@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Point } from '../commontypes/geometry/Point';
@@ -18,7 +18,8 @@ import { GeometryType } from '../REST';
  * @class ServerGeometry
  * @deprecatedclass SuperMap.ServerGeometry
  * @category  iServer Data Feature
- * @classdesc 服务端几何对象类。该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
+ * @classdesc 服务端几何对象类。该类描述了几何对象（矢量）的特征数据（坐标点对、几何对象的类型等），
+ * 是基于服务端空间分析、空间关系运算、查询等 GIS 服务功能使用的服务端几何对象。
  * @param {Object} options - 参数。
  * @param {string} options.id - 服务端几何对象唯一标识符。
  * @param {Array.<number>} options.parts - 服务端几何对象中各个子对象所包含的节点个数。
@@ -37,7 +38,7 @@ export class ServerGeometry {
 
         /**
          * @member {ServerStyle} [ServerGeometry.prototype.style]
-         * @description 服务端几何对象的风格（ServerStyle）。
+         * @description 服务端几何对象的风格。
          */
         this.style = null;
 
@@ -71,7 +72,7 @@ export class ServerGeometry {
 
         /**
          * @member {GeometryType} ServerGeometry.prototype.type
-         * @description 几何对象的类型（GeometryType）。
+         * @description 几何对象的类型。
          */
         this.type = null;
 
@@ -504,9 +505,9 @@ export class ServerGeometry {
 
     /**
      * @function ServerGeometry.prototype.fromGeometry
-     * @description 将客户端 Geometry 转换成服务端 ServerGeometry。
-     * @param {Geometry} geometry - 要转换的客户端 Geometry 对象。
-     * @returns {ServerGeometry} 转换后的 ServerGeometry 对象。
+     * @description 将客户端几何对象转换成服务端几何对象。
+     * @param {Geometry} geometry - 要转换的客户端几何对象。
+     * @returns {ServerGeometry} 转换后的服务端几何对象。
      */
     static fromGeometry(geometry) {
         if (!geometry) {

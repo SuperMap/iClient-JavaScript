@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -38,7 +38,7 @@
         widgets.loader.showLoader();
         new L.supermap
             .QueryService(url)
-            .queryByGeometry(param, function (serviceResult) {
+            .queryByGeometry(param).then(function (serviceResult) {
                 //leaflet 绘制数据默认为 4326，服务器返回数据为 3857，因此在加载到地图前，先进行坐标系转换：
                 var result = L.supermap.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
                 widgets.loader.removeLoader();

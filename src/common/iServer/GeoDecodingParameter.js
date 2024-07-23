@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,11 +7,13 @@ import {Util} from '../commontypes/Util';
  * @class GeoDecodingParameter
  * @deprecatedclass SuperMap.GeoDecodingParameter
  * @category iServer AddressMatch
- * @classdesc 地理反向匹配参数类。
+ * @classdesc 地理反向匹配参数类。地理反向匹配是指通过位置坐标信息查询相关地点。
+ * 此类用于设置地理反向匹配中的查询位置坐标、过滤字段、查询半径等参数，还可以对返回结果进行一系列参数设置。
  * @param {Object} options - 参数。
  * @param {number} options.x - 查询位置的横坐标。
  * @param {number} options.y - 查询位置的纵坐标。
  * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。
  * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。
  * @param {string} [options.prjCoordSys] - 查询结果的坐标系。
  * @param {number} [options.maxReturn] - 最大返回结果数。

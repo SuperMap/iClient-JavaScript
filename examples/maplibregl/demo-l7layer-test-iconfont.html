@@ -1,0 +1,120 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="resources.title_mapQueryByBounds"></title>
+  <!-- <link rel="stylesheet" href="./font/iconfont.css"> -->
+</head>
+
+<body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+  <div id="map" class="ms-icons-map" style="margin: 0 auto; width: 100%; height: 100%"></div>
+  <!-- <script type="text/javascript" src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script> -->
+  <!-- <script type="text/javascript" src="./maplibre-gl.js"></script> -->
+  <script
+  type="text/javascript"
+  include="three,L7,L7Three"
+  src="../../dist/maplibregl/include-maplibregl.js"
+></script>
+  <script type="text/javascript">
+    var scene;
+    var map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://api.maptiler.com/maps/basic/style.json?key=49D4vXt4KBt37nKTQbX5',
+      center: [115.5268, 34.3628],
+      maxZoom: 18,
+      zoom: 2,
+      pitch: 45,
+      bearing: 0,
+      ,
+      localIdeographFontFamily: "'supermapol-icons'"
+    });
+
+    map.on('load', async () => {
+      // 添加点图层
+      const dotLayer = await getDotPointLayer();
+      map.addLayer(dotLayer);
+      // 添加字体图标信息
+      const scene = dotLayer.getScene();
+      const fontFamily = 'iconfont';
+      const fontPath = 'https://at.alicdn.com/t/font_2534097_ao9soua2obv.woff2?t=1622021146076';
+      scene.addFontFace(fontFamily, fontPath);
+      scene.addIconFonts([
+        ['smallRain', '&#xe6f7;'],
+        ['middleRain', '&#xe61c;'],
+        ['hugeRain', '&#xe6a6;'],
+        ['sun', '&#xe6da;'],
+        ['cloud', '&#xe8da;']
+      ]);
+      // 添加使用字体图标的图层
+      const layer = await getIconPointLayer();
+      map.addLayer(layer);
+    });
+    async function getDotPointLayer() {
+      const dot = await fetch(
+        'https://gw.alipayobjects.com/os/basement_prod/4472780b-fea1-4fc2-9e4b-3ca716933dc7.json'
+      ).then((d) => d.text());
+
+      // new L7Layer()， 参数：（type: antv l7 layer的图层类型  options: antv l7 layer的图层类型）
+      const layer = new maplibregl.supermap.L7Layer({ type: 'PointLayer', options: {} });
+      // getL7Layer返回原生antv l7 layer的实例
+      const l7Layer = layer.getL7Layer();
+      // 调用原生antv l7 layer的方法，构建图层
+      l7Layer
+        .source(eval(dot), {
+          parser: {
+            type: 'json',
+            x: 'lng',
+            y: 'lat'
+          }
+        })
+        .shape('circle')
+        .color('rgb(22,119,255)')
+        .size(20)
+        .style({
+          opacity: 1.0
+        });
+      // 返回iclient-maplibregl的L7Layer实例， 通过map.addLayer()上图
+      return layer;
+    }
+
+    async function getIconPointLayer() {
+      const data = await fetch(
+        'https://gw.alipayobjects.com/os/bmw-prod/9eb3f1b5-0c3b-49b2-8221-191d4ba8aa5e.json'
+      ).then((d) => d.text());
+
+      const layer = new maplibregl.supermap.L7Layer({ type: 'PointLayer', options: {} });
+
+      const l7Layer = layer.getL7Layer();
+      l7Layer
+        .source(eval(data), {
+          parser: {
+            type: 'json',
+            x: 'lng',
+            y: 'lat'
+          }
+        })
+        .shape('iconType', 'text')
+        .color('#f00')
+        .size(20)
+        .style({
+          opacity: 1.0,
+          textAnchor: 'center', // 文本相对锚点的位置 center|left|right|top|bottom|top-left
+          textOffset: [ -10, 10 ], // 文本相对锚点的偏移量 [水平, 垂直]
+          fontFamily: 'iconfont',
+          iconfont: true,
+          textAllowOverlap: true
+        });
+      return layer;
+    }
+
+    function getLayer(type = 'PointLayer', options = {}) {
+      return new maplibregl.supermap.L7Layer({ type, options });
+    }
+  </script>
+</body>
+
+</html>

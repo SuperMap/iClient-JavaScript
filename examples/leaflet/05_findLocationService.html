@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -120,7 +120,7 @@
             supplyCenters: supplyCenters
         });
         //进行查找
-        findLocationService.findLocation(findLocationParameter, function (serviceResult) {
+        findLocationService.findLocation(findLocationParameter).then(function (serviceResult) {
             L.geoJSON(serviceResult.result.demandResults, {
                 pointToLayer: function (geoJsonPoint, latlng) {
                     return L.circleMarker(latlng, {radius: 1, color: "green"});

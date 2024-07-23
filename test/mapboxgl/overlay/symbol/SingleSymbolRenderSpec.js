@@ -2,7 +2,7 @@ import SingleSymbolRender from '../../../../src/mapboxgl/overlay/symbol/SingleSy
 import mapboxgl from 'mapbox-gl';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-describe('SingleSymbolRender', () => {
+describe('mapboxgl_SingleSymbolRender', () => {
   var testDiv, map, singleSymbolRender;
   beforeAll(() => {
     new mapboxgl.supermap.WebSymbol().init();

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SecurityManager} from '../security/SecurityManager';
@@ -44,15 +44,12 @@ export class IManagerServiceBase {
                 'Content-Type': 'application/json'
             }
         };
-        if (!requestOptions.hasOwnProperty("withCredentials")) {
-            requestOptions['withCredentials'] = true;
-        }
         requestOptions['crossOrigin'] = this.options.crossOrigin;
         requestOptions['headers'] = this.options.headers;
         var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {
-                requestOptions.headers = [];
+                requestOptions.headers = {};
             }
             requestOptions.headers['X-Auth-Token'] = token;
         }

@@ -1,0 +1,134 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_bar_chart"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7,g2" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [
+                host +
+                  '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' +
+                  encodeURIComponent('{"epsgCode":3857}') +
+                  '&z={z}&x={x}&y={y}'
+              ],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [2.6125016864608597, 49.359131],
+        zoom: 4.19
+      });
+
+      map.on('load', function () {
+        map.getL7Scene().then((scene) => {
+          addChart(scene);
+          scene.render();
+        });
+      });
+      function addChart(scene) {
+        fetch('https://iclient.supermap.io/web/data/L7/0b96cca4-7e83-449a-93d0-2a77053e74ab.json')
+          .then((res) => res.json())
+          .then((data) => {
+            data.nodes.forEach(function (item) {
+              const el = document.createElement('div');
+              const total = item.gdp.Agriculture + item.gdp.Industry + item.gdp.Service;
+
+              const size = Math.min(parseInt(total / 30000, 10), 70);
+              if (size < 30) {
+                return;
+              }
+              const itemData = [
+                {
+                  item: 'Agriculture',
+                  count: item.gdp.Agriculture,
+                  percent: item.gdp.Agriculture / total
+                },
+                {
+                  item: 'Industry',
+                  count: item.gdp.Industry,
+                  percent: item.gdp.Industry / total
+                },
+                {
+                  item: 'Service',
+                  count: item.gdp.Service,
+                  percent: item.gdp.Service / total
+                }
+              ];
+
+              const chart = new G2.Chart({
+                container: el,
+                width: size,
+                height: size,
+                render: 'svg',
+                padding: 0
+              });
+              chart.legend(false);
+              chart.data(itemData);
+              chart.tooltip(false);
+
+              chart.axis('count', false);
+              chart.axis('item', false);
+              chart.interval().position('item*count').color('item', ['#5CCEA1', '#5D7092', '#5B8FF9']);
+              chart.render();
+              const marker = new L7.Marker({
+                element: el
+              }).setLnglat({
+                lng: item.coordinates[0],
+                lat: item.coordinates[1]
+              });
+              scene.addMarker(marker);
+            });
+          });
+      }
+    </script>
+  </body>
+</html>

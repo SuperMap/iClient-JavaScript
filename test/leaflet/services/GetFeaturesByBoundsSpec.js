@@ -83,6 +83,69 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
         });
     });
 
+    it('successEvent:getFeaturesByBounds_returnContent=true promise', done => {
+      var polygon = L.polygon([
+          [-20, 20],
+          [0, 20],
+          [0, 40],
+          [-20, 40],
+          [-20, 20]
+      ]);
+      var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
+          datasetNames: ['World:Capitals'],
+          bounds: polygon.getBounds(),
+          returnContent: true
+      });
+      var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+          expect(paramsObj.getFeatureMode).toBe('BOUNDS');
+          expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+      });
+      getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams).then(result => {
+        serviceResult = result;
+        try {
+            expect(getFeaturesByBoundsService).not.toBeNull();
+            expect(serviceResult.type).toBe('processCompleted');
+            expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
+            expect(serviceResult.result).not.toBeNull();
+            expect(serviceResult.result.succeed).toBeTruthy();
+            expect(serviceResult.result.featureCount).toEqual(1);
+            expect(serviceResult.result.totalCount).toEqual(1);
+            expect(serviceResult.result.features.type).toBe('FeatureCollection');
+            expect(serviceResult.result.features.features.length).toEqual(1);
+            for (var i = 0; i < serviceResult.result.features.features.length; i++) {
+                expect(serviceResult.result.features.features[i].type).toBe('Feature');
+                // expect(serviceResult.result.features.features[i].geometry.type).toBe("MultiPolygon");
+                expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
+            }
+            expect(serviceResult.result.features.features[0].properties).toEqual(
+                Object({
+                    SMID: '127',
+                    CAPITAL: '利伯维尔'
+                })
+            );
+            getFeaturesByBoundsService.destroy();
+            done();
+        } catch (exception) {
+            console.log(
+                "leafletGetFeaturesByBoundsService_'successEvent:returnContent=true'案例失败：" +
+                    exception.name +
+                    ':' +
+                    exception.message
+            );
+            getFeaturesByBoundsService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
+
     it('successEvent:getFeaturesByBounds_returnContent=false', done => {
         var polygon = L.polygon([
             [-20, 20],
@@ -304,4 +367,106 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
             done();
         });
     });
+
+    it('getFeaturesCount', done => {
+      var polygon = L.polygon([
+          [-20, 20],
+          [0, 20],
+          [0, 40],
+          [-20, 40],
+          [-20, 20]
+      ]);
+      var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
+          datasetNames: ['World:Capitals'],
+          bounds: polygon.getBounds(),
+          returnContent: true
+      });
+      var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnCountOnly=true&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+          expect(paramsObj.getFeatureMode).toBe('BOUNDS');
+          expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
+          expect(options).not.toBeNull();
+                    return Promise.resolve(new Response(JSON.stringify({
+              "features": null,
+              "featureUriList": null,
+              "datasetInfos": null,
+              "totalCount": 1889,
+              "featureCount": 20
+          })));
+      });
+      getFeaturesByBoundsService.getFeaturesCount(getFeaturesByBoundsParams, result => {
+          serviceResult = result;
+          try {
+              expect(getFeaturesByBoundsService).not.toBeNull();
+              expect(serviceResult.result).not.toBeNull();
+              expect(serviceResult.result.succeed).toBeTruthy();
+              expect(serviceResult.result.totalCount).toEqual(1889);
+              expect(serviceResult.result.features).toBe(null);
+              done();
+          } catch (exception) {
+              console.log(
+                  "leafletGetFeaturesByBoundsService_'getFeaturesCount'案例失败：" +
+                      exception.name +
+                      ':' +
+                      exception.message
+              );
+              getFeaturesByBoundsService.destroy();
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+  });
+
+  it('getFeaturesDatasetInfo', done => {
+    var polygon = L.polygon([
+        [-20, 20],
+        [0, 20],
+        [0, 40],
+        [-20, 40],
+        [-20, 20]
+    ]);
+    var getFeaturesByBoundsParams = new GetFeaturesByBoundsParameters({
+        datasetNames: ['World:Capitals'],
+        bounds: polygon.getBounds(),
+        returnContent: true
+    });
+    var getFeaturesByBoundsService = featureService(dataServiceURL, options);
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+        expect(method).toBe('POST');
+        expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnDatasetInfoOnly=true&returnContent=true');
+        var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+        expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+        expect(paramsObj.getFeatureMode).toBe('BOUNDS');
+        expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
+        expect(options).not.toBeNull();
+                  return Promise.resolve(new Response(JSON.stringify(getReturnDatasetInfoOnlyResult)));
+    });
+    getFeaturesByBoundsService.getFeaturesDatasetInfo(getFeaturesByBoundsParams, result => {
+        serviceResult = result;
+        try {
+            expect(getFeaturesByBoundsService).not.toBeNull();
+            expect(serviceResult.type).toBe('processCompleted');
+            expect(serviceResult.result).not.toBeNull();
+            expect(serviceResult.result.succeed).toBeTruthy();
+            expect(serviceResult.result[0].datasetName).toBe("World:Countries");
+            expect(serviceResult.result[0].fieldInfos.length).toEqual(13);
+            getFeaturesByBoundsService.destroy();
+            done();
+        } catch (exception) {
+            console.log(
+                "leafletGetFeaturesByBoundsService_'getFeaturesDatasetInfo'案例失败：" +
+                    exception.name +
+                    ':' +
+                    exception.message
+            );
+            getFeaturesByBoundsService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+});
 });

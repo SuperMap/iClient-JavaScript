@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -9,12 +9,13 @@ import Attributions from '../core/Attributions'
 /**
  * @class TurfLayer
  * @deprecatedclassinstance L.supermap.turfLayer
- * @classdesc Turf 图层类。
+ * @classdesc Turf.js 图层类。Turf.js 是一个用于空间分析的 JavaScript 库。它包括传统的空间操作、用于创建 GeoJSON数据的帮助函数、
+ * 以及数据分类和统计工具。此类提供了执行 Turf.js 中相关空间分析方法的功能。
  * @category Visualization Turf
  * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} options - 参数。
- * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权描述信息。
  * @usage
  */
 export var TurfLayer = L.GeoJSON.extend({

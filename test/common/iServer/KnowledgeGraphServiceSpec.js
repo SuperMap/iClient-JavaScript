@@ -18,7 +18,6 @@ describe('KnowledgeGraphService', () => {
     expect(knowledgeGraphService).not.toBeNull();
     expect(knowledgeGraphService.url).toEqual(knowledgegraphURL);
     knowledgeGraphService.destroy();
-    expect(knowledgeGraphService.events).toBeNull();
     expect(knowledgeGraphService.url).toBeNull();
   });
 
@@ -37,17 +36,45 @@ describe('KnowledgeGraphService', () => {
     knowledgeGraphService.destroy();
   });
 
-  it('query', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+  it('findShortestPath', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(findShortestPathData));
+    });
+    knowledgeGraphService.findShortestPath({startID:38756, endID:38757}, (res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
-        expect(result.result.length).toEqual(2);
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
+        expect(res.result.edgeIDs).toEqual([69575, 66619]);
+        knowledgeGraphService.destroy();
+        done();
+      } catch (exception) {
+        console.log("'findShortestPath'案例失败：" + exception.name + ':' + exception.message);
+        expect(false).toBeTruthy();
+        done();
+      }
+    });
+  });
+
+  it('query', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/query.json?cypherQuery=cypherQuery');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(queryData));
+    });
+    knowledgeGraphService.query('cypherQuery', (res) => {
+      try {
+        expect(knowledgeGraphService).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.length).toEqual(6);
         knowledgeGraphService.destroy();
         done();
       } catch (exception) {
@@ -56,30 +83,21 @@ describe('KnowledgeGraphService', () => {
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/query.json?cypherQuery=cypherQuery');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(queryData));
-    });
-    knowledgeGraphService.query('cypherQuery', (res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMap', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(graphmapData));
+    });
+    knowledgeGraphService.getGraphMap('xxx图谱', (res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
         knowledgeGraphService.destroy();
         done();
       } catch (exception) {
@@ -88,30 +106,21 @@ describe('KnowledgeGraphService', () => {
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(graphmapData));
-    });
-    knowledgeGraphService.getGraphMap('xxx图谱', (res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMaps', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps.json');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(graphmaps));
+    });
+    knowledgeGraphService.getGraphMaps((res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
         knowledgeGraphService.destroy();
         done();
       } catch (exception) {
@@ -121,18 +130,6 @@ describe('KnowledgeGraphService', () => {
         knowledgeGraphService.destroy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps.json');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(graphmaps));
-    });
-    knowledgeGraphService.getGraphMaps((res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMapData', (done) => {

@@ -131,6 +131,10 @@ var typeLinks = {
     "THREE.Shape": threeApi + '#api/extras/core/Shape',
 
     // TF
-    'tf.GraphModel': 'https://js.tensorflow.org/api/latest/#class:GraphModel'
+    'tf.GraphModel': 'https://js.tensorflow.org/api/latest/#class:GraphModel',
+
+    // File Blob
+    'File': webApi + 'API/File',
+    'Blob': webApi + 'API/Blob'
 }
 exports.typeLinks = typeLinks;

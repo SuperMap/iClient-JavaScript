@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%;height: 100%;">
@@ -173,7 +173,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label for="scale" data-i18n="resources.text_scale"></label>
-                            <input type="text" class="form-control" id="scale" value="0" />
+                            <input type="text" class="form-control" id="scale" value="1" />
                         </div>
                         <div class="form-group">
                             <label for="center"  data-i18n="resources.text_center"></label>
@@ -248,7 +248,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exportScale" data-i18n="resources.text_scale"></label>
-                            <input type="text" class="form-control" id="exportScale" value="0" />
+                            <input type="text" class="form-control" id="exportScale" value="1" />
                         </div>
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                         unit: $('#unit').val(),
                     }),
                     littleMapOptions: new ol.supermap.WebPrintingJobLittleMapOptions({
-                        scale: +$('#scale').val() || 0,
+                        scale: +$('#scale').val(),
                         center: { x: $('#center').val().split(',')[0], y: $('#center').val().split(',')[1] },
                         layerNames: webMap.layers && webMap.layers.map(function(item) {return item.name})
                     }),
@@ -339,7 +339,7 @@
                             window.URL.revokeObjectURL(link.href);
                             $('#printBtn').show();
                             $('.progress').hide();
-                        } else {
+                        } else if (!res.result) {
                             alert('打印失败');
                             $('#printBtn').show();
                             $('.progress').hide();

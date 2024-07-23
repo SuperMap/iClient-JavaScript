@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { GetFieldsService } from './GetFieldsService';
@@ -8,7 +8,7 @@ import { FieldStatisticsParameters } from './FieldStatisticsParameters';
 /**
  * @class FieldService
  * @category  iServer Data Field
- * @classdesc 字段服务类。
+ * @classdesc 字段服务类。提供方法：查询字段信息、查询字段统计信息等。
  * @example
  * new FieldService(url).getFields(function(result){
  *     //doSomething
@@ -32,7 +32,8 @@ export class FieldService {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {
         var me = this;
@@ -41,22 +42,17 @@ export class FieldService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             datasource: params.datasource,
             dataset: params.dataset
         });
-        getFieldsService.processAsync();
+        return getFieldsService.processAsync(callback);
     }
 
     /**
      * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
      * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getFieldStatisticsInfo(params, callback) {
       if (!(params instanceof FieldStatisticsParameters)) {
@@ -80,11 +76,6 @@ export class FieldService {
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: me._processCompleted.bind(me),
-                processFailed: me._statisticsCallback
-            },
             datasource: datasource,
             dataset: dataset,
             field: fieldName,
@@ -92,11 +83,15 @@ export class FieldService {
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers
         });
-        statisticService.processAsync();
+        statisticService.processAsync(me._processCompleted.bind(me));
     }
 
-    _processCompleted(fieldStatisticResult, options) {
+    _processCompleted(fieldStatisticResult) {
         var me = this;
+        if (fieldStatisticResult.error) {
+          me._statisticsCallback(fieldStatisticResult);
+          return;
+        }
         var getAll = true,
             result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
@@ -111,7 +106,7 @@ export class FieldService {
             }
         }
         if (getAll) {
-            me._statisticsCallback({result: me.currentStatisticResult, options});
+            me._statisticsCallback({result: me.currentStatisticResult});
         }
     }
 }

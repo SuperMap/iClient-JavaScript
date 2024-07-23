@@ -1,4 +1,5 @@
-import { echartsLayer } from '../../../src/leaflet/overlay/EChartsLayer';
+import { echartsLayer, LeafletMapCoordSys } from '../../../src/leaflet/overlay/EChartsLayer';
+import { RangeThemeLayer } from '../../../src/leaflet/overlay/RangeThemeLayer';
 import { tiledMapLayer } from '../../../src/leaflet/mapping/TiledMapLayer';
 
 var url = GlobeParameter.imageURL;
@@ -367,6 +368,69 @@ describe('leaflet_EChartsLayer', () => {
       expect(layer.style.left).toBe('0px');
       expect(layer.style.top).toBe('0px');
       expect(panel.style.transform).toBe('translate3d(0px, 0px, 0px)');
+      done();
+    });
+
+    it('LeafletMapCoordSys create coordinateSystem', (done)=>{
+      const mockECModel = {
+        scheduler: {ecInstance: { leafletMap: {}}},
+        eachComponent: () => {},
+        eachSeries: (cb) => {
+          var obj = { get: () => {} };
+          cb(obj);
+          expect(obj.coordinateSystem).toBeUndefined();
+        }
+      }
+      const mockECModel1 = {
+        scheduler: { ecInstance: { leafletMap: { containerPointToLayerPoint: () => ({ x:0, y:0 }) } } },
+        eachComponent: () => {},
+        eachSeries: (cb) => {
+          var obj = { get: () => { return 'leaflet'} };
+          cb(obj);
+          expect(obj.coordinateSystem).not.toBeUndefined();
+        }
+      }
+      LeafletMapCoordSys.create(mockECModel)
+      LeafletMapCoordSys.create(mockECModel1)
+      done();
+    });
+
+    it('layer index fix', (done) => {
+      var data = [
+        {
+          value: [104.006244, 30.677465]
+        },
+        {
+          value: [104.041946, 30.689538]
+        },
+        {
+          value: [104.002589, 30.64683]
+        }
+      ];
+      var option = {
+        series: [
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'leaflet',
+            data: data,
+            symbolSize: 30
+          }
+        ]
+      };
+      var themeLayer = new RangeThemeLayer("ThemeLayer", {
+        isHoverAble:false,
+        opacity: 0.8,
+        alwaysMapCRS: true
+      });
+      themeLayer.addTo(map);
+      var echartsMapLayer = echartsLayer(option).addTo(map);
+      const layer = document.getElementsByClassName('echarts-layer')[0];
+      const themeLayerElement = document.getElementsByClassName('themeLayer')[0];
+      const panel = document.getElementsByClassName('leaflet-map-pane')[0];
+      expect(+layer.parentNode.style.zIndex).toEqual(+themeLayerElement.style.zIndex);
+      expect(themeLayerElement.nextSibling.children[0].classList.contains('echarts-layer')).toBeTruthy();
+      expect(layer.style.left).toBe('0px');
+      expect(layer.style.top).toBe('0px');
       done();
     });
 });

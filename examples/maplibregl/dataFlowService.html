@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -28,9 +28,7 @@
         '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}',
       urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
 
-    wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
-
-    var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
+    var urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow";
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
       " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
@@ -63,7 +61,9 @@
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
 
     maplibregl.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
-    var popup = new maplibregl.Popup();
+    var popup = new maplibregl.Popup({
+      focusAfterOpen: false
+    });
 
     map.on('load', function () {
       var options = {
@@ -90,13 +90,12 @@
           attributeFilter: "SMID = 1755"
         }
       });
-      queryService = new maplibregl.supermap.QueryService(urlQuery).queryBySQL(param, function (serviceResult) {
+      queryService = new maplibregl.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
         featureResult = serviceResult;
         dataFlowBroadcast = new maplibregl.supermap.DataFlowService(urlDataFlow).initBroadcast();
         dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
           timer = window.setInterval("broadcast()", 2000);
         });
-
       });
     }
 

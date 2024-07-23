@@ -1,12 +1,13 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import "../core/Base";
-import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
-import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
-import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
-import { LinearRing } from "@supermap/iclient-common/commontypes/geometry/LinearRing";
-import { GeoJSON as GeoJSONFormat } from "@supermap/iclient-common/format/GeoJSON";
+import maplibregl from 'maplibre-gl';
+import { Bounds } from "@supermapgis/iclient-common/commontypes/Bounds";
+import { Point as GeometryPoint } from "@supermapgis/iclient-common/commontypes/geometry/Point";
+import { Polygon } from "@supermapgis/iclient-common/commontypes/geometry/Polygon";
+import { LinearRing } from "@supermapgis/iclient-common/commontypes/geometry/LinearRing";
+import { GeoJSON as GeoJSONFormat } from "@supermapgis/iclient-common/format/GeoJSON";
 
 const isArray = function (obj){
   return Object.prototype.toString.call(obj) == "[object Array]";
@@ -54,7 +55,13 @@ export const Util = {
             //左下右上
             return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
-        return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        if (bounds instanceof maplibregl.LngLatBounds) {
+          return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        }
+        if (bounds instanceof Bounds) {
+          return bounds;
+        }
+        return bounds;
     },
 
     toSuperMapPoint(lnglat) {

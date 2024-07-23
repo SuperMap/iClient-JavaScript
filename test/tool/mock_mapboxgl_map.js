@@ -1,4 +1,12 @@
 import mapboxgl from 'mapbox-gl';
+class VectorTileSource {
+  constructor(id, options) {
+    this.id = id;
+    this.options = options;
+  }
+  async beforeLoad() {}
+}
+mapboxgl.VectorTileSource = VectorTileSource;
 
 const defaultOptions = {
   doubleClickZoom: true
@@ -10,42 +18,56 @@ function functor(x) {
   };
 }
 
-
 const Map = function (options) {
   const evented = new mapboxgl.Evented();
   this.on = evented.on;
+  this.once = evented.once;
+  this._update = ()=>{};
   this.fire = evented.fire;
   this.listens = evented.listens;
 
-  this.options = options;                                                                                                                                                
+  this.options = options;
   this._events = {};
   this._sources = {};
   this._collectResourceTiming = !!this.options.collectResourceTiming;
   this.zoom = this.options.zoom || 0;
   this._container = this.options.container || 'map';
   this._layers = {};
+  this.style = {};
   this.getContainer = function () {
     return this._container;
   };
   this.bounds = this.options.bounds;
 
   try {
-    this.center = this.options.center ? new mapboxgl.LngLat(this.options.center.lng, this.options.center.lat) : new mapboxgl.LngLat(0, 0);
+    this.center = this.options.center
+      ? new mapboxgl.LngLat(this.options.center.lng, this.options.center.lat)
+      : new mapboxgl.LngLat(0, 0);
   } catch (e) {
-    this.center = this.options.center ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1]) : new mapboxgl.LngLat(0, 0);
+    this.center = this.options.center
+      ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1])
+      : new mapboxgl.LngLat(0, 0);
   }
   this.resize = function () {};
-  this.style = options.style;
+  this.style = {
+    ...options.style,
+    addGlyphs: function() {},
+    addSprite: function() {}
+  };
   this.setStyle = function (style, options) {
-    for (let i = 0, list = style.layers; i < list.length; i += 1) {
-      this._layers[layer.id] = list[i];
+    if (style.layers) {
+      for (let i = 0, list = style.layers; i < list.length; i += 1) {
+        const layer = list[i];
+        this._layers[layer.id] = list[i];
+      }
     }
-    this.sources = style.sources
+    this.sources = style.sources;
   };
   if (options.style) {
     this.setStyle(options.style);
   }
   this.transform = {
+    zoomScale: function () {},
     angle: 0
   };
   this._controlCorners = {
@@ -79,6 +101,7 @@ const Map = function (options) {
   }
 
   this.setLayoutProperty = function (layerid) {};
+  this.setLayoutPropertyBySymbolBak = function (layerid) {};
 
   this.addControl = function (control) {
     control.onAdd(this);
@@ -86,10 +109,10 @@ const Map = function (options) {
 
   this.getStyle = function () {
     return {
-      version:8,
-      source:this._sources,
-      layers:Object.values(this._layers)
-    }
+      version: 8,
+      source: this._sources,
+      layers: Object.values(this._layers)
+    };
   };
 
   this.getContainer = function () {
@@ -112,7 +135,12 @@ const Map = function (options) {
   };
 
   this.getSource = function (name) {
-    this._sources[name]
+    if (this._sources[name]?.type === 'video') {
+      return {
+        play: function () {}
+      };
+    }
+    return this._sources[name];
   };
 
   this.loaded = function () {
@@ -126,6 +154,9 @@ const Map = function (options) {
   this.overlayLayersManager = {};
 
   this.addSource = function (name, source) {
+    if (source && source.drawImageCallback) {
+      source.drawImageCallback();
+    }
     this._sources[name] = source;
   };
   this.removeSource = function (name) {
@@ -152,10 +183,16 @@ const Map = function (options) {
   this.getFilter = function (layerId) {};
   this.setFilter = function (layerId, filter) {};
   this.getLayer = function (id) {
-    return this._layers[layer.id]
+    return this._layers[id];
   };
   this.getBounds = function () {
-    return this.bounds;
+    return (
+      this.bounds ||
+      mapboxgl.LngLatBounds.convert([
+        [-180, -90],
+        [180, 90]
+      ])
+    );
   };
 
   this.getZoom = function () {
@@ -215,7 +252,13 @@ const Map = function (options) {
     enable: function () {}
   };
 
-  this.project = function () {
+  this.project = function (latlng) {
+    if (latlng) {
+      return {
+        x: Math.floor(Math.random() * 800),
+        y: Math.floor(Math.random() * 600),
+      }
+    };
     return {
       x: 500,
       y: 300
@@ -226,6 +269,10 @@ const Map = function (options) {
   };
 
   this.queryRenderedFeatures = function (pointOrBox, queryParams) {
+    return [];
+  };
+
+  this.querySourceFeatures = function (sourceId, queryParams) {
     return [];
   };
 
@@ -246,43 +293,50 @@ const Map = function (options) {
     return this.zoom;
   };
   this.loadImage = function (src, callback) {
-      callback(null, [1, 2, 3]);
+    callback(null, [1, 2, 3]);
   };
   this.addImage = function () {};
   this.hasImage = function () {
     return true;
   };
   this.getPaintProperty = function () {};
+  this.getLayoutProperty = function () {};
   this.removeImage = function () {};
   this.getCanvasContainer = () => {
-    return {
-      appendChild() {},
-      addEventListener(eventName, callback) {},
-      style: {
-        cursor: null
-      }
-    };
+    if (typeof this._container === 'string') {
+      return document.getElementById(this._container);
+    }
+    return this._container;
   };
   this.getCanvas = () => {
     return {
       style: {
         width: 100,
         height: 100
+      },
+      getBoundingClientRect: function () {
+        return {
+          width: 100,
+          height: 100
+        };
       }
     };
   };
   this.getCRS = () => {
     return {
+      epsgCode: this.options.crs,
       getExtent: () => jest.fn()
     };
   };
   this.setCRS = () => {};
-  this.flyTo = options => {};
-  this.setRenderWorldCopies = epsgCode => {};
+  this.flyTo = (options) => {};
+  this.setRenderWorldCopies = (epsgCode) => {};
   this.triggerRepaint = () => {};
-    setTimeout(() => {
-      this.fire('load');
-    }, 0);
+  setTimeout(() => {
+    this.fire('load');
+  }, 0);
 };
 
 export default Map;
+var mapboxglMock = { Map };
+export { mapboxglMock };

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -16,7 +16,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  * 分段专题图所基于的专题变量必须为数值型，分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
- * @param {Array.<ThemeRangeItem>} options.items - 子项数组。
+ * @param {Array.<ThemeRangeItem>} options.items - 范围分段专题图子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。
  * @param {number} options.rangeParameter - 分段参数。
  * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段模式。
@@ -71,7 +71,7 @@ export class ThemeRange extends Theme {
          * @member {ColorGradientType} [ThemeRange.prototype.colorGradientType=ColorGradientType.YELLOW_RED]
          * @description 渐变颜色枚举类。<br>
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
-         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中Style属性），
+         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中 Style 属性），
          *              该配色方案对于这几个子项将不起作用。
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;

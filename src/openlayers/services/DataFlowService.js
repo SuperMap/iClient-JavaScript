@@ -1,13 +1,14 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
+import { DataFlowService as DataFlow } from '@supermapgis/iclient-common/iServer/DataFlowService';
 
 /**
  * @class DataFlowService
  * @category  iServer DataFlow
- * @classdesc 数据流服务。
+ * @classdesc 数据流服务类。用于实现客户端与服务器之间实现低延迟和实时数据传输。数据流服务采用 WebSocket 协议，支持全双工、双向式通信。
+ * 服务器可将流数据服务的分析处理结果作为数据来源向客户端广播，客户端与数据流服务建立连接后，即可自动接收服务器广播的数据。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @example
@@ -20,7 +21,7 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @usage
  */
@@ -49,7 +50,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {DataFlowService}
+     * @returns {DataFlowService} - 数据流服务。
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -88,7 +89,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

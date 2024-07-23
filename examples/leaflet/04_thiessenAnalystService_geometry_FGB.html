@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -48,11 +48,11 @@
             points: pointsList
         });
         thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, 'FGB').then(function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
             strategy: 'all'
           }).addTo(map);
-        }, 'FGB')
+        })
     }
 </script>
 </body>

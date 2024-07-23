@@ -1,6 +1,7 @@
 import {
   ElasticSearch,
   SecurityManager,
+  VectorClipJobsParameter,
   KernelDensityJobParameter,
   SingleObjectQueryJobsParameter,
   SummaryAttributesJobsParameter,
@@ -14,11 +15,13 @@ import {
   GeoCodingParameter,
   GeoDecodingParameter,
   SuperMap,
-  Util
+  Util,
+  FetchRequest
 } from './index';
 
 SuperMap.ElasticSearch = ElasticSearch;
 SuperMap.SecurityManager = SecurityManager;
+SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
@@ -31,5 +34,6 @@ SuperMap.OutputSetting = OutputSetting;
 SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
+SuperMap.FetchRequest = FetchRequest;
 SuperMap.Util = {...SuperMap.Util, ...Util};
 export * from './index';

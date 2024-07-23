@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,7 +8,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @class MappingParameters
  * @deprecatedclass SuperMap.MappingParameters
  * @category  iServer ProcessingService
- * @classdesc 分析后结果可视化的参数类。
+ * @classdesc 分析后结果可视化的参数类。此类用于设置分布式分析结果可视化得到的专题图的子项数组、精度、分段模式、分段个数和颜色渐变模式等参数。
  * @param {Object} options - 参数。
  * @param {Array.<ThemeGridRangeItem>} [options.items] - 栅格分段专题图子项数组。
  * @param {number} [options.numericPrecision=1] - 精度，此字段用于设置分析结果标签专题图中标签数值的精度，如“1”表示精确到小数点的后一位。

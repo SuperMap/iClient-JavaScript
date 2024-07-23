@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41,14 +41,18 @@ import {
   Graphic,
   GraticuleLayer,
   FGBLayer,
-  GraphMap
+  GraphMap,
+  WebSymbol,
+  L7Layer
 } from './overlay';
+
+import { initMap } from './mapping';
 
 import {
   CommonUtil,
   SuperMap,
   Transform
-} from '@supermap/iclient-common/namespace';
+} from '@supermapgis/iclient-common/namespace';
 
 export * from './index';
 
@@ -91,3 +95,6 @@ maplibregl.supermap.HeatMapLayer = HeatMapLayer;
 maplibregl.supermap.GraphicLayer = GraphicLayer;
 maplibregl.supermap.GraticuleLayer = GraticuleLayer;
 maplibregl.supermap.FGBLayer = FGBLayer;
+maplibregl.supermap.L7Layer = L7Layer;
+maplibregl.supermap.initMap = initMap;
+maplibregl.supermap.WebSymbol = WebSymbol;

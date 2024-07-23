@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -50,13 +50,13 @@
             zValueFieldName: "AVG_TMP"
         });
         surfaceAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (serviceResult) {
-            var result = serviceResult.result;
-            if (result && result.recordset && result.recordset.features) {
-                resultLayer = L.geoJSON(result.recordset.features, {weight: 3}).addTo(map);
-            } else {
-                alert(serviceResult.error.errorMsg);
-            }
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (serviceResult) {
+            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+              strategy: 'all',
+              style: {
+                weight: 3
+              },
+          }).addTo(map);
         });
     }
 </script>

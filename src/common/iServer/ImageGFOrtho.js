@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFOrtho
  * @deprecatedclass SuperMap.ImageGFOrtho
- * @classdesc 栅格函数对象：对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
+ * @classdesc 栅格函数对象：对 DEM 数据生成正射三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFOrtho'] 栅格函数名称，参数值为：GFOrtho。

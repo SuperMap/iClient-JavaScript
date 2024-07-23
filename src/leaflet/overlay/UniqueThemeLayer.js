@@ -1,9 +1,9 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import '../core/Base';
  import { GeoFeatureThemeLayer } from './theme/GeoFeatureThemeLayer';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 /**
  * @class UniqueThemeLayer
  * @deprecatedclassinstance L.supermap.uniqueThemeLayer
@@ -15,7 +15,7 @@
  * @param {string} name - 专题图层名。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
@@ -66,9 +66,9 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @private
      * @function UniqueThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 用户要素数据。
-     * @returns {Array.<ThemeStyle>} 返回包含专题要素 style 的对象。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格对象数组。
      */
     getStyleByData: function (feat) {
         var me = this,

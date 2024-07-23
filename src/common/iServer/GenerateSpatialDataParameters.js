@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -9,7 +9,8 @@ import {
  * @class GenerateSpatialDataParameters
  * @deprecatedclass SuperMap.GenerateSpatialDataParameters
  * @category iServer SpatialAnalyst GenerateSpatialData
- * @classdesc 动态分段操作参数类。通过该类可以为动态分段提供参数信息。
+ * @classdesc 动态分段操作参数类。此类可用于设置动态分段中的路由数据集及其标识字段、用于生成空间数据的事件表名、
+ * 事件表的路由标识、刻度、刻度偏移量、错误信息等参数，还可以对分析结果进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.routeTable - 路由数据集。
  * @param {string} options.routeIDField - 路由数据集的标识字段。

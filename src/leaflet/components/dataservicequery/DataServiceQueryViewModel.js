@@ -1,15 +1,15 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 import L from "leaflet";
 import '../../core/Base';
 import { featureService as FeatureService} from '../../services/FeatureService';
-import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
-import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
-import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
+import { GetFeaturesByIDsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByIDsParameters';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { GetFeaturesByBoundsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBoundsParameters';
+import { GetFeaturesByBufferParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBufferParameters';
+import { GetFeaturesByGeometryParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByGeometryParameters';
 
 /**
  * @class DataServiceQueryViewModel
@@ -19,6 +19,7 @@ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServe
  * @version 9.1.1
  * @category Components DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
+ * @param {function} onEachFeature - 给该元素绑定事件和弹窗。
  * @fires DataServiceQueryViewModel#getfeaturessucceeded
  * @fires DataServiceQueryViewModel#getfeaturesfailed
  * @extends {L.Evented}
@@ -26,9 +27,10 @@ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServe
  */
 export class DataServiceQueryViewModel extends L.Evented {
 
-    initialize(dataserviceUrl) {
+    initialize(dataserviceUrl, onEachFeature) {
         this.dataserviceUrl = dataserviceUrl;
         this.resultLayers = [];
+        this.onEachFeature = onEachFeature;
     }
 
     /**
@@ -82,9 +84,7 @@ export class DataServiceQueryViewModel extends L.Evented {
             return;
         }
         let resultLayer = L.geoJSON(serviceResult.result.features, {
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup("ID: " + feature.properties.SMID);
-            },
+            onEachFeature: this.onEachFeature,
             pointToLayer: function (geoJsonPoint, latLng) {
                 return L.circleMarker(latLng, { radius: 6})
             }

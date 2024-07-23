@@ -13,8 +13,9 @@ describe('mapboxgl_GraphicLayer', () => {
     [-37.16, 40.05],
     [-38.16, 39.05]
   ];
+  let testDiv, map;
   function creatGraphicLayer() {
-    let testDiv, map, graphics = [], graphicLayer;
+    let graphics = [], graphicLayer;
     //构建数据
     for (let i = 0; i < coors.length; i++) {
       let lngLat = {
@@ -35,7 +36,25 @@ describe('mapboxgl_GraphicLayer', () => {
     window.document.body.appendChild(testDiv);
     map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v9',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
       center: [13.413952, 52.531913],
       zoom: 16.000000000000004,
       pitch: 33.2
@@ -51,10 +70,15 @@ describe('mapboxgl_GraphicLayer', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
   afterEach(() => {
+    if(testDiv){
+      document.body.removeChild(testDiv);
+      testDiv = null;
+    }
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
   afterAll(() => {
-    document.body.removeChild(document.getElementById('map'));
+    // document.body.removeChild(document.getElementById('map'));
+    map = null;
     // map.removeLayer("graphicLayer");
   });
 

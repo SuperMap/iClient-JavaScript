@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -155,7 +155,7 @@
         });
 
         new L.supermap.FeatureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, L.supermap.DataFormat.ISERVER);
+            .getFeaturesBySQL(getFeatureBySQLParams, L.supermap.DataFormat.ISERVER).then(processComplete);
     }
 
     //数据预处理并添加到专题图图层

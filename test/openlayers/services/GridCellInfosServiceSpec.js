@@ -52,7 +52,7 @@ describe('openlayers_GridCellInfosService', () => {
                 expect(serviceResult.object.dataSourceName).toBe("World");
                 expect(serviceResult.object.datasetName).toBe("WorldEarth");
                 expect(serviceResult.object.datasetType).toBe("IMAGE");
-                expect(FetchRequest.commit.calls.count()).toEqual(2);
+                expect(FetchRequest.commit.calls.count()).toEqual(3);
                 params.destroy();
                 done();
             } catch (exception) {

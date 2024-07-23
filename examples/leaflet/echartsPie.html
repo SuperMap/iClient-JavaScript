@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -154,7 +158,7 @@
 
         new L.supermap
                 .QueryService(url2)
-                .queryBySQL(param, function (serviceResult) {
+                .queryBySQL(param).then(function (serviceResult) {
                     serviceResult.result.recordsets.map(function (record) {
                         resultLayer = L.geoJSON(record.features, {
                             coordsToLatLng: function (coords) {

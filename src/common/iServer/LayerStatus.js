@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class LayerStatus
  * @deprecatedclass SuperMap.LayerStatus
  * @category iServer Map TempLayersSet
- * @classdesc 子图层显示参数类。该类存储了各个子图层的名字和是否可见的状态。
+ * @classdesc 子图层显示参数类。此类存储了各个子图层的名称、是否可见的状态、SQL 过滤条件等参数。
  * @param {Object} options - 参数。
  * @param {string} options.layerName - 图层名称。
  * @param {boolean} [options.isVisible=true] - 图层是否可见，true 表示可见。

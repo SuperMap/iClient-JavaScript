@@ -1,0 +1,152 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcGeodesicDistance"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 10000;
+        border-radius: 4px;
+      }
+      .ol-popup {
+        position: absolute;
+        background-color: white;
+        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 280px;
+      }
+
+      .ol-popup:after,
+      .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: ' ';
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+      }
+
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center">计算测地线的长度</h5>
+      </div>
+      <div class="panel-body content">
+        <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <div id="popup" class="ol-popup">
+      <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
+    <script>
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
+      var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        }
+      });
+      var map, bufferLayer;
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World';
+      ol.supermap
+        .initMap(url, {
+          viewOptions: {
+            center: [120, 30],
+            zoom: 6
+          },
+          mapOptions: {
+            overlays: [overlay]
+          }
+        })
+        .then((res) => {
+          map = res.map;
+          addFeatures();
+        });
+
+      function addFeatures() {
+        var line = {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [120, 30],
+              [125, 30]
+            ]
+          }
+        };
+        var lineSource = new ol.source.Vector({
+          features: [new ol.format.GeoJSON().readFeature(line)],
+          wrapX: false
+        });
+        lineLayer = new ol.layer.Vector({
+          source: lineSource,
+          style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'blue',
+              width: 3
+            })
+          })
+        });
+        map.addLayer(lineLayer);
+      }
+
+      function search() {
+        var geometryAnalysis = new ol.supermap.GeometryAnalysis();
+        var distance;
+        distance = geometryAnalysis.computeGeodesicDistance([120, 125], [30, 30], 6378137, 0.0033528106647475);
+        var innerHTML = '距离为: ' + distance;
+        content.innerHTML = innerHTML;
+        overlay.setPosition([123, 30]);
+      }
+    </script>
+  </body>
+</html>

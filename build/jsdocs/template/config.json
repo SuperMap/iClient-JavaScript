@@ -106,6 +106,10 @@
             "name": "邻近分析",
             "name_en": "ThiessenPolygonAnalyst"
           },
+          "MinDistanceAnalyst": {
+            "name": "最近距离分析",
+            "name_en": "MinDistanceAnalyst"
+          },
           "GeoRelationAnalyst": {
             "name": "空间关系分析",
             "name_en": "GeoRelationAnalyst"
@@ -129,6 +133,10 @@
           "TerrainCalculation": {
             "name": "地形分析",
             "name_en": "TerrainCalculation"
+          },
+          "ConvexHullAnalyst": {
+            "name": "凸包运算",
+            "name_en": "ConvexHullAnalyst"
           },
           "BatchAnalyst": {
             "name": "批量分析",
@@ -167,6 +175,14 @@
           "ServiceArea": {
             "name": "服务区分析",
             "name_en": "ServiceArea"
+          },
+          "ConnectedEdges": {
+            "name": "连通性分析",
+            "name_en": "ConnectedEdges"
+          },
+          "TraceAnalystService": {
+            "name": "上游/下游追踪分析",
+            "name_en": "TraceAnalystService"
           },
           "UpstreamCirticalFaclilities": {
             "name": "上游/下游关键设施查找",
@@ -398,6 +414,14 @@
       "WebSymbol": {
         "name": "Web符号",
         "name_en": "WebSymbol"
+      },
+      "L7": {
+        "name": "L7",
+        "name_en": "L7"
+      },
+      "Video": {
+        "name": "Video",
+        "name_en": "Video"
       }
     }
   },
@@ -489,6 +513,10 @@
       "Constant": {
         "name": "常量",
         "name_en": "Constant"
+      },
+      "MapExtend": {
+        "name": "地图扩展",
+        "name_en": "MapExtend"
       }
     }
   }

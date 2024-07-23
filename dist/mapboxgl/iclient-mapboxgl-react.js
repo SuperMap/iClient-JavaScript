@@ -1,9 +1,9 @@
 /*!
  * 
  *       @supermap/react-iclient.(https://iclient.supermap.io)
- *       Copyright© 2000 - 2022 SuperMap Software Co.Ltd
+ *       Copyright© 2000 - 2023 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v11.1.0-beta
+ *       version: v11.1.1
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -14827,7 +14827,7 @@ _antd.message.error('获取图层信息失败！');});};_this.state={spinning:tr
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5973));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5973));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */ // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
@@ -29913,14 +29913,14 @@ module.exports = _interopRequireWildcard, module.exports.__esModule = true, modu
 /***/ 8698:
 /***/ (function(module) {
 
-function _typeof(obj) {
+function _typeof(o) {
   "@babel/helpers - typeof";
 
-  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(o);
 }
 module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
@@ -29931,7 +29931,7 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _arrayLikeToArray; }
+/* harmony export */   Z: function() { return /* binding */ _arrayLikeToArray; }
 /* harmony export */ });
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
@@ -30144,26 +30144,26 @@ function _defineProperty(obj, key, value) {
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
+function ownKeys(e, r) {
+  var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
   }
-  return keys;
+  return t;
 }
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      _defineProperty(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
     });
   }
-  return target;
+  return e;
 }
 
 /***/ }),
@@ -30230,31 +30230,31 @@ function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js
-function _iterableToArrayLimit(arr, i) {
-  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-  if (null != _i) {
-    var _s,
-      _e,
-      _x,
-      _r,
-      _arr = [],
-      _n = !0,
-      _d = !1;
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
     try {
-      if (_x = (_i = _i.call(arr)).next, 0 === i) {
-        if (Object(_i) !== _i) return;
-        _n = !1;
-      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
-    } catch (err) {
-      _d = !0, _e = err;
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
     } finally {
       try {
-        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
       } finally {
-        if (_d) throw _e;
+        if (o) throw n;
       }
     }
-    return _arr;
+    return a;
   }
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js
@@ -30321,7 +30321,7 @@ function _toConsumableArray(arr) {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "Z": function() { return /* binding */ _toPropertyKey; }
+  Z: function() { return /* binding */ _toPropertyKey; }
 });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
@@ -30353,16 +30353,16 @@ function _toPropertyKey(arg) {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _typeof; }
+/* harmony export */   Z: function() { return /* binding */ _typeof; }
 /* harmony export */ });
-function _typeof(obj) {
+function _typeof(o) {
   "@babel/helpers - typeof";
 
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
 }
 
 /***/ }),
@@ -30372,7 +30372,7 @@ function _typeof(obj) {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _unsupportedIterableToArray; }
+/* harmony export */   Z: function() { return /* binding */ _unsupportedIterableToArray; }
 /* harmony export */ });
 /* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(907);
 

@@ -16,12 +16,33 @@ function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = 
   });
 }
 
+function checkRootDependencies(dependenciesToCompare, rootDependencies = pkg.dependencies) {
+  const clientDepsList = Object.values(dependenciesToCompare);
+  const clientNames = Object.keys(dependenciesToCompare);
+  Object.keys(rootDependencies).forEach(name => {
+    if (rootDependencies[name].includes('file:src/')){
+      return;
+    }
+    if (!clientDepsList.some(deps => Object.keys(deps).some(item => item === name))) {
+      console.log(chalk.red(`ERROR: The dependency ${name} version can not match in (${clientNames.join('|')}) package.json!\n`));
+    }
+  });
+}
+
 const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl', 'maplibregl'];
-packageToClients.forEach(client => {
+
+const clientDepencies = packageToClients.reduce((list, client) => {
   // eslint-disable-next-line import/no-dynamic-require
   const clientPkg = require(`../src/${client}/package.json`);
-  compareDependencies(clientPkg.name, clientPkg.dependencies);
-});
+  list[clientPkg.name] = clientPkg.dependencies;
+  return list;
+}, {});
+
+for (const clientName in clientDepencies) {
+  compareDependencies(clientName, clientDepencies[clientName]);
+}
+
+checkRootDependencies(clientDepencies);
 
 //包版本(ES6或者ES5)
 let moduleVersion = process.env.moduleVersion || 'es5';
@@ -58,25 +79,18 @@ module.exports = {
 
     //其它解决方案配置
     resolve: {
-        extensions: ['.js', '.json', '.css'],
-        mainFields: ['browser', 'main'],
-        fallback: {
-          fs: false,
-          http: require.resolve('stream-http'),
-          https: require.resolve('https-browserify'),
-          os: require.resolve('os-browserify/browser'),
-          stream: require.resolve('stream-browserify'),
-          tty: require.resolve('tty-browserify'),
-          zlib: require.resolve('browserify-zlib')
-        }
+        extensions: ['.js', '.json', '.css']
     },
 
     externals: {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
         '@antv/g6': 'function(){try{return G6}catch(e){return {}}}()',
-        '@elastic/elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
+        '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()',
+        'video.js': 'function(){try{return videojs}catch(e){return {}}}()',
+        'flv.js': 'function(){try{return flvjs}catch(e){return {}}}()',
+        'videojs-flvjs-es6': 'function(){try{return;}catch(e){return {}}}()',
+        './UGCWasmAll': 'function(){try{return Module}catch(e){return {}}}()'
     },
 
     module: {
@@ -101,7 +115,7 @@ module.exports = {
     bannerInfo: function (libName) {
         return `
          ${libName}
-         Copyright© 2000 - 2023 SuperMap Software Co.Ltd
+         Copyright© 2000 - 2024 SuperMap Software Co.Ltd
          license: ${pkg.license}
          version: v${pkg.version}
         `;

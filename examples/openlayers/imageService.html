@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (https://github.com/Turfjs/turf/)
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%; height: 100%">
@@ -343,7 +347,7 @@
         <script type="text/javascript">
             widgets.loader.showLoader("data loading...");
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-            var root = host + '/iserver/services/imageservice-hainan/restjsr';
+            var root = 'https://iserver.supermap.io/iserver/services/imageservice-hainan/restjsr';
             var url = host + '/iserver/services/data-china400/rest/data';
             var projection = 'EPSG:4326';
             var map = new ol.Map({

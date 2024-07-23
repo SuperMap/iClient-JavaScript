@@ -1,22 +1,22 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
 /**
  * @class RangeThemeLayer
  * @deprecatedclassinstance L.supermap.rangeThemeLayer
  * @category Visualization Theme
- * @classdesc 范围分段专题图类。范围分段专题图对数据（{@link FeatureVector}）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
+ * @classdesc 范围分段专题图图层类。范围分段专题图对数据（{@link FeatureVector}）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @modulecategory Overlay
  * @extends GeoFeatureThemeLayer
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
@@ -65,9 +65,9 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function RangeThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（ feature ）设置专题要素的 Style。
+     * @description 根据用户数据（ feature ）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData: function (feat) {
         var me = this,

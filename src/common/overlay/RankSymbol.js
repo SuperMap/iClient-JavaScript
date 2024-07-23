@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Graph} from './Graph';
@@ -18,8 +18,8 @@ import {Graph} from './Graph';
  * @param {LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @param {Object} setting - 图表配置对象。除了以下 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同，请在此类的子类中查看 setting 对象的可设属性和属性含义。
  * @param {Array.<number>} setting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @param {number} [setting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @param {number} [setting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @param {number} [setting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+ * @param {number} [setting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
  * @param {Array.<number>} [setting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
  * @param {number} [setting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @extends FeatureThemeGraph
@@ -58,8 +58,8 @@ export class RankSymbol extends Graph {
      * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
      * 调用此函数关系到 setting 对象的以下属性。
      * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
-     * @param {number} [XOffset] - 专题要素（图形）在 X 方向上的偏移值，单位像素。
-     * @param {number} [YOffset] - 专题要素（图形）在 Y 方向上的偏移值，单位像素。
+     * @param {number} [XOffset] - 专题要素（图形）在 X 方向上的偏移值，单位为像素。
+     * @param {number} [YOffset] - 专题要素（图形）在 Y 方向上的偏移值，单位为像素。
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
      * @returns {boolean} 初始化参数是否成功。

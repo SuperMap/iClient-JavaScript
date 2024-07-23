@@ -8,7 +8,7 @@
 
 export class WebMachineLearning {
     /**
-     * @function  WebMachineLearning.prototype.execute
+     * @function WebMachineLearning.prototype.execute
      * @description 执行预测
      * @param {BinaryClassification|LandcoverClassification|ObjectDetection} instance - 模型实例。
      * @returns {Object} 返回处理的数据

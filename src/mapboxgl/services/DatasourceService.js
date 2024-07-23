@@ -1,15 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
-import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
+import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
+import { DatasourceService as CommonDatasourceService } from '@supermapgis/iclient-common/iServer/DatasourceService';
 
 /**
  * @class DatasourceService
  * @category  iServer Data Datasource
- * @classdesc 数据源服务类。
+ * @classdesc 数据源服务类。提供方法：查询数据源集合、查询指定数据源信息、设置指定数据源信息。
+ * 可以获取的数据源信息包括数据源名称、数据源描述、引擎类型、距离单位、坐标单位、投影信息等。
  * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -33,15 +34,16 @@ export class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集查询服务。
+     * @description 数据源集合查询服务。
      * @example
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasources(callback) {
-      this._datasourceService.getDatasourcesService(callback);
+      return this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -52,13 +54,14 @@ export class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
       if (!datasourceName) {
         return;
       }
-      this._datasourceService.getDatasourceService(datasourceName, callback);
+      return this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
     /**
@@ -69,7 +72,8 @@ export class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {
       if (!(params instanceof SetDatasourceParameters)) {
@@ -81,7 +85,7 @@ export class DatasourceService extends ServiceBase {
           distanceUnit: params.distanceUnit,
           datasourceName: params.datasourceName
       };
-      this._datasourceService.setDatasourceService(datasourceParams, callback);
+      return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 

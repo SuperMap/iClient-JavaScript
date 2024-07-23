@@ -332,7 +332,6 @@ describe('leaflet_DataFlowLayer', () => {
                     expect(e.layer).not.toBeNull;
                     expect(e.layer).not.toBeUndefined;
                     done();
-
                 } catch (exception) {
                     console.log("'_onMessageSuccessed'案例失败：" + exception.name + ":" + exception.message);
                     expect(false).toBeTruthy();

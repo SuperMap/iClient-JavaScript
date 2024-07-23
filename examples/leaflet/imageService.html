@@ -1,12 +1,16 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (https://github.com/Turfjs/turf/) 
+* leaflet-geoman (https://github.com/geoman-io/leaflet-geoman)
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%; height: 100%">
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_image_service"></title>
-
     <script
       type="text/javascript"
       include="turf,leaflet-geoman"
@@ -335,7 +339,7 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var mapUrl = host + '/iserver/services/map-world/rest/maps/World';
-      var root = host + '/iserver/services/imageservice-hainan/restjsr';
+      var root = 'https://iserver.supermap.io/iserver/services/imageservice-hainan/restjsr';
       var url = host + '/iserver/services/data-china400/rest/data';
       var currentIndex = 0;
       var features = [];
@@ -507,7 +511,7 @@
           targetPrj: { epsgCode: 4326 },
           maxFeatures: 10000
         });
-        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
           var featureResults = serviceResult.result;
           if (featureResults) {
             var features = featureResults.features;

@@ -1,0 +1,120 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_heatmap_grid"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="mapbox-gl-enhance,L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [
+                host +
+                  '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' +
+                  encodeURIComponent('{"epsgCode":3857}') +
+                  '&z={z}&x={x}&y={y}'
+              ],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [110.097892, 33.853662],
+        zoom: 4.056
+      });
+
+      map.on('load', function () {
+        fetch('https://iclient.supermap.io/web/data/L7/7359a5e9-3c5e-453f-b207-bc892fb23b84.csv')
+          .then((res) => res.text())
+          .then((data) => {
+            var layer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer' });
+            var l7Layer = layer.getL7Layer();
+            l7Layer
+              .source(data, {
+                parser: {
+                  type: 'csv',
+                  x: 'lng',
+                  y: 'lat'
+                },
+                transforms: [
+                  {
+                    type: 'grid',
+                    size: 20000,
+                    field: 'v',
+                    method: 'sum'
+                  }
+                ]
+              })
+              .shape('circle')
+              .style({
+                coverage: 0.9,
+                angle: 0
+              })
+              .color(
+                'count',
+                [
+                  '#8C1EB2',
+                  '#8C1EB2',
+                  '#DA05AA',
+                  '#F0051A',
+                  '#FF2A3C',
+                  '#FF4818',
+                  '#FF4818',
+                  '#FF8B18',
+                  '#F77B00',
+                  '#ED9909',
+                  '#ECC357',
+                  '#EDE59C'
+                ].reverse()
+              );
+            map.addLayer(layer);
+          });
+      });
+    </script>
+  </body>
+</html>

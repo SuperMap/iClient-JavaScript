@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import {
@@ -127,7 +127,7 @@ export class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.removeData
      * @description 删除符合过滤条件的数据。
-     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除。
+     * @param {function} [filter] - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      */
     removeData(filter) {
         if (!this.dataSet) {

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -71,7 +71,7 @@
             datasetNames: ["World:Countries"]
         });
 
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

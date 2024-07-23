@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -20,11 +20,11 @@ import { Util } from '../commontypes/Util';
 //   "id": 5348024557502471,
 //   "properties": {
 //     "server": "test1",
-//     "labelfieldname": "FEATUREGUID",
-//     "entityname": "院落",
-//     "bindfindid": "院落@ST_YARDA@1",
+//     "_labelfieldname": "FEATUREGUID",
+//     "_entityname": "院落",
+//     "_bindfindid": "院落@ST_YARDA@1",
 //     "FEATUREGUID": "{409E615B-A545-4E07-872D-B12EDA0B4A1A}",
-//     "findid": 1,
+//     "_findid": 1,
 //     "ENTITYNAME": "公共管理与公共服务"
 //   },
 //   "labels": ["院落"]

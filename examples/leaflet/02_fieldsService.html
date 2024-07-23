@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -31,9 +31,9 @@
             datasource: "World",
             dataset: "continent_T"
         });
-        new L.supermap.FieldService(url).getFields(param, function (serviceResult) {
+        new L.supermap.FieldService(url).getFields(param).then(function (serviceResult) {
             var innerHTML = serviceResult.result.fieldNames.join(', ');
-            infoWin = L.popup({maxWidth: 420})
+            infoWin = L.popup({maxWidth: 420, closeOnClick:false})
                 .setLatLng(map.getCenter())
                 .setContent(innerHTML)
                 .openOn(map);

@@ -1,6 +1,6 @@
 import { ChartService } from '../../../src/maplibregl/services/ChartService';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermap/iclient-common';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermapgis/iclient-common';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 
 var url = GlobeParameter.chartServiceURL;
@@ -64,6 +64,30 @@ describe('maplibregl_ChartService', () => {
                 done();
             } catch (e) {
                 console.log("'getChartFeatureInfo'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+    it('getChartAcronymClassify', (done) => {
+        var service = new ChartService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/chartAcronymClassify");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(chartAcronymClassify)));
+        });
+        service.getChartAcronymClassify((result) => {
+            serviceResult = result;
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                done();
+            } catch (e) {
+                console.log("'getChartAcronymClassify'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

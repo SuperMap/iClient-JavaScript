@@ -1,0 +1,140 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_3d_terrain"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [120.1025, 30.2594],
+        pitch: 65,
+        zoom: 14
+      });
+      let currentZoom = 14,
+        currentModelData = '100x100';
+      map.on('load', function () {
+        var layer = new maplibregl.supermap.L7Layer({ type: 'GeometryLayer' });
+        var l7Layer = layer.getL7Layer();
+        l7Layer.shape('plane').style({
+          heightfixed: true,
+          width: 0.074,
+          height: 0.061,
+          center: [120.1025, 30.2594],
+          widthSegments: 100,
+          heightSegments: 100,
+          terrainClipHeight: 1,
+          mapTexture: '../img/A_gA0NRbuOF5cAAAAAAAAAAAAAARQnAQ.png',
+          terrainTexture: '../img/A_eYFaRYlnnOUAAAAAAAAAAAAAARQnAQ.png',
+          rgb2height: (r, g, b) => {
+            let h = -10000.0 + (r * 255.0 * 256.0 * 256.0 + g * 255.0 * 256.0 + b * 255.0) * 0.1;
+            h = h / 20 - 127600;
+            h = Math.max(0, h);
+            return h * 0.1;
+          }
+        });
+        map.addLayer(layer);
+
+        let modelData10,
+          modelData20 = null,
+          modelData100;
+
+        l7Layer.on('terrainImageLoaded', () => {
+          modelData10 = l7Layer.createModelData([], {
+            widthSegments: 10,
+            heightSegments: 10
+          });
+
+          modelData20 = l7Layer.createModelData([], {
+            widthSegments: 20,
+            heightSegments: 20
+          });
+
+          modelData100 = l7Layer.createModelData([], {
+            widthSegments: 100,
+            heightSegments: 100
+          });
+        });
+
+        map.getL7Scene().then((scene) => {
+          scene.on('zoom', ({ value }) => {
+            const zoom = Math.floor(value);
+            if (currentZoom !== zoom) {
+              if (zoom > 13) {
+                if (currentModelData !== '100x100') {
+                  l7Layer.updateModelData(modelData100);
+                  currentModelData = '100x100';
+                }
+              } else if (zoom > 12) {
+                if (currentModelData !== '20x20') {
+                  l7Layer.updateModelData(modelData20);
+                  currentModelData = '20x20';
+                }
+              } else {
+                if (currentModelData !== '10x10') {
+                  l7Layer.updateModelData(modelData10);
+                  currentModelData = '10x10';
+                }
+              }
+              currentZoom = zoom;
+            }
+            return '';
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

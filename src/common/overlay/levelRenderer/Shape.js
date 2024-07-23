@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {mixinExt as mixin} from '../../commontypes';
@@ -44,8 +44,8 @@ export class Shape extends mixin(Eventful, Transformable) {
          * @param {string} style.textColor -  文本颜色。默认值："#000000'"。
          * @param {string} style.textFont -  附加文本样式。示例:'bold 18px verdana'。
          * @param {string} style.textPosition -  附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * @param {string} style.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * @param {string} style.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @param {string} style.textAlign -  附加文本水平对齐方式。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} style.textBaseline - 附加文本垂直对齐方式。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          *
          */
         this.style = {};
@@ -78,8 +78,8 @@ export class Shape extends mixin(Eventful, Transformable) {
          * @param {string} highlightStyle.textColor - 文本颜色。默认值："#000000'"。
          * @param {string} highlightStyle.textFont - 附加文本样式。示例:'bold 18px verdana'。
          * @param {string} highlightStyle.textPosition - 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-         * @param {string} highlightStyle.textAlign -  附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-         * @param {string} highlightStyle.textBaseline - 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.textAlign -  附加文本水平对齐方式。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * @param {string} highlightStyle.textBaseline - 附加文本垂直对齐方式。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
          */
         this.highlightStyle = null;
 

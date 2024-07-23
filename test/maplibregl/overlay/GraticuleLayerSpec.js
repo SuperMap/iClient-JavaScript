@@ -1,6 +1,6 @@
 import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
 import maplibregl from 'maplibre-gl';
-import { Feature } from '@supermap/iclient-common';
+import { Feature } from '@supermapgis/iclient-common';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl_GraticuleLayer', () => {
@@ -43,6 +43,7 @@ describe('maplibregl_GraticuleLayer', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        debugger
         if (!map.getLayer('graticuleLayer_1')) {
             graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
             graticuleLayer.onAdd(map);
@@ -57,6 +58,7 @@ describe('maplibregl_GraticuleLayer', () => {
         if (map.getLayer('graticuleLayer_1')) {
             map.removeLayer('graticuleLayer_1');
         }
+        debugger
         document.body.removeChild(testDiv);
         map = null;
     });

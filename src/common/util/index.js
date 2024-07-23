@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -11,6 +11,8 @@ import {
 
 import { ColorsPickerUtil } from './ColorsPickerUtil';
 
+import { EncryptRequest, getServiceKey } from './EncryptRequest';
+
 import { ArrayStatistic } from './ArrayStatistic';
 import { getMeterPerMapUnit, getWrapNum, conversionDegree } from './MapCalculateUtil';
 
@@ -18,6 +20,7 @@ import { Point as GeometryPoint } from "../commontypes/geometry/Point";
 import { Polygon } from "../commontypes/geometry/Polygon";
 import { LinearRing } from "../commontypes/geometry/LinearRing";
 import { GeoJSON as GeoJSONFormat } from "../format/GeoJSON";
+import { GeometryAnalysis } from './GeometryAnalysis';
 
 function toSuperMapGeometry(geoJSON) {
     if (geoJSON && geoJSON.type) {
@@ -42,13 +45,6 @@ function toSuperMapPolygon(lnglatBounds) {
     ]);
 }
 
- /**
-* @function Util.extend
-* @description 对象拷贝赋值。
-* @param {Object} dest - 目标对象。
-* @param {Object} arguments - 待拷贝的对象。
-* @returns {Object} 赋值后的目标对象。
-*/
 function extend(dest) {
    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
        var arg = Object.getOwnPropertyNames(arguments)[index];
@@ -77,10 +73,13 @@ export {
   setRequestTimeout,
   getRequestTimeout,
   FetchRequest,
+  EncryptRequest,
+  getServiceKey,
   ColorsPickerUtil,
   ArrayStatistic,
   getMeterPerMapUnit,
   getWrapNum,
   conversionDegree,
-  extend
+  extend,
+  GeometryAnalysis
 };

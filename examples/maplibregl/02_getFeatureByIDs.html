@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +66,7 @@
         });
 
         var service = new maplibregl.supermap.FeatureService(dataUrl);
-        service.getFeaturesByIDs(idsParam, function (serviceResult) {
+        service.getFeaturesByIDs(idsParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

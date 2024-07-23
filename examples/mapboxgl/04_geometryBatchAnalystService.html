@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -189,7 +189,7 @@
       var paramter = [geoBufferAnalystParams, OverlayBatchAnalystParameters, geoBufferAnalystParams_Point];
 
       //批量分析
-      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter, function (serviceResult) {
+      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter).then(function (serviceResult) {
         //结果展示
         map.addSource("bufferResultLine", {
           "type": "geojson",

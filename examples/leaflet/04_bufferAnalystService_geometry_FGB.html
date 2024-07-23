@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -83,13 +83,13 @@
             })
         });
        
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, 'FGB').then(function (serviceResult) {
           var resultLayer = new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
               strategy: 'all'
             }).addTo(map);
-        }, 'FGB');
+        });
 
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams).then(function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.resultGeometry);
             //查询出缓冲区内信号影响范围内的工厂
             queryService = new L.supermap.QueryService(baseUrl);
@@ -98,7 +98,7 @@
                 geometry: resultLayer,
                 spatialQueryMode: L.supermap.SpatialQueryMode.INTERSECT
             });
-            queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+            queryService.queryByGeometry(queryByGeometryParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 resultLayer1 = L.geoJSON(result.recordsets[0].features).addTo(map);
             });

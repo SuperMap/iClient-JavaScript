@@ -1,3 +1,100 @@
+# 11.1.1 #
+
+## 新特性
+
+### iClient for MapLibreGL 新增支持 Web符号化制图能力
+
+  - 提供Web符号库列表，方便用户检索，同时提供在线制图示例
+  - 改造地图库API支持直接传入Web符号库ID进行快速制图
+  - 支持mapbox样式规范表达式，可以对符号进行数据驱动制图
+
+### Service 相关 API 编程模式支持 ECMAScript 6 Promise，简化异步编程，使代码更优雅更易维护
+
+## API changes
+
+
+### for Leaflet
+ - `L.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `L.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `L.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `L.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `L.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `L.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+
+### for OpenLayers
+ - `ol.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `ol.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `ol.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `ol.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `ol.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `ol.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MapboxGL
+ - 新增 `mapboxgl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `mapboxgl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `mapboxgl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MaplibreGL
+ - 新增 `maplibregl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `maplibregl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `maplibregl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+# 11.1.0 #
+
+## 新特性
+
+### 提供全新地图库：iClient for MaplibreGL，可将现有Mapbox方案平滑迁移
+ - 作为MapboxGL v1版本的开源分支，可将现有的MapboxGL方案平滑迁移
+ - 提供iServer地图、数据、分析等服务访问API和可视化相关API
+![1110-1](https://iclient.supermap.io/web/img/whatsNewMaplibre.png)
+
+### 支持地理知识图谱Web可视化
+ - 提供地理知识图谱和实体关系访问的API，一句代码快速出图
+ - 提供样式编辑和交互事件相关API
+![1110-2](https://iclient.supermap.io/web/img/whatsNewKnowledge.png)
+
+### iClient for MapboxGL支持地理、投影全坐标系
+ - 支持访问SuperMap iServer地图服务和OGC WMTS/WMS服务
+ - 支持地理坐标系、投影坐标系
+ - 支持栅格瓦片、矢量瓦片
+![1110-3](https://iclient.supermap.io/web/img/whatsNewCoor.png)
+
+### iClient for MapboxGL提供前后端一致的Web符号化制图能力
+ - 提供Web符号库列表，方便用户检索，同时提供在线制图示例
+ - 改造地图库API支持直接传入Web符号库ID进行快速制图
+ - 支持mapbox样式规范表达式，可以对符号进行数据驱动制图
+![1110-4](https://iclient.supermap.io/web/img/whatsNewSymbol.png)
+
+### GIS数据上云访问支持，新增支持云原生矢量交换格式（FlatGeoBuf）
+ - 支持直接访问云存储和SuperMap iServer服务返回的FlatGeoBuf格式文件，并支持流式传输和渲染
+ - 支持全量渲染或按需渲染两种模式
+![1110-5](https://iclient.supermap.io/web/img/whatsNewFGB.gif)
+
 # 11.1.0-beta #
 
 ## 新特性

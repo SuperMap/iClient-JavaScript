@@ -1,20 +1,21 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
-import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
-import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { ShapeFactory } from '@supermapgis/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector } from '@supermapgis/iclient-common/overlay/ThemeVector';
+import { Vector as FeatureVector } from '@supermapgis/iclient-common/commontypes/Vector';
 import { GeoFeature } from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class LabelThemeLayer
  * @category  Visualization Theme
- * @classdesc  标签专题图层类。
+ * @classdesc  标签专题图图层类。标签专题图是用文本形式在图层上直接显示属性表中的数据，实质上是对图层的标注。
+ * 不仅帮助用户更好地区分地物要素，同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
@@ -99,7 +100,7 @@ export class Label extends GeoFeature {
             //用  _isGeoTextStrategyStyle 标记此style，携带此类style的要素特指GeoText策略中的标签要素
             _isGeoTextStrategyStyle: true
         };
-        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
+        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用 SVG 渲染）。默认值为 0。
         this.getPxBoundsMode = 0;
 
         this.labelFeatures = [];
@@ -125,7 +126,7 @@ export class Label extends GeoFeature {
     }
     /**
      * @function LabelThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) {
@@ -336,9 +337,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData(feat) {
         var feature = feat;
@@ -492,7 +493,7 @@ export class Label extends GeoFeature {
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -549,9 +550,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算范围的效率。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11,7 +11,7 @@ import Style from 'ol/style/Style';
  * @browsernamespace ol
  * @aliasclass Graphic
  * @category  Visualization Graphic
- * @classdesc 高效率点图层点要素类。
+ * @classdesc 高效率点图层点要素类。高效率点图层中的点要素，类型为ol.geom.Point。支持获取或修改点要素的属性、样式、几何信息。
  * @modulecategory Overlay
  * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
@@ -99,7 +99,7 @@ export class Graphic extends BaseObject {
 
     /**
      * @function OverlayGraphic.prototype.getStyle
-     * @description 获取样式。
+     * @description 获取要素样式。
      * @returns {ol.style.Image} ol.style.Image 子类样式对象。
      */
     getStyle() {
@@ -108,8 +108,8 @@ export class Graphic extends BaseObject {
 
     /**
      * @function OverlayGraphic.prototype.setStyle
-     * @description 设置样式。
-     * @param {ol.style.Image} style - 样式，ol/style/Image 子类样式对象。
+     * @description 设置要素样式。
+     * @param {ol.style.Image} style - 样式，ol.style.Image 子类样式对象。
      */
     setStyle(style) {
         if (!this.style && !style) {

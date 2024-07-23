@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import 'promise-polyfill/dist/polyfill';
@@ -104,6 +104,7 @@ export var RequestJSONPPromise = {
   send: function (splitQuestUrl, callback, proxy) {
       var len = splitQuestUrl.length;
       if (len > 0) {
+         return new Promise((resolve) => {
           var jsonpUserID = new Date().getTime();
           for (var i = 0; i < len; i++) {
               var url = splitQuestUrl[i];
@@ -119,13 +120,14 @@ export var RequestJSONPPromise = {
                   url = decodeURIComponent(url);
                   url = proxy + encodeURIComponent(url);
               }
-              return fetchJsonp(url, {
+              fetchJsonp(url, {
                   jsonpCallbackFunction: callback,
                   timeout: 30000
               }).then((result) => {
-                return result.json();
+                resolve(result.json());
               });
           }
+         })
       }
   },
 
@@ -228,7 +230,7 @@ export var isCORS = function () {
  * @function setRequestTimeout
  * @category BaseTypes Util
  * @description 设置请求超时时间。
- * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @param {number} [timeout=45] - 请求超时时间，单位为秒。
  * @usage
  * ```
  * // 浏览器
@@ -253,7 +255,7 @@ export var setRequestTimeout = function (timeout) {
 /**
  * @function getRequestTimeout
  * @category BaseTypes Util
- * @description 获取请求超时时间。
+ * @description 获取请求超时的时间。
  * @returns {number} 请求超时时间。
  * @usage
  * ```
@@ -403,15 +405,16 @@ export var FetchRequest = {
      */
     post: function (url, params, options) {
         options = options || {};
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
-                url: url += "&_method=POST",
+                url: Util.urlAppend(url, "_method=POST"),
                 data: params
             };
             return RequestJSONPPromise.POST(config);
         }
-        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+        return this._fetch(url, params, options, 'POST');
     },
     /**
      * @function FetchRequest.put

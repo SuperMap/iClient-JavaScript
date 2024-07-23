@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { Theme as FeatureTheme } from "@supermap/iclient-common/overlay/feature/Theme";
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { Theme as FeatureTheme } from "@supermapgis/iclient-common/overlay/feature/Theme";
 import {
     Theme
 } from './theme/ThemeLayer';
@@ -12,7 +12,10 @@ import {
 /**
  * @class GraphThemeLayer
  * @category  Visualization Theme
- * @classdesc 统计专题图层类。
+ * @classdesc 统计专题图图层类。统计专题图是通过为每个要素或记录绘制统计图来反映其对应的专题值的大小。
+ * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题值绘制在一个统计图上，并且每个区域都会有一幅表示该区域各专题值的统计图。
+ * 通过统计专题图可以在区域本身与各区域之间形成横向和纵向的对比。多用于具有相关数量特征的地图上，
+ * 比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {string} chartsType - 图表类别。
@@ -63,7 +66,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据，支持的 feature 类型为：iServer 返回的 feature JSON 对象。
+     * @description 向专题图图层中添加数据，支持的要素类型为：SuperMap iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} features - 待添加的要素。
      */
     addFeatures(features) {
@@ -130,7 +133,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.createThematicFeature
-     * @description  向专题图图层中添加数据, 支持的 feature 类型为:iServer 返回的 feature json 对象。
+     * @description  向专题图图层中添加数据，支持的要素类型为：SuperMap iServer 返回的 feature JSON 对象。
      * @param {Object} feature - 待添加的要素。
      *
      */
@@ -258,7 +261,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.getShapesByFeatureID
-     * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description  通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID(featureID) {
@@ -365,7 +368,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
-     * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description  从专题图中删除要素。这个函数删除所有传递进来的矢量要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {

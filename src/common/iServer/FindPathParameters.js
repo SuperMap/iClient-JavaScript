@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,7 +8,9 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class FindPathParameters
  * @deprecatedclass SuperMap.FindPathParameters
  * @category  iServer NetworkAnalyst Path
- * @classdesc 最佳路径分析参数类。最佳路径是在网络数据集中指定一些结点，按照顺序访问结点从而求解起止点之间阻抗最小的路径。
+ * @classdesc 最佳路径分析参数类。此类除了能够设置交通网络分析中的通用参数，还可以设置最佳路径分析经过的结点或设施点、
+ * 是否通过节点 ID 指定路径分析的结点、是否按照弧段数最少的进行最佳路径分析等参数。<br>
+ * 最佳路径是在网络数据集中指定一些结点，按照顺序访问结点从而求解起止点之间阻抗最小的路径。
  * 例如如果要顺序访问 1、2、3、4 四个结点，则需要分别找到1、2结点间的最佳路径 R1—2，2、3 间的最佳路径 R2—3 和 3、4 结点间的最佳路径 R3—4，
  * 顺序访问 1、2、3、4 四个结点的最佳路径就是 R = R1—2 + R2—3 + R3—4。
  * 阻抗就是指从一点到另一点的耗费，在实际应用中我们可以将距离、时间、花费等作为阻抗条件。
@@ -32,7 +34,7 @@ export class FindPathParameters {
          * @description 是否通过节点 ID 指定路径分析的结点。
          *              指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。
          *              当该字段为 true 时，表示通过结点 ID 指定途经点，即 FindPathParameters.nodes = [ID1,ID2,...]；
-         *              反之表示通过结点坐标指定途经点，即 FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
+         *              反之表示通过结点坐标指定途经点，即 FindPathParameters.nodes = [{x1,y1},{x2,y2},...]。
          */
         this.isAnalyzeById = false;
 

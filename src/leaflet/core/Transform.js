@@ -1,16 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
 /**
  * @function transform
- * @description 转换要素坐标。
+ * @description 转换要素坐标参考系统                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         。
  * @category BaseTypes Util
  * @param {(L.Marker|L.CircleMarker|L.Polyline|L.Polygon|L.Rectangle|L.LatLngBounds|L.Bounds|Object)} feature - 待转换要素：Leaflet Vector Layers 的 {@link L.Marker}|{@link L.CircleMarker}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Rectangle}|{@link L.LatLngBounds}|{@link L.Bounds}|{@link GeoJSONObject} 类型。
- * @param {CRS} [sourceCRS=L.CRS.EPSG4326] - 转换要素的源坐标系。
- * @param {CRS} targetCRS - 转换要素的目标坐标系。
+ * @param {CRS} [sourceCRS=L.CRS.EPSG4326] - 待转换要素的源坐标系。
+ * @param {CRS} targetCRS - 待转换要素的目标坐标系。
  * @returns {GeoJSONObject} 返回 GeoJSON 规范的数据类型。
  * @usage
  * ```

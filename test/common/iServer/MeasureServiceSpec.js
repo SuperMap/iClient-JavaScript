@@ -9,13 +9,8 @@ import {Unit} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var measureEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var initMeasureService = (url,measureFailed,measureCompleted) => {
-    return new MeasureService(url,{
-        eventListeners: {
-            'processCompleted': measureCompleted,
-            'processFailed': measureFailed
-        }
-    });
+var initMeasureService = (url) => {
+    return new MeasureService(url);
 };
 describe('MeasureService', () => {
     var originalTimeout;
@@ -59,8 +54,6 @@ describe('MeasureService', () => {
                 measureService.destroy();
                 expect(measureService.url == null).toBeTruthy();
                 expect(measureService.isInTheSameDomain == null).toBeTruthy();
-                expect(measureService.EVENT_TYPES == null).toBeTruthy();
-                expect(measureService.events == null).toBeTruthy();
                 expect(measureService.distanceMode == null).toBeTruthy();
                 measureParameters.destroy();
                 done();
@@ -72,10 +65,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         var points = [new Point(0, 0), new Point(10, 10)];
         var geometry = new LineString(points);
         var measureParameters = new MeasureParameters(geometry);
@@ -86,16 +76,53 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureCompleted);
     });
+
+    it('processAsync_distance promise', (done) => {
+      var mapServiceURL = GlobeParameter.mapServiceURL;
+      var worldMapURL = mapServiceURL + "World Map";
+      var measureCompleted = (measureEventArgs) => {
+          measureEventArgsSystem = measureEventArgs;
+          try {
+              var measureResult = measureEventArgsSystem.result;
+              expect(measureResult).not.toBeNull();
+              expect(measureResult.succeed).toBeTruthy();
+              expect(measureResult.area).toEqual(-1);
+              expect(measureResult.distance).toEqual(1565109.0991230179);
+              expect(measureResult.unit).toBe("METER");
+              measureService.destroy();
+              expect(measureService.url == null).toBeTruthy();
+              expect(measureService.isInTheSameDomain == null).toBeTruthy();
+              expect(measureService.distanceMode == null).toBeTruthy();
+              measureParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("MeasureService_" + exception.name + ":" + exception.message);
+              measureService.destroy();
+              measureParameters.destroy();
+              done();
+          }
+      };
+      var measureService = initMeasureService(worldMapURL);
+      var points = [new Point(0, 0), new Point(10, 10)];
+      var geometry = new LineString(points);
+      var measureParameters = new MeasureParameters(geometry);
+      expect(measureService).not.toBeNull();
+      expect(measureService.url).toEqual(worldMapURL);
+      spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(worldMapURL+"/distance");
+          return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance":1565109.0991230179}`));
+      });
+      measureService.processAsync(measureParameters).then(measureCompleted);
+  });
 
     //反向测试用例，输入点进行距离量算
     it('fail0:processAsync_distance', (done) => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
         var worldMapURL = mapServiceURL + "World Map";
-        var measureCompleted = (measureEventArgs) => {
-            measureEventArgsSystem = measureEventArgs;
-        };
         var measureFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -116,7 +143,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         var point = new Point(0, 0);
         var measureParameters = new MeasureParameters(point);
         spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
@@ -124,16 +151,13 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 point2Ds 不合法，必须至少包含两个二维点"}}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureFailed);
     });
 
     //反向测试用例，输入距离单位枚举值错误
     it('fail1:processAsync_distance', (done) => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
         var worldMapURL = mapServiceURL + "World Map";
-        var measureCompleted = (measureEventArgs) => {
-            measureEventArgsSystem = measureEventArgs;
-        };
         var measureFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -154,7 +178,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         var points = [new Point(0, 0), new Point(0, 0)];
         var geometry = new LineString(points);
         var measureParameters = new MeasureParameters(geometry);
@@ -164,7 +188,7 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/distance");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"No enum constant com.supermap.services.components.commontypes.Unit.error"}}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureFailed);
     });
 
     //area
@@ -190,10 +214,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         measureService.measureMode= MeasureMode.AREA;
         var points = [
             new Point(0, 0),
@@ -208,7 +229,7 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"area":6.170492166191235E11,"unit":"METER","distance":-1}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureCompleted);
     });
 
     //反向测试用例，传入的点无法构成面
@@ -234,11 +255,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-
-        };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         measureService.measureMode= MeasureMode.AREA;
         var points = [
             new Point(0, 0),
@@ -252,16 +269,13 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"area":0,"unit":"METER","distance":-1}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureCompleted);
     });
 
     //反向测试用例，传入线进行面积量算
     it('fail1_processAsync_area', (done) => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
         var worldMapURL = mapServiceURL + "World Map";
-        var measureCompleted = (measureEventArgs) => {
-            measureEventArgsSystem = measureEventArgs;
-        };
         var measureFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -282,7 +296,7 @@ describe('MeasureService', () => {
                 done();
             }
         };
-        var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL);
         measureService.measureMode= MeasureMode.AREA;
         var points = [new Point(0, 0), new Point(10, 10)];
         var geometry = new LineString(points);
@@ -292,16 +306,13 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(worldMapURL+"/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"传入参数 points 的长度小于3。"}}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureFailed);
     });
 
     //反向测试用例，地图名错误，无法调用回调函数
     it('fail2_processAsync_area', (done) => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
         var worldMapURL = mapServiceURL + "World Map";
-        var measureCompleted = (measureEventArgs) => {
-            measureEventArgsSystem = measureEventArgs;
-        };
         var measureFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -323,7 +334,7 @@ describe('MeasureService', () => {
             }
 
         };
-        var measureService = initMeasureService(worldMapURL + "_Error",measureFailed,measureCompleted);
+        var measureService = initMeasureService(worldMapURL + "_Error");
         measureService.measureMode= MeasureMode.AREA;
         // var measureService = new MeasureService(worldMapURL + "_Error", {measureMode: MeasureMode.AREA});
         var points = [new Point(0, 0), new Point(10, 10), new Point(10, 0)];
@@ -335,7 +346,7 @@ describe('MeasureService', () => {
             expect(testUrl).toBe(mapServiceURL+"World Map_Error/area");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`));
         });
-        measureService.processAsync(measureParameters);
+        measureService.processAsync(measureParameters, measureFailed);
     });
 
     // MeasureParameters-distanceMode
@@ -354,8 +365,6 @@ describe('MeasureService', () => {
               measureService.destroy();
               expect(measureService.url == null).toBeTruthy();
               expect(measureService.isInTheSameDomain == null).toBeTruthy();
-              expect(measureService.EVENT_TYPES == null).toBeTruthy();
-              expect(measureService.events == null).toBeTruthy();
               expect(measureService.distanceMode == null).toBeTruthy();
               measureParameters.destroy();
               done();
@@ -367,10 +376,7 @@ describe('MeasureService', () => {
               done();
           }
       };
-      var measureFailed = (serviceFailedEventArgs) => {
-          serviceFailedEventArgsSystem = serviceFailedEventArgs;
-      };
-      var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+      var measureService = initMeasureService(worldMapURL);
       var points = [new Point(0, 0), new Point(10, 10)];
       var geometry = new LinearRing(points);
       var measureParameters = new MeasureParameters(geometry,{ distanceMode: 'Geodesic' });
@@ -383,7 +389,7 @@ describe('MeasureService', () => {
           expect(params.distanceMode).toEqual('Geodesic');
           return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.0616868362}`));
       });
-      measureService.processAsync(measureParameters);
+      measureService.processAsync(measureParameters, measureCompleted);
   });
 
   it('processAsync_distanceMode', (done) => {
@@ -401,8 +407,6 @@ describe('MeasureService', () => {
             measureService.destroy();
             expect(measureService.url == null).toBeTruthy();
             expect(measureService.isInTheSameDomain == null).toBeTruthy();
-            expect(measureService.EVENT_TYPES == null).toBeTruthy();
-            expect(measureService.events == null).toBeTruthy();
             expect(measureService.distanceMode == null).toBeTruthy();
             measureParameters.destroy();
             done();
@@ -414,10 +418,7 @@ describe('MeasureService', () => {
             done();
         }
     };
-    var measureFailed = (serviceFailedEventArgs) => {
-        serviceFailedEventArgsSystem = serviceFailedEventArgs;
-    };
-    var measureService = initMeasureService(worldMapURL,measureFailed,measureCompleted);
+    var measureService = initMeasureService(worldMapURL);
     var points = [new Point(0, 0), new Point(10, 10)];
     var geometry = new LinearRing(points);
     var measureParameters = new MeasureParameters(geometry,{ distanceMode: 'Planar' });
@@ -430,7 +431,7 @@ describe('MeasureService', () => {
         expect(params.distanceMode).toEqual('Planar');
         return Promise.resolve(new Response(`{"area":-1,"unit":"METER","distance": 3.9981624957}`));
     });
-    measureService.processAsync(measureParameters);
+    measureService.processAsync(measureParameters, measureCompleted);
 });
 });
 

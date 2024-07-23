@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -169,7 +173,7 @@
 
     function plotSymbol(){
         widgets.alert.clearAlert();
-        if(drawControl.drawingLayer != null){
+        if(plotMapManager.activePlottingLayer && drawControl.drawingLayer != null){
             drawControl.handler.libID = 421;
             drawControl.handler.code = 10100;
             drawControl.handler.serverUrl = serverUrl;

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -62,7 +62,7 @@ export class ThemeParameters {
         /**
          * @member {Object} [ThemeParameters.prototype.fieldValuesDisplayFilter]
          * @property {Array.<number>} values - 待过滤的值。
-         * @property {string} fieldName - 待过滤的字段名称只支持数字类型的字段。
+         * @property {string} fieldName - 待过滤的字段名称，只支持数字类型的字段。
          * @property {string} fieldValuesDisplayMode - 目前为 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
          */
         this.fieldValuesDisplayFilter = null;

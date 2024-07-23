@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from "../util/FetchRequest";
@@ -32,7 +32,7 @@ export class IPortal extends IPortalServiceBase {
     /**
      * @function IPortal.prototype.load
      * @description 加载页面。
-     * @returns {Promise} 包含 iportal web 资源信息的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iPortal Web 资源信息的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.iportalUrl + "/web");

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -34,11 +34,11 @@
           });
           new L.supermap
               .QueryService(url)
-              .queryBySQL(param, function (serviceResult) {
+              .queryBySQL(param, 'FGB').then(function (serviceResult) {
                 new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
                   strategy: 'all'
               }).addTo(map);
-      }, 'FGB')};
+      })};
     </script>
   </body>
 </html>

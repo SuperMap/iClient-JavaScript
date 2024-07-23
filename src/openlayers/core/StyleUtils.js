@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
-import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
+import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermapgis/iclient-common/commontypes/Util';
+import { StringExt } from '@supermapgis/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
 import { Util } from '../core/Util';
@@ -456,7 +456,7 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getStyleFromiPortalMarker
-   * @description 从 iPortal 标记获取样式。
+   * @description 从 SuperMap iPortal 标记获取样式。
    * @param {Object} icon - 图标参数。
    */
   static getStyleFromiPortalMarker(icon) {
@@ -479,8 +479,8 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getStyleFromiPortalStyle
-   * @description 从 iPortal 标记获取样式。
-   * @param {Object} iPortalStyle - iportal 样式。
+   * @description 从 SuperMap iPortal 标记获取样式。
+   * @param {Object} iPortalStyle - SuperMap iPortal 样式。
    * @param {string} type - 样式类型。
    * @param {Object} fStyle - 要素样式。
    */

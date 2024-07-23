@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {GetFeaturesServiceBase} from './GetFeaturesServiceBase';
@@ -13,18 +13,12 @@ import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
  * @example
- * var myGetFeaturesByBufferService = new GetFeaturesByBufferService(url, {
- *     eventListeners: {
- *           "processCompleted": GetFeaturesCompleted,
- *           "processFailed": GetFeaturesError
- *           }
- * });
+ * var myGetFeaturesByBufferService = new GetFeaturesByBufferService(url);
  * function GetFeaturesCompleted(object){//todo};
  * function GetFeaturesError(object){//todo};
  * @usage
@@ -53,10 +47,7 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
-        if (!(params instanceof GetFeaturesByBufferParameters)) {
-            return;
-        }
-        return GetFeaturesByBufferParameters.toJsonParameters(params);
+      return GetFeaturesByBufferParameters.toJsonParameters(params);
     }
 
 }

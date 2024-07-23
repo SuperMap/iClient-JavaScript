@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -115,8 +115,7 @@
         "tolerance": 0.0001,
         "isIgnoreGap": false
       });
-      routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCaculateServiceResult) {
-
+      routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters).then(function (routeCaculateServiceResult) {
         map.addLayer({
           "id": "Point",
           "type": "circle",
@@ -129,7 +128,6 @@
             "circle-color": "red",
           },
         });
-
         var innerHTML = resources.msg_MByQuery + routeCaculateServiceResult.result.measure;
         new maplibregl.Popup().setLngLat(point).setHTML(innerHTML).addTo(map);
       });

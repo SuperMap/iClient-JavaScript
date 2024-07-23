@@ -1,0 +1,97 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_polygon_annotation"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var dataUrl = host + '/iserver/services/map-china400/rest/maps/China';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [
+                host +
+                  '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' +
+                  encodeURIComponent('{"epsgCode":3857}') +
+                  '&z={z}&x={x}&y={y}'
+              ],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [-96, 37.8],
+        zoom: 3
+      });
+
+      map.on('load', function () {
+        fetch('https://iclient.supermap.io/web/data/L7/d36ad90e-3902-4742-b8a2-d93f7e5dafa2.json')
+          .then((res) => res.json())
+          .then((data) => {
+            var layer = new maplibregl.supermap.L7Layer({ type: 'PolygonLayer' });
+            var l7Layer = layer.getL7Layer();
+            l7Layer
+              .source(data)
+              .color('blue')
+              .shape('name', 'text')
+              .size(18)
+              .style({
+                textAnchor: 'center', // 文本相对锚点的位置 center|left|right|top|bottom|top-left
+                textOffset: [0, 0], // 文本相对锚点的偏移量 [水平, 垂直]
+                spacing: 2, // 字符间距
+                padding: [1, 1], // 文本包围盒 padding [水平，垂直]，影响碰撞检测结果，避免相邻文本靠的太近
+                stroke: '#ffffff', // 描边颜色
+                strokeWidth: 0.3, // 描边宽度
+                strokeOpacity: 1.0
+              });
+            map.addLayer(layer);
+          });
+      });
+    </script>
+  </body>
+</html>

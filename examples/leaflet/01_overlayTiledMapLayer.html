@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@
           //         2.调用 L.supermap.crsFromMapJSON 创建 CRS
           //         3.调用 L.map 创建地图
           //         4.调用 L.supermap.TiledMapLayer 创建底图和叠加图层
-        new L.supermap.MapService(urlWorld).getMapInfo((res) => {
+        new L.supermap.MapService(urlWorld).getMapInfo().then((res) => {
             var crs = L.supermap.crsFromMapJSON(res.result);
             map = L.map('map', {
               crs: crs,

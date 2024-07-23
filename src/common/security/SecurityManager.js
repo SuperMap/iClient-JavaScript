@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -126,13 +126,13 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer 登录验证。
+     * @description SuperMap iServer 登录验证。
      * @function SecurityManager.loginiServer
-     * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @param {boolean} [rememberme=false] - 是否记住。
-     * @returns {Promise} 包含 iServer 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
         url = Util.urlPathAppend(url, 'services/security/login');
@@ -153,9 +153,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer登出。
+     * @description SuperMap iServer 登出。
      * @function SecurityManager.logoutiServer
-     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
@@ -187,12 +187,12 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal登录验证。
+     * @description SuperMap iPortal 登录验证。
      * @function SecurityManager.loginiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
-     * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
         url = Util.urlPathAppend(url, 'web/login');
@@ -205,7 +205,7 @@ export class SecurityManager {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            withCredentials: true
+            withCredentials: false
         };
         return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
@@ -213,9 +213,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal 登出。
+     * @description SuperMap iPortal 登出。
      * @function SecurityManager.logoutiPortal
-     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
@@ -247,13 +247,8 @@ export class SecurityManager {
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
      * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
-    static loginManager(url, loginInfoParams, options) {
-        if (!Util.isInTheSameDomain(url)) {
-            var isNewTab = options ? options.isNewTab : true;
-            this._open(url, isNewTab);
-            return;
-        }
-        var requestUrl = Util.urlPathAppend(url, 'icloud/security/tokens');
+    static loginManager(url, loginInfoParams) {
+        var requestUrl = Util.urlPathAppend(url, '/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -263,15 +258,15 @@ export class SecurityManager {
         var requestOptions = {
             headers: {
                 Accept: '*/*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             }
         };
         var me = this;
         return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function(response) {
-            response.text().then(function(result) {
-                me.imanagerToken = result;
-                return result;
-            });
+          return response.text();
+        }).then(function(result) {
+          me.imanagerToken = result;
+          return result;
         });
     }
 
@@ -288,7 +283,7 @@ export class SecurityManager {
     /**
      * @description 清空令牌信息。
      * @function SecurityManager.destroyToken
-     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      */
     static destroyToken(url) {
         if (!url) {
@@ -304,7 +299,7 @@ export class SecurityManager {
     /**
      * @description 清空服务授权码。
      * @function SecurityManager.destroyKey
-     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      */
     static destroyKey(url) {
         if (!url) {

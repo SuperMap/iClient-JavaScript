@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { Unit } from '@supermap/iclient-common/REST';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
 import { Util } from '../core/Util';
 import ImageSource, { defaultImageLoadFunction } from 'ol/source/Image';
 import ImageWrapper from 'ol/Image';

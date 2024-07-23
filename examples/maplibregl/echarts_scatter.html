@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <html>
 <head>
@@ -60,44 +64,51 @@
         zoom: 3.5
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.loadImage('../img/marker-icon.png', function (error, image) {
-        if (error) throw error;
-        map.addImage('positionPoint', image);
+    map.on('load', async () => {
+      // maplibre-gl v3版本用法：
+      //  map.loadImage('../img/marker-icon.png', function (error, image) {
+      //   if (error) throw error;
+      //   map.addImage('positionPoint', image);
+      // });
+
+      // maplibre-gl v4版本用法：
+      const image =  await map.loadImage('../img/marker-icon.png');
+      map.addImage('positionPoint', image.data);
     });
 
     var dataBJ = [
-        [1, 55, 9, 56, 0.46, 18, 6, resources.text_good],
-        [2, 25, 11, 21, 0.65, 34, 9, resources.text_great],
-        [3, 56, 7, 63, 0.3, 14, 5, resources.text_good],
-        [4, 33, 7, 29, 0.33, 16, 6, resources.text_great],
-        [5, 42, 24, 44, 0.76, 40, 16, resources.text_great],
-        [6, 82, 58, 90, 1.77, 68, 33, resources.text_good],
-        [7, 74, 49, 77, 1.46, 48, 27, resources.text_good],
-        [8, 78, 55, 80, 1.29, 59, 29, resources.text_good],
-        [9, 267, 216, 280, 4.8, 108, 64, resources.text_heavyPollution],
-        [10, 185, 127, 216, 2.52, 61, 27, resources.text_moderatePollution],
-        [11, 39, 19, 38, 0.57, 31, 15, resources.text_great],
-        [12, 41, 11, 40, 0.43, 21, 7, resources.text_great],
-        [13, 64, 38, 74, 1.04, 46, 22, resources.text_good],
-        [14, 108, 79, 120, 1.7, 75, 41, resources.text_mildPollution],
-        [15, 108, 63, 116, 1.48, 44, 26, resources.text_mildPollution],
-        [16, 33, 6, 29, 0.34, 13, 5, resources.text_great],
-        [17, 94, 66, 110, 1.54, 62, 31, resources.text_good],
-        [18, 186, 142, 192, 3.88, 93, 79, resources.text_moderatePollution],
-        [19, 57, 31, 54, 0.96, 32, 14, resources.text_good],
-        [20, 22, 8, 17, 0.48, 23, 10, resources.text_great],
-        [21, 39, 15, 36, 0.61, 29, 13, resources.text_great],
-        [22, 94, 69, 114, 2.08, 73, 39, resources.text_good],
-        [23, 99, 73, 110, 2.43, 76, 48, resources.text_good],
-        [24, 31, 12, 30, 0.5, 32, 16, resources.text_great],
-        [25, 42, 27, 43, 1, 53, 22, resources.text_great],
-        [26, 154, 117, 157, 3.05, 92, 58, resources.text_moderatePollution],
-        [27, 234, 185, 230, 4.09, 123, 69, resources.text_heavyPollution],
-        [28, 160, 120, 186, 2.77, 91, 50, resources.text_moderatePollution],
-        [29, 134, 96, 165, 2.76, 83, 41, resources.text_mildPollution],
-        [30, 52, 24, 60, 1.03, 50, 21, resources.text_good],
-        [31, 46, 5, 49, 0.28, 10, 6, resources.text_great]
-    ];
+          [1, 55, 9, 56, 0.46, 18, 6, resources.text_good],
+          [2, 25, 11, 21, 0.65, 34, 9, resources.text_great],
+          [3, 56, 7, 63, 0.3, 14, 5, resources.text_good],
+          [4, 33, 7, 29, 0.33, 16, 6, resources.text_great],
+          [5, 42, 24, 44, 0.76, 40, 16, resources.text_great],
+          [6, 82, 58, 90, 1.77, 68, 33, resources.text_good],
+          [7, 74, 49, 77, 1.46, 48, 27, resources.text_good],
+          [8, 78, 55, 80, 1.29, 59, 29, resources.text_good],
+          [9, 267, 216, 280, 4.8, 108, 64, resources.text_heavyPollution],
+          [10, 185, 127, 216, 2.52, 61, 27, resources.text_moderatePollution],
+          [11, 39, 19, 38, 0.57, 31, 15, resources.text_great],
+          [12, 41, 11, 40, 0.43, 21, 7, resources.text_great],
+          [13, 64, 38, 74, 1.04, 46, 22, resources.text_good],
+          [14, 108, 79, 120, 1.7, 75, 41, resources.text_mildPollution],
+          [15, 108, 63, 116, 1.48, 44, 26, resources.text_mildPollution],
+          [16, 33, 6, 29, 0.34, 13, 5, resources.text_great],
+          [17, 94, 66, 110, 1.54, 62, 31, resources.text_good],
+          [18, 186, 142, 192, 3.88, 93, 79, resources.text_moderatePollution],
+          [19, 57, 31, 54, 0.96, 32, 14, resources.text_good],
+          [20, 22, 8, 17, 0.48, 23, 10, resources.text_great],
+          [21, 39, 15, 36, 0.61, 29, 13, resources.text_great],
+          [22, 94, 69, 114, 2.08, 73, 39, resources.text_good],
+          [23, 99, 73, 110, 2.43, 76, 48, resources.text_good],
+          [24, 31, 12, 30, 0.5, 32, 16, resources.text_great],
+          [25, 42, 27, 43, 1, 53, 22, resources.text_great],
+          [26, 154, 117, 157, 3.05, 92, 58, resources.text_moderatePollution],
+          [27, 234, 185, 230, 4.09, 123, 69, resources.text_heavyPollution],
+          [28, 160, 120, 186, 2.77, 91, 50, resources.text_moderatePollution],
+          [29, 134, 96, 165, 2.76, 83, 41, resources.text_mildPollution],
+          [30, 52, 24, 60, 1.03, 50, 21, resources.text_good],
+          [31, 46, 5, 49, 0.28, 10, 6, resources.text_great]
+      ];
 
     var dataGZ = [
         [1, 26, 37, 27, 1.163, 27, 13, resources.text_great],
@@ -357,7 +368,8 @@
             }]
         });
 
-        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(sqlParam).then(
+          function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             features = recordsets && recordsets[0] && recordsets[0].features;
             var featureCollection = features.features;
@@ -408,7 +420,8 @@
                 });
 
             });
-        });
+        }
+        );
     }
 
 </script>

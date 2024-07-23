@@ -1,0 +1,864 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* mapbox-gl-draw (https://github.com/mapbox/mapbox-gl-draw)
+* turf (https://github.com/Turfjs/turf)
+* mapboxgl-draw-rectangle-drag (https://github.com/CartoDB/mapboxgl-draw-rectangle-drag)
+* maplibre-gl-enhance (https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/1.12.1/maplibre-gl-enhance.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%">
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="resources.title_image_service"></title>
+        <style>
+            .sidebar-config-wrap {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 600px;
+                padding: 20px;
+                background: #fff;
+                font-family: Avenir, Helvetica, Arial, sans-serif;
+                box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
+            }
+
+            .sidebar-config-wrap .panel-group .panel {
+                border-color: transparent;
+                background: transparent;
+                color: rgba(0, 0, 0, 0.85);
+            }
+
+            .sidebar-config-wrap .panel .panel-heading {
+                background: #fafafa;
+                color: rgba(0, 0, 0, 0.85);
+                border-color: #e8e8e8 !important;
+                position: relative;
+            }
+
+            .sidebar-config-wrap .panel .panel-heading::before {
+                content: '';
+                height: 100%;
+                width: 2px;
+                background: #3394dc;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+            }
+
+            .form-group {
+                overflow: hidden;
+            }
+
+            .sidebar-config-wrap .form-group label {
+                margin-bottom: 0;
+                line-height: 34px;
+            }
+            .sidebar-config-wrap .button-group {
+                margin: 0 auto;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .sidebar-config-wrap button {
+                width: 30%;
+                outline: none;
+            }
+
+            .sidebar-config-wrap button:focus {
+                outline: none !important;
+            }
+
+            .sidebar-config-wrap .btn-search {
+                width: 100%;
+                outline: none;
+                height: 32px;
+                padding: 0 15px;
+                font-size: 14px;
+                border-radius: 4px;
+                color: rgba(0, 0, 0, 0.65);
+                border-color: #d9d9d9;
+                background-color: rgb(255, 255, 255);
+            }
+            .sidebar-config-wrap .btn-search:hover,
+            .sidebar-config-wrap .btn-search:active,
+            .sidebar-config-wrap .btn-search:focus {
+                color: #40a9ff;
+                border-color: #40a9ff;
+                background-color: rgb(255, 255, 255);
+                box-shadow: none;
+            }
+
+            .sidebar-config-wrap .panel-title a {
+                width: 100%;
+                display: block;
+                text-decoration: none !important;
+                overflow: hidden;
+            }
+
+            .sidebar-config-wrap .panel-title a span.glyphicon {
+                float: right;
+            }
+
+            .sidebar-config-wrap .panel-title a[aria-expanded='true'] .glyphicon-chevron-down {
+                display: none;
+            }
+
+            .sidebar-config-wrap .panel-title a[aria-expanded='false'] .glyphicon-chevron-up {
+                display: none;
+            }
+            .table-bordered > thead > tr {
+                border-bottom: none !important;
+            }
+            .table-bordered > thead > tr > th,
+            .table-bordered > tbody > tr > td {
+                vertical-align: middle !important;
+            }
+            .table-bordered > thead > tr > th {
+                background: #fafafa;
+                color: rgba(0, 0, 0, 0.85);
+                font-weight: 500;
+                border-color: #e8e8e8 !important;
+                padding: 16px !important;
+                overflow-wrap: break-word;
+            }
+            .table-bordered > tbody > tr > td {
+                text-align: center;
+                color: rgba(0, 0, 0, 0.85);
+                font-weight: 500;
+                border-color: #e8e8e8 !important;
+                padding: 8px !important;
+                overflow-wrap: break-word;
+            }
+            .sidebar-config-wrap .navigation {
+                text-align: right !important;
+            }
+            .sidebar-config-wrap .pagination {
+                margin-top: 0;
+                box-sizing: content-box;
+            }
+            .sidebar-config-wrap .pagination > li {
+                display: inline-block;
+                box-sizing: content-box;
+                width: 30px;
+                height: 30px;
+                margin-right: 8px;
+            }
+            .sidebar-config-wrap .pagination > li > a,
+            .sidebar-config-wrap .pagination > li > span {
+                box-sizing: content-box;
+                padding: 0 6px;
+                width: 18px;
+                height: 30px;
+                border-radius: 4px;
+                line-height: 30px;
+                text-align: center;
+            }
+
+            .btn.btn-default {
+                padding-right: 15px;
+            }
+            .glyphicon-eye-open {
+                color: #1890ff;
+                cursor: pointer;
+            }
+            .glyphicon-eye-closed {
+                color: rgba(0, 0, 0, 0.65);
+            }
+            .modal-dialog {
+                width: 1100px !important;
+                top: 50px;
+            }
+            .modal-body {
+                border: 1px solid #e8e8e8;
+            }
+            .modal-body table {
+                margin: 0 auto;
+                border: 1px solid #e8e8e8;
+
+                border-radius: 4px;
+            }
+            .modal-content-row {
+                border-bottom: 1px solid #e8e8e8;
+            }
+            .modal-content-item-label {
+                background-color: #fafafa;
+                color: rgba(0, 0, 0, 0.85);
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            .modal-content-item-label,
+            .modal-content-item-content {
+                padding: 16px 24px;
+                border-right: 1px solid #e8e8e8;
+                font-size: 14px;
+                line-height: 1.5;
+                word-wrap: break-word;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(2){
+                width: 193px;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(4){
+                width: 479px;
+            }
+        </style>
+    </head>
+
+    <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
+        <div id="map" style="width: calc(100% - 600px); height: 100%"></div>
+        <div class="panel-group sidebar-config-wrap" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a
+                            role="button"
+                            data-toggle="collapse"
+                            data-parent="#accordion"
+                            href="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                        >
+                            <span data-i18n="resources.text_query"></span>
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="templateName">Collections</label>
+                            <div>
+                                <select
+                                    class="form-control"
+                                    id="collections"
+                                    style="width: 100%"
+                                    onchange="selectCollection()"
+                                >
+                                    <option value="-1" data-i18n="resources.text_select"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="templateName" data-i18n="resources.text_district_search"></label>
+                            <div>
+                                <select
+                                    class="form-control"
+                                    id="provinces"
+                                    style="width: 100%"
+                                    onchange="selectProvince()"
+                                >
+                                    <option value="-1" data-i18n="resources.text_select"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <button
+                            class="btn btn-search"
+                            id="polygon-search"
+                            data-i18n="resources.text_polygon_search"
+                            onclick="drawRegion('Polygon')"
+                        ></button>
+                        <button
+                            class="btn btn-search"
+                            id="rectangle-search"
+                            data-i18n="resources.text_rectangle_search"
+                            onclick="drawRegion('Box')"
+                        ></button>
+                        <div class="button-group">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                id="query"
+                                data-i18n="resources.text_query"
+                                onclick="query()"
+                            ></button>
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                id="printBtn"
+                                data-i18n="resources.text_reset"
+                                onclick="clearSearchResult(true)"
+                            ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="exportOptions">
+                    <h4 class="panel-title">
+                        <a
+                            class="collapsed"
+                            role="button"
+                            data-toggle="collapse"
+                            data-parent="#accordion"
+                            href="#collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="collapseTwo"
+                        >
+                            <span data-i18n="resources.text_queryResult"></span>
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="exportOptions">
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th data-i18n="resources.text_filename"></th>
+                                  <th data-i18n="resources.text_addTime"></th>
+                                  <th data-i18n="resources.text_showImage"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="collectionsTbody"></tbody>
+                        </table>
+                        <nav class="page" aria-label="Page navigation">
+                            <ul id="pagination" class="pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 模态框（Modal） -->
+        <div
+            class="modal fade"
+            id="myModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tbody id="myModalContent"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+        <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+        <script
+            type="text/javascript"
+            include="turf,draw,maplibre-gl-enhance,mapboxgl-draw-rectangle-drag"
+            src="../../dist/maplibregl/include-maplibregl.js"
+        ></script>
+        <script type="text/javascript">
+            // MapboxDraw.constants.classes.CONTROL_BASE  = 'maplibregl-ctrl';
+            // MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';
+            // MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';
+            
+            widgets.loader.showLoader("data loading...");
+            var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+            var root = 'https://iserver.supermap.io/iserver/services/imageservice-hainan/restjsr';
+            var url = host + '/iserver/services/data-china400/rest/data';
+            var attribution =
+                "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© maplibre </a>" +
+                "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+            var map = new maplibregl.Map({
+                container: 'map',
+                crs: 'EPSG:4326',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            attribution: attribution,
+                            tileSize: 256,
+                            type: 'raster',
+                            tiles: [host + '/iserver/services/map-world/rest/maps/World'],
+                            rasterSource: 'iserver'
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'simple-tiles',
+                            type: 'raster',
+                            source: 'raster-tiles',
+                            minzoom: 0,
+                            maxzoom: 22
+                        }
+                    ]
+                },
+                center: [110, 19.2],
+                zoom: 8
+            });
+
+            var currentIndex = 0;
+            var features = [];
+            var pageMax = 10;
+            var tableMax = 10;
+            var collections = [];
+            var collectionId;
+            var itemLayers = [];
+            var searchBoxLayerID = 'searchBoxLayerID';
+            var epsgCodes = {};
+            var provinces = [];
+            var provinceId = -1;
+            var provinceBbox;
+            var searchRegionLayerID = 'searchRegionLayer';
+            var regionFeature;
+            var selectedFeature;
+            var result = queryFromDataService(url);
+            var draw = addDrawControl();
+            var imageService = ImageService();
+            function ImageService() {
+                var service = new maplibregl.supermap.ImageService(root);
+                service.getCollections(getCollectionsCompleted);
+                return service;
+            }
+
+            function ImageSearchService(params) {
+                imageService.search(params, getSearchProcessCompleted);
+            }
+
+            function getCollectionsCompleted(res) {
+                var collectionsInfo = res.result || [];
+                collections = [];
+                collectionsInfo.forEach(function (collection) {
+                    var split = collection['extent']['spatial']['crs'].split('/');
+                    var EPSGCode = split[split.length - 1];
+                    collections.push({
+                        id: collection['id'],
+                        title: collection['title'],
+                        value: collection['id'],
+                        extent: collection['extent']['spatial']['bbox'][0],
+                        EPSG: EPSGCode
+                    });
+                });
+                appendOptions('collections', collections, 'id', 'title');
+            }
+
+            function getSearchProcessCompleted(res) {
+                var result = res.result;
+                if (result && result.features) {
+                    //id不能重复，否则相同id会被覆盖，显示不正确。重新设置id
+                    result.features.forEach(function (feature) {
+                        feature.id = feature.collection + '.' + feature.id;
+                    });
+                }
+                features = (result && result.features) || [];
+                showSearchResultBox(result);
+                // 填充table
+                appendTable(features.slice(0, tableMax));
+                // 填充page
+                appendPage(features);
+                // 展开table
+                collapseTable();
+                // 显示所有影像
+                setTimeout(() => {
+                    features.forEach((feature) => {
+                        showSearchItemTile(feature.id, feature.properties.smfilename);
+                    });
+                }, 2000);
+            }
+
+            function showSearchResultBox(searchResult) {
+                if (searchResult === undefined) {
+                    removeLayer(map, searchBoxLayerID);
+                    return;
+                }
+                if (searchResult) {
+                    var readFeatures = searchResult.features;
+                    if (readFeatures.length > 0) {
+                        addSearchBoxLayer(readFeatures, searchBoxLayerID);
+                    } else {
+                        removeLayer(map, searchBoxLayerID);
+                    }
+                }
+            }
+
+            function addSearchBoxLayer(features, layerName, style = undefined) {
+                removeLayer(map, layerName);
+                var layer = {
+                    id: layerName,
+                    type: 'fill',
+                    source: {
+                        type: 'geojson',
+                        data: { type: 'FeatureCollection', features }
+                    },
+                    paint: {
+                        'fill-outline-color': '#ff0000',
+                        'fill-color': 'rgba(0,0,0,0.2)'
+                    }
+                };
+                map.addLayer(layer);
+                map.setCenter(getPolygonCenter(features[0]));
+                bindEvent();
+            }
+
+            function bindEvent() {
+                map.on('click', function (e) {
+                    if (map.getLayer(searchBoxLayerID)) {
+                        var bbox = [
+                            [e.point.x - 5, e.point.y - 5],
+                            [e.point.x + 5, e.point.y + 5]
+                        ];
+                        var queryFeatures = map.queryRenderedFeatures(bbox, {
+                            layers: [searchBoxLayerID]
+                        });
+
+                        var smfilename = queryFeatures[0] && queryFeatures[0].properties.smfilename;
+                        for (var i = 0; i < features.length; i++) {
+                            var feature = features[i];
+                            if (feature.properties.smfilename === smfilename) {
+                                selectedFeature = feature;
+                                break;
+                            }
+                        }
+                        if (selectedFeature) {
+                            $('#myModal').modal('show');
+                            showTifInfo(selectedFeature.id);
+                        }
+                    }
+                });
+            }
+
+            function addProvinceLayer(feature, layerID) {
+                removeLayer(map, layerID);
+                clearPlotLayer();
+                var layer = {
+                    id: layerID,
+                    type: 'fill',
+                    source: {
+                        type: 'geojson',
+                        data: { type: 'FeatureCollection', features: [feature] }
+                    },
+                    paint: {
+                        'fill-outline-color': '#33adff',
+                        'fill-color': 'rgba(0,0,0,0.2)'
+                    }
+                };
+                map.addLayer(layer);
+                map.setCenter(getPolygonCenter(feature));
+            }
+
+            function addDrawControl() {
+                map.addControl(new maplibregl.NavigationControl(), 'top-left');
+                var draw = new MapboxDraw({
+                    displayControlsDefault: false,
+                    controls: { polygon: true },
+                    modes: {
+                        ...MapboxDraw.modes,
+                        draw_rectangle_drag: mapboxGLDrawRectangleDrag
+                    }
+                });
+                map.addControl(draw, 'top-left');
+                $($('.mapboxgl-ctrl').get(0)).hide();
+                return draw;
+            }
+
+            function drawRegion(type) {
+                clearSearchResult(true);
+                map.on('draw.create', function (e) {
+                    regionFeature = e.features[0];
+                });
+                if (type === 'Box') {
+                    draw.changeMode('draw_rectangle_drag');
+                } else {
+                    $('.mapbox-gl-draw_polygon').trigger('click');
+                }
+            }
+            function clearPlotLayer() {
+                if (regionFeature) {
+                    draw.delete(regionFeature.id);
+                }
+                regionFeature = null;
+            }
+
+            function queryFromDataService(url) {
+                var result = [];
+                var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+                    queryParameter: { attributeFilter: "PAC Like '46%'" },
+                    datasetNames: ['China:City_R'],
+                    targetPrj: { epsgCode: 4326 },
+                    maxFeatures: 10000
+                });
+                new maplibregl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+                    var featureResults = serviceResult.result;
+                    if (featureResults) {
+                        var features = featureResults.features;
+                        features.features.forEach(function (feature) {
+                            var item = {
+                                value: feature['properties']['NAME'],
+                                label: feature['properties']['NAME'],
+                                feature
+                            };
+                            result.push(item);
+                        });
+                    }
+                    appendOptions('provinces', result, 'value', 'label');
+                    widgets.loader.removeLoader();
+                    provinces = result;
+                    return result;
+                });
+            }
+
+            function showSearchItemTile(layerID, name) {
+                // 眼睛颜色变化
+                var isShow = showOrCloseEye(layerID);
+                if (!isShow) {
+                    removeSearchItemTile(layerID);
+                } else {
+                    var tileRoot = root + '/collections/' + collectionId + '/tile';
+                    var url = tileRoot + '.png?z={z}&x={x}&y={y}&transparent=true&names=' + name;
+                    map.addLayer({
+                        id: layerID,
+                        type: 'raster',
+                        source: {
+                            type: 'raster',
+                            tiles: [url]
+                        }
+                    });
+                    itemLayers.push(layerID);
+                }
+            }
+
+            function removeSearchItemTile(layerID) {
+                removeLayer(map, layerID);
+                itemLayers.splice(itemLayers.indexOf(layerID), 1);
+            }
+
+            function removeLayer(map, layerID) {
+                if (map.getLayer(layerID)) {
+                    map.removeLayer(layerID);
+                    map.removeSource(layerID);
+                }
+            }
+
+            function getPolygonCenter(polygon) {
+                var centerOfMass = turf.centerOfMass(polygon);
+                return centerOfMass.geometry.coordinates;
+            }
+
+            function clearSearchResult(isReset) {
+                $('.page').hide();
+                $('tbody').empty();
+                $('#pagination').empty();
+                itemLayers.forEach(function (layerID) {
+                    removeLayer(map, layerID);
+                });
+                removeLayer(map, searchBoxLayerID);
+                if (isReset) {
+                    plotBbox = null;
+                    provinceBbox = null;
+                    provinceId = -1;
+                    $('#provinces').val(provinceId);
+                    removeLayer(map, searchRegionLayerID);
+                    clearPlotLayer();
+                }
+                itemLayers = [];
+                features = [];
+            }
+
+            function appendOptions(id, data, key, value) {
+                data.forEach(function (item) {
+                    $('#' + id).append('<option value=' + item[key] + '>' + item[value] + '</option}');
+                });
+            }
+
+            function appendTable(features) {
+                $('#collectionsTbody').empty();
+                var tbodyHtml = '';
+                features.forEach(function (feature, index) {
+                    tbodyHtml +=
+                        '<tr>' +
+                        '<td>' +
+                        feature.id +
+                        '</td>' +
+                        '<td onclick="showTifInfo(' +
+                        "'" +
+                        feature.id +
+                        "'" +
+                        ')" data-toggle="modal" data-target="#myModal"><a href="#">' +
+                        feature.properties.smfilename +
+                        '</a></td>' +
+                        '<td>' +
+                        feature.properties.addtime +
+                        '</td>' +
+                        '<td>' +
+                        '<span id="' +
+                        feature.id +
+                        '" class="glyphicon glyphicon-eye-closed glyphicon-eye-open" aria-hidden="true" onclick="showSearchItemTile(' +
+                        "'" +
+                        feature.id +
+                        "'" +
+                        ',' +
+                        "'" +
+                        feature.properties.smfilename +
+                        "'" +
+                        ')"></span>' +
+                        '</td>' +
+                        '</tr>';
+                });
+                $('#collectionsTbody').append(tbodyHtml);
+            }
+            function appendPage(features) {
+                var pageHtml =
+                    '<li id="previous-page" class="disabled" onclick="goPrevious()">' +
+                    '<a href="#" aria-label="Previous">' +
+                    '<span aria-hidden="true">&laquo;</span>' +
+                    '</a>' +
+                    '</li>';
+                for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
+                  var pageIndex = i - 1;
+                  pageHtml += '<li onclick="clickPage(' + pageIndex + ')"><a href="#">' + i + '</a></li>';
+                }
+                pageHtml +=
+                    '<li id="next-page" style="margin-right: 0">' +
+                    '<a href="#" aria-label="Next" onclick="goNext()">' +
+                    '<span aria-hidden="true">&raquo;</span>' +
+                    '</a>' +
+                    '</li>';
+                $('#pagination').append(pageHtml);
+                $('.page').show();
+                $($('#pagination').children('li').get(1)).addClass('active');
+            }
+
+            function showTifInfo(featureId) {
+                var feature = typeof featureId === 'string' ? null : featureId;
+                features.forEach(function (item) {
+                    if (item.id === featureId) {
+                        feature = item;
+                    }
+                });
+                var title = '影像' + feature.id + '详情';
+                var properties = feature.properties;
+                var tbodyHtml = '';
+                var thHtml = '';
+                $('#myModalContent').empty();
+                for (var key in properties) {
+                    if (thHtml) {
+                        tbodyHtml +=
+                            '<tr class="modal-content-row">' +
+                            thHtml +
+                            '<th class="modal-content-item-label">' +
+                            key +
+                            '</th><td class="modal-content-item-content">' +
+                            properties[key] +
+                            '</td></tr>';
+                        thHtml = '';
+                    } else {
+                        thHtml =
+                            '<th class="modal-content-item-label">' +
+                            key +
+                            '</th><td class="modal-content-item-content">' +
+                            properties[key] +
+                            '</td>';
+                    }
+                }
+                document.getElementById('myModalLabel').innerHTML = title;
+                $('#myModalContent').append(tbodyHtml);
+            }
+
+            function clickPage(i) {
+                currentIndex = parseInt(i);
+                var start = tableMax * currentIndex;
+                $($('#pagination').children('.active')).removeClass('active');
+                $(
+                    $('#pagination')
+                        .children('li')
+                        .get(i + 1)
+                ).addClass('active');
+                pageDisable();
+                appendTable(features.slice(start, start + tableMax));
+            }
+
+            function goPrevious() {
+                if (currentIndex >= 1) {
+                    currentIndex -= 1;
+                    clickPage(currentIndex);
+                }
+                pageDisable();
+            }
+
+            function goNext() {
+                pageDisable();
+                if (currentIndex + 1 < Math.ceil(features.length / pageMax)) {
+                    currentIndex += 1;
+                    clickPage(currentIndex);
+                }
+            }
+
+            function pageDisable() {
+                if (currentIndex === 0) {
+                    $('#previous-page').addClass('disabled');
+                } else {
+                    $('#previous-page').removeClass('disabled');
+                }
+                if (currentIndex === Math.ceil(features.length / pageMax) - 1) {
+                    $('#next-page').addClass('disabled');
+                } else {
+                    $('#next-page').removeClass('disabled');
+                }
+            }
+
+            function collapseTable() {
+                $('#collapseTwo').addClass('in');
+            }
+
+            function showOrCloseEye(featureId) {
+                var closeClass = 'glyphicon-eye-closed';
+                var el = document.getElementById(featureId);
+                var classValues = $(el).attr('class');
+                if (classValues.includes(closeClass)) {
+                    $(el).removeClass(closeClass);
+                    return true;
+                } else {
+                    $(el).addClass(closeClass);
+                    return false;
+                }
+            }
+
+            function selectCollection() {
+                collectionId = getSelectedValue('collections');
+            }
+            function selectProvince() {
+                clearSearchResult();
+                provinceId = getSelectedValue('provinces');
+                var item;
+                for (var i = 0; i < provinces.length; i++) {
+                    var province = provinces[i];
+                    if (province.value === provinceId) {
+                        item = province;
+                        break;
+                    }
+                }
+                provinceBbox = turf.bbox(item.feature.geometry);
+                addProvinceLayer(item.feature, searchRegionLayerID);
+            }
+            function getSelectedValue(id) {
+                var el = document.getElementById(id);
+                var selIndex = el.selectedIndex; //获取当前选择的选项的index值
+                var value = el.options[selIndex].value; //获取当前选择项的值
+                return value;
+            }
+            function query() {
+                clearSearchResult();
+                var postData = {};
+                if (provinceId != -1) {
+                    postData.bbox = provinceBbox;
+                }
+                if (collectionId != -1) {
+                    postData.collections = [collectionId];
+                }
+                if (regionFeature) {
+                    postData['bbox'] = turf.bbox(regionFeature.geometry);
+                }
+                ImageSearchService(postData);
+            }
+        </script>
+    </body>
+</html>

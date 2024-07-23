@@ -1,12 +1,14 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
-import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermap/iclient-common/iServer/KnowledgeGraphService';
+import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermapgis/iclient-common/iServer/KnowledgeGraphService';
 /**
  * @class KnowledgeGraphService
  * @category  iServer KnowledgeGraph
- * @classdesc 知识图谱服务类。
+ * @classdesc 知识图谱服务类。知识图谱是知识表示的一种形式，是由具有属性的实体通过关系链接而成的网状知识库。
+ * 图谱数据和常规结构化表格数据相比，具有强大的数据描述能力，可以实现更快更高效的查询，更快更精准的数据关联性推理运算和隐藏关系的挖掘。
+ * 提供方法：获取图谱图序列化数据、获取图谱列表、查询知识图谱数据、将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
  * @version 11.1.0
  * @example
  * new KnowledgeGraphService(url)
@@ -29,13 +31,26 @@ export class KnowledgeGraphService extends ServiceBase {
   }
 
   /**
+   * @function KnowledgeGraphService.prototype.findShortestPath
+   * @version 11.2.0
+   * @description 获取开始节点和结束节点之间的最短路径。
+   * @param {KnowledgeGraphService.findShortestPathParams} params - 参数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
+   */
+  findShortestPath(params, callback) {
+    return this._knowledgeGraphService.findShortestPath(params, callback);
+  }
+
+  /**
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {
-    this._knowledgeGraphService.query(cypherQuery, callback);
+    return this._knowledgeGraphService.query(cypherQuery, callback);
   }
 
   // /**
@@ -50,25 +65,27 @@ export class KnowledgeGraphService extends ServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMaps(callback) {
-    this._knowledgeGraphService.getGraphMaps(callback);
+    return this._knowledgeGraphService.getGraphMaps(callback);
   }
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMap
    * @description 获取图谱图序列化数据。
    * @param {string} params 图谱名称。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMap(params, callback) {
-    this._knowledgeGraphService.getGraphMap(params, callback);
+    return this._knowledgeGraphService.getGraphMap(params, callback);
   }
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMapData
-   * @description 将iServer GraphMap服务的数据格式转换为KnowledgeGraph的数据格式。
+   * @description 将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
    * @param {string} graphMapName - 图谱名称。
    * @returns {Promise} Promise 对象。
    */

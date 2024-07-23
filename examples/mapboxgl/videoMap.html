@@ -1,0 +1,229 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js)
+* Turf (https://github.com/Turfjs/turf/)
+* proj4js (https://github.com/proj4js/proj4js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title data-i18n="resources.title_videoMap"></title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script
+      type="text/javascript"
+      include="mapbox-gl-enhance,proj4,turf,videojs,opencv"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <script type="text/javascript">
+      var map,
+        videoLayer;
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var dataUrl = 'https://iserver.supermap.io/iserver/services/data-video/rest/data';
+      var datasourceName = 'VideoData';
+      var datasetName = 'DJI_0937_2';
+      var count = 0;
+      var videoMap;
+
+      function query1(dstName, datasource = 'Xinchuan') {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: dstName + '@' + datasource,
+            attributeFilter: 'SMID > 0'
+          },
+          targetEpsgCode: '4326',
+          datasetNames: [datasource + ':' + dstName]
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          count++;
+          var features = serviceResult.result.features;
+          if (features.features[0].geometry.type === 'Point') {
+            videoMap.addLayer({
+              id: 'symbol' + count,
+              type: 'symbol',
+              source: {
+                type: 'geojson',
+                data: features
+              },
+              layout: {
+                'icon-image': 'ro-communal-3',
+                'text-anchor': 'bottom',
+                'text-field': '{NAME}',
+                'icon-text-fit': 'both',
+                'text-size': 12,
+                'icon-text-fit-padding': [5, 10, 5, 10]
+              },
+              paint: {
+                'text-color': 'black'
+              }
+            });
+          } else if (features.features[0].geometry.type === 'LineString') {
+            if (dstName === 'Road_L') {
+              features.features.forEach((f) => {
+                f.properties['NAME'] = '新川路';
+              });
+              videoMap.addSource('line_roads', {
+                type: 'geojson',
+                data: features
+              });
+              videoMap.addLayer({
+                id: 'line_road',
+                type: 'line',
+                source: 'line_roads',
+                paint: {
+                  'line-width': 8,
+                  'line-color': 'hsl(26, 87%, 62%)'
+                }
+              });
+              videoMap.addLayer({
+                id: 'line_road_2',
+                type: 'line',
+                source: 'line_roads',
+                paint: {
+                  'line-width': 4,
+                  'line-color': 'hsl(0, 0%, 100%)'
+                }
+              });
+
+              videoMap.addLayer({
+                id: 'label11111111',
+                type: 'symbol',
+                source: {
+                  type: 'geojson',
+                  data: features
+                },
+                layout: {
+                  'text-line-height': 1.1,
+                  'text-size': 14,
+                  'text-font': ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
+                  'symbol-placement': 'line',
+                  'text-field': '{NAME}',
+                  'text-letter-spacing': 0.1,
+                  'text-max-width': 5
+                },
+                paint: {
+                  'text-color': 'hsl(0, 0%, 0%)',
+                  'text-halo-color': 'hsl(0, 0%, 100%)',
+                  'text-halo-width': 1.25,
+                  'text-opacity': {
+                    base: 1,
+                    stops: [
+                      [13.99, 0],
+                      [14, 1]
+                    ]
+                  }
+                }
+              });
+            } else {
+              videoMap.addSource('line_raod2s', {
+                type: 'geojson',
+                data: features
+              });
+              videoMap.addLayer({
+                id: 'line_raod2',
+                type: 'line',
+                source: 'line_raod2s',
+                paint: {
+                  'line-color': 'red',
+                  'line-width': 5
+                }
+              });
+              videoMap.addLayer({
+                id: 'line_raod2_2',
+                type: 'line',
+                source: 'line_raod2s',
+                paint: {
+                  'line-color': 'hsl(26, 87%, 62%)',
+                  'line-width': 3
+                }
+              });
+            }
+          } else {
+            videoMap.addLayer({
+              id: 'polygon' + count,
+              source: {
+                type: 'geojson',
+                data: features
+              },
+              type: 'fill',
+              paint: {
+                'fill-color': 'hsl(200, 100%, 80%)'
+              }
+            });
+          }
+        });
+      }
+
+      function query() {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: datasetName + '@' + datasourceName,
+            attributeFilter: 'SMID > 0'
+          },
+          datasetNames: [datasourceName + ':' + datasetName]
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var url = serviceResult.result.features.features[0].properties.address;
+          var cameraLocation = serviceResult.result.features.features[0].properties.cameraLocation;
+          var calibrationModel = serviceResult.result.features.features[0].properties.videoParameters.videoParameterList[0].calibrationModel;
+          videoMap = new mapboxgl.supermap.VideoMap(
+          {
+            url,
+            videoParameters: {
+              fovX: calibrationModel.fovX,
+              fovY: calibrationModel.fovY,
+              centerX: calibrationModel.centerX,
+              centerY: calibrationModel.centerY,
+              pitch:cameraLocation.cameraPitch,
+              roll: cameraLocation.cameraRoll,
+              yaw: cameraLocation.cameraYaw,
+              x: cameraLocation.cameraX,
+              y: cameraLocation.cameraY,
+              z: cameraLocation.cameraZ
+            },
+            autoplay: false,
+            styleOptions: {
+              sprite: 'https://iclient.supermap.io/web/styles/street/sprite',
+              glyphs:
+                'https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf'
+            },
+          });
+
+          videoMap.on('load', function () {
+            var datasetList = ['POI', 'Road_L', 'Water', '写字楼', '学校', '步行道'];
+            datasetList.forEach((name) => {
+              query1(name);
+            });
+          });
+        });
+      }
+      query();
+    </script>
+  </body>
+</html>

@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import "../core/Base";
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
 /**
  * @class WMTSLayer
@@ -24,7 +24,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {string} [options.tilematrixSet] - 瓦片矩阵集。
  * @param {Array.<WMTSLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为 tilematrix 参数。
  * @param {string} [options.version='1.0.0'] - 版本。
- * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.attribution] - 版权描述信息。
  * @param {string} [options.noWrap=true] - 图层是否 X 方向平铺。
  * @usage
  */

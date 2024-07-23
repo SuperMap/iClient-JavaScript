@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../../core/Base';
@@ -7,12 +7,12 @@ import {Util} from "../../core/Util";
 
 /**
  * @class Graphic
- * @classdesc 高效率点图层点要素类。
+ * @classdesc 高效率点图层点要素类。高效率点图层中的点要素，支持获取或修改点要素的属性、样式、几何信息。
  * @category  Visualization Graphic
- * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象。
+ * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含 {lng,lat} 格式对象。
  * @param {Object} style - 图形参数。
  * @param {Array.<number>} [style.color] - 点颜色。目前只支持 rgba 数组。
- * @param {Object} [style.radius] - 点半径。
+ * @param {Object} [style.radius] - 点半径，单位为像素。
  * @param {Object} [attributes] - 属性信息。
  * @example
  * var graphic = new Graphic(

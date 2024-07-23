@@ -22,8 +22,19 @@ describe('maplibregl_SpatialAnalystService_thiessenAnalysis', () => {
     //泰森多边形分析 数据集泰森多边形
     it('thiessenAnalysis_byDataset', (done) => {
         var datasetThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
-            dataset: "Town_P@Jingjin"
+            dataset: "Town_P@Jingjin",
+            clipRegion: polygon
         });
+        var polygon = {
+          "type": "Polygon",
+          "coordinates": [[
+            [116, 39],
+            [117, 39],
+            [117, 38],
+            [116, 38],
+            [116, 39]
+          ]]
+        };
         var service = new SpatialAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");

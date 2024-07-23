@@ -1,0 +1,204 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcConvexHull"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+         position: absolute;
+         top: 50px;
+         right: 10px;
+         width: 280px;
+         text-align: center;
+         z-index: 100;
+         border-radius: 4px;
+       }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class='panel-heading'>
+          <h5 class='panel-title text-center'>计算</h5>
+      </div>
+      <div class='panel-body content'>
+        <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon'>计算</span>
+              <select id='operation' class='form-control'>
+                <option value='computeConvexHull'>凸多边形</option>
+                <option value='computeConvexHullPoints'>点集凸闭包</option>
+                <option value='computeConcaveHullPoints'>点集凹闭包</option>
+              </select>
+            </div>
+        </div>
+          <input type="button" class="btn btn-default" value="计算"
+                  onclick="cal()"/>&nbsp;
+          <input type="button" class="btn btn-default" value="移除"
+                  onclick="clearLayer()"/>
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+        var map, pointLists;
+        var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+        var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+        function initMap(url) {
+          return new Promise((resolve) => {
+            map = new maplibregl.Map({
+              container: "map",
+              style: {
+                version: 8,
+                sources: {
+                  "raster-tiles": {
+                    type: "raster",
+                    tiles: [url],
+                    tileSize: 256
+                  }
+                },
+                layers: [
+                  {
+                    id: "simple-tiles",
+                    type: "raster",
+                    source: "raster-tiles"
+                  }
+                ]
+              },
+              center: [120, 30],
+              zoom: 6
+            })
+            map.on("load", function () {
+              resolve(map);
+            })
+          })
+        }
+
+        function addMarker() {
+          const point1 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [118, 30]
+            }
+          };
+          const point2 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [125, 31]
+            }
+          };
+          const point3 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [123, 28]
+            }
+          };
+          const point4 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [117, 32]
+            }
+          };
+          const point5 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [120, 34]
+            }
+          };
+          const point6 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [120, 30]
+            }
+          };
+          pointLists = [point1, point2, point3, point4, point5, point6]
+          map.addLayer({
+            "id": "points",
+            "type": "circle",
+            "source": {
+              "type": "geojson",
+              "data": {
+                  "type": "FeatureCollection",
+                  "features": pointLists
+              }
+            },
+            "paint": {
+                "circle-radius": 6,
+                "circle-color": "black",
+            }
+          });
+        }
+
+        function cal() {
+          clearLayer();
+          const operationFun = document.getElementById("operation").value;
+          let calRes;
+          const pointsCoors = pointLists.map(point => point.geometry.coordinates);
+          var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+          if (operationFun === 'computeConvexHull') {
+            calRes = geometryAnalysis[operationFun](pointsCoors, pointsCoors.length);
+          } else {
+            const xArrs = [];
+            const yArrs = [];
+            pointsCoors.forEach(p => {
+              xArrs.push(p[0]);
+              yArrs.push(p[1]);
+            });
+            calRes = geometryAnalysis[operationFun](xArrs, yArrs, pointsCoors.length);
+            console.log(calRes)
+          }
+          map.addLayer({
+            "id": "fill",
+            "type": "fill",
+            "source": {
+              "type": "geojson",
+              "data": {
+                  "type": "FeatureCollection",
+                  "features": [calRes]
+              }
+            },
+            "paint": {
+                "fill-color": "rgba(255, 0, 0, 0.5)",
+                'fill-outline-color': "red",
+            }
+          });
+        }
+
+        function clearLayer() {
+          if (!map) {
+            return;
+          }
+          if (map.getLayer("fill")) {
+            map.removeLayer("fill")
+            map.removeSource("fill")
+          }
+        }
+        initMap(url).then((map) => {
+          addMarker();
+        });
+    </script>
+  </body>
+</html>

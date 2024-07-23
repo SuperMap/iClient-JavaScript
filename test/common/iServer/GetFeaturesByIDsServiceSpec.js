@@ -6,13 +6,8 @@ var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeatureEventArgsSystem = null;
 
-var initGetFeaturesByIDsService = (getFeaturesByIDsCompleted, getFeaturesByIDsFailed) => {
-  return new GetFeaturesByIDsService(dataServiceURL, {
-    eventListeners: {
-      processCompleted: getFeaturesByIDsCompleted,
-      processFailed: getFeaturesByIDsFailed
-    }
-  });
+var initGetFeaturesByIDsService = () => {
+  return new GetFeaturesByIDsService(dataServiceURL);
 };
 
 describe('GetFeaturesByIDsService', () => {
@@ -53,9 +48,6 @@ describe('GetFeaturesByIDsService', () => {
         expect(getFeaturesResult.newResourceID).not.toBeNull();
         expect(getFeaturesResult.newResourceLocation).not.toBeNull();
         getFeaturesByIDsService.destroy();
-        expect(getFeaturesByIDsService.EVENT_TYPES).toBeNull();
-        expect(getFeaturesByIDsService.events).toBeNull();
-        expect(getFeaturesByIDsService.eventListeners).toBeNull();
         expect(getFeaturesByIDsService.returnContent).toBeNull();
         getFeaturesByIDsParameters.destroy();
         done();
@@ -68,7 +60,7 @@ describe('GetFeaturesByIDsService', () => {
       }
     };
 
-    var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed);
+    var getFeaturesByIDsService = initGetFeaturesByIDsService();
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       returnContent: false,
       datasetNames: ['World:Capitals'],
@@ -94,13 +86,10 @@ describe('GetFeaturesByIDsService', () => {
         )
       );
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, getFeaturesByIDsCompleted);
   });
 
   it('processAsync_returnContent:true', done => {
-    var getFeaturesByIDsFailed = serviceFailedEventArgs => {
-      serviceFailedEventArgsSystem = serviceFailedEventArgs;
-    };
     var getFeaturesByIDsCompleted = getFeatureEventArgsSystem => {
       try {
         var getFeaturesResult = getFeatureEventArgsSystem.result.features;
@@ -120,7 +109,7 @@ describe('GetFeaturesByIDsService', () => {
         done();
       }
     };
-    var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed);
+    var getFeaturesByIDsService = initGetFeaturesByIDsService();
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       returnContent: true,
       datasetNames: ['World:Capitals'],
@@ -139,7 +128,7 @@ describe('GetFeaturesByIDsService', () => {
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, getFeaturesByIDsCompleted);
   });
 
   //测试没有传入参数时的情况
@@ -166,7 +155,7 @@ describe('GetFeaturesByIDsService', () => {
       getFeatureEventArgsSystem = getFeaturesEventArgs;
     };
 
-    var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed);
+    var getFeaturesByIDsService = initGetFeaturesByIDsService();
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       IDs: []
     });
@@ -180,7 +169,7 @@ describe('GetFeaturesByIDsService', () => {
         )
       );
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, getFeaturesByIDsFailed);
   });
 
   //查询目标图层不存在情况
@@ -206,7 +195,7 @@ describe('GetFeaturesByIDsService', () => {
     var getFeaturesByIDsCompleted = getFeaturesEventArgs => {
       getFeatureEventArgsSystem = getFeaturesEventArgs;
     };
-    var getFeaturesByIDsService = initGetFeaturesByIDsService(getFeaturesByIDsCompleted, getFeaturesByIDsFailed);
+    var getFeaturesByIDsService = initGetFeaturesByIDsService();
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       returnContent: false,
       datasetNames: ['World:CapitalsNotExsit'],
@@ -229,20 +218,59 @@ describe('GetFeaturesByIDsService', () => {
       );
     });
 
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, getFeaturesByIDsFailed);
+  });
+
+  it('processAsync_LayerNotExist promise', done => {
+    var getFeaturesByIDsFailed = serviceFailedEventArgsSystem => {
+      try {
+        expect(getFeaturesByIDsService).not.toBeNull();
+        expect(serviceFailedEventArgsSystem.result).not.toBeNull();
+        expect(serviceFailedEventArgsSystem.error).not.toBeNull();
+        expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
+        expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
+        getFeaturesByIDsService.destroy();
+        getFeaturesByIDsParameters.destroy();
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByIDsService_' + exception.name + ':' + exception.message);
+        getFeaturesByIDsService.destroy();
+        getFeaturesByIDsParameters.destroy();
+        done();
+      }
+    };
+    var getFeaturesByIDsCompleted = getFeaturesEventArgs => {
+      getFeatureEventArgsSystem = getFeaturesEventArgs;
+    };
+    var getFeaturesByIDsService = initGetFeaturesByIDsService();
+    var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
+      returnContent: false,
+      datasetNames: ['World:CapitalsNotExsit'],
+      fromIndex: 0,
+      toIndex: -1,
+      IDs: [1, 2, 3]
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      expect(method).toBe('POST');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults');
+      var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+      expect(paramsObj.datasetNames[0]).toBe('World:CapitalsNotExsit');
+      expect(paramsObj.getFeatureMode).toBe('ID');
+      // expect(params).toContain("'datasetNames':[\"World:CapitalsNotExsit\"]");
+      expect(options).not.toBeNull();
+      return Promise.resolve(
+        new Response(
+          `{"succeed":false,"error":{"code":400,"errorMsg":"getFeature方法中数据集名CapitalsNotExsit不存在"}}`
+        )
+      );
+    });
+
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters).then(getFeaturesByIDsFailed);
   });
 
   it('getFeaturesByIDsParameters:targetEpsgCode', done => {
-    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => {
-          getFeaturesByIDsService.destroy();
-          getFeaturesByIDsParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL);
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       datasetNames: ['World:Capitals'],
       IDs: [1, 2, 3],
@@ -253,19 +281,14 @@ describe('GetFeaturesByIDsService', () => {
       expect(paramsObj.targetEpsgCode).toEqual(4326);
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, function() {
+      getFeaturesByIDsService.destroy();
+      getFeaturesByIDsParameters.destroy();
+      done();
+    });
   })
   it('getFeaturesByIDsParameters:targetPrj', done => {
-    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => {
-          getFeaturesByIDsService.destroy();
-          getFeaturesByIDsParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL);
     var getFeaturesByIDsParameters = new GetFeaturesByIDsParameters({
       datasetNames: ['World:Capitals'],
       IDs: [1, 2, 3],
@@ -276,6 +299,41 @@ describe('GetFeaturesByIDsService', () => {
       expect(paramsObj.targetPrj.epsgCode).toEqual(4326);
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters, function() {
+      getFeaturesByIDsService.destroy();
+      getFeaturesByIDsParameters.destroy();
+      done();
+    });
+  })
+  it('GetFeaturesByIDsParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByIDsService.destroy();
+        idParams.destroy();
+        expect(serviceSucceedEventArgsSystem.result.features.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByIDsService_' + exception.name + ':' + exception.message);
+        getFeaturesByIDsService.destroy();
+        idParams.destroy();
+        done();
+      }
+    };
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL);
+    var idParams = new GetFeaturesByIDsParameters({
+      datasetNames: ['World:Capitals'],
+      IDs: [1, 2, 3],
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByIDsService.processAsync(idParams, serviceCompleted);
   })
 });

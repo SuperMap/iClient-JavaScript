@@ -2,9 +2,9 @@ import { Unit } from '../REST';
 
 /**
  * @function getMeterPerMapUnit
- * @description 单位换算，把米|度|千米|英寸|英尺换成米。
+ * @description 单位换算，把米|度|千米|英寸|英尺换算成米。
  * @category BaseTypes Util
- * @param {string} mapUnit 地图单位。
+ * @param {string} mapUnit 需要换算的地图单位。
  * @returns {number} 返回地图的距离单位。
  * @usage
  * ```
@@ -22,11 +22,15 @@ import { Unit } from '../REST';
  * ```
  */
 export var getMeterPerMapUnit = function(mapUnit) {
-    var earchRadiusInMeters = 6378137;
     var meterPerMapUnit;
-    if (mapUnit === Unit.METER) {
+    if(!mapUnit){
+      return meterPerMapUnit;
+    }
+    var earchRadiusInMeters = 6378137;
+    
+    if (['m','meter','meters'].indexOf(mapUnit.toLocaleLowerCase())>-1) {
         meterPerMapUnit = 1;
-    } else if (mapUnit === Unit.DEGREE) {
+    } else if (['degrees','deg','degree','dd'].indexOf(mapUnit.toLocaleLowerCase())>-1) {
         // 每度表示多少米。
         meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
     } else if (mapUnit === Unit.KILOMETER) {
@@ -35,8 +39,6 @@ export var getMeterPerMapUnit = function(mapUnit) {
         meterPerMapUnit = 1 / 2.5399999918e-2;
     } else if (mapUnit === Unit.FOOT) {
         meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
     }
     return meterPerMapUnit;
 };
@@ -137,11 +139,25 @@ export function conversionDegree(degrees) {
   * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
   * ```
  */
- export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+ export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22, baseScale) {
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
       resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else if (baseScale){
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    const baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    let topRes = baseRes;
+    for (let i = 0; i < level; i++) {
+      const temp = baseRes * Math.pow(2, i);
+      if(Math.abs(temp,maxReolution)<= 1E-6 || temp>maxReolution){
+        topRes = temp;
+        break;
+      }
+    }
+    for (let i = 0; i < level; i++) {
+      resolutions.push(topRes / Math.pow(2, i));
     }
   } else {
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
@@ -220,10 +236,17 @@ export function scaleToResolution(scale, dpi, mapUnit) {
   return resolution;
 }
 
+export function getDpi(scale, resolution, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const dpi = 1.0/resolution/(scale * inchPerMeter * meterPerMapUnitValue);
+  return dpi;
+}
+
 /**
- * 范围是否相交
- * @param {Array} extent1 范围1
- * @param {Array} extent2 范围2
+ * 范围是否相交。
+ * @param {Array} extent1 范围 1。
+ * @param {Array} extent2 范围 2。
  * @return {boolean} 范围是否相交。
  */
  export function intersects(extent1, extent2) {
@@ -236,10 +259,10 @@ export function scaleToResolution(scale, dpi, mapUnit) {
 }
 
 /**
- * 获取两个范围的交集
- * @param {Array} extent1 Extent 1
- * @param {Array} extent2 Extent 2
- * @return {Array} 相交范围数组.
+ * 获取两个范围的交集。
+ * @param {Array} extent1 范围 1。
+ * @param {Array} extent2 范围 2。
+ * @return {Array} 相交范围数组。
  * @api
  */
  export function getIntersection(extent1, extent2) {

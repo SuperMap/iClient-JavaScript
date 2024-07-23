@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { Theme as FeatureTheme } from "@supermap/iclient-common/overlay/feature/Theme";
-import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { Theme as FeatureTheme } from "@supermapgis/iclient-common/overlay/feature/Theme";
+import { LonLat } from '@supermapgis/iclient-common/commontypes/LonLat';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
 import {
     Theme
 } from './theme/Theme';
@@ -13,31 +13,34 @@ import {
  * @class Graph
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 统计专题图图层基类。
+ * @classdesc 统计专题图图层基类。统计专题图是通过为每个要素或记录绘制统计图来反映其对应的专题值的大小。
+ * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题值绘制在一个统计图上，并且每个区域都会有一幅表示该区域各专题值的统计图。
+ * 通过统计专题图可以在区域本身与各区域之间形成横向和纵向的对比。多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，
+ * 不同时段客运量、地铁流量等。
  * @modulecategory Overlay
  * @param {string} chartsType - 图表类别。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers 地图对象。
  * @param {string} opt_options.chartsType - 图表类型。目前可用："Bar"，"Bar3D"，"Line"，"Point"，"Pie"，"Ring"。
  * @param {Object} opt_options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下几个基础可设属性。
- * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度。
- * @param {number} opt_options.chartsSetting.height - 专题要素（图表）高度。
+ * @param {number} opt_options.chartsSetting.width - 专题要素（图表）宽度，单位为像素。
+ * @param {number} opt_options.chartsSetting.height - 专题要素（图表）高度，单位为像素。
  * @param {Array.<number>} opt_options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @param {number} [opt_options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @param {number} [opt_options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @param {number} [opt_options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+ * @param {number} [opt_options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
  * @param {Array.<number>} [opt_options.chartsSetting.dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox（由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
  * @param {number} [opt_options.chartsSetting.decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
  * @param {string} opt_options.themeFields - 指定创建专题图字段。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [opt_options.opacity = 1] - 图层透明度。
- * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {number} [opt_options.opacity = 1] - 图层不透明度。
+ * @param {string} [opt_options.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - {@link ol.proj.Projection} 投影信息。
- * @param {number} [opt_options.ratio=1.5] - 视图比, 1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
- * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @extends {Theme}
  * @usage
  */
@@ -150,7 +153,7 @@ export class Graph extends Theme {
 
     /**
      * @function Graph.prototype.createThematicFeature
-     * @description 向专题图图层中添加数据, 支持的 feature 类型为：iServer 返回的 feature JSON 对象。
+     * @description 向专题图图层中添加数据，支持的 feature 类型为：SuperMap iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} feature - 待添加的要素。
      *
      */
@@ -280,7 +283,7 @@ export class Graph extends Theme {
 
     /**
      * @function Graph.prototype.getShapesByFeatureID
-     * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description  通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID(featureID) {
@@ -387,7 +390,7 @@ export class Graph extends Theme {
 
     /**
      * @function Graph.prototype.removeFeatures
-     * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description  从专题图中删除要素。这个函数删除所有传递进来的矢量要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {

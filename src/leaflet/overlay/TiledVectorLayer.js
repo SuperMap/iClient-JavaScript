@@ -1,15 +1,15 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../core/Base';
  import { VectorGrid } from './vectortile/VectorGrid';
  import { CartoCSSToLeaflet } from './carto/CartoCSSToLeaflet';
- import { Credential } from '@supermap/iclient-common/commontypes/Credential';
- import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
- import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
- import { Unit } from '@supermap/iclient-common/REST';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { Credential } from '@supermapgis/iclient-common/commontypes/Credential';
+ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+ import { Unit } from '@supermapgis/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
  import * as Util from '../core/Util';
  import Attributions from '../core/Attributions';
@@ -17,7 +17,9 @@
 /**
  * @class TiledVectorLayer
  * @deprecatedclassinstance L.supermap.tiledVectorLayer
- * @classdesc SuperMap iServer 的矢量瓦片图层。
+ * @classdesc SuperMap iServer 的矢量瓦片图层。矢量瓦片是将矢量数据通过不同的描述文件来组织和定义，在客户端实时解析数据并完成绘制。
+ * 矢量瓦片体积小，可高度压缩，数据传输体量小，地图更新的代价小，常用于存储用于查询、变更频繁的矢量图层，
+ * 适合于地图中对时效性要求较高的地物要素的表达，如 POI 信息、路线信息等。
  * @category Visualization VectorTile
  * @extends VectorGrid
  * @example
@@ -31,12 +33,12 @@
  * @param {boolean} [options.processCharacters=false] - 设置客户端 CartoCSS 样式时是否进行特定字符转换。
  * @param {CRS} [options.crs] - 坐标系统类。
  * @param {boolean} [options.returnAttributes=false] - 是否返回 attributes。
- * @param {string} [options.expands] - expands。
+ * @param {string} [options.expands] - 图层扩展的像素值。
  * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
  * @param {Object} [options.tileTemplate] - 瓦片模板，如果设置了此参数，则按此模板出图。默认出图方式为 URL 对接的第三方瓦片。
  * @param {string} [options.subdomains] - 子域名。
  * @param {number} [options.timeout=10000] - 延时。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权描述信息。
  * @usage
  */
 export var TiledVectorLayer = VectorGrid.extend({

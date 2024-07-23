@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -75,9 +75,8 @@
 
         new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
             getFeatureBySQLParams,
-            processCompleted,
             mapboxgl.supermap.DataFormat.GEOJSON
-        );
+        ).then(processCompleted);
     }
 
     function processCompleted(serviceResult) {

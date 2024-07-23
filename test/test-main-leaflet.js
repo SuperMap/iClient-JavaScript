@@ -5,6 +5,7 @@ import './leaflet/control/ChangeTileVersionSpec.js';
 import './leaflet/core/NonEarthCRSSpec.js';
 import './leaflet/core/TransformUtilSpec.js';
 import './leaflet/core/Proj4LeafletSpec.js';
+import './leaflet/core/BaseSpec.js';
 
 /*leaflet -- mapping*/
 import './leaflet/mapping/ImageMapLayerSpec.js';
@@ -42,6 +43,7 @@ import './leaflet/services/BufferAnalysisSpec.js';
 import './leaflet/services/DensityAnalysisSpec.js';
 import './leaflet/services/EditFeaturesLineSpec.js';
 import './leaflet/services/EditFeaturesPointSpec.js';
+import './leaflet/services/EditVideoFeatureSpec.js';
 import './leaflet/services/EditFeaturesRegionSpec.js';
 import './leaflet/services/FieldServiceSpec.js';
 import './leaflet/services/GenerateSpatialDataSpec.js';
@@ -71,6 +73,11 @@ import './leaflet/services/RouteCalculateMeasureSpec.js';
 import './leaflet/services/RouteLocateSpec.js';
 import './leaflet/services/SurfaceAnalysisSpec.js';
 import './leaflet/services/TerrainCurvatureCalculateSpec.js';
+import './leaflet/services/TerrainAspectCalculateSpec.js';
+import './leaflet/services/TerrainSlopeCalculateSpec.js';
+import './leaflet/services/TerrainCutFillCalculateSpec.js';
+import './leaflet/services/MinDistanceAnalysisSpec.js';
+import './leaflet/services/ConvexHullAnalysisSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';
@@ -79,6 +86,9 @@ import './leaflet/services/DatasetServiceSpec.js';
 import './leaflet/services/DatasourceServiceSpec.js';
 import './leaflet/services/ImageServiceSpec';
 import './leaflet/services/ImageCollectionServiceSpec';
+import './leaflet/services/ChartServiceSpec';
+import './leaflet/services/GetFeatureAttachmentsSpec';
+import './leaflet/services/EditFeatureAttachmentsSpec';
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
 import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';

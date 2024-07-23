@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Util as CommonUtil} from '../../commontypes/Util';
@@ -19,9 +19,9 @@
   * @class GraphicLayerRenderer
   * @category  Visualization Graphic
   * @classdesc 高效率点图层。
-  * @param {string} [id] - 图层id。
+  * @param {string} [id] - 图层 ID。
   * @param {Object} options - 参数。
-  * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
+  * @param {Array.<Graphic>} options.graphics - 点要素对象数组。
   * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
   * @param {number} [options.radius=10] - 半径。
   * @param {number} [options.opacity=0.8] - 不透明度。
@@ -142,12 +142,12 @@
       * @description 设置图层整体样式。
       * @param {Object} styleOptions - 样式对象。
       * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-      * @param {number} [styleOptions.radius=10] - 点半径。
+      * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
       * @param {number} [styleOptions.opacity=0.8] - 不透明度。
       * @param {Array.<number>}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
       * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
       * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
       * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
       */
@@ -237,8 +237,8 @@
      /**
       * @function GraphicLayerRenderer.prototype.getGraphicsByAttribute
       * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-      * @param {string} attrName - graphic 的某个属性名称。
-      * @param {string} attrValue - property 所对应的值。
+      * @param {string} attrName - 属性的 key 值。
+      * @param {string} attrValue - 属性的 value 值。
       * @returns {Array.<Graphic>} 一个匹配的 graphic 数组。
       */
      getGraphicsByAttribute(attrName, attrValue) {
@@ -257,8 +257,8 @@
  
      /**
       * @function GraphicLayerRenderer.prototype.removeGraphics
-      * @description 删除要素数组，默认将删除所有要素
-      * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组
+      * @description 删除要素数组，默认将删除所有要素。
+      * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组。
       */
      removeGraphics(graphics = null) {
          //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素

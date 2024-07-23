@@ -42,7 +42,14 @@ module.exports = function (config) {
               '../node_modules/three/**',
               '../node_modules/xlsx/**',
               '../node_modules/@turf/**',
-              '../node_modules/lodash/**'
+              '../node_modules/lodash/**',
+              '../node_modules/echarts/dist/echarts.js',
+              '../src/mapboxgl/overlay/L7/l7-render.js',
+              '../src/maplibregl/overlay/L7/l7-render.js',
+              '../node_modules/video.js/dist/video.cjs.js',
+              '../src/common/util/UGCWasmAll.js',
+              '../node_modules/@mapbox/mapbox-gl-style-spec'
+              
             ],
             plugins: ['istanbul', '@babel/plugin-transform-runtime']
           }
@@ -63,6 +70,7 @@ module.exports = function (config) {
       { pattern: '../src/classic/libs/Lang/*.js', included: true },
       { pattern: '../src/classic/theme/default/*.css', included: true },
       { pattern: './resources/data/**.fgb', included: false },
+      { pattern: './resources/data/**.m3u8', included: false },
       { pattern: './resources/img/**.svg', included: false },
       { pattern: './resources/img/baiduTileTest.png', included: false },
       /**测试文件**/
@@ -89,6 +97,8 @@ module.exports = function (config) {
       './test-main-openlayers.js',
       /***mapboxgl***/
       { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
+      { pattern: './resources/data/sprite.png', included: false },
+      { pattern: './resources/data/sprite.json', included: false },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
       './test-main-mapboxgl.js',
@@ -147,7 +157,7 @@ module.exports = function (config) {
 
     coverageReporter: {
       dir: 'testcoverage/',
-      reporters: [{ type: 'lcov', subdir: '.' }]
+      reporters: [{ type: 'lcov', subdir: '.' },{ type: 'json', subdir: '.' }]
     },
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',

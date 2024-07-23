@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -68,19 +68,19 @@ export class ServerTextStyle {
         /**
          * @member {number} [ServerTextStyle.prototype.fontHeight=6]
          * @description 文本字体的高度，单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
-         *              如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
+         *              如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米。
          */
         this.fontHeight = 6;
 
         /**
          * @member {number} [ServerTextStyle.prototype.fontWidth=0]
-         * @description 文本字体的宽度。字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符。
+         * @description 文本字体的宽度。由于一个中文字符相当于两个英文字符，因此字体的宽度以英文字符为标准。
          */
         this.fontWidth = 0;
 
         /**
          * @member {number} [ServerTextStyle.prototype.fontWeight=400]
-         * @description 文本字体的磅数。表示粗体的具体数值。取值范围为从0－900之间的整百数。
+         * @description 文本字体的磅数。表示粗体的具体数值。取值范围为从 0－900 之间的整百数。
          */
         this.fontWeight = 400;
 
@@ -92,7 +92,7 @@ export class ServerTextStyle {
 
         /**
          * @member {boolean} [ServerTextStyle.prototype.bold=false]
-         * @description 文本是否为粗体字。true 表示为粗体。false 表示文本不是粗体字。
+         * @description 文本是否为粗体字。true 表示文本为粗体字，false 表示文本不是粗体字。
          */
         this.bold = false;
 
@@ -104,8 +104,8 @@ export class ServerTextStyle {
 
         /**
          * @member {number} [ServerTextStyle.prototype.italicAngle=0]
-         * @description 字体倾斜角度。正负度之间，以度为单位，精确到0.1度。当倾斜角度为0度，为系统默认的字体倾斜样式。
-         *              正负度是指以纵轴为起始零度线，其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
+         * @description 字体倾斜角度。正负度之间，以度为单位，精确到 0.1 度。当倾斜角度为 0 度，为系统默认的字体倾斜样式。
+         *              正负度是指以纵轴为起始零度线，其纵轴左侧为正，右侧为负。允许的最大角度为 60，最小 -60。大于 60 按照 60 处理，小于 -60 按照 -60 处理。目前只对标签专题图有效。
          */
         this.italicAngle = 0;
 
@@ -117,7 +117,7 @@ export class ServerTextStyle {
 
         /**
          * @member {boolean} [ServerTextStyle.prototype.strikeout=false]
-         * @description 文本字体是否加删除线。true 表示加删除线。false 表示文本字体不加删除线。
+         * @description 文本字体是否加删除线。true 表示给文本字体加删除线。false 表示文本字体不加删除线。
          */
         this.strikeout = false;
 
@@ -129,19 +129,19 @@ export class ServerTextStyle {
 
         /**
          * @member {number} [ServerTextStyle.prototype.opaqueRate=0]
-         * @description 注记文字的不透明度。不透明度的范围为0-100。0表示透明。
+         * @description 注记文字的不透明度。不透明度的范围为 0-100 。0 表示透明。
          */
         this.opaqueRate = 0;
 
         /**
          * @member {boolean} [ServerTextStyle.prototype.underline=false]
-         * @description 文本字体是否加下划线。true 表示加下划线。
+         * @description 文本字体是否加下划线。true 表示给文本字体加下划线。false 表示不加删除线。
          */
         this.underline = false;
 
         /**
          * @member {number} [ServerTextStyle.prototype.rotation=0.0]
-         * @description 文本旋转的角度。逆时针方向为正方向，单位为度，精确到0.1度。
+         * @description 文本旋转的角度。逆时针方向为正方向，单位为度，精确到 0.1 度。
          */
         this.rotation = 0.0;
 
@@ -188,8 +188,8 @@ export class ServerTextStyle {
     /**
      * @function ServerTextStyle.fromObj
      * @description 从传入对象获服务端文本风格类。
-     * @param {Object} obj - 传入对象
-     * @returns {ServerTextStyle} 返回服务端文本风格对象
+     * @param {Object} obj - 传入对象。
+     * @returns {ServerTextStyle} 返回服务端文本风格对象。
      */
     static fromObj(obj) {
         var res = new ServerTextStyle(obj);

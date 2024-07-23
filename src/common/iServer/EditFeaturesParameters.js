@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -9,10 +9,12 @@ import {ServerGeometry} from './ServerGeometry';
  * @class EditFeaturesParameters
  * @deprecatedclass SuperMap.EditFeaturesParameters
  * @category iServer Data Feature
- * @classdesc 数据集添加、修改、删除参数类。
+ * @classdesc 数据集添加、修改、删除参数类。此类可设置需要创建或修改的要素集和相应的编辑类型等参数，编辑类型包括：添加、修改、删除。
  * @param {Object} options - 参数。
+ * @param {string} options.dataSourceName - 当前需要创建或者是修改的要素的数据源。
+ * @param {string} options.datasetName - 当前需要创建或者是修改的要素的数据集。
  * @param {Array.<FeatureVector|GeoJSONObject|ol.Feature>} options.features - 当前需要创建或者是修改的要素集。
- * @param {boolean} [options.returnContent=false] - 是否返回要素内容。如果为true则返回创建要素的 ID 数组，否则返回 featureResult 资源的 URI。
+ * @param {boolean} [options.returnContent=false] - 是否返回要素内容。如果为 true 则返回创建要素的 ID 数组，为 false 则返回 featureResult 资源的 URI。
  * @param {EditType} [options.editType=EditType.ADD] - POST 动作类型 (ADD、UPDATE、DELETE)。
  * @param {Array.<string|number>} [options.IDs] - 删除要素时的要素的 ID 数组。
  * @usage

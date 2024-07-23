@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -6,11 +6,11 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFAspect
  * @deprecatedclass SuperMap.ImageGFAspect
- * @classdesc 栅格函数对象：对DEM数据生成坡向渲图。
+ * @classdesc 栅格函数对象：对 DEM 数据生成坡向渲图，坡向即 DEM 数据中各个像元的坡度面的朝向。此类用于设置栅格函数名称、光源高度角等参数。
  * @category iServer Image
  * @param {Object} options -可选参数。
  * @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
- * @param {number} [options.Azimuth] 光源方位角，固定为360度。
+ * @param {number} [options.Azimuth] 光源方位角，固定为 360 度。
  * @usage
 */
 export default class ImageGFAspect {
@@ -22,7 +22,7 @@ export default class ImageGFAspect {
     */
     this.girdFuncName = 'GFAspect';
     /**
-    * @description 光源方位角，固定为360度。
+    * @description 光源方位角，固定为 360 度。
     * @member {number} ImageGFAspect.prototype.Azimuth
     */
     this.Azimuth = undefined;

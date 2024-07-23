@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -145,8 +149,7 @@
                             },
                             datasetNames: ["UntitledDatasource:analystResult"]
                         });
-                        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam,
-                            function (serviceResult) {
+                        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                                 result = serviceResult.result.features.features;
                                 var names = [];
                                 var data1 = [];

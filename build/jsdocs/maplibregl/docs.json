@@ -62,7 +62,8 @@
       "src/common/components/templates/Select",
       "src/common/security/KeyServiceParameter",
       "src/common/components/templates/TemplateBase",
-      "src/mapboxgl/core/Util"
+      "src/maplibregl/core/Util",
+      "src/maplibregl/overlay/L7/l7-render"
     ]
   },
   "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories"],
@@ -76,7 +77,7 @@
       "outputSourceFiles": false
     },
     "namespace": "maplibregl.supermap",
-    "npm": "@supermap/iclient-maplibregl",
+    "npm": "@supermapgis/iclient-maplibregl",
     "cdn": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js"
   }
 }

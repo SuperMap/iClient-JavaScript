@@ -1,13 +1,14 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
+import { DataFlowService as DataFlow } from '@supermapgis/iclient-common/iServer/DataFlowService';
 /**
  * @class DataFlowService
  * @category  iServer DataFlow
- * @classdesc 数据流服务类。
+ * @classdesc 数据流服务类。用于实现客户端与服务器之间实现低延迟和实时数据传输。数据流服务采用 WebSocket 协议，支持全双工、双向式通信。
+ * 服务器可将流数据服务的分析处理结果作为数据来源向客户端广播，客户端与数据流服务建立连接后，即可自动接收服务器广播的数据。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @example
@@ -17,7 +18,7 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  * })
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -41,37 +42,37 @@ export class DataFlowService extends ServiceBase {
         super(url, options);
         this.dataFlow = new DataFlow(url, options);
         /**
-         * @event DataFlowService#broadcastSocketConnected
-         * @description broadcast Socket 连接成功。
-         */
+        * @event DataFlowService#broadcastSocketConnected
+        * @description broadcast Socket 连接成功。
+        */
         /**
-         * @event DataFlowService#broadcastSocketError
-         * @description broadcast Socket 连接失败。
-         */
+        * @event DataFlowService#broadcastSocketError
+        * @description broadcast Socket 连接失败。
+        */
         /**
-         * @event DataFlowService#broadcastFailed
-         * @description 广播失败。
-         */
+        * @event DataFlowService#broadcastFailed
+        * @description 广播失败。
+        */
         /**
-         * @event DataFlowService#broadcastSucceeded
-         * @description 广播成功。
-         */
+        * @event DataFlowService#broadcastSucceeded
+        * @description 广播成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketConnected
-         * @description 订阅数据连接成功。
-         */
+        * @event DataFlowService#subscribeSocketConnected
+        * @description 订阅数据连接成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketError
-         * @description 订阅数据连接失败。
-         */
+        * @event DataFlowService#subscribeSocketError
+        * @description 订阅数据连接失败。
+        */
         /**
-         * @event DataFlowService#messageSucceeded
-         * @description 获取信息成功。
-         */
+        * @event DataFlowService#messageSucceeded
+        * @description 获取信息成功。
+        */
         /**
-         * @event DataFlowService#setFilterParamSucceeded
-         * @description 设置过滤参数成功。
-         */
+        * @event DataFlowService#setFilterParamSucceeded
+        * @description 设置过滤参数成功。
+        */
 
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
@@ -100,7 +101,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {DataFlowService}
+     * @returns {DataFlowService} - 数据流服务。
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -140,7 +141,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

@@ -1,16 +1,17 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
+import URI from 'urijs';
 
 /**
- * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：
- *     * "opera" -- Opera
- *     * "msie"  -- Internet Explorer
- *     * "safari" -- Safari
- *     * "firefox" -- Firefox
- *     * "mozilla" -- Mozilla
+ * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：<br>
+ *      "opera" -- Opera<br>
+ *      "msie"  -- Internet Explorer<br>
+ *      "safari" -- Safari<br>
+ *      "firefox" -- Firefox<br>
+ *      "mozilla" -- Mozilla
  * @category BaseTypes Constant
  * @constant {Object}
  * @usage
@@ -129,28 +130,28 @@ const DOTS_PER_INCH = 96;
 const Util = {
 
   /**
-     * @function Util.extend
-     * @description 对象拷贝赋值。
-     * @param {Object} dest - 目标对象。
-     * @param {Object} arguments - 待拷贝的对象。
-     * @returns {Object} 赋值后的目标对象。
-     */
+   * @memberOf CommonUtil
+   * @description 对象拷贝赋值。
+   * @param {Object} dest - 目标对象。
+   * @param {Object} arguments - 待拷贝的对象。
+   * @returns {Object} 赋值后的目标对象。
+   */
   assign(dest) {
     for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
-        var arg = Object.getOwnPropertyNames(arguments)[index];
+      var arg = Object.getOwnPropertyNames(arguments)[index];
         if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
-            continue;
-        }
-        var obj = arguments[arg];
-        if (obj) {
-            for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
-                var key = Object.getOwnPropertyNames(obj)[j];
+        continue;
+      }
+      var obj = arguments[arg];
+      if (obj) {
+        for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+          var key = Object.getOwnPropertyNames(obj)[j];
                 if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
-                    continue;
-                }
-                dest[key] = obj[key];
-            }
+            continue;
+          }
+          dest[key] = obj[key];
         }
+      }
     }
     return dest;
   },
@@ -334,7 +335,7 @@ const Util = {
    * @param {string} [position] - DOM 元素的 position 属性。
    * @param {string} [border] - DOM 元素的 style 属性的 border 属性。
    * @param {string} [overflow] - DOM 元素的 style 属性的 overflow 属性。
-   * @param {number} [opacity] - 不透明度值。取值范围为(0.0 - 1.0)。
+   * @param {number} [opacity] - 不透明度值。取值范围：(0.0 - 1.0)。
    */
   modifyDOMElement: function (element, id, px, sz, position, border, overflow, opacity) {
     if (id) {
@@ -667,46 +668,15 @@ const Util = {
     if (!url) {
       return true;
     }
-    var index = url.indexOf('//');
-    var documentUrl = document.location.toString();
-    var documentIndex = documentUrl.indexOf('//');
+    const index = url.indexOf('//');
     if (index === -1) {
       return true;
-    } else {
-      var protocol;
-      var substring = (protocol = url.substring(0, index));
-      var documentSubString = documentUrl.substring(documentIndex + 2);
-      documentIndex = documentSubString.indexOf('/');
-      var documentPortIndex = documentSubString.indexOf(':');
-      var documentDomainWithPort = documentSubString.substring(0, documentIndex);
-      //var documentPort;
-
-      var documentprotocol = document.location.protocol;
-      if (documentPortIndex !== -1) {
-        // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
-      } else {
-        documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      if (documentprotocol.toLowerCase() !== substring.toLowerCase()) {
-        return false;
-      }
-      substring = url.substring(index + 2);
-      var portIndex = substring.indexOf(':');
-      index = substring.indexOf('/');
-      var domainWithPort = substring.substring(0, index);
-      var domain;
-      if (portIndex !== -1) {
-        domain = substring.substring(0, portIndex);
-      } else {
-        domain = substring.substring(0, index);
-        domainWithPort += ':' + (protocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      var documentDomain = document.domain;
-      if (domain === documentDomain && domainWithPort === documentDomainWithPort) {
-        return true;
-      }
     }
-    return false;
+    return Util.isSameDomain(url, document.location.toString());
+  },
+
+  isSameDomain(url, otherUrl) {
+    return new URI(url).normalize().origin() === new URI(otherUrl).normalize().origin();
   },
 
   /**

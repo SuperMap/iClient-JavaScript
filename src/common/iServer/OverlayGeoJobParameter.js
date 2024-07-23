@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -9,13 +9,13 @@ import { MappingParameters } from './MappingParameters';
  * @class OverlayGeoJobParameter
  * @deprecatedclass SuperMap.OverlayGeoJobParameter
  * @category iServer ProcessingService OverlayAnalyst
- * @classdesc 叠加分析任务参数类。
+ * @classdesc 叠加分析任务参数类。此类用于设置叠加分析的数据集、分析模式、保留字段等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。
  * @param {string} options.srcFields - 输入数据需要保留的字段。
- * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。对分析模式为 clip、update、erase 时，此参数无效。
- * @param {string} [options.mode] - 叠加分析模式。
+ * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。当分析模式为 clip、update、erase 时，此参数无效。
+ * @param {OverlayOperationType} [options.mode] - 叠加分析模式。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -28,7 +28,7 @@ export class OverlayGeoJobParameter {
         }
         /**
          * @member {string} OverlayGeoJobParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -52,7 +52,7 @@ export class OverlayGeoJobParameter {
 
         /**
          * @member {string} OverlayGeoJobParameter.prototype.overlayFields
-         * @description 叠加数据需要保留的字段，对分析模式为 clip、update、erase 时，此参数无效。
+         * @description 叠加数据需要保留的字段，当分析模式为 clip、update、erase 时，此参数无效。
          */
         this.overlayFields = "";
 

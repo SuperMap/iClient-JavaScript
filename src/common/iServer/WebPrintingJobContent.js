@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -6,7 +6,8 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobContent
  * @deprecatedclass SuperMap.WebPrintingJobContent
- * @classdesc Web 打印内容参数类。
+ * @classdesc Web 打印内容参数类。此类用于设置 Web 打印内容的类型、待打印 Web 地图的 URL 地址、JSON 表达等参数。<br>
+ * 目前支持打印的 Web 内容为 WebMap，即：在线创建的地图。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
@@ -20,7 +21,7 @@ export class WebPrintingJobContent {
     constructor(option) {
         /**
          * @member {string} WebPrintingJobContent.prototype.type
-         * @description Web 打印内容支持的类型。
+         * @description Web 打印内容支持的类型。目前支持的类型：WEBMAP。
          */
         this.type = null;
         /**

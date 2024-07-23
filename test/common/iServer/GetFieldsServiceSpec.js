@@ -2,15 +2,8 @@
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
-var serviceFailedEventArgsSystem = null;
-var getFieldsEventArgsSystem = null;
-var initGetFieldsService = (getFieldsCompleted, getFieldsFailed) => {
-    return new GetFieldsService(dataServiceURL, {
-        eventListeners: {
-            processCompleted: getFieldsCompleted,
-            processFailed: getFieldsFailed
-        }
-    });
+var initGetFieldsService = () => {
+    return new GetFieldsService(dataServiceURL);
 };
 describe('GetFieldsService', () => {
     var originalTimeout;
@@ -39,9 +32,6 @@ describe('GetFieldsService', () => {
 
     //存在对应数据源数据集返回查询结果
     it('success:processAsync', done => {
-        var getFieldsFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var getFieldsCompleted = getFieldsEventArgsSystem => {
             try {
                 var getFieldsResult = getFieldsEventArgsSystem.result;
@@ -51,8 +41,6 @@ describe('GetFieldsService', () => {
                 expect(getFieldsResult.fieldNames.length).toEqual(17);
                 expect(getFieldsResult.childUriList).not.toBeNull();
                 getFieldsService.destroy();
-                expect(getFieldsService.EVENT_TYPES).toBeNull();
-                expect(getFieldsService.events).toBeNull();
                 expect(getFieldsService.datasource).toBeNull();
                 expect(getFieldsService.dataset).toBeNull();
                 done();
@@ -63,7 +51,7 @@ describe('GetFieldsService', () => {
                 done();
             }
         };
-        var getFieldsService = initGetFieldsService(getFieldsCompleted, getFieldsFailed);
+        var getFieldsService = initGetFieldsService();
         expect(getFieldsService).not.toBeNull();
         getFieldsService.dataset = 'Countries';
         getFieldsService.datasource = 'World';
@@ -73,7 +61,7 @@ describe('GetFieldsService', () => {
             var resultJson = `{"fieldNames":["SmID","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmUserID","SmArea","SmPerimeter","SmGeometrySize","SQKM","SQMI","COLOR_MAP","CAPITAL","COUNTRY","POP_1994","ColorID","CONTINENT"],"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriW","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriN","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriE","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmSdriS","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmUserID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmArea","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmPerimeter","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SmGeometrySize","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQKM","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/SQMI","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COLOR_MAP","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CAPITAL","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/COUNTRY","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/POP_1994","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/ColorID","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/fields/CONTINENT"]}`;
             return Promise.resolve(new Response(resultJson));
         });
-        getFieldsService.processAsync();
+        getFieldsService.processAsync(getFieldsCompleted);
     });
 
     //错误数据集，查询错误
@@ -92,11 +80,8 @@ describe('GetFieldsService', () => {
                 done();
             }
         };
-        var getFieldsCompleted = getFieldsEventArgs => {
-            getFieldsEventArgsSystem = getFieldsEventArgs;
-        };
 
-        var getFieldsService = initGetFieldsService(getFieldsCompleted, getFieldsFailed);
+        var getFieldsService = initGetFieldsService();
         getFieldsService.dataset = 'NoDataset';
         getFieldsService.datasource = 'World';
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
@@ -105,6 +90,6 @@ describe('GetFieldsService', () => {
             var resultJson = `{"succeed":false,"error":{"code":404,"errorMsg":"资源不存在"}}`;
             return Promise.resolve(new Response(resultJson));
         });
-        getFieldsService.processAsync();
+        getFieldsService.processAsync(getFieldsFailed);
     });
 });

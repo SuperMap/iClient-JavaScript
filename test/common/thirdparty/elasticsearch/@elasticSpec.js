@@ -2,10 +2,11 @@ import { ElasticSearch } from '../../../../src/common/thirdparty/elasticsearch/E
 import { Point } from '../../../../src/common/commontypes/geometry/Point';
 import { LinearRing } from '../../../../src/common/commontypes/geometry/LinearRing';
 import { Polygon } from '../../../../src/common/commontypes/geometry/Polygon';
+import es from '@elastic/elasticsearch';
 
 describe('@elastic/ElasticSearch', () => {
   it('constructor, setGeoFence', () => {
-    var elasticSearch = new ElasticSearch('https://fake.iclient.supermap.io/es');
+    var elasticSearch = new ElasticSearch('https://fake.iclient.supermap.io/es', es);
     expect(elasticSearch.geoFence).toBeNull();
     var points = [
       new Point(0, 4010338),
@@ -24,7 +25,7 @@ describe('@elastic/ElasticSearch', () => {
   });
   it('search', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'search').and.callFake(function () {
       const resp = { aggregations: { zoomedInView: {} } };
@@ -39,7 +40,7 @@ describe('@elastic/ElasticSearch', () => {
   });
   it('msearch', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'msearch').and.callFake(function () {
       const resp = { body: { responses: {} } };
@@ -54,7 +55,7 @@ describe('@elastic/ElasticSearch', () => {
   });
   it('bulk', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'bulk').and.callFake(function (params, callback) {
       const resp = { body: { items: [] } };
@@ -65,5 +66,24 @@ describe('@elastic/ElasticSearch', () => {
       expect(result.items).not.toBeNull();
       done();
     });
+  });
+  it('no es', (done) => {
+    var dataUrl = 'https://fake.iclient.supermap.io/es';
+    try {
+      new ElasticSearch(dataUrl);
+    } catch (e) {
+      expect(e.message).toBe('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+    }
+    try {
+      new ElasticSearch(dataUrl, {});
+    } catch (e) {
+      expect(e.message).toBe('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+    }
+    try {
+      new ElasticSearch(dataUrl, function () {});
+    } catch (e) {
+      expect(e.message).toBe('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+      done();
+    }
   });
 });

@@ -1,31 +1,37 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 var selectFeatures = [];
 //var groupIndex = 0;
-L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
-    editControl.on(SuperMap.Plot.Event.featuresselected, function(event){
+L.supermap.plotting.initStylePanel = function (div, serverUrl, editControl) {
+    editControl.on(SuperMap.Plot.Event.featuresselected, function (event) {
         showFeatureProperty(event);
     });
-    editControl.on(SuperMap.Plot.Event.featuresmodified, function(event){
+    editControl.on(SuperMap.Plot.Event.featuresmodified, function (event) {
         showFeatureProperty(event);
     });
-    editControl.on(SuperMap.Plot.Event.featuresunselected, function(event){
+    editControl.on(SuperMap.Plot.Event.featuresunselected, function (event) {
         hideFeatureProperty(event);
     });
-    function afterModifySelectFeature(rowIndex, rowData, changes){
+    function afterModifySelectFeature(rowIndex, rowData, changes) {
         var updated = $('#pg').propertygrid('getChanges', "updated");
-        if(updated.length !== 0 ){
-           //var  groups = $('#pg').propertygrid("groups");
-           // for(var i=0;i<groups.length;i++){
-           //     if(updated[0].group === groups[i].value){
-           //         groupIndex = i;
-           //     }
-           // }
-            new Promise(function(resolve,reject) {
-                if(updated.length !== 0) {
+        if (updated.length !== 0) {
+            //var  groups = $('#pg').propertygrid("groups");
+            // for(var i=0;i<groups.length;i++){
+            //     if(updated[0].group === groups[i].value){
+            //         groupIndex = i;
+            //     }
+            // }
+            var _this = this;
+            new Promise(function (resolve, reject) {
+                if (updated.length !== 0) {
+                    // if(updated[0].group == "子标号"){
+                    //     updateSubFeature(updated[0], selectFeatures);
+                    // }else{
+                    //     updateSelectFeature(updated[0], selectFeatures, serverUrl);
+                    // }
                     updateSelectFeature(updated[0], selectFeatures, serverUrl);
                 }
-                for(var i = 0; i < selectFeatures.length; i++){
-                    if(selectFeatures[i].graphic){
+                for (var i = 0; i < selectFeatures.length; i++) {
+                    if (selectFeatures[i].graphic) {
                         selectFeatures[i].graphic.updateImage();
                     }
                 }
@@ -34,18 +40,18 @@ L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
                 //$('#pg').propertygrid('expandGroup',0);
                 //$('#pg').propertygrid('expandGroup',groupIndex);
                 return;
-            }).then(function(selectFeatures) {
-                    for(var i = 0; i < selectFeatures.length; i++){
-                        if(selectFeatures[i].graphic){
-                            selectFeatures[i].graphic.updateImage();
-                        }
+            }).then(function (selectFeatures) {
+                for (var i = 0; i < selectFeatures.length; i++) {
+                    if (selectFeatures[i].graphic) {
+                        selectFeatures[i].graphic.updateImage();
                     }
-                    $('#pg').propertygrid('loadData', collectionPropertyGridRows(selectFeatures));
-                    //$('#pg').propertygrid('collapseGroup');
-                    //$('#pg').propertygrid('expandGroup',0);
-                    return;
+                }
+                $('#pg').propertygrid('loadData', collectionPropertyGridRows(selectFeatures));
+                //$('#pg').propertygrid('collapseGroup');
+                //$('#pg').propertygrid('expandGroup',0);
+                return;
 
-                })
+            })
         }
 
     }
@@ -55,26 +61,30 @@ L.supermap.plotting.initStylePanel = function(div, serverUrl, editControl){
     pg.className = "easyui-propertygrid";
     stylePanel.appendChild(pg);
     $('#pg').propertygrid({
-        showGroup:true,
+        showGroup: true,
         columns: [[
             { field: 'name', title: 'Name', width: 100, resizable: true },
-            { field: 'value', title: 'Value', width: 100, resizable: false
+            {
+                field: 'value', title: 'Value', width: 100, resizable: false
             }
         ]],
         onAfterEdit: afterModifySelectFeature
     });
+
 }
 
 function showFeatureProperty(event) {
-    for(var index in event.features){
-        var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
-        if(sIndex === -1){
-            selectFeatures.push(event.features[index]);
+    if (event.features) {
+        for (var index = 0; index < event.features.length; index++) {
+            var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
+            if (sIndex === -1) {
+                selectFeatures.push(event.features[index]);
+            }
         }
     }
 
     var rows = [];
-    if(selectFeatures.length !== 0){
+    if (selectFeatures.length !== 0) {
         var rows = collectionPropertyGridRows(selectFeatures);
     }
     $('#pg').propertygrid('loadData', rows);
@@ -83,84 +93,135 @@ function showFeatureProperty(event) {
     //$('#pg').propertygrid('expandGroup',groupIndex);
 }
 function hideFeatureProperty(event) {
-    for(var index in event.features){
+    for (var index = 0; index < event.features.length; index++) {
         var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
-        if(sIndex !== -1){
+        if (sIndex !== -1) {
             selectFeatures.splice(sIndex, 1);
         }
     }
 
     var rows = [];
-    if(selectFeatures.length !== 0){
+    if (selectFeatures.length !== 0) {
         var rows = collectionPropertyGridRows(selectFeatures);
     }
     $('#pg').propertygrid('loadData', rows);
 }
-
+function updateSubFeature(updated, selectfeatures) {
+    var subFeature = selectfeature.getSubSymbols();
+    switch (updated.name) {
+        case displayLineStyleName[0]:
+            subFeature[0].
+                break;
+        case displayLineStyleName[1]:
+            break;
+    }
+}
 function updateSelectFeature(updated, selectfeatures) {
     var transaction = new SuperMap.Plot.Transaction();
     L.supermap.plotting.getControl(this.map).getTransManager().add(transaction);
-    for(var i=0;i<selectfeatures.length;i++){
+    for (var i = 0; i < selectfeatures.length; i++) {
         var transInfo = new SuperMap.Plot.TransactionInfo();
         transInfo.layerId = selectfeatures[i].layer._leaflet_id;
         transInfo.uuid = selectfeatures[i].uuid;
         if (updated != null) {
-            switch(updated.name) {
+            switch (updated.name) {
+                case resources.text_content:
+                    transInfo.functionName = "setTextContent";
+                    transInfo.undoParams = [selectfeatures[i].getTextContent()];
+                    transInfo.redoParams = [updated.value];
+                    selectfeatures[i].setTextContent(updated.value);
+                    break;
                 case displayName[0]:
                     transInfo.functionName = "setLocked";
                     transInfo.undoParams = [selectfeatures[i].getLocked()];
                     transInfo.redoParams = [fromCheckboxValue(updated.value)];
                     selectfeatures[i].setLocked(fromCheckboxValue(updated.value));
                     break;
-                case  displayName[1]:
+                case displayName[1]:
                     transInfo.propertyName = "display";
                     transInfo.undoValue = selectfeatures[i].style.display;
                     transInfo.redoValue = updated.value;
-                    selectfeatures[i].setStyle({display: updated.value});
+                    selectfeatures[i].setStyle({ display: updated.value });
                     break;
                 case displayLineStyleName[0]:
                     transInfo.propertyName = "weight";
                     transInfo.undoValue = selectfeatures[i].style.weight;
                     transInfo.redoValue = parseInt(updated.value);
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN){
-                        selectfeatures[i].route.applyTextStyle({weight: parseInt(updated.value)});
-                    }else{
-                        selectfeatures[i].setStyle({weight: parseInt(updated.value)});
+                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
+                        selectfeatures[i].route.applyTextStyle({ weight: parseInt(updated.value) });
+                    } else {
+                        selectfeatures[i].setStyle({ weight: parseInt(updated.value) });
                     }
                     break;
                 case displayLineStyleName[1]:
                     transInfo.propertyName = "color";
                     transInfo.undoValue = [selectfeatures[i].style.color];
                     transInfo.redoValue = [updated.value];
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN){
-                        selectfeatures[i].route.applyTextStyle({color: updated.value});
-                    }else{
-                        selectfeatures[i].setStyle({color: updated.value});
+                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
+                        selectfeatures[i].route.applyTextStyle({ color: updated.value });
+                    } else {
+                        selectfeatures[i].setStyle({ color: updated.value });
                     }
                     break;
                 case displayLineStyleName[2]:
                     transInfo.propertyName = "lineSymbolID";
                     transInfo.undoValue = selectfeatures[i].style.lineSymbolID;
                     transInfo.redoValue = updated.value;
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN){
-                        selectfeatures[i].route.applyTextStyle({lineSymbolID: updated.value});
-                    }else{
-                        selectfeatures[i].setStyle({lineSymbolID: updated.value});
+                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
+                        selectfeatures[i].route.applyTextStyle({ lineSymbolID: updated.value });
+                    } else {
+                        if(selectfeatures[i].symbolType != 1 && selectfeatures[i].setDashLine){
+                            selectfeatures[i].setDashLine([]);
+                            selectfeatures[i].setStyle({ lineSymbolID: 0 });
+                        }
+                        
+                        if (parseInt(updated.value) === 999) {
+                            openDialog(selectfeatures[i]);
+                        } else {
+                            if(selectfeatures[i].symbolType != 1){
+                                if (parseInt(updated.value) == 5) {
+                                    selectfeatures[i].setDashLine([0.3, 0.05]);
+                                } else if (parseInt(updated.value) == 6) {
+                                    selectfeatures[i].setDashLine([0.23, 0.06]);
+                                }
+                                else if (parseInt(updated.value) == 7) {
+                                    selectfeatures[i].setDashLine([0.16, 0.05]);
+                                }
+                                else if (parseInt(updated.value) == 8) {
+                                    selectfeatures[i].setDashLine([0.14, 0.032]);
+                                } else if (parseInt(updated.value) == 0) {
+                                    selectfeatures[i].setDashLine([]);
+                                } else if (parseInt(updated.value) == 888) {
+                                    selectfeatures[i].setDashLine([0]);
+                                }
+                                if (selectfeatures[i].style.lineSymbolID == 888) {
+                                    selectfeatures[i].setDashLine([]);
+                                    selectfeatures[i].setStyle({ lineSymbolID: 0 });
+                                }
+                            }
+                            
+                            selectfeatures[i].setStyle({ lineSymbolID: updated.value });
+                        }
+                        //         this.dashLines = [0.3,0.05];两段虚线
+                        //         this.dashLines = [0.2,0.05];三段虚线
+                        //         this.dashLines = [0.16,0.05];四段虚线
+                        //         this.dashLines = [0.14,0.032];五段虚线
+
                     }
                     break;
                 case displayLineStyleName[3]:
-                {
-                    var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
-                    opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "opacity";
-                    transInfo.undoValue = selectfeatures[i].style.opacity;
-                    transInfo.redoValue = opacity;
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN){
-                        selectfeatures[i].route.applyTextStyle({opacity: opacity});
-                    }else{
-                        selectfeatures[i].setStyle({opacity: opacity});
+                    {
+                        var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
+                        opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "opacity";
+                        transInfo.undoValue = selectfeatures[i].style.opacity;
+                        transInfo.redoValue = opacity;
+                        if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
+                            selectfeatures[i].route.applyTextStyle({ opacity: opacity });
+                        } else {
+                            selectfeatures[i].setStyle({ opacity: opacity });
+                        }
                     }
-                }
                     break;
                 case displaySurroundLineName[0]:
                     transInfo.functionName = "setSurroundLineType";
@@ -172,23 +233,23 @@ function updateSelectFeature(updated, selectfeatures) {
                     transInfo.propertyName = "surroundLineWidth";
                     transInfo.undoValue = selectfeatures[i].style.surroundLineWidth;
                     transInfo.redoValue = parseInt(updated.value);
-                    selectfeatures[i].setStyle({surroundLineWidth: parseInt(updated.value)});
+                    selectfeatures[i].setStyle({ surroundLineWidth: parseInt(updated.value) });
                     break;
                 case displaySurroundLineName[2]:
                     transInfo.propertyName = "surroundLineColor";
                     transInfo.undoValue = selectfeatures[i].style.surroundLineColor;
                     transInfo.redoValue = updated.value;
-                    selectfeatures[i].setStyle({surroundLineColor: updated.value});
+                    selectfeatures[i].setStyle({ surroundLineColor: updated.value });
                     break;
                 case displaySurroundLineName[3]:
-                {
-                    var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
-                    opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "surroundLineColorOpacity";
-                    transInfo.undoValue = selectfeatures[i].style.surroundLineColorOpacity;
-                    transInfo.redoValue = opacity;
-                    selectfeatures[i].setStyle({surroundLineColorOpacity: opacity});
-                }
+                    {
+                        var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
+                        opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "surroundLineColorOpacity";
+                        transInfo.undoValue = selectfeatures[i].style.surroundLineColorOpacity;
+                        transInfo.redoValue = opacity;
+                        selectfeatures[i].setStyle({ surroundLineColorOpacity: opacity });
+                    }
                     break;
                 case displayFillStyleName[0]:
                     transInfo.propertyName = "fillSymbolID";
@@ -205,15 +266,15 @@ function updateSelectFeature(updated, selectfeatures) {
                     selectfeatures[i].setStyle(selectfeatures[i].style);
                     break;
                 case displayFillStyleName[2]:
-                {
-                    var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
-                    opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "fillOpacity";
-                    transInfo.undoValue = selectfeatures[i].style.fillOpacity;
-                    transInfo.redoValue = opacity;
-                    selectfeatures[i].style.fillOpacity = opacity;
-                    selectfeatures[i].setStyle(selectfeatures[i].style);
-                }
+                    {
+                        var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
+                        opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "fillOpacity";
+                        transInfo.undoValue = selectfeatures[i].style.fillOpacity;
+                        transInfo.redoValue = opacity;
+                        selectfeatures[i].style.fillOpacity = opacity;
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayFillStyleName[3]:
                     transInfo.propertyName = "fillGradientMode";
@@ -230,49 +291,49 @@ function updateSelectFeature(updated, selectfeatures) {
                     selectfeatures[i].setStyle(selectfeatures[i].style);
                     break;
                 case displayFillStyleName[5]:
-                {
-                    var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
-                    opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "fillBackOpacity";
-                    transInfo.undoValue = selectfeatures[i].style.fillBackOpacity;
-                    transInfo.redoValue = opacity;
-                    selectfeatures[i].style.fillBackOpacity = opacity;
-                    selectfeatures[i].setStyle(selectfeatures[i].style);
-                }
+                    {
+                        var opacity = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
+                        opacity = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "fillBackOpacity";
+                        transInfo.undoValue = selectfeatures[i].style.fillBackOpacity;
+                        transInfo.redoValue = opacity;
+                        selectfeatures[i].style.fillBackOpacity = opacity;
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayFillStyleName[6]:
-                {
-                    var angle = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
-                    angle = parseFloat(updated.value) >= 360 ? 0 : parseFloat(updated.value);
-                    transInfo.propertyName = "fillAngle";
-                    transInfo.undoValue = selectfeatures[i].style.fillAngle;
-                    transInfo.redoValue = angle;
-                    selectfeatures[i].style.fillAngle = angle;
-                    selectfeatures[i].setStyle(selectfeatures[i].style);
-                }
+                    {
+                        var angle = parseFloat(updated.value) < 0 ? 0 : parseFloat(updated.value);
+                        angle = parseFloat(updated.value) >= 360 ? 0 : parseFloat(updated.value);
+                        transInfo.propertyName = "fillAngle";
+                        transInfo.undoValue = selectfeatures[i].style.fillAngle;
+                        transInfo.redoValue = angle;
+                        selectfeatures[i].style.fillAngle = angle;
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayFillStyleName[7]:
-                {
-                    var X = parseFloat(updated.value) < -1 ? -1 : parseFloat(updated.value);
-                    X = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "fillCenterOffsetX";
-                    transInfo.undoValue = selectfeatures[i].style.fillCenterOffsetX;
-                    transInfo.redoValue = X;
-                    selectfeatures[i].style.fillCenterOffsetX = X;
-                    selectfeatures[i].setStyle(selectfeatures[i].style);
-                }
+                    {
+                        var X = parseFloat(updated.value) < -1 ? -1 : parseFloat(updated.value);
+                        X = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "fillCenterOffsetX";
+                        transInfo.undoValue = selectfeatures[i].style.fillCenterOffsetX;
+                        transInfo.redoValue = X;
+                        selectfeatures[i].style.fillCenterOffsetX = X;
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
 
                 case displayFillStyleName[8]:
-                {
-                    var Y = parseFloat(updated.value) < -1 ? -1 : parseFloat(updated.value);
-                    Y = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
-                    transInfo.propertyName = "fillCenterOffsetY";
-                    transInfo.undoValue = selectfeatures[i].style.fillCenterOffsetY;
-                    transInfo.redoValue = Y;
-                    selectfeatures[i].style.fillCenterOffsetY = Y;
-                    selectfeatures[i].setStyle(selectfeatures[i].style);
-                }
+                    {
+                        var Y = parseFloat(updated.value) < -1 ? -1 : parseFloat(updated.value);
+                        Y = parseFloat(updated.value) > 1 ? 1 : parseFloat(updated.value);
+                        transInfo.propertyName = "fillCenterOffsetY";
+                        transInfo.undoValue = selectfeatures[i].style.fillCenterOffsetY;
+                        transInfo.redoValue = Y;
+                        selectfeatures[i].style.fillCenterOffsetY = Y;
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayNameDot[0]:
                     transInfo.functionName = "setRotate";
@@ -317,16 +378,26 @@ function updateSelectFeature(updated, selectfeatures) {
                     selectfeatures[i].setWidthHeightLimit(fromCheckboxValue(updated.value));
                     break;
                 case displayNameDot[7]:
-                    transInfo.functionName = "setSymbolSize";
-                    transInfo.undoParams = [selectfeatures[i].getSymbolSize().w];
-                    transInfo.redoParams = [parseFloat(updated.value), selectfeatures[i].getSymbolSize().h];
-                    selectfeatures[i].setSymbolSize(updated.value, selectfeatures[i].getSymbolSize().h);
+                    if(selectfeatures[i].symbolType!=20 && selectfeatures[i].symbolType!=21){
+                        transInfo.functionName = "setSymbolSize";
+                        transInfo.undoParams = [selectfeatures[i].getSymbolSize().w];
+                        transInfo.redoParams = [parseFloat(updated.value), selectfeatures[i].getSymbolSize().h];
+                        selectfeatures[i].setSymbolSize(updated.value, selectfeatures[i].getSymbolSize().h);
+                    }else{
+                        selectfeatures[i].style.graphicWidth = parseFloat(updated.value);
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayNameDot[8]:
+                    if(selectfeatures[i].symbolType!=20 && selectfeatures[i].symbolType!=21){
                     transInfo.functionName = "setSymbolSize";
                     transInfo.undoParams = [selectfeatures[i].getSymbolSize().h];
                     transInfo.redoParams = [selectfeatures[i].getSymbolSize().w, parseFloat(updated.value)];
                     selectfeatures[i].setSymbolSize(selectfeatures[i].getSymbolSize().w, updated.value);
+                    }else{
+                        selectfeatures[i].style.graphicHeight = parseFloat(updated.value);
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
+                    }
                     break;
                 case displayTextContentName[0]:
                     if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.SYMBOLTEXT) {
@@ -335,15 +406,15 @@ function updateSelectFeature(updated, selectfeatures) {
                         selectfeatures[i].symbolTexts[0].textContent = updated.value;
                         selectfeatures[i].updateSymbolText(selectfeatures[i].symbolTexts[0], 0);
                         transInfo.redoParams = [selectfeatures[i].symbolTexts[0], 0];
-                    } else if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.SYMBOLTEXT1 ||
-                        selectfeatures[i].symbolType ===SuperMap.Plot.SymbolType.PATHTEXT) {
+                    } else if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.SYMBOLTEXT1 ||
+                        selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.PATHTEXT) {
                         transInfo.functionName = "setTextContent";
                         transInfo.undoParams = [selectfeatures[i].getTextContent()];
-                        var updatedValueStr=updated.value;
-                        var textContent=updatedValueStr.split(",");
+                        var updatedValueStr = updated.value;
+                        var textContent = updatedValueStr.split(",");
                         transInfo.redoParams = [textContent];
                         selectfeatures[i].setTextContent(textContent);
-                    }else{
+                    } else {
                         transInfo.functionName = "setTextContent";
                         transInfo.undoParams = [selectfeatures[i].getTextContent()];
                         transInfo.redoParams = [updated.value];
@@ -371,24 +442,24 @@ function updateSelectFeature(updated, selectfeatures) {
                     transInfo.propertyName = "fontSize";
                     transInfo.undoValue = selectfeatures[i].style.fontSize;
                     transInfo.redoValue = parseFloat(updated.value);
-                    selectfeatures[i].setStyle({fontSize: parseFloat(updated.value)});
+                    selectfeatures[i].setStyle({ fontSize: parseFloat(updated.value) });
                     break;
                 case displayTextContentName[3]:
                     transInfo.propertyName = "fontColor";
                     transInfo.undoValue = selectfeatures[i].style.fontColor;
                     transInfo.redoValue = updated.value;
-                    selectfeatures[i].setStyle({fontColor: updated.value});
+                    selectfeatures[i].setStyle({ fontColor: updated.value });
                     break;
                 case displayTextContentName[4]:
                     transInfo.propertyName = "fontFamily";
                     transInfo.undoValue = selectfeatures[i].style.fontFamily;
                     transInfo.redoValue = updated.value;
-                    selectfeatures[i].setStyle({fontFamily: updated.value});
+                    selectfeatures[i].setStyle({ fontFamily: updated.value });
                     break;
                 case displayTextContentName[5]:
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.SYMBOLTEXT1){
+                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.SYMBOLTEXT1) {
                         selectfeatures[i].space = updated.value;
-                    }else{
+                    } else {
                         transInfo.functionName = "setSpace";
                         transInfo.undoParams = [selectfeatures[i].getSpace()];
                         transInfo.redoParams = [parseInt(updated.value)];
@@ -454,7 +525,7 @@ function updateSelectFeature(updated, selectfeatures) {
                 case displayTextContentName[14]:
                     transInfo.propertyName = "fontShadowColor";
                     transInfo.undoValue = selectfeatures[i].style.fontShadowColor;
-                    transInfo.redoValue =  updated.value;
+                    transInfo.redoValue = updated.value;
                     selectfeatures[i].style.fontShadowColor = updated.value;
                     selectfeatures[i].setStyle(selectfeatures[i].style);
                     break;
@@ -558,13 +629,13 @@ function updateSelectFeature(updated, selectfeatures) {
                     break;
                 case displayNameNew[14]:
                     transInfo.functionName = "setRadiusText";
-                    transInfo.undoParams = [selectfeatures[i].radiusText[0],0];
+                    transInfo.undoParams = [selectfeatures[i].radiusText[0], 0];
                     transInfo.redoParams = [updated.value, 0];
                     selectfeatures[i].setRadiusText(updated.value, 0);
                     break;
                 case displayNameNew[15]:
                     transInfo.functionName = "setRadiusText";
-                    transInfo.undoParams = [selectfeatures[i].radiusText[1],1];
+                    transInfo.undoParams = [selectfeatures[i].radiusText[1], 1];
                     transInfo.redoParams = [updated.value, 1];
                     selectfeatures[i].setRadiusText(updated.value, 1);
                     break;
@@ -598,7 +669,7 @@ function updateSelectFeature(updated, selectfeatures) {
                     transInfo.redoParams = [fromCheckboxValue(updated.value)];
                     selectfeatures[i].setPolylineConnectLocationPoint(fromCheckboxValue(updated.value));
                     break;
-                case  displayNameNew[21]:
+                case displayNameNew[21]:
                     transInfo.functionName = "setFontAlign";
                     transInfo.undoParams = [selectfeatures[i].style.labelAlign];
                     transInfo.redoParams = [fontAlignTypeValue(updated.value)];
@@ -607,7 +678,7 @@ function updateSelectFeature(updated, selectfeatures) {
             }
             if (updated.group == group[8]) {
                 if (updated.name == displayName[2]) {
-                    if(updated.value !== null){
+                    if (updated.value !== null) {
                         transInfo.propertyName = "libID";
                         transInfo.undoValue = selectfeatures[i].getSubSymbols()[updated.index].libID;
                         transInfo.redoValue = parseInt(updated.value);
@@ -616,13 +687,13 @@ function updateSelectFeature(updated, selectfeatures) {
                 }
                 if (updated.name == displayName[3]) {
                     var code = parseInt(updated.value);
-                    if(selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.NODECHAIN && code != null) {
+                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.NODECHAIN && code != null) {
                         var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
                         var subCode = symbolLibManager.findSymbolByCode(code);
-                        if(subCode.length !== 0 && subCode[0].symbolType === "SYMBOL_DOT"){
+                        if (subCode.length !== 0 && subCode[0].symbolType === "SYMBOL_DOT") {
                             transInfo.functionName = "setSubSymbol";
-                            if(selectfeatures[i].getSubSymbols()[updated.index]) {
-                                transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index,subCode[0].libID];
+                            if (selectfeatures[i].getSubSymbols()[updated.index]) {
+                                transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, subCode[0].libID];
                             } else {
                                 transInfo.undoParams = [-1, updated.index];
                             }
@@ -631,15 +702,31 @@ function updateSelectFeature(updated, selectfeatures) {
                         }
                     }
                     else if (code !== null) {
+
+                        var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                        var subCode = symbolLibManager.findSymbolByCode(code);
+
                         transInfo.functionName = "setSubSymbol";
-                        if(selectfeatures[i].getSubSymbols()[updated.index]) {
-                            transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index,selectfeatures[i].getSubSymbols()[updated.index].libID];
+                        if (selectfeatures[i].getSubSymbols()[updated.index]) {
+                            transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, selectfeatures[i].getSubSymbols()[updated.index].libID];
                         } else {
                             transInfo.undoParams = [-1, updated.index];
                         }
+                        var subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
+
                         transInfo.redoParams = [code, updated.index];
-                        selectfeatures[i].setSubSymbol(code, updated.index);
+                        selectfeatures[i].setSubSymbol(code, updated.index, subCode[0].libID);
                     }
+                }
+                var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                var subCode = symbolLibManager.findSymbolByCode(subSymbol.code);
+                if (updated.name == resources.text_subSymbolLineWidth) {
+                    let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
+                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subCode[0].libID, subSymbol.lineColor, parseFloat(updated.value));
+                }
+                if (updated.name == resources.text_subSymbolLineColor) {
+                    let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
+                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subCode[0].libID, updated.value, subSymbol.width2D);
                 }
             }
             transaction.transInfos.push(transInfo);
@@ -647,9 +734,38 @@ function updateSelectFeature(updated, selectfeatures) {
 
     }
 }
-
-
-
-
-
-
+function openDialog(obj) {
+    let dashlines = obj.dashLines;
+    for (let i = 0; i < dashlines.length; i++) {
+        let typevalue = dashlines[i];
+        let dom = document.getElementById("lineTypeUserDefineTable");
+        let tbody = dom.children[0].children;
+        let typename = dom.children[0].children[tbody.length - 1].children[0].innerHTML;
+        var tr = document.createElement('tr');
+        tr.classList.add("tabler")
+        var th = document.createElement('th');
+        th.classList.add("th")
+        th.addEventListener("click", (e) => {
+            let node = document.getElementsByClassName("tabler selected");
+            if (node.length != 0) {
+                node[0].classList.remove("selected");
+            }
+            e.target.parentElement.classList.add("selected");
+        })
+        if (typename == resources.text_dashedLine || typename == resources.text_lineType) {
+            th.innerHTML = resources.text_solidLine;
+        } else {
+            th.innerHTML = resources.text_dashedLine;
+        }
+        var td = document.createElement('td');
+        td.classList.add("td")
+        var input = document.createElement('input');
+        input.classList.add("lineTypeValue");
+        input.value = typevalue;
+        td.append(input);
+        tr.append(th);
+        tr.append(td);
+        dom.children[0].append(tr);
+    }
+    document.getElementById('lineTypeUserDefine').style.display = "";
+}

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -55,7 +55,7 @@ var ServiceStatus = {
  * ```
  */
 var DataItemOrderBy = {
-    /** 文件名。 */
+    /** 文件名称。 */
     FILENAME: "FILENAME",
     /** ID。 */
     ID: "ID",
@@ -63,7 +63,7 @@ var DataItemOrderBy = {
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
     /** 作者昵称。 */
     NICKNAME: "NICKNAME",
-    /** SERVICESTATUS。 */
+    /** 服务状态。 */
     SERVICESTATUS: "SERVICESTATUS",
     /** 大小。 */
     SIZE: "SIZE",
@@ -73,7 +73,7 @@ var DataItemOrderBy = {
     TYPE: "TYPE",
     /** 更新时间。 */
     UPDATETIME: "UPDATETIME",
-    /** 作者名。 */
+    /** 作者名称。 */
     USERNAME: "USERNAME"
 };
 

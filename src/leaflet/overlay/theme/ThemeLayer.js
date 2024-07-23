@@ -1,14 +1,14 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { LevelRenderer } from '@supermap/iclient-common/overlay/levelRenderer/LevelRenderer';
-import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
-import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
-import { Point  } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { LevelRenderer } from '@supermapgis/iclient-common/overlay/levelRenderer/LevelRenderer';
+import { ServerFeature } from '@supermapgis/iclient-common/iServer/ServerFeature';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+import { Point  } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { Vector as FeatureVector } from '@supermapgis/iclient-common/commontypes/Vector';
 import {
     ThemeFeature
 } from './ThemeFeature';
@@ -16,13 +16,15 @@ import Attributions from '../../core/Attributions'
 
 /**
  * @class ThemeLayer
- * @classdesc 专题图层基类，调用建议使用其子类实现类。
+ * @classdesc 专题图层基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
+ * 调用建议：使用其子类实现该类。
  * @category Visualization Theme
  * @extends {L.Layer}
  * @param {string} name - 专题图图层名称。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
@@ -160,7 +162,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 将被删除的要素或用来过滤的回调函数。
      */
     removeFeatures: function (features) {
@@ -217,7 +219,7 @@ export var ThemeLayer = L.Layer.extend({
          * @event ThemeLayer#featuresremoved
          * @description 删除的要素成功之后触发。
          * @property {Array.<FeatureVector>} features - 删除失败的要素数组。
-         * @property {boolean} succeed - 要输是否删除成功，true 为删除成功，false 为删除失败。
+         * @property {boolean} succeed - 要素是否删除成功，true 为删除成功，false 为删除失败。
          */
         me.fire("featuresremoved", {
             features: featuresFailRemoved,
@@ -261,8 +263,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param {string} property - 要的某个属性名。
-     * @param {string} value - 对应属性名得值。
+     * @param {string} property - 要素的某个属性名称。
+     * @param {string} value - 对应属性名称的值。
      * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureBy: function (property, value) {
@@ -291,8 +293,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - key 值。
-     * @param {string} attrValue - value 值。
+     * @param {string} attrName - 属性的 key 值。
+     * @param {string} attrValue - 属性的 value 值。
      * @returns {Array.<FeatureVector>} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
@@ -345,7 +347,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function ThemeLayer.prototype.setOpacity
-     * @description 设置图层的不透明度,取值 [0-1] 之间。
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} opacity - 不透明度。
      */
     setOpacity: function (opacity) {
@@ -461,7 +463,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换要素。
      * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature: function (features) {
@@ -497,7 +499,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function ThemeLayer.prototype.toFeature
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link ThemeLayer#toiClientFeature} 代替。
-     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待转换要素。
      * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toFeature: function (features) {

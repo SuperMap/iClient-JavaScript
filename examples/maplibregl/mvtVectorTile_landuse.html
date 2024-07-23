@@ -1,46 +1,55 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <html>
 
 <head>
-    <meta charset='utf-8' />
-    <title data-i18n="resources.title_mvtVectorLayer_maplibreStyle_landuse"></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude='iclient-maplibregl' src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset='utf-8' />
+  <title data-i18n="resources.title_mvtVectorLayer_maplibreStyle_landuse"></title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script type="text/javascript" src="../js/include-web.js"></script>
+  <script type="text/javascript"
+    src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body>
-    <div id='map'></div>
-    <script type="text/javascript">
-        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+  <div id='map'></div>
+  <script type="text/javascript">
 
-        var map = new maplibregl.Map({
-            container: 'map', // container id
-            style: host +
-                '/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
-            center: [108.913171372641, 23.8262192695701], // starting position
-            zoom: 13,
-            minZoom: 11,
-            maxZoom: 15,
-            attributionControl: false
-        });
-        map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    </script>
+    // 方式一：1.调用 maplibregl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
+    maplibregl.supermap.initMap('https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse', {
+      type: 'vector-tile',
+      mapOptions: {
+        zoom: 13
+      }
+    }).then(function (result) {
+      var map = result.map;
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    });
+
+    // 方法二： 直接用 maplibregl.Map 初始化
+    // var map = new maplibregl.Map({
+    //   container: 'map', // container id
+    //   style: 'https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
+    //   center: [108.913171372641, 23.8262192695701], // starting position
+    //   zoom: 13
+    //   attributionControl: false
+    // });
+    // map.addControl(new maplibregl.NavigationControl(), 'top-left');
+  </script>
 
 </body>
 

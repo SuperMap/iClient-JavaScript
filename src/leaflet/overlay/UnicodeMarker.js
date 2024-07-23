@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -7,7 +7,7 @@ import '../core/Base';
 /**
  * @class UnicodeMarker
  * @deprecatedclassinstance L.supermap.unicodeMarker
- * @classdesc Unicode 字符图标类。
+ * @classdesc Unicode 字符图标类。Unicode 是由 Unicode 联盟维护的文本编码标准，它定义了许多常见字符，包括数字、标点符号和其他符号。
  * @category Visualization Marker
  * @modulecategory Overlay
  * @extends {L.Path}
@@ -15,7 +15,7 @@ import '../core/Base';
  * @param {Object} options - 参数。
  * @param {string} options.label - 符号 Unicode 值。
  * @param {string} [options.labelRotation='0'] - 符号旋转角度。
- * @param {string} [options.globalAlpha='1'] - 符号的透明值。
+ * @param {string} [options.globalAlpha='1'] - 符号的不透明度。
  * @param {string} [options.fontStyle='normal'] - 符号的风格。
  * @param {string} [options.fontWeight='normal'] - 符号的粗细。
  * @param {string} [options.fontSize='1em'] - 符号的尺寸。

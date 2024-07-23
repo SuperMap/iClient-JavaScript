@@ -1,12 +1,12 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../../core/Base';
- import { GeoJSON } from '@supermap/iclient-common/format/GeoJSON';
- import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
- import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
- import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+ import { GeoJSON } from '@supermapgis/iclient-common/format/GeoJSON';
+ import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+ import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
 /**
  * @class ThemeFeature
  * @deprecatedclassinstance L.supermap.themeFeature
@@ -55,7 +55,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function ThemeFeature.prototype.reverseLatLngs
      * @description 坐标反转。
-     * @param {L.LatLng} latlngs - 坐标值。
+     * @param {L.LatLng} latlngs - 经纬度坐标。
      */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {

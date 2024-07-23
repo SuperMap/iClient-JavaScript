@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SecurityManager } from '../security/SecurityManager';
@@ -8,7 +8,7 @@ import { FetchRequest } from '../util/FetchRequest';
  * @class IPortalServiceBase
  * @aliasclass iPortalServiceBase
  * @deprecatedclass SuperMap.iPortalServiceBase
- * @classdesc iPortal 服务基类（有权限限制的类需要实现此类）。
+ * @classdesc SuperMap iPortal 服务基类（有权限限制的类需要实现此类）。
  * @category iPortal/Online Core
  * @param {string} url - 服务地址。
  * @param {Object} options - 可选参数。

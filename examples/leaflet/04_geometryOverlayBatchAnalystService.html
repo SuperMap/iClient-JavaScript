@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +92,7 @@
             operation: L.supermap.OverlayOperationType.INTERSECT
         });
 
-        new L.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+        new L.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
             var overlayResultStyle = {
                 "color": "red",
                 "opacity": 0.65

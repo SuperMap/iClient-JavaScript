@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -382,8 +382,14 @@
         };
         new ol.supermap.iPortalUser(iPortalUrl).deleteResources(deleteParams).then(result=>{
             $('#deleteModel').modal('hide');
-            widgets.alert.showAlert(resources.text_deleteSuccess, true);
             deleteIds = [];
+            if (result.succeed) {
+              widgets.alert.showAlert(resources.text_deleteSuccess, true);
+              // 删除成功重新请求列表
+              queryResouces(queryParams);
+            } else {
+              widgets.alert.showAlert(resources.msg_deleteFailure + "," + resources.msg_resourceNotExist, false);
+            }
         }).catch(err => {
             widgets.alert.showAlert(resources.msg_deleteFailure, false);
         })
@@ -423,7 +429,12 @@
     function viewResource(ids){
         $("#edit-and-detail-plot").tabs('select',0);
         var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
-        item.load().then(()=>{
+        item.load().then((result)=>{
+            // 资源不存在或无权限提示
+            if (result && !result.succeed) {
+              widgets.alert.showAlert(resources.msg_resourceNotExist, false);
+              return;
+            }
             //创建详情面板
             L.supermap.plotting.initIportalStylePanel("iPortalDetailPanel",resourceType,item.sourceJSON,'detail');
         });
@@ -433,7 +444,12 @@
         viewResource(ids)
         $("#edit-and-detail-plot").tabs('select',1);
         var item = new ol.supermap.iPortalResource(iPortalUrl,{resourceId:ids,resourceType:resourceType});
-        item.load().then(()=>{
+        item.load().then((result)=>{
+            // 资源不存在或无权限提示
+            if (result && !result.succeed) {
+              widgets.alert.showAlert(resources.msg_resourceNotExist, false);
+              return;
+            }
             //创建属性面板 
             L.supermap.plotting.initIportalStylePanel("plotPanel", resourceType, item.sourceJSON,'edit');
             itemData = item.sourceJSON;
@@ -1286,7 +1302,11 @@
             usersSettingEntities = [];
             departmentSettingEntities = [];
             groupsSettingEntities = [];
-            widgets.alert.showAlert(resources.msg_shareSuccess, true);
+            if (result.succeed) {
+              widgets.alert.showAlert(resources.msg_shareSuccess, true);
+            } else {
+              widgets.alert.showAlert(resources.msg_shareFailed + "," + resources.msg_resourceNotExist, false);
+            }
         }).catch(err => {
             widgets.alert.showAlert(resources.msg_shareFailed, false);
         })

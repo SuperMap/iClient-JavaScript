@@ -10,12 +10,9 @@ export function mockES() {
   });
 }
 describe('old ElasticSearch', () => {
-  beforeEach(() => {
-    mockES();
-  });
   it('search', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'search').and.callFake(function () {
       const resp = { aggregations: { zoomedInView: {} } };
@@ -30,7 +27,7 @@ describe('old ElasticSearch', () => {
   });
   it('msearch', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'msearch').and.callFake(function () {
       const resp = { responses: { aggregations: { zoomedInView: {} } } };
@@ -45,7 +42,7 @@ describe('old ElasticSearch', () => {
   });
   it('bulk', (done) => {
     var dataUrl = 'https://fake.iclient.supermap.io/es';
-    var elasticSearch = new ElasticSearch(dataUrl);
+    var elasticSearch = new ElasticSearch(dataUrl, es);
     expect(elasticSearch.url).toBe(dataUrl);
     spyOn(elasticSearch.client, 'bulk').and.callFake(function (params, callback) {
       const resp = { items: [] };

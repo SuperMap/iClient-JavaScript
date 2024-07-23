@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 $(document).ready(function () {
     window.initI18N(function(){
     initPage();
@@ -6,7 +6,6 @@ $(document).ready(function () {
     sidebarScrollFix();
 });
 });
-
 var aceEditor;
 var containExamples = true;
 
@@ -15,6 +14,7 @@ function initPage() {
     initEditor();
     screenResize();
 }
+
 
 
 //获取示例页面的配置信息
@@ -95,17 +95,21 @@ function loadExampleHtml() {
     if (!mapUrl) {
         return;
     }
-    var html = $.ajax({
+    var isError = false;
+    var response = $.ajax({
         url: mapUrl,
         async: false,
         error: function (error) {
             alert(resources.editor.envTips);
-            html = "";
+            isError = true;
         }
-    }).responseText;
-    if (html && html != "") {
+    });
+    var html = response.responseText;
+    if (html && html != "" && !isError) {
         $('#editor').val(html);
         loadPreview(html);
+    } else {
+      window.location.href = window.location.origin + '/web/404.html';
     }
 }
 

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,13 +8,13 @@ import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
  * @class ChartQueryParameters
  * @deprecatedclass SuperMap.ChartQueryParameters
  * @category iServer Map Chart
- * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询和海图范围查询两类，通过属性 queryMode 指定查询模式。
- *            必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括 bounds。
+ * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询、海图范围查询、海图要素范围查询三类，通过属性 queryMode 指定查询模式。
+ *            必设属性有：queryMode。 当进行海图属性查询和海图范围查询时，必设属性还包括chartLayerNames、chartQueryFilterParameters, 当进行海图范围查询和海图要素范围查询时，必设属性还包括 bounds。
  * @param {Object} options - 参数。
- * @param {string} options.queryMode - 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。
+ * @param {string} options.queryMode - 海图查询模式类型，支持三种查询方式：海图属性查询（"ChartAttributeQuery"）和海图范围查询（"ChartBoundsQuery"）和海图要素范围查询（"ChartFeatureBoundsQuery"）。
  * @param {Array.<string>} options.chartLayerNames - 查询的海图图层的名称。
  * @param {Array.<ChartQueryFilterParameter>} options.chartQueryFilterParameters - 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 海图查询范围。当进行海图范围查询时，此为必选参数。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 海图查询范围。当进行海图范围查询和海图要素范围查询时，此为必选参数。
  * @param {boolean} [options.returnContent=true] - 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。
  * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.expectCount] - 期望查询结果返回的记录数，该值大于0。
@@ -26,7 +26,7 @@ export class ChartQueryParameters {
     constructor(options) {
         /**
          * @member {string} ChartQueryParameters.prototype.queryMode
-         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。
+         * @description 海图查询模式类型，支持三种查询方式：海图属性查询（"ChartAttributeQuery"）和海图范围查询（"ChartBoundsQuery"）和海图要素范围查询（"ChartFeatureBoundsQuery"）。
          */
         this.queryMode = null;
 
@@ -105,7 +105,7 @@ export class ChartQueryParameters {
             json += "\"chartLayerNames\":" + layerNames + ",";
         }
 
-        if (this.queryMode === "ChartBoundsQuery" && this.bounds) {
+        if ((this.queryMode === "ChartBoundsQuery" || this.queryMode === "ChartFeatureBoundsQuery") && this.bounds) {
             json += "\"bounds\":" + "{" + "\"leftBottom\":" + "{" + "\"x\":" + this.bounds.left + "," +
                 "\"y\":" + this.bounds.bottom + "}" + "," + "\"rightTop\":" + "{" + "\"x\":" + this.bounds.right + "," +
                 "\"y\":" + this.bounds.top + "}" + "},";

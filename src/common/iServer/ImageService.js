@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8,7 +8,8 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class ImageService
  * @deprecatedclass SuperMap.ImageService
- * @classdesc 影像服务类。
+ * @classdesc 影像服务类。可实现大规模影像或栅格数据的管理，提供方法：
+ * 获取影像集合列表、获取影像集合中指定 ID 的影像、根据过滤条件查询匹配的影像数据。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -25,7 +26,6 @@ export default class ImageService extends CommonServiceBase {
     if (options) {
       Util.extend(this, options);
     }
-    this.eventCount = 0;
     this.CLASS_NAME = 'SuperMap.ImageService';
   }
 
@@ -40,18 +40,22 @@ export default class ImageService extends CommonServiceBase {
   /**
    * @function ImageService.prototype.getCollections
    * @description 返回当前影像服务中的影像集合列表（Collections）。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getCollections(callback) {
     var me = this;
     var path = Util.convertPath('/collections');
     var url = Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, mehtod: 'GET', callback });
+    return this._processAsync({ url, mehtod: 'GET', callback });
   }
 
   /**
    * @function ImageService.prototype.getCollectionByID
-   * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
-   * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+   * @description ID 值等于`collectionId`参数值的影像集合（Collection）。ID 值用于在服务中唯一标识该影像集合。
+   * @param {string} collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getCollectionByID(collectionId, callback) {
     var pathParams = {
@@ -60,60 +64,32 @@ export default class ImageService extends CommonServiceBase {
     var me = this;
     var path = Util.convertPath('/collections/{collectionId}', pathParams);
     var url = Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, mehtod: 'GET', callback });
+    return this._processAsync({ url, mehtod: 'GET', callback });
   }
 
   /**
    * @function ImageSearchService.prototype.search
    * @description 查询与过滤条件匹配的影像数据。
    * @param {ImageSearchParameter} [imageSearchParameter] 查询参数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   search(imageSearchParameter, callback) {
     var postBody = { ...(imageSearchParameter || {}) };
     var me = this;
     var path = Util.convertPath('/search');
     var url = Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, method: 'POST', data: postBody, callback });
+    return this._processAsync({ url, method: 'POST', data: postBody, callback });
   }
 
   _processAsync({ url, method, callback, data }) {
-    let eventId = ++this.eventCount;
-    let me = this;
-    let eventListeners = {
-      scope: this,
-      processCompleted: function (result) {
-        if (eventId === result.result.eventId && callback) {
-          delete result.result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      },
-      processFailed: function (result) {
-        if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      }
-    };
-    this.events.on(eventListeners);
-    this.request({
+    return this.request({
       method: method || 'GET',
       url,
       data,
       scope: this,
-      success(result, options) {
-        result.eventId = eventId;
-        me.serviceProcessCompleted(result, options);
-      },
-      failure(result, options) {
-        if (result.error) {
-          result.error.eventId = eventId;
-        }
-        result.eventId = eventId;
-        me.serviceProcessFailed(result, options);
-      }
+      success: callback,
+      failure: callback
     });
   }
 }

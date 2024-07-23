@@ -1,0 +1,173 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_knowledgeGraphMap"></title>
+    <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #knowledgeGraph {
+        width: 100%;
+        height: 100%;
+      }
+      .node-item {
+        display: inline-flex;
+        width: 100%;
+        margin-top: 15px;
+      }
+      .node-item .form-control {
+        width: 150px;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .node-item .btn {
+        padding: 0 8px;
+        margin-left: 10px;
+      }
+      .buttons {
+        display: inline-flex;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+      }
+      #analysis {
+        width: 80px;
+      }
+      #reset {
+        width: 80px;
+        margin-right: 10px;
+      }
+      .panel-default {
+        position: fixed;
+        top: 60px;
+        right: 30px;
+        width: 380px;
+        margin: 15px 15px 0 0;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+      .node-title {
+        width: 80px;
+        line-height: unset;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="knowledgeGraph"></div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title" data-i18n="resources.text_graphmap_shortest_analysis"></h3>
+      </div>
+      <div class="panel-body">
+        <div class="node-item start-node">
+          <span class="input-group-addon node-title" data-i18n="resources.text_startNode"></span>
+          <input type="text" class="start form-control" disabled />
+          <input
+            type="button"
+            id="select-start-node"
+            class="btn btn-primary"
+            data-i18n="[value]resources.text_selectStartNode"
+          />
+        </div>
+        <div class="node-item end-node">
+          <span class="input-group-addon node-title" data-i18n="resources.text_endeNode"></span>
+          <input type="text" class="end form-control" disabled />
+          <input
+            type="button"
+            id="select-end-node"
+            class="btn btn-primary"
+            data-i18n="[value]resources.text_selectEndNode"
+          />
+        </div>
+        <div class="buttons" align="center">
+          <input type="button" id="reset" class="btn" data-i18n="[value]resources.text_reset" />
+          <input type="button" id="analysis" class="btn btn-primary" data-i18n="[value]resources.text_analysis" />
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" include="g6" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      const graphmap = new maplibregl.supermap.GraphMap(
+        "https://iserver.supermap.io/iserver/services/knowledgeGraph-budongchan/restjsr/graph/graphmaps/图谱",
+        { config: { dragNode: false } }
+      );
+      graphmap.on('loaded', () => {
+        graphmap.graph.on('click', (e) => {
+          if (selectType && e.item && e.item._cfg.type === 'node') {
+            const model = e.item.get('model');
+            const { id, label } = model;
+
+            const oldNodeId = shortestPathParams[`${selectType}ID`];
+            graphmap.clearHighlight({ nodeIDs: [oldNodeId], edgeIDs: [] });
+
+            $(`.${selectType}`).val(label);
+            shortestPathParams[`${selectType}ID`] = id;
+            graphmap.highlight({ nodeIDs: [id], edgeIDs: [] });
+          }
+        });
+      });
+
+      var shortestPathParams = { startID: '', endID: '' };
+      var oldHeightNodesEdges = { nodeIDs: [], edgeIDs: [] };
+      var selectType = '';
+      $('#select-start-node').on('click', () => {
+        selectType = 'start';
+        resetStartEndNode(selectType);
+      });
+      $('#select-end-node').on('click', () => {
+        selectType = 'end';
+        resetStartEndNode(selectType);
+      });
+      $('#analysis').on('click', () => {
+        selectType = '';
+        setShortestPath(shortestPathParams);
+      });
+
+      $('#reset').on('click', () => {
+        selectType = '';
+        resetAll();
+      });
+
+      function resetStartEndNode(selectType) {
+        $(`.${selectType}`).val('');
+        graphmap.clearHighlight({ nodeIDs: [shortestPathParams[`${selectType}ID`]], edgeIDs: [] });
+        shortestPathParams[`${selectType}ID`] = '';
+      }
+
+      function resetAll() {
+        resetStartEndNode('start');
+        resetStartEndNode('end');
+        graphmap.clearHighlight();
+      }
+
+      function setShortestPath({ startID, endID }) {
+        graphmap.findShortestPath({ startID, endID }, (res) => {
+          if (res.type === 'processCompleted' && res.result.succeed) {
+            const { nodeIDs, edgeIDs } = res.result;
+            if (nodeIDs.length === 0 && edgeIDs.length === 0) {
+              widgets.alert.showAlert(resources.text_no_shortestPath);
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

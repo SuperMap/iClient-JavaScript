@@ -11,10 +11,14 @@ import './common/iServer/BufferSettingSpec.js';
 import './common/iServer/BurstPipelineAnalystServiceSpec.js';
 import './common/iServer/ChartQueryFilterParameterSpec.js';
 import './common/iServer/ChartQueryParametersSpec.js';
+import './common/iServer/ChartAcronymClassifyServiceSpec.js';
+import './common/iServer/ChartSettingSpec.js';
+import './common/iServer/ChartQueryServiceSpec.js';
 import './common/iServer/ClipParameterSpec.js';
 import './common/iServer/ComputeWeightMatrixServiceSpec.js';
 import './common/iServer/DensityAnalystServiceSpec.js';
 import './common/iServer/EditFeaturesServiceSpec.js';
+import './common/iServer/FeatureAttachmentsServiceSpec.js';
 import './common/iServer/FacilityAnalystStreamParametersSpec.js';
 import './common/iServer/FacilityAnalystUpstream3DParametersSpec.js';
 import './common/iServer/FieldStatisticServiceSpec.js';
@@ -24,9 +28,14 @@ import './common/iServer/FindMTSPPathsServiceSpec.js';
 import './common/iServer/FindPathServiceSpec.js';
 import './common/iServer/FindServiceAreasServiceSpec.js';
 import './common/iServer/FindTSPPathsServiceSpec.js';
+import './common/iServer/TraceAnalystServiceSpec.js';
+import './common/iServer/ConnectedEdgesAnalystServiceSpec.js';
 import './common/iServer/GenerateSpatialDataServiceSpec.js';
 import './common/iServer/GeoHashGridAggParameterSpec.js';
 import './common/iServer/GeoprocessingServiceSpec.js';
+import './common/iServer/ConvexHullAnalystServiceSpec.js';
+import './common/iServer/ConvexHullAnalystParametersSpec.js';
+import './common/iServer/MinDistanceAnalystServiceSpec.js';
 
 import './common/iServer/GeometryBatchAnalystServiceSpec.js';
 import './common/iServer/GeoRelationAnalystServiceSpec.js';
@@ -38,6 +47,7 @@ import './common/iServer/GetFeaturesBySQLServiceSpec.js';
 import './common/iServer/GetFieldsServiceSpec.js';
 import './common/iServer/GetGridCellInfosServiceSpec.js';
 import './common/iServer/GetLayersInfoServiceSpec.js';
+import './common/iServer/GetLayersLegendInfoServiceSpec.js';
 import './common/iServer/GridSpec.js';
 import './common/iServer/ImageSpec.js';
 import './common/iServer/InterpolationAnalystServiceSpec.js';
@@ -65,6 +75,9 @@ import './common/iServer/StopQueryServiceSpec.js';
 import './common/iServer/SummaryAttributesJobsParameterSpec.js';
 import './common/iServer/SurfaceAnalystServiceSpec.js';
 import './common/iServer/TerrainCurvatureCalculationServiceSpec.js';
+import './common/iServer/TerrainAspectCalculationServiceSpec.js';
+import './common/iServer/TerrainSlopeCalculationServiceSpec.js';
+import './common/iServer/TerrainCutFillCalculationServiceSpec.js';
 import './common/iServer/ThemeDotDensitySpec.js';
 import './common/iServer/ThemeGridRangeSpec.js';
 import './common/iServer/ThemeGridUniqueSpec.js';
@@ -101,7 +114,9 @@ import './common/iServer/ImageSearchParameterSpec';
 import './common/iServer/ImageRenderingRuleSpec';
 import './common/iServer/SortbySpec';
 import './common/iServer/ImageStretchOptionSpec';
-
+import './common/iServer/CompatibleSpec.js';
+import './common/iServer/AttachmentsParametersSpec.js';
+import './common/iServer/EditAttachmentsParametersSpec.js';
 /**common -- control**/
 import './common/control/TimeControlBaseSpec.js';
 import './common/control/TimeFlowControlSpec.js';
@@ -162,6 +177,7 @@ import './common/overlay/levelRenderer/StorageSpec.js';
 import './common/overlay/levelRenderer/TransformableSpec.js';
 import './common/overlay/levelRenderer/UtilSpec.js';
 import './common/overlay/levelRenderer/VectorSpec.js';
+import './common/overlay/levelRenderer/HandlerSpec.js';
 import './common/overlay/GraphSpec';
 import './common/overlay/KnowledgeGraphSpec.js'
 
@@ -171,6 +187,7 @@ import './common/online/OnlineSpec.js';
 import './common/online/OnlineQueryDatasParameterSpec';
 
 /**common -- iManager**/
+import './common/iManager/iManagerSpec.js';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
@@ -202,6 +219,8 @@ import './common/components/templates/CommonContainerSpec.js';
 import './common/components/chart/ChartModelSpec.js';
 import './common/components/chart/ChartViewModelSpec';
 import './common/components/chart/ChartViewSpec';
-
 import './common/util/FetchRequestSpec';
 import './common/lang/LangSpec.js';
+import './common/util/EncryptRequestSpec';
+import './common/util/MapCalculateUtilSpec';
+import './common/util/GeometryAnalysisSpec.js';

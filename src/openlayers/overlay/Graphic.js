@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
 import { HitCloverShape } from './graphic/HitCloverShape';
 import { CloverShape } from './graphic/CloverShape';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
 import { GraphicWebGLRenderer } from './graphic/WebGLRenderer';
 import { GraphicCanvasRenderer } from './graphic/CanvasRenderer';
 import { Graphic as OverlayGraphic } from './graphic/Graphic';
@@ -35,20 +35,21 @@ const Renderer = ['canvas', 'webgl'];
  * @class Graphic
  * @browsernamespace ol.source
  * @category  Visualization Graphic
- * @classdesc 高效率点图层源。
+ * @classdesc 高效率点图层源。能够支持前端百万点数据的渲染，并支持 GeoJSON、TopoJSON、二维表等多种数据格式，支持修改样式，
+ * 支持属性筛选、鼠标事件等交互操作。
  * @param {Object} options - 参数。
- * @param {ol.Map} options.map - openlayers 地图对象。
+ * @param {ol.Map} options.map - OpenLayers 地图对象。
  * @param {OverlayGraphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
- * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.opacity=0.8] - 要素不透明度。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.radius=10] - 要素半径，单位为像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
- * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
@@ -319,8 +320,8 @@ export class Graphic extends ImageCanvasSource {
     /**
      * @function Graphic.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - graphic 的某个属性名称。
-     * @param {string} attrValue - property 所对应的值。
+     * @param {string} attrName - 属性的 key 值。
+     * @param {string} attrValue - 属性的 value 值。
      * @returns {Array.<OverlayGraphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
@@ -415,12 +416,12 @@ export class Graphic extends ImageCanvasSource {
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
@@ -445,7 +446,7 @@ export class Graphic extends ImageCanvasSource {
     /**
      * @function Graphic.prototype.getLayerState
      * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态信息。
      */
     getLayerState() {
         let map = this.map;

@@ -1,7 +1,7 @@
 import { ImageSearchParameter, ImageService } from '../../../src/mapboxgl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('ImageService', () => {
+describe('mapboxgl_ImageService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

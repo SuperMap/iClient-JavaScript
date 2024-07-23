@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from './SuperMap';
@@ -72,7 +72,11 @@ import {
     WebScaleOrientationType,
     WebScaleType,
     WebScaleUnit,
-    DataItemType
+    DataItemType,
+    BoundsType,
+    CellSizeType,
+    ColourModeChart,
+    DisplayModeChart
 } from './REST';
 import {
     GeometryCollection,
@@ -92,6 +96,7 @@ import {
     Events,
     Feature,
     Geometry,
+    Geometry3D,
     LonLat,
     Pixel,
     Size,
@@ -121,6 +126,7 @@ import {
 } from './iPortal';
 import {
     AggregationParameter,
+    AttachmentsParameters,
     BucketAggParameter,
     MetricsAggParameter,
     AreaSolarRadiationParameters,
@@ -131,6 +137,7 @@ import {
     BurstPipelineAnalystParameters,
     ChartQueryFilterParameter,
     ChartQueryParameters,
+    ChartSetting,
     ClipParameter,
     ColorDictionary,
     CommonServiceBase,
@@ -143,6 +150,7 @@ import {
     DatasetThiessenAnalystParameters,
     DatasourceConnectionInfo,
     DensityKernelAnalystParameters,
+    EditAttachmentsParameters,
     EditFeaturesParameters,
     FacilityAnalyst3DParameters,
     FacilityAnalystSinks3DParameters,
@@ -206,6 +214,16 @@ import {
     QueryByDistanceParameters,
     QueryByGeometryParameters,
     QueryBySQLParameters,
+    DatasetMinDistanceAnalystParameters,
+    TerrainCutFillCalculationParameters,
+    TerrainAspectCalculationParameters,
+    terrainAnalystSetting,
+    TerrainSlopeCalculationParameters,
+    GeometryMinDistanceAnalystParameters,
+    ConvexHullAnalystParameters,
+    TraceAnalystParameters,
+    ConnectedEdgesAnalystParameters,
+    GetLayersLegendInfoParameters,
     QueryParameters,
     Route,
     RouteCalculateMeasureParameters,
@@ -294,7 +312,8 @@ import {
     ImageSearchParameter,
     ImageRenderingRule,
     Sortby,
-    ImageStretchOption
+    ImageStretchOption,
+    VideoFeature
 } from './iServer';
 import {
     Online,
@@ -315,7 +334,10 @@ import {
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    EncryptRequest,
+    getServiceKey,
+    GeometryAnalysis
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -442,7 +464,11 @@ export {
     WebScaleOrientationType,
     WebScaleType,
     WebScaleUnit,
-    DataItemType
+    DataItemType,
+    BoundsType,
+    CellSizeType,
+    ColourModeChart,
+    DisplayModeChart
 };
 export {
     GeometryCollection,
@@ -462,6 +488,7 @@ export {
     Events,
     Feature,
     Geometry,
+    Geometry3D,
     LonLat,
     Pixel,
     Size,
@@ -475,11 +502,14 @@ export {
     isCORS,
     setCORS,
     FetchRequest,
+    EncryptRequest,
+    getServiceKey,
     ColorsPickerUtil,
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    GeometryAnalysis
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {
@@ -500,6 +530,7 @@ export {
 };
 export {
     AggregationParameter,
+    AttachmentsParameters,
     BucketAggParameter,
     MetricsAggParameter,
     AreaSolarRadiationParameters,
@@ -510,6 +541,7 @@ export {
     BurstPipelineAnalystParameters,
     ChartQueryFilterParameter,
     ChartQueryParameters,
+    ChartSetting,
     ClipParameter,
     ColorDictionary,
     CommonServiceBase,
@@ -522,6 +554,7 @@ export {
     DatasetThiessenAnalystParameters,
     DatasourceConnectionInfo,
     DensityKernelAnalystParameters,
+    EditAttachmentsParameters,
     EditFeaturesParameters,
     FacilityAnalyst3DParameters,
     FacilityAnalystSinks3DParameters,
@@ -585,6 +618,16 @@ export {
     QueryByDistanceParameters,
     QueryByGeometryParameters,
     QueryBySQLParameters,
+    DatasetMinDistanceAnalystParameters,
+    TerrainCutFillCalculationParameters,
+    terrainAnalystSetting,
+    TerrainAspectCalculationParameters,
+    TerrainSlopeCalculationParameters,
+    GeometryMinDistanceAnalystParameters,
+    ConvexHullAnalystParameters,
+    TraceAnalystParameters,
+    ConnectedEdgesAnalystParameters,
+    GetLayersLegendInfoParameters,
     QueryParameters,
     Route,
     RouteCalculateMeasureParameters,
@@ -673,7 +716,8 @@ export {
     ImageSearchParameter,
     ImageRenderingRule,
     Sortby,
-    ImageStretchOption
+    ImageStretchOption,
+    VideoFeature
 };
 export {
     Online,

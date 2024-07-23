@@ -71,7 +71,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\kernelDensity.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -123,7 +123,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\kernelDensity.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -205,7 +205,7 @@ describe('classic_ProcessingService', () => {
             expect(kernelDensityJobState.errorStackTrace).toBeNull();
             expect(kernelDensityJobState.publisherelapsedTime).toEqual(4945);
             expect(kernelDensityJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             kernelDensityJobParams.destroy();
             done();
         });
@@ -289,7 +289,7 @@ describe('classic_ProcessingService', () => {
             expect(kernelDensityJobState.errorStackTrace).toBeNull();
             expect(kernelDensityJobState.publisherelapsedTime).toEqual(4945);
             expect(kernelDensityJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             kernelDensityJobParams.destroy();
             done();
         });
@@ -341,7 +341,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\summaryMesh.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -389,7 +389,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\summaryMesh.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -464,7 +464,7 @@ describe('classic_ProcessingService', () => {
             expect(summaryMeshJobState.errorStackTrace).toBeNull();
             expect(summaryMeshJobState.publisherelapsedTime).toEqual(8547);
             expect(summaryMeshJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             summaryMeshJobParams.destroy();
             done();
         });
@@ -540,7 +540,6 @@ describe('classic_ProcessingService', () => {
             expect(summaryMeshJobState.errorStackTrace).toBeNull();
             expect(summaryMeshJobState.publisherelapsedTime).toEqual(8547);
             expect(summaryMeshJobState.runState).toBe("FINISHED");
-            processingService.destroy();
             summaryMeshJobParams.destroy();
             done();
         });
@@ -592,7 +591,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\spatialQueryGeo.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -641,7 +640,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\spatialQueryGeo.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -714,7 +713,6 @@ describe('classic_ProcessingService', () => {
             expect(queryJobState.errorStackTrace).toBeNull();
             expect(queryJobState.publisherelapsedTime).toEqual(7797);
             expect(queryJobState.runState).toBe("FINISHED");
-            processingService.destroy();
             singleObjectQueryJobParameter.destroy();
             done();
         });
@@ -775,7 +773,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\summaryRegion.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -833,7 +831,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.outputPath).toBe("D:\\summaryRegion.smwu");
             expect(setting.output.type).toBe("udb");
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -924,7 +922,7 @@ describe('classic_ProcessingService', () => {
             expect(summaryRegionJobState.errorStackTrace).toBeNull();
             expect(summaryRegionJobState.publisherelapsedTime).toEqual(15141);
             expect(summaryRegionJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             summaryRegionJobParams.destroy();
             done();
         });
@@ -1016,7 +1014,7 @@ describe('classic_ProcessingService', () => {
             expect(summaryRegionJobState.errorStackTrace).toBeNull();
             expect(summaryRegionJobState.publisherelapsedTime).toEqual(15141);
             expect(summaryRegionJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             summaryRegionJobParams.destroy();
             done();
         });
@@ -1069,7 +1067,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\vectorClipAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1119,7 +1117,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\vectorClipAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1193,7 +1191,7 @@ describe('classic_ProcessingService', () => {
             expect(vectorClipJobState.errorStackTrace).toBeNull();
             expect(vectorClipJobState.publisherelapsedTime).toEqual(7016);
             expect(vectorClipJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             vectorClipJobParameter.destroy();
             done();
         });
@@ -1247,7 +1245,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\overlayAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1298,7 +1296,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\overlayAnalystGeo.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1373,7 +1371,7 @@ describe('classic_ProcessingService', () => {
             expect(overlayGeoJobState.errorStackTrace).toBeNull();
             expect(overlayGeoJobState.publisherelapsedTime).toEqual(9281);
             expect(overlayGeoJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             overlayGeoJobParams.destroy();
             done();
         });
@@ -1427,7 +1425,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\buffers.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1478,7 +1476,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\buffers.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1555,7 +1553,7 @@ describe('classic_ProcessingService', () => {
             expect(buffersJobState.errorStackTrace).toBeNull();
             expect(buffersJobState.publisherelapsedTime).toEqual(6922);
             expect(buffersJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             buffersJobParameter.destroy();
             done();
         });
@@ -1608,7 +1606,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\topology.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1658,7 +1656,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\topology.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
             expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1731,7 +1729,7 @@ describe('classic_ProcessingService', () => {
             expect(topologyValidatorJobState.errorStackTrace).toBeNull();
             expect(topologyValidatorJobState.publisherelapsedTime).toEqual(3113);
             expect(topologyValidatorJobState.runState).toBe("FINISHED");
-            processingService.destroy();
+            
             topologyValidatorJobParameter.destroy();
             done();
         });
@@ -1783,7 +1781,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.output.type).toBe("UDB");
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(1);
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1833,7 +1831,7 @@ describe('classic_ProcessingService', () => {
             expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
             expect(setting.serviceInfo.targetServiceInfos.length).toEqual(1);
 
-            processingService.destroy();
+            
             done();
         });
     });
@@ -1905,7 +1903,6 @@ describe('classic_ProcessingService', () => {
             expect(summaryAttributesJobState.errorStackTrace).toBeNull();
             expect(summaryAttributesJobState.publisherelapsedTime).toEqual(4348);
             expect(summaryAttributesJobState.runState).toBe("FINISHED");
-            processingService.destroy();
             summaryAttributesJobsParameter.destroy();
             done();
         });

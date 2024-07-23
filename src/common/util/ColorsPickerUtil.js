@@ -30,7 +30,7 @@ var ColorRender = new Color();
 export class ColorsPickerUtil  {
     /**
      * @function ColorsPickerUtil.createCanvas
-     * @description 创建DOM canvas。
+     * @description 创建 DOM canvas。
      * @param {number} height - canvas 高度。
      * @param {number} width - canvas 宽度。
      */

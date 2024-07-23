@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -11,7 +11,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string} options.datasource - 要查询的数据集所在的数据源名称。
  * @param {string} options.dataset - 要查询的数据集名称。
@@ -28,7 +27,6 @@ export class DatasourceService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.DatasourceService";
     }
 
@@ -38,7 +36,6 @@ export class DatasourceService extends CommonServiceBase {
      * @override
      */
     destroy() {
-        this.eventCount = 0;
         super.destroy();
     }
 
@@ -46,71 +43,50 @@ export class DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourceService(datasourceName, callback) {
         let url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
-        this.processAsync(url, "GET", callback);
+        return this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourcesService(callback) {
         let url = Util.urlPathAppend(this.url,`datasources`);
-        this.processAsync(url, "GET", callback);
+        return this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
+     * @param {Object} params 请求参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasourceService(params, callback) {
         if (!params) {
             return;
         }
         const url = Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
-        this.processAsync(url, "PUT", callback, params);
+        return this.processAsync(url, "PUT", callback, params);
     }
 
     processAsync(url, method, callback, params) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
        var me = this;
        let requestConfig = {
           url,
           method,
           scope: me,
-          success(result, options) {
-            result.eventId = eventId;
-            this.serviceProcessCompleted(result, options);
-          },
-          failure(result, options) {
-            if (result.error) {
-              result.error.eventId = eventId;
-            }
-            result.eventId = eventId;
-            this.serviceProcessFailed(result, options);
-          }
+          success: callback,
+          failure: callback
         }
         params && (requestConfig.data = Util.toJSON(params));
-        me.request(requestConfig);
+        return me.request(requestConfig);
     }
 }

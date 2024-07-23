@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -10,21 +10,17 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
  * @deprecatedclass SuperMap.TransferSolutionService
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询服务类。
- * 返回结果通过该类支持的事件的监听函数参数获取。
+ * 交通换乘方案查询是指根据换乘策略、乘车偏好、避让站点、出行时间等参数查询交通换乘方案，根据换乘方案中的介绍信息可以获取具体的乘车路线。
  * @param {string} url - 服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myService = new TransferSolutionService(url, {eventListeners: {
-     *     "processCompleted": trafficTransferCompleted,
-     *     "processFailed": trafficTransferError
-     *     }
-     * };
+ * var myService = new TransferSolutionService(url)
+ * };
  * (end)
  * @usage
  */
@@ -46,8 +42,10 @@ export class TransferSolutionService extends CommonServiceBase {
      * @function TransferSolutionService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {TransferSolutionParameters} params - 交通换乘参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof TransferSolutionParameters)) {
             return;
         }
@@ -79,12 +77,12 @@ export class TransferSolutionService extends CommonServiceBase {
             jsonParameters["travelTime"] = params.travelTime;
         }
 
-        me.request({
+        return me.request({
             method: method,
             params: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

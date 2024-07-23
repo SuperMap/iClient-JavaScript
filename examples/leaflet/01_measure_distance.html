@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -34,12 +34,10 @@
         var distanceMeasureParam = new L.supermap.MeasureParameters(polyLine);
         new L.supermap
             .MeasureService(url)
-            .measureDistance(distanceMeasureParam, function (serviceResult) {
+            .measureDistance(distanceMeasureParam).then(function (serviceResult) {
                 var content = resources.text_distance+"：" + serviceResult.result.distance + resources.msg_m;
                 marker1.bindPopup(content).openPopup(marker1.getLatLng());
             });
-
-
     }
 </script>
 </body>

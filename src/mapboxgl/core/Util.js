@@ -1,12 +1,13 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import "../core/Base";
-import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
-import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
-import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
-import { LinearRing } from "@supermap/iclient-common/commontypes/geometry/LinearRing";
-import { GeoJSON as GeoJSONFormat } from "@supermap/iclient-common/format/GeoJSON";
+import mapboxgl from 'mapbox-gl';
+import { Bounds } from "@supermapgis/iclient-common/commontypes/Bounds";
+import { Point as GeometryPoint } from "@supermapgis/iclient-common/commontypes/geometry/Point";
+import { Polygon } from "@supermapgis/iclient-common/commontypes/geometry/Polygon";
+import { LinearRing } from "@supermapgis/iclient-common/commontypes/geometry/LinearRing";
+import { GeoJSON as GeoJSONFormat } from "@supermapgis/iclient-common/format/GeoJSON";
 
 const isArray = function (obj){
   return Object.prototype.toString.call(obj) == "[object Array]";
@@ -54,7 +55,13 @@ export const Util = {
             //左下右上
             return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
-        return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        if (bounds instanceof mapboxgl.LngLatBounds) {
+          return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        }
+        if (bounds instanceof Bounds) {
+          return bounds;
+        }
+        return bounds;
     },
 
     toSuperMapPoint(lnglat) {
@@ -228,5 +235,44 @@ export const Util = {
           return !!fieldName.match(new RegExp(shortName));
       }
       return false;
+  },
+
+  /**
+   * @description 墨卡托转经纬度。
+   * @param {Array} point - 待转换的点。
+   * @returns {Object} 经纬度坐标。
+   */
+  unproject(point) {
+    var d = 180 / Math.PI,
+      r = 6378137,
+      ts = Math.exp(-point[1] / r),
+      phi = Math.PI / 2 - 2 * Math.atan(ts);
+    for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
+      con = 1;
+      dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
+      phi += dphi;
+    }
+    return new mapboxgl.LngLat((point[0] * d) / r, phi * d);
+  },
+
+  /**
+   * @description url 拼接代理或者凭证信息
+   * @param {string} point - 待转换的 url
+   * @returns {string} 转换后的 url
+   */
+  transformUrl({ url, server, excludePortalProxyUrl, credentialValue, credentialKey }) {
+    let mapUrl = url.indexOf('.json') === -1 ? `${url}.json` : url;
+    let filter = 'getUrlResource.json?url=';
+    if (excludePortalProxyUrl && server.indexOf(filter) > -1) {
+      //大屏需求,或者有加上代理的
+      let urlArray = server.split(filter);
+      if (urlArray.length > 1) {
+        mapUrl = urlArray[0] + filter + mapUrl;
+      }
+    }
+    if (credentialValue && credentialKey) {
+      mapUrl += '?' + credentialKey + '=' + credentialValue;
+    }
+    return mapUrl;
   }
 }

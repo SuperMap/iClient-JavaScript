@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80,13 +80,8 @@ export class ChartModel {
             fromIndex: 0,
             toIndex: 100000
         });
-        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                processCompleted: success,
-                processFailed: function () {}
-            }
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams, success);
     }
 
     /**
@@ -108,13 +103,8 @@ export class ChartModel {
             queryParams: [queryParam],
             expectCount: 100000
         });
-        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                processCompleted: success,
-                processFailed: function () {}
-            }
-        });
-        queryBySQLService.processAsync(queryBySQLParams);
+        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl);
+        queryBySQLService.processAsync(queryBySQLParams, success);
     }
 
     /**
@@ -398,18 +388,14 @@ export class ChartModel {
             toIndex: 100000,
             returnContent: true
         });
-        let options = {
-            eventListeners: {
-                processCompleted: (getFeaturesEventArgs) => {
-                    processCompleted && processCompleted(getFeaturesEventArgs);
-                },
-                processFailed: (e) => {
-                    processFaild && processFaild(e);
-                }
-            }
-        };
-        getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new GetFeaturesBySQLService(url);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams, function(getFeaturesEventArgs) {
+          if (getFeaturesEventArgs.type === 'processCompleted') {
+            processCompleted && processCompleted(getFeaturesEventArgs);
+          } else {
+            processFaild && processFaild(getFeaturesEventArgs);
+          }
+        });
     }
 
     /**
@@ -466,15 +452,10 @@ export class ChartModel {
     _queryBySQL(url, params, callback, resultFormat) {
         var me = this;
         var queryBySQLService = new QueryBySQLService(url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
 
-        queryBySQLService.processAsync(params);
+        queryBySQLService.processAsync(params, callback);
     }
     /**
      * @function ChartModel.prototype._processFormat

@@ -1,14 +1,15 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { Unit } from '@supermap/iclient-common/REST';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Size } from '@supermap/iclient-common/commontypes/Size';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { getServiceKey } from '@supermapgis/iclient-common/util/EncryptRequest';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { Size } from '@supermapgis/iclient-common/commontypes/Size';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 import { VectorTileStyles } from './vectortile/VectorTileStyles';
 import VectorTile from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
@@ -16,20 +17,25 @@ import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import Projection from 'ol/proj/Projection';
 import TileGrid from 'ol/tilegrid/TileGrid';
+import decryptTileUtil from '@supermapgis/tile-decryptor';
 
 /**
  * @class VectorTileSuperMapRest
  * @browsernamespace ol.source
  * @category  Visualization VectorTile
- * @classdesc 矢量瓦片图层源。
+ * @classdesc 矢量瓦片是将矢量数据通过不同的描述文件来组织和定义，在客户端实时解析数据并完成绘制。
+ * 矢量瓦片体积小，可高度压缩，数据传输体量小，地图更新的代价小，常用于存储用于查询、变更频繁的矢量图层，
+ * 适合于地图中对时效性要求较高的地物要素的表达，如 POI 信息、路线信息等。
  * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - 服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 {@link ol.format.MVT} 且 `options.source` 不为空时有效，优先级高于 `options.url`。
- * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
- * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的 source 名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
+ * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @param {boolean|Function} [options.decrypt] - 瓦片解密。如果是 true 表示用内置的解密方法， 如 decrypt: true；如果是function 则是自定义解密如 decrypt: function ({ key, bytes })。
+ * @param {Function} [options.decryptCompletedFunction] - 解密完成后触发。如 decryptCompletedFunction(completeData)。
  * @extends {ol.source.VectorTile}
  * @usage
  */
@@ -57,9 +63,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             overlaps: options.overlaps,
             projection: options.projection,
             state:
-                options.format instanceof MVT &&
-                options.style &&
-                Object.prototype.toString.call(options.style) == '[object String]'
+                options.format instanceof MVT
                     ? 'loading'
                     : options.state,
             tileClass: options.tileClass,
@@ -75,21 +79,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         me.withCredentials = options.withCredentials;
         me._tileType = options.tileType || 'ScaleXY';
         this.vectorTileStyles = new VectorTileStyles();
-        if (options.format instanceof MVT && options.style) {
-            if (Object.prototype.toString.call(options.style) == '[object String]') {
-                var url = SecurityManager.appendCredential(options.style);
-                FetchRequest.get(url, null, { withCredentials: options.withCredentials })
-                    .then((response) => response.json())
-                    .then((mbStyle) => {
-                        this._fillByStyleJSON(mbStyle, options.source);
-                        this.setState('ready');
-                    });
-            } else {
-                this._fillByStyleJSON(options.style, options.source);
-            }
-        } else {
-            this._fillByRestMapOptions(options.url, options);
-        }
+        this._initialized(options);
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
@@ -122,12 +112,6 @@ export class VectorTileSuperMapRest extends VectorTile {
                 var resolution = me.tileGrid.getResolution(z);
                 var dpi = 96;
                 var unit = projection.getUnits() || 'degrees';
-                if (unit === 'degrees') {
-                    unit = Unit.DEGREE;
-                }
-                if (unit === 'm') {
-                    unit = Unit.METER;
-                }
 
                 var scale = Util.resolutionToScale(resolution, dpi, unit);
                 params =
@@ -154,10 +138,10 @@ export class VectorTileSuperMapRest extends VectorTile {
             if (!tileCoord) {
                 return undefined;
             } else {
-                return me._tileUrl
+                              return me._tileUrl
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                    .replace(yRegEx, function () {
+                     .replace(yRegEx, function () {
                         var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
@@ -282,13 +266,14 @@ export class VectorTileSuperMapRest extends VectorTile {
                             source = xhr.response;
                         }
                         if (source) {
+                            source = me._decryptMvt(source);
                             if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
-                                success.call(
-                                    this,
-                                    format.readFeatures(source, { featureProjection: projection }),
-                                    format.readProjection(source),
-                                    format.getLastExtent()
-                                );
+                              success.call(
+                                  this,
+                                  format.readFeatures(source, { featureProjection: projection }),
+                                  format.readProjection(source),
+                                  format.getLastExtent()
+                              );
                             } else {
                                 success.call(
                                     this,
@@ -313,6 +298,27 @@ export class VectorTileSuperMapRest extends VectorTile {
             });
         }
     }
+
+    async _initialized(options) {
+      if (options.format instanceof MVT && options.style) {
+          let style = options.style;
+          if (Object.prototype.toString.call(options.style) == '[object String]') {
+            var url = SecurityManager.appendCredential(options.style);
+            const response = await FetchRequest.get(url, null, { withCredentials: options.withCredentials })
+            style = await response.json();
+          }
+          this._fillByStyleJSON(style, options.source);
+      } else {
+          this._fillByRestMapOptions(options.url, options);
+      }
+      if (options.format instanceof MVT) {
+        if (options.decrypt) {
+          await this._verifyVectorTileIsEncrypt(options);
+        }
+        this.setState('ready');
+      }
+    }
+
     _fillByStyleJSON(style, source) {
         if (!source) {
             source = Object.keys(style.sources)[0];
@@ -371,6 +377,35 @@ export class VectorTileSuperMapRest extends VectorTile {
             params['returnCutEdges'] = options.returnCutEdges;
         }
         this._tileUrl = CommonUtil.urlAppend(this._tileUrl, CommonUtil.getParameterString(params));
+    }
+
+    async _verifyVectorTileIsEncrypt(options) {
+      try {
+        let serviceUrl = options.url || typeof options.style === 'string' && options.style;
+
+        if (!serviceUrl && Object.prototype.toString.call(options.style) == '[object Object]') {
+          const firstSource = Object.keys(options.style.sources)[0];
+          serviceUrl = options.style.sources[firstSource].tiles[0];
+        }
+        const res = await getServiceKey(serviceUrl);
+        if (res) {
+          this.decryptOptions = {
+            key: res.serviceKey,
+            algorithm: res.algorithm,
+            decrypt: typeof options.decrypt === 'boolean' ? undefined : options.decrypt,
+            decryptCompletedFunction: options.decryptCompletedFunction
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    _decryptMvt(mvtData) {
+      if (this.decryptOptions) {
+        return decryptTileUtil({ ...this.decryptOptions, arrayBuffer: mvtData });
+      }
+      return mvtData;
     }
 
     /**

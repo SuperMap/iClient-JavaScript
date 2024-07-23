@@ -1,17 +1,20 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
 import '../core/Base';
 import RBush from 'rbush';
-import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 
 /**
  * @class FGBLayer
  * @deprecatedclassinstance L.supermap.FGBLayer
  * @classdesc FGB 图层类。该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * FlatGeobuf（FGB）是一种用于存储地理要素的坐标、类型的二进制编码格式。
+ * FGB 格式与传统的 Shapefile、GeoJSON 等文件格式类似，支持地理空间矢量数据的存储，但 FGB 格式具有更高的存储效率和更快的读写速度，
+ * 适用于大量静态数据的编码与传输。
  * @version 11.1.0
  * @category Visualization FGB
  * @modulecategory Overlay
@@ -20,11 +23,11 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {Object} options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
- * @param {string} [options.strategy='bbox'] - all为全量加载，要素会以流的方式渲染到地图。 bbox为当前可见范围加载，当地图范围改变时会重新加载要素，此时可以通过idField 参数来标识已被加载过的要素，被标识的要素无需再次加载。idField 参数无效时会清空要素，重新加载。
- * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
- * @param {boolean} [options.idField='SmID'] - 是否指定要素字段作为唯一id，当 strategy 为 bbox 时生效。
+ * @param {string} [options.strategy='bbox'] - all 为全量加载，要素会以流的方式渲染到地图。bbox 为当前可见范围加载，当地图范围改变时会重新加载要素，此时可以通过 idField 参数来标识已被加载过的要素，被标识的要素无需再次加载。idField 参数无效时会清空要素，重新加载。
+ * @param {Array} [options.extent] - 加载范围，参数规范为: [minX, minY, maxX, maxY]，传递此参数后，图层将使用局部加载。
+ * @param {boolean} [options.idField='SmID'] - 是否指定要素字段作为唯一 ID，当 strategy 为 bbox 时生效。
  * @param {function} [options.featureLoader] - 要素自定义方法。
- * @param {function} [options.onEachFeature] - 要素创建时调用
+ * @param {function} [options.onEachFeature] - 要素创建时调用。
  * @usage
  * ```
  * // 浏览器
@@ -42,7 +45,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * ```
  */
 
-export var FGBLayer = L.LayerGroup.extend({
+export var FGBLayer = L.FeatureGroup.extend({
   initialize: function (url, options) {
     this.options = options || {};
     this.strategy = this.options.strategy || 'bbox';

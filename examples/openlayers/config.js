@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
@@ -35,12 +35,12 @@ var exampleConfig = {
                     name_en: "planar coordinate system",
                     thumbnail: "ol_tiledMapLayerNoProj.png",
                     fileName: "01_tiledMapLayerNoProj"
-                }, {
-                    name: "地图-栅格分析",
-                    name_en: "map rasterFunction",
-                    version: "10.0.0",
-                    thumbnail: "ol_tiledMapLayerRasterfunction.png",
-                    fileName: "01_tiledmaplayer_rasterfunction"
+                // }, {
+                //     name: "地图-栅格分析",
+                //     name_en: "map rasterFunction",
+                //     version: "10.0.0",
+                //     thumbnail: "ol_tiledMapLayerRasterfunction.png",
+                //     fileName: "01_tiledmaplayer_rasterfunction"
                 }, {
                     name: "地图信息",
                     name_en: "map query service",
@@ -89,7 +89,21 @@ var exampleConfig = {
                   version: '11.1.0',
                   thumbnail: "query_fgb_features.png",
                   fileName: "01_mapQueryBySQL_FGB"
-              }
+                }, 
+                {
+                  name: "图例",
+                  name_en: "Legend",
+                  version: '11.1.1',
+                  thumbnail: "layersLegend.png",
+                  fileName: "01_layersLegend"
+                },
+                {
+                  name: "海图",
+                  name_en: "Chart",
+                  version: '11.2.0',
+                  thumbnail: "chart.png",
+                  fileName: "01_chartService"
+                }
               ]
             },
             "data": {
@@ -147,7 +161,13 @@ var exampleConfig = {
                     name_en: "data editing",
                     thumbnail: "ol_editFeatures.png",
                     fileName: "02_editFeatures"
-                },                    
+                },
+                {
+                    name: "要素关联附件",
+                    name_en: "feature attachment",
+                    thumbnail: "ol_featureAttachments.png",
+                    fileName: "02_FeatureAttachment"
+                },
                 {
                     name: "数据源信息查询",
                     name_en: "datasource information service",
@@ -159,7 +179,21 @@ var exampleConfig = {
                     name_en: "dataset information service",
                     thumbnail: "02_datasetService.png",
                     fileName: "02_datasetService"
-                }]
+                },
+                {
+                    name: "要素编辑",
+                    name_en: "draw and edit features",
+                    version: '11.2.0',
+                    thumbnail: "drawAndEditFeatures.png",
+                    fileName: "drawAndEditFeatures"
+                },
+                {
+                  name: "属性表",
+                  name_en: "attributes",
+                  version: '11.2.0',
+                  thumbnail: "attributes.png",
+                  fileName: "02_attributes"
+              }]
             },
             "theme": {
                 name: "专题图",
@@ -326,6 +360,30 @@ var exampleConfig = {
                     thumbnail: "ol_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
+                    name: "地形坡度计算",
+                    name_en: "terrain slope calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainSlopeCalculationService.png",
+                    fileName: "04_terrainSlopeCalculationService"
+                }, {
+                    name: "地形坡向计算",
+                    name_en: "terrain aspect calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainAspectCalculationService.png",
+                    fileName: "04_terrainAspectCalculationService"
+                }, {
+                    name: "填挖方计算",
+                    name_en: "terrain cutfill calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainCutFillCalculationService.png",
+                    fileName: "04_terrainCutFillCalculationService"
+                }, {
+                    name: "最近距离计算",
+                    name_en: "min distance analysis",
+                    version: '11.1.1',
+                    thumbnail: "minDistanceAnalysisService.png",
+                    fileName: "04_minDistanceAnalysisService"
+                },{
                     name: "离散点插值分析",
                     name_en: "discrete point interpolation",
                     thumbnail: "ol_interpolationAnalystService_IDW_geometry.png",
@@ -385,6 +443,18 @@ var exampleConfig = {
                     name_en: "traveler - quality inspection",
                     thumbnail: "ol_findTSPPathsService.png",
                     fileName: "05_findTSPPathsService"
+                }, {
+                    name: "连通性分析",
+                    name_en: "connectivity analysis",
+                    version: '11.1.1',
+                    thumbnail: "connectedEdgesService.png",
+                    fileName: "05_connectedEdgesService"
+                }, {
+                    name: "上下游追踪分析",
+                    name_en: "upstream and downstream trace",
+                    version: '11.1.1',
+                    thumbnail: "traceAnalystService.png",
+                    fileName: "05_traceAnalystService"
                 }]
             },
             "trafficTransferAnalyst": {
@@ -506,11 +576,25 @@ var exampleConfig = {
                       fileName: 'knowledgeGraphMap'
                   },
                   {
+                    name: '不动产图谱-样式',
+                    name_en: 'Real Estate GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap2.png',
+                    fileName: 'knowledgeGraphMap2'
+                  },
+                  {
                     name: '河流流经省份图谱',
                     name_en: 'Rivers flowing through provinces GraphMap',
                     version: '11.1.0',
                     thumbnail: 'knowledgeGraphMap1.png',
                     fileName: 'knowledgeGraphMap1'
+                },
+                {
+                  name: '最短路径',
+                  name_en: 'Shortest Path',
+                  version: '11.2.0',
+                  thumbnail: 'knowledgeGraphMap2.png',
+                  fileName: 'knowledgeGraph_shortestpath'
                 }
               ]
             },
@@ -644,12 +728,6 @@ var exampleConfig = {
                 }]
             }
         }
-    },
-    "iManager": {
-        name: "iManager",
-        name_en: "iManager",
-        localIgnore: true,
-        content: null
     },
     "viz": {
         name: "可视化",
@@ -1086,15 +1164,15 @@ var exampleConfig = {
               version: '11.1.0',
               content: [
                   {
-                    name: 'FGB 全量加载（2500万点数据量）',
-                    name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                    name: 'FGB 全量加载（1400万点数据量）',
+                    name_en: 'FGB Full Load (Use lines to draw 14 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_all_load.png',
                     fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 按需加载（2500万点数据量）',
-                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    name: 'FGB 按需加载（1400万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 14 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_bbox_load.png',
                     fileName: 'fgb_bbox_load'
@@ -1167,6 +1245,85 @@ var exampleConfig = {
                     thumbnail: "ol_turf_measurement.png",
                     fileName: "turf_measurement"
                 }]
+            },
+            WebAssembly: {
+              name: "WebAssembly",
+              version: "11.2.0",
+              content: [{
+                name: "缓冲区分析",
+                version: "11.2.0",
+                name_en: "buffer analysis",
+                thumbnail: "ugc_buffer.png",
+                fileName: "ugc_buffer"
+              }, {
+                name: "凹凸面计算",
+                version: "11.2.0",
+                name_en: "convexHull calculate",
+                thumbnail: "ugc_convexHull.png",
+                fileName: "ugc_convexHull"
+              }, {
+                name: "地理面积计算",
+                version: "11.2.0",
+                name_en: "geodesic area calculate",
+                thumbnail: "ugc_computeGeodesicArea.png",
+                fileName: "ugc_computeGeodesicArea"
+              }, {
+                name: "测地线计算",
+                version: "11.2.0",
+                name_en: "geodesic distance calculate",
+                thumbnail: "ugc_computeGeodesicDistance.png",
+                fileName: "ugc_computeGeodesicDistance"
+              }, {
+                name: "平行线分析",
+                name_en: "parallel analysis",
+                version: "11.2.0",
+                thumbnail: "ugc_computeParallel.png",
+                fileName: "ugc_computeParallel"
+              }, {
+                name: "点线距离分析",
+                version: "11.2.0",
+                name_en: "distance To lineSegment analysis",
+                thumbnail: "ugc_distanceToLineSegment.png",
+                fileName: "ugc_distanceToLineSegment"
+              }, {
+                name: "面面相交分析",
+                version: "11.2.0",
+                name_en: "intersectRegion with rect analysis",
+                thumbnail: "ugc_isIntersectRegionWithRect.png",
+                fileName: "ugc_isIntersectRegionWithRect"
+              }, {
+                name: "线线计算",
+                version: "11.2.0",
+                name_en: "parallel and perpendicular calculate",
+                thumbnail: "ugc_ParallelAndPerpendicular.png",
+                fileName: "ugc_ParallelAndPerpendicular"
+              }, {
+                name: "重采样分析",
+                version: "11.2.0",
+                name_en: "resample analysis",
+                thumbnail: "ugc_resample.png",
+                fileName: "ugc_resample"
+              }, {
+                name: "点线计算",
+                version: "11.2.0",
+                name_en: "point and line calculate",
+                thumbnail: "ugc_pointPositon.png",
+                fileName: "ugc_pointPositon"
+              },
+              {
+                name: "线光滑分析",
+                version: "11.2.0",
+                name_en: "smooth analysis",
+                thumbnail: "ugc_smooth.png",
+                fileName: "ugc_smooth"
+              }, 
+              {
+                name: "空间分析",
+                version: "11.2.0",
+                name_en: "spatial analysis",
+                thumbnail: "ugc_spatialRelationship.png",
+                fileName: "ugc_spatialRelationship"
+              }]
             }
         }
     },

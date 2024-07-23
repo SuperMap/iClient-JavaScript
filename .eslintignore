@@ -4,4 +4,7 @@ src/classic/resource/*
 src/classic/theme/*
 src/common/style/CartoCSS.js
 src/common/thirdparty/ai/*
+src/common/util/UGCWasmAll.js
+src/maplibregl/overlay/L7/l7-render.js
+src/mapboxgl/overlay/L7/l7-render.js
 test

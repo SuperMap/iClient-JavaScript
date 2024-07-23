@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7,13 +7,15 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageStretchOption
  * @deprecatedclass SuperMap.ImageStretchOption
- * @classdesc 影像拉伸类。
+ * @classdesc 影像拉伸类。影像拉伸是一种图像/影像处理方式，此类存储了影像拉伸类型和每一种拉伸类型相应的参数，
+ * 从而改善影像质量，使影像中的地物更易辨识。
+ * 此处提供了四种拉伸方式：标准差拉伸、最值拉伸、高斯拉伸以及百分比截断拉伸。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {ImageStretchOption.StretchType} [options.stretchType] 影像拉伸类型。该属性的值有以下几种情况：NONE，无拉伸；GAUSSIAN，高斯拉伸；PERCENTCLIP，百分比截断拉伸；MINIMUMMAXIMUM，最值拉伸；STANDARDDEVIATION，标准差拉伸。
  * @param {number} [options.stdevCoefficient] 标准差系数。
  * @param {number} [options.gaussianCoefficient] 高斯系数。
- * @param {boolean} [options.useMedianValue] 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+ * @param {boolean} [options.useMedianValue] 高斯拉伸时，是否使用中间值，若该属性值为 true，表示使用中间值；false，表示使用平均值。
  * @param {number} [options.minPercent] 使用百分比截断拉伸时，排除影像直方图最低值区域的像元，该参数值为这部分像元占总像元百分比。
  * @param {number} [options.maxPercent] 使用百分比截断拉伸时，排除影像直方图最高值区域的像元，该参数值为这部分像元占总像元百分比。
  * @usage
@@ -36,7 +38,7 @@ export default class ImageStretchOption {
      */
     this.gaussianCoefficient = undefined;
     /**
-     * @description 高斯拉伸时，是否使用中间值，若该属性值为true，表示使用中间值；false，表示使用平均值。
+     * @description 高斯拉伸时，是否使用中间值，若该属性值为 true，表示使用中间值；false，表示使用平均值。
      * @member {boolean} ImageStretchOption.prototype.useMedianValue
      */
     this.useMedianValue = undefined;

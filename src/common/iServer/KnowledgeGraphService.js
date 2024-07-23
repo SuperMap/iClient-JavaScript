@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -7,7 +7,9 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class KnowledgeGraphService
  * @category iServer KnowledgeGraph
- * @classdesc 知识图谱服务类
+ * @classdesc 知识图谱服务类。知识图谱是知识表示的一种形式，是由具有属性的实体通过关系链接而成的网状知识库。
+ * 图谱数据和常规结构化表格数据相比，具有强大的数据描述能力，可以实现更快更高效的查询，更快更精准的数据关联性推理运算和隐藏关系的挖掘。
+ * 提供方法：获取图谱图序列化数据、获取图谱列表、查询知识图谱数据、将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
  * @version 11.1.0
  * @extends {ProcessingServiceBase}
  * @param {string} url - 服务地址。
@@ -22,7 +24,6 @@ export class KnowledgeGraphService extends CommonServiceBase {
   constructor(url, options) {
     super(url, options);
     this.options = options || {};
-    this.eventCount = 0;
     this.CLASS_NAME = 'SuperMap.KnowledgeGraphService';
   }
 
@@ -35,14 +36,25 @@ export class KnowledgeGraphService extends CommonServiceBase {
   }
 
   /**
+   * @function KnowledgeGraphService.prototype.findShortestPath
+   * @description 获取开始节点和结束节点之间的最短路径。
+   * @param {KnowledgeGraphService.findShortestPathParams} params - 参数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   */
+  findShortestPath(params, callback) {
+    const url = this.url + `/shortestPath.json?startID=${params.startID}&endID=${params.endID}`;
+    this.processAsync({ url, method: 'GET', callback });
+  }
+
+  /**
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} params - 查询条件。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   query(params, callback) {
     const paramKey = 'cypherQuery';
-    const url = Util.urlAppend(this.url + '/query.json', `${paramKey}=${params}`);
+    const url = Util.urlAppend(this.url + '/query.json', `${paramKey}=${encodeURI(params)}`);
     this.processAsync({ url, method: 'GET', callback });
   }
 
@@ -70,8 +82,8 @@ export class KnowledgeGraphService extends CommonServiceBase {
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
-   * @description 获取图谱列表
-   * @param {RequestCallback} callback 回调函数。
+   * @description 获取图谱列表。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   getGraphMaps(callback) {
     const url = this.url + '/graphmaps.json';
@@ -80,9 +92,9 @@ export class KnowledgeGraphService extends CommonServiceBase {
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMap
-   * @description 获取图谱图序列化数据
-   * @param {string} graphMapName 图谱名称
-   * @param {RequestCallback} callback 回调函数
+   * @description 获取图谱图序列化数据。
+   * @param {string} graphMapName 图谱名称。
+   * @param {RequestCallback} callback 回调函数。
    */
   getGraphMap(graphMapName, callback) {
     const url = this.url + `/graphmaps/${graphMapName}.json`;
@@ -91,8 +103,8 @@ export class KnowledgeGraphService extends CommonServiceBase {
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMapData
-   * @description 将iServer GraphMap服务的数据格式转换为KnowledgeGraph的数据格式。
-   * @param {string} graphMapName - 图谱名称
+   * @description 将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
+   * @param {string} graphMapName - 图谱名称。
    * @returns {Promise} Promise 对象。
    */
   async getGraphMapData(graphMapName) {
@@ -123,9 +135,9 @@ export class KnowledgeGraphService extends CommonServiceBase {
   /**
    * @private
    * @function KnowledgeGraphService.prototype._getGraphMapExpandQuery
-   * @description 获取graphMap图谱展开节点的query条件
-   * @param {Object} graphMap -将iServer GraphMap图谱服务的数据
-   * @param {Array.<string>} 查询条件
+   * @description 获取 GraphMap 图谱展开节点的 query 条件。
+   * @param {Object} graphMap -将 iServer GraphMap 图谱服务的数据。
+   * @param {Array.<string>} 查询条件。
    */
   _getGraphMapExpandQuery(graphMap) {
     const queries = [];
@@ -208,56 +220,31 @@ export class KnowledgeGraphService extends CommonServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.processAsync
    * @description 负责将客户端的动态分段服务参数传递到服务端。
-   * @param {string} url - 服务地址
-   * @param {Object} params - 参数
+   * @param {string} url - 服务地址。
+   * @param {Object} params - 参数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
 
   processAsync({ url, params, method, callback }) {
-    let eventId = ++this.eventCount;
-    let eventListeners = {
-      scope: this,
-      processCompleted: function (result) {
-        if (eventId === result.result.eventId && callback) {
-          delete result.result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      },
-      processFailed: function (result) {
-        if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-          delete result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      }
-    };
-    this.events.on(eventListeners);
     const requestParams = {
       method,
       url,
       scope: this,
-      success(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessCompleted(result, options);
-      },
-      failure(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessFailed(result, options);
-      }
+      success: callback,
+      failure: callback
     };
     if (params) {
       requestParams.params = params;
     }
-    this.request(requestParams);
+    return this.request(requestParams);
   }
   /**
    * @private
    * @function _getGraphMapData
-   * @description 获取图谱信息
-   * @param {string} graphMapName - 图谱名称
-   * @returns {Promise} Promise 对象
+   * @description 获取图谱信息。
+   * @param {string} graphMapName - 图谱名称。
+   * @returns {Promise} Promise 对象。
    */
   _getGraphMapData(graphMapName) {
     return new Promise((resolve, reject) => {
@@ -279,7 +266,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
    * @private
    * @function _queryDataBySql
    * @description 查询实体和关系数据。
-   * @param {string} cypherQuery - 查询语句
+   * @param {string} cypherQuery - 查询语句。
    * @returns {Promise} Promise 对象。
    */
   _queryDataBySql(cypherQuery) {

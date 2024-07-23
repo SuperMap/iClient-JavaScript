@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,11 +8,11 @@ import {ServerStyle} from './ServerStyle';
  * @class ThemeGraphItem
  * @deprecatedclass SuperMap.ThemeGraphItem
  * @category  iServer Map Theme
- * @classdesc 统计专题图子项类。
+ * @classdesc 统计专题图子项类。该类用于设置统计专题图子项的名称、专题变量、显示风格等属性。每一个统计专题图子项都对应一种显示风格。
  * @param {Object} options - 参数。
- * @param {string} [options.caption] - 专题图子项的名称。
+ * @param {string} [options.caption] - 统计专题图子项的名称。
  * @param {string} options.graphExpression - 统计专题图的专题变量。
- * @param {Array.<number>} [options.memoryDoubleValues] - 内存数组方式制作专题图时的值数组。
+ * @param {Array.<number>} [options.memoryDoubleValues] - 以内存数组方式制作专题图时的值数组。
  * @param {ServerStyle} [options.uniformStyle] - 统计专题图子项的显示风格。
  * @usage
  */
@@ -22,7 +22,7 @@ export class ThemeGraphItem {
 
         /**
          * @member {string} [ThemeGraphItem.prototype.caption]
-         * @description 专题图子项的名称。
+         * @description 统计专题图子项的名称。
          */
         this.caption = null;
 

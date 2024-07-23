@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(PlottingPanel.Include\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -50,6 +50,18 @@
         }
         if (inArray(includes, 'iPortalStylePanel')) {
             inputScript("../js/plottingPanel/iPortalStylePanel.js");
+        }
+        if (inArray(includes, 'PlotMapPanel')) {
+            inputScript("../js/plottingPanel/PlotMapPanel.js");
+        }
+        if (inArray(includes, 'SignSymbolPanel')) {
+            inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/SignSymbolPanel.js");
+        }
+        if (inArray(includes, 'SpecialEffectStylePanel')) {
+            inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/SpecialEffectStyleFunction.js");
+            inputScript("../js/plottingPanel/SpecialEffectStylePanel.js");
         }
     }
 

@@ -1,17 +1,18 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../core/Base';
- import { Util } from '@supermap/iclient-common/commontypes/Util';
+ import { Util } from '@supermapgis/iclient-common/commontypes/Util';
  import { GeoFeatureThemeLayer } from './theme/GeoFeatureThemeLayer';
- import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
- import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
- import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+ import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+ import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+ import { Vector as FeatureVector } from '@supermapgis/iclient-common/commontypes/Vector';
 /**
  * @class LabelThemeLayer
  * @deprecatedclassinstance L.supermap.labelThemeLayer
- * @classdesc 标签专题图类。
+ * @classdesc 标签专题图类。标签专题图是用文本形式在图层上直接显示属性表中的数据，实质上是对图层的标注。不仅帮助用户更好地区分地物要素，
+ * 同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @category Visualization Theme
  * @modulecategory Overlay
  * @extends GeoFeatureThemeLayer
@@ -22,7 +23,7 @@
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
@@ -108,7 +109,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
             _isGeoTextStrategyStyle: true
         };
 
-        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
+        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用 SVG 渲染）。默认值为 0。
         this.getPxBoundsMode = 0;
 
         this.labelFeatures = [];
@@ -143,7 +144,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
      /**
      * @function LabelThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
@@ -321,9 +322,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData: function (feat) {
         var feature = feat;
@@ -370,9 +371,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.setLabelsStyle
-     * @description 设置标签要素的 Style。
-     * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<FeatureVector>}  赋予 Style 后的标签要素数组。
+     * @description 设置标签要素的风格。
+     * @param {Array.<FeatureVector>} labelFeatures - 需要设置风格的标签要素数组。
+     * @returns {Array.<FeatureVector>}  赋予风格后的标签要素数组。
      */
     setLabelsStyle: function (labelFeatures) {
         var fea, labelFeas = [];
@@ -398,8 +399,8 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.setStyle
-     * @description 设置标签要素的 Style。
-     * @param {FeatureVector} feat - 需要赋予 style 的要素。
+     * @description 设置标签要素的风格。
+     * @param {FeatureVector} feat - 需要赋予风格的要素。
      */
     setStyle: function (feat) {
         var feature = feat;
@@ -477,7 +478,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -534,9 +535,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算范围的效率。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -732,10 +733,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @description 旋转 bounds。
      *
      * @param {Bounds} bounds - 要旋转的 bounds。
-     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {number}  angle - 旋转角度（顺时针）。
      *
-     * @returns {Array.<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array.<Object>}  bounds 旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     rotationBounds: function (bounds, rotationCenterPoi, angle) {
         var ltPoi = L.point(bounds.left, bounds.top);

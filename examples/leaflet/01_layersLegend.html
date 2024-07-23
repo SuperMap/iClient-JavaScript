@@ -1,0 +1,189 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_layerService"></title>
+  <style>
+    #layersList,
+    #mapLegend {
+      max-height: calc(40vh - 55px);
+      overflow: auto;
+      font-size: 12px;
+      text-wrap: nowrap;
+    }
+
+    #layersList label {
+      font-weight: 400;
+    }
+
+    .layer-group {
+      padding: 4px 0;
+    }
+
+    .layer-group::before {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      margin-right: 6px;
+      background: url(../img/arrowDown.png) no-repeat center center / contain;
+      content: '';
+    }
+
+    .layer-group[aria-expanded='true']::before {
+      rotate: 180deg;
+    }
+
+    .legend-wrapper {
+      padding-left: 12px;
+    }
+
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+  <div id="map" style="width: 100%;height:100%"></div>
+  <div style="z-index: 999;position: absolute;width:250px;top:0;right:0">
+    <div class="panel panel-primary" style="width:250px;margin-top: 20px;position: absolute;float:right">
+      <div class="panel-heading">
+        <h5 class='panel-title text-center'>
+          <span data-i18n="resources.text_layerList"></span>
+        </h5>
+      </div>
+      <div class="panel-body" id="layersList"></div>
+      <div class="panel-footer">
+        <input class="btn btn-default" type="button" onclick="createLegend()" data-i18n="[value]resources.btn_getLegend"></input>
+      </div>
+    </div>
+    <div class="panel panel-primary legend" style="width:250px;margin-top: 50vh;position: absolute;float:right;">
+      <div class="panel-heading">
+        <h5 class='panel-title text-center'>
+          <span data-i18n="resources.text_legend"></span>
+        </h5>
+      </div>
+      <div class="panel-body" id="mapLegend"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+  <script type="text/javascript">
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图";
+    var map = L.map('map', {
+      preferCanvas: true,
+      crs: L.CRS.EPSG4326,
+      center: [40.04, 117.08],
+      maxZoom: 18,
+      zoom: 7
+    });
+    new L.supermap.TiledMapLayer(url).addTo(map);
+    getLayers();
+
+    function createLayersDom(layers, parentDom, layerName) {
+      layers.map(function (layer) {
+        var fullLayerName = layerName || '';
+        if (Object.keys(layer.subLayers).length) {
+          fullLayerName = '@@' + layer.name + fullLayerName;
+          var groupWrapper = document.createElement('div');
+          var layerGroup = document.createElement('div');
+          layerGroup.innerHTML = layer.name;
+          layerGroup.className = 'layer-group';
+          layerGroup.setAttribute('data-toggle', 'collapse');
+          layerGroup.setAttribute('data-target', '#' + layer.name.replace(/#/g, '_'));
+          groupWrapper.appendChild(layerGroup);
+
+          parentDom.appendChild(groupWrapper);
+          var collapse = document.createElement('div');
+          collapse.id = layer.name.replace(/#/g, '_');
+          collapse.className = 'collapse';
+          collapse.style.paddingLeft = '18px';
+          groupWrapper.appendChild(collapse);
+          createLayersDom(layer.subLayers.layers, collapse, fullLayerName);
+        } else {
+          var checkbox = document.createElement('input');
+          checkbox.id = layer.name;
+          checkbox.type = 'checkbox';
+          checkbox.value = layer.name + fullLayerName;
+          var label = document.createElement('label');
+          label.textContent = layer.name;
+          label.style.marginLeft = "8px"
+          label.setAttribute('for', checkbox.id);
+          parentDom.appendChild(checkbox);
+          parentDom.appendChild(label);
+          // 初始化，默认获取土地利用图层图例
+          if (checkbox.value === "Landuse_R@Jingjin#1@@京津地区土地利用现状图") {
+            checkbox.checked = true;
+            createLegend();
+          }
+          var brElement = document.createElement('br');
+          parentDom.appendChild(brElement);
+        }
+      });
+    }
+
+    function getLayers() {
+      new L.supermap.LayerInfoService(url).getLayersInfo(function (serviceResult) {
+        var layers = serviceResult.result.subLayers.layers;
+        var parentDom = document.getElementById('layersList');
+        var layerName = '@@' + serviceResult.result.name;
+        createLayersDom(layers, parentDom, layerName);
+      });
+    }
+
+    function createLegendDom(layerLegends, parentDom) {
+      layerLegends.forEach(function (layerLegend) {
+        var legendWrapper = document.createElement('div');
+        legendWrapper.className = 'legend-wrapper';
+        var layerName = document.createElement('div');
+        layerName.innerHTML = layerLegend.layerName;
+        parentDom.appendChild(layerName);
+        parentDom.appendChild(legendWrapper);
+        layerLegend.legends.forEach(function (legend) {
+          var legendItem = document.createElement('div');
+          var legendPic = document.createElement('img');
+          var legendLabel = document.createElement('label');
+          legendLabel.innerHTML = legend.label;
+          legendLabel.style.marginLeft = "4px"
+          // legendPic.src = legend.url;
+          legendPic.src = 'data:image/png;base64,' + legend.imageData;
+          legendItem.appendChild(legendPic);
+          legendItem.appendChild(legendLabel);
+          legendWrapper.appendChild(legendItem);
+        });
+        if (layerLegend.subLayerLegends) {
+          createLegendDom(layerLegend.subLayerLegends, legendWrapper);
+        }
+      })
+    }
+
+    function createLegend() {
+      var legendContainer = document.getElementById("mapLegend");
+      legendContainer.innerHTML = ''
+      // 获取所有被选中的图层，并拼接成参数
+      var checkboxes = document.querySelectorAll('#layersList input[type="checkbox"]')
+      var layers = "";
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          layers += checkbox.value + ","
+        }
+      });
+
+      // 发起请求，获取图例
+      var getLayersLegendInfoParams = new L.supermap.GetLayersLegendInfoParameters({
+        // bbox 或 layers 参数必须至少设置一个参数
+        // bbox: "114.59,37.76,119.51,42.31",
+        layers: "show:" + layers,
+        width: 18,
+        height: 18
+      })
+      new L.supermap.LayerInfoService(url).getLayersLegendInfo(getLayersLegendInfoParams, function (serviceResult) {
+        createLegendDom(serviceResult.result.layerLegends, legendContainer);
+      });
+    }
+
+  </script>
+</body>
+
+</html>

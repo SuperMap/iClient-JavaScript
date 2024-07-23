@@ -1,23 +1,24 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
-import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { ShapeFactory } from '@supermapgis/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector } from '@supermapgis/iclient-common/overlay/ThemeVector';
 import {GeoFeature} from './theme/GeoFeature';
 
 /**
  * @class Unique
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 单值专题图图层源。
+ * @classdesc 单值专题图图层源。单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。
+ * 比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @modulecategory Overlay
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers 地图对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
- * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {number} [opt_options.opacity=1] - 图层不透明度。
+ * @param {string} [opt_options.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是1 或更高。
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
@@ -27,7 +28,7 @@ import {GeoFeature} from './theme/GeoFeature';
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble=false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @extends {GeoFeature}
  * @usage
  */
@@ -80,7 +81,7 @@ export class Unique extends GeoFeature {
     /**
      * @private
      * @function Unique.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {Object} fea - 用户要素数据。
      */
     getStyleByData(fea) {

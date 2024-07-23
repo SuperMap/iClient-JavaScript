@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -53,7 +53,7 @@ export class ThemeLabelText {
 
         /**
          * @member {ServerTextStyle} [ThemeLabelText.prototype.uniformStyle]
-         * @description 统一文本风格。当标签专题图子项的个数大于等于1时，
+         * @description 统一文本风格。当标签专题图子项的个数大于等于 1 时，
          *              uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */

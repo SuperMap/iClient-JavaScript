@@ -1,0 +1,381 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_signSymbol"></title>
+    <link rel="stylesheet" href="../css/iconfont/iconfont.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            position: absolute;
+            left: 250px;
+            right: 0px;
+            height: 100%;
+        }
+
+        #plottingMenu {
+            position: absolute;
+            top: 20%;
+            z-index: 888;
+            left: 260px;
+            color: #000000;
+            background-color: #fff;
+        }
+
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 250px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="toolbar0" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;width: 360px;
+        border: 1px solid #337ab7;">
+        <div class='panel-heading' id="panelheading">
+            <h5 class='panel-title text-center' data-i18n="resources.text_signSymbol"
+                style=" font-size: 16px;color: #ffffff;"></h5>
+        </div>
+        <!-- <div class='panel-body content' id="panelbodycontent"
+            style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px"> -->
+        <div style="margin-right: 10px;margin-left: 10px;">
+            <select id="selectMenu1" style="width:100px;height:30px; margin-right:10px"
+                onclick="changeModeValue(this.value)">
+                <option id="10001" data-i18n="resources.title_simpleSignSymbol" value="0"></option>
+                <option id="10002" data-i18n="resources.title_complexSignSymbol" value="1"></option>
+                <option id="10003" data-i18n="resources.title_customSignSymbol" value="2"></option>
+            </select>
+            <select id="selectMenu2" style="width:100px;height:30px;margin-right:10px"
+                onclick="changeTypeValue(this.value)">
+                <option id="30001" data-i18n="resources.title_type1" value="0"></option>
+                <option id="30002" data-i18n="resources.title_type2" value="1"></option>
+                <option id="30003" data-i18n="resources.title_type3" value="2"></option>
+                <option id="30004" data-i18n="resources.title_type4" value="3"></option>
+                <option id="30005" data-i18n="resources.title_type5" value="4"></option>
+                <option id="30006" data-i18n="resources.title_type6" value="5"></option>
+                <option id="30007" data-i18n="resources.title_type7" value="6"></option>
+                <option id="30008" data-i18n="resources.title_type8" value="7"></option>
+                <option id="30009" data-i18n="resources.title_type9" value="8"></option>
+                <option id="300010" data-i18n="resources.title_type10" value="9"></option>
+                <option id="300011" data-i18n="resources.title_type11" value="10"></option>
+                <option id="300012" data-i18n="resources.title_type12" value="11"></option>
+                <option id="300013" data-i18n="resources.title_type13" value="12"></option>
+                <option id="300014" data-i18n="resources.title_type14" value="13"></option>
+                <option id="300015" data-i18n="resources.title_type15" value="14"></option>
+            </select>
+            <select id="selectMenu3"
+                style="width:100px;height:30px;margin-right:10px ;margin-top:16px;" disabled="false">
+                <option id="20001" data-i18n="resources.title_template1" value="0"></option>
+                <option id="20002" data-i18n="resources.title_template2" value="1"></option>
+                <option id="20003" data-i18n="resources.title_template3" value="2"></option>
+                <option id="20004" data-i18n="resources.title_template4" value="3"></option>
+                <option id="20005" data-i18n="resources.title_template5" value="4"></option>
+                <option id="20006" data-i18n="resources.title_template6" value="5"></option>
+                <option id="20007" data-i18n="resources.title_template7" value="6"></option>
+                <option id="20008" data-i18n="resources.title_template8" value="7"></option>
+                <option id="20009" data-i18n="resources.title_template9" value="8"></option>
+                <option id="20010" data-i18n="resources.title_template10" value="9"></option>
+                <option id="20011" data-i18n="resources.title_template11" value="10"></option>
+                <option id="20012" data-i18n="resources.title_template12" value="11"></option>
+            </select>
+        </div>
+        <div style="margin: 10px;">
+            <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                data-i18n="[value]resources.title_createSignSymbol" onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+            <input id="removeSignSymbol" type="button" class="btn btn-default"
+                style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_removeSignSymbol"
+                onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+        </div>
+        <!-- </div> -->
+    </div>
+    <div id="toolbar" class="panel panel-primary"
+        style=" position: absolute;top: 180px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;width: 360px;">
+        <div class='panel-heading' id="panelheading">
+            <h5 class='panel-title text-center' data-i18n="resources.title_showSignSymbol"
+                style=" font-size: 16px;color: #ffffff;"></h5>
+        </div>
+        <div style="margin: 10px;">
+            <input id="maxLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                data-i18n="[value]resources.title_maxScale" onclick="setMax()" />
+            <input id="minLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                data-i18n="[value]resources.title_minScale" onclick="setMin()" />
+            <input id="cancelScale" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                data-i18n="[value]resources.title_clearScale" onclick="setClear()" />
+        </div>
+    </div>
+    </div>
+    <div id="plottingPanel">
+        <div class="easyui-panel"
+            style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+            <div class="easyui-tabs" style="width: 100%;height: 100%">
+                <div id="signStylePanel" data-i18n="[title]resources.text_attributeSignSymbolPanel"></div>
+            </div>
+        </div>
+    </div>
+    <!-- <div  id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 245px;width: 300px;background: #FFF;z-index: 9999;display: block;">
+    <div class="winTitle" style=" background: #1E90FF;">
+        <span class="title_left" data-i18n="resources.title_signSymbolTree"></span>
+        <span class="title_active" style="margin-left: 21px;color: #0fff00;" data-i18n="resources.title_currentLayerInfo"></span>
+    </div>
+
+    <div class="panel5" id = "max&minScale" style="display:flex; padding: 10px;justify-content: center;">
+        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" data-i18n="[value]resources.title_maxScale" onclick="setMax()" />
+        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"data-i18n="[value]resources.title_minScale" onclick="setMin()" />
+        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" data-i18n="[value]resources.title_clearScale" onclick="setClear()" />
+    </div>
+</div> -->
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" include="bootstrap,widgets.alert,plottingPanel" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet"
+        src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="PlotPanel,StylePanel,SignSymbolPanel"
+        src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+        var map;
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: [37.6171875, 109.3359375],
+            maxZoom: 18,
+            zoom: 4
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
+        L.control.scale().addTo(map);
+        var plottingLayer = L.supermap.plotting.plottingLayer("plottingLayer", serverUrl).addTo(map);
+        var signSymbolLayer = L.supermap.plotting.signSymbolLayer(resources.title_signSymbolLayer, serverUrl).addTo(map);
+        var drawControl = L.supermap.plotting.drawControl(plottingLayer).addTo(map);
+        var editControl = L.supermap.plotting.editControl().addTo(map);
+        // L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
+        L.supermap.plotting.getControl().setTouchMode(false);//触屏模式
+        var plotting = L.supermap.plotting.getControl(map, serverUrl);
+        var plotMapManager = plotting.getPlotMapManager();
+        var specialEffectManager = plotting.getSpecialEffectManager();
+        // L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
+        L.supermap.plotting.initSignStylePanel("signStylePanel", editControl);
+        // L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+
+        var templateURL = "../data/plot-sign/sign3.html";
+
+        var currentSelectedSignSymbolUuid, activeSignSymbolLayer, selectedSignSymbolLayer;
+        addLayer();
+        function create() {
+            var signMode = parseInt(document.getElementById("selectMenu1").value);
+            var signType = parseInt(document.getElementById("selectMenu2").value);
+            if (signMode == 2) {
+                var index = parseInt(document.getElementById("selectMenu3").value)
+                switch (index) {
+                    case 0:
+                        templateURL = "../data/plot-sign/sign1.html";
+                        break;
+                    case 1:
+                        templateURL = "../data/plot-sign/sign2.html";
+                        break;
+                    case 2:
+                        templateURL = "../data/plot-sign/sign3.html";
+                        break;
+                    case 3:
+                        templateURL = "../data/plot-sign/sign4.html";
+                        break;
+                    case 4:
+                        templateURL = "../data/plot-sign/sign5.html";
+                        break;
+                    case 5:
+                        templateURL = "../data/plot-sign/sign6.html";
+                        break;
+                    case 6:
+                        templateURL = "../data/plot-sign/sign7.html";
+                        break;
+                    case 7:
+                        templateURL = "../data/plot-sign/sign8.html";
+                        break;
+                    case 8:
+                        templateURL = "../data/plot-sign/sign9.html";
+                        break;
+                    case 9:
+                        templateURL = "../data/plot-sign/sign10.html";
+                        break;
+                    case 10:
+                        templateURL = "../data/plot-sign/sign11.html";
+                        break;
+                    case 11:
+                        templateURL = "../data/plot-sign/sign12.html";
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            var title = "";
+            if (signMode === SuperMap.Plot.SignMode.Simple) {
+                title = resources.title_simpleSignSymbol;
+            } else if (signMode === SuperMap.Plot.SignMode.Complex) {
+                title = resources.title_complexSignSymbol;
+            } else if (signMode === SuperMap.Plot.SignMode.Custom) {
+                title = resources.title_customSignSymbol;
+            } else if (signMode === SuperMap.Plot.SignMode.Image) {
+                title = resources.title_ImageSignSymbol;
+            }
+            var signOption = {
+                signMode: signMode, signType: signType, title: title, offsetX: 0, offsetY: -50, style: { contentFontColor: "#00b2ff" }, templateUrl: templateURL
+            };
+            var options = {
+                isLocked: false,
+                enableEdit: true,
+                enableSelected: true
+            };
+            var symbolText = new SuperMap.Plot.SymbolText("", SuperMap.Plot.AnnoPosition.TOP, null, signOption)
+            var coordinates = [map.getCenter().lat + (2 * 15 * Math.random() - 15), map.getCenter().lng + (2 * 15 * Math.random() - 15)];
+            var latlng = L.latLng(coordinates[0], coordinates[1]);
+            symbolText.textContent = [resources.text_name + "：" + title, resources.text_longitude + latlng.lng, resources.text_latitude + latlng.lat];//resources.text_longitude + latlng.lng + "\n" + resources.text_latitude + latlng.lat;
+            activeSignSymbolLayer.createSignSymbol(latlng, symbolText, options);
+        }
+        function remove() {
+            var sign = editControl.getSelectedSignSymbols()[0];
+            editControl.unselectSignSymbol();
+            if (sign) {
+                sign.remove();
+            } else {
+                sign = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
+                if (sign) {
+                    sign.remove();
+                }
+            }
+        }
+        function signLayer() {
+            if (selectedSignSymbolLayer.getVisibility()) {
+                signLayerUnshow(selectedSignSymbolLayer);
+                document.getElementById("layerVisiable").value = resources.title_showLayer;
+            } else {
+                signLayerShow(selectedSignSymbolLayer);
+                document.getElementById("layerVisiable").value = resources.title_hideLayer;
+            }
+        }
+        function signLayerShow(selectedSignSymbolLayer) {
+            if (selectedSignSymbolLayer) {
+                selectedSignSymbolLayer.setVisibility(true);
+            }
+        }
+        function signLayerUnshow(selectedSignSymbolLayer) {
+            if (selectedSignSymbolLayer) {
+                selectedSignSymbolLayer.setVisibility(false);
+                if (selectedSignSymbolLayer.selectedFeatures) {
+                    editControl.unselectSignSymbol();
+                }
+            }
+        }
+
+        var currentSignSymbol;
+
+        function setMax() {
+            activeSignSymbolLayer.setMaxVisibleScale(map.getScale());
+        }
+        function setMin() {
+            activeSignSymbolLayer.setMinVisibleScale(map.getScale());
+        }
+        function setClear() {
+            activeSignSymbolLayer.clearVisibleScale();
+        }
+
+        function addLayer() {
+            var layer = L.supermap.plotting.signSymbolLayer(resources.title_signSymbolLayer, serverUrl).addTo(map);
+            activeSignSymbolLayer = layer;
+            // document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：${activeSignSymbolLayer.name}`
+            // layer.on(SuperMap.Plot.Event.signsymbolsadded, refresh);
+            // layer.on(SuperMap.Plot.Event.signsymbolsremoved, refresh);
+        }
+        function removeLayer() {
+            if (selectedSignSymbolLayer) {
+                var isCurrent = false
+                if (activeSignSymbolLayer.name == selectedSignSymbolLayer.name) {
+                    isCurrent = true;
+                }
+                selectedSignSymbolLayer.off(SuperMap.Plot.Event.signsymbolsadded, refresh);
+                selectedSignSymbolLayer.off(SuperMap.Plot.Event.signsymbolsremoved, refresh);
+                plotMapManager.removeSignSymbolLayer(selectedSignSymbolLayer);
+                if (isCurrent) {
+                    var layers = L.supermap.plotting.getControl().getPlotMapManager().getSignSymbolLayers();
+                    if (layers.length > 0) {
+                        activeSignSymbolLayer = layers[0];
+                        document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：${activeSignSymbolLayer.name}`
+                    } else {
+                        activeSignSymbolLayer = null;
+                        document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：`
+                    }
+                }
+            }
+        }
+        function changeModeValue(value) {
+            var type = parseInt(value)
+            if (value == 0 || value == 1) {
+                document.getElementById("selectMenu3").disabled = true;
+            } else {
+                document.getElementById("selectMenu3").disabled = false;
+            }
+            if (value == 2) {
+                document.getElementById("selectMenu2").disabled = true;
+            } else {
+                document.getElementById("selectMenu2").disabled = false;
+            }
+            if (value == 3) {
+                document.getElementById("selectMenu2").disabled = false;
+                document.getElementById("selectMenu3").disabled = false;
+            }
+        }
+
+        function changeTypeValue(value) {
+            var type = parseInt(value)
+            // if(value == 2){
+            //     document.getElementById("selectMenu2").disabled = false;
+            // }else{
+            //     document.getElementById("selectMenu2").disabled = true;
+            // }
+        }
+
+        function getTieFeature(event) {
+            if (event.features) {
+                if (event.features.length > 0) {
+                    var associated = event.features[0];
+                    currentSignSymbol.connectToFeature(associated);
+                    currentSignSymbol = null;
+                }
+            } else {
+                alert("选择了错误的绑定对象！")
+            }
+        }
+        document.onkeydown = function (event) {
+            var event = event || window.event;
+            if (event && event.keyCode === 46) {//Delete键
+                editControl.deleteSelectedFeatures();
+            }
+        }
+    </script>
+</body>
+
+</html>

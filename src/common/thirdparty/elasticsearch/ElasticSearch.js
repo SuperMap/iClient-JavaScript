@@ -1,8 +1,7 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Events} from '../../commontypes/Events';
-import es from '@elastic/elasticsearch';
 import {Util} from "../../commontypes/Util";
 
 /**
@@ -12,44 +11,21 @@ import {Util} from "../../commontypes/Util";
  * @category ElasticSearch
  * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} es - elasticsearch的全局变量。注意：需要@elastic/elasticsearch@5.6.22或者elasticsearch@16.7.3。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
- * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      alias: {
-        process: 'process/browser',
-      },
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        http: require.resolve('stream-http'),
-        https: require.resolve('https-browserify'),
-        os: require.resolve('os-browserify/browser'),
-        stream: require.resolve('stream-browserify'),
-        tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib')
-      }
-    }
-    plugins: [
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
-      }),
-    ]
-}</code></pre>
  * @usage
  */
 
 export class ElasticSearch {
 
-    constructor(url, options) {
+    constructor(url, es, options) {
+        if (!es || (typeof es !== 'function' && typeof es !== 'object') || typeof es.Client !== 'function') {
+          throw Error('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+        }
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
@@ -128,7 +104,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.setGeoFence
+     * @function ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
      * @param {Geometry} geoFence - 地理围栏。
      */
@@ -138,7 +114,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.bulk
+     * @function ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
@@ -150,7 +126,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.clearScroll
+     * @function ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
      *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -162,7 +138,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.count
+     * @function ElasticSearch.prototype.count
      * @description 获取集群、索引、类型或查询的文档个数。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
@@ -174,7 +150,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.create
+     * @function ElasticSearch.prototype.create
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
@@ -186,7 +162,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
@@ -198,7 +174,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteByQuery
+     * @function ElasticSearch.prototype.deleteByQuery
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
@@ -210,7 +186,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteScript
+     * @function ElasticSearch.prototype.deleteScript
      * @description 根据其ID删除脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -222,7 +198,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteTemplate
+     * @function ElasticSearch.prototype.deleteTemplate
      * @description 根据其ID删除模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -234,7 +210,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.exists
+     * @function ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -246,7 +222,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.existsSource
+     * @function ElasticSearch.prototype.existsSource
      * @description 检查资源是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -259,7 +235,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.explain
+     * @function ElasticSearch.prototype.explain
      * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
@@ -271,7 +247,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.fieldCaps
+     * @function ElasticSearch.prototype.fieldCaps
      * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
@@ -284,7 +260,7 @@ export class ElasticSearch {
 
 
     /**
-     * @function  ElasticSearch.prototype.get
+     * @function ElasticSearch.prototype.get
      * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -296,7 +272,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getScript
+     * @function ElasticSearch.prototype.getScript
      * @description 获取脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -308,7 +284,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getSource
+     * @function ElasticSearch.prototype.getSource
      * @description 通过索引，类型和ID获取文档的源。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -320,7 +296,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getTemplate
+     * @function ElasticSearch.prototype.getTemplate
      * @description 获取模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -332,7 +308,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.index
+     * @function ElasticSearch.prototype.index
      * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
@@ -344,7 +320,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.info
+     * @function ElasticSearch.prototype.info
      * @description 从当前集群获取基本信息。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -356,7 +332,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mget
+     * @function ElasticSearch.prototype.mget
      * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
@@ -368,7 +344,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearch
+     * @function ElasticSearch.prototype.msearch
      * @description 在同一请求中执行多个搜索请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
@@ -392,7 +368,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearchTemplate
+     * @function ElasticSearch.prototype.msearchTemplate
      * @description 在同一请求中执行多个搜索模板请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -404,7 +380,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mtermvectors
+     * @function ElasticSearch.prototype.mtermvectors
      * @description 多termvectors API允许一次获得多个termvectors。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
@@ -416,7 +392,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.ping
+     * @function ElasticSearch.prototype.ping
      * @description 测试连接。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -428,7 +404,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putScript
+     * @function ElasticSearch.prototype.putScript
      * @description 添加脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -440,7 +416,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putTemplate
+     * @function ElasticSearch.prototype.putTemplate
      * @description 添加模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -452,7 +428,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindex
+     * @function ElasticSearch.prototype.reindex
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -464,7 +440,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindexRessrottle
+     * @function ElasticSearch.prototype.reindexRessrottle
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -476,7 +452,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.renderSearchTemplate
+     * @function ElasticSearch.prototype.renderSearchTemplate
      * @description 搜索模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -488,7 +464,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.scroll
+     * @function ElasticSearch.prototype.scroll
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -500,7 +476,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.search
+     * @function ElasticSearch.prototype.search
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
@@ -523,7 +499,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchShards
+     * @function ElasticSearch.prototype.searchShards
      * @description  返回要执行搜索请求的索引和分片。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
@@ -535,7 +511,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchTemplate
+     * @function ElasticSearch.prototype.searchTemplate
      * @description  搜索模板。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -547,7 +523,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.suggest
+     * @function ElasticSearch.prototype.suggest
      * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -559,7 +535,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.termvectors
+     * @function ElasticSearch.prototype.termvectors
      * @description 返回有关特定文档字段中的术语的信息和统计信息。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
@@ -571,7 +547,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.update
+     * @function ElasticSearch.prototype.update
      * @description 更新文档的部分。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
@@ -583,7 +559,7 @@ export class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.updateByQuery
+     * @function ElasticSearch.prototype.updateByQuery
      * @description 通过查询API来更新文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>

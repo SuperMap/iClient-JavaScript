@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class UpdateEdgeWeightParameters
  * @deprecatedclass SuperMap.UpdateEdgeWeightParameters
  * @category  iServer NetworkAnalyst EdgeWeight
- * @classdesc 边的耗费权重更新服务参数类。
+ * @classdesc 边的耗费权重更新服务参数类。边的耗费权重又称弧段权值，此类用于设置需要更新权值的边、
+ * 起始转向点、终止转向点以及更新后的耗费字段、耗费权重等参数。
  * @param {Object} options - 参数。
  * @param {string} options.edgeId - 所在边的 ID。
  * @param {string} options.fromNodeId - 起始转向点的 ID。

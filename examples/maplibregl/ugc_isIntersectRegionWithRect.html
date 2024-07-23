@@ -1,0 +1,181 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcRegionWithRect"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 10000;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center">面与矩形相交检测</h5>
+      </div>
+      <div class="panel-body content">
+        <input type="button" class="btn btn-default" value="执行" onclick="search()" />
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+      var map, polygon1, polygon2;
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      function initMap(url) {
+        return new Promise((resolve) => {
+          map = new maplibregl.Map({
+            container: 'map',
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tiles: [url],
+                  tileSize: 256
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles'
+                }
+              ]
+            },
+            center: [120, 30],
+            zoom: 6
+          });
+          map.on('load', function () {
+            resolve(map);
+          });
+        });
+      }
+
+      function addFeatures() {
+        polygon1 = {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            coordinates: [
+              [
+                [119.267912970807, 29.742649250075488],
+                [119.267912970807, 28.929660206686734],
+                [120.88700327552647, 28.929660206686734],
+                [120.88700327552647, 29.742649250075488],
+                [119.267912970807, 29.742649250075488]
+              ]
+            ],
+            type: 'Polygon'
+          }
+        };
+        polygon2 = {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            coordinates: [
+              [
+                [121.21536332646303, 33.19979516422491],
+                [121.21536332646303, 29.664917601179866],
+                [123.33517321005525, 29.664917601179866],
+                [123.33517321005525, 33.19979516422491],
+                [121.21536332646303, 33.19979516422491]
+              ]
+            ],
+            type: 'Polygon'
+          }
+        };
+        var targetPolygon = {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            coordinates: [
+              [
+                [118, 32],
+                [118, 30],
+                [122, 30],
+                [122, 32],
+                [118, 32]
+              ]
+            ],
+            type: 'Polygon'
+          }
+        };
+        [polygon1, polygon2, targetPolygon].forEach((polygon, index) => {
+          addLayer('fill' + index, 'fill', polygon, {
+            'fill-color': 'blue'
+          });
+        });
+      }
+
+      function search() {
+        clearLayer();
+        let intersectCount;
+        var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+        [polygon1, polygon2].forEach((polygon) => {
+          intersectCount = geometryAnalysis.isIntersectRegionWithRect(polygon, 118, 32, 122, 30);
+          if (intersectCount) {
+            addLayer('fill3', 'fill', polygon, {
+              'fill-color': 'green'
+            });
+          }
+        });
+      }
+
+      function addLayer(id, type, sourceData, paint) {
+        map.addLayer({
+          id,
+          type,
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [sourceData]
+            }
+          },
+          paint
+        });
+      }
+
+      function clearLayer() {
+        if (!map) {
+          return;
+        }
+        if (map.getLayer('fill3')) {
+          map.removeLayer('fill3');
+          map.removeSource('fill3');
+        }
+      }
+
+      initMap(url).then((map) => {
+        addFeatures();
+      });
+    </script>
+  </body>
+</html>

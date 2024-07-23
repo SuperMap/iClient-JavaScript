@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -12,7 +12,6 @@ import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
  * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -67,10 +66,12 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
 
     /**
      * @function GeoRelationAnalystService.prototype.processAsync
-     * @description 负责将客户端的空间关系分析参数传递到服务端
+     * @description 负责将客户端的空间关系分析参数传递到服务端。
      * @param {GeoRelationAnalystParameters} parameter - 空间关系分析所需的参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         if (!(parameter instanceof GeoRelationAnalystParameters)) {
             return;
         }
@@ -80,12 +81,12 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
 
         me.url = Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

@@ -1,0 +1,130 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcSmooth"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 10000;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center">线光滑</h5>
+      </div>
+      <div class="panel-body content">
+        <input type="button" class="btn btn-default" value="执行" onclick="search()" />
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
+    <script>
+      var map, res, point, line;
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World';
+      ol.supermap
+        .initMap(url, {
+          viewOptions: {
+            center: [120, 30],
+            zoom: 6
+          }
+        })
+        .then((res) => {
+          map = res.map;
+          addFeatures();
+        });
+
+      function addFeatures() {
+        line = {
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [121.56999950408226, 32.91386448256446],
+              [120.38144509177931, 33.00134554706615],
+              [119.50566815639718, 32.510338788575055],
+              [119.27629800665363, 31.733317307775863],
+              [119.06777968870506, 30.860267725080803],
+              [117.69155879025038, 30.84236640800131],
+              [117.60815146307095, 31.68009824940232],
+              [117.14941116358398, 31.76877970830175],
+              [116.5655598733299, 30.931839567467875],
+              [117.62900329486581, 29.78031553873329],
+              [120.31888959639468, 29.21770993348899],
+              [120.7359262322899, 30.23174156616949],
+              [121.69511049485146, 31.128385878890384],
+              [122.88366490715441, 31.6978413284709],
+              [121.21551836356957, 32.157967534470345],
+              [119.98526028767691, 31.164077959023942],
+              [119.23459434306397, 30.357771913607237],
+              [119.4639644928074, 29.924995219781238],
+              [118.15029908973531, 30.177679018209986]
+            ]
+          },
+          type: 'Feature'
+        };
+        addLayer(line, {
+          width: 5,
+          color: 'blue'
+        });
+      }
+
+      function search() {
+        var geometryAnalysis = new ol.supermap.GeometryAnalysis();
+        let smoothLine;
+        smoothLine = geometryAnalysis.smooth(line, point);
+        res = addLayer(smoothLine, {
+          width: 5,
+          color: 'green'
+        });
+      }
+
+      function addLayer(line, style) {
+        var lineSource = new ol.source.Vector({
+          features: [new ol.format.GeoJSON().readFeature(line)],
+          wrapX: false
+        });
+        var lineLayer = new ol.layer.Vector({
+          source: lineSource,
+          style: new ol.style.Style({
+            stroke: new ol.style.Stroke(style)
+          })
+        });
+        map.addLayer(lineLayer);
+        return lineLayer;
+      }
+
+      function clearLayer() {
+        if (res) {
+          map.removeLayer(res);
+        }
+      }
+    </script>
+  </body>
+</html>

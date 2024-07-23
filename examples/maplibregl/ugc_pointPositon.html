@@ -1,0 +1,272 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcPointPosition"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 100;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center">点线关系</h5>
+      </div>
+      <div class="panel-body content">
+        <div class="panel">
+          <div class="input-group">
+            <span class="input-group-addon">查找点</span>
+            <select id="positon" class="form-control">
+              <option value="isLeft">线左侧</option>
+              <option value="isRight">线右侧</option>
+              <option value="isOnSameSide">线同一侧</option>
+              <option value="isPointOnLine">在线上</option>
+              <option value="isProjectOnLineSegment">垂足在线上</option>
+              <option value="computePerpendicularPosition">计算点到直线的垂线</option>
+              <option value="nearestPointToVertex">计算线到点的最近点</option>
+            </select>
+          </div>
+        </div>
+        <input type="button" class="btn btn-default" value="查找" onclick="search()" />&nbsp;
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+      var map,
+        pointLists = [];
+      var line = {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [120, 26],
+            [120, 33]
+          ]
+        }
+      };
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      function initMap(url) {
+        return new Promise((resolve) => {
+          map = new maplibregl.Map({
+            container: 'map',
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tiles: [url],
+                  tileSize: 256
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles'
+                }
+              ]
+            },
+            center: [120, 30],
+            zoom: 6
+          });
+          map.on('load', function () {
+            resolve(map);
+          });
+        });
+      }
+
+      function addFeatures() {
+        const point1 = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [118, 30]
+          }
+        };
+        const point2 = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [120, 30]
+          }
+        };
+        const point3 = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [122, 30]
+          }
+        };
+        const point4 = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [122, 34]
+          }
+        };
+        pointLists = [point1, point2, point3, point4];
+        addLayer('line', 'line', [line], {
+          'line-color': 'red',
+          'line-width': 4
+        });
+        addLayer('points', 'circle', pointLists, {
+          'circle-radius': 6,
+          'circle-color': 'black'
+        });
+      }
+
+      function search() {
+        clearLayer();
+        const positonFun = document.getElementById('positon').value;
+        var line = {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [120, 26],
+              [120, 33]
+            ]
+          }
+        };
+        const [[spx, spy], [epx, epy]] = line.geometry.coordinates;
+        const pointResults = [];
+        var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+        if (positonFun === 'isOnSameSide') {
+          for (let i = 0; i < pointLists.length; i++) {
+            for (let j = i + 1; j < pointLists.length; j++) {
+              const [px1, py1] = pointLists[i].geometry.coordinates;
+              const [px2, py2] = pointLists[j].geometry.coordinates;
+              const booleanResult = geometryAnalysis['isOnSameSide'](
+                px1,
+                py1,
+                px2,
+                py2,
+                spx,
+                spy,
+                epx,
+                epy
+              );
+              if (booleanResult) {
+                pointResults.push(pointLists[i], pointLists[j]);
+              }
+            }
+          }
+        } else if (positonFun === 'computePerpendicularPosition') {
+          const [px, py] = pointLists[0].geometry.coordinates;
+          const result = geometryAnalysis[positonFun](px, py, spx, spy, epx, epy);
+          var line = {
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [[px, py], result]
+            }
+          };
+          addLayer('line1', 'line', [line], {
+            'line-color': 'red',
+            'line-width': 4
+          });
+        } else if (positonFun === 'nearestPointToVertex') {
+          const [px, py] = pointLists[0].geometry.coordinates;
+          var line = {
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [spx, spy],
+                [epx, epy]
+              ]
+            }
+          };
+          const result = geometryAnalysis[positonFun](px, py, line);
+            addLayer('nearestPoint', 'circle', [{
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: result
+            }
+          }], {
+            'circle-radius': 6,
+            'circle-color': 'green'
+          });
+        } else {
+          pointLists.forEach((point) => {
+            const [px, py] = point.geometry.coordinates;
+            const booleanResult = geometryAnalysis[positonFun](px, py, spx, spy, epx, epy);
+            if (booleanResult) {
+              pointResults.push(point);
+            }
+          });
+        }
+        addLayer('highlightPoints', 'circle', pointResults, {
+          'circle-radius': 6,
+          'circle-color': 'red'
+        });
+      }
+
+      function addLayer(id, type, sourceData, paint) {
+        map.addLayer({
+          id,
+          type,
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: sourceData
+            }
+          },
+          paint
+        });
+      }
+
+      function clearLayer() {
+        if (!map) {
+          return;
+        }
+        if (map.getLayer('highlightPoints')) {
+          map.removeLayer('highlightPoints');
+          map.removeSource('highlightPoints');
+        }
+        if (map.getLayer('line1')) {
+          map.removeLayer('line1');
+          map.removeSource('line1');
+        }
+        if (map.getLayer('nearestPoint')) {
+          map.removeLayer('nearestPoint');
+          map.removeSource('nearestPoint');
+        }
+      }
+      initMap(url).then((map) => {
+        addFeatures();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,785 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* turf (https://github.com/Turfjs/turf)
+* maplibre-gl-enhance (https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/1.12.1/maplibre-gl-enhance.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_tiledMapLayer_rasterfunction"></title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        width: 330px;
+        height: 100%;
+        z-index: 999;
+        border-radius: 4px;
+      }
+      .tab-content {
+        height: calc(100% - 40px);
+        overflow: auto;
+      }
+      .setting-title {
+        padding-bottom: 4px;
+        text-align: left;
+      }
+      #settings .input-group-addon:first-child {
+        min-width: 165px;
+        text-align: left;
+      }
+      #sql .input-group-addon:first-child {
+        min-width: 100px;
+        text-align: left;
+      }
+  
+      #groups {
+        max-height: 290px;
+        overflow: auto;
+        padding: 0;
+      }
+      #queryResults {
+        max-height: 360px;
+        overflow: auto;
+        padding: 0;
+      }
+      td,th{
+        border: 1px solid black;
+        max-width: 135px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      #queryResults a,#groups a, a:hover, a:focus {
+        color: #333 !important;
+        text-decoration: none !important;
+      }
+      #queryResults li>a,
+      #groups li>a {
+        display: inline-block;
+        width: 100%;
+        padding: 3px 8px;
+      }
+      #queryResults li,
+      #groups li {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+      }
+      #queryResults li img,
+      #groups li img{
+        width: 12px;
+        height: 12px;
+        opacity: 0.8;
+      }
+      #queryResults li:hover,
+      #queryResults li.active,
+      #groups li:hover,
+      #groups li.active {
+        background-color: #eee;
+      }
+      .attrs-btns {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+      }
+      #toolbar .panel-heading{
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="toolbar" class="panel panel-primary">
+      <ul class='panel-heading nav nav-tabs'>
+          <li class="panel-title active"><a href="#settings" data-toggle="tab" data-i18n="resources.text_chartSetting"></a></li>
+          <li class="panel-title"><a href="#attrs" data-toggle="tab" data-i18n="resources.text_selectQuery"></a></li>
+          <li class="panel-title"><a href="#sql" data-toggle="tab" data-i18n="resources.text_sqlQuery"></a></li>
+      </ul>
+      <div class="tab-content">
+        <!-- 海图设置面板 -->
+        <div class='panel-body content tab-pane active' id="settings">
+          <div class='panel'>
+            <div data-i18n="resources.text_displaySetting" class="setting-title"></div>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_displayModeChart"></span>
+              <select id='displayModeChart' class='form-control' onchange="changeDisplayModeChart()">
+                <option value="STANDARD" data-i18n="resources.text_STANDARD"></option>
+                <option value="BASIC" data-i18n="resources.text_BASIC"></option>
+                <option value="OTHER" data-i18n="resources.text_OTHER" selected></option>
+              </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_colourModeChart"></span>
+                <select id='colourModeChart' class='form-control'>
+                  <option value="DAY_BRIGHT" data-i18n="resources.text_DAY_BRIGHT" selected></option>
+                  <option value="DUSK" data-i18n="resources.text_DUSK"></option>
+                  <option value="NIGHT" data-i18n="resources.text_NIGHT"></option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_displayTypeName"></span>
+                <input type='text' class='form-control' id='displayTypeName' value='S52'/>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_displayScaleFactor"></span>
+                <input type='text' class='form-control' id='displayScaleFactor' value='0.05'/>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon' data-i18n="resources.text_fontName"></span>
+                <select id='fontName' class='form-control'>
+                  <option value="Arial">Arial</option>
+                  <option value="宋体">宋体</option>
+                  <option value="黑体">黑体</option>
+                </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_fontSize"></span>
+              <input type='number' class='form-control' id='fontSize' value='10'/>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'  data-i18n="resources.text_simplifiedMarker"></span>
+                <select id='simplifiedMarker' class='form-control'>
+                  <option value="true" data-i18n="resources.text_true" selected></option>
+                  <option value="false" data-i18n="resources.text_false"></option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'  data-i18n="resources.text_symbolizedAreaBoundary"></span>
+                <select id='symbolizedAreaBoundary' class='form-control'>
+                  <option value="true" data-i18n="resources.text_true"></option>
+                  <option value="false" data-i18n="resources.text_false" selected></option>
+                </select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div data-i18n="resources.text_soundingSetting" class="setting-title"></div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displayTwoShades"></span>
+              <select id='displayTwoShades' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_safetyContour"></span>
+              <input type='number' class='form-control' id='safetyContour' value='30'/>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_shallowContour"></span>
+              <input type='number' class='form-control' id='shallowContour' value='2'/>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_deepContour"></span>
+              <input type='number' class='form-control' id='deepContour' value='30'/>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_safetyDepth"></span>
+              <input type='number' class='form-control' id='safetyDepth' value='30'/>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_depthUnit"></span>
+              <select id='depthUnit' class='form-control'>
+                <option value="DECIMETER"  data-i18n="resources.text_DECIMETER"></option>
+                <option value="METER"  data-i18n="resources.text_METER" selected></option>
+                <option value="FOOT"  data-i18n="resources.text_FOOT"></option>
+              </select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div data-i18n="resources.text_filterSetting" class="setting-title"></div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displaySafetyContourLabel"></span>
+              <select id='displaySafetyContourLabel' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displayOtherContourLabel"></span>
+              <select id='displayOtherContourLabel' class='form-control' disabled>
+                <option value="true" data-i18n="resources.text_true"></option>
+                <option value="false" data-i18n="resources.text_false" selected></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displaySounding"></span>
+              <select id='displaySounding' class='form-control' disabled>
+                <option value="true" data-i18n="resources.text_true"></option>
+                <option value="false" data-i18n="resources.text_false" selected></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displayMetaObject"></span>
+              <select id='displayMetaObject' class='form-control' disabled>
+                <option value="true" data-i18n="resources.text_true"></option>
+                <option value="false" data-i18n="resources.text_false" selected></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displayTextMessage"></span>
+              <select id='displayTextMessage' class='form-control'>
+                <option value="true" data-i18n="resources.text_true"></option>
+                <option value="false" data-i18n="resources.text_false" selected></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_displayLowAccurateMarker"></span>
+              <select id='displayLowAccurateMarker' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'  data-i18n="resources.text_localizationDisplayText"></span>
+                <select id='localizationDisplayText' class='form-control'>
+                  <option value="true" data-i18n="resources.text_true"></option>
+                  <option value="false" data-i18n="resources.text_false" selected></option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'  data-i18n="resources.text_displayCellName"></span>
+                <select id='displayCellName' class='form-control'>
+                  <option value="true" data-i18n="resources.text_true"></option>
+                  <option value="false" data-i18n="resources.text_false" selected></option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'  data-i18n="resources.text_displayBorder"></span>
+                <select id='displayBorder' class='form-control'>
+                  <option value="true" data-i18n="resources.text_true"></option>
+                  <option value="false" data-i18n="resources.text_false" selected></option>
+                </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_minVisibleScaleEnabled"></span>
+              <select id='minVisibleScaleEnabled' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+            <div class='input-group'>
+              <span class='input-group-addon'  data-i18n="resources.text_textClipRegionEnabled"></span>
+              <select id='textClipRegionEnabled' class='form-control'>
+                <option value="true" data-i18n="resources.text_true"></option>
+                <option value="false" data-i18n="resources.text_false" selected></option>
+              </select>
+            </div>
+          </div>
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_createChart" onclick="update()"/>
+        </div>
+        <!-- 点选查询面板 -->
+        <div class="panel-body tab-pane" id="attrs">
+          <ul id="groups"></ul>
+          <div id="attrTitle" style="display: none;padding:3px 0;" data-i18n="resources.text_attributes"></div>
+          <div id="featuresAttr" style="max-height: 400px;overflow: auto;" class="tab-content"></div>
+          <div id="queryTips" style="text-align: center;"></div>
+          <div class="attrs-btns">
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_select" onclick="clickToDraw()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel" onclick="cancelDraw()"/>
+          </div>
+        </div>
+        <!-- SQL查询面板 -->
+        <div class="panel-body tab-pane" id="sql">
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_chartLayers"></span>
+              <select id='chartLayers' class='form-control'></select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_featuresType"></span>
+              <select id='featuresList' class='form-control'></select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_attributeFilter"></span>
+              <input type='text' class='form-control' id='attributeFilter' value='SMID > 0' />
+            </div>
+          </div>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_isQueryPoint"></span>
+              <select id='isQueryPoint' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_isQueryLine"></span>
+              <select id='isQueryLine' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_isQueryRegion"></span>
+              <select id='isQueryRegion' class='form-control'>
+                <option value="true" data-i18n="resources.text_true" selected></option>
+                <option value="false" data-i18n="resources.text_false"></option>
+              </select>
+            </div>
+          </div>
+          <div class='panel'>
+            <div class="attrs-btns">
+              <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="sqlQuery()" />&nbsp;
+              <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clear" onclick="removeSqlRes()"/>
+            </div>
+          </div>
+          <ul id="queryResults"></ul>
+        </div>
+      </div>
+    </div>
+    <!-- 物标分类列表 -->
+    <div class="panel panel-primary" style="width:160px;position: absolute;bottom:5px;left:5px;z-index: 999;">
+      <div class="panel-heading">
+        <h5 class='panel-title text-center'>
+            <span  data-i18n="resources.text_classify"></span>
+        </h5>
+      </div>
+      <div class="panel-body" id="classify"></div>
+    </div>
+    <script type="text/javascript" include="maplibre-gl-enhance,turf" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var url = "https://iserver.supermap.io/iserver/services/map-chart/rest/maps/GB4X0000_52000";
+      var featureInfos;
+      var imgSrc = {
+          "Point": "../img/point1.png",
+          "MultiPoint": "../img/point1.png",
+          "LineString": "../img/line.png",
+          "MultiLineString": "../img/line.png",
+          "Polygon": "../img/polygon.png",
+          "MultiPolygon": "../img/polygon.png",
+      };
+      var displayableAcronymClassify = {};
+      var chartSetting = getChartSetting();
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tileSize: 256,
+              tiles: [url+ '/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}&chartSetting='+ JSON.stringify(chartSetting)],
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        crs: 'EPSG:4326', 
+        center: [61.0, -32.51],
+        maxZoom: 20,
+        zoom: 12
+      });
+
+      changeDisplayModeChart();
+      function changeDisplayModeChart() { 
+      // 当将显示模式设置为OTHER时,是否显示水深点、是否显示元物标、是否显示其他等深线标注 才有效
+      var displayModeChart = document.getElementById("displayModeChart").value;
+      document.getElementById("displaySounding").disabled = displayModeChart !== 'OTHER';
+      document.getElementById("displayMetaObject").disabled = displayModeChart !== 'OTHER';
+      document.getElementById("displayOtherContourLabel").disabled = displayModeChart !== 'OTHER';
+    }
+   
+      function getChartSetting() { 
+      var displayModeChart = document.getElementById("displayModeChart").value;
+      var colourModeChart = document.getElementById("colourModeChart").value;
+      var displayTypeName = document.getElementById("displayTypeName").value;
+      var displayScaleFactor = parseFloat(document.getElementById("displayScaleFactor").value);
+      var fontName = document.getElementById("fontName").value;
+      var simplifiedMarker = document.getElementById("simplifiedMarker").value === "true";
+      var symbolizedAreaBoundary = document.getElementById("symbolizedAreaBoundary").value === "true";
+      var displayTextMessage = document.getElementById("displayTextMessage").value === "true";
+      var displaySounding = document.getElementById("displaySounding").value === "true";
+      var minVisibleScaleEnabled = document.getElementById("minVisibleScaleEnabled").value === "true";
+      var localizationDisplayText = document.getElementById("localizationDisplayText").value === "true";
+      var displayMetaObject = document.getElementById("displayMetaObject").value === "true";
+      var displayCellName = document.getElementById("displayCellName").value === "true";
+      var displayBorder = document.getElementById("displayBorder").value === "true";
+      var displaySafetyContourLabel = document.getElementById("displaySafetyContourLabel").value === "true";
+      var safetyContour = parseFloat(document.getElementById("safetyContour").value);
+      var shallowContour = parseFloat(document.getElementById("shallowContour").value);
+      var deepContour = parseFloat(document.getElementById("deepContour").value);
+      var safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
+      var displayOtherContourLabel = document.getElementById("displayOtherContourLabel").value === "true";
+      var displayTwoShades = document.getElementById("displayTwoShades").value === "true";
+      var depthUnit = document.getElementById("depthUnit").value;
+      var fontSize = parseFloat(document.getElementById("fontSize").value);
+      var textClipRegionEnabled = document.getElementById("textClipRegionEnabled").value === "true";
+      var displayLowAccurateMarker = document.getElementById("displayLowAccurateMarker").value === "true";
+    
+      var chartSetting = new maplibregl.supermap.ChartSetting({
+        displayModeChart: displayModeChart,
+        colourModeChart: colourModeChart,
+        displayTypeName: displayTypeName,
+        displayScaleFactor: displayScaleFactor,
+        fontName: fontName,
+        simplifiedMarker: simplifiedMarker,
+        symbolizedAreaBoundary: symbolizedAreaBoundary,
+        displayTextMessage: displayTextMessage,
+        displaySounding: displaySounding,
+        minVisibleScaleEnabled: minVisibleScaleEnabled,
+        localizationDisplayText: localizationDisplayText,
+        displayMetaObject: displayMetaObject,
+        displayCellName: displayCellName,
+        displaySafetyContourLabel: displaySafetyContourLabel,
+        safetyContour: safetyContour,
+        shallowContour: shallowContour,
+        deepContour: deepContour,
+        safetyDepth: safetyDepth,
+        displayOtherContourLabel: displayOtherContourLabel,
+        displayTwoShades: displayTwoShades,
+        depthUnit: depthUnit,
+        fontSize: fontSize,
+        displayBorder: displayBorder,
+        textClipRegionEnabled: textClipRegionEnabled,
+        displayLowAccurateMarker: displayLowAccurateMarker,
+        displayableAcronymClassify: displayableAcronymClassify
+      })
+      return chartSetting;
+    }
+
+      function update() { 
+        var newChartSetting = getChartSetting();
+        map.getSource('raster-tiles').tiles=[url + '/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}&chartSetting='+ JSON.stringify(newChartSetting)]
+        map.style.sourceCaches['raster-tiles'].clearTiles()
+        map.style.sourceCaches['raster-tiles'].update(map.transform)
+        map.triggerRepaint();
+      }
+
+      getChartFeatureInfo();
+      function getChartFeatureInfo() {
+        new maplibregl.supermap.ChartService(url).getChartFeatureInfo().then(function(serviceResult) {
+          featureInfos = serviceResult.result;
+          getFeaturesList();
+        })
+      }
+
+      getClassify();
+      function getClassify() {
+        var classifications = document.getElementById('classify')
+        var chartService = new maplibregl.supermap.ChartService(url);
+        // 获取海图物标分类信息
+        chartService.getChartAcronymClassify().then(function(serviceResult) {
+          // 创建分类信息复选框
+          serviceResult.result.forEach(function(element) {
+            displayableAcronymClassify[element.name] = true
+            update();
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = element.name;
+            checkbox.checked = true;
+            checkbox.id = element.name;
+            var label = document.createElement('label');
+            label.textContent = element.aliasName;
+            label.style.marginLeft = "15px";
+            label.htmlFor = element.name;
+            classifications.appendChild(checkbox);
+            classifications.appendChild(label);
+            var brElement = document.createElement('br');
+            classifications.appendChild(brElement);
+            checkbox.addEventListener("click", function() {
+              displayableAcronymClassify[checkbox.value] = checkbox.checked;
+              update();
+            });
+          });
+        })
+      }
+
+      function clickHandler(event) {
+        var coordinates = [event.lngLat.lng, event.lngLat.lat];
+        var pixelCoor = event.point;
+        var b1 = map.unproject([pixelCoor.x-15,pixelCoor.y+15]);
+        var b2 = map.unproject([pixelCoor.x+15,pixelCoor.y-15]);
+        // 清除上一个点
+        if (map.getLayer('markerLayer')) {
+          map.removeLayer('markerLayer');
+          map.removeSource('markerSource');
+        }
+        // 创建新的点图层和数据源
+        map.addSource('markerSource', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: coordinates
+            }
+          }
+        });
+        map.addLayer({
+          id: 'markerLayer',
+          type: 'circle',
+          source: 'markerSource',
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#FF0000'
+          }
+        });
+        hasMarker = true;
+
+        var parms = new maplibregl.supermap.ChartQueryParameters({
+            queryMode:"ChartFeatureBoundsQuery",
+            bounds: new maplibregl.LngLatBounds(b1, b2)
+        });
+        var groups = document.getElementById('groups');
+        var featuresAttr = document.getElementById('featuresAttr');
+        var queryTips = document.querySelector('#queryTips');
+        var attrTitle = document.getElementById('attrTitle');
+        groups.innerHTML = '';
+        featuresAttr.innerHTML = '';
+        attrTitle.style.display = 'none';
+        queryTips.innerHTML = resources.text_isQuerying;
+
+        new maplibregl.supermap.ChartService(url).queryChart(parms).then(function(res) {
+          var queryRes = res.result.recordsets;
+          attrTitle.style.display = queryRes.length ? "block" : "none";
+          if(queryRes.length) {
+            queryTips.innerHTML = '';
+            queryRes.forEach(function(recordset) {
+              // 图幅
+              var groupName = document.createElement('div');
+              groupName.innerHTML = recordset.datasetGroupName;
+              groupName.style.fontWeight = 600;
+              groups.append(groupName);
+              recordset.chartRecordsets.forEach(function(chartFeatureRecordset) {
+                var localName = featureInfos.find(function(featureInfo) {
+                  return featureInfo.acronym === chartFeatureRecordset.acronym;
+                }).localName;
+                chartFeatureRecordset.features.features.forEach(function(feature) {
+                  // 图幅下的物标
+                  var type = feature.geometry.type;
+                  var acronym = document.createElement('li');
+                  acronym.innerHTML = '<img src=' + imgSrc[type] + '></img><a href="#' + chartFeatureRecordset.acronym + feature.id + '" data-toggle="tab">' + localName + '</a>';
+                  document.getElementById('groups').append(acronym);
+                  // 物标属性表格
+                  var field = document.createElement('table');
+                  field.id=chartFeatureRecordset.acronym+feature.id;
+                  field.className='tab-pane';
+                  var thead = document.createElement('thead');
+                  thead.innerHTML = '<tr><th>' + resources.text_propertyName + '</th><th>' + resources.text_propertyValue + '</th></tr>';
+                  field.append(thead);
+                  featuresAttr.append(field);
+                  var tbody = document.createElement('tbody');
+                  field.append(tbody);
+                  var propertiesKeys = Object.keys(feature.properties)
+                  propertiesKeys.forEach(function(fieldName) {
+                    var tr = document.createElement('tr');
+                    var fieldValue = feature.properties[fieldName];
+                    tr.innerHTML = '<td title=' + fieldName + '>' + fieldName + '</td> <td title="' + fieldValue + '">' + fieldValue + '</td>';
+                    tbody.append(tr);
+                  })
+                })
+              })
+            })
+            document.querySelector('#groups li').classList.add('active');
+            document.querySelector('#featuresAttr table').classList.add('active');
+          } else {
+            queryTips.innerHTML = resources.text_queryEmpty;
+          }
+        })
+      }
+      
+      function clickToDraw() {
+        map.getCanvas().style.cursor = 'crosshair';
+        map.on('click', clickHandler);
+      }
+
+      function cancelDraw() { 
+        map.getCanvas().style.cursor = 'default';
+        map.off('click', clickHandler);
+        if (map.getLayer('markerLayer')) {
+          map.removeLayer('markerLayer');
+          map.removeSource('markerSource');
+        }
+      }
+
+      getLayers()
+      function getLayers() {
+        var chartLayers= [];
+        new maplibregl.supermap.LayerInfoService(url).getLayersInfo().then(function(serviceResult) {
+          serviceResult.result.subLayers.layers.map(function (layer) {
+              chartLayers.push(layer.name);
+          });
+          var selectElement = document.getElementById('chartLayers');
+          for (var i = 0; i < chartLayers.length; i++) {
+            const optionElement = document.createElement('option');
+            optionElement.value = chartLayers[i];
+            optionElement.textContent = chartLayers[i];
+            selectElement.appendChild(optionElement);
+          }
+        })
+      }
+
+      function getFeaturesList() {
+        var featuresList = document.getElementById('featuresList');
+        for (var i = 0; i < featureInfos.length; i++) {
+            const optionElement = document.createElement('option');
+            optionElement.value = featureInfos[i]['code'];
+            optionElement.textContent = featureInfos[i]['localName'];
+            featuresList.appendChild(optionElement);
+          }
+      }
+
+      // maplibre-gl v3版本用法：
+      // map.loadImage(
+      //   '../img/point2.png', 
+      //   function(error, image) {
+      //   if (error) throw error;
+      //     map.addImage('icon_name', image);
+      // });
+      // maplibre-gl v4版本用法：
+      map.loadImage('../img/point2.png').then(function(image) {
+        map.addImage('icon_name', image.data);
+      });
+      function sqlQuery() { 
+        var chartLayerNames = document.getElementById("chartLayers").value;
+        var chartFeatureInfoSpecCode = document.getElementById("featuresList").value;
+        var attributeFilter = document.getElementById("attributeFilter").value;
+        var isQueryPoint = document.getElementById("isQueryPoint").value === "true";
+        var isQueryLine = document.getElementById("isQueryLine").value === "true";
+        var isQueryRegion = document.getElementById("isQueryRegion").value === "true";
+        
+        var chartQueryFilterParameter = new maplibregl.supermap.ChartQueryFilterParameter({
+          isQueryPoint,
+          isQueryLine,
+          isQueryRegion,
+          attributeFilter,
+          chartFeatureInfoSpecCode
+        });
+        var chartQueryParameters = new maplibregl.supermap.ChartQueryParameters({
+          queryMode:"ChartAttributeQuery",
+          chartLayerNames:[chartLayerNames],
+          returnContent:true,
+          chartQueryFilterParameters:[chartQueryFilterParameter]
+        });
+        removeSqlRes();
+        var queryResults = document.getElementById('queryResults')
+        queryResults.innerHTML = resources.text_isQuerying;
+
+        var allFeatures = {features: [], type:"FeatureCollection"};
+        var layerStyle = {
+          pointToLayer: function (feature, latlng) {
+            return maplibregl.marker(latlng, {
+              icon: maplibregl.icon({
+                iconUrl: '../img/point2.png',
+                iconSize: [32, 32]
+              })
+            });
+          },
+          style: function (feature) {
+            return {
+              stroke: true,
+              color: 'rgba(255, 0, 0, 1)',
+              weight: 3,
+              fillOpacity: 0.1
+            };
+        }}
+
+        var featuresListEle = document.getElementById("featuresList");
+        var localName = featuresListEle.options[featuresListEle.selectedIndex].text;
+
+        new maplibregl.supermap.ChartService(url).queryChart(chartQueryParameters).then(function(res) {
+          var queryRes = res.result.recordsets;
+          queryResults.innerHTML = queryRes.length ? '': resources.text_queryEmpty;
+          queryRes.forEach(function(recordset) {
+            allFeatures.features.push(...recordset.features.features);
+            recordset.features.features.forEach(function(feature) {
+              var type = feature.geometry.type;
+              
+              var acronym = document.createElement('li');
+              acronym.addEventListener('click', addLayerAndFlyTo);
+              // 点击列表物标，创建图层高亮显示
+              function addLayerAndFlyTo() {
+                removeSqlRes(false);
+                addSourceAndLayer(feature);
+                var bounds = turf.bbox(feature);
+                map.fitBounds(bounds, {
+                  padding: 200
+                });
+              }
+              acronym.innerHTML = '<img src=' + imgSrc[type] + '></img><a data-toggle="tab">' + localName + '</a>';
+              queryResults.append(acronym);
+            })
+          })
+          addSourceAndLayer(allFeatures);
+        })
+      }
+
+      function addSourceAndLayer(features) {
+        map.addSource('sqlResultSource', {
+          type: 'geojson',
+          data: features
+        });
+        map.addLayer({
+          'id': 'sql-layer-fill',
+          'type': 'fill',
+          'source': 'sqlResultSource',
+          'paint': {
+            'fill-outline-color': 'red',
+            'fill-color': 'rgba(255, 0, 0, 0.1)'
+          },
+          'filter': ['==', '$type', 'Polygon']
+        });
+
+        map.addLayer({
+          'id': 'sql-layer-line',
+          'type': 'line',
+          'source': 'sqlResultSource',
+          'paint': {
+            'line-color': 'red',
+            'line-width': 3
+          },
+          'filter': ['==', '$type', 'LineString']
+        });
+
+        map.addLayer({
+          'id': 'sql-layer-point',
+          'type': 'symbol',
+          'source': 'sqlResultSource',
+          'layout': {
+            'icon-image': 'icon_name'
+          },
+          'filter': ['==', '$type', 'Point']
+        });
+      }
+      
+      function removeSqlRes(clearHTML = true) {
+        if (clearHTML) {
+          document.getElementById('queryResults').innerHTML = '';
+        }
+        const layers = ['sql-layer-fill', 'sql-layer-line', 'sql-layer-point'];
+        layers.forEach(function(layer) {
+          if (map.getLayer(layer)) {
+            map.removeLayer(layer);
+          }
+        });
+        if (map.getSource('sqlResultSource')) {
+          map.removeSource('sqlResultSource');
+        }
+      }
+    </script>
+  </body>
+</html>

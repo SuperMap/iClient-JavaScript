@@ -1,16 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from "mapbox-gl";
 import MapExtendSymbol from './MapExtendSymbol';
 /**
 * @class WebSymbol
-* @classdesc SuperMap iClient for MapboxGL 支持 Web 符号库，扩展了 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API。
+* @classdesc Web 符号库。SuperMap iClient for MapboxGL 通过扩展 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API，实现了对 Web 符号库的支持，提供了前后端一致的 Web 符号化制图能力和自定义 Web 符号的能力。
 * @category Visualization WebSymbol
 * @description 
 * 
 * ## 初始化
-* 使用Web符号资源时, 通过接口指定符号资源路径。
+* 使用Web符号资源时，通过接口指定符号资源路径。
 * ```
 * new mapboxgl.supermap.WebSymbol().init({basePath: "./resources/symbols"});
 * ```
@@ -21,15 +21,28 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 
 * 参数名称			     |类型			 |描述  
 * :----				|:---		    |:---	
-* id				    |string		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
+* id				    |string、string[]		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
 * callback			    |function		|在符号加载完成后调用，返回符号信息；如果有错误，则返回错误参数。
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
+* // 加载单个Web符号
 * map.loadSymbol('point-1', (error, symbol) => {
 *       if (error) throw error;
 *       // Add the loaded symbol with the ID 'point-1'.
 *       map.addSymbol('point-1', symbol);
+* });
+*
+* // 加载多个Web符号
+* var symbolIds = ['point-1', 'point-2'];
+* map.loadSymbol(symbolIds, (error, symbols) => {
+*      symbols.forEach((symbol, index) => {
+*          symbol && map.addSymbol(symbolIds[index], symbol);
+*      })
 * });
 * ```
 * 
@@ -42,8 +55,12 @@ import MapExtendSymbol from './MapExtendSymbol';
 * |id				    |string		        |符号ID              |||
 * |symbol			    |object	            |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |                    |                   |参数名称			 |类型			     |描述  |
-* |                    |                   |paint				|object		        |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |                    |                   |layout			    |object	            |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |                    |                   |paint				|object		        |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |                    |                   |layout			    |object	            |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -58,6 +75,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----				|:---		    |:---	
 * layerId				|string		    |图层ID
 * symbol			    |string、array		    |已经添加的符号ID（addSymbol中的符号ID), 或者[符号表达式](#expression)
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -81,6 +102,15 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
 * 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* boolean		   |符号是否存在
+*   
 * **Example**
 * ```
 * const pointExists = map.hasSymbol('point-1');
@@ -94,6 +124,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----				|:---		    |:---	
 * id			      |string		    |已经添加的符号ID
 * 
+* **Version:**
+* 
+* 11.1.0
+* 
 * **Example**
 * ```
 * map.removeSymbol('point-1');
@@ -103,17 +137,44 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ## mapboxgl.Map.prototype.updateSymbol
 * 更新指定 ID 的符号。
 * 
-* 参数名称			     |类型			 |描述  
-* :----				|:---		    |:---	
-* id			      |string		    |已经添加的符号ID
+* |参数名称			     |类型			     |描述                | ||
+* |----				|---		        |---			    |---|---|
+* id			      |string		    |已经添加的符号ID|||
 * |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |             |             |参数名称			 |类型			     |描述  |
-* |             |             |paint				|object		      |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |             |             |layout			  |object	        |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |             |             |paint				|object		      |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |             |             |layout			  |object	        |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
 * map.updateSymbol('point-1', symbol);
+* ```
+* 
+* 
+* ## mapboxgl.Map.prototype.getSymbol
+* 获取指定 ID 的符号信息。
+* 
+* 参数名称			     |类型			 |描述  
+* :----			    |:---		    |:---	
+* id			    |string		    |符号ID
+* 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象
+* 
+* 
+* **Example**
+* ```
+* const point1 = map.getSymbol('point-1');
 * ```
 * 
 * 
@@ -123,9 +184,13 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
-* value			      |any		      |属性值
+* value			      |any		      |可选，属性值
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -140,8 +205,17 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
+* 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			  |描述  
+* :---		        |:---	
+* any		        |属性值 
 * 
 * **Example**
 * ```
@@ -234,9 +308,10 @@ export class WebSymbol {
 
   /**
    * @function WebSymbol.prototype.init
-   * @description 初始化Web符号配置。
-   * @param {object} config - 配置信息
-   * @param {string} [config.basePath] - 指定符号资源路径
+   * @description 初始化 Web 符号配置。
+   * @version 11.1.0
+   * @param {object} config - 配置信息。
+   * @param {string} [config.basePath] - 指定符号资源路径。
    */
   init(config) {
     mapboxgl.Map.prototype.basePath = config && config.basePath || this.defaultBasePath;

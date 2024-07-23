@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -12,8 +12,18 @@
             margin-bottom: 0;
         }
 
+        #listTable {
+          margin: 0 auto;
+          border: 1px solid #cfcfcf;
+          border-radius: 4px;
+          border-collapse: collapse;
+          border-style:hidden;  
+          box-shadow: 0 0 0 1px #cfcfcf;
+        }
+
         #listTable th, #listTable td {
             padding: 5px;
+            border: 1px solid #cfcfcf;
         }
     </style>
 </head>
@@ -51,7 +61,7 @@
                                            data-i18n="resources.text_userName"></label>
 
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="username_iManager" value="admin">
+                                        <input type="text" class="form-control" id="username_iManager">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -59,8 +69,7 @@
                                            data-i18n="resources.text_password"></label>
 
                                     <div class="col-md-8">
-                                        <input type="password" class="form-control" id="password_iManager"
-                                               value="admin">
+                                        <input type="password" class="form-control" id="password_iManager">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -87,13 +96,13 @@
                                         <table id="listTable">
                                             <thead>
                                             <tr role="row">
-                                                <th rowspan="1" colspan="1" style="width: 50px;">
+                                                <th rowspan="1" colspan="1" style="width: 80px;">
                                                     <div><span>id</span></div>
                                                 </th>
-                                                <th rowspan="1" colspan="1" style="width: 150px;">
+                                                <th rowspan="1" colspan="1" style="width: 200px;">
                                                     <div><span data-i18n="resources.text_name"></span></div>
                                                 </th>
-                                                <th rowspan="1" colspan="1" style="width: 150px;">
+                                                <th rowspan="1" colspan="1" style="width: 220px;">
                                                     <div><span data-i18n="resources.text_address"></span></div>
                                                 </th>
                                             </tr>
@@ -216,7 +225,7 @@
 <script>
 
     $(document).ready(function () {
-        $("#loginUrl_iManager").val("http://imgr.supermapol.com/imanager");
+        $("#loginUrl_iManager").val("http://localhost:8390/imanager");
     });
 
     /*登录*/
@@ -240,15 +249,18 @@
             .then(function (response) {
                 console.log(JSON.stringify(response));
                 var result = response;
+                var html = "";
                 if (result.list) {
-                    var html = "";
                     for (var i = 0; i < result.list.length; i++) {
                         var obj = result.list[i];
                         var address = obj.productInfos ? obj.productInfos[0].address : "";
-                        html += "<tr role='row'><td>" + obj.id + "</td><td>" + obj.nodeName + "</td><td><a href='" + address + "' target='_blank'>" + address + "</a></td><td></tr>";
+                        html += "<tr role='row'><td>" + obj.id + "</td><td>" + obj.nodeName + "</td><td><a href='" + address + "' target='_blank'>" + address + "</a></td></tr>";
                     }
-                    $("#nodeList").html(html);
+                   
+                } else {
+                  html += "<tr role='row'><td></td><td></td><td></td></tr>";
                 }
+                $("#nodeList").html(html);
             });
     }
 

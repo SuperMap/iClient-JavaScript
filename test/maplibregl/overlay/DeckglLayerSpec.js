@@ -77,7 +77,7 @@ describe('maplibregl_DeckglLayer', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
-        // document.body.removeChild(testDiv);
+        document.body.removeChild(testDiv);
     });
 
     it('onAdd_PathLayer', (done) => {

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * component 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -354,6 +354,13 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_geojson_vue.png',
             fileName: 'components_geojson_vue'
+          },
+          {
+            name: '知识图谱',
+            name_en: 'Knowledge GraphMap',
+            version: '11.1.0',
+            thumbnail: 'knowledgeGraphMap.png',
+            fileName: 'components_knowledgeGraphMap_vue'
           }
         ]
       },

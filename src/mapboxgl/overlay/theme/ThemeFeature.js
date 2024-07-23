@@ -1,17 +1,17 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import { Vector } from '@supermap/iclient-common/commontypes/Vector';
-import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
+import { Point } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
 import {Util} from '../../core/Util';
 
 /**
  * @class ThemeFeature
  * @category  Visualization Theme
- * @classdesc 专题图要素类。
+ * @classdesc 专题图要素类。支持的 geometry 参数类型为 GeoJSONObject。
  * @param {GeoJSONObject} geometry - 专题图要素几何对象。
  * @param {Object} [attributes] - 几何对象属性。
  * @usage

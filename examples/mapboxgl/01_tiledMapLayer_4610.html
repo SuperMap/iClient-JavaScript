@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -88,7 +92,7 @@
                         attributeFilter: 'SMID =14'
                     }
                 });
-                new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
+                new mapboxgl.supermap.QueryService(url).queryBySQL(param).then(function(serviceResult) {
                     map.addSource('queryDatas', {
                         type: 'geojson',
                         data: serviceResult.result.recordsets[0].features

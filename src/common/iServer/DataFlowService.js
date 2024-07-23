@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {CommonServiceBase} from './CommonServiceBase';
@@ -9,13 +9,14 @@ import {SecurityManager} from '../security/SecurityManager';
  * @class DataFlowService
  * @deprecatedclass SuperMap.DataFlowService
  * @category iServer DataFlow
- * @classdesc 数据流服务类。
+ * @classdesc 数据流服务类。用于实现客户端与服务器之间实现低延迟和实时数据传输。数据流服务采用 WebSocket 协议，支持全双工、双向式通信。
+ * 服务器可将流数据服务的分析处理结果作为数据来源向客户端广播，客户端与数据流服务建立连接后，即可自动接收服务器广播的数据。
  * @extends {CommonServiceBase}
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
- * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {function} [options.onEachFeature] - 设置每个数据加载 popup 等。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -36,7 +37,7 @@ export class DataFlowService extends CommonServiceBase {
 
         /**
          * @member {GeoJSONObject} DataFlowService.prototype.geometry
-         * @description 指定几何范围，该范围内的要素才能被订阅。
+         * @description 指定几何范围，只有在该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -60,7 +61,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {DataFlowService}
+     * @returns {DataFlowService} - 数据流服务。
      */
     initBroadcast() {
         var me = this;
@@ -96,13 +97,12 @@ export class DataFlowService extends CommonServiceBase {
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
         this.events.triggerEvent('broadcastSucceeded');
-
     }
 
     /**
      * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     initSubscribe() {
         var me = this;
@@ -131,7 +131,7 @@ export class DataFlowService extends CommonServiceBase {
      * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段。
      * @param {Object} excludeField - 排除字段。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
@@ -142,8 +142,8 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setGeometry(geometry) {
         this.geometry = geometry;

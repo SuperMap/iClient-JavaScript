@@ -1,11 +1,11 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import Pbf from 'pbf';
 import {VectorTile} from '@mapbox/vector-tile';
 import {VectorFeatureType} from './VectorFeatureType';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 /**
  * @class VectorTilePBF

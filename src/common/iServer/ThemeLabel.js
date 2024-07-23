@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -15,7 +15,8 @@ import {LabelOverLengthMode} from '../REST';
  * @class ThemeLabel
  * @deprecatedclass SuperMap.ThemeLabel
  * @category  iServer Map Theme
- * @classdesc 标签专题图类。
+ * @classdesc 标签专题图类。标签专题图是用文本形式在图层上直接显示属性表中的数据。
+ * 标签专题图不仅可以帮助用户更好地区分地物要素，同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @extends CommonTheme
  * @param {Object} options - 参数。
  * @param {Array.<ThemeLabelItem>} options.items - 子项数组。
@@ -25,13 +26,13 @@ import {LabelOverLengthMode} from '../REST';
  * @param {ThemeLabelBackground} [options.background] - 标签的背景风格类。
  * @param {LabelOverLengthMode} [options.labelOverLengthMode=LabelOverLengthMode.NONE] - 超长标签的处理模式枚举类。
  * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
- * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
+ * @param {number} [options.numericPrecision=0] - 数字显示精度。如果显示的标签内容为数字，通过该字段设置其显示的精度。
  * @param {ThemeOffset} [options.offset] - 指定标签专题图中标记文本相对于要素内点的偏移量对象。
  * @param {boolean} [options.overlapAvoided=true] - 是否允许以文本避让方式显示文本。
  * @param {string} [options.rangeExpression] - 制作分段标签专题的分段字段或字段表达式。
  * @param {boolean} [options.smallGeometryLabeled=false] - 是否显示长度大于被标注对象本身长度的标签。
  * @param {ThemeLabelText} options.text - 标签中文本风格。
- * @param {number} [options.textSpace=0] - 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
+ * @param {number} [options.textSpace=0] - 沿线标注，相邻两个文字之间的间距，单位：当前设置的字高。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage
  */
@@ -62,7 +63,7 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {Array.<ThemeLabelUniqueItem>} ThemeLabel.prototype.uniqueItems
-         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression单值标签专题图子项集合。
+         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression 单值标签专题图子项集合。
          */
         this.uniqueItems = null;
 
@@ -94,8 +95,8 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {number} [ThemeLabel.prototype.numericPrecision=0]
-         * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
-         *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
+         * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是 8071.64529347，
+         *              如果该属性为 0 时，显示 8071；为 1 时，显示 8071.6；为 3 时，则是 8071.645。
          */
         this.numericPrecision = 0;
 
@@ -115,7 +116,7 @@ export class ThemeLabel extends Theme {
         /**
          * @member {string} ThemeLabel.prototype.rangeExpression
          * @description 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
-         *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
+         *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end) 来源于 rangeExpression 字段值。
          *              最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
          */
         this.rangeExpression = null;
@@ -123,7 +124,7 @@ export class ThemeLabel extends Theme {
         /**
          * @member {string} ThemeLabel.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。
-         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必须与labelExpression一起使用。
+         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必须与 labelExpression 一起使用。
          */
         this.uniqueExpression = null;
 
@@ -143,7 +144,7 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {number} [ThemeLabel.prototype.textSpace=0]
-         * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
+         * @description 沿线标注，相邻两个文字之间的间距，单位：当前设置的字高。
          */
         this.textSpace = 0;
 
@@ -202,7 +203,7 @@ export class ThemeLabel extends Theme {
 
     /**
      * @function ThemeLabel.prototype.toJSON
-     * @description 将themeLabel对象转化为 JSON 字符串。
+     * @description 将 themeLabel 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

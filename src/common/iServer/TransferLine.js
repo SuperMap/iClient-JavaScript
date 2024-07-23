@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class TransferLine
  * @deprecatedclass SuperMap.TransferLine
  * @category  iServer TrafficTransferAnalyst TransferPath
- * @classdesc 换乘路线信息类。
+ * @classdesc 换乘路线信息类。本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到。
  * @param {Object} options - 参数。
  * @param {number} options.lineID - 乘车路线 ID。
  * @param {string} options.lineName - 乘车路线名称。

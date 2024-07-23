@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -43,7 +47,32 @@
 	});
 
 	drawGraphics();
-	window.setInterval(updateInterval, 1000);
+	// window.setInterval(updateInterval, 1000);
+	updateAnimation();
+
+	function updateAnimation() {
+		var frameCount = 0;
+		var start = null;
+		var lasttime;
+		var fps = 1;
+		var fpsInterval = 1000/fps;
+		const animation = (timestamp) => {
+			if(start === null){
+				start = timestamp;
+				lasttime = start;
+			}
+			elapsed = timestamp - lasttime;
+			if(elapsed > fpsInterval){
+				lasttime = timestamp - (elapsed%fpsInterval);
+				frameCount++;
+				totaltime = timestamp-start;
+				average_fps = 1000 * frameCount/totaltime;
+				updateInterval();
+			}
+			requestAnimationFrame(animation);
+		}
+		requestAnimationFrame(animation);
+	}
 
 	function updateInterval() {
 		var features = movingTargetLayer.features;

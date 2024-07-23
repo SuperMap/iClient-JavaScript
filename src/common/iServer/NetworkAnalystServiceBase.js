@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -40,11 +40,13 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function NetworkAnalystServiceBase.prototype.serviceProcessCompleted
-     * @description 分析完成，执行此方法。
+     * @function NetworkAnalystServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, analystResult;
         result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
@@ -53,7 +55,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, options});
+        return { result: analystResult, options };
     }
 
     /**

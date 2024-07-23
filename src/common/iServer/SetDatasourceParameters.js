@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class SetDatasourceParameters
  * @deprecatedclass SuperMap.SetDatasourceParameters
  * @category iServer Data Datasource
- * @classdesc 设置数据源信息参数类。
+ * @classdesc 设置数据源信息参数类。此类用于设置数据源的名称、描述信息、坐标单位、距离单位等参数。
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称。
  * @param {string} options.description - 数据源描述信息。

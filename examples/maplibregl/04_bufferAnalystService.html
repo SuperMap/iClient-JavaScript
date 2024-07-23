@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +96,7 @@
             })
         });
         //缓冲区分析服务
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters).then(function (serviceResult) {
             map.addLayer({
                 "id": "queryDatas",
                 "type": "fill", /* fill类型一般用来表示一个面，一般较大 */

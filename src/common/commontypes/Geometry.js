@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -39,7 +39,7 @@ export class Geometry {
 
         /**
          * @member {number} Geometry.prototype.SRID
-         * @description 投影坐标参数。通过该参数，服务器判断 Geometry 对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
+         * @description 投影坐标参数。通过该参数，服务器判断几何对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
          * @example
          * var geometry= new Geometry();
          * geometry. SRID=4326;
@@ -72,7 +72,7 @@ export class Geometry {
 
     /**
      * @function Geometry.prototype.setBounds
-     * @description 设置几何对象的 bounds。
+     * @description 设置几何对象的边界。
      * @param {Bounds} bounds - 范围。
      */
     setBounds(bounds) {
@@ -84,8 +84,8 @@ export class Geometry {
 
     /**
      * @function Geometry.prototype.clearBounds
-     * @description 清除几何对象的 bounds。
-     * 如果该对象有父类，也会清除父类几何对象的 bounds。
+     * @description 清除几何对象的边界。
+     * 如果该对象有父类，也会清除父类几何对象的边界。
      */
     clearBounds() {
         this.bounds = null;
@@ -98,7 +98,7 @@ export class Geometry {
     /**
      * @function Geometry.prototype.extendBounds
      * @description 扩展现有边界以包含新边界。如果尚未设置几何边界，则设置新边界。
-     * @param {Bounds} newBounds - 几何对象的 bounds。
+     * @param {Bounds} newBounds - 几何对象的边界。
      */
     extendBounds(newBounds) {
         var bounds = this.getBounds();

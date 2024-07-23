@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobScaleBarOptions
  * @deprecatedclass SuperMap.WebPrintingJobScaleBarOptions
- * @classdesc Web 打印比例尺参数类。
+ * @classdesc Web 打印比例尺参数类。此类用于设置 Web 打印地图比例尺的文本信息，方位样式、段数、单位制等参数。
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @param {Object} option - 参数。

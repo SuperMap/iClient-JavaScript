@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,7 +8,8 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class FindClosestFacilitiesParameters
  * @deprecatedclass SuperMap.FindClosestFacilitiesParameters
  * @category iServer NetworkAnalyst ClosestFacility
- * @classdesc 最近设施分析参数类。
+ * @classdesc 最近设施分析参数类。此类用于设置最近设施分析中的事件点、设施点、期望查找的设施点数量、权值的最大限值以及交通网络分析中的通用参数等。<br>
+ * 最近设施分析指在网络上给定一个事件点和一组设施点，查找从事件点到设施点（或从设施点到事件点）以最小耗费能到达的最佳路径。
  * @param {Object} options - 参数。
  * @param {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} options.event - 事件点，一般为需要获得服务设施服务的事件位置。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>}  options.facilities - 设施点集合，一般为提供服务的服务设施位置。
@@ -60,15 +61,14 @@ export class FindClosestFacilitiesParameters {
          * @member {number} [FindClosestFacilitiesParameters.prototype.maxWeight=0]
          * @description 权值的最大限值。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
          *              例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，超过 10 分钟能到达的都不予考虑。
-         *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
+         *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为 10。
          */
         this.maxWeight = 0;
 
         /**
          * @member {TransportationAnalystParameter} [FindClosestFacilitiesParameters.prototype.parameter]
          * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
-         *              它为 TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，
-         *              则返回结果空间信息等都为空。
+         *              它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter();
         Util.extend(this, options);

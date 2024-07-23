@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -11,14 +11,16 @@ import { MappingParameters } from './MappingParameters';
  * @class SummaryMeshJobParameter
  * @deprecatedclass SuperMap.SummaryMeshJobParameter
  * @category  iServer ProcessingService AggregatePoints
- * @classdesc 点聚合分析任务参数类。
+ * @classdesc 点聚合分析任务参数类。此类用于设置点聚合分析的数据集、分析范围、权重索引、分析模式、分析类型、聚合类型等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
- * @param {number} options.fields - 权重索引。
+ * @param {string} options.datasetName - 数据集名称。
+ * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 聚合分析范围（默认为全图范围）。
+ * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
  * @param {number} [options.resolution=100] - 分辨率。
- * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 分析模式。
- * @param {number} [options.meshType=0] - 分析类型。
+ * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
+ * @param {number} [options.meshType=0] - 聚合分析类型（聚合类型为网格面聚合时使用的参数）。0 表示四边形网格，1 表示六边形网格。
  * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
@@ -32,7 +34,7 @@ export class SummaryMeshJobParameter {
         }
         /**
          * @member {string} SummaryMeshJobParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -44,7 +46,7 @@ export class SummaryMeshJobParameter {
 
         /**
          * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} SummaryMeshJobParameter.prototype.query
-         * @description 分析范围（聚合类型为网格面聚合时使用的参数）。
+         * @description 聚合分析范围（聚合类型为网格面聚合时使用的参数）。
          */
         this.query = "";
 
@@ -56,13 +58,13 @@ export class SummaryMeshJobParameter {
 
         /**
          * @member {number} [SummaryMeshJobParameter.prototype.meshType=0]
-         * @description  网格面类型（聚合类型为网格面聚合时使用的参数），取值：0 或 1。
+         * @description  网格面类型（聚合类型为网格面聚合时使用的参数），取值：0 或 1，0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 
         /**
          * @member {StatisticAnalystMode} [SummaryMeshJobParameter.prototype.statisticModes=StatisticAnalystMode.AVERAGE]
-         * @description 统计模式。
+         * @description 统计模式。“统计模式”个数应与“权重值字段”个数一致。
          */
         this.statisticModes = StatisticAnalystMode.AVERAGE;
 
@@ -74,7 +76,7 @@ export class SummaryMeshJobParameter {
 
         /**
          * @member {SummaryType} [SummaryMeshJobParameter.prototype.type=SummaryType.SUMMARYMESH]
-         * @description 聚合类型。
+         * @description 点聚合分析类型。
          */
         this.type = SummaryType.SUMMARYMESH;
 

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +82,7 @@
         geometry: queryBufferGeometry
       });
       new maplibregl.Popup().setText(resources.text_bufferDistance + ' = 30').setLngLat([0, 0]).addTo(map);
-      new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam, function (serviceResult) {
+      new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
         map.addSource("queryDatas", {
           "type": "geojson",
           "data": serviceResult.result.features

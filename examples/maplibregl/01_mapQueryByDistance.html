@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -60,7 +60,7 @@
         });
 
         var queryService = new maplibregl.supermap.QueryService(url);
-        queryService.queryByDistance(param, callback);
+        queryService.queryByDistance(param).then(callback);
     }
 
     map.on('load', function () {

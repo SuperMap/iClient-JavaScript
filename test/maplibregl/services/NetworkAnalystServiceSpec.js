@@ -12,6 +12,8 @@ import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServ
 import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
 import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
 import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import { TraceAnalystParameters } from '../../../src/common/iServer/TraceAnalystParameters';
+import { ConnectedEdgesAnalystParameters } from '../../../src/common/iServer/ConnectedEdgesAnalystParameters';
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
 import maplibregl from 'maplibre-gl';
@@ -578,6 +580,71 @@ describe('maplibregl_NetworkAnalystService', () => {
             }
     });
     });
+
+    // 上游/下游追踪分析服务
+    it('TraceAnalyst', (done) => {
+      var traceAnalystParameters = new TraceAnalystParameters({
+          edgeID:336,
+          // nodeID:336,
+          // 0:上游； 1：下游
+          traceType:0,
+          weightName:"",
+          isUncertainDirectionValid: true,
+          returnFeatures: true
+      });
+      var service = new NetworkAnalystService(url, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(url + "/traceup");
+          return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+      });
+      service.traceAnalyst(traceAnalystParameters, (result) => {
+          serviceResult = result;
+          try {
+              expect(service).not.toBeNull();
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.result.nodes.length).toBe(1);
+              expect(serviceResult.result).not.toBeNull();
+              expect(serviceResult.type).toEqual("processCompleted");
+              done();
+          } catch (e) {
+              console.log("'TraceAnalyst_test'案例失败" + e.name + ":" + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+    });
+
+    // 连通性分析服务
+    it('connectedEdgesAnalyst', (done) => {
+        var connectedEdgesAnalystParameters = new ConnectedEdgesAnalystParameters({
+            connected: false,
+            returnFeatures: true,
+            edgeIDs:[2,3,500]
+        });
+        var service = new NetworkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/connectededges");
+            return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+        });
+        service.connectedEdgesAnalyst(connectedEdgesAnalystParameters, (result) => {
+            serviceResult = result;
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result.nodes.length).toBe(1);
+                expect(serviceResult.result).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                done();
+            } catch (e) {
+                console.log("'ConnectedEdgesAnalyst_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
     // 上游/下游 关键设施查找资源服务
     it('streamFacilityAnalyst', (done) => {
         var facilityAnalystStreamParameters = new FacilityAnalystStreamParameters({

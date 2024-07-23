@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
- import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
- import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { ShapeFactory } from '@supermapgis/iclient-common/overlay/feature/ShapeFactory';
+ import { ThemeVector } from '@supermapgis/iclient-common/overlay/ThemeVector';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
  import { ThemeLayer } from './ThemeLayer';
  import { CommontypesConversion } from '../../core/CommontypesConversion';
 /**
@@ -13,10 +13,10 @@
  * @category Visualization Theme
  * @extends ThemeLayer
  * @category Visualization Graphic
- * @param {string} name - 专题图名。
+ * @param {string} name - 专题图名称。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
@@ -97,7 +97,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 删除专题图中 features。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description 删除专题图中要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
@@ -271,7 +271,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description 通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      * @returns {Array} 返回图形数组。
      */

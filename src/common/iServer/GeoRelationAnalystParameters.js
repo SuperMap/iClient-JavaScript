@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class GeoRelationAnalystParameters
  * @deprecatedclass SuperMap.GeoRelationAnalystParameters
  * @category iServer SpatialAnalyst GeoRelationAnalyst
- * @classdesc 空间关系分析服务参数类。使用该类可以为空间关系分析服务提供所需的参数信息。
+ * @classdesc 空间关系分析服务参数类。该类可指定用于空间关系分析的源数据集和参考数据集，以及空间判断关系类型、边界处理方式等参数，
+ * 还可以对分析结果进行一系列设置。支持的空间关系判断类型：包含、被包含、相交。
  * @param {Object} options - 参数。
  * @param {FilterParameter} options.sourceFilter - 空间关系分析中的源数据集查询参数。仅 name, ids, attributeFilter 和 fields 字段有效。
  * @param {FilterParameter} options.referenceFilter - 空间关系分析中的参考数据集查询参数。仅 name, ids, attributeFilter 和 fields 字段有效。
@@ -25,7 +26,7 @@ export class GeoRelationAnalystParameters {
     constructor(options) {
         /**
          *  @member {string} GeoRelationAnalystParameters.prototype.dataset
-         *  @description 源数据集名称。
+         *  @description 源数据集名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_R@Jingjin。
          */
         this.dataset = null;
 

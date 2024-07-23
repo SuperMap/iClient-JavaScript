@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* proj4js (https://github.com/proj4js/proj4js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +80,7 @@
         });
         //创建表面分析服务实例
         surfaceAnalystService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (surfaceAnalystServiceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: surfaceAnalystServiceResult.result.newResourceLocation,
               featureLoader: function(feature) {
@@ -102,7 +106,7 @@
               }
             });
             map.addLayer(FGBLayer);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

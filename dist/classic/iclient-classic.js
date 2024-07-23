@@ -1,7 +1,1706 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 122:
+/***/ 3393:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(5114);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 6396:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(6417);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 4130:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(8786);
+var path = __webpack_require__(5761);
+module.exports = path.Object.assign;
+
+/***/ }),
+
+/***/ 7969:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(3001);
+var WrappedWellKnownSymbolModule = __webpack_require__(5787);
+module.exports = WrappedWellKnownSymbolModule.f('asyncIterator');
+
+/***/ }),
+
+/***/ 4363:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(1977);
+var tryToString = __webpack_require__(5959);
+var $TypeError = TypeError;
+
+// `Assert: IsCallable(argument) is true`
+module.exports = function (argument) {
+  if (isCallable(argument)) return argument;
+  throw $TypeError(tryToString(argument) + ' is not a function');
+};
+
+/***/ }),
+
+/***/ 6424:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isObject = __webpack_require__(7212);
+var $String = String;
+var $TypeError = TypeError;
+
+// `Assert: Type(argument) is Object`
+module.exports = function (argument) {
+  if (isObject(argument)) return argument;
+  throw $TypeError($String(argument) + ' is not an object');
+};
+
+/***/ }),
+
+/***/ 4525:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIndexedObject = __webpack_require__(630);
+var toAbsoluteIndex = __webpack_require__(5217);
+var lengthOfArrayLike = __webpack_require__(8601);
+
+// `Array.prototype.{ indexOf, includes }` methods implementation
+var createMethod = function createMethod(IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIndexedObject($this);
+    var length = lengthOfArrayLike(O);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare -- NaN check
+    if (IS_INCLUDES && el != el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare -- NaN check
+      if (value != value) return true;
+      // Array#indexOf ignores holes, Array#includes - not
+    } else for (; length > index; index++) {
+      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
+    }
+    return !IS_INCLUDES && -1;
+  };
+};
+module.exports = {
+  // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
+  includes: createMethod(true),
+  // `Array.prototype.indexOf` method
+  // https://tc39.es/ecma262/#sec-array.prototype.indexof
+  indexOf: createMethod(false)
+};
+
+/***/ }),
+
+/***/ 2393:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var toString = uncurryThis({}.toString);
+var stringSlice = uncurryThis(''.slice);
+module.exports = function (it) {
+  return stringSlice(toString(it), 8, -1);
+};
+
+/***/ }),
+
+/***/ 6616:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var hasOwn = __webpack_require__(2011);
+var ownKeys = __webpack_require__(3575);
+var getOwnPropertyDescriptorModule = __webpack_require__(4912);
+var definePropertyModule = __webpack_require__(421);
+module.exports = function (target, source, exceptions) {
+  var keys = ownKeys(source);
+  var defineProperty = definePropertyModule.f;
+  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!hasOwn(target, key) && !(exceptions && hasOwn(exceptions, key))) {
+      defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+    }
+  }
+};
+
+/***/ }),
+
+/***/ 1873:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var definePropertyModule = __webpack_require__(421);
+var createPropertyDescriptor = __webpack_require__(1283);
+module.exports = DESCRIPTORS ? function (object, key, value) {
+  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+/***/ }),
+
+/***/ 1283:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+/***/ }),
+
+/***/ 8424:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(1977);
+var definePropertyModule = __webpack_require__(421);
+var makeBuiltIn = __webpack_require__(4382);
+var defineGlobalProperty = __webpack_require__(6722);
+module.exports = function (O, key, value, options) {
+  if (!options) options = {};
+  var simple = options.enumerable;
+  var name = options.name !== undefined ? options.name : key;
+  if (isCallable(value)) makeBuiltIn(value, name, options);
+  if (options.global) {
+    if (simple) O[key] = value;else defineGlobalProperty(key, value);
+  } else {
+    try {
+      if (!options.unsafe) delete O[key];else if (O[key]) simple = true;
+    } catch (error) {/* empty */}
+    if (simple) O[key] = value;else definePropertyModule.f(O, key, {
+      value: value,
+      enumerable: false,
+      configurable: !options.nonConfigurable,
+      writable: !options.nonWritable
+    });
+  }
+  return O;
+};
+
+/***/ }),
+
+/***/ 6722:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+module.exports = function (key, value) {
+  try {
+    defineProperty(global, key, {
+      value: value,
+      configurable: true,
+      writable: true
+    });
+  } catch (error) {
+    global[key] = value;
+  }
+  return value;
+};
+
+/***/ }),
+
+/***/ 1337:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(4418);
+
+// Detect IE8's incomplete defineProperty implementation
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty({}, 1, {
+    get: function get() {
+      return 7;
+    }
+  })[1] != 7;
+});
+
+/***/ }),
+
+/***/ 6330:
+/***/ (function(module) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var documentAll = (typeof document === "undefined" ? "undefined" : _typeof(document)) == 'object' && document.all;
+
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
+var IS_HTMLDDA = typeof documentAll == 'undefined' && documentAll !== undefined;
+module.exports = {
+  all: documentAll,
+  IS_HTMLDDA: IS_HTMLDDA
+};
+
+/***/ }),
+
+/***/ 2649:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var isObject = __webpack_require__(7212);
+var document = global.document;
+// typeof document.createElement is 'object' in old IE
+var EXISTS = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
+  return EXISTS ? document.createElement(it) : {};
+};
+
+/***/ }),
+
+/***/ 2894:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
+
+/***/ }),
+
+/***/ 617:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var userAgent = __webpack_require__(2894);
+var process = global.process;
+var Deno = global.Deno;
+var versions = process && process.versions || Deno && Deno.version;
+var v8 = versions && versions.v8;
+var match, version;
+if (v8) {
+  match = v8.split('.');
+  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+  // but their correct versions are not interesting for us
+  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
+}
+
+// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+// so check `userAgent` even if `.v8` exists, but 0
+if (!version && userAgent) {
+  match = userAgent.match(/Edge\/(\d+)/);
+  if (!match || match[1] >= 74) {
+    match = userAgent.match(/Chrome\/(\d+)/);
+    if (match) version = +match[1];
+  }
+}
+module.exports = version;
+
+/***/ }),
+
+/***/ 154:
+/***/ (function(module) {
+
+"use strict";
+
+
+// IE8- don't enum bug keys
+module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
+
+/***/ }),
+
+/***/ 4427:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var global = __webpack_require__(2021);
+var getOwnPropertyDescriptor = (__webpack_require__(4912).f);
+var createNonEnumerableProperty = __webpack_require__(1873);
+var defineBuiltIn = __webpack_require__(8424);
+var defineGlobalProperty = __webpack_require__(6722);
+var copyConstructorProperties = __webpack_require__(6616);
+var isForced = __webpack_require__(1943);
+
+/*
+  options.target         - name of the target object
+  options.global         - target is the global object
+  options.stat           - export as static methods of target
+  options.proto          - export as prototype methods of target
+  options.real           - real prototype method for the `pure` version
+  options.forced         - export even if the native feature is available
+  options.bind           - bind methods to the target, required for the `pure` version
+  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
+  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
+  options.sham           - add a flag to not completely full polyfills
+  options.enumerable     - export as enumerable property
+  options.dontCallGetSet - prevent calling a getter on target
+  options.name           - the .name of the function if it does not match the key
+*/
+module.exports = function (options, source) {
+  var TARGET = options.target;
+  var GLOBAL = options.global;
+  var STATIC = options.stat;
+  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
+  if (GLOBAL) {
+    target = global;
+  } else if (STATIC) {
+    target = global[TARGET] || defineGlobalProperty(TARGET, {});
+  } else {
+    target = (global[TARGET] || {}).prototype;
+  }
+  if (target) for (key in source) {
+    sourceProperty = source[key];
+    if (options.dontCallGetSet) {
+      descriptor = getOwnPropertyDescriptor(target, key);
+      targetProperty = descriptor && descriptor.value;
+    } else targetProperty = target[key];
+    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
+    // contained in target
+    if (!FORCED && targetProperty !== undefined) {
+      if (_typeof(sourceProperty) == _typeof(targetProperty)) continue;
+      copyConstructorProperties(sourceProperty, targetProperty);
+    }
+    // add a flag to not completely full polyfills
+    if (options.sham || targetProperty && targetProperty.sham) {
+      createNonEnumerableProperty(sourceProperty, 'sham', true);
+    }
+    defineBuiltIn(target, key, sourceProperty, options);
+  }
+};
+
+/***/ }),
+
+/***/ 4418:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (error) {
+    return true;
+  }
+};
+
+/***/ }),
+
+/***/ 6973:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(4418);
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-function-prototype-bind -- safe
+  var test = function () {/* empty */}.bind();
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return typeof test != 'function' || test.hasOwnProperty('prototype');
+});
+
+/***/ }),
+
+/***/ 5563:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_BIND = __webpack_require__(6973);
+var call = Function.prototype.call;
+module.exports = NATIVE_BIND ? call.bind(call) : function () {
+  return call.apply(call, arguments);
+};
+
+/***/ }),
+
+/***/ 7967:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var hasOwn = __webpack_require__(2011);
+var FunctionPrototype = Function.prototype;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
+var EXISTS = hasOwn(FunctionPrototype, 'name');
+// additional protection from minified / mangled / dropped function names
+var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
+var CONFIGURABLE = EXISTS && (!DESCRIPTORS || DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable);
+module.exports = {
+  EXISTS: EXISTS,
+  PROPER: PROPER,
+  CONFIGURABLE: CONFIGURABLE
+};
+
+/***/ }),
+
+/***/ 4686:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_BIND = __webpack_require__(6973);
+var FunctionPrototype = Function.prototype;
+var call = FunctionPrototype.call;
+var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
+module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
+  return function () {
+    return call.apply(fn, arguments);
+  };
+};
+
+/***/ }),
+
+/***/ 5718:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var isCallable = __webpack_require__(1977);
+var aFunction = function aFunction(argument) {
+  return isCallable(argument) ? argument : undefined;
+};
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(global[namespace]) : global[namespace] && global[namespace][method];
+};
+
+/***/ }),
+
+/***/ 1260:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var aCallable = __webpack_require__(4363);
+var isNullOrUndefined = __webpack_require__(5323);
+
+// `GetMethod` abstract operation
+// https://tc39.es/ecma262/#sec-getmethod
+module.exports = function (V, P) {
+  var func = V[P];
+  return isNullOrUndefined(func) ? undefined : aCallable(func);
+};
+
+/***/ }),
+
+/***/ 2021:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var check = function check(it) {
+  return it && it.Math == Math && it;
+};
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+module.exports =
+// eslint-disable-next-line es/no-global-this -- safe
+check((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) == 'object' && globalThis) || check((typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && window) ||
+// eslint-disable-next-line no-restricted-globals -- safe
+check((typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self) || check((typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g) ||
+// eslint-disable-next-line no-new-func -- fallback
+function () {
+  return this;
+}() || this || Function('return this')();
+
+/***/ }),
+
+/***/ 2011:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var toObject = __webpack_require__(4548);
+var hasOwnProperty = uncurryThis({}.hasOwnProperty);
+
+// `HasOwnProperty` abstract operation
+// https://tc39.es/ecma262/#sec-hasownproperty
+// eslint-disable-next-line es/no-object-hasown -- safe
+module.exports = Object.hasOwn || function hasOwn(it, key) {
+  return hasOwnProperty(toObject(it), key);
+};
+
+/***/ }),
+
+/***/ 8653:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = {};
+
+/***/ }),
+
+/***/ 4497:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var fails = __webpack_require__(4418);
+var createElement = __webpack_require__(2649);
+
+// Thanks to IE8 for its funny defineProperty
+module.exports = !DESCRIPTORS && !fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty(createElement('div'), 'a', {
+    get: function get() {
+      return 7;
+    }
+  }).a != 7;
+});
+
+/***/ }),
+
+/***/ 3436:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var fails = __webpack_require__(4418);
+var classof = __webpack_require__(2393);
+var $Object = Object;
+var split = uncurryThis(''.split);
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+module.exports = fails(function () {
+  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return !$Object('z').propertyIsEnumerable(0);
+}) ? function (it) {
+  return classof(it) == 'String' ? split(it, '') : $Object(it);
+} : $Object;
+
+/***/ }),
+
+/***/ 5430:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var isCallable = __webpack_require__(1977);
+var store = __webpack_require__(8817);
+var functionToString = uncurryThis(Function.toString);
+
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+if (!isCallable(store.inspectSource)) {
+  store.inspectSource = function (it) {
+    return functionToString(it);
+  };
+}
+module.exports = store.inspectSource;
+
+/***/ }),
+
+/***/ 5774:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_WEAK_MAP = __webpack_require__(1859);
+var global = __webpack_require__(2021);
+var isObject = __webpack_require__(7212);
+var createNonEnumerableProperty = __webpack_require__(1873);
+var hasOwn = __webpack_require__(2011);
+var shared = __webpack_require__(8817);
+var sharedKey = __webpack_require__(8093);
+var hiddenKeys = __webpack_require__(8653);
+var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
+var TypeError = global.TypeError;
+var WeakMap = global.WeakMap;
+var set, get, has;
+var enforce = function enforce(it) {
+  return has(it) ? get(it) : set(it, {});
+};
+var getterFor = function getterFor(TYPE) {
+  return function (it) {
+    var state;
+    if (!isObject(it) || (state = get(it)).type !== TYPE) {
+      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
+    }
+    return state;
+  };
+};
+if (NATIVE_WEAK_MAP || shared.state) {
+  var store = shared.state || (shared.state = new WeakMap());
+  /* eslint-disable no-self-assign -- prototype methods protection */
+  store.get = store.get;
+  store.has = store.has;
+  store.set = store.set;
+  /* eslint-enable no-self-assign -- prototype methods protection */
+  set = function set(it, metadata) {
+    if (store.has(it)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    store.set(it, metadata);
+    return metadata;
+  };
+  get = function get(it) {
+    return store.get(it) || {};
+  };
+  has = function has(it) {
+    return store.has(it);
+  };
+} else {
+  var STATE = sharedKey('state');
+  hiddenKeys[STATE] = true;
+  set = function set(it, metadata) {
+    if (hasOwn(it, STATE)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    createNonEnumerableProperty(it, STATE, metadata);
+    return metadata;
+  };
+  get = function get(it) {
+    return hasOwn(it, STATE) ? it[STATE] : {};
+  };
+  has = function has(it) {
+    return hasOwn(it, STATE);
+  };
+}
+module.exports = {
+  set: set,
+  get: get,
+  has: has,
+  enforce: enforce,
+  getterFor: getterFor
+};
+
+/***/ }),
+
+/***/ 1977:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var $documentAll = __webpack_require__(6330);
+var documentAll = $documentAll.all;
+
+// `IsCallable` abstract operation
+// https://tc39.es/ecma262/#sec-iscallable
+module.exports = $documentAll.IS_HTMLDDA ? function (argument) {
+  return typeof argument == 'function' || argument === documentAll;
+} : function (argument) {
+  return typeof argument == 'function';
+};
+
+/***/ }),
+
+/***/ 1943:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(4418);
+var isCallable = __webpack_require__(1977);
+var replacement = /#|\.prototype\./;
+var isForced = function isForced(feature, detection) {
+  var value = data[normalize(feature)];
+  return value == POLYFILL ? true : value == NATIVE ? false : isCallable(detection) ? fails(detection) : !!detection;
+};
+var normalize = isForced.normalize = function (string) {
+  return String(string).replace(replacement, '.').toLowerCase();
+};
+var data = isForced.data = {};
+var NATIVE = isForced.NATIVE = 'N';
+var POLYFILL = isForced.POLYFILL = 'P';
+module.exports = isForced;
+
+/***/ }),
+
+/***/ 5323:
+/***/ (function(module) {
+
+"use strict";
+
+
+// we can't use just `it == null` since of `document.all` special case
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
+module.exports = function (it) {
+  return it === null || it === undefined;
+};
+
+/***/ }),
+
+/***/ 7212:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var isCallable = __webpack_require__(1977);
+var $documentAll = __webpack_require__(6330);
+var documentAll = $documentAll.all;
+module.exports = $documentAll.IS_HTMLDDA ? function (it) {
+  return _typeof(it) == 'object' ? it !== null : isCallable(it) || it === documentAll;
+} : function (it) {
+  return _typeof(it) == 'object' ? it !== null : isCallable(it);
+};
+
+/***/ }),
+
+/***/ 9596:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = false;
+
+/***/ }),
+
+/***/ 6874:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var getBuiltIn = __webpack_require__(5718);
+var isCallable = __webpack_require__(1977);
+var isPrototypeOf = __webpack_require__(6701);
+var USE_SYMBOL_AS_UID = __webpack_require__(1635);
+var $Object = Object;
+module.exports = USE_SYMBOL_AS_UID ? function (it) {
+  return _typeof(it) == 'symbol';
+} : function (it) {
+  var $Symbol = getBuiltIn('Symbol');
+  return isCallable($Symbol) && isPrototypeOf($Symbol.prototype, $Object(it));
+};
+
+/***/ }),
+
+/***/ 8601:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toLength = __webpack_require__(3346);
+
+// `LengthOfArrayLike` abstract operation
+// https://tc39.es/ecma262/#sec-lengthofarraylike
+module.exports = function (obj) {
+  return toLength(obj.length);
+};
+
+/***/ }),
+
+/***/ 4382:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var fails = __webpack_require__(4418);
+var isCallable = __webpack_require__(1977);
+var hasOwn = __webpack_require__(2011);
+var DESCRIPTORS = __webpack_require__(1337);
+var CONFIGURABLE_FUNCTION_NAME = (__webpack_require__(7967).CONFIGURABLE);
+var inspectSource = __webpack_require__(5430);
+var InternalStateModule = __webpack_require__(5774);
+var enforceInternalState = InternalStateModule.enforce;
+var getInternalState = InternalStateModule.get;
+var $String = String;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+var stringSlice = uncurryThis(''.slice);
+var replace = uncurryThis(''.replace);
+var join = uncurryThis([].join);
+var CONFIGURABLE_LENGTH = DESCRIPTORS && !fails(function () {
+  return defineProperty(function () {/* empty */}, 'length', {
+    value: 8
+  }).length !== 8;
+});
+var TEMPLATE = String(String).split('String');
+var makeBuiltIn = module.exports = function (value, name, options) {
+  if (stringSlice($String(name), 0, 7) === 'Symbol(') {
+    name = '[' + replace($String(name), /^Symbol\(([^)]*)\)/, '$1') + ']';
+  }
+  if (options && options.getter) name = 'get ' + name;
+  if (options && options.setter) name = 'set ' + name;
+  if (!hasOwn(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+    if (DESCRIPTORS) defineProperty(value, 'name', {
+      value: name,
+      configurable: true
+    });else value.name = name;
+  }
+  if (CONFIGURABLE_LENGTH && options && hasOwn(options, 'arity') && value.length !== options.arity) {
+    defineProperty(value, 'length', {
+      value: options.arity
+    });
+  }
+  try {
+    if (options && hasOwn(options, 'constructor') && options.constructor) {
+      if (DESCRIPTORS) defineProperty(value, 'prototype', {
+        writable: false
+      });
+      // in V8 ~ Chrome 53, prototypes of some methods, like `Array.prototype.values`, are non-writable
+    } else if (value.prototype) value.prototype = undefined;
+  } catch (error) {/* empty */}
+  var state = enforceInternalState(value);
+  if (!hasOwn(state, 'source')) {
+    state.source = join(TEMPLATE, typeof name == 'string' ? name : '');
+  }
+  return value;
+};
+
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+// eslint-disable-next-line no-extend-native -- required
+Function.prototype.toString = makeBuiltIn(function toString() {
+  return isCallable(this) && getInternalState(this).source || inspectSource(this);
+}, 'toString');
+
+/***/ }),
+
+/***/ 6729:
+/***/ (function(module) {
+
+"use strict";
+
+
+var ceil = Math.ceil;
+var floor = Math.floor;
+
+// `Math.trunc` method
+// https://tc39.es/ecma262/#sec-math.trunc
+// eslint-disable-next-line es/no-math-trunc -- safe
+module.exports = Math.trunc || function trunc(x) {
+  var n = +x;
+  return (n > 0 ? floor : ceil)(n);
+};
+
+/***/ }),
+
+/***/ 6898:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var uncurryThis = __webpack_require__(4686);
+var call = __webpack_require__(5563);
+var fails = __webpack_require__(4418);
+var objectKeys = __webpack_require__(6555);
+var getOwnPropertySymbolsModule = __webpack_require__(9833);
+var propertyIsEnumerableModule = __webpack_require__(5073);
+var toObject = __webpack_require__(4548);
+var IndexedObject = __webpack_require__(3436);
+
+// eslint-disable-next-line es/no-object-assign -- safe
+var $assign = Object.assign;
+// eslint-disable-next-line es/no-object-defineproperty -- required for testing
+var defineProperty = Object.defineProperty;
+var concat = uncurryThis([].concat);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+module.exports = !$assign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (DESCRIPTORS && $assign({
+    b: 1
+  }, $assign(defineProperty({}, 'a', {
+    enumerable: true,
+    get: function get() {
+      defineProperty(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), {
+    b: 2
+  })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line es/no-symbol -- safe
+  var symbol = Symbol();
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) {
+    B[chr] = chr;
+  });
+  return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
+}) ? function assign(target, source) {
+  // eslint-disable-line no-unused-vars -- required for `.length`
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  var propertyIsEnumerable = propertyIsEnumerableModule.f;
+  while (argumentsLength > index) {
+    var S = IndexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? concat(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || call(propertyIsEnumerable, S, key)) T[key] = S[key];
+    }
+  }
+  return T;
+} : $assign;
+
+/***/ }),
+
+/***/ 421:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var IE8_DOM_DEFINE = __webpack_require__(4497);
+var V8_PROTOTYPE_DEFINE_BUG = __webpack_require__(3504);
+var anObject = __webpack_require__(6424);
+var toPropertyKey = __webpack_require__(8069);
+var $TypeError = TypeError;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $defineProperty = Object.defineProperty;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var ENUMERABLE = 'enumerable';
+var CONFIGURABLE = 'configurable';
+var WRITABLE = 'writable';
+
+// `Object.defineProperty` method
+// https://tc39.es/ecma262/#sec-object.defineproperty
+exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
+    var current = $getOwnPropertyDescriptor(O, P);
+    if (current && current[WRITABLE]) {
+      O[P] = Attributes.value;
+      Attributes = {
+        configurable: CONFIGURABLE in Attributes ? Attributes[CONFIGURABLE] : current[CONFIGURABLE],
+        enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
+        writable: false
+      };
+    }
+  }
+  return $defineProperty(O, P, Attributes);
+} : $defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return $defineProperty(O, P, Attributes);
+  } catch (error) {/* empty */}
+  if ('get' in Attributes || 'set' in Attributes) throw $TypeError('Accessors not supported');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+/***/ }),
+
+/***/ 4912:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var call = __webpack_require__(5563);
+var propertyIsEnumerableModule = __webpack_require__(5073);
+var createPropertyDescriptor = __webpack_require__(1283);
+var toIndexedObject = __webpack_require__(630);
+var toPropertyKey = __webpack_require__(8069);
+var hasOwn = __webpack_require__(2011);
+var IE8_DOM_DEFINE = __webpack_require__(4497);
+
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+  O = toIndexedObject(O);
+  P = toPropertyKey(P);
+  if (IE8_DOM_DEFINE) try {
+    return $getOwnPropertyDescriptor(O, P);
+  } catch (error) {/* empty */}
+  if (hasOwn(O, P)) return createPropertyDescriptor(!call(propertyIsEnumerableModule.f, O, P), O[P]);
+};
+
+/***/ }),
+
+/***/ 4190:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(1717);
+var enumBugKeys = __webpack_require__(154);
+var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+
+// `Object.getOwnPropertyNames` method
+// https://tc39.es/ecma262/#sec-object.getownpropertynames
+// eslint-disable-next-line es/no-object-getownpropertynames -- safe
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return internalObjectKeys(O, hiddenKeys);
+};
+
+/***/ }),
+
+/***/ 9833:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ }),
+
+/***/ 6701:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+module.exports = uncurryThis({}.isPrototypeOf);
+
+/***/ }),
+
+/***/ 1717:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var hasOwn = __webpack_require__(2011);
+var toIndexedObject = __webpack_require__(630);
+var indexOf = (__webpack_require__(4525).indexOf);
+var hiddenKeys = __webpack_require__(8653);
+var push = uncurryThis([].push);
+module.exports = function (object, names) {
+  var O = toIndexedObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (hasOwn(O, key = names[i++])) {
+    ~indexOf(result, key) || push(result, key);
+  }
+  return result;
+};
+
+/***/ }),
+
+/***/ 6555:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(1717);
+var enumBugKeys = __webpack_require__(154);
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+// eslint-disable-next-line es/no-object-keys -- safe
+module.exports = Object.keys || function keys(O) {
+  return internalObjectKeys(O, enumBugKeys);
+};
+
+/***/ }),
+
+/***/ 5073:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+var $propertyIsEnumerable = {}.propertyIsEnumerable;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// Nashorn ~ JDK8 bug
+var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({
+  1: 2
+}, 1);
+
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
+  var descriptor = getOwnPropertyDescriptor(this, V);
+  return !!descriptor && descriptor.enumerable;
+} : $propertyIsEnumerable;
+
+/***/ }),
+
+/***/ 4565:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var call = __webpack_require__(5563);
+var isCallable = __webpack_require__(1977);
+var isObject = __webpack_require__(7212);
+var $TypeError = TypeError;
+
+// `OrdinaryToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive
+module.exports = function (input, pref) {
+  var fn, val;
+  if (pref === 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
+  if (isCallable(fn = input.valueOf) && !isObject(val = call(fn, input))) return val;
+  if (pref !== 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
+  throw $TypeError("Can't convert object to primitive value");
+};
+
+/***/ }),
+
+/***/ 3575:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var getBuiltIn = __webpack_require__(5718);
+var uncurryThis = __webpack_require__(4686);
+var getOwnPropertyNamesModule = __webpack_require__(4190);
+var getOwnPropertySymbolsModule = __webpack_require__(9833);
+var anObject = __webpack_require__(6424);
+var concat = uncurryThis([].concat);
+
+// all object keys, includes non-enumerable and symbols
+module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
+  var keys = getOwnPropertyNamesModule.f(anObject(it));
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
+};
+
+/***/ }),
+
+/***/ 5761:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+module.exports = global;
+
+/***/ }),
+
+/***/ 8089:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isNullOrUndefined = __webpack_require__(5323);
+var $TypeError = TypeError;
+
+// `RequireObjectCoercible` abstract operation
+// https://tc39.es/ecma262/#sec-requireobjectcoercible
+module.exports = function (it) {
+  if (isNullOrUndefined(it)) throw $TypeError("Can't call method on " + it);
+  return it;
+};
+
+/***/ }),
+
+/***/ 8093:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var shared = __webpack_require__(678);
+var uid = __webpack_require__(4552);
+var keys = shared('keys');
+module.exports = function (key) {
+  return keys[key] || (keys[key] = uid(key));
+};
+
+/***/ }),
+
+/***/ 8817:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var defineGlobalProperty = __webpack_require__(6722);
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || defineGlobalProperty(SHARED, {});
+module.exports = store;
+
+/***/ }),
+
+/***/ 678:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var IS_PURE = __webpack_require__(9596);
+var store = __webpack_require__(8817);
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: '3.32.0',
+  mode: IS_PURE ? 'pure' : 'global',
+  copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
+  license: 'https://github.com/zloirock/core-js/blob/v3.32.0/LICENSE',
+  source: 'https://github.com/zloirock/core-js'
+});
+
+/***/ }),
+
+/***/ 6009:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable es/no-symbol -- required for testing */
+var V8_VERSION = __webpack_require__(617);
+var fails = __webpack_require__(4418);
+var global = __webpack_require__(2021);
+var $String = global.String;
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
+  var symbol = Symbol();
+  // Chrome 38 Symbol has incorrect toString conversion
+  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
+  // of course, fail.
+  return !$String(symbol) || !(Object(symbol) instanceof Symbol) ||
+  // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+  !Symbol.sham && V8_VERSION && V8_VERSION < 41;
+});
+
+/***/ }),
+
+/***/ 5217:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIntegerOrInfinity = __webpack_require__(2898);
+var max = Math.max;
+var min = Math.min;
+
+// Helper for a popular repeating case of the spec:
+// Let integer be ? ToInteger(index).
+// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
+module.exports = function (index, length) {
+  var integer = toIntegerOrInfinity(index);
+  return integer < 0 ? max(integer + length, 0) : min(integer, length);
+};
+
+/***/ }),
+
+/***/ 630:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+// toObject with fallback for non-array-like ES3 strings
+var IndexedObject = __webpack_require__(3436);
+var requireObjectCoercible = __webpack_require__(8089);
+module.exports = function (it) {
+  return IndexedObject(requireObjectCoercible(it));
+};
+
+/***/ }),
+
+/***/ 2898:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var trunc = __webpack_require__(6729);
+
+// `ToIntegerOrInfinity` abstract operation
+// https://tc39.es/ecma262/#sec-tointegerorinfinity
+module.exports = function (argument) {
+  var number = +argument;
+  // eslint-disable-next-line no-self-compare -- NaN check
+  return number !== number || number === 0 ? 0 : trunc(number);
+};
+
+/***/ }),
+
+/***/ 3346:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIntegerOrInfinity = __webpack_require__(2898);
+var min = Math.min;
+
+// `ToLength` abstract operation
+// https://tc39.es/ecma262/#sec-tolength
+module.exports = function (argument) {
+  return argument > 0 ? min(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
+
+/***/ }),
+
+/***/ 4548:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var requireObjectCoercible = __webpack_require__(8089);
+var $Object = Object;
+
+// `ToObject` abstract operation
+// https://tc39.es/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return $Object(requireObjectCoercible(argument));
+};
+
+/***/ }),
+
+/***/ 3841:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var call = __webpack_require__(5563);
+var isObject = __webpack_require__(7212);
+var isSymbol = __webpack_require__(6874);
+var getMethod = __webpack_require__(1260);
+var ordinaryToPrimitive = __webpack_require__(4565);
+var wellKnownSymbol = __webpack_require__(3048);
+var $TypeError = TypeError;
+var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+
+// `ToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-toprimitive
+module.exports = function (input, pref) {
+  if (!isObject(input) || isSymbol(input)) return input;
+  var exoticToPrim = getMethod(input, TO_PRIMITIVE);
+  var result;
+  if (exoticToPrim) {
+    if (pref === undefined) pref = 'default';
+    result = call(exoticToPrim, input, pref);
+    if (!isObject(result) || isSymbol(result)) return result;
+    throw $TypeError("Can't convert object to primitive value");
+  }
+  if (pref === undefined) pref = 'number';
+  return ordinaryToPrimitive(input, pref);
+};
+
+/***/ }),
+
+/***/ 8069:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toPrimitive = __webpack_require__(3841);
+var isSymbol = __webpack_require__(6874);
+
+// `ToPropertyKey` abstract operation
+// https://tc39.es/ecma262/#sec-topropertykey
+module.exports = function (argument) {
+  var key = toPrimitive(argument, 'string');
+  return isSymbol(key) ? key : key + '';
+};
+
+/***/ }),
+
+/***/ 5959:
+/***/ (function(module) {
+
+"use strict";
+
+
+var $String = String;
+module.exports = function (argument) {
+  try {
+    return $String(argument);
+  } catch (error) {
+    return 'Object';
+  }
+};
+
+/***/ }),
+
+/***/ 4552:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(4686);
+var id = 0;
+var postfix = Math.random();
+var toString = uncurryThis(1.0.toString);
+module.exports = function (key) {
+  return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
+};
+
+/***/ }),
+
+/***/ 1635:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable es/no-symbol -- required for testing */
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var NATIVE_SYMBOL = __webpack_require__(6009);
+module.exports = NATIVE_SYMBOL && !Symbol.sham && _typeof(Symbol.iterator) == 'symbol';
+
+/***/ }),
+
+/***/ 3504:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(1337);
+var fails = __webpack_require__(4418);
+
+// V8 ~ Chrome 36-
+// https://bugs.chromium.org/p/v8/issues/detail?id=3334
+module.exports = DESCRIPTORS && fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty(function () {/* empty */}, 'prototype', {
+    value: 42,
+    writable: false
+  }).prototype != 42;
+});
+
+/***/ }),
+
+/***/ 1859:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var isCallable = __webpack_require__(1977);
+var WeakMap = global.WeakMap;
+module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
+
+/***/ }),
+
+/***/ 5273:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var path = __webpack_require__(5761);
+var hasOwn = __webpack_require__(2011);
+var wrappedWellKnownSymbolModule = __webpack_require__(5787);
+var defineProperty = (__webpack_require__(421).f);
+module.exports = function (NAME) {
+  var _Symbol = path.Symbol || (path.Symbol = {});
+  if (!hasOwn(_Symbol, NAME)) defineProperty(_Symbol, NAME, {
+    value: wrappedWellKnownSymbolModule.f(NAME)
+  });
+};
+
+/***/ }),
+
+/***/ 5787:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var wellKnownSymbol = __webpack_require__(3048);
+exports.f = wellKnownSymbol;
+
+/***/ }),
+
+/***/ 3048:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var global = __webpack_require__(2021);
+var shared = __webpack_require__(678);
+var hasOwn = __webpack_require__(2011);
+var uid = __webpack_require__(4552);
+var NATIVE_SYMBOL = __webpack_require__(6009);
+var USE_SYMBOL_AS_UID = __webpack_require__(1635);
+var _Symbol = global.Symbol;
+var WellKnownSymbolsStore = shared('wks');
+var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
+module.exports = function (name) {
+  if (!hasOwn(WellKnownSymbolsStore, name)) {
+    WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(_Symbol, name) ? _Symbol[name] : createWellKnownSymbol('Symbol.' + name);
+  }
+  return WellKnownSymbolsStore[name];
+};
+
+/***/ }),
+
+/***/ 8786:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var $ = __webpack_require__(4427);
+var assign = __webpack_require__(6898);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+// eslint-disable-next-line es/no-object-assign -- required for testing
+$({
+  target: 'Object',
+  stat: true,
+  arity: 2,
+  forced: Object.assign !== assign
+}, {
+  assign: assign
+});
+
+/***/ }),
+
+/***/ 3001:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var defineWellKnownSymbol = __webpack_require__(5273);
+
+// `Symbol.asyncIterator` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.asynciterator
+defineWellKnownSymbol('asyncIterator');
+
+/***/ }),
+
+/***/ 5114:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(4130);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 6417:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(7969);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 5122:
 /***/ (function(module) {
 
 (function (self) {
@@ -497,7 +2196,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 347:
+/***/ 2347:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -816,80 +2515,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
   }
 });
 
-/***/ })
+/***/ }),
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	!function() {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-!function() {
+/***/ 4794:
+/***/ (function(__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
+
 "use strict";
 
 // UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util
@@ -1839,6 +3469,32 @@ var DOTS_PER_INCH = 96;
  */
 
 var Util_Util = {
+  /**
+     * @memberOf CommonUtil
+     * @description 对象拷贝赋值。
+     * @param {Object} dest - 目标对象。
+     * @param {Object} arguments - 待拷贝的对象。
+     * @returns {Object} 赋值后的目标对象。
+     */
+  assign: function assign(dest) {
+    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
+      var arg = Object.getOwnPropertyNames(arguments)[index];
+      if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+        continue;
+      }
+      var obj = arguments[arg];
+      if (obj) {
+        for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+          var key = Object.getOwnPropertyNames(obj)[j];
+          if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+            continue;
+          }
+          dest[key] = obj[key];
+        }
+      }
+    }
+    return dest;
+  },
   /**
    * @memberOf CommonUtil
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
@@ -3669,9 +5325,6 @@ var Events = /*#__PURE__*/function () {
   return Events;
 }();
 Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-;// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-var external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
-var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3679,6 +5332,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function ElasticSearch_typeof(obj) { "@babel/helpers - typeof"; return ElasticSearch_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, ElasticSearch_typeof(obj); }
 function ElasticSearch_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function ElasticSearch_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (protoProps) ElasticSearch_defineProperties(Constructor.prototype, protoProps); if (staticProps) ElasticSearch_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -3688,51 +5342,28 @@ function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (p
 
 
 
-
 /**
  * @class ElasticSearch
  * @deprecatedclass SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
  * @category ElasticSearch
+ * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} es - elasticsearch的全局变量。注意：需要@elastic/elasticsearch@5.6.22或者elasticsearch@16.7.3。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description 
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
- * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      alias: {
-        process: 'process/browser',
-      },
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        http: require.resolve('stream-http'),
-        https: require.resolve('https-browserify'),
-        os: require.resolve('os-browserify/browser'),
-        stream: require.resolve('stream-browserify'),
-        tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib')
-      }
-    }
-    plugins: [
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
-      }),
-    ]
-}</code></pre>
  * @usage
  */
 
 var ElasticSearch = /*#__PURE__*/function () {
-  function ElasticSearch(url, options) {
+  function ElasticSearch(url, es, options) {
     ElasticSearch_classCallCheck(this, ElasticSearch);
+    if (!es || typeof es !== 'function' && ElasticSearch_typeof(es) !== 'object' || typeof es.Client !== 'function') {
+      throw Error('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+    }
     options = options || {};
     /**
      *  @member {string} ElasticSearch.prototype.url
@@ -3745,12 +5376,12 @@ var ElasticSearch = /*#__PURE__*/function () {
      */
     try {
       // 老版本
-      this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+      this.client = new es.Client({
         host: this.url
       });
     } catch (e) {
       // 新版本
-      this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+      this.client = new es.Client({
         node: {
           url: new URL(this.url)
         }
@@ -3811,7 +5442,7 @@ var ElasticSearch = /*#__PURE__*/function () {
   }
 
   /**
-   * @function  ElasticSearch.prototype.setGeoFence
+   * @function ElasticSearch.prototype.setGeoFence
    * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
    * @param {Geometry} geoFence - 地理围栏。
    */
@@ -3822,7 +5453,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.bulk
+     * @function ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
@@ -3836,7 +5467,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.clearScroll
+     * @function ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
      *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -3850,7 +5481,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.count
+     * @function ElasticSearch.prototype.count
      * @description 获取集群、索引、类型或查询的文档个数。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
@@ -3864,7 +5495,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.create
+     * @function ElasticSearch.prototype.create
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
@@ -3878,7 +5509,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
@@ -3892,7 +5523,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteByQuery
+     * @function ElasticSearch.prototype.deleteByQuery
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
@@ -3906,7 +5537,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteScript
+     * @function ElasticSearch.prototype.deleteScript
      * @description 根据其ID删除脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -3920,7 +5551,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteTemplate
+     * @function ElasticSearch.prototype.deleteTemplate
      * @description 根据其ID删除模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -3934,7 +5565,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.exists
+     * @function ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -3948,7 +5579,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.existsSource
+     * @function ElasticSearch.prototype.existsSource
      * @description 检查资源是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -3962,7 +5593,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.explain
+     * @function ElasticSearch.prototype.explain
      * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
@@ -3976,7 +5607,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.fieldCaps
+     * @function ElasticSearch.prototype.fieldCaps
      * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
@@ -3990,7 +5621,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.get
+     * @function ElasticSearch.prototype.get
      * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4004,7 +5635,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getScript
+     * @function ElasticSearch.prototype.getScript
      * @description 获取脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -4018,7 +5649,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getSource
+     * @function ElasticSearch.prototype.getSource
      * @description 通过索引，类型和ID获取文档的源。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4032,7 +5663,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getTemplate
+     * @function ElasticSearch.prototype.getTemplate
      * @description 获取模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4046,7 +5677,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.index
+     * @function ElasticSearch.prototype.index
      * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
@@ -4060,7 +5691,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.info
+     * @function ElasticSearch.prototype.info
      * @description 从当前集群获取基本信息。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -4074,7 +5705,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mget
+     * @function ElasticSearch.prototype.mget
      * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
@@ -4088,7 +5719,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearch
+     * @function ElasticSearch.prototype.msearch
      * @description 在同一请求中执行多个搜索请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
@@ -4114,7 +5745,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearchTemplate
+     * @function ElasticSearch.prototype.msearchTemplate
      * @description 在同一请求中执行多个搜索模板请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4128,7 +5759,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mtermvectors
+     * @function ElasticSearch.prototype.mtermvectors
      * @description 多termvectors API允许一次获得多个termvectors。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
@@ -4142,7 +5773,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.ping
+     * @function ElasticSearch.prototype.ping
      * @description 测试连接。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -4156,7 +5787,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putScript
+     * @function ElasticSearch.prototype.putScript
      * @description 添加脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -4170,7 +5801,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putTemplate
+     * @function ElasticSearch.prototype.putTemplate
      * @description 添加模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4184,7 +5815,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindex
+     * @function ElasticSearch.prototype.reindex
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -4198,7 +5829,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindexRessrottle
+     * @function ElasticSearch.prototype.reindexRessrottle
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -4212,7 +5843,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.renderSearchTemplate
+     * @function ElasticSearch.prototype.renderSearchTemplate
      * @description 搜索模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4226,7 +5857,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.scroll
+     * @function ElasticSearch.prototype.scroll
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -4240,7 +5871,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.search
+     * @function ElasticSearch.prototype.search
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
@@ -4266,7 +5897,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchShards
+     * @function ElasticSearch.prototype.searchShards
      * @description  返回要执行搜索请求的索引和分片。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
@@ -4280,7 +5911,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchTemplate
+     * @function ElasticSearch.prototype.searchTemplate
      * @description  搜索模板。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -4294,7 +5925,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.suggest
+     * @function ElasticSearch.prototype.suggest
      * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -4308,7 +5939,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.termvectors
+     * @function ElasticSearch.prototype.termvectors
      * @description 返回有关特定文档字段中的术语的信息和统计信息。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
@@ -4322,7 +5953,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.update
+     * @function ElasticSearch.prototype.update
      * @description 更新文档的部分。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
@@ -4336,7 +5967,7 @@ var ElasticSearch = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  ElasticSearch.prototype.updateByQuery
+     * @function ElasticSearch.prototype.updateByQuery
      * @description 通过查询API来更新文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
@@ -4456,9 +6087,9 @@ var ElasticSearch = /*#__PURE__*/function () {
   return ElasticSearch;
 }();
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(347);
+var polyfill = __webpack_require__(2347);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(122);
+var fetch = __webpack_require__(5122);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
 var fetch_jsonp = __webpack_require__(683);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
@@ -4495,12 +6126,6 @@ var RequestJSONPPromise = {
       uid = me.getUid(),
       url = config.url,
       splitQuestUrl = [];
-    var p = new Promise(function (resolve) {
-      me.supermap_callbacks[uid] = function (response) {
-        delete me.supermap_callbacks[uid];
-        resolve(response);
-      };
-    });
 
     // me.addQueryStrings({
     //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
@@ -4557,8 +6182,7 @@ var RequestJSONPPromise = {
       }
     }
     splitQuestUrl.push(sectionURL);
-    me.send(splitQuestUrl, 'RequestJSONPPromise.supermap_callbacks[' + uid + ']', config && config.proxy);
-    return p;
+    return me.send(splitQuestUrl, 'SuperMapJSONPCallbacks_' + uid, config && config.proxy);
   },
   getUid: function getUid() {
     var uid = new Date().getTime(),
@@ -4568,26 +6192,30 @@ var RequestJSONPPromise = {
   send: function send(splitQuestUrl, callback, proxy) {
     var len = splitQuestUrl.length;
     if (len > 0) {
-      var jsonpUserID = new Date().getTime();
-      for (var i = 0; i < len; i++) {
-        var url = splitQuestUrl[i];
-        if (url.indexOf('?') > -1) {
-          url += '&';
-        } else {
-          url += '?';
+      return new Promise(function (resolve) {
+        var jsonpUserID = new Date().getTime();
+        for (var i = 0; i < len; i++) {
+          var url = splitQuestUrl[i];
+          if (url.indexOf('?') > -1) {
+            url += '&';
+          } else {
+            url += '?';
+          }
+          url += 'sectionCount=' + len;
+          url += '&sectionIndex=' + i;
+          url += '&jsonpUserID=' + jsonpUserID;
+          if (proxy) {
+            url = decodeURIComponent(url);
+            url = proxy + encodeURIComponent(url);
+          }
+          fetch_jsonp_default()(url, {
+            jsonpCallbackFunction: callback,
+            timeout: 30000
+          }).then(function (result) {
+            resolve(result.json());
+          });
         }
-        url += 'sectionCount=' + len;
-        url += '&sectionIndex=' + i;
-        url += '&jsonpUserID=' + jsonpUserID;
-        if (proxy) {
-          url = decodeURIComponent(url);
-          url = proxy + encodeURIComponent(url);
-        }
-        fetch_jsonp_default()(url, {
-          jsonpCallbackFunction: callback,
-          timeout: 30000
-        });
-      }
+      });
     }
   },
   GET: function GET(config) {
@@ -4861,15 +6489,16 @@ var FetchRequest = {
    */
   post: function post(url, params, options) {
     options = options || {};
+    url = this._processUrl(url, options);
     if (!this.supportDirectRequest(url, options)) {
       url = url.replace('.json', '.jsonp');
       var config = {
-        url: url += "&_method=POST",
+        url: Util_Util.urlAppend(url, "_method=POST"),
         data: params
       };
       return RequestJSONPPromise.POST(config);
     }
-    return this._fetch(this._processUrl(url, options), params, options, 'POST');
+    return this._fetch(url, params, options, 'POST');
   },
   /**
    * @function FetchRequest.put
@@ -5357,7 +6986,7 @@ var SecurityManager = /*#__PURE__*/function () {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-        withCredentials: true
+        withCredentials: false
       };
       return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
         return response.json();
@@ -5401,13 +7030,8 @@ var SecurityManager = /*#__PURE__*/function () {
      */
   }, {
     key: "loginManager",
-    value: function loginManager(url, loginInfoParams, options) {
-      if (!Util_Util.isInTheSameDomain(url)) {
-        var isNewTab = options ? options.isNewTab : true;
-        this._open(url, isNewTab);
-        return;
-      }
-      var requestUrl = Util_Util.urlPathAppend(url, 'icloud/security/tokens');
+    value: function loginManager(url, loginInfoParams) {
+      var requestUrl = Util_Util.urlPathAppend(url, '/security/tokens');
       var params = loginInfoParams || {};
       var loginInfo = {
         username: params.userName && params.userName.toString(),
@@ -5417,15 +7041,15 @@ var SecurityManager = /*#__PURE__*/function () {
       var requestOptions = {
         headers: {
           Accept: '*/*',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json; charset=UTF-8'
         }
       };
       var me = this;
       return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
-        response.text().then(function (result) {
-          me.imanagerToken = result;
-          return result;
-        });
+        return response.text();
+      }).then(function (result) {
+        me.imanagerToken = result;
+        return result;
       });
     }
 
@@ -7866,6 +9490,64 @@ var WebScaleUnit = {
   DEGREES: "DEGREES"
 };
 
+/**
+ * @enum BoundsType
+ * @description 范围类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BoundsType.UNION;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BoundsType } from '{npm}';
+ *
+ * const result = BoundsType.UNION;
+ * ```
+ */
+var BoundsType = {
+  /** 自定义范围。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集范围的交集。 */
+  INTERSECTION: "INTERSECTION",
+  /** 输入栅格数据集范围的并集。 */
+  UNION: "UNION"
+};
+
+/**
+ * @enum CellSizeType
+ * @description 单元格类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.CellSizeType.MAX;
+ *
+ * </script>
+ * // ES6 Import
+ * import { CellSizeType } from '{npm}';
+ *
+ * const result = CellSizeType.MAX;
+ * ```
+ */
+var CellSizeType = {
+  /** 用户自己输入的单元格值大小作为单元格大小类型。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集中单元格最大值作为单元格大小类型。*/
+  MAX: "MAX",
+  /** 输入栅格数据集中单元格最小值作为单元格大小类型。 */
+  MIN: "MIN"
+};
+
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 function DatasourceConnectionInfo_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function DatasourceConnectionInfo_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -8189,6 +9871,9 @@ function KernelDensityJobParameter_createClass(Constructor, protoProps, staticPr
  * @param {number} [options.method=0] - 分析方法。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
+ * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
+ * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -8595,6 +10280,7 @@ function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProp
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
@@ -8768,6 +10454,7 @@ function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticPr
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset] - 汇总数据源（多边形汇总时用到的参数）。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
@@ -9463,6 +11150,7 @@ function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) 
  * @param {number} options.x - 查询位置的横坐标。
  * @param {number} options.y - 查询位置的纵坐标。
  * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。
  * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。
  * @param {string} [options.prjCoordSys] - 查询结果的坐标系。
  * @param {number} [options.maxReturn] - 最大返回结果数。
@@ -9778,8 +11466,8 @@ function scaleToResolution(scale, dpi, mapUnit) {
 
 /**
  * 范围是否相交
- * @param {Extent} extent1 范围1
- * @param {Extent} extent2 范围2
+ * @param {Array} extent1 范围1
+ * @param {Array} extent2 范围2
  * @return {boolean} 范围是否相交。
  */
 function intersects(extent1, extent2) {
@@ -10243,7 +11931,8 @@ function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setProt
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。
+ * @modulecategory Overlay
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
@@ -10884,6 +12573,9 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
   return JSONFormat;
 }(Format);
 ;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function CommonServiceBase_typeof(obj) { "@babel/helpers - typeof"; return CommonServiceBase_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, CommonServiceBase_typeof(obj); }
 function CommonServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function CommonServiceBase_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -10906,7 +12598,6 @@ function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { i
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -10925,11 +12616,8 @@ var CommonServiceBase = /*#__PURE__*/function () {
     this.proxy = null;
     this.index = null;
     this.length = null;
-    this.options = null;
     this.totalTimes = null;
     this.POLLING_TIMES = 3;
-    this._processSuccess = null;
-    this._processFailed = null;
     this.isInTheSameDomain = null;
     this.withCredentials = false;
     if (Util_Util.isArray(url)) {
@@ -10977,9 +12665,6 @@ var CommonServiceBase = /*#__PURE__*/function () {
         me.totalTimes = null;
       }
       me.url = null;
-      me.options = null;
-      me._processSuccess = null;
-      me._processFailed = null;
       me.isInTheSameDomain = null;
       me.EVENT_TYPES = null;
       if (me.events) {
@@ -10992,7 +12677,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
     }
 
     /**
-     * @function  CommonServiceBase.prototype.request
+     * @function CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
@@ -11011,6 +12696,13 @@ var CommonServiceBase = /*#__PURE__*/function () {
     key: "request",
     value: function request(options) {
       var format = options.scope.format;
+      // 兼容 callback 未传，dataFormat 传入的情况
+      if (typeof options.success === 'string') {
+        options.scope.format = options.success;
+        format = options.success;
+        options.success = null;
+        options.failure = null;
+      }
       if (format && !this.supportDataFormat(format)) {
         throw new Error("".concat(this.CLASS_NAME, " is not surport ").concat(format, " format!"));
       }
@@ -11028,61 +12720,33 @@ var CommonServiceBase = /*#__PURE__*/function () {
       //为url添加安全认证信息片段
       options.url = SecurityManager.appendCredential(options.url);
       me.calculatePollingTimes();
-      me._processSuccess = options.success;
-      me._processFailed = options.failure;
       options.scope = me;
-      options.success = me.getUrlCompleted;
-      options.failure = me.getUrlFailed;
-      me.options = options;
-      me._commit(me.options);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlCompleted
-     * @description 请求成功后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-  }, {
-    key: "getUrlCompleted",
-    value: function getUrlCompleted(result) {
-      var me = this;
-      me._processSuccess(result);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlFailed
-     * @description 请求失败后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-  }, {
-    key: "getUrlFailed",
-    value: function getUrlFailed(result) {
-      var me = this;
       if (me.totalTimes > 0) {
         me.totalTimes--;
-        me.ajaxPolling();
-      } else {
-        me._processFailed(result);
+        return me.ajaxPolling(options);
       }
+      return me._commit(options);
     }
 
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
      * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
   }, {
     key: "ajaxPolling",
-    value: function ajaxPolling() {
+    value: function ajaxPolling(options) {
       var me = this,
-        url = me.options.url,
+        url = options.url,
         re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
       me.index = parseInt(Math.random() * me.length);
       me.url = me.urls[me.index];
       url = url.replace(re, re.exec(me.url)[0]);
-      me.options.url = url;
-      me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
-      me._commit(me.options);
+      options.url = url;
+      options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+      return me._commit(options);
     }
 
     /**
@@ -11125,16 +12789,56 @@ var CommonServiceBase = /*#__PURE__*/function () {
     }
 
     /**
-     * @function CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
      */
   }, {
-    key: "serviceProcessCompleted",
-    value: function serviceProcessCompleted(result) {
+    key: "transformResult",
+    value: function transformResult(result, options) {
       result = Util_Util.transformResult(result);
+      return {
+        result: result,
+        options: options
+      };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+  }, {
+    key: "transformErrorResult",
+    value: function transformErrorResult(result, options) {
+      result = Util_Util.transformResult(result);
+      var error = result.error || result;
+      return {
+        error: error,
+        options: options
+      };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+  }, {
+    key: "serviceProcessCompleted",
+    value: function serviceProcessCompleted(result, options) {
+      result = this.transformResult(result).result;
       this.events.triggerEvent('processCompleted', {
-        result: result
+        result: result,
+        options: options
       });
     }
 
@@ -11142,14 +12846,17 @@ var CommonServiceBase = /*#__PURE__*/function () {
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
+     * @private
      */
   }, {
     key: "serviceProcessFailed",
-    value: function serviceProcessFailed(result) {
-      result = Util_Util.transformResult(result);
+    value: function serviceProcessFailed(result, options) {
+      result = this.transformErrorResult(result).error;
       var error = result.error || result;
       this.events.triggerEvent('processFailed', {
-        error: error
+        error: error,
+        options: options
       });
     }
   }, {
@@ -11176,6 +12883,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
   }, {
     key: "_commit",
     value: function _commit(options) {
+      var _this = this;
       if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
         if (options.params) {
           options.url = Util_Util.urlAppend(options.url, Util_Util.getParameterString(options.params || {}));
@@ -11190,7 +12898,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
           options.params = options.data;
         }
       }
-      FetchRequest.commit(options.method, options.url, options.params, {
+      return FetchRequest.commit(options.method, options.url, options.params, {
         headers: options.headers,
         withoutFormatSuffix: options.withoutFormatSuffix,
         withCredentials: options.withCredentials,
@@ -11230,14 +12938,33 @@ var CommonServiceBase = /*#__PURE__*/function () {
           error: e
         };
       }).then(function (requestResult) {
+        var response = {
+          object: _this
+        };
         if (requestResult.error) {
-          var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-          failure(requestResult);
+          var type = 'processFailed';
+          // 兼容服务在构造函数中使用 eventListeners 的老用法
+          if (_this.events && _this.events.listeners[type] && _this.events.listeners[type].length) {
+            var failure = options.failure && (options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure);
+            failure ? failure(requestResult, options) : _this.serviceProcessFailed(requestResult, options);
+          } else {
+            response = _objectSpread(_objectSpread({}, response), _this.transformErrorResult(requestResult, options));
+            response.type = type;
+            options.failure && options.failure(response);
+          }
         } else {
-          requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-          var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-          success(requestResult);
+          var _type = 'processCompleted';
+          if (_this.events && _this.events.listeners[_type] && _this.events.listeners[_type].length) {
+            var success = options.success && (options.scope ? FunctionExt.bind(options.success, options.scope) : options.success);
+            success ? success(requestResult, options) : _this.serviceProcessCompleted(requestResult, options);
+          } else {
+            requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
+            response = _objectSpread(_objectSpread({}, response), _this.transformResult(requestResult, options));
+            response.type = _type;
+            options.success && options.success(response);
+          }
         }
+        return response;
       });
     }
   }]);
@@ -11257,7 +12984,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
- * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
+ * @param {Object} serviceResult.options 请求参数。
  */
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
 function AddressMatchService_typeof(obj) { "@babel/helpers - typeof"; return AddressMatchService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, AddressMatchService_typeof(obj); }
@@ -11317,28 +13044,32 @@ var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServ
      * @function AddressMatchService.prototype.code
      * @param {string} url - 正向地址匹配服务地址。
      * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "code",
-    value: function code(url, params) {
+    value: function code(url, params, callback) {
       if (!(params instanceof GeoCodingParameter)) {
         return;
       }
-      this.processAsync(url, params);
+      return this.processAsync(url, params, callback);
     }
 
     /**
      * @function AddressMatchService.prototype.decode
      * @param {string} url - 反向地址匹配服务地址。
      * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "decode",
-    value: function decode(url, params) {
+    value: function decode(url, params, callback) {
       if (!(params instanceof GeoDecodingParameter)) {
         return;
       }
-      this.processAsync(url, params);
+      return this.processAsync(url, params, callback);
     }
 
     /**
@@ -11346,43 +13077,38 @@ var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServ
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param {string} url - 服务地址。
      * @param {Object} params - 参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "processAsync",
-    value: function processAsync(url, params) {
-      this.request({
+    value: function processAsync(url, params, callback) {
+      return this.request({
         method: 'GET',
         url: url,
         params: params,
         scope: this,
-        success: this.serviceProcessCompleted,
-        failure: this.serviceProcessFailed
+        success: callback,
+        failure: callback
       });
     }
-
     /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
   }, {
-    key: "serviceProcessCompleted",
-    value: function serviceProcessCompleted(result) {
+    key: "transformResult",
+    value: function transformResult(result, options) {
       if (result.succeed) {
         delete result.succeed;
       }
-      AddressMatchService_get(AddressMatchService_getPrototypeOf(AddressMatchService.prototype), "serviceProcessCompleted", this).call(this, result);
-    }
-
-    /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
-     * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否失败
-     */
-  }, {
-    key: "serviceProcessFailed",
-    value: function serviceProcessFailed(result) {
-      AddressMatchService_get(AddressMatchService_getPrototypeOf(AddressMatchService.prototype), "serviceProcessFailed", this).call(this, result);
+      return {
+        result: result,
+        options: options
+      };
     }
   }]);
   return AddressMatchService;
@@ -11409,7 +13135,8 @@ function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchS
 /**
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @classdesc 地址匹配服务类。包括正向匹配和反向匹配。
+ * @modulecategory Services
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11431,7 +13158,8 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
    * @function SuperMap.REST.AddressMatchService.prototype.code
    * @description 正向匹配。
    * @param {GeoCodingParameter} params - 正向匹配参数。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   services_AddressMatchService_createClass(AddressMatchService, [{
     key: "code",
@@ -11441,21 +13169,17 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
+        crossOrigin: me.crossOrigin
       });
-      addressMatchService.code(me.url + '/geocoding', params);
+      return addressMatchService.code(me.url + '/geocoding', params, callback);
     }
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "decode",
@@ -11465,14 +13189,9 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
         headers: me.headers,
         proxy: me.proxy,
         withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
+        crossOrigin: me.crossOrigin
       });
-      addressMatchService.decode(me.url + '/geodecoding', params);
+      return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
   }]);
   return AddressMatchService;
@@ -11505,7 +13224,6 @@ function DatasetService_getPrototypeOf(o) { DatasetService_getPrototypeOf = Obje
  * @classdesc 数据集查询服务。
  * @param {string} url - 服务的访问地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 数据源名称。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -11556,75 +13274,70 @@ var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
     /**
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDatasetsService",
-    value: function getDatasetsService(params) {
-      var me = this;
-      me.url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(params, "/datasets"));
-      me.request({
-        method: "GET",
-        data: null,
-        scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+    value: function getDatasetsService(params, callback) {
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(params, "/datasets"));
+      return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDatasetService",
-    value: function getDatasetService(datasourceName, datasetName) {
-      var me = this;
-      me.url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
-      me.request({
-        method: "GET",
-        data: null,
-        scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+    value: function getDatasetService(datasourceName, datasetName, callback) {
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
+      return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.setDatasetService
      * @description 执行服务，更改数据集信息服务。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "setDatasetService",
-    value: function setDatasetService(params) {
+    value: function setDatasetService(params, callback) {
       if (!params) {
         return;
       }
-      var me = this;
-      var jsonParamsStr = Util_Util.toJSON(params);
-      me.request({
-        method: "PUT",
-        data: jsonParamsStr,
-        scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(params.datasourceName, "/datasets/name/").concat(params.datasetName));
+      delete params.datasourceName;
+      return this.processAsync(url, 'PUT', callback, params);
     }
 
     /**
     * @function DatasetService.prototype.deleteDatasetService
     * @description 执行服务，删除数据集信息服务。
+    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+    * @returns {Promise} Promise 对象。
     */
   }, {
     key: "deleteDatasetService",
-    value: function deleteDatasetService() {
+    value: function deleteDatasetService(datasourceName, datasetName, callback) {
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
+      return this.processAsync(url, 'DELETE', callback);
+    }
+  }, {
+    key: "processAsync",
+    value: function processAsync(url, method, callback, params) {
       var me = this;
-      me.request({
-        method: "DELETE",
-        data: null,
+      var requestConfig = {
+        url: url,
+        method: method,
         scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+        success: callback,
+        failure: callback
+      };
+      params && (requestConfig.data = Util_Util.toJSON(params));
+      return me.request(requestConfig);
     }
   }]);
   return DatasetService;
@@ -11818,11 +13531,10 @@ function services_DatasetService_getPrototypeOf(o) { services_DatasetService_get
 
 
 
-
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集查询。
+ * @classdesc 数据集信息服务。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11836,6 +13548,13 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
     var _this;
     services_DatasetService_classCallCheck(this, DatasetService);
     _this = _super.call(this, url, options);
+    var me = services_DatasetService_assertThisInitialized(_this);
+    _this._datasetService = new DatasetService_DatasetService(me.url, {
+      proxy: me.proxy,
+      withCredentials: me.withCredentials,
+      crossOrigin: me.crossOrigin,
+      headers: me.headers
+    });
     _this.CLASS_NAME = "SuperMap.REST.DatasetService";
     return _this;
   }
@@ -11848,7 +13567,8 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
    *     //doSomething
    *   });
    * @param {string} datasourceName - 数据源名称。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   services_DatasetService_createClass(DatasetService, [{
     key: "getDatasets",
@@ -11856,19 +13576,7 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       if (!datasourceName) {
         return;
       }
-      var me = this;
-      var datasetService = new DatasetService_DatasetService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasetService.getDatasetsService(datasourceName);
+      return this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -11880,7 +13588,8 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDataset",
@@ -11888,19 +13597,7 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       if (!datasourceName || !datasetName) {
         return;
       }
-      var me = this;
-      var datasetService = new DatasetService_DatasetService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasetService.getDatasetService(datasourceName, datasetName);
+      return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -11911,7 +13608,8 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "setDataset",
@@ -11923,30 +13621,20 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       if (params instanceof CreateDatasetParameters) {
         datasetParams = {
           "datasetType": params.datasetType,
+          "datasourceName": params.datasourceName,
           "datasetName": params.datasetName
         };
       } else if (params instanceof UpdateDatasetParameters) {
         datasetParams = {
           "datasetName": params.datasetName,
+          "datasourceName": params.datasourceName,
           "isFileCache": params.isFileCache,
           "description": params.description,
           "prjCoordSys": params.prjCoordSys,
           "charset": params.charset
         };
       }
-      var me = this;
-      var url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(params.datasourceName, "/datasets/name/").concat(params.datasetName));
-      var datasetService = new DatasetService_DatasetService(url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasetService.setDatasetService(datasetParams);
+      return this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -11958,24 +13646,13 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "deleteDataset",
     value: function deleteDataset(datasourceName, datasetName, callback) {
-      var me = this;
-      var url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName, "/datasets/name/").concat(datasetName));
-      var datasetService = new DatasetService_DatasetService(url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasetService.deleteDatasetService();
+      return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
   }]);
   return DatasetService;
@@ -12005,10 +13682,9 @@ function DatasourceService_getPrototypeOf(o) { DatasourceService_getPrototypeOf 
  * @class DatasourceService
  * @deprecatedclass SuperMap.DatasourceService
  * @category iServer Data Datasource
- * @classdesc 数据源查询服务。
+ * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string} options.datasource - 要查询的数据集所在的数据源名称。
  * @param {string} options.dataset - 要查询的数据集名称。
@@ -12045,57 +13721,58 @@ var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceB
     /**
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDatasourceService",
-    value: function getDatasourceService(datasourceName) {
-      var me = this;
-      me.url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(datasourceName));
-      me.request({
-        method: "GET",
-        data: null,
-        scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+    value: function getDatasourceService(datasourceName, callback) {
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(datasourceName));
+      return this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDatasourcesService",
-    value: function getDatasourcesService() {
-      var me = this;
-      me.url = Util_Util.urlPathAppend(me.url, "datasources");
-      me.request({
-        method: "GET",
-        data: null,
-        scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+    value: function getDatasourcesService(callback) {
+      var url = Util_Util.urlPathAppend(this.url, "datasources");
+      return this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
+     * @param {Object} params 请求参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "setDatasourceService",
-    value: function setDatasourceService(params) {
+    value: function setDatasourceService(params, callback) {
       if (!params) {
         return;
       }
+      var url = Util_Util.urlPathAppend(this.url, "datasources/name/".concat(params.datasourceName));
+      return this.processAsync(url, "PUT", callback, params);
+    }
+  }, {
+    key: "processAsync",
+    value: function processAsync(url, method, callback, params) {
       var me = this;
-      var jsonParamsStr = Util_Util.toJSON(params);
-      me.request({
-        method: "PUT",
-        data: jsonParamsStr,
+      var requestConfig = {
+        url: url,
+        method: method,
         scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
-      });
+        success: callback,
+        failure: callback
+      };
+      params && (requestConfig.data = Util_Util.toJSON(params));
+      return me.request(requestConfig);
     }
   }]);
   return DatasourceService;
@@ -12193,7 +13870,6 @@ function services_DatasourceService_getPrototypeOf(o) { services_DatasourceServi
 
 
 
-
 /**
  * @class SuperMap.REST.DatasourceService
  * @category  iServer Data Datasource
@@ -12211,6 +13887,13 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
     var _this;
     services_DatasourceService_classCallCheck(this, DatasourceService);
     _this = _super.call(this, url, options);
+    var me = services_DatasourceService_assertThisInitialized(_this);
+    _this._datasourceService = new DatasourceService_DatasourceService(me.url, {
+      proxy: me.proxy,
+      withCredentials: me.withCredentials,
+      crossOrigin: me.crossOrigin,
+      headers: me.headers
+    });
     _this.CLASS_NAME = "SuperMap.REST.DatasourceService";
     return _this;
   }
@@ -12222,24 +13905,13 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
    *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
    *     //doSomething
    *   });
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   services_DatasourceService_createClass(DatasourceService, [{
     key: "getDatasources",
     value: function getDatasources(callback) {
-      var me = this;
-      var datasourceService = new DatasourceService_DatasourceService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasourceService.getDatasourcesService();
+      return this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -12250,7 +13922,8 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getDatasource",
@@ -12258,19 +13931,7 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
       if (!datasourceName) {
         return;
       }
-      var me = this;
-      var datasourceService = new DatasourceService_DatasourceService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasourceService.getDatasourceService(datasourceName);
+      return this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
     /**
@@ -12281,7 +13942,8 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
       *     //doSomething
       *   });
       * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
   }, {
     key: "setDatasource",
@@ -12292,21 +13954,10 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
       var datasourceParams = {
         description: params.description,
         coordUnit: params.coordUnit,
-        distanceUnit: params.distanceUnit
+        distanceUnit: params.distanceUnit,
+        datasourceName: params.datasourceName
       };
-      var me = this;
-      var url = Util_Util.urlPathAppend(me.url, "datasources/name/".concat(params.datasourceName));
-      var datasourceService = new DatasourceService_DatasourceService(url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          processCompleted: callback,
-          processFailed: callback
-        }
-      });
-      datasourceService.setDatasourceService(datasourceParams);
+      return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
   }]);
   return DatasourceService;
@@ -12345,7 +13996,6 @@ function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getProt
  * @param {Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -12357,15 +14007,6 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
     var _this;
     ProcessingServiceBase_classCallCheck(this, ProcessingServiceBase);
     options = options || {};
-    /*
-     * Constant: EVENT_TYPES
-     * {Array.<string>}
-     * 此类支持的事件类型
-     * - *processCompleted* 创建成功后触发的事件。
-     * - *processFailed* 创建失败后触发的事件 。
-     * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
-     */
-    options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
     _this = _super.call(this, url, options);
     _this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
     return _this;
@@ -12385,23 +14026,33 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
      * @function ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
      * @param {string} url - 资源地址。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getJobs",
-    value: function getJobs(url) {
+    value: function getJobs(url, callback) {
       var me = this;
-      FetchRequest.get(SecurityManager.appendCredential(url), null, {
+      return FetchRequest.get(SecurityManager.appendCredential(url), null, {
         proxy: me.proxy
       }).then(function (response) {
         return response.json();
       }).then(function (result) {
-        me.events.triggerEvent("processCompleted", {
-          result: result
-        });
+        var res = {
+          result: result,
+          object: me,
+          type: 'processCompleted'
+        };
+        callback(res);
+        return res;
       })["catch"](function (e) {
-        me.eventListeners.processFailed({
-          error: e
-        });
+        var res = {
+          error: e,
+          object: me,
+          type: 'processFailed'
+        };
+        callback(res);
+        return res;
       });
     }
 
@@ -12412,10 +14063,13 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
      * @param {Object} params - 创建一个空间分析的请求参数。
      * @param {string} paramType - 请求参数类型。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addJob",
-    value: function addJob(url, params, paramType, seconds) {
+    value: function addJob(url, params, paramType, seconds, callback, processRunningCallback) {
       var me = this,
         parameterObject = null;
       if (params && params instanceof paramType) {
@@ -12432,63 +14086,86 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
         crossOrigin: me.crossOrigin,
         isInTheSameDomain: me.isInTheSameDomain
       };
-      FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
+      return FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
         return response.json();
       }).then(function (result) {
         if (result.succeed) {
-          me.serviceProcessCompleted(result, seconds);
+          return me.transformResult(result, seconds, callback, processRunningCallback);
         } else {
-          me.serviceProcessFailed(result);
+          result = me.transformErrorResult(result);
+          result.options = me;
+          result.type = 'processFailed';
+          callback(result);
+          return result;
         }
       })["catch"](function (e) {
-        me.serviceProcessFailed({
+        e = me.transformErrorResult({
           error: e
         });
+        e.options = me;
+        e.type = 'processFailed';
+        callback(e);
+        return e;
       });
     }
   }, {
-    key: "serviceProcessCompleted",
-    value: function serviceProcessCompleted(result, seconds) {
+    key: "transformResult",
+    value: function transformResult(result, seconds, callback, processRunningCallback) {
       result = Util_Util.transformResult(result);
       seconds = seconds || 1000;
       var me = this;
       if (result) {
-        var id = setInterval(function () {
-          FetchRequest.get(SecurityManager.appendCredential(result.newResourceLocation), {
-            _t: new Date().getTime()
-          }).then(function (response) {
-            return response.json();
-          }).then(function (job) {
-            me.events.triggerEvent("processRunning", {
-              id: job.id,
-              state: job.state
-            });
-            if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
-              clearInterval(id);
-              me.events.triggerEvent("processFailed", {
-                error: job.state.errorMsg,
-                state: job.state.runState
+        return new Promise(function (resolve) {
+          var id = setInterval(function () {
+            FetchRequest.get(SecurityManager.appendCredential(result.newResourceLocation), {
+              _t: new Date().getTime()
+            }).then(function (response) {
+              return response.json();
+            }).then(function (job) {
+              resolve({
+                object: me,
+                id: job.id,
+                state: job.state
               });
-            }
-            if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-              clearInterval(id);
-              me.events.triggerEvent("processCompleted", {
-                result: job
+              processRunningCallback({
+                id: job.id,
+                state: job.state,
+                object: me
               });
-            }
-          })["catch"](function (e) {
-            clearInterval(id);
-            me.events.triggerEvent("processFailed", {
-              error: e
+              if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
+                clearInterval(id);
+                var res = {
+                  error: job.state.errorMsg,
+                  state: job.state.runState,
+                  object: me,
+                  type: 'processFailed'
+                };
+                resolve(res);
+                callback(res);
+              }
+              if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                clearInterval(id);
+                var _res = {
+                  result: job,
+                  object: me,
+                  type: 'processCompleted'
+                };
+                resolve(_res);
+                callback(_res);
+              }
+            })["catch"](function (e) {
+              clearInterval(id);
+              var res = {
+                error: e,
+                object: me,
+                type: 'processFailed'
+              };
+              resolve(res);
+              callback(res);
             });
-          });
-        }, seconds);
+          }, seconds);
+        });
       }
-    }
-  }, {
-    key: "serviceProcessFailed",
-    value: function serviceProcessFailed(result) {
-      ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "serviceProcessFailed", this).call(this, result);
     }
   }]);
   return ProcessingServiceBase;
@@ -12551,22 +14228,26 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getKernelDensityJobs",
-    value: function getKernelDensityJobs() {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getKernelDensityJobs(callback) {
+      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getKernelDensityJob",
-    value: function getKernelDensityJob(id) {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getKernelDensityJob(id, callback) {
+      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12574,11 +14255,14 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
      * @description 新建核密度分析服务
      * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addKernelDensityJob",
-    value: function addKernelDensityJob(params, seconds) {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter, seconds);
+    value: function addKernelDensityJob(params, seconds, callback, processRunningCallback) {
+      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return KernelDensityJobsService;
@@ -12640,22 +14324,26 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
     /**
      * @function SingleObjectQueryJobsService.protitype.getQueryJobs
      * @description 获取单对象空间查询分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getQueryJobs",
-    value: function getQueryJobs() {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getQueryJobs(callback) {
+      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getQueryJob
      * @description 获取指定id的单对象空间查询分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getQueryJob",
-    value: function getQueryJob(id) {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getQueryJob(id, callback) {
+      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12663,11 +14351,13 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
      * @description 新建单对象空间查询分析服务
      * @param {SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addQueryJob",
-    value: function addQueryJob(params, seconds) {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter, seconds);
+    value: function addQueryJob(params, seconds, callback, processRunningCallback) {
+      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return SingleObjectQueryJobsService;
@@ -12701,7 +14391,6 @@ function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPr
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务地址在数组中的位置。
  * @param {number} options.length - 服务地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -12732,22 +14421,26 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryMeshJobs",
-    value: function getSummaryMeshJobs() {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getSummaryMeshJobs(callback) {
+      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJob
      * @description 获取指定ip的点聚合分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryMeshJob",
-    value: function getSummaryMeshJob(id) {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getSummaryMeshJob(id, callback) {
+      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12755,103 +14448,16 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
      * @description 新建点聚合分析服务
      * @param {SummaryMeshJobParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addSummaryMeshJob",
-    value: function addSummaryMeshJob(params, seconds) {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter, seconds);
+    value: function addSummaryMeshJob(params, seconds, callback, processRunningCallback) {
+      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return SummaryMeshJobsService;
-}(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-function SummaryRegionJobsService_typeof(obj) { "@babel/helpers - typeof"; return SummaryRegionJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SummaryRegionJobsService_typeof(obj); }
-function SummaryRegionJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryRegionJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function SummaryRegionJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryRegionJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get.bind(); } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryRegionJobsService_get.apply(this, arguments); }
-function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
-function SummaryRegionJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryRegionJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryRegionJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryRegionJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryRegionJobsService_possibleConstructorReturn(this, result); }; }
-function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryRegionJobsService_assertThisInitialized(self); }
-function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function SummaryRegionJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SummaryRegionJobsService
- * @deprecatedclass SuperMap.SummaryRegionJobsService
- * @category  iServer ProcessingService SummaryRegion
- * @classdesc 区域汇总分析服务类
- * @extends {ProcessingServiceBase}
- * @param {string} url - 服务地址。
- * @param {Object} options - 可选参数。
- * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
- * @param {Object} [options.headers] - 请求头。
- * @usage
- */
-var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
-  var _super = SummaryRegionJobsService_createSuper(SummaryRegionJobsService);
-  function SummaryRegionJobsService(url, options) {
-    var _this;
-    SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
-    _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
-    return _this;
-  }
-
-  /**
-   *@override
-   */
-  SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
-    key: "destroy",
-    value: function destroy() {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "destroy", this).call(this);
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
-     * @description 获取区域汇总分析任务集合。
-     */
-  }, {
-    key: "getSummaryRegionJobs",
-    value: function getSummaryRegionJobs() {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, this.url);
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
-     * @description 获取指定id的区域汇总分析任务。
-     * @param {string} id -要获取区域汇总分析任务的id
-     */
-  }, {
-    key: "getSummaryRegionJob",
-    value: function getSummaryRegionJob(id) {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
-     * @description 新建区域汇总任务。
-     * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
-     * @param {number} seconds - 创建成功结果的时间间隔。
-     */
-  }, {
-    key: "addSummaryRegionJob",
-    value: function addSummaryRegionJob(params, seconds) {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter, seconds);
-    }
-  }]);
-  return SummaryRegionJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 function VectorClipJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12874,6 +14480,7 @@ function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProp
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetOverlay - 裁剪对象数据集。
  * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -13031,22 +14638,26 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
     /**
      * @function VectorClipJobsService.protitype.getVectorClipJobs
      * @description 获取矢量裁剪分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getVectorClipJobs",
-    value: function getVectorClipJobs() {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getVectorClipJobs(callback) {
+      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getVectorClipJob
      * @description 获取指定id的矢量裁剪分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getVectorClipJob",
-    value: function getVectorClipJob(id) {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getVectorClipJob(id, callback) {
+      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -13054,11 +14665,14 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
      * @description 新建矢量裁剪分析服务
      * @param {VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addVectorClipJob",
-    value: function addVectorClipJob(params, seconds) {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter, seconds);
+    value: function addVectorClipJob(params, seconds, callback, processRunningCallback) {
+      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return VectorClipJobsService;
@@ -13092,7 +14706,6 @@ function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getProt
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -13123,22 +14736,26 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getOverlayGeoJobs",
-    value: function getOverlayGeoJobs() {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getOverlayGeoJobs(callback) {
+      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJob
      * @description 获取指定id的叠加分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getOverlayGeoJob",
-    value: function getOverlayGeoJob(id) {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getOverlayGeoJob(id, callback) {
+      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -13146,14 +14763,111 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
      * @description 新建点叠加析服务
      * @param {OverlayGeoJobParameter} params - 创建一个叠加分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addOverlayGeoJob",
-    value: function addOverlayGeoJob(params, seconds) {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter, seconds);
+    value: function addOverlayGeoJob(params, seconds, callback, processRunningCallback) {
+      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return OverlayGeoJobsService;
+}(ProcessingServiceBase);
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
+function SummaryRegionJobsService_typeof(obj) { "@babel/helpers - typeof"; return SummaryRegionJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SummaryRegionJobsService_typeof(obj); }
+function SummaryRegionJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function SummaryRegionJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function SummaryRegionJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function SummaryRegionJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get.bind(); } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryRegionJobsService_get.apply(this, arguments); }
+function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
+function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
+function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
+function SummaryRegionJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryRegionJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryRegionJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryRegionJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryRegionJobsService_possibleConstructorReturn(this, result); }; }
+function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryRegionJobsService_assertThisInitialized(self); }
+function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function SummaryRegionJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SummaryRegionJobsService
+ * @deprecatedclass SuperMap.SummaryRegionJobsService
+ * @category  iServer ProcessingService SummaryRegion
+ * @classdesc 区域汇总分析服务类
+ * @extends {ProcessingServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @usage
+ */
+var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
+  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
+  var _super = SummaryRegionJobsService_createSuper(SummaryRegionJobsService);
+  function SummaryRegionJobsService(url, options) {
+    var _this;
+    SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
+    _this = _super.call(this, url, options);
+    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
+    _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
+    return _this;
+  }
+
+  /**
+   *@override
+   */
+  SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
+    key: "destroy",
+    value: function destroy() {
+      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "destroy", this).call(this);
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
+     * @description 获取区域汇总分析任务集合。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryRegionJobs",
+    value: function getSummaryRegionJobs(callback) {
+      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
+     * @description 获取指定id的区域汇总分析任务。
+     * @param {string} id -要获取区域汇总分析任务的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryRegionJob",
+    value: function getSummaryRegionJob(id, callback) {
+      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
+     * @description 新建区域汇总任务。
+     * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
+     * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addSummaryRegionJob",
+    value: function addSummaryRegionJob(params, seconds, callback, processRunningCallback) {
+      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
+    }
+  }]);
+  return SummaryRegionJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 function BuffersAnalystJobsService_typeof(obj) { "@babel/helpers - typeof"; return BuffersAnalystJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, BuffersAnalystJobsService_typeof(obj); }
@@ -13180,7 +14894,7 @@ function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService
  * @class BuffersAnalystJobsService
  * @deprecatedclass SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析服务类
+ * @classdesc 缓冲区分析服务类。
  * @extends {ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -13211,23 +14925,27 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJobs
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @description 获取缓冲区分析所有任务
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getBuffersJobs",
-    value: function getBuffersJobs() {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getBuffersJobs(callback) {
+      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJob
      * @description 获取指定id的缓冲区分析服务
      * @param {string} id - 指定要获取数据的id。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getBuffersJob",
-    value: function getBuffersJob(id) {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getBuffersJob(id, callback) {
+      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -13235,11 +14953,14 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
      * @description 新建缓冲区分析服务
      * @param {BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addBuffersJob",
-    value: function addBuffersJob(params, seconds) {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter, seconds);
+    value: function addBuffersJob(params, seconds, callback, processRunningCallback) {
+      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return BuffersAnalystJobsService;
@@ -13301,22 +15022,26 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getTopologyValidatorJobs",
-    value: function getTopologyValidatorJobs() {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getTopologyValidatorJobs(callback) {
+      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getTopologyValidatorJob",
-    value: function getTopologyValidatorJob(id) {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getTopologyValidatorJob(id, callback) {
+      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -13324,11 +15049,13 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
      * @description 新建拓扑检查分析服务
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {number} seconds -创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addTopologyValidatorJob",
-    value: function addTopologyValidatorJob(params, seconds) {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter, seconds);
+    value: function addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {
+      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return TopologyValidatorJobsService;
@@ -13390,22 +15117,26 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJobs
      * @description 获取属性汇总分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryAttributesJobs",
-    value: function getSummaryAttributesJobs() {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, this.url);
+    value: function getSummaryAttributesJobs(callback) {
+      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, this.url, callback);
     }
 
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJob
      * @description 获取指定id的属性汇总分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryAttributesJob",
-    value: function getSummaryAttributesJob(id) {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id));
+    value: function getSummaryAttributesJob(id, callback) {
+      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -13413,27 +15144,21 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
      * @description 新建属性汇总分析服务
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addSummaryAttributesJob",
-    value: function addSummaryAttributesJob(params, seconds) {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter, seconds);
+    value: function addSummaryAttributesJob(params, seconds, callback, processRunningCallback) {
+      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
   return SummaryAttributesJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
-function ProcessingService_typeof(obj) { "@babel/helpers - typeof"; return ProcessingService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, ProcessingService_typeof(obj); }
+;// CONCATENATED MODULE: ./src/common/iServer/ProcessingService.js
 function ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function ProcessingService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) ProcessingService_setPrototypeOf(subClass, superClass); }
-function ProcessingService_setPrototypeOf(o, p) { ProcessingService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingService_setPrototypeOf(o, p); }
-function ProcessingService_createSuper(Derived) { var hasNativeReflectConstruct = ProcessingService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = ProcessingService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = ProcessingService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return ProcessingService_possibleConstructorReturn(this, result); }; }
-function ProcessingService_possibleConstructorReturn(self, call) { if (call && (ProcessingService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return ProcessingService_assertThisInitialized(self); }
-function ProcessingService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function ProcessingService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function ProcessingService_getPrototypeOf(o) { ProcessingService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingService_getPrototypeOf(o); }
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -13448,47 +15173,46 @@ function ProcessingService_getPrototypeOf(o) { ProcessingService_getPrototypeOf 
 
 
 
-
-
 /**
- * @class SuperMap.REST.ProcessingService
+ * @class ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
- * @augments CommonServiceBase
+ * @extends {ServiceBase}
  * @example
- * new SuperMap.REST.ProcessingService(url,options)
- *    .getKernelDensityJobs(function(result){
- *       //doSomething
+ * new ProcessingService(url,options)
+ *  .getKernelDensityJobs(function(result){
+ *     //doSomething
  * })
- * @param {string} url - 分布式分析服务地址。
- * @param {Object} options - 可选参数。
+ * @param {string} url - 服务地址。 
+ * @param {Object} options - 参数。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
-var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
-  ProcessingService_inherits(ProcessingService, _CommonServiceBase);
-  var _super = ProcessingService_createSuper(ProcessingService);
+var ProcessingService_ProcessingService = /*#__PURE__*/function () {
   function ProcessingService(url, options) {
-    var _this;
     ProcessingService_classCallCheck(this, ProcessingService);
-    _this = _super.call(this, url, options);
-    _this.kernelDensityJobs = {};
-    _this.summaryMeshJobs = {};
-    _this.queryJobs = {};
-    _this.summaryRegionJobs = {};
-    _this.vectorClipJobs = {};
-    _this.overlayGeoJobs = {};
-    _this.buffersJobs = {};
-    _this.topologyValidatorJobs = {};
-    _this.summaryAttributesJobs = {};
-    return _this;
+    this.url = url;
+    this.options = options || {};
+    this.kernelDensityJobs = {};
+    this.summaryMeshJobs = {};
+    this.queryJobs = {};
+    this.summaryRegionJobs = {};
+    this.vectorClipJobs = {};
+    this.overlayGeoJobs = {};
+    this.buffersJobs = {};
+    this.topologyValidatorJobs = {};
+    this.summaryAttributesJobs = {};
   }
 
   /**
-   * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobs
+   * @function ProcessingService.prototype.getKernelDensityJobs
    * @description 获取密度分析的列表。
-   * @param {function} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+   * @returns {Promise} Promise 对象。
    */
   ProcessingService_createClass(ProcessingService, [{
     key: "getKernelDensityJobs",
@@ -13496,26 +15220,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      kernelDensityJobsService.getKernelDensityJobs();
+      return kernelDensityJobsService.getKernelDensityJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
-     * @description 获取某一个密度分析。
-     * @param {string} id - 空间分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @function ProcessingService.prototype.getKernelDensityJob
+     * @description 获取某个密度分析。
+     * @param {string} id - 空间分析的ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getKernelDensityJob",
@@ -13523,27 +15243,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      kernelDensityJobsService.getKernelDensityJob(id);
+      return kernelDensityJobsService.getKernelDensityJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addKernelDensityJob
+     * @function ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
-     * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {KernelDensityJobParameter} params -密度分析参数类。 
+     * @param {RequestCallback} callback 回调函数。 
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addKernelDensityJob",
@@ -13551,27 +15267,21 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.kernelDensityJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      kernelDensityJobsService.addKernelDensityJob(params, seconds);
+      return kernelDensityJobsService.addKernelDensityJob(params, seconds, callback, function (job) {
+        me.kernelDensityJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
+     * @function ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param {string} id - 密度分析的 ID。
+     * @param {string} id - 密度分析的id。
      * @returns {Object} 密度分析的状态。
      */
   }, {
@@ -13581,10 +15291,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
+     * @function ProcessingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryMeshJobs",
@@ -13592,26 +15303,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryMeshJobsService.getSummaryMeshJobs();
+      return summaryMeshJobsService.getSummaryMeshJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
-     * @description 获取点聚合分析。
-     * @param {string} id - 点聚合分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @function ProcessingService.prototype.getSummaryMeshJob
+     * @description 获取某个点聚合分析。
+     * @param {string} id - 空间分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryMeshJob",
@@ -13619,27 +15326,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryMeshJobsService.getSummaryMeshJob(id);
+      return summaryMeshJobsService.getSummaryMeshJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addSummaryMeshJob
+     * @function ProcessingService.prototype.addSummaryMeshJob
      * @description 点聚合分析。
-     * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addSummaryMeshJob",
@@ -13647,25 +15350,19 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.summaryMeshJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryMeshJobsService.addSummaryMeshJob(params, seconds);
+      return summaryMeshJobsService.addSummaryMeshJob(params, seconds, callback, function (job) {
+        me.summaryMeshJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
+     * @function ProcessingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
      * @param {string} id - 点聚合分析的 ID。
      * @returns {Object} 点聚合分析的状态。
@@ -13677,10 +15374,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getQueryJobs
+     * @function ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getQueryJobs",
@@ -13688,26 +15386,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      singleObjectQueryJobsService.getQueryJobs();
+      return singleObjectQueryJobsService.getQueryJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
-     * @description 获取单对象查询分析。
-     * @param {string} id - 单对象查询分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @function ProcessingService.prototype.getQueryJob
+     * @description 获取某个单对象查询分析。
+     * @param {string} id - 空间分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getQueryJob",
@@ -13715,54 +15409,43 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      singleObjectQueryJobsService.getQueryJob(id);
+      return singleObjectQueryJobsService.getQueryJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addQueryJob
+     * @function ProcessingService.prototype.addQueryJob
      * @description 单对象查询分析。
-     * @param {SingleObjectQueryJobsParameter} params - 单对象空间查询分析任务参数类。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addQueryJob",
     value: function addQueryJob(params, callback, seconds, resultFormat) {
       var me = this,
-        param = me._processParams(params),
         format = me._processFormat(resultFormat);
       var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-        headers: me.headers,
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.queryJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      singleObjectQueryJobsService.addQueryJob(param, seconds);
+      return singleObjectQueryJobsService.addQueryJob(params, seconds, callback, function (job) {
+        me.queryJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
+     * @function ProcessingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
      * @param {string} id - 单对象查询分析的 ID。
      * @returns {Object} 单对象查询分析的状态。
@@ -13774,10 +15457,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
+     * @function ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryRegionJobs",
@@ -13785,26 +15469,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-        proxy: me.proxy,
-        headers: me.headers,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryRegionJobsService.getSummaryRegionJobs();
+      return summaryRegionJobsService.getSummaryRegionJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
-     * @description 获取某一个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @function ProcessingService.prototype.getSummaryRegionJob
+     * @description 获取某个区域汇总分析。
+     * @param {string} id - 区域汇总分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryRegionJob",
@@ -13812,27 +15492,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryRegionJobsService.getSummaryRegionJob(id);
+      return summaryRegionJobsService.getSummaryRegionJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
-     * @description 新建一个区域汇总分析。
-     * @param {SummaryRegionJobParameter} params -创建一个区域汇总分析的请求参数。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
+     * @function ProcessingService.prototype.addSummaryRegionJob
+     * @description 区域汇总分析。
+     * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addSummaryRegionJob",
@@ -13840,27 +15516,21 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.summaryRegionJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryRegionJobsService.addSummaryRegionJob(params, seconds);
+      return summaryRegionJobsService.addSummaryRegionJob(params, seconds, callback, function (job) {
+        me.summaryRegionJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
+     * @function ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 区域汇总分析的 ID。
+     * @param {string} id - 生成区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
   }, {
@@ -13870,10 +15540,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobs
+     * @function ProcessingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getVectorClipJobs",
@@ -13881,26 +15552,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var vectorClipJobsService = new VectorClipJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      vectorClipJobsService.getVectorClipJobs();
+      return vectorClipJobsService.getVectorClipJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
-     * @description 获取矢量裁剪分析。
-     * @param {string} id - 矢量裁剪分析的 ID。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @function ProcessingService.prototype.getVectorClipJob
+     * @description 获取某个矢量裁剪分析。
+     * @param {string} id - 空间分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getVectorClipJob",
@@ -13908,56 +15575,45 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var vectorClipJobsService = new VectorClipJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      vectorClipJobsService.getVectorClipJob(id);
+      return vectorClipJobsService.getVectorClipJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addVectorClipJob
+     * @function ProcessingService.prototype.addVectorClipJob
      * @description 矢量裁剪分析。
-     * @param {VectorClipJobsParameter} params - 矢量裁剪分析任务参数类。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addVectorClipJob",
     value: function addVectorClipJob(params, callback, seconds, resultFormat) {
       var me = this,
-        param = me._processParams(params),
         format = me._processFormat(resultFormat);
       var vectorClipJobsService = new VectorClipJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.vectorClipJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      vectorClipJobsService.addVectorClipJob(param, seconds);
+      return vectorClipJobsService.addVectorClipJob(params, seconds, callback, function (job) {
+        me.vectorClipJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
+     * @function ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {string} id - 矢量裁剪分析的 ID。
+     * @param {number} id - 矢量裁剪分析的ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
   }, {
@@ -13967,10 +15623,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJobs
+     * @function ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getOverlayGeoJobs",
@@ -13978,26 +15635,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      overlayGeoJobsService.getOverlayGeoJobs();
+      return overlayGeoJobsService.getOverlayGeoJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
-     * @description 获取叠加分析。
-     * @param {string} id - 叠加分析的 ID。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @function ProcessingService.prototype.getOverlayGeoJob
+     * @description 获取某个叠加分析。
+     * @param {string} id - 空间分析的 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getOverlayGeoJob",
@@ -14005,27 +15658,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      overlayGeoJobsService.getOverlayGeoJob(id);
+      return overlayGeoJobsService.getOverlayGeoJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addOverlayGeoJob
+     * @function ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
-     * @param {OverlayGeoJobParameter} params - 叠加分析任务参数类。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addOverlayGeoJob",
@@ -14033,25 +15682,19 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.overlayGeoJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      overlayGeoJobsService.addOverlayGeoJob(params, seconds);
+      return overlayGeoJobsService.addOverlayGeoJob(params, seconds, callback, function (job) {
+        me.overlayGeoJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
+     * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态。
@@ -14063,10 +15706,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
+     * @function ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getBuffersJobs",
@@ -14074,26 +15718,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      buffersAnalystJobsService.getBuffersJobs();
+      return buffersAnalystJobsService.getBuffersJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
-     * @description 获取缓冲区分析。
-     * @param {string} id - 缓冲区分析的 ID。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @function ProcessingService.prototype.getBuffersJob
+     * @description 获取某个缓冲区分析。
+     * @param {string} id - 空间分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getBuffersJob",
@@ -14101,27 +15741,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      buffersAnalystJobsService.getBuffersJob(id);
+      return buffersAnalystJobsService.getBuffersJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addBuffersJob
+     * @function ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
-     * @param {BuffersAnalystJobsParameter} params - 创建一个缓冲区分析的请求参数。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} seconds - 获取创建成功结果的时间间隔。 
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addBuffersJob",
@@ -14129,25 +15765,19 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.buffersJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      buffersAnalystJobsService.addBuffersJob(params, seconds);
+      return buffersAnalystJobsService.addBuffersJob(params, seconds, callback, function (job) {
+        me.buffersJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
+     * @function ProcessingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
      * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态。
@@ -14159,10 +15789,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
+     * @function ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getTopologyValidatorJobs",
@@ -14170,26 +15801,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      topologyValidatorJobsService.getTopologyValidatorJobs();
+      return topologyValidatorJobsService.getTopologyValidatorJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
-     * @description 获取拓扑检查分析。
-     * @param {string} id - 拓扑检查分析的 ID。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @function ProcessingService.prototype.getTopologyValidatorJob
+     * @description 获取某个拓扑检查分析。
+     * @param {string} id - 空间分析的 ID。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getTopologyValidatorJob",
@@ -14197,27 +15824,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      topologyValidatorJobsService.getTopologyValidatorJob(id);
+      return topologyValidatorJobsService.getTopologyValidatorJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addTopologyValidatorJob
+     * @function ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
-     * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
-     * @param {function} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addTopologyValidatorJob",
@@ -14225,25 +15848,19 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.topologyValidatorJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      topologyValidatorJobsService.addTopologyValidatorJob(params, seconds);
+      return topologyValidatorJobsService.addTopologyValidatorJob(params, seconds, callback, function (job) {
+        me.topologyValidatorJobs[job.id] = job.state;
+      });
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
+     * @function ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
      * @param {string} id - 拓扑检查分析的 ID。
      * @returns {Object} 拓扑检查分析的状态。
@@ -14255,10 +15872,11 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
+     * @function ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryAttributesJobs",
@@ -14266,26 +15884,22 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryAttributesJobsService.getSummaryAttributesJobs();
+      return summaryAttributesJobsService.getSummaryAttributesJobs(callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
-     * @description 获取属性汇总分析。
-     * @param {string} id - 属性汇总分析的 ID。
-     * @param {function} callback - 回调函数。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @function ProcessingService.prototype.getSummaryAttributesJob
+     * @description 获取某个属性汇总分析。
+     * @param {string} id - 空间分析的 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "getSummaryAttributesJob",
@@ -14293,27 +15907,23 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryAttributesJobsService.getSummaryAttributesJob(id);
+      return summaryAttributesJobsService.getSummaryAttributesJob(id, callback);
     }
 
     /**
-     * @function SuperMap.REST.ProcessingService.prototype.addSummaryAttributesJob
+     * @function ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
-     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。 
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
-     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
   }, {
     key: "addSummaryAttributesJob",
@@ -14321,21 +15931,549 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
       var me = this,
         format = me._processFormat(resultFormat);
       var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-        proxy: me.proxy,
-        withCredentials: me.withCredentials,
-        crossOrigin: me.crossOrigin,
-        headers: me.headers,
-        eventListeners: {
-          scope: me,
-          processCompleted: callback,
-          processFailed: callback,
-          processRunning: function processRunning(job) {
-            me.summaryAttributesJobs[job.id] = job.state;
-          }
-        },
+        proxy: me.options.proxy,
+        withCredentials: me.options.withCredentials,
+        crossOrigin: me.options.crossOrigin,
+        headers: me.options.headers,
         format: format
       });
-      summaryAttributesJobsService.addSummaryAttributesJob(params, seconds);
+      return summaryAttributesJobsService.addSummaryAttributesJob(params, seconds, callback, function (job) {
+        me.summaryAttributesJobs[job.id] = job.state;
+      });
+    }
+
+    /**
+     * @function ProcessingService.prototype.getSummaryAttributesJobState
+     * @description 获取属性汇总分析的状态。
+     * @param {string} id - 属性汇总分析的 ID。 
+     * @returns {Object} 属性汇总分析的状态
+     */
+  }, {
+    key: "getSummaryAttributesJobState",
+    value: function getSummaryAttributesJobState(id) {
+      return this.summaryAttributesJobs[id];
+    }
+  }, {
+    key: "_processFormat",
+    value: function _processFormat(resultFormat) {
+      return resultFormat ? resultFormat : DataFormat.GEOJSON;
+    }
+  }]);
+  return ProcessingService;
+}();
+;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
+function services_ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function services_ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function services_ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class SuperMap.REST.ProcessingService
+ * @category  iServer ProcessingService
+ * @classdesc 分布式分析相关服务类。
+ * @modulecategory Services
+ * @augments CommonServiceBase
+ * @example
+ * new SuperMap.REST.ProcessingService(url,options)
+ *    .getKernelDensityJobs(function(result){
+ *       //doSomething
+ * })
+ * @param {string} url - 分布式分析服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ */
+var ProcessingService = /*#__PURE__*/function () {
+  function ProcessingService(url, options) {
+    services_ProcessingService_classCallCheck(this, ProcessingService);
+    this._processingService = new ProcessingService_ProcessingService(url, options);
+  }
+
+  /**
+   * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobs
+   * @description 获取密度分析的列表。
+   * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+   * @returns {Promise} Promise 对象。
+   */
+  services_ProcessingService_createClass(ProcessingService, [{
+    key: "getKernelDensityJobs",
+    value: function getKernelDensityJobs(callback, resultFormat) {
+      return this._processingService.getKernelDensityJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
+     * @description 获取某一个密度分析。
+     * @param {string} id - 空间分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getKernelDensityJob",
+    value: function getKernelDensityJob(id, callback, resultFormat) {
+      return this._processingService.getKernelDensityJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addKernelDensityJob
+     * @description 密度分析。
+     * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addKernelDensityJob",
+    value: function addKernelDensityJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
+     * @description 获取密度分析的状态。
+     * @param {string} id - 密度分析的 ID。
+     * @returns {Object} 密度分析的状态。
+     */
+  }, {
+    key: "getKernelDensityJobState",
+    value: function getKernelDensityJobState(id) {
+      return this._processingService.getKernelDensityJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
+     * @description 获取点聚合分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryMeshJobs",
+    value: function getSummaryMeshJobs(callback, resultFormat) {
+      return this._processingService.getSummaryMeshJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
+     * @description 获取点聚合分析。
+     * @param {string} id - 点聚合分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryMeshJob",
+    value: function getSummaryMeshJob(id, callback, resultFormat) {
+      return this._processingService.getSummaryMeshJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addSummaryMeshJob
+     * @description 点聚合分析。
+     * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addSummaryMeshJob",
+    value: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
+     * @description 获取点聚合分析的状态。
+     * @param {string} id - 点聚合分析的 ID。
+     * @returns {Object} 点聚合分析的状态。
+     */
+  }, {
+    key: "getSummaryMeshJobState",
+    value: function getSummaryMeshJobState(id) {
+      return this._processingService.getSummaryMeshJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getQueryJobs
+     * @description 获取单对象查询分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getQueryJobs",
+    value: function getQueryJobs(callback, resultFormat) {
+      return this._processingService.getQueryJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
+     * @description 获取单对象查询分析。
+     * @param {string} id - 单对象查询分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getQueryJob",
+    value: function getQueryJob(id, callback, resultFormat) {
+      return this._processingService.getQueryJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addQueryJob
+     * @description 单对象查询分析。
+     * @param {SingleObjectQueryJobsParameter} params - 单对象空间查询分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addQueryJob",
+    value: function addQueryJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addQueryJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
+     * @description 获取单对象查询分析的状态。
+     * @param {string} id - 单对象查询分析的 ID。
+     * @returns {Object} 单对象查询分析的状态。
+     */
+  }, {
+    key: "getQueryJobState",
+    value: function getQueryJobState(id) {
+      return this._processingService.getQueryJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
+     * @description 获取区域汇总分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryRegionJobs",
+    value: function getSummaryRegionJobs(callback, resultFormat) {
+      return this._processingService.getSummaryRegionJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
+     * @description 获取某一个区域汇总分析。
+     * @param {string} id - 区域汇总分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryRegionJob",
+    value: function getSummaryRegionJob(id, callback, resultFormat) {
+      return this._processingService.getSummaryRegionJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
+     * @description 新建一个区域汇总分析。
+     * @param {SummaryRegionJobParameter} params -创建一个区域汇总分析的请求参数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addSummaryRegionJob",
+    value: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
+     * @description 获取区域汇总分析的状态。
+     * @param {string} id - 区域汇总分析的 ID。
+     * @returns {Object} 区域汇总分析的状态。
+     */
+  }, {
+    key: "getSummaryRegionJobState",
+    value: function getSummaryRegionJobState(id) {
+      return this._processingService.getSummaryRegionJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobs
+     * @description 获取矢量裁剪分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getVectorClipJobs",
+    value: function getVectorClipJobs(callback, resultFormat) {
+      return this._processingService.getVectorClipJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
+     * @description 获取矢量裁剪分析。
+     * @param {string} id - 矢量裁剪分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getVectorClipJob",
+    value: function getVectorClipJob(id, callback, resultFormat) {
+      return this._processingService.getVectorClipJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addVectorClipJob
+     * @description 矢量裁剪分析。
+     * @param {VectorClipJobsParameter} params - 矢量裁剪分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addVectorClipJob",
+    value: function addVectorClipJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addVectorClipJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
+     * @description 获取矢量裁剪分析的状态。
+     * @param {string} id - 矢量裁剪分析的 ID。
+     * @returns {Object} 矢量裁剪分析的状态。
+     */
+  }, {
+    key: "getVectorClipJobState",
+    value: function getVectorClipJobState(id) {
+      return this._processingService.getVectorClipJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJobs
+     * @description 获取叠加分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getOverlayGeoJobs",
+    value: function getOverlayGeoJobs(callback, resultFormat) {
+      return this._processingService.getOverlayGeoJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
+     * @description 获取叠加分析。
+     * @param {string} id - 叠加分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getOverlayGeoJob",
+    value: function getOverlayGeoJob(id, callback, resultFormat) {
+      return this._processingService.getOverlayGeoJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addOverlayGeoJob
+     * @description 叠加分析。
+     * @param {OverlayGeoJobParameter} params - 叠加分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addOverlayGeoJob",
+    value: function addOverlayGeoJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
+     * @description 获取叠加分析的状态。
+     * @param {string} id - 叠加分析的 ID。
+     * @returns {Object} 叠加分析的状态。
+     */
+  }, {
+    key: "getoverlayGeoJobState",
+    value: function getoverlayGeoJobState(id) {
+      return this._processingService.getoverlayGeoJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
+     * @description 获取缓冲区分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getBuffersJobs",
+    value: function getBuffersJobs(callback, resultFormat) {
+      return this._processingService.getBuffersJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
+     * @description 获取缓冲区分析。
+     * @param {string} id - 缓冲区分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getBuffersJob",
+    value: function getBuffersJob(id, callback, resultFormat) {
+      return this._processingService.getBuffersJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addBuffersJob
+     * @description 缓冲区分析。
+     * @param {BuffersAnalystJobsParameter} params - 创建一个缓冲区分析的请求参数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addBuffersJob",
+    value: function addBuffersJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addBuffersJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
+     * @description 获取缓冲区分析的状态。
+     * @param {string} id - 缓冲区分析的 ID。
+     * @returns {Object} 缓冲区分析的状态。
+     */
+  }, {
+    key: "getBuffersJobState",
+    value: function getBuffersJobState(id) {
+      return this._processingService.getBuffersJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
+     * @description 获取拓扑检查分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getTopologyValidatorJobs",
+    value: function getTopologyValidatorJobs(callback, resultFormat) {
+      return this._processingService.getTopologyValidatorJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
+     * @description 获取拓扑检查分析。
+     * @param {string} id - 拓扑检查分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getTopologyValidatorJob",
+    value: function getTopologyValidatorJob(id, callback, resultFormat) {
+      return this._processingService.getTopologyValidatorJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addTopologyValidatorJob
+     * @description 拓扑检查分析。
+     * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addTopologyValidatorJob",
+    value: function addTopologyValidatorJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
+     * @description 获取拓扑检查分析的状态。
+     * @param {string} id - 拓扑检查分析的 ID。
+     * @returns {Object} 拓扑检查分析的状态。
+     */
+  }, {
+    key: "getTopologyValidatorJobState",
+    value: function getTopologyValidatorJobState(id) {
+      return this._processingService.getTopologyValidatorJobState(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
+     * @description 获取属性汇总分析的列表。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryAttributesJobs",
+    value: function getSummaryAttributesJobs(callback, resultFormat) {
+      return this._processingService.getSummaryAttributesJobs(callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
+     * @description 获取属性汇总分析。
+     * @param {string} id - 属性汇总分析的 ID。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "getSummaryAttributesJob",
+    value: function getSummaryAttributesJob(id, callback, resultFormat) {
+      return this._processingService.getSummaryAttributesJob(id, callback, resultFormat);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addSummaryAttributesJob
+     * @description 属性汇总分析。
+     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+  }, {
+    key: "addSummaryAttributesJob",
+    value: function addSummaryAttributesJob(params, callback, seconds, resultFormat) {
+      params = this._processParams(params);
+      return this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -14347,7 +16485,7 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
   }, {
     key: "getSummaryAttributesJobState",
     value: function getSummaryAttributesJobState(id) {
-      return this.summaryAttributesJobs[id];
+      return this._processingService.getSummaryAttributesJobState(id);
     }
   }, {
     key: "_processFormat",
@@ -14389,7 +16527,7 @@ var ProcessingService = /*#__PURE__*/function (_CommonServiceBase) {
     }
   }]);
   return ProcessingService;
-}(CommonServiceBase);
+}();
 SuperMap.REST.ProcessingService = ProcessingService;
 ;// CONCATENATED MODULE: ./src/classic/services/index.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
@@ -14423,9 +16561,9 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 ;// CONCATENATED MODULE: ./src/classic/namespace.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function namespace_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function namespace_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? namespace_ownKeys(Object(source), !0).forEach(function (key) { namespace_defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : namespace_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function namespace_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 SuperMap.ElasticSearch = ElasticSearch;
 SuperMap.SecurityManager = SecurityManager;
@@ -14441,8 +16579,87 @@ SuperMap.OutputSetting = OutputSetting;
 SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
-SuperMap.Util = _objectSpread(_objectSpread({}, SuperMap.Util), Util_Util);
+SuperMap.Util = namespace_objectSpread(namespace_objectSpread({}, SuperMap.Util), Util_Util);
 
-}();
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	!function() {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	__webpack_require__(6396);
+/******/ 	__webpack_require__(3393);
+/******/ 	var __webpack_exports__ = __webpack_require__(4794);
+/******/ 	
 /******/ })()
 ;

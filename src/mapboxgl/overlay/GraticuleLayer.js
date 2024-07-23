@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -9,13 +9,13 @@
  * thanks dereklieu, cloudybay
  */
 import '../core/Base';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { GraticuleLayerRenderer } from '@supermap/iclient-common/overlay/graticule/GraticuleLayerRenderer';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { GraticuleLayerRenderer } from '@supermapgis/iclient-common/overlay/graticule/GraticuleLayerRenderer';
 import mapboxgl from 'mapbox-gl';
 /**
  * @class GraticuleLayer
  * @category Visualization GraticuleLayer
- * @classdesc 经纬网类。
+ * @classdesc 经纬网类。经纬网是由间隔均匀的经度线和纬度线组成的网络，用于在地图上识别各个位置的地理坐标。
  * @modulecategory Overlay
  * @version 10.1.1
  * @param {Object} options - 参数。
@@ -114,7 +114,7 @@ export class GraticuleLayer {
       id: this.id
     });
     this.addGraticuleLayer();
-    this.resizeEvent = this.renderer._resizeCallback;
+    this.resizeEvent = this.renderer._resizeCallback.bind(this.renderer);
     this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
   }

@@ -1,4 +1,4 @@
-import { MetricsAggParameter, BucketAggParameter } from '@supermap/iclient-common/iServer';
+import { MetricsAggParameter, BucketAggParameter } from '@supermapgis/iclient-common/iServer';
 
 describe('BucketAggParameter', () => {
     it('constructor destroy', () => {

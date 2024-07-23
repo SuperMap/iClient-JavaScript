@@ -1,12 +1,12 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import L, { Util as LUtil } from 'leaflet';
+ import L from 'leaflet';
  import '../core/Base';
- import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
- import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
- import { Unit } from '@supermap/iclient-common/REST';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+ import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
+ import { Unit } from '@supermapgis/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
  import * as Util from '../core/Util';
  import Attributions from '../core/Attributions';
@@ -15,6 +15,7 @@
  * @class TiledMapLayer
  * @deprecatedclassinstance L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
+ * 此类提供了与地图显示、地图裁剪、瓦片类型与大小、栅格分析等相关参数。
  * @category iServer Map Tile
  * @extends {L.TileLayer}
  * @modulecategory Mapping
@@ -22,10 +23,10 @@
  *      new TiledMapLayer(url).addTo(map);
  * @param {string} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {Object} options - 参数。
- * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合
+ * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
- * @param {boolean} [options.transparent=true] - 是否背景透明。
- * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
+ * @param {boolean} [options.transparent=true] - 背景是否透明。
+ * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
  * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}。
@@ -37,8 +38,9 @@
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png"、"webp"、"bmp"、"jpg"、"gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
+ * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @fires TiledMapLayer#tilesetsinfoloaded
  * @fires TiledMapLayer#tileversionschanged
  * @usage
@@ -224,7 +226,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function TiledMapLayer.prototype.changeTilesVersion
-     * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引
+     * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引。
      */
     changeTilesVersion: function () {
         var me = this;
@@ -281,6 +283,17 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         return false;
     },
+    /**
+     * @function  TileSuperMapRest.updateParams
+     * @description 更新参数。
+     * @param {Object} params - 参数对象。
+     */
+    updateParams: function(params) {
+      Object.assign(this.requestParams, params);
+      this._paramsChanged = true;
+      this.redraw();
+      this._paramsChanged = false;
+    },
 
     _getLayerUrl: function () {
         if (this._paramsChanged) {
@@ -292,7 +305,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     _createLayerUrl: function () {
         let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`);
         this.requestParams = this.requestParams || this._getAllRequestParams();
-        layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams));
+        layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
         layerUrl = SecurityManager.appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;
@@ -358,6 +371,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         if (options.rasterfunction) {
             params["rasterfunction"] = JSON.stringify(options.rasterfunction);
+        }
+        if (options.chartSetting) {
+            params["chartSetting"] = JSON.stringify(options.chartSetting);
         }
 
         return params;

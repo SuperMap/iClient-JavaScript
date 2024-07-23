@@ -1,6 +1,6 @@
 import {DatasourceService} from '../../../src/leaflet/services/DatasourceService';
-import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
@@ -132,4 +132,36 @@ describe('leaflet_DatasourceService', () => {
             }
         });
     })
+
+    it('success:setDatasource promise', (done) => {
+      var datasourceParameters = new SetDatasourceParameters({
+          datasourceName: "World",
+          description:"This is a new description",
+          coordUnit: "MILE",
+          distanceUnit: "MILE"
+      });
+      var service = new DatasourceService(url, options);
+      spyOn(FetchRequest,'commit').and.callFake((method, testUrl, options) => {
+          expect(method).toBe("PUT");
+          expect(testUrl).toBe( url + "/datasources/name/World");
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(`{"succeed":true}`));
+      });
+      service.setDatasource(datasourceParameters).then((result) => {
+        serviceResult = result;
+        try {
+            expect(service).not.toBeNull();
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            expect(serviceResult.result.succeed).toBe(true);
+            expect(serviceResult.result.object).toBe(undefined);
+            expect(serviceResult.object.url).toBe(url);
+            done();
+        } catch (exception) {
+            console.log("'fail:setDataSource'案例失败" + exception.name + ":" + exception.message);
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  })
 });

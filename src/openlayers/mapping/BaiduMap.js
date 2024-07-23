@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import TileImage from 'ol/source/TileImage';
@@ -13,7 +13,7 @@ import { Util } from '../core/Util';
  * @classdesc 百度地图图层源。
  * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
+ * @param {string} [opt_options.url='https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
  * @extends {ol.source.TileImage}
@@ -31,7 +31,7 @@ export class BaiduMap extends TileImage {
         var url =
             options.url !== undefined
                 ? options.url
-                : 'http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
+                : 'https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
         var hidpi =
             options.hidpi || (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1;
         url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
@@ -58,6 +58,7 @@ export class BaiduMap extends TileImage {
         // eslint-disable-next-line no-unused-vars
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             var tempUrl = url
+                .replace('{num}', Math.abs((tileCoord[1] + tileCoord[2]) % 4))
                 .replace('{z}', tileCoord[0].toString())
                 .replace('{x}', tileCoord[1].toString())
                 .replace('{y}', function() {

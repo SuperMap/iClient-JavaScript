@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* ol-mapbox-style (https://github.com/boundlessgeo/ol-mapbox-style)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -116,8 +120,7 @@
     <link rel="stylesheet" href="https://iclient.supermap.io/web/libs/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" include='ol-mapbox-style' src="../../dist/ol/include-ol.js"></script>
     <script type="text/javascript">
-        var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
-            "/iserver/services/map-beijing/rest/maps/beijingMap";
+        var url = "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap";
         /**
          * Elements that make up the popup.
         */
@@ -159,7 +162,8 @@
         var map = new ol.Map({
             target: 'map',
             overlays: [overlay],
-            controls: ol.control.defaults({
+            // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+            controls: ol.control.defaults.defaults({
                     attributionOptions: {
                         collapsed: false
                     }

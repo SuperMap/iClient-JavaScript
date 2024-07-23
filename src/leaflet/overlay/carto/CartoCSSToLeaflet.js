@@ -1,11 +1,11 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
-import { Util, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
-import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
-import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
+import { Util, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermapgis/iclient-common/commontypes/Util';
+import { CartoCSS } from '@supermapgis/iclient-common/style/CartoCSS';
+import { StringExt } from '@supermapgis/iclient-common/commontypes/BaseTypes';
 import {
     DefaultStyle
 } from './CartoDefaultStyle';
@@ -130,7 +130,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从 iPortalMarker 中获取样式。
-     * @param {string} icon - iPortal 图标。
+     * @param {string} icon - SuperMap iPortal 图标。
      */
     getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -150,8 +150,8 @@ export class CartoCSSToLeaflet {
 
     /**
      * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
-     * @description 从 iPortal 的风格中获取样式。
-     * @param {Object} iPortalStyle - iPortal 的样式对象。
+     * @description 从 SuperMap iPortal 的风格中获取样式。
+     * @param {Object} iPortalStyle - SuperMap iPortal 的样式对象。
      * @param {string} type - 样式类型。
      * @param {Object} [fStyle] - 图标参数。
      */

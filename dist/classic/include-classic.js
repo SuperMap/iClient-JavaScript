@@ -64,7 +64,7 @@
             inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
+            inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS(libsurl + '/iclient8c/examples/css/nanoscroller.css');

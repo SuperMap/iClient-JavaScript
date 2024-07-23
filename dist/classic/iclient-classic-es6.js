@@ -1941,6 +1941,33 @@ const DOTS_PER_INCH = 96;
  */
 
 const Util_Util = {
+
+  /**
+     * @memberOf CommonUtil
+     * @description 对象拷贝赋值。
+     * @param {Object} dest - 目标对象。
+     * @param {Object} arguments - 待拷贝的对象。
+     * @returns {Object} 赋值后的目标对象。
+     */
+  assign(dest) {
+    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
+        var arg = Object.getOwnPropertyNames(arguments)[index];
+        if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+            continue;
+        }
+        var obj = arguments[arg];
+        if (obj) {
+            for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+                var key = Object.getOwnPropertyNames(obj)[j];
+                if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+                    continue;
+                }
+                dest[key] = obj[key];
+            }
+        }
+    }
+    return dest;
+  },
   /**
    * @memberOf CommonUtil
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
@@ -3890,14 +3917,10 @@ Events.prototype.BROWSER_EVENTS = [
   "contextmenu"
 ];
 
-;// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
-var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -3906,45 +3929,23 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @deprecatedclass SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
  * @category ElasticSearch
+ * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} es - elasticsearch的全局变量。注意：需要@elastic/elasticsearch@5.6.22或者elasticsearch@16.7.3。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description 
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
- * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      alias: {
-        process: 'process/browser',
-      },
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        http: require.resolve('stream-http'),
-        https: require.resolve('https-browserify'),
-        os: require.resolve('os-browserify/browser'),
-        stream: require.resolve('stream-browserify'),
-        tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib')
-      }
-    }
-    plugins: [
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
-      }),
-    ]
-}</code></pre>
  * @usage
  */
 
 class ElasticSearch {
 
-    constructor(url, options) {
+    constructor(url, es, options) {
+        if (!es || (typeof es !== 'function' && typeof es !== 'object') || typeof es.Client !== 'function') {
+          throw Error('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+        }
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
@@ -3957,12 +3958,12 @@ class ElasticSearch {
          */
         try {
           // 老版本
-          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+          this.client = new es.Client({
             host: this.url
           });
         } catch (e) {
           // 新版本
-          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+          this.client = new es.Client({
             node: {
               url: new URL(this.url)
             }
@@ -4023,7 +4024,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.setGeoFence
+     * @function ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
      * @param {Geometry} geoFence - 地理围栏。
      */
@@ -4033,7 +4034,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.bulk
+     * @function ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
@@ -4045,7 +4046,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.clearScroll
+     * @function ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
      *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -4057,7 +4058,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.count
+     * @function ElasticSearch.prototype.count
      * @description 获取集群、索引、类型或查询的文档个数。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
@@ -4069,7 +4070,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.create
+     * @function ElasticSearch.prototype.create
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
@@ -4081,7 +4082,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
@@ -4093,7 +4094,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteByQuery
+     * @function ElasticSearch.prototype.deleteByQuery
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
@@ -4105,7 +4106,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteScript
+     * @function ElasticSearch.prototype.deleteScript
      * @description 根据其ID删除脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -4117,7 +4118,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteTemplate
+     * @function ElasticSearch.prototype.deleteTemplate
      * @description 根据其ID删除模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4129,7 +4130,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.exists
+     * @function ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4141,7 +4142,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.existsSource
+     * @function ElasticSearch.prototype.existsSource
      * @description 检查资源是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4154,7 +4155,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.explain
+     * @function ElasticSearch.prototype.explain
      * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
@@ -4166,7 +4167,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.fieldCaps
+     * @function ElasticSearch.prototype.fieldCaps
      * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
@@ -4179,7 +4180,7 @@ class ElasticSearch {
 
 
     /**
-     * @function  ElasticSearch.prototype.get
+     * @function ElasticSearch.prototype.get
      * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4191,7 +4192,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getScript
+     * @function ElasticSearch.prototype.getScript
      * @description 获取脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -4203,7 +4204,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getSource
+     * @function ElasticSearch.prototype.getSource
      * @description 通过索引，类型和ID获取文档的源。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -4215,7 +4216,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getTemplate
+     * @function ElasticSearch.prototype.getTemplate
      * @description 获取模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4227,7 +4228,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.index
+     * @function ElasticSearch.prototype.index
      * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
@@ -4239,7 +4240,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.info
+     * @function ElasticSearch.prototype.info
      * @description 从当前集群获取基本信息。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -4251,7 +4252,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mget
+     * @function ElasticSearch.prototype.mget
      * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
@@ -4263,7 +4264,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearch
+     * @function ElasticSearch.prototype.msearch
      * @description 在同一请求中执行多个搜索请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
@@ -4287,7 +4288,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearchTemplate
+     * @function ElasticSearch.prototype.msearchTemplate
      * @description 在同一请求中执行多个搜索模板请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4299,7 +4300,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mtermvectors
+     * @function ElasticSearch.prototype.mtermvectors
      * @description 多termvectors API允许一次获得多个termvectors。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
@@ -4311,7 +4312,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.ping
+     * @function ElasticSearch.prototype.ping
      * @description 测试连接。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -4323,7 +4324,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putScript
+     * @function ElasticSearch.prototype.putScript
      * @description 添加脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -4335,7 +4336,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putTemplate
+     * @function ElasticSearch.prototype.putTemplate
      * @description 添加模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4347,7 +4348,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindex
+     * @function ElasticSearch.prototype.reindex
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -4359,7 +4360,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindexRessrottle
+     * @function ElasticSearch.prototype.reindexRessrottle
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -4371,7 +4372,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.renderSearchTemplate
+     * @function ElasticSearch.prototype.renderSearchTemplate
      * @description 搜索模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -4383,7 +4384,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.scroll
+     * @function ElasticSearch.prototype.scroll
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -4395,7 +4396,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.search
+     * @function ElasticSearch.prototype.search
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
@@ -4418,7 +4419,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchShards
+     * @function ElasticSearch.prototype.searchShards
      * @description  返回要执行搜索请求的索引和分片。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
@@ -4430,7 +4431,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchTemplate
+     * @function ElasticSearch.prototype.searchTemplate
      * @description  搜索模板。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -4442,7 +4443,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.suggest
+     * @function ElasticSearch.prototype.suggest
      * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -4454,7 +4455,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.termvectors
+     * @function ElasticSearch.prototype.termvectors
      * @description 返回有关特定文档字段中的术语的信息和统计信息。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
@@ -4466,7 +4467,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.update
+     * @function ElasticSearch.prototype.update
      * @description 更新文档的部分。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
@@ -4478,7 +4479,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.updateByQuery
+     * @function ElasticSearch.prototype.updateByQuery
      * @description 通过查询API来更新文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
@@ -4621,12 +4622,6 @@ var RequestJSONPPromise = {
           uid = me.getUid(),
           url = config.url,
           splitQuestUrl = [];
-      var p = new Promise(function (resolve) {
-          me.supermap_callbacks[uid] = function (response) {
-              delete me.supermap_callbacks[uid];
-              resolve(response);
-          };
-      });
 
       // me.addQueryStrings({
       //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
@@ -4684,12 +4679,11 @@ var RequestJSONPPromise = {
           }
       }
       splitQuestUrl.push(sectionURL);
-      me.send(
+      return me.send(
           splitQuestUrl,
-          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+          'SuperMapJSONPCallbacks_' + uid,
           config && config.proxy
       );
-      return p;
   },
 
   getUid: function () {
@@ -4701,6 +4695,7 @@ var RequestJSONPPromise = {
   send: function (splitQuestUrl, callback, proxy) {
       var len = splitQuestUrl.length;
       if (len > 0) {
+         return new Promise((resolve) => {
           var jsonpUserID = new Date().getTime();
           for (var i = 0; i < len; i++) {
               var url = splitQuestUrl[i];
@@ -4719,8 +4714,11 @@ var RequestJSONPPromise = {
               fetch_jsonp_default()(url, {
                   jsonpCallbackFunction: callback,
                   timeout: 30000
+              }).then((result) => {
+                resolve(result.json());
               });
           }
+         })
       }
   },
 
@@ -4998,15 +4996,16 @@ var FetchRequest = {
      */
     post: function (url, params, options) {
         options = options || {};
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
-                url: url += "&_method=POST",
+                url: Util_Util.urlAppend(url, "_method=POST"),
                 data: params
             };
             return RequestJSONPPromise.POST(config);
         }
-        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+        return this._fetch(url, params, options, 'POST');
     },
     /**
      * @function FetchRequest.put
@@ -5475,7 +5474,7 @@ class SecurityManager {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            withCredentials: true
+            withCredentials: false
         };
         return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
@@ -5517,13 +5516,8 @@ class SecurityManager {
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
      * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
-    static loginManager(url, loginInfoParams, options) {
-        if (!Util_Util.isInTheSameDomain(url)) {
-            var isNewTab = options ? options.isNewTab : true;
-            this._open(url, isNewTab);
-            return;
-        }
-        var requestUrl = Util_Util.urlPathAppend(url, 'icloud/security/tokens');
+    static loginManager(url, loginInfoParams) {
+        var requestUrl = Util_Util.urlPathAppend(url, '/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -5533,15 +5527,15 @@ class SecurityManager {
         var requestOptions = {
             headers: {
                 Accept: '*/*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             }
         };
         var me = this;
         return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function(response) {
-            response.text().then(function(result) {
-                me.imanagerToken = result;
-                return result;
-            });
+          return response.text();
+        }).then(function(result) {
+          me.imanagerToken = result;
+          return result;
         });
     }
 
@@ -7980,6 +7974,64 @@ var WebScaleUnit = {
     DEGREES: "DEGREES"
 }
 
+/**
+ * @enum BoundsType
+ * @description 范围类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BoundsType.UNION;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BoundsType } from '{npm}';
+ *
+ * const result = BoundsType.UNION;
+ * ```
+ */
+var BoundsType = {
+  /** 自定义范围。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集范围的交集。 */
+  INTERSECTION: "INTERSECTION",
+  /** 输入栅格数据集范围的并集。 */
+  UNION: "UNION"
+}
+
+/**
+ * @enum CellSizeType
+ * @description 单元格类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.CellSizeType.MAX;
+ *
+ * </script>
+ * // ES6 Import
+ * import { CellSizeType } from '{npm}';
+ *
+ * const result = CellSizeType.MAX;
+ * ```
+ */
+var CellSizeType = {
+  /** 用户自己输入的单元格值大小作为单元格大小类型。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集中单元格最大值作为单元格大小类型。*/
+  MAX : "MAX",
+  /** 输入栅格数据集中单元格最小值作为单元格大小类型。 */
+  MIN : "MIN"
+}
+
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
@@ -8295,6 +8347,9 @@ class MappingParameters {
  * @param {number} [options.method=0] - 分析方法。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
+ * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
+ * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -8689,6 +8744,7 @@ class SummaryAttributesJobsParameter {
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
@@ -8861,6 +8917,7 @@ class SummaryMeshJobParameter {
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset] - 汇总数据源（多边形汇总时用到的参数）。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
@@ -9531,6 +9588,7 @@ class GeoCodingParameter {
  * @param {number} options.x - 查询位置的横坐标。
  * @param {number} options.y - 查询位置的纵坐标。
  * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。
  * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。
  * @param {string} [options.prjCoordSys] - 查询结果的坐标系。
  * @param {number} [options.maxReturn] - 最大返回结果数。
@@ -9842,8 +9900,8 @@ function scaleToResolution(scale, dpi, mapUnit) {
 
 /**
  * 范围是否相交
- * @param {Extent} extent1 范围1
- * @param {Extent} extent2 范围2
+ * @param {Array} extent1 范围1
+ * @param {Array} extent2 范围2
  * @return {boolean} 范围是否相交。
  */
  function intersects(extent1, extent2) {
@@ -10248,7 +10306,8 @@ class MapVRenderer extends MapVBaseLayer {
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。
+ * @modulecategory Overlay
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
@@ -10293,7 +10352,7 @@ class MapVLayer extends SuperMap.Layer {
         if (options) {
           SuperMap.Util.extend(this, options);
         }
-        
+
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
@@ -10443,7 +10502,7 @@ class MapVLayer extends SuperMap.Layer {
                 this.canvas.width = parseInt(size.w);
                 this.canvas.height = parseInt(size.h);
             }
-           
+
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;
@@ -10881,7 +10940,6 @@ class JSONFormat extends Format {
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -10908,15 +10966,9 @@ class CommonServiceBase {
 
         this.length = null;
 
-        this.options = null;
-
         this.totalTimes = null;
 
         this.POLLING_TIMES = 3;
-
-        this._processSuccess = null;
-
-        this._processFailed = null;
 
         this.isInTheSameDomain = null;
 
@@ -10970,11 +11022,7 @@ class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me.options = null;
-        me._processSuccess = null;
-        me._processFailed = null;
         me.isInTheSameDomain = null;
-
         me.EVENT_TYPES = null;
         if (me.events) {
             me.events.destroy();
@@ -10986,7 +11034,7 @@ class CommonServiceBase {
     }
 
     /**
-     * @function  CommonServiceBase.prototype.request
+     * @function CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
@@ -11002,7 +11050,15 @@ class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
-        const format = options.scope.format;
+        let format = options.scope.format;
+        // 兼容 callback 未传，dataFormat 传入的情况
+        if (typeof options.success === 'string') {
+          options.scope.format = options.success;
+          format = options.success;
+          options.success = null;
+          options.failure = null;
+        }
+       
         if (format && !this.supportDataFormat(format)) {
           throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
         }
@@ -11022,55 +11078,32 @@ class CommonServiceBase {
         options.url = SecurityManager.appendCredential(options.url);
 
         me.calculatePollingTimes();
-        me._processSuccess = options.success;
-        me._processFailed = options.failure;
         options.scope = me;
-        options.success = me.getUrlCompleted;
-        options.failure = me.getUrlFailed;
-        me.options = options;
-        me._commit(me.options);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlCompleted
-     * @description 请求成功后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getUrlCompleted(result) {
-        let me = this;
-        me._processSuccess(result);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlFailed
-     * @description 请求失败后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getUrlFailed(result) {
-        let me = this;
         if (me.totalTimes > 0) {
-            me.totalTimes--;
-            me.ajaxPolling();
-        } else {
-            me._processFailed(result);
+          me.totalTimes--;
+          return me.ajaxPolling(options);
         }
+        return me._commit(options);
     }
+
 
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
      * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    ajaxPolling() {
+    ajaxPolling(options) {
         let me = this,
-            url = me.options.url,
+            url = options.url,
             re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
         me.index = parseInt(Math.random() * me.length);
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
-        me.options.url = url;
-        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
-        me._commit(me.options);
+        options.url = url;
+        options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        return me._commit(options);
     }
 
     /**
@@ -11111,14 +11144,44 @@ class CommonServiceBase {
     }
 
     /**
-     * @function CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
      */
-    serviceProcessCompleted(result) {
+    transformResult(result, options) {
         result = Util_Util.transformResult(result);
+        return { result, options };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+    transformErrorResult(result, options) {
+        result = Util_Util.transformResult(result);
+        let error = result.error || result;
+        return { error, options };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+    serviceProcessCompleted(result, options) {
+        result = this.transformResult(result).result;
         this.events.triggerEvent('processCompleted', {
-            result: result
+            result: result,
+            options: options
         });
     }
 
@@ -11126,13 +11189,16 @@ class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
+     * @private
      */
-    serviceProcessFailed(result) {
-        result = Util_Util.transformResult(result);
-        let error = result.error || result;
-        this.events.triggerEvent('processFailed', {
-            error: error
-        });
+    serviceProcessFailed(result, options) {
+      result = this.transformErrorResult(result).error;
+      let error = result.error || result;
+      this.events.triggerEvent('processFailed', {
+          error: error,
+          options: options
+      });
     }
 
     _returnContent(options) {
@@ -11168,7 +11234,7 @@ class CommonServiceBase {
                 options.params = options.data;
             }
         }
-        FetchRequest.commit(options.method, options.url, options.params, {
+        return FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
@@ -11214,14 +11280,33 @@ class CommonServiceBase {
                 return { error: e };
             })
             .then((requestResult) => {
+                let response = {
+                  object: this
+                };
                 if (requestResult.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(requestResult);
+                  const type = 'processFailed';
+                  // 兼容服务在构造函数中使用 eventListeners 的老用法
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var failure = options.failure && (options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure);
+                    failure ? failure(requestResult, options) : this.serviceProcessFailed(requestResult, options);
+                  } else {
+                    response = {...response, ...this.transformErrorResult(requestResult, options)};
+                    response.type = type;
+                    options.failure && options.failure(response);
+                  }
                 } else {
+                  const type = 'processCompleted';
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var success = options.success && (options.scope ? FunctionExt.bind(options.success, options.scope) : options.success);
+                    success ? success(requestResult, options) : this.serviceProcessCompleted(requestResult, options);
+                  } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(requestResult);
+                    response = {...response, ...this.transformResult(requestResult, options)};
+                    response.type = type;
+                    options.success && options.success(response);
+                  }
                 }
+                return response;
             });
     }
 }
@@ -11240,7 +11325,7 @@ class CommonServiceBase {
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
- * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
+ * @param {Object} serviceResult.options 请求参数。
  */
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
@@ -11281,24 +11366,28 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @function AddressMatchService.prototype.code
      * @param {string} url - 正向地址匹配服务地址。
      * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    code(url, params) {
+    code(url, params, callback) {
         if (!(params instanceof GeoCodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        return this.processAsync(url, params, callback);
     }
 
     /**
      * @function AddressMatchService.prototype.decode
      * @param {string} url - 反向地址匹配服务地址。
      * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    decode(url, params) {
+    decode(url, params, callback) {
         if (!(params instanceof GeoDecodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        return this.processAsync(url, params, callback);
     }
 
     /**
@@ -11306,38 +11395,32 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param {string} url - 服务地址。
      * @param {Object} params - 参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
 
-    processAsync(url, params) {
-        this.request({
-            method: 'GET',
-            url,
-            params,
-            scope: this,
-            success: this.serviceProcessCompleted,
-            failure: this.serviceProcessFailed
-        });
+    processAsync(url, params, callback) {
+      return this.request({
+          method: 'GET',
+          url,
+          params,
+          scope: this,
+          success: callback,
+          failure: callback
+      });
     }
-
     /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
-    serviceProcessCompleted(result) {
+    transformResult(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }
-        super.serviceProcessCompleted(result);
-    }
-
-    /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
-     * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否失败
-     */
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
+        return { result, options };
     }
 }
 
@@ -11353,7 +11436,8 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 /**
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @classdesc 地址匹配服务类。包括正向匹配和反向匹配。
+ * @modulecategory Services
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11371,7 +11455,8 @@ class AddressMatchService extends CommonServiceBase {
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
         var me = this;
@@ -11379,21 +11464,17 @@ class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        return addressMatchService.code(me.url + '/geocoding', params, callback);
     }
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {
         var me = this;
@@ -11401,14 +11482,9 @@ class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
 }
 SuperMap.REST.AddressMatchService = AddressMatchService;
@@ -11427,7 +11503,6 @@ SuperMap.REST.AddressMatchService = AddressMatchService;
  * @classdesc 数据集查询服务。
  * @param {string} url - 服务的访问地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 数据源名称。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -11452,7 +11527,6 @@ class DatasetService_DatasetService extends CommonServiceBase {
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
-
         if (options) {
             Util_Util.extend(this, options);
         }
@@ -11474,69 +11548,62 @@ class DatasetService_DatasetService extends CommonServiceBase {
     /**
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasetsService(params) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${params}/datasets`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetsService(params, callback) {
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
+        return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasetService(datasourceName, datasetName) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetService(datasourceName, datasetName, callback) {
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+        return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.setDatasetService
      * @description 执行服务，更改数据集信息服务。
+     * @returns {Promise} Promise 对象。
      */
-    setDatasetService(params) {
+    setDatasetService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util_Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util_Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
+        delete params.datasourceName;
+        return this.processAsync(url, 'PUT', callback, params);
     }
 
      /**
      * @function DatasetService.prototype.deleteDatasetService
      * @description 执行服务，删除数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    deleteDatasetService() {
-        var me = this;
-        me.request({
-            method: "DELETE",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    deleteDatasetService(datasourceName, datasetName, callback) {
+      const url = Util_Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+      return this.processAsync(url, 'DELETE', callback);
     }
 
+    processAsync(url, method, callback, params) {
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success: callback,
+          failure: callback
+        }
+        params && (requestConfig.data = Util_Util.toJSON(params));
+        return me.request(requestConfig);
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
@@ -11710,11 +11777,10 @@ class UpdateDatasetParameters {
 
 
 
-
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集查询。
+ * @classdesc 数据集信息服务。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11725,6 +11791,13 @@ class DatasetService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasetService = new DatasetService_DatasetService(me.url, {
+          proxy: me.proxy,
+          withCredentials: me.withCredentials,
+          crossOrigin: me.crossOrigin,
+          headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasetService";
     }
 
@@ -11736,25 +11809,14 @@ class DatasetService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasets(datasourceName, callback) {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasetService = new DatasetService_DatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetsService(datasourceName);
+        return this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -11766,25 +11828,14 @@ class DatasetService extends CommonServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDataset(datasourceName, datasetName, callback) {
         if (!datasourceName || !datasetName) {
             return;
         }
-        const me = this;
-        const datasetService = new DatasetService_DatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetService(datasourceName, datasetName);
+        return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -11795,40 +11846,31 @@ class DatasetService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDataset(params, callback) {
         if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
             return;
-        } 
+        }
         let datasetParams;
         if (params instanceof CreateDatasetParameters) {
             datasetParams = {
                 "datasetType": params.datasetType,
+                "datasourceName": params.datasourceName,
                 "datasetName": params.datasetName
             }
         } else if (params instanceof UpdateDatasetParameters) {
             datasetParams = {
                 "datasetName": params.datasetName,
+                "datasourceName": params.datasourceName,
                 "isFileCache": params.isFileCache,
                 "description": params.description,
                 "prjCoordSys": params.prjCoordSys,
                 "charset": params.charset
             }
         }
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
-        const datasetService = new DatasetService_DatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.setDatasetService(datasetParams);
+        return this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -11840,22 +11882,11 @@ class DatasetService extends CommonServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        const datasetService = new DatasetService_DatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.deleteDatasetService();
+        return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }
 SuperMap.REST.DatasetService = DatasetService;
@@ -11871,10 +11902,9 @@ SuperMap.REST.DatasetService = DatasetService;
  * @class DatasourceService
  * @deprecatedclass SuperMap.DatasourceService
  * @category iServer Data Datasource
- * @classdesc 数据源查询服务。
+ * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string} options.datasource - 要查询的数据集所在的数据源名称。
  * @param {string} options.dataset - 要查询的数据集名称。
@@ -11907,51 +11937,51 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasourceService(datasourceName) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${datasourceName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourceService(datasourceName, callback) {
+        let url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
+        return this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasourcesService() {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourcesService(callback) {
+        let url = Util_Util.urlPathAppend(this.url,`datasources`);
+        return this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
+     * @param {Object} params 请求参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    setDatasourceService(params) {
+    setDatasourceService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util_Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
+        return this.processAsync(url, "PUT", callback, params);
+    }
+
+    processAsync(url, method, callback, params) {
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success: callback,
+          failure: callback
+        }
+        params && (requestConfig.data = Util_Util.toJSON(params));
+        return me.request(requestConfig);
     }
 }
 
@@ -12034,7 +12064,6 @@ class SetDatasourceParameters {
 
 
 
-
 /**
  * @class SuperMap.REST.DatasourceService
  * @category  iServer Data Datasource
@@ -12049,6 +12078,13 @@ class DatasourceService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasourceService = new DatasourceService_DatasourceService(me.url, {
+            proxy: me.proxy,
+            withCredentials: me.withCredentials,
+            crossOrigin: me.crossOrigin,
+            headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasourceService";
     }
 
@@ -12059,22 +12095,11 @@ class DatasourceService extends CommonServiceBase {
      *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasources(callback) {
-        const me = this;
-        const datasourceService = new DatasourceService_DatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourcesService();
+        return this._datasourceService.getDatasourcesService(callback);
     }
     
     /**
@@ -12085,25 +12110,14 @@ class DatasourceService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasourceService = new DatasourceService_DatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourceService(datasourceName);
+        return this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
    /**
@@ -12114,7 +12128,8 @@ class DatasourceService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {
         if (!(params instanceof SetDatasourceParameters)) {
@@ -12123,21 +12138,10 @@ class DatasourceService extends CommonServiceBase {
         const datasourceParams = {
             description: params.description ,
             coordUnit: params.coordUnit,
-            distanceUnit: params.distanceUnit
+            distanceUnit: params.distanceUnit,
+            datasourceName: params.datasourceName
         };
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
-        const datasourceService = new DatasourceService_DatasourceService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.setDatasourceService(datasourceParams);
+        return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 SuperMap.REST.DatasourceService = DatasourceService;
@@ -12162,7 +12166,6 @@ SuperMap.REST.DatasourceService = DatasourceService;
  * @param {Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -12171,15 +12174,6 @@ class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
         options = options || {};
-        /*
-         * Constant: EVENT_TYPES
-         * {Array.<string>}
-         * 此类支持的事件类型
-         * - *processCompleted* 创建成功后触发的事件。
-         * - *processFailed* 创建失败后触发的事件 。
-         * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
-         */
-        options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
         super(url, options);
 
         this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
@@ -12197,21 +12191,23 @@ class ProcessingServiceBase extends CommonServiceBase {
      * @function ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
      * @param {string} url - 资源地址。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getJobs(url) {
+    getJobs(url, callback) {
         var me = this;
-        FetchRequest.get(SecurityManager.appendCredential(url), null, {
+        return FetchRequest.get(SecurityManager.appendCredential(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
         }).then(function (result) {
-            me.events.triggerEvent("processCompleted", {
-                result: result
-            });
+            const res = { result, object: me, type: 'processCompleted' };
+            callback(res);
+            return res;
         }).catch(function (e) {
-            me.eventListeners.processFailed({
-                error: e
-            });
+          const res = { error: e, object: me, type: 'processFailed' };
+          callback(res);
+          return res;
         });
     }
 
@@ -12222,8 +12218,11 @@ class ProcessingServiceBase extends CommonServiceBase {
      * @param {Object} params - 创建一个空间分析的请求参数。
      * @param {string} paramType - 请求参数类型。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addJob(url, params, paramType, seconds) {
+    addJob(url, params, paramType, seconds, callback, processRunningCallback) {
         var me = this,
             parameterObject = null;
         if (params && params instanceof paramType) {
@@ -12240,62 +12239,84 @@ class ProcessingServiceBase extends CommonServiceBase {
             crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
+        return FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
-                me.serviceProcessCompleted(result, seconds);
+                return me.transformResult(result, seconds, callback, processRunningCallback);
             } else {
-                me.serviceProcessFailed(result);
+              result = me.transformErrorResult(result);
+              result.options = me;
+              result.type = 'processFailed';
+              callback(result);
+              return result;
             }
         }).catch(function (e) {
-            me.serviceProcessFailed({
-                error: e
-            });
+            e = me.transformErrorResult({ error: e });
+            e.options = me;
+            e.type = 'processFailed';
+            callback(e);
+            return e;
         });
     }
 
-    serviceProcessCompleted(result, seconds) {
+    transformResult(result, seconds, callback, processRunningCallback) {
         result = Util_Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
-            var id = setInterval(function () {
+           return new Promise((resolve) => {
+              var id = setInterval(function () {
                 FetchRequest.get(SecurityManager.appendCredential(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                        me.events.triggerEvent("processRunning", {
+                        resolve({
+                          object: me,
+                          id: job.id,
+                          state: job.state
+                        });
+                        processRunningCallback({
                             id: job.id,
-                            state: job.state
+                            state: job.state,
+                            object: me
                         });
                         if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                             clearInterval(id);
-                            me.events.triggerEvent("processFailed", {
-                                error: job.state.errorMsg,
-                                state: job.state.runState
-                            });
+                            const res = {
+                              error: job.state.errorMsg,
+                              state: job.state.runState,
+                              object: me,
+                              type: 'processFailed'
+                            };
+                            resolve(res);
+                            callback(res);
                         }
                         if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                             clearInterval(id);
-                            me.events.triggerEvent("processCompleted", {
-                                result: job
-                            });
+                            const res = {
+                              result: job,
+                              object: me, 
+                              type: 'processCompleted'
+                            };
+                            resolve(res);
+                            callback(res);
                         }
                     }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {
-                            error: e
-                        });
+                        const res = {
+                          error: e,
+                          object: me,
+                          type: 'processFailed'
+                        };
+                        resolve(res);
+                        callback(res);
                     });
             }, seconds);
+           });
         }
-    }
-
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
     }
 }
 
@@ -12338,18 +12359,22 @@ class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getKernelDensityJobs() {
-        super.getJobs(this.url);
+    getKernelDensityJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getKernelDensityJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getKernelDensityJob(id, callback) {
+      return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12357,9 +12382,12 @@ class KernelDensityJobsService extends ProcessingServiceBase {
      * @description 新建核密度分析服务
      * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addKernelDensityJob(params, seconds) {
-        super.addJob(this.url, params, KernelDensityJobParameter, seconds);
+    addKernelDensityJob(params, seconds, callback, processRunningCallback) {
+      return super.addJob(this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback);
     }
 
 }
@@ -12401,18 +12429,22 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
     /**
      * @function SingleObjectQueryJobsService.protitype.getQueryJobs
      * @description 获取单对象空间查询分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJobs() {
-        super.getJobs(this.url);
+    getQueryJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getQueryJob
      * @description 获取指定id的单对象空间查询分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getQueryJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12420,9 +12452,11 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
      * @description 新建单对象空间查询分析服务
      * @param {SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addQueryJob(params, seconds) {
-        super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
+    addQueryJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -12443,7 +12477,6 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务地址在数组中的位置。
  * @param {number} options.length - 服务地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -12467,18 +12500,22 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryMeshJobs() {
-        super.getJobs(this.url);
+    getSummaryMeshJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJob
      * @description 获取指定ip的点聚合分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryMeshJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getSummaryMeshJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12486,72 +12523,11 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
      * @description 新建点聚合分析服务
      * @param {SummaryMeshJobParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryMeshJob(params, seconds) {
-        super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
-    }
-}
-
-
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-/**
- * @class SummaryRegionJobsService
- * @deprecatedclass SuperMap.SummaryRegionJobsService
- * @category  iServer ProcessingService SummaryRegion
- * @classdesc 区域汇总分析服务类
- * @extends {ProcessingServiceBase}
- * @param {string} url - 服务地址。
- * @param {Object} options - 可选参数。
- * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
- * @param {Object} [options.headers] - 请求头。
- * @usage
- */
-class SummaryRegionJobsService extends ProcessingServiceBase {
-    constructor(url, options) {
-        super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
-        this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
-    }
-
-    /**
-     *@override
-     */
-    destroy() {
-        super.destroy();
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
-     * @description 获取区域汇总分析任务集合。
-     */
-    getSummaryRegionJobs() {
-        super.getJobs(this.url);
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
-     * @description 获取指定id的区域汇总分析任务。
-     * @param {string} id -要获取区域汇总分析任务的id
-     */
-    getSummaryRegionJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
-    }
-
-    /**
-     * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
-     * @description 新建区域汇总任务。
-     * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
-     * @param {number} seconds - 创建成功结果的时间间隔。
-     */
-    addSummaryRegionJob(params, seconds) {
-        super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
+    addSummaryMeshJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -12574,6 +12550,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetOverlay - 裁剪对象数据集。
  * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -12710,18 +12687,22 @@ class VectorClipJobsService extends ProcessingServiceBase {
     /**
      * @function VectorClipJobsService.protitype.getVectorClipJobs
      * @description 获取矢量裁剪分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getVectorClipJobs() {
-        super.getJobs(this.url);
+    getVectorClipJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getVectorClipJob
      * @description 获取指定id的矢量裁剪分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getVectorClipJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getVectorClipJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12729,9 +12710,12 @@ class VectorClipJobsService extends ProcessingServiceBase {
      * @description 新建矢量裁剪分析服务
      * @param {VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addVectorClipJob(params, seconds) {
-        super.addJob(this.url, params, VectorClipJobsParameter, seconds);
+    addVectorClipJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -12752,7 +12736,6 @@ class VectorClipJobsService extends ProcessingServiceBase {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -12776,18 +12759,22 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getOverlayGeoJobs() {
-        super.getJobs(this.url);
+    getOverlayGeoJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJob
      * @description 获取指定id的叠加分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getOverlayGeoJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getOverlayGeoJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12795,11 +12782,82 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
      * @description 新建点叠加析服务
      * @param {OverlayGeoJobParameter} params - 创建一个叠加分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addOverlayGeoJob(params, seconds) {
-        super.addJob(this.url, params, OverlayGeoJobParameter, seconds);
+    addOverlayGeoJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback);
     }
 }
+
+;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class SummaryRegionJobsService
+ * @deprecatedclass SuperMap.SummaryRegionJobsService
+ * @category  iServer ProcessingService SummaryRegion
+ * @classdesc 区域汇总分析服务类
+ * @extends {ProcessingServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @usage
+ */
+class SummaryRegionJobsService extends ProcessingServiceBase {
+    constructor(url, options) {
+        super(url, options);
+        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
+        this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
+    }
+
+    /**
+     *@override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
+     * @description 获取区域汇总分析任务集合。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getSummaryRegionJobs(callback) {
+      return super.getJobs(this.url, callback);
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
+     * @description 获取指定id的区域汇总分析任务。
+     * @param {string} id -要获取区域汇总分析任务的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getSummaryRegionJob(id, callback) {
+       return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+    }
+
+    /**
+     * @function SummaryRegionJobsService.prototype.addSummaryRegionJob
+     * @description 新建区域汇总任务。
+     * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
+     * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    addSummaryRegionJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
+    }
+}
+
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
@@ -12813,7 +12871,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
  * @class BuffersAnalystJobsService
  * @deprecatedclass SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析服务类
+ * @classdesc 缓冲区分析服务类。
  * @extends {ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -12832,24 +12890,28 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
      *@override
      */
     destroy() {
-        super.destroy();
+      super.destroy();
     }
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJobs
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @description 获取缓冲区分析所有任务
+     * @returns {Promise} Promise 对象。
      */
-    getBuffersJobs() {
-        super.getJobs(this.url);
+    getBuffersJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJob
      * @description 获取指定id的缓冲区分析服务
      * @param {string} id - 指定要获取数据的id。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getBuffersJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getBuffersJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12857,9 +12919,12 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @description 新建缓冲区分析服务
      * @param {BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addBuffersJob(params, seconds) {
-        super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds);
+    addBuffersJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -12902,18 +12967,22 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJobs() {
-        super.getJobs(this.url);
+    getTopologyValidatorJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJob(id) {
-        super.getJobs( Util_Util.urlPathAppend(this.url, id));
+    getTopologyValidatorJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12921,9 +12990,11 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @description 新建拓扑检查分析服务
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {number} seconds -创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addTopologyValidatorJob(params, seconds) {
-        super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
+    addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
     }
 
 }
@@ -12966,18 +13037,22 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJobs
      * @description 获取属性汇总分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJobs (){
-        super.getJobs(this.url);
+    getSummaryAttributesJobs (callback){
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJob
      * @description 获取指定id的属性汇总分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getSummaryAttributesJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -12985,13 +13060,743 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      * @description 新建属性汇总分析服务
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryAttributesJob(params, seconds) {
-        super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);
+    addSummaryAttributesJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
     }
-
 }
 
+;// CONCATENATED MODULE: ./src/common/iServer/ProcessingService.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ /**
+  * @class ProcessingService
+  * @category  iServer ProcessingService
+  * @classdesc 分布式分析相关服务类。
+  * @extends {ServiceBase}
+  * @example
+  * new ProcessingService(url,options)
+  *  .getKernelDensityJobs(function(result){
+  *     //doSomething
+  * })
+  * @param {string} url - 服务地址。 
+  * @param {Object} options - 参数。
+  * @param {string} [options.proxy] - 服务代理地址。
+  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+  * @param {Object} [options.headers] - 请求头。
+  * @usage
+  */
+ class ProcessingService_ProcessingService {
+ 
+     constructor(url, options) {
+         this.url = url;
+         this.options = options || {};
+         this.kernelDensityJobs = {};
+         this.summaryMeshJobs = {};
+         this.queryJobs = {};
+         this.summaryRegionJobs = {};
+         this.vectorClipJobs = {};
+         this.overlayGeoJobs = {};
+         this.buffersJobs = {};
+         this.topologyValidatorJobs = {};
+         this.summaryAttributesJobs = {};
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getKernelDensityJobs
+      * @description 获取密度分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getKernelDensityJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return kernelDensityJobsService.getKernelDensityJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getKernelDensityJob
+      * @description 获取某个密度分析。
+      * @param {string} id - 空间分析的ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getKernelDensityJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return kernelDensityJobsService.getKernelDensityJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addKernelDensityJob
+      * @description 密度分析。
+      * @param {KernelDensityJobParameter} params -密度分析参数类。 
+      * @param {RequestCallback} callback 回调函数。 
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addKernelDensityJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return kernelDensityJobsService.addKernelDensityJob(params, seconds, callback, function (job) {
+          me.kernelDensityJobs[job.id] = job.state;
+        });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getKernelDensityJobState
+      * @description 获取密度分析的状态。
+      * @param {string} id - 密度分析的id。
+      * @returns {Object} 密度分析的状态。
+      */
+     getKernelDensityJobState(id) {
+         return this.kernelDensityJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryMeshJobs
+      * @description 获取点聚合分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryMeshJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryMeshJobsService.getSummaryMeshJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryMeshJob
+      * @description 获取某个点聚合分析。
+      * @param {string} id - 空间分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryMeshJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryMeshJobsService.getSummaryMeshJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addSummaryMeshJob
+      * @description 点聚合分析。
+      * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addSummaryMeshJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryMeshJobsService.addSummaryMeshJob(params, seconds, callback, function (job) {
+          me.summaryMeshJobs[job.id] = job.state;
+        });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryMeshJobState
+      * @description 获取点聚合分析的状态。
+      * @param {string} id - 点聚合分析的 ID。
+      * @returns {Object} 点聚合分析的状态。
+      */
+     getSummaryMeshJobState(id) {
+         return this.summaryMeshJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getQueryJobs
+      * @description 获取单对象查询分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getQueryJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return singleObjectQueryJobsService.getQueryJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getQueryJob
+      * @description 获取某个单对象查询分析。
+      * @param {string} id - 空间分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getQueryJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return singleObjectQueryJobsService.getQueryJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addQueryJob
+      * @description 单对象查询分析。
+      * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addQueryJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return singleObjectQueryJobsService.addQueryJob(params, seconds, callback, function (job) {
+          me.queryJobs[job.id] = job.state;
+        });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getQueryJobState
+      * @description 获取单对象查询分析的状态。
+      * @param {string} id - 单对象查询分析的 ID。
+      * @returns {Object} 单对象查询分析的状态。
+      */
+     getQueryJobState(id) {
+         return this.queryJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryRegionJobs
+      * @description 获取区域汇总分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryRegionJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryRegionJobsService.getSummaryRegionJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryRegionJob
+      * @description 获取某个区域汇总分析。
+      * @param {string} id - 区域汇总分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryRegionJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryRegionJobsService.getSummaryRegionJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addSummaryRegionJob
+      * @description 区域汇总分析。
+      * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addSummaryRegionJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryRegionJobsService.addSummaryRegionJob(params, seconds, callback, function (job) {
+          me.summaryRegionJobs[job.id] = job.state;
+      });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryRegionJobState
+      * @description 获取区域汇总分析的状态。
+      * @param {string} id - 生成区域汇总分析的 ID。
+      * @returns {Object} 区域汇总分析的状态。
+      */
+     getSummaryRegionJobState(id) {
+         return this.summaryRegionJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getVectorClipJobs
+      * @description 获取矢量裁剪分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getVectorClipJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var vectorClipJobsService = new VectorClipJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return vectorClipJobsService.getVectorClipJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getVectorClipJob
+      * @description 获取某个矢量裁剪分析。
+      * @param {string} id - 空间分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getVectorClipJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var vectorClipJobsService = new VectorClipJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return vectorClipJobsService.getVectorClipJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addVectorClipJob
+      * @description 矢量裁剪分析。
+      * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addVectorClipJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var vectorClipJobsService = new VectorClipJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return vectorClipJobsService.addVectorClipJob(params, seconds, callback, function (job) {
+          me.vectorClipJobs[job.id] = job.state;
+        });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getVectorClipJobState
+      * @description 获取矢量裁剪分析的状态。
+      * @param {number} id - 矢量裁剪分析的ID。
+      * @returns {Object} 矢量裁剪分析的状态。
+      */
+     getVectorClipJobState(id) {
+         return this.vectorClipJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getOverlayGeoJobs
+      * @description 获取叠加分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getOverlayGeoJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return overlayGeoJobsService.getOverlayGeoJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getOverlayGeoJob
+      * @description 获取某个叠加分析。
+      * @param {string} id - 空间分析的 ID。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getOverlayGeoJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return overlayGeoJobsService.getOverlayGeoJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addOverlayGeoJob
+      * @description 叠加分析。
+      * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addOverlayGeoJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return overlayGeoJobsService.addOverlayGeoJob(params, seconds, callback, function (job) {
+          me.overlayGeoJobs[job.id] = job.state;
+        });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getoverlayGeoJobState
+      * @description 获取叠加分析的状态。
+      * @param {string} id - 叠加分析的 ID。
+      * @returns {Object} 叠加分析的状态。
+      */
+     getoverlayGeoJobState(id) {
+         return this.overlayGeoJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getBuffersJobs
+      * @description 获取缓冲区分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getBuffersJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return buffersAnalystJobsService.getBuffersJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getBuffersJob
+      * @description 获取某个缓冲区分析。
+      * @param {string} id - 空间分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getBuffersJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return buffersAnalystJobsService.getBuffersJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addBuffersJob
+      * @description 缓冲区分析。
+      * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} seconds - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addBuffersJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return buffersAnalystJobsService.addBuffersJob(params, seconds, callback, function (job) {
+          me.buffersJobs[job.id] = job.state;
+      });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getBuffersJobState
+      * @description 获取缓冲区分析的状态。
+      * @param {string} id - 缓冲区分析的 ID。
+      * @returns {Object} 缓冲区分析的状态。
+      */
+     getBuffersJobState(id) {
+         return this.buffersJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getTopologyValidatorJobs
+      * @description 获取拓扑检查分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getTopologyValidatorJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return topologyValidatorJobsService.getTopologyValidatorJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getTopologyValidatorJob
+      * @description 获取某个拓扑检查分析。
+      * @param {string} id - 空间分析的 ID。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getTopologyValidatorJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return topologyValidatorJobsService.getTopologyValidatorJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addTopologyValidatorJob
+      * @description 拓扑检查分析。
+      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return topologyValidatorJobsService.addTopologyValidatorJob(params, seconds, callback, function (job) {
+          me.topologyValidatorJobs[job.id] = job.state;
+      });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getTopologyValidatorJobState
+      * @description 获取拓扑检查分析的状态。
+      * @param {string} id - 拓扑检查分析的 ID。
+      * @returns {Object} 拓扑检查分析的状态。
+      */
+     getTopologyValidatorJobState(id) {
+         return this.topologyValidatorJobs[id];
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryAttributesJobs
+      * @description 获取属性汇总分析的列表。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryAttributesJobs(callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryAttributesJobsService.getSummaryAttributesJobs(callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryAttributesJob
+      * @description 获取某个属性汇总分析。
+      * @param {string} id - 空间分析的 ID。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     getSummaryAttributesJob(id, callback, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryAttributesJobsService.getSummaryAttributesJob(id, callback);
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.addSummaryAttributesJob
+      * @description 属性汇总分析。
+      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。 
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
+      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
+      */
+     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
+         var me = this,
+             format = me._processFormat(resultFormat);
+         var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers,
+             format: format
+         });
+         return summaryAttributesJobsService.addSummaryAttributesJob(params, seconds, callback, function (job) {
+          me.summaryAttributesJobs[job.id] = job.state;
+      });
+     }
+ 
+     /**
+      * @function ProcessingService.prototype.getSummaryAttributesJobState
+      * @description 获取属性汇总分析的状态。
+      * @param {string} id - 属性汇总分析的 ID。 
+      * @returns {Object} 属性汇总分析的状态
+      */
+     getSummaryAttributesJobState(id) {
+         return this.summaryAttributesJobs[id];
+     }
+ 
+     _processFormat(resultFormat) {
+         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+     }
+ }
+ 
 ;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12999,20 +13804,11 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 
 
 
-
-
-
-
-
-
-
-
-
-
 /**
  * @class SuperMap.REST.ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
+ * @modulecategory Services
  * @augments CommonServiceBase
  * @example
  * new SuperMap.REST.ProcessingService(url,options)
@@ -13024,96 +13820,46 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  */
-class ProcessingService extends CommonServiceBase {
+class ProcessingService {
     constructor(url, options) {
-        super(url, options);
-        this.kernelDensityJobs = {};
-        this.summaryMeshJobs = {};
-        this.queryJobs = {};
-        this.summaryRegionJobs = {};
-        this.vectorClipJobs = {};
-        this.overlayGeoJobs = {};
-        this.buffersJobs = {};
-        this.topologyValidatorJobs = {};
-        this.summaryAttributesJobs = {};
+      this._processingService = new ProcessingService_ProcessingService(url, options);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        kernelDensityJobsService.getKernelDensityJobs();
+      return this._processingService.getKernelDensityJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        kernelDensityJobsService.getKernelDensityJob(id);
+        return this._processingService.getKernelDensityJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
      * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.kernelDensityJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        kernelDensityJobsService.addKernelDensityJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13123,85 +13869,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 密度分析的状态。
      */
     getKernelDensityJobState(id) {
-        return this.kernelDensityJobs[id];
+      return this._processingService.getKernelDensityJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryMeshJobsService.getSummaryMeshJobs();
+      return this._processingService.getSummaryMeshJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
      * @description 获取点聚合分析。
      * @param {string} id - 点聚合分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryMeshJobsService.getSummaryMeshJob(id);
+      return this._processingService.getSummaryMeshJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addSummaryMeshJob
      * @description 点聚合分析。
      * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.summaryMeshJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        summaryMeshJobsService.addSummaryMeshJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13211,87 +13916,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState(id) {
-        return this.summaryMeshJobs[id];
+      return this._processingService.getSummaryMeshJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getQueryJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        singleObjectQueryJobsService.getQueryJobs();
+      return this._processingService.getQueryJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
      * @description 获取单对象查询分析。
      * @param {string} id - 单对象查询分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getQueryJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        singleObjectQueryJobsService.getQueryJob(id);
+      return this._processingService.getQueryJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addQueryJob
      * @description 单对象查询分析。
      * @param {SingleObjectQueryJobsParameter} params - 单对象空间查询分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addQueryJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-            headers: me.headers,
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.queryJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        singleObjectQueryJobsService.addQueryJob(param, seconds);
+      params = this._processParams(params);
+      return this._processingService.addQueryJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13301,86 +13963,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 单对象查询分析的状态。
      */
     getQueryJobState(id) {
-        return this.queryJobs[id];
+      return this._processingService.getQueryJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-            proxy: me.proxy,
-            headers: me.headers,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryRegionJobsService.getSummaryRegionJobs();
+      return this._processingService.getSummaryRegionJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
      * @param {string} id - 区域汇总分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryRegionJobsService.getSummaryRegionJob(id);
+      return this._processingService.getSummaryRegionJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
      * @description 新建一个区域汇总分析。
      * @param {SummaryRegionJobParameter} params -创建一个区域汇总分析的请求参数。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 开始创建后，获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.summaryRegionJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        summaryRegionJobsService.addSummaryRegionJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13390,86 +14010,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
-        return this.summaryRegionJobs[id];
+      return this._processingService.getSummaryRegionJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getVectorClipJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        vectorClipJobsService.getVectorClipJobs();
+      return this._processingService.getVectorClipJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
      * @description 获取矢量裁剪分析。
      * @param {string} id - 矢量裁剪分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getVectorClipJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        vectorClipJobsService.getVectorClipJob(id);
+      return this._processingService.getVectorClipJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addVectorClipJob
      * @description 矢量裁剪分析。
      * @param {VectorClipJobsParameter} params - 矢量裁剪分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var vectorClipJobsService = new VectorClipJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.vectorClipJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        vectorClipJobsService.addVectorClipJob(param, seconds);
+      params = this._processParams(params);
+      return this._processingService.addVectorClipJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13479,85 +14057,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
-        return this.vectorClipJobs[id];
+      return this._processingService.getVectorClipJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        overlayGeoJobsService.getOverlayGeoJobs();
+      return this._processingService.getOverlayGeoJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
      * @description 获取叠加分析。
      * @param {string} id - 叠加分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        overlayGeoJobsService.getOverlayGeoJob(id);
+      return this._processingService.getOverlayGeoJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
      * @param {OverlayGeoJobParameter} params - 叠加分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addOverlayGeoJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning: function(job) {
-                    me.overlayGeoJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        overlayGeoJobsService.addOverlayGeoJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13567,85 +14104,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
-        return this.overlayGeoJobs[id];
+      return this._processingService.getoverlayGeoJobState(id);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getBuffersJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buffersAnalystJobsService.getBuffersJobs();
+      return this._processingService.getBuffersJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
      * @description 获取缓冲区分析。
      * @param {string} id - 缓冲区分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getBuffersJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buffersAnalystJobsService.getBuffersJob(id);
+      return this._processingService.getBuffersJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
      * @param {BuffersAnalystJobsParameter} params - 创建一个缓冲区分析的请求参数。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addBuffersJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning: function(job) {
-                    me.buffersJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        buffersAnalystJobsService.addBuffersJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addBuffersJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13655,85 +14151,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 缓冲区分析的状态。
      */
     getBuffersJobState(id) {
-        return this.buffersJobs[id];
+      return this._processingService.getBuffersJobState(id)
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        topologyValidatorJobsService.getTopologyValidatorJobs();
+      return this._processingService.getTopologyValidatorJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取拓扑检查分析。
      * @param {string} id - 拓扑检查分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        topologyValidatorJobsService.getTopologyValidatorJob(id);
+      return this._processingService.getTopologyValidatorJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning: function(job) {
-                    me.topologyValidatorJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        topologyValidatorJobsService.addTopologyValidatorJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13743,85 +14198,44 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState(id) {
-        return this.topologyValidatorJobs[id];
+      return this._processingService.getTopologyValidatorJobState(id);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryAttributesJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryAttributesJobsService.getSummaryAttributesJobs();
+      return this._processingService.getSummaryAttributesJobs(callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取属性汇总分析。
      * @param {string} id - 属性汇总分析的 ID。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryAttributesJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        summaryAttributesJobsService.getSummaryAttributesJob(id);
+      return this._processingService.getSummaryAttributesJob(id, callback, resultFormat);
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
-     * @param {function} callback - 回调函数。
+     * @param {function} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning: function(job) {
-                    me.summaryAttributesJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        summaryAttributesJobsService.addSummaryAttributesJob(params, seconds);
+      params = this._processParams(params);
+      return this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -13831,7 +14245,7 @@ class ProcessingService extends CommonServiceBase {
      * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState(id) {
-        return this.summaryAttributesJobs[id];
+      return this._processingService.getSummaryAttributesJobState(id);
     }
 
     _processFormat(resultFormat) {

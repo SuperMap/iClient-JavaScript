@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +103,7 @@
             points: pointsList
         });
         //创建泰森多边形服务实例
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters).then(function (serviceResult) {
             map.addSource("analystDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.regions

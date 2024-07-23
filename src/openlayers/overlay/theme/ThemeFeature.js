@@ -1,9 +1,9 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
-import { Vector as FeatureVector} from '@supermap/iclient-common/commontypes/Vector';
+import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+import { Vector as FeatureVector} from '@supermapgis/iclient-common/commontypes/Vector';
 import Geometry from 'ol/geom/Geometry';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -11,7 +11,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @class ThemeFeature
  * @category Visualization Theme
- * @classdesc 专题图要素类。
+ * @classdesc 专题图要素类。支持的 geometry 参数类型为 ol.geom.Geometry 和 GeometryGeoText 标签数组类型。
  * @modulecategory Overlay
  * @param {Object} geometry - 要量算的几何对象，支持 {@link ol.geom.Geometry} 和 GeometryGeoText 标签数组类型 geometry = [x,y,text]。
  * @param {Object} [attributes] - 属性。

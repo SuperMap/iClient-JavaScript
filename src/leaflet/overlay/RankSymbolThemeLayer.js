@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
-import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
+import { Theme as FeatureTheme } from '@supermapgis/iclient-common/overlay/feature/Theme';
 import {
     GraphThemeLayer
 } from './GraphThemeLayer';
@@ -24,7 +24,7 @@ import {
  * @param {string} options.themeFields - 指定创建专题图字段。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage

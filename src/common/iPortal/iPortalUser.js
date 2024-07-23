@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { IPortalServiceBase } from './iPortalServiceBase';
@@ -12,7 +12,7 @@ import { IPortalDataConnectionInfoParam } from "./iPortalDataConnectionInfoParam
  * @class IPortalUser
  * @aliasclass iPortalUser
  * @deprecatedclass SuperMap.iPortalUser
- * @classdesc iPortal 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
+ * @classdesc SuperMap 门户中用户信息的封装类。用于管理用户资源，包括可删除，添加资源。
  * @version 10.0.1
  * @category iPortal/Online Resources
  * @param {string} iportalUrl - 服务地址。
@@ -259,8 +259,8 @@ export class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
      * @version 10.1.0
-     * @param {number} dataId - 查询服务状态的数据项ID。
-     * @param {string} dataServiceId - 发布的服务ID。
+     * @param {number} dataId - 查询服务状态的数据项 ID。
+     * @param {string} dataServiceId - 发布的服务 ID。
      * @returns {Promise} 返回查询服务状态的 Promise 对象。
      */
     getDataPublishedStatus(dataId,dataServiceId){
@@ -273,7 +273,7 @@ export class IPortalUser extends IPortalServiceBase {
      * @description 取消发布。
      * @version 10.1.0
      * @param {Object} options - 取消发布服务具体参数。
-     * @param {Object} options.dataId - 数据项ID。
+     * @param {Object} options.dataId - 数据项 ID。
      * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
      * @param {Object} [options.dataServiceId] - 发布的服务 ID。
      * @returns {Promise} 返回取消发布数据服务的 Promise 对象。

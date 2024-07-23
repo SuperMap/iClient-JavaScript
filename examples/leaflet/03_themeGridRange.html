@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -129,7 +129,7 @@
             joinItems: null,
             themes: [themeGridRange]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new L.supermap.TiledMapLayer(url, {

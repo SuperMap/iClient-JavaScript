@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,7 +8,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @class UGCLayer
  * @deprecatedclass SuperMap.UGCLayer
  * @category  iServer Map Layer
- * @classdesc SuperMap 图层类。
+ * @classdesc SuperMap 图层类。图层（Layer）是数据集的可视化显示，一个图层是对一个数据集的引用或参考，但其不包含地理数据。
  * @param {Object} options - 参数。
  * @param {Bounds} options.bounds - 图层范围。
  * @param {string} options.name - 图层的名称。
@@ -16,7 +16,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {string} [options.caption] - 图层的标题。
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
- * @param {boolean} [options.subUGCLayers] - 是否允许图层的符号大小随图缩放。
+ * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  * @usage
  */

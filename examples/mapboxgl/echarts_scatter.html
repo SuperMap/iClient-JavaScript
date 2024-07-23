@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <html>
 <head>
@@ -357,7 +361,7 @@
             }]
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam).then(function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             features = recordsets && recordsets[0] && recordsets[0].features;
             var featureCollection = features.features;

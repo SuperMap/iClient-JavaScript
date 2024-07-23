@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Size} from './Size';
@@ -144,7 +144,7 @@ export class Bounds {
      * var str2 = bounds.toBBOX(1,true);
      * @param {number} [decimal=6] - 边界方位坐标的有效数字个数。
      * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。
-     * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+     * 如果设为 true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
      * @returns {string} 边界对象的字符串表示形式，如："5,42,10,45"。
      */
     toBBOX(decimal, reverseAxisOrder) {
@@ -374,8 +374,8 @@ export class Bounds {
      * @param {(LonLat|Object)} ll - <LonLat> 对象或者是一个包含 'lon' 与 'lat' 属性的对象。
      * @param {Object} options - 可选参数。
      * @param {boolean} [options.inclusive=true] - 是否包含边界。
-     * @param {Bounds} [options.worldBounds] - 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds），
-     *        但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
+     * @param {Bounds} [options.worldBounds] - 如果提供 worldBounds 参数，如果 ll 参数提供的坐标超出了世界边界（worldBounds），
+     *        但是通过日界线的转化可以被包含，它将被认为是包含在该范围内的。
      * @returns {boolean} 传入坐标是否包含在范围内。
      */
     containsLonLat(ll, options) {
@@ -673,7 +673,7 @@ export class Bounds {
      * var bounds = Bounds.fromString("-180,-90,100,80");
      * @param {string} str - 边界字符串，用逗号隔开（e.g. <i>"5,42,10,45"</i>）。
      * @param {boolean} [reverseAxisOrder=false] - 是否反转轴顺序。
-     * 如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
+     * 如果设为 true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
      * @returns {Bounds} 给定的字符串创建的新的边界对象。
      */
     static fromString(str, reverseAxisOrder) {
@@ -687,7 +687,7 @@ export class Bounds {
      * @example
      * var bounds = Bounds.fromArray([-180,-90,100,80]);
      * @param {Array.<number>} bbox - 边界值数组。（e.g. <i>[5,42,10,45]</i>）。
-     * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
+     * @param {boolean} [reverseAxisOrder=false] - 是否是反转轴顺序。如果设为 true，则倒转顺序（bottom,left,top,right），否则按正常轴顺序（left,bottom,right,top）。
      * @returns {Bounds} 根据传入的数组创建的新的边界对象。
      */
     static fromArray(bbox, reverseAxisOrder) {

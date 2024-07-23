@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -51,14 +51,14 @@
             })
         });
   
-        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, 'FGB').then(function (serviceResult) {
             new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
               style: {
                 color: 'red'
               },
               strategy: 'all'
             }).addTo(map);
-        }, 'FGB');
+        });
 
     }
 </script>

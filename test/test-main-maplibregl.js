@@ -1,10 +1,14 @@
 
+import './maplibregl/core/MapExtendSpec.js';
+import './maplibregl/core/UtilSpec.js';
+
 /*maplibregl -- services*/
 import './maplibregl/services/AddressMatchServiceSpec.js';
 import './maplibregl/services/BufferAnalysisSpec.js';
 import './maplibregl/services/DataFlowServiceSpec.js';
 import './maplibregl/services/DensityAnalysisSpec.js';
 import './maplibregl/services/EditFeaturesSpec.js';
+import './maplibregl/services/EditVideoFeatureSpec.js';
 import './maplibregl/services/FieldServiceSpec.js';
 import './maplibregl/services/GenerateSpatialDataSpec.js';
 import './maplibregl/services/GeoRelationAnalysisSpec.js';
@@ -29,6 +33,11 @@ import './maplibregl/services/RouteCalculateMeasureSpec.js';
 import './maplibregl/services/RouteLocateSpec.js';
 import './maplibregl/services/SurfaceAnalysisSpec.js';
 import './maplibregl/services/TerrainCurvatureCalculateSpec.js';
+import './maplibregl/services/TerrainAspectCalculateSpec.js';
+import './maplibregl/services/TerrainSlopeCalculateSpec.js';
+import './maplibregl/services/TerrainCutFillCalculateSpec.js';
+import './maplibregl/services/MinDistanceAnalysisSpec.js';
+import './maplibregl/services/ConvexHullAnalysisSpec.js';
 import './maplibregl/services/ThemeServiceSpec.js';
 import './maplibregl/services/ThiessenAnalysisSpec.js';
 import './maplibregl/services/TrafficTransferAnalystServiceSpec.js';
@@ -41,6 +50,8 @@ import './maplibregl/services/KnowledgeGraphServiceSpec.js';
 import './maplibregl/services/AreaSolarRadiationServiceSpec.js';
 import './maplibregl/services/NetworkAnalyst3DServiceSpec.js';
 import './maplibregl/services/ChartServiceSpec.js';
+import './maplibregl/services/GetFeatureAttachmentsSpec';
+import './maplibregl/services/EditFeatureAttachmentsSpec';
 // overlay
 import './maplibregl/overlay/GraphMapSpec';
 import './maplibregl/overlay/HeatMapLayerSpec.js';
@@ -51,3 +62,14 @@ import './maplibregl/overlay/FGBLayerSpec.js';
 import './maplibregl/overlay/DeckglLayerSpec.js';
 import './maplibregl/overlay/ThreeLayerSpec.js';
 import './maplibregl/overlay/graphic/GraphicSpec.js';
+import './maplibregl/overlay/L7LayerSpec.js';
+import './maplibregl/overlay/symbol/CompositeSymbolRenderSpec';
+import './maplibregl/overlay/symbol/SingleSymbolRenderSpec';
+import './maplibregl/overlay/symbol/SymbolManagerSpec';
+import './maplibregl/overlay/symbol/WebSymbolSpec';
+import './maplibregl/overlay/symbol/SymbolHandlerSpec';
+import './maplibregl/overlay/symbol/SymbolUtilSpec';
+import './maplibregl/overlay/symbol/MapExtendSymbolSpec.js';
+
+/*maplibregl -- mapping*/
+import './maplibregl/mapping/InitMapSpec.js';

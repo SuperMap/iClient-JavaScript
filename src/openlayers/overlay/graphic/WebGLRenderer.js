@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil } from "@supermap/iclient-common/commontypes/Util";
-import { Unit } from "@supermap/iclient-common/REST";
+import { Util as CommonUtil } from "@supermapgis/iclient-common/commontypes/Util";
+import { Unit } from "@supermapgis/iclient-common/REST";
 import {Util} from "../../core/Util";
 import BaseObject from 'ol/Object';
 import * as olProj from 'ol/proj';
@@ -39,12 +39,12 @@ const CSS_TRANSFORM = (function () {
  * @param {number} options.height - 地图高度。
  * @param {HTMLElement} options.container - 放置渲染器的父元素。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色，目前只支持 rgba 数组。 
- * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.radius=10] - 半径，单位为像素。
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
  * @param {number} [options.radiusScale = 1] - 点放大倍数。
- * @param {number} [options.radiusMinPixels = 0] - 半径最小值（像素）。
- * @param {number} [options.radiusMaxPixels = Number.MAX_SAFE_INTEGER] - 半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels = 0] - 半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels = Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
  * @param {number} [options.strokeWidth = 1] - 边框大小。
  * @param {boolean} [options.outline = false] - 是否显示边框。
  * @param {function} [options.onClick] - 点击事件。
@@ -123,7 +123,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.getCanvas
+     * @function GraphicWebGLRenderer.prototype.getCanvas
      * @description 返回画布。
      * @returns {HTMLCanvasElement} canvas 对象。
      */
@@ -133,7 +133,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.update
+     * @function GraphicWebGLRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
     update(graphics) {
@@ -159,7 +159,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.drawGraphics
+     * @function GraphicWebGLRenderer.prototype.drawGraphics
      * @description 绘制点要素。
      */
     drawGraphics(graphics) {

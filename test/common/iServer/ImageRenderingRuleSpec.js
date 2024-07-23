@@ -5,7 +5,7 @@ import {
     ImageGFOrtho,
     ImageStretchOption,
     ImageRenderingRule
-} from '@supermap/iclient-common/iServer';
+} from '@supermapgis/iclient-common/iServer';
 
 var option = {
     displayMode: 'Composite',

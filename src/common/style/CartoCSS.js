@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../SuperMap';
@@ -877,8 +877,8 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.parse
-     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集。
-     * @returns {Object} CartoCSS规则集。
+     * @description 利用 CartoCSS 解析器里面的 parse 方法，将 CartoCSS 样式表字符串转化为 CartoCSS 规则集。
+     * @returns {Object} CartoCSS 规则集。
      */
     parse(str) {
         var parser = this.parser;
@@ -889,8 +889,8 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.toShaders
-     * @description 将CartoCSS规则集转化为着色器。
-     * @returns {Array} CartoCSS着色器集。
+     * @description 将 CartoCSS 规则集转化为着色器。
+     * @returns {Array} CartoCSS 着色器集。
      */
     toShaders() {
         if (this.ruleSet) {
@@ -1021,7 +1021,7 @@ export class CartoCSS {
     }
     /**
      * @function CartoCSS.prototype.getShaders
-     * @description 获取CartoCSS着色器。
+     * @description 获取 CartoCSS 着色器。
      * @returns {Array} 着色器集。
      * @example
      *   //shaders的结构大概如下：
@@ -1050,7 +1050,7 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.destroy
-     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象。
+     * @description CartoCSS 解析对象的析构函数，用于销毁 CartoCSS 解析对象。
      */
     destroy() {
         this.cartoStr = null;

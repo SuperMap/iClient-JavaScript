@@ -38,7 +38,7 @@ export default class MachineLearningModelBase {
     }
 
     /**
-     * @function  MachineLearningBase.prototype._loadModel
+     * @function MachineLearningBase.prototype._loadModel
      * @description 加载模型
      * @param {string} modelUrl - 模型地址。
      * @returns {Promise.<tf.GraphModel>}
@@ -49,14 +49,14 @@ export default class MachineLearningModelBase {
     }
 
     /**
-     * @function  MachineLearningBase.prototype.handleResult
+     * @function MachineLearningBase.prototype.handleResult
      * @description 对预测数据进行处理
      */
 
     handleResult() {}
 
     /**
-     * @function  MachineLearningBase.prototype.handleInputParams
+     * @function MachineLearningBase.prototype.handleInputParams
      * @description 处理输入张量
      * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
      * @param {number} width - 图片宽度。
@@ -70,7 +70,7 @@ export default class MachineLearningModelBase {
     }
 
     /**
-     * @function  MachineLearningBase.prototype.predict
+     * @function MachineLearningBase.prototype.predict
      * @description 对模型进行预测
      * @returns {Object}
      */
@@ -88,7 +88,7 @@ export default class MachineLearningModelBase {
     }
 
     /**
-     * @function  MachineLearningBase.prototype.dispose
+     * @function MachineLearningBase.prototype.dispose
      * @description 释放内存
      */
 

@@ -1,0 +1,78 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>测试视频推流服务</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      var dataUrl =
+        (window.isLocal ? window.server : 'https://iserver.supermap.io') + '/iserver/services/data-China400/rest/data';
+      queryVideoByBounds();
+      queryVideoBySQL();
+      queryVideoByTime();
+
+      function queryVideoByBounds() {
+        var sw = new maplibregl.LngLat(-180, -60);
+        var ne = new maplibregl.LngLat(180, 60);
+        var lngLatBounds = new maplibregl.LngLatBounds(sw, ne);
+
+        var boundsParam = new maplibregl.supermap.GetFeaturesByBoundsParameters({
+          datasetNames: ['China:Airport_pt'],
+          bounds: lngLatBounds
+        });
+
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam).then(function (serviceResult) {
+          console.log('serviceResult.result.features', serviceResult.result.features);
+        });
+      }
+
+      function queryVideoBySQL() {
+        var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: 'Countries@World',
+            attributeFilter: 'SMID = 234'
+          },
+          datasetNames: ['World:Countries']
+        });
+
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          console.log('serviceResult.result.features', serviceResult.result.features);
+        });
+      }
+
+      function queryVideoByTime() {
+        var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: 'Countries@World',
+            attributeFilter: 'SMID = 234'
+          },
+          datasetNames: ['World:Countries']
+        });
+
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          console.log('serviceResult.result.features', serviceResult.result.features);
+        });
+      }
+    </script>
+  </body>
+</html>

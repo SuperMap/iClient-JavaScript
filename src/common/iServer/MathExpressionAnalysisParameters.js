@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,14 +7,14 @@ import {Util} from '../commontypes/Util';
  * @class MathExpressionAnalysisParameters
  * @deprecatedclass SuperMap.MathExpressionAnalysisParameters
  * @category iServer SpatialAnalyst GridMathAnalyst
- * @classdesc 栅格代数运算参数类。
+ * @classdesc 栅格代数运算参数类。该类可指定进行栅格代数运算的数据集及其运算表达式、运算范围等参数，还可以对分析结果内容进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 指定栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。
+ * @param {string} options.dataset - 用于做栅格代数运算的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。
  * @param {string} options.resultGridName - 指定结果数据集名称。
  * @param {string} options.expression - 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10。
  * @param {string} options.targetDatasource - 指定存储结果数据集的数据源。
  * @param {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [options.extractRegion] - 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
- *                                                                                        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
+ *                                                                                        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域。
  * @param {boolean} [options.isZip=false] - 是否对结果数据集进行压缩处理。
  * @param {boolean} [options.ignoreNoValue=false] - 是否忽略无值栅格数据。true 表示忽略无值数据，即无值栅格不参与运算。
  * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
@@ -28,7 +28,7 @@ export class MathExpressionAnalysisParameters {
         }
         /**
          * @member {string} MathExpressionAnalysisParameters.prototype.dataset
-         * @description 要用来做栅格代数运算数据源中数据集的名称。
+         * @description 用于做栅格代数运算的数据源中数据集的名称。
          * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
          *
          */
@@ -37,7 +37,7 @@ export class MathExpressionAnalysisParameters {
         /**
          * @member {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [MathExpressionAnalysisParameters.prototype.extractRegion]
          * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
-         * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
+         * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域。
          */
         this.extractRegion = null;
 

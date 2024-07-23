@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @class FieldsFilter
  * @deprecatedclass SuperMap.FieldsFilter
  * @category iServer Data Field
- * @classdesc 指定返回的用于描述 Feature 的字段。
+ * @classdesc 指定返回的用于描述 Feature 的字段。支持对返回的字段内容进行保留字段或排除字段的操作，以达到过滤字段的目的。
  * @param {Object} options - 可选参数。
  * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表。
  * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表。

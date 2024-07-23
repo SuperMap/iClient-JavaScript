@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <html>
 <head>
@@ -125,57 +129,57 @@
             }]
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam).then(function (serviceResult) {
 
-            var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
-            features = recordsets && recordsets[0] && recordsets[0].features;
-            map.addLayer({
-                "id": "points",
-                "type": "symbol",
-                "layout": {
-                    "icon-image": "positionPoint",
-                    "icon-size": 0.8,
-                    "icon-offset": [0, -15] //设置偏移量
-                },
-                "source": {
-                    "type": "geojson",
-                    "data": features
-                }
-            });
+var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
+features = recordsets && recordsets[0] && recordsets[0].features;
+map.addLayer({
+    "id": "points",
+    "type": "symbol",
+    "layout": {
+        "icon-image": "positionPoint",
+        "icon-size": 0.8,
+        "icon-offset": [0, -15] //设置偏移量
+    },
+    "source": {
+        "type": "geojson",
+        "data": features
+    }
+});
 
-            map.on('click', 'points', function (e) {
-                popup = new mapboxgl.Popup({maxWidth: 'none'});
-                popup.setLngLat(e.lngLat.toArray())
-                    .setDOMContent(div) // sets a popup on this marker
-                    .addTo(map);
+map.on('click', 'points', function (e) {
+    popup = new mapboxgl.Popup({maxWidth: 'none'});
+    popup.setLngLat(e.lngLat.toArray())
+        .setDOMContent(div) // sets a popup on this marker
+        .addTo(map);
 
-                var data1 = [];
-                var data2 = [];
-                for (var i = 0; i < 7; i++) {
-                    var data = Math.random().toFixed(2);
-                    data1.push(data);
-                    data2.push(data * (Math.random() + 1.5));
-                }
+    var data1 = [];
+    var data2 = [];
+    for (var i = 0; i < 7; i++) {
+        var data = Math.random().toFixed(2);
+        data1.push(data);
+        data2.push(data * (Math.random() + 1.5));
+    }
 
-                chart.setOption({
-                    title: {
-                        text: e.features[0].properties.NAME,
-                        subtext: resources.text_fictitiouData
-                    },
-                    series: [
-                        {
-                            name: resources.text_rainfall,
-                            data: data1
-                        },
-                        {
-                            name: resources.text_runoff,
-                            data: data2
-                        }
-                    ]
-                });
+    chart.setOption({
+        title: {
+            text: e.features[0].properties.NAME,
+            subtext: resources.text_fictitiouData
+        },
+        series: [
+            {
+                name: resources.text_rainfall,
+                data: data1
+            },
+            {
+                name: resources.text_runoff,
+                data: data2
+            }
+        ]
+    });
 
-            });
-        });
+});
+});
     }
 
 </script>

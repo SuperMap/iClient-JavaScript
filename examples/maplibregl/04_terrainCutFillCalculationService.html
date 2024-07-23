@@ -1,0 +1,174 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_terrainCutFillCalculation"></title>
+    <style>
+      #toolbar {
+          position: absolute;
+          top: 50px;
+          right: 10px;
+          text-align: center;
+          z-index: 100;
+          border-radius: 4px;
+      }
+  </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_terrainCutFillCalculation"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainCutFillCalculation"
+              onclick="terrainCutFillCalculationProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+              onclick="removeTheme()"/>
+  </div>
+</div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, options, terrainCutFillCalculationResult, themeLayer, popup,
+    baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    function terrainCutFillCalculationProcess() {
+        removeTheme();
+        var terrainCutFillCalculationParameters = new maplibregl.supermap.TerrainCutFillCalculationParameters({
+            dataset: "JingjinTerrain@Jingjin",
+            cutFillType:"REGION3D",
+            region3D: new maplibregl.supermap.Geometry3D({
+              points:[{"x":116.2,"y":40.1,"z":-5.0},{"x":116.5,"y":40.5,"z":0.0},{"x":116.5,"y":40.1,"z":30.0},{"x":116.2,"y":40.1,"z":-5.0}],
+              rotationX: 0.0,
+              rotationY: 0.0,
+              rotationZ: 0.0,
+              scaleX: 0.0,
+              scaleY: 0.0,
+              scaleZ: 0.0,
+              type: "REGION3D",
+            }),
+            resultDataset:"cutfill", 
+            buildPyramid:true,
+            deleteExistResultDataset:true
+
+        });
+        new maplibregl.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters).then(function (serviceResult) {
+            terrainCutFillCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+            var innerHTML = resources.text_cutArea + terrainCutFillCalculationResult.cutArea + "<br/>";
+            innerHTML += resources.text_cutVolume  + terrainCutFillCalculationResult.cutVolume + "<br/>";
+            innerHTML += resources.text_fillArea  + terrainCutFillCalculationResult.fillArea + "<br/>";
+            innerHTML += resources.text_fillVolume  + terrainCutFillCalculationResult.fillVolume + "<br/>";
+            innerHTML += resources.text_remainderArea  + terrainCutFillCalculationResult.remainderArea;
+            popup = new maplibregl.Popup({ closeOnClick: false })
+              .setLngLat([116.5, 40.5])
+              .setHTML(innerHTML)
+              .addTo(map);
+        });
+
+          //构造栅格专题图
+        function showAnalysisResult_ThemeGridRange() {
+            var themeGridRangeIteme1 = new maplibregl.supermap.ThemeGridRangeItem({
+                    start: 0,
+                    end: 100,
+                    color: new maplibregl.supermap.ServerColor(0, 255, 255)
+                }),
+                themeGridRangeIteme2 = new maplibregl.supermap.ThemeGridRangeItem({
+                    start: 100,
+                    end: 500,
+                    color: new maplibregl.supermap.ServerColor(0, 125, 125)
+                }),
+                themeGridRangeIteme3 = new maplibregl.supermap.ThemeGridRangeItem({
+                    start: 500,
+                    end: 1000,
+                    color: new maplibregl.supermap.ServerColor(0, 125, 0)
+                }),
+                themeGridRangeIteme4 = new maplibregl.supermap.ThemeGridRangeItem({
+                    start: 1000,
+                    end: 99999999999,
+                    color: new maplibregl.supermap.ServerColor(0, 255, 0)
+                });
+
+            var themeGridRange = new maplibregl.supermap.ThemeGridRange({
+                reverseColor: false,
+                rangeMode: maplibregl.supermap.RangeMode.EQUALINTERVAL,
+                //栅格分段专题图子项数组
+                items: [
+                    themeGridRangeIteme1,
+                    themeGridRangeIteme2,
+                    themeGridRangeIteme3,
+                    themeGridRangeIteme4
+                ]
+            });
+
+            var themeParameters = new maplibregl.supermap.ThemeParameters({
+                //制作专题图的数据集（填挖方计算的结果数据集）
+                datasetNames: [terrainCutFillCalculationResult.dataset.split('@')[0]],
+                dataSourceNames: ["Jingjin"],
+                joinItems: null,
+                themes: [themeGridRange]
+            });
+
+            new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
+            var result = serviceResult1.result;
+            if (result && result.newResourceID) {
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": {
+                        "type": "raster",
+                        "tiles": [baseUrl + "&transparent=true&cacheEnabled=false&layersID=" + result.newResourceID],
+                        "tileSize": 256
+                    },
+                    "minzoom": 0,
+                    "maxzoom": 22
+                });
+              }
+            })
+        }
+    }
+
+    //移除专题图
+    function removeTheme() {
+      if (map.getLayer('themeLayer')) {
+        map.removeLayer('themeLayer');
+        map.removeSource('themeLayer');
+        popup.remove();
+      }
+    }
+</script>
+</body>
+</html>

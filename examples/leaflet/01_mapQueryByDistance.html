@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -24,7 +24,7 @@
     });
     new L.supermap.TiledMapLayer(url).addTo(map);
     circleMarker = L.circleMarker([30, 104], {color: 'red'}).addTo(map);
-    circleMarker.bindPopup('distance = 10').openPopup();
+    circleMarker.bindPopup('distance = 10',{closeOnClick:false}).openPopup();
     query();
 
     function query() {
@@ -35,7 +35,7 @@
         });
         new L.supermap
             .QueryService(url)
-            .queryByDistance(param, function (serviceResult) {
+            .queryByDistance(param).then(function (serviceResult) {
                 var result = serviceResult.result;
                 resultLayer = L.geoJSON(result.recordsets[0].features).addTo(map);
             });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -10,11 +10,13 @@ import { MappingParameters } from './MappingParameters';
  * @class VectorClipJobsParameter
  * @deprecatedclass SuperMap.VectorClipJobsParameter
  * @category  iServer ProcessingService VectorClip
- * @classdesc 矢量裁剪分析任务参数类。
+ * @classdesc 矢量裁剪分析任务参数类。此类用于设置矢量裁剪分析的数据集、裁剪分析模式、裁剪几何对象等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
- * @param {string} options.datasetOverlay - 裁剪对象数据集。
+ * @param {string} options.datasetName - 数据集名称。
+ * @param {string} options.datasetVectorClip - 裁剪对象数据集。
  * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -26,12 +28,12 @@ export class VectorClipJobsParameter {
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
         /**
-         * @member {string} VectorClipJobsParameter.prototype.datasetOverlay
+         * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
          * @description 裁剪对象数据集。
          */
         this.datasetVectorClip = "";
@@ -44,7 +46,7 @@ export class VectorClipJobsParameter {
 
         /**
          * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-         * @description 裁剪分析模式 。
+         * @description 裁剪分析模式。
          */
         this.mode = ClipAnalystMode.CLIP;
 
@@ -86,7 +88,7 @@ export class VectorClipJobsParameter {
 
     /**
      * @function VectorClipJobsParameter.toObject
-     * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数。
+     * @param {Object} vectorClipJobsParameter - 矢量裁剪分析服务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 矢量裁剪分析任务对象。
      */

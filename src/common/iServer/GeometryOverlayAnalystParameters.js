@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -10,7 +10,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.GeometryOverlayAnalystParameters
  * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc
- * 几何对象叠加分析参数类。对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
+ * 几何对象叠加分析参数类。
+ * 该类用于设置要进行叠加分析的几何对象、叠加操作类型等参数，还可为批量叠加分析设置几何对象数组。
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} options.operateGeometry - 叠加分析的操作几何对象。<br>
  * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。<br>

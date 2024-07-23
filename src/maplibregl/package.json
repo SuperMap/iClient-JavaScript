@@ -1,7 +1,7 @@
 {
-  "name": "@supermap/iclient-maplibregl",
+  "name": "@supermapgis/iclient-maplibregl",
   "description": "",
-  "version": "11.1.0",
+  "version": "11.2.0",
   "keywords": [
     "SuperMap",
     "maplibregl"
@@ -15,12 +15,12 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "maplibre-gl": "3.1.0",
+    "maplibre-gl": "4.3.2",
     "mapv": "2.0.62",
     "three": "0.150.1",
     "canvg": "3.0.10",
-    "xml-js": "1.6.11",
-    "@supermap/iclient-common": "11.1.0",
+    "proj4": "2.11.0",
+    "@supermapgis/iclient-common": "11.2.0",
     "rbush": "^2.0.2"
   }
 }

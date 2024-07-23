@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,7 +8,7 @@ import {DataReturnMode} from '../REST';
  * @class DataReturnOption
  * @deprecatedclass SuperMap.DataReturnOption
  * @category iServer Data Dataset
- * @classdesc 数据返回设置类。
+ * @classdesc 数据返回设置类。该类主要用于设置空间分析完成后返回数据的一些选项，包括数据返回模式、返回的最大记录数、结果数据集名称，数据集重名处理方式等。
  * @param {Object} options - 参数。
  * @param {number} [options.expectCount=1000] - 设置返回的最大记录数，小于或者等于 0 时表示返回所有记录数。
  * @param {string} [options.dataset] - 设置结果数据集标识，当 dataReturnMode 为 {@link DataReturnMode.DATASET_ONLY}或{@link DataReturnMode.DATASET_AND_RECORDSET}时有效，

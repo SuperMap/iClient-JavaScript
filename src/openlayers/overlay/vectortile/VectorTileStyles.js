@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { Unit } from '@supermap/iclient-common/REST';
-import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
-import { JSONFormat } from '@supermap/iclient-common/format/JSON';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { CartoCSS } from '@supermapgis/iclient-common/style/CartoCSS';
+import { JSONFormat } from '@supermapgis/iclient-common/format/JSON';
 import {StyleUtils} from '../../core/StyleUtils';
 import {Util} from '../../core/Util';
 import Observable from 'ol/Observable';
@@ -291,8 +291,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setUrl
-     * @description 设置地址。
-     * @param {string} url - 地址。
+     * @description 设置 URL 地址。
+     * @param {string} url - URL 地址。
      */
     static setUrl(url) {
         this.url = url;
@@ -368,8 +368,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setSelectedLineStyle
-     * @description 设置选择后线样式。
-     * @param {Object} selectedLineStyle - 选择后线样式。
+     * @description 设置选择后的线样式。
+     * @param {Object} selectedLineStyle - 选择后的线样式。
      */
     static setSelectedLineStyle(selectedLineStyle) {
         this.selectedLineStyle = selectedLineStyle;
@@ -377,8 +377,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setSelectedRegionStyle
-     * @description 设置选择后面样式。
-     * @param {Object} selectedRegionStyle - 选择后面样式。
+     * @description 设置选择后的面样式。
+     * @param {Object} selectedRegionStyle - 选择后的面样式。
      */
     static setSelectedRegionStyle(selectedRegionStyle) {
         this.selectedRegionStyle = selectedRegionStyle;
@@ -386,8 +386,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setSelectedTextStyle
-     * @description 设置选择后文本样式。
-     * @param {Object} selectedTextStyle - 选择后文本样式。
+     * @description 设置选择后的文本样式。
+     * @param {Object} selectedTextStyle - 选择后的文本样式。
      */
     static setSelectedTextStyle(selectedTextStyle) {
         this.selectedTextStyle = selectedTextStyle;
@@ -395,7 +395,7 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.getSelectedStyle
-     * @description 设置选择后的样式。
+     * @description 获取选择后的样式。
      * @param {string} type - 选择后的样式。
      */
     static getSelectedStyle(type) {

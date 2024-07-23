@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -6,8 +6,8 @@
  * @classdesc Mapv 渲染器。
  * @private
  * @param {Object} options - 参数。
- * @param {number} options.width - 画布宽。
- * @param {number} options.height - 画布高。
+ * @param {number} options.width - 画布宽度。
+ * @param {number} options.height - 画布高度。
  * @param {string} [options.paneName='mapPane'] - 窗口名。
  * @param {string} [options.context='2d'] - 内容。
  * @param {number} [options.zIndex=2] - 层级。

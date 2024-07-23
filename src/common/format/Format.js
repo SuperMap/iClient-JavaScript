@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -45,7 +45,7 @@ export class Format {
 
     /**
      * @function Format.prototype.read
-     * @description 来从字符串中读取数据。
+     * @description 从字符串中读取数据。
      * @param {string} data - 读取的数据。
      */
     read(data) { // eslint-disable-line no-unused-vars

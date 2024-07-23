@@ -1,7 +1,7 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
+ import {LogoBase64} from '@supermapgis/iclient-common/control/img/Logo';
 
  /**
   * @class Logo
@@ -69,8 +69,8 @@
              }
          }
          var link = this.link;
-         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
-             "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
+         var imgElement = "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'>";
+         this._container.innerHTML = link ? "<a href='" + link + "' target='_blank'>" + imgElement + "</a>" : imgElement;
          this._createStyleSheet();
          return this._container;
      }

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -7,12 +7,12 @@ import '../../core/Base';
 /**
  * @class Graphic
  * @deprecatedclassinstance L.supermap.graphic
- * @classdesc 高效率点图层要素类。
+ * @classdesc 高效率点图层要素类。点要素样式支持：圆形要素、三叶草要素、自定义图形要素。
  * @category Visualization Graphic
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {L.LatLng} options.latLng - 经纬度。
- * @param {number} options.id - 要素ID。
+ * @param {number} options.id - 要素 ID。
  * @param {(CircleStyle|CloverStyle|ImageStyle)} [options.style] - 点样式。
  * @param {Object} [options.attributes] - 要素属性。
  * @usage
@@ -108,7 +108,7 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function Graphic.prototype.setStyle
-     * @description 设置样式。
+     * @description 设置要素样式。
      * @param {(CircleStyle|ImageStyle|CloverStyle)} style - 样式。
      */
     setStyle: function (style) {
@@ -117,7 +117,7 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function Graphic.prototype.getStyle
-     * @description 获取样式。
+     * @description 获取要素样式。
      * @returns {(CircleStyle|ImageStyle|CloverStyle)} 样式。
      */
     getStyle: function () {

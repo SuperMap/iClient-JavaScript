@@ -17,6 +17,7 @@ export class G6Render {
     this.data = null;
     this.collpasedData = {};
     this.importG6();
+    this.hoverColor = '#b4d6ff';
     this.CLASS_NAME = 'SuperMap.G6Render';
   }
   importG6() {
@@ -46,6 +47,24 @@ export class G6Render {
     return graph;
   }
 
+  _getDefaultEdgeHighlightStyle(color = this.hoverColor) {
+    return {
+      stroke: color,
+      shadowColor: color,
+      shadowBlur: 5,
+      endArrow: {
+        path: 'M 0,0 L 4,2 L 4,-2 Z',
+        fill: color
+      }
+    };
+  }
+  _getDefaultNodeHighlightStyle(color = this.hoverColor) {
+    return {
+      lineWidth: 3,
+      stroke: color
+    }
+  }
+
   _getContextMenu() {
     const contextMenu = new G6.Menu({
       shouldBegin(evt) {
@@ -72,12 +91,10 @@ export class G6Render {
             if (this.isCollpased(model.id)) {
               return `<ul>
               <li id='expand'>展开</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             } else {
               return `<ul>
               <li id='collapse'>折叠</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             }
           }
@@ -113,19 +130,24 @@ export class G6Render {
   }
 
   _getGraphConfig(config) {
+    const animateConfig = {
+      speed: 120,
+      maxIteration: 83,
+      tick: () => {
+        this.refreshPositions();
+      }
+    };
     const defaultLayout = {
-      type: 'force',
-      linkDistance: 80,
-      nodeSpacing: 20,
-      preventOverlap: true,
-      nodeStrength: 0
+      type: 'fruchterman',
+      gravity: 5
     };
     const defaultNode = {};
     const defaultEdge = {
       type: 'line',
       style: {
         endArrow: {
-          path: 'M 0,0 L 2,1 L 2,-1 Z'
+          path: 'M 0,0 L 4,2 L 4,-2 Z',
+          fill: '#e0e0e0'
         },
         lineWidth: 0.5
       },
@@ -142,19 +164,6 @@ export class G6Render {
     };
     const contextMenu = this._getContextMenu();
     const defaultPlugins = [new G6.ToolBar(), contextMenu];
-    const hoverColor = '#b4d6ff';
-    const defaultNodeHighlightStyle = {
-      lineWidth: 3,
-      stroke: hoverColor
-    };
-    const defaultEdgeHighlightStyle = {
-      stroke: hoverColor,
-      lineWidth: 2,
-      endArrow: {
-        path: 'M 0,0 L 2,1 L 2,-1 Z',
-        fill: hoverColor
-      }
-    };
     const defaultGraphConfig = (container = 'knowledgeGraph') => {
       const dom = document.querySelector(`#${container}`);
       return {
@@ -163,14 +172,16 @@ export class G6Render {
         height: dom.scrollHeight, // Number，必须，图的高度
         plugins: defaultPlugins,
         modes: defaultMode,
-        layout: defaultLayout,
+        layout: { ...defaultLayout, ...animateConfig },
         defaultNode,
         defaultEdge,
         nodeStateStyles: {
-          hover: defaultNodeHighlightStyle
+          hover: this._getDefaultNodeHighlightStyle(),
+          actived: this._getDefaultNodeHighlightStyle()
         },
         edgeStateStyles: {
-          hover: defaultEdgeHighlightStyle
+          hover: this._getDefaultEdgeHighlightStyle(),
+          actived: this._getDefaultEdgeHighlightStyle()
         }
       };
     };
@@ -183,21 +194,28 @@ export class G6Render {
       typeof config.container === 'string' ? document.querySelector(`#${config.container}`) : config.container;
     config.width = config.width || dom.scrollWidth;
     config.height = config.height || dom.scrollHeight;
-    config.layout = { ...defaultLayout, ...(config.layout || {}) };
+    config.layout = { ...defaultLayout, ...(config.layout || {}), ...(config.animate !== false ? animateConfig : {}) };
     config.defaultNode = { ...defaultNode, ...(config.defaultNode || {}) };
     config.defaultEdge = { ...defaultEdge, ...(config.defaultEdge || {}) };
-    config.modes = {
-      default: [
-        config.dragCanvas !== false && 'drag-canvas',
-        config.zoomCanvas !== false && 'zoom-canvas',
-        config.dragNode !== false && 'drag-node'
-      ]
-    };
+    config.modes = { default: [] };
+    if (config.dragCanvas !== false) {
+      config.modes.default.push('drag-canvas');
+    }
+    if (config.zoomCanvas !== false) {
+      config.modes.default.push('zoom-canvas');
+    }
+    if (config.dragNode !== false) {
+      config.modes.default.push('drag-node');
+    }
+    const highlightNodeStyle = { ...this._getDefaultNodeHighlightStyle(), ...(config.nodeHighlightStyle || {}) };
+    const highlightEdgeStyle = { ...this._getDefaultEdgeHighlightStyle(), ...(config.edgeHighlightStyle || {}) };
     config.nodeStateStyles = {
-      hover: { ...defaultNodeHighlightStyle, ...(config.nodeHighlightStyle || {}) }
+      hover: highlightNodeStyle,
+      actived: highlightNodeStyle
     };
     config.edgeStateStyles = {
-      hover: { ...defaultEdgeHighlightStyle, ...(config.edgeHighlightStyle || {}) }
+      hover: highlightEdgeStyle,
+      actived: highlightEdgeStyle
     };
     if (config.showToolBar !== false) {
       config.plugins = [new G6.ToolBar()];
@@ -211,7 +229,7 @@ export class G6Render {
   }
 
   /**
-   * @function KnowledgeGraph.prototype.changeSize
+   * @function G6Render.prototype.changeSize
    * @description 当源数据中现有节点/边 的数据项发生配置的变更时，根据新数据刷新视图。
    * @param {number} width - 宽度。
    * @param {number} height - 高度。
@@ -417,11 +435,13 @@ export class G6Render {
    * @param {Object} graph - graph实例。
    */
   highlightNode(graph = this.graph) {
+    let node = null;
     function clearAllStats() {
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (node) {
+        graph.clearItemStates(node, 'hover');
+        node = null;
+      }
       graph.paint();
       graph.setAutoPaint(true);
     }
@@ -429,10 +449,11 @@ export class G6Render {
     graph.on('node:mouseenter', function (e) {
       const item = e.item;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (node) {
+        graph.clearItemStates(node, 'hover');
+      }
       graph.setItemState(item, 'hover', true);
+      node = item;
       graph.paint();
       graph.setAutoPaint(true);
     });
@@ -440,16 +461,18 @@ export class G6Render {
   }
 
   /**
-   * @function G6Render.prototype.highlightNode
-   * @description 鼠标移入节点，节点高亮
+   * @function G6Render.prototype.highlightEdge
+   * @description 鼠标移入边，边高亮
    * @param {Object} graph - graph实例。
    */
   highlightEdge(graph = this.graph) {
+    let edge = null;
     function clearAllStats() {
       graph.setAutoPaint(false);
-      graph.getEdges().forEach(function (edge) {
-        graph.clearItemStates(edge);
-      });
+      if (edge) {
+        graph.clearItemStates(edge, 'hover');
+        edge = null;
+      }
       graph.paint();
       graph.setAutoPaint(true);
     }
@@ -457,10 +480,11 @@ export class G6Render {
     graph.on('edge:mouseenter', function (e) {
       const item = e.item;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (edge) {
+        graph.clearItemStates(edge, 'hover');
+      }
       graph.setItemState(item, 'hover', true);
+      edge = item;
       graph.paint();
       graph.setAutoPaint(true);
     });

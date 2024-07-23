@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initSMLInfosPanel = function(div, smlInfos, clickTreeNode){
     var smlInfosPanel = document.getElementById(div);
 
@@ -62,8 +62,8 @@ function analysisSMLInfos(smlInfos){
     var cellRootNode = new Object();
     cellRootNode.id = 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "态势图文件列表";
-    cellRootNode.fullName = "态势图文件列表" +"/";
+    cellRootNode.name = resources.text_situationMapDocList;
+    cellRootNode.fullName = resources.text_situationMapDocList +"/";
     treeData.push(cellRootNode);
 
     var cellId = cellRootNode.id + 1;

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SpatialAnalystBase} from './SpatialAnalystBase';
@@ -17,18 +17,12 @@ import {DataFormat} from '../REST';
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var mySurfaceAnalystService = new SurfaceAnalystService(url, {
-     *      eventListeners: {
-     *	       "processCompleted": surfaceAnalysCompleted,
-     *		   "processFailed": surfaceAnalysFailed
-     *		   }
-     * });
+ * var mySurfaceAnalystService = new SurfaceAnalystService(url);
  * (end)
  * @usage
  */
@@ -51,19 +45,21 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
      * @function SurfaceAnalystService.prototype.processAsync
      * @description 负责将客户端的表面分析服务参数传递到服务端。
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof SurfaceAnalystParameters)) {
             return;
         }
         var me = this, jsonParameters;
         jsonParameters = me.getJsonParameters(params);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

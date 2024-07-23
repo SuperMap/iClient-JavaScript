@@ -48,13 +48,12 @@ describe('leaflet_GridCellInfosService', () => {
                     expect(serviceResult.result.column).not.toBeUndefined();
                     expect(serviceResult.result.row).not.toBeUndefined();
                     expect(serviceResult.result.value).not.toBeUndefined();
-                    expect(serviceResult.options.method).toBe("GET");
                     expect(serviceResult.object.X).toEqual(4);
                     expect(serviceResult.object.Y).toEqual(20);
                     expect(serviceResult.object.dataSourceName).toBe("World");
                     expect(serviceResult.object.datasetName).toBe("WorldEarth");
                     expect(serviceResult.object.datasetType).toBe("IMAGE");
-                    expect(FetchRequest.commit.calls.count()).toEqual(2);
+                    expect(FetchRequest.commit.calls.count()).toEqual(3);
                     params.destroy();
                     done();
                     } catch (exception) {

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,8 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class SetLayerStatusParameters
  * @deprecatedclass SuperMap.SetLayerStatusParameters
  * @category  iServer Map TempLayersSet
- * @classdesc 子图层显示控制参数类，该类存储了各子图层是否可见的状态。
- *            注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
+ * @classdesc 子图层显示控制参数类，该类存储了各子图层是否可见的状态。<br>
+ *            注意：在 SuperMap iClient 系列产品中所说的图层与 SuperMap iDesktop 的地图对应，子图层与 SuperMap iDesktop 的图层对应。
  * @param {Object} options - 参数。
  * @param {Array.<LayerStatus>} options.layerStatusList - 获取或设置图层可见状态（{@link LayerStatus}）集合，
  *                                                                 集合中的每个 {@link LayerStatus} 对象代表一个子图层的可视状态。
@@ -33,7 +33,7 @@ export class SetLayerStatusParameters {
 
         /**
          * @member {string} SetLayerStatusParameters.prototype.resourceID
-         * @description 获取或设置资源服务ID。如果设置该参数则会在指定的 TempLayer 中进行图层的显示控制；
+         * @description 获取或设置资源服务 ID。如果设置该参数则会在指定的 TempLayer 中进行图层的显示控制；
          *              如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 中进行图层的显示控制。
          */
         this.resourceID = null;

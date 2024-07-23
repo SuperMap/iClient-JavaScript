@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -14,11 +14,12 @@
 <script type="text/javascript">
     var map, themeLayer, options
     url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China";
-    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(url).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+            controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
                 .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12406035, 4304933],
@@ -77,7 +78,7 @@
             themes: [themeRange]
         });
 
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

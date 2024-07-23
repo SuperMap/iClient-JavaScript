@@ -1,18 +1,18 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { DataServiceQueryViewModel } from './DataServiceQueryViewModel';
- import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
- import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
- import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
- import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
- import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
- import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
- import { Select } from '@supermap/iclient-common/components/templates/Select';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { GetFeaturesByIDsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByIDsParameters';
+ import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+ import { GetFeaturesByBoundsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBoundsParameters';
+ import { GetFeaturesByBufferParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBufferParameters';
+ import { GetFeaturesByGeometryParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByGeometryParameters';
+ import { CommonContainer } from '@supermapgis/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermapgis/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 /**
  * @class DataServiceQueryView
@@ -98,7 +98,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
      */
     setDataServiceUrl(dataServiceUrl) {
         this.dataServiceUrl = dataServiceUrl;
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
 
     },
     /**
@@ -127,7 +127,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
      */
     _initView: function () {
         // 初始化 ViewModel:
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
         this.messageBox = new MessageBox();
 
         // 组件 container

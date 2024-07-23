@@ -1,15 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/DataFlowService';
+import {DataFlowService as DataFlow} from '@supermapgis/iclient-common/iServer/DataFlowService';
 
 /**
  * @class DataFlowService
  * @deprecatedclassinstance L.supermap.dataFlowService
- * @classdesc 数据流服务类。
+ * @classdesc 数据流服务类。用于实现客户端与服务器之间实现低延迟和实时数据传输。数据流服务采用 WebSocket 协议，支持全双工、双向式通信。
+ * 服务器可将流数据服务的分析处理结果作为数据来源向客户端广播，客户端与数据流服务建立连接后，即可自动接收服务器广播的数据。
  * @category  iServer DataFlow
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -17,7 +18,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/Data
  * @param {Object} options - 参数。
  * @param {function} [options.style] - 设置数据加载样式。
  * @param {function} [options.onEachFeature] -  给该元素绑定事件和弹窗。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -47,37 +48,37 @@ export var DataFlowService = ServiceBase.extend({
         ServiceBase.prototype.initialize.call(this, url, options);
         this.dataFlow = new DataFlow(url, options);
         /**
-         * @event DataFlowService#broadcastSocketConnected
-         * @description broadcast Socket 连接成功。
-         */
+        * @event DataFlowService#broadcastSocketConnected
+        * @description broadcast Socket 连接成功。
+        */
         /**
-         * @event DataFlowService#broadcastSocketError
-         * @description broadcast Socket 连接失败。
-         */
+        * @event DataFlowService#broadcastSocketError
+        * @description broadcast Socket 连接失败。
+        */
         /**
-         * @event DataFlowService#broadcastFailed
-         * @description 广播失败。
-         */
+        * @event DataFlowService#broadcastFailed
+        * @description 广播失败。
+        */
         /**
-         * @event DataFlowService#broadcastSucceeded
-         * @description 广播成功。
-         */
+        * @event DataFlowService#broadcastSucceeded
+        * @description 广播成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketConnected
-         * @description 订阅数据连接成功。
-         */
+        * @event DataFlowService#subscribeSocketConnected
+        * @description 订阅数据连接成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketError
-         * @description 订阅数据连接失败。
-         */
+        * @event DataFlowService#subscribeSocketError
+        * @description 订阅数据连接失败。
+        */
         /**
-         * @event DataFlowService#messageSucceeded
-         * @description 获取信息成功。
-         */
+        * @event DataFlowService#messageSucceeded
+        * @description 获取信息成功。
+        */
         /**
-         * @event DataFlowService#setFilterParamSucceeded
-         * @description 设置过滤参数成功。
-         */
+        * @event DataFlowService#setFilterParamSucceeded
+        * @description 设置过滤参数成功。
+        */
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
             "broadcastSocketError": this._defaultEvent,
@@ -133,7 +134,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的 GeoJSON 几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

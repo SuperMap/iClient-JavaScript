@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -8,13 +8,12 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @class TransportationAnalystParameter
  * @deprecatedclass SuperMap.TransportationAnalystParameter
  * @category  iServer NetworkAnalyst
- * @classdesc 交通网络分析通用参数类。该类主要用来提供交通网络分析所需的通用参数。
- * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。
+ * @classdesc 交通网络分析通用参数类。此类提供了交通网络分析中所需的障碍边、障碍点、权值字段信息的名称标识、转向权值字段，以及有关分析结果的一系列参数。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。
  * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。
  * @param {string} options.turnWeightField - 转向权重字段的名称。
- * @param {TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
+ * @param {TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容设置。
  * @param {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} [options.barrierPoints] - 网络分析中 Point2D 类型的障碍点数组。
  * @param {string} [options.weightFieldName] - 阻力字段的名称。
  * @usage
@@ -60,7 +59,7 @@ export class TransportationAnalystParameter {
 
         /**
          *  @member {TransportationAnalystResultSetting} TransportationAnalystParameter.prototype.resultSetting
-         *  @description 分析结果返回内容。
+         *  @description 分析结果返回内容设置。该设置不影响结果，但设置后将增加分析所耗时间。
          */
         this.resultSetting = new TransportationAnalystResultSetting();
 

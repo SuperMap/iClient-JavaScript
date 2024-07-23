@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,10 @@ import {Util} from '../commontypes/Util';
  * @class FindLocationParameters
  * @deprecatedclass SuperMap.FindLocationParameters
  * @category iServer NetworkAnalyst Location
- * @classdesc 选址分区分析参数类。
+ * @classdesc 选址分区分析参数类。此类用于设置选址分区中转向权值字段、阻力字段、资源供给中心、期望的资源供给中心数量，
+ * 还可以对是否从中心点开始分配资源等分析方式进行设置。<br>
+ * 选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
+ * 选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
  * @param {Object} options - 参数。
  * @param {string} options.turnWeightField - 转向权值字段的名称。
  * @param {string} options.weightName - 阻力字段的名称，标识了进行网络分析时所使用的阻力字段。

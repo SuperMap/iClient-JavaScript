@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -9,11 +9,11 @@ import {ThemeGraphTextFormat} from '../REST';
  * @class ThemeGraphText
  * @deprecatedclass SuperMap.ThemeGraphText
  * @category  iServer Map Theme
- * @classdesc 统计图文字标注风格类。
+ * @classdesc 统计专题图文字标注风格类。该类用于设置统计专题图上的文本显示格式和文字标注风格，文本显示格式包括百分数、真实数值、标题、标题和百分数、标题和真实数值。
  * @param {Object} options - 可选参数。
- * @param {boolean} [options.graphTextDisplayed=false] - 是否显示统计图上的文字标注。
+ * @param {boolean} [options.graphTextDisplayed=false] - 是否显示统计专题图上的文字标注。
  * @param {ThemeGraphTextFormat} [options.graphTextFormat=ThemeGraphTextFormat.CAPTION] - 统计专题图文本显示格式。
- * @param {ServerTextStyle} [options.graphTextStyle] - 统计图上的文字标注风格。
+ * @param {ServerTextStyle} [options.graphTextStyle] - 统计专题图上的文字标注风格。
  * @usage
  */
 export class ThemeGraphText {
@@ -22,7 +22,7 @@ export class ThemeGraphText {
 
         /**
          * @member {boolean} [ThemeGraphText.prototype.graphTextDisplayed=false]
-         * @description 是否显示统计图上的文字标注。
+         * @description 是否显示统计专题图上的文字标注。
          */
         this.graphTextDisplayed = false;
 
@@ -35,7 +35,7 @@ export class ThemeGraphText {
 
         /**
          * @member {ServerTextStyle} ThemeGraphText.prototype.graphTextStyle
-         * @description 统计图上的文字标注风格。
+         * @description 统计专题图上的文字标注风格。
          */
         this.graphTextStyle =  new ServerTextStyle();
 
@@ -62,7 +62,7 @@ export class ThemeGraphText {
 
     /**
      * @function ThemeGraphText.fromObj
-     * @description 从传入对象获取统计图文字标注风格类。
+     * @description 从传入对象获取统计专题图文字标注风格类。
      * @param {Object} obj - 传入对象。
      * @returns {ThemeGraphText} ThemeGraphText 对象。
      */

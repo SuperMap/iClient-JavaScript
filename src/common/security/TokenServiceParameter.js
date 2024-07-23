@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -13,8 +13,8 @@ import {ClientType} from '../REST';
  * @param {string} options.username - 用户名。
  * @param {string} options.password - 密码。
  * @param {ClientType} [options.clientType='ClientType.NONE'] - token 申请的客户端标识类型。
- * @param {string} [options.ip] - clientType=IP 时，此为必选参数。
- * @param {string} [options.referer] -clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
+ * @param {string} [options.ip] - clientType=IP 时，此为必设参数。
+ * @param {string} [options.referer] -clientType=Referer 时，此为必设参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
  * @param {number} [options.expiration=60] - 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
  * @usage
  *
@@ -41,13 +41,13 @@ export class TokenServiceParameter {
 
         /**
          * @member {string} [TokenServiceParameter.prototype.ip]
-         * @description clientType=IP 时，此为必选参数。
+         * @description clientType=IP 时，此为必设参数。
          */
 
         this.ip = null;
         /**
          * @member {string} [TokenServiceParameter.prototype.referer]
-         * @description clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
+         * @description clientType=Referer 时，此为必设参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
          */
         this.referer = null;
 

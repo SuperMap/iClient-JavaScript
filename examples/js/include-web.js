@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-web\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -32,13 +32,45 @@
         return false;
     }
 
+    function getCookie(cKey) {
+      var name = cKey + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') {c = c.substring(1);}
+          if (c.indexOf(name) !== -1) {return c.substring(name.length, c.length);}
+      }
+      return "";
+    }
+
+    function getLanguage() {
+      var lang = getCookie('language');
+      if (!lang) {
+          if (navigator.appName === 'Netscape') {
+              lang = navigator.language;
+          } else {
+              lang = navigator.browserLanguage;
+          }
+      }
+      if (lang) {
+          if (lang.indexOf('zh') === 0) {
+              return 'zh-CN';
+          }
+          if (lang.indexOf('en') === 0) {
+              return 'en-US';
+          }
+      }
+      return 'zh-CN';
+    }
+
     //加载类库资源文件
     function load(config) {
         var libsurl = config.libsurl;
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
+        const resourceLanguage = getLanguage();
+        inputScript("../locales/" + resourceLanguage + "/resources.js");
         inputScript("../js/tokengenerator.js");
-        inputScript("../js/websymbol.js");
         var jQueryInclude = false;
         if (!inArray(excludes, 'example-i18n')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
@@ -50,10 +82,12 @@
 
             inputScript("../js/utils.js");
             inputScript("../js/localization.js");
-            inputScript("../js/theme/themeConfig.js");
-            inputScript("../js/theme/theme.js");
             document.writeln("<script>Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();}); </script>");
             jQueryInclude = true;
+        }
+        if (inArray(includes, 'theme')) {
+            inputScript("../js/theme/themeConfig.js");
+            inputScript("../js/theme/theme.js");
         }
         if (inArray(includes, 'jquery') && !jQueryInclude) {
             inputScript(libsurl + '/jquery/jquery.min.js');
@@ -61,15 +95,15 @@
 
         if (inArray(includes, 'bootstrap')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
-            inputCSS(libsurl + '/bootstrap/css/bootstrap.min.css');
-            inputScript(libsurl + '/bootstrap/js/bootstrap.min.js');
+            inputCSS(libsurl + '/bootstrap/3.4.1/css/bootstrap.min.css');
+            inputScript(libsurl + '/bootstrap/3.4.1/js/bootstrap.min.js');
         }
         if (inArray(includes, 'bootstrap-css')) {
-            inputCSS(libsurl + '/bootstrap/css/bootstrap.min.css')
+            inputCSS(libsurl + '/bootstrap/3.4.1/css/bootstrap.min.css')
         }
 
         if (inArray(includes, 'bootstrap-js')) {
-            inputScript(libsurl + '/bootstrap/js/bootstrap.min.js');
+            inputScript(libsurl + '/bootstrap/3.4.1/js/bootstrap.min.js');
         }
 
         if (inArray(includes, 'jquery-ui')) {
@@ -87,16 +121,16 @@
             inputScript(libsurl + '/papaparse/papaparse.min.js');
         }
         if (inArray(includes, 'moment')) {
-            inputScript(libsurl + '/moment/2.29.4/moment.min.js');
-            inputScript(libsurl + '/moment/2.29.4/zh-cn.min.js');
+            inputScript(libsurl + '/moment/2.30.1/moment.min.js');
+            inputScript(libsurl + '/moment/2.30.1/zh-cn.js');
         }
         if (inArray(includes, 'bootstrap-datetimepicker')) {
             inputCSS(libsurl + '/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css');
             inputScript(libsurl + '/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js');
         }
         if (inArray(includes, 'bootstrap-select')) {
-            inputCSS(libsurl + '/bootstrap-select/bootstrap-select.min.css');
-            inputScript(libsurl + '/bootstrap-select/bootstrap-select.min.js');
+            inputCSS(libsurl + '/bootstrap-select/1.13.18/bootstrap-select.min.css');
+            inputScript(libsurl + '/bootstrap-select/1.13.18/bootstrap-select.min.js');
         }
         if (inArray(includes, 'geohash')) {
             inputScript(libsurl + '/geohash/geohash.js');
@@ -161,7 +195,7 @@
             inputScript(libsurl + '/babel/6.26.0/babel.min.js');
         }
         if (inArray(includes, 'vue')) {
-            inputScript(libsurl + '/vue/2.5.17/vue.min.js');
+            inputScript(libsurl + '/vue/2.6.14/vue.min.js');
         }
         if (inArray(includes, 'ionRangeSlider')) {
             inputCSS(libsurl + '/ionRangeSlider/2.2.0/css/ion.rangeSlider.css');
@@ -176,6 +210,13 @@
             inputCSS(libsurl + '/iclient8c/examples/js/plottingPanel/jquery-easyui-1.4.4/css/easyui.css');
             inputScript(libsurl + '/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js');
             inputCSS(libsurl + '/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css');
+        }
+        if (inArray(includes, 'viewer')) {
+          inputScript(libsurl + '/viewer-js/viewer.min.js');
+          inputCSS(libsurl + '/viewer-js/css/viewer.css');
+        }
+        if (inArray(includes, 'jquery-twbsPagination')) {
+          inputScript(libsurl + '/jquery.twbsPagination/1.4.2/jquery.twbsPagination.min.js');
         }
     }
 
@@ -194,6 +235,6 @@
     });
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
-    window.version = "11.1.0";
+    window.version = "11.2.0";
     window.preRelease = "";
 })();

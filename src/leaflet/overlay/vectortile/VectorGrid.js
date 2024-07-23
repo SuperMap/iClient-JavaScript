@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -14,11 +14,11 @@ import {VectorFeatureType} from './VectorFeatureType';
 
 /**
  * @class VectorGrid
- * @classdesc 矢量瓦片图层基类。
+ * @classdesc 矢量瓦片图层基类。此类存储了矢量瓦片图层风格、矢量瓦片格式、渲染器类型、是否可交互、最大缩放级别等参数。
  * @category Visualization VectorTile
  * @extends {L.GridLayer}
  * @param {Object} options - 参数。
- * @param {Object} [options.vectorTileLayerStyles] - 矢量网片图层风格。
+ * @param {Object} [options.vectorTileLayerStyles] - 矢量瓦片图层风格。
  * @param {string} [options.renderer='SVG'] -  渲染器类型。
  * @param {VectorTileFormat} [options.format=VectorTileFormat.JSON] - 矢量瓦片格式。
  * @param {boolean} [options.interactive=true] - 是否可交互。
@@ -115,7 +115,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
      * @param {(Array|function)} layerStyle - 图层样式。
-     * @returns {VectorGrid} VectorGrid的实例对象。
+     * @returns {VectorGrid} VectorGrid 的实例对象。
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -138,7 +138,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @description 指定要素 ID 和图层名称重绘要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
-     * @returns {VectorGrid} VectorGrid的实例对象。
+     * @returns {VectorGrid} VectorGrid 的实例对象。
      */
     resetFeatureStyle: function (id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);

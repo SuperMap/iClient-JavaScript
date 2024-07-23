@@ -1,16 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
-import { CommonServiceBase } from '@supermap/iclient-common/iServer/CommonServiceBase';
-import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
-import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
-import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
+import { CommonServiceBase } from '@supermapgis/iclient-common/iServer/CommonServiceBase';
+import { DatasetService as CommonDatasetService } from '@supermapgis/iclient-common/iServer/DatasetService';
+import { CreateDatasetParameters } from '@supermapgis/iclient-common/iServer/CreateDatasetParameters';
+import { UpdateDatasetParameters } from '@supermapgis/iclient-common/iServer/UpdateDatasetParameters';
 
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集信息服务。
+ * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -33,37 +33,39 @@ export class DatasetService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 数据集集合查询服务。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasets(datasourceName, callback) {
         if (!datasourceName) {
             return;
         }
-        this._datasetService.getDatasetsService(datasourceName, callback);
+        return this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 数据集信息查询服务。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDataset(datasourceName, datasetName, callback) {
         if (!datasourceName || !datasetName) {
             return;
         }
-        this._datasetService.getDatasetService(datasourceName, datasetName, callback);
+        return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -74,7 +76,8 @@ export class DatasetService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDataset(params, callback) {
         if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
@@ -97,7 +100,7 @@ export class DatasetService extends CommonServiceBase {
                 "charset": params.charset
             }
         }
-        this._datasetService.setDatasetService(datasetParams, callback);
+        return this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -109,10 +112,11 @@ export class DatasetService extends CommonServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-        this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+        return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }
 SuperMap.REST.DatasetService = DatasetService;

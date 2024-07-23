@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Transformable} from './Transformable';
@@ -617,7 +617,7 @@ export class Painter {
      * @param {string} type - 图片类型。
      * @param {string} backgroundColor - 背景色。默认值：'#fff'。
      * @param {Object} args
-     * @return {string} 图片的Base64 url。
+     * @return {string} 图片的 Base64 URL。
      */
     toDataURL(type, backgroundColor, args) {
         //var imageDom = Painter.createDom('image', 'canvas', this);

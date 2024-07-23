@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -27,13 +27,13 @@
     function layerService() {
         new L.supermap
             .LayerInfoService(url)
-            .getLayersInfo(function (serviceResult) {
+            .getLayersInfo().then((serviceResult) => {
                 var result = serviceResult.result;
                 var innerHTML = "";
                 result.subLayers.layers.map(function (layer) {
                     innerHTML += layer.name + "<br>";
                 });
-                infowin = L.popup({maxWidth: 400})
+                infowin = L.popup({maxWidth: 400, closeOnClick:false})
                     .setLatLng(map.getCenter())
                     .setContent(innerHTML)
                     .openOn(map);

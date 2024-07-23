@@ -1,3 +1,6 @@
+import './mapboxgl/core/MapExtendSpec.js';
+import './mapboxgl/core/UtilSpec.js';
+
 /*mapboxgl -- control*/
 import './mapboxgl/control/LogoSpec.js';
 
@@ -17,6 +20,7 @@ import './mapboxgl/overlay/graphic/GraphicSpec.js';
 import './mapboxgl/overlay/GraphicLayerSpec.js';
 import './mapboxgl/overlay/GraticuleLayerSpec.js';
 import './mapboxgl/overlay/GraphMapSpec';
+import './mapboxgl/overlay/L7LayerSpec.js';
 import './mapboxgl/overlay/symbol/CompositeSymbolRenderSpec';
 import './mapboxgl/overlay/symbol/SingleSymbolRenderSpec';
 import './mapboxgl/overlay/symbol/SymbolManagerSpec';
@@ -32,12 +36,14 @@ import './mapboxgl/services/BufferAnalysisSpec.js';
 import './mapboxgl/services/DataFlowServiceSpec.js';
 import './mapboxgl/services/DensityAnalysisSpec.js';
 import './mapboxgl/services/EditFeaturesSpec.js';
+import './mapboxgl/services/EditVideoFeatureSpec.js';
 import './mapboxgl/services/FieldServiceSpec.js';
 import './mapboxgl/services/GenerateSpatialDataSpec.js';
 import './mapboxgl/services/GeoRelationAnalysisSpec.js';
 import './mapboxgl/services/GeometryBatchAnalysisSpec.js';
 import './mapboxgl/services/GeoprocessingServiceSpec.js';
 import './mapboxgl/overlay/FGBLayerSpec.js';
+import './mapboxgl/overlay/VideoLayerSpec.js';
 import './mapboxgl/services/GetFeaturesByBoundsSpec.js';
 import './mapboxgl/services/GetFeaturesByBufferSpec.js';
 import './mapboxgl/services/GetFeaturesByGeometrySpec.js';
@@ -57,6 +63,11 @@ import './mapboxgl/services/RouteCalculateMeasureSpec.js';
 import './mapboxgl/services/RouteLocateSpec.js';
 import './mapboxgl/services/SurfaceAnalysisSpec.js';
 import './mapboxgl/services/TerrainCurvatureCalculateSpec.js';
+import './mapboxgl/services/TerrainAspectCalculateSpec.js';
+import './mapboxgl/services/TerrainSlopeCalculateSpec.js';
+import './mapboxgl/services/TerrainCutFillCalculateSpec.js';
+import './mapboxgl/services/MinDistanceAnalysisSpec.js';
+import './mapboxgl/services/ConvexHullAnalysisSpec.js';
 import './mapboxgl/services/ThemeServiceSpec.js';
 import './mapboxgl/services/ThiessenAnalysisSpec.js';
 import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';
@@ -65,6 +76,13 @@ import './mapboxgl/services/DatasetServiceSpec.js';
 import './mapboxgl/services/DatasourceServiceSpec.js';
 import './mapboxgl/services/ImageServiceSpec';
 import './mapboxgl/services/ImageCollectionServiceSpec';
-
+import './mapboxgl/services/ChartServiceSpec';
+import './mapboxgl/services/GetFeatureAttachmentsSpec';
+import './mapboxgl/services/EditFeatureAttachmentsSpec';
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';
+import './mapboxgl/mapping/WebMapV3Spec.js';
+import './mapboxgl/mapping/InitMapSpec.js';
+import './mapboxgl/mapping/VideoMapSpec.js';
+import './mapboxgl/mapping/utils/L7LayerUtilSpec.js';
+import './mapboxgl/mapping/utils/ColorUtilSpec.js';

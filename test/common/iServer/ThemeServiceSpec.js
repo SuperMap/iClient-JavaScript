@@ -42,18 +42,8 @@ var themeFailed = (serviceFailedEventArgs) => {
 var initThemeService = (newUrl) => {
     return new ThemeService(newUrl || themeURL);
 };
-var initThemeService_RegisterListener = (callback,newUrl) => {
-    return new ThemeService(newUrl || themeURL,
-        {
-            eventListeners: {
-                "processCompleted": (themeEventArgs)=>{
-                    callback(themeEventArgs)
-                },
-                "processFailed":  (serviceFailedEventArgs) => {
-                    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-                }
-            }
-        });
+var initThemeService_RegisterListener = (newUrl) => {
+    return new ThemeService(newUrl || themeURL);
 };
 
 describe('ThemeService', () => {
@@ -82,27 +72,7 @@ describe('ThemeService', () => {
     });
 
     it('processAsync_Range', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeRange = new ThemeRange({
                 rangeExpression: "POP_1994",
                 rangeParameter: 3,
@@ -159,32 +129,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     
     });
     
     it('processAsync_Range_1', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeRange = new ThemeRange({
             rangeExpression: "POP_1994",
             rangeParameter: 2,
@@ -235,31 +202,28 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     });
     
     it('processAsync_Range_UrlLarge', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeRange = new ThemeRange({
             rangeExpression: "POP_1994",
             rangeParameter: 6,
@@ -354,31 +318,28 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     });
     
     it('processAsync_Graph', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeGraph = new ThemeGraph({
                 barWidth: 2,
                 graphType: ThemeGraphType.PIE,
@@ -423,32 +384,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     it('processAsync_JoinItem', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var joinItem = new JoinItem({
             foreignTableName: "Capitals",
             joinFilter: "Countries.Country = Capitals.Country",
@@ -518,32 +476,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     it('processAsync_Unique', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeUnique = new ThemeUnique({
             uniqueExpression: "CONTINENT"
         });
@@ -604,32 +559,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     it('processAsync_Unique_0', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeUnique = new ThemeUnique({
                 uniqueExpression: "SmID"
             }),
@@ -698,32 +650,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     });
     
     //统一风格标签专题图
     it('processAsync_Label_uniformStyle', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeLabel = new ThemeLabel({
             labelExpression: "Pop_1994",
             labelOverLengthMode: LabelOverLengthMode.NEWLINE,
@@ -764,33 +713,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     
     });
     
     //分段标签专题图
     it('processAsync_Label_range_1', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4;
         var style1, style2;
         var themeLabel = new ThemeLabel({
@@ -870,33 +816,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     
     });
     
     //分段标签专题图
     it('processAsync_Label_range_2', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeLabelIteme1 = new ThemeLabelItem();
         themeLabelIteme1.start = 0;
         themeLabelIteme1.end = 59973;
@@ -1005,33 +948,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     
     });
     
     //矩阵标签专题图
     it('processAsync_Label_matrixCells', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
             var labelThemeOfThemeCell = new ThemeLabel({
                 labelExpression: "Capital",
                 labelOverLengthMode: LabelOverLengthMode.NEWLINE,
@@ -1080,33 +1020,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     //使用内存数据制作统一风格标签专题图
     it('processAsync_Label__WithMemortData', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var srcData = new Array("亚洲", "欧洲", "非洲", "北美洲", "南美洲");
         var targetData = new Array("亚洲国家", "欧洲国家", "非洲国家", "北美洲国家", "南美洲国家");
         var themeMemoryData = new ThemeMemoryData(srcData, targetData);
@@ -1151,33 +1088,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     //使用内存数据制作范围分段专题图
     it('processAsync_Range_withMemoryData', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeRange = new ThemeRange({
                 rangeExpression: "POP_1994",
                 rangeParameter: 3,
@@ -1238,33 +1172,29 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
-
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     });
     
     //点密度专题图
     it('processAsync_DotDensity_style', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var themeDotDensity = new ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 10000000
@@ -1294,33 +1224,30 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
     
     //等级符号专题图
     it('processAsync_GraduatedSymbol', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                var themeResult = themeEventArgsSystem.result;
-                expect(themeResult).not.toBeNull();
-                expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();
-                themeService.destroy();
-                expect(themeService.EVENT_TYPES == null).toBeTruthy();
-                expect(themeService.events == null).toBeTruthy();
-                expect(themeService.eventListeners == null).toBeTruthy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        });
+        var themeService = initThemeService_RegisterListener();
         var myOffset = new ThemeOffset({
             offsetFixed: true,
             offsetX: 0.2,
@@ -1358,7 +1285,24 @@ describe('ThemeService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_99b6f193020345299d393ad187479086.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              var themeResult = themeEventArgsSystem.result;
+              expect(themeResult).not.toBeNull();
+              expect(themeResult.succeed).toBeTruthy();
+              expect(themeResult.newResourceID).not.toBeNull();
+              expect(themeResult.newResourceLocation).not.toBeNull();
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
 
     });
 
@@ -1378,19 +1322,7 @@ describe('ThemeService', () => {
         expect(themeUniqueItem.style).toBeNull();
     })
     it('processAsync_customQueryParam', (done) => {
-        var themeService = initThemeService_RegisterListener((themeEventArgsSystem)=>{
-            try {
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("ThemeService_" + exception.name + ":" + exception.message);
-                themeService.destroy();
-                themeParameters.destroy();
-                done();
-            }
-        },themeURL + '?key=123');
+        var themeService = initThemeService_RegisterListener(themeURL + '?key=123');
         
         var themeRange = new ThemeRange({
                 rangeExpression: "POP_1994",
@@ -1441,6 +1373,86 @@ describe('ThemeService', () => {
             expect(testUrl).toBe(themeURL + "/tempLayersSet?key=123");
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
         });
-        themeService.processAsync(themeParameters);
+        themeService.processAsync(themeParameters, (themeEventArgsSystem)=>{
+          try {
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("ThemeService_" + exception.name + ":" + exception.message);
+              themeService.destroy();
+              themeParameters.destroy();
+              done();
+          }
+      });
     });
+
+
+    it('processAsync_customQueryParam promise', (done) => {
+      var themeService = initThemeService_RegisterListener(themeURL + '?key=123');
+      
+      var themeRange = new ThemeRange({
+              rangeExpression: "POP_1994",
+              rangeParameter: 3,
+              rangeMode: RangeMode.CUSTOMINTERVAL
+          }),
+          style1 = new ServerStyle({
+              fillForeColor: new ServerColor(250, 105, 25),
+              lineWidth: 0.05
+          }),
+          themeRangeItem1 = new ThemeRangeItem({
+              style: style1,
+              visible: true,
+              start: -5,
+              caption: "item1",
+              end: 8609844.5
+          }),
+          style2 = new ServerStyle({
+              fillForeColor: new ServerColor(114, 15, 205),
+              lineWidth: 0.02
+          }),
+          themeRangeItem2 = new ThemeRangeItem({
+              style: style2,
+              visible: true,
+              start: 8609844.5,
+              caption: "item2",
+              end: 28609844.5
+          }),
+          themeRangeItem3 = new ThemeRangeItem({
+              style: new ServerStyle({
+                  fillForeColor: new ServerColor(67, 78, 127),
+                  lineWidth: 0.01
+              }),
+              visible: true,
+              start: 28609844.5,
+              caption: "item3",
+              end: 15028139690,
+          });
+      themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
+      expect(themeService.url).toEqual(themeURL + "/tempLayersSet?key=123");
+      var themeParameters = new ThemeParameters({
+          datasetNames: new Array("Countries"),
+          dataSourceNames: new Array("World"),
+          joinItems: null,
+          themes: new Array(themeRange)
+      });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(testUrl).toBe(themeURL + "/tempLayersSet?key=123");
+          return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/tempLayersSet/f701028a2b7144b19b582f55c1902b18_5679adba657d4123b075feb98c1d2449.json"}`));
+      });
+      themeService.processAsync(themeParameters).then((themeEventArgsSystem)=>{
+        try {
+            themeService.destroy();
+            themeParameters.destroy();
+            done();
+        } catch (exception) {
+            expect(false).toBeTruthy();
+            console.log("ThemeService_" + exception.name + ":" + exception.message);
+            themeService.destroy();
+            themeParameters.destroy();
+            done();
+        }
+    });
+  });
 });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -57,7 +57,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.getRenderer
+     * @function GraphicWebGLRenderer.prototype.getRenderer
      * @description 返回渲染器，可对图层数据增加、删除和修改。
      * @returns {GraphicWebGLRenderer}
      */
@@ -67,7 +67,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.update
+     * @function GraphicWebGLRenderer.prototype.update
      * @description  更新图层。
      */
     update: function (graphics) {
@@ -92,7 +92,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.drawGraphics
+     * @function GraphicWebGLRenderer.prototype.drawGraphics
      * @description 绘制点要素。
      */
     drawGraphics: function (graphics) {

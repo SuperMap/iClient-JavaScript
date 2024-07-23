@@ -1,14 +1,15 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
-import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
+import { MapService as CommonMapService } from '@supermapgis/iclient-common/iServer/MapService';
+import { TilesetsService } from '@supermapgis/iclient-common/iServer/TilesetsService';
 
 /**
  * @class MapService
  * @category  iServer Map
- * @classdesc 地图信息服务类。
+ * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -34,8 +35,8 @@ export class MapService extends ServiceBase {
     /**
      * @function MapService.prototype.getMapInfo
      * @description 地图信息查询服务。
-     * @param {RequestCallback} callback 回调函数。
-     * @returns {MapService} 获取服务信息。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getMapInfo(callback) {
         var me = this;
@@ -46,14 +47,33 @@ export class MapService extends ServiceBase {
             headers: me.options.headers,
             projection: me.options.projection
         });
-        getMapStatusService.processAsync(callback);
+        return getMapStatusService.processAsync(callback);
+    }
+
+    /**
+     * @function MapService.prototype.getWKT
+     * @description 获取WKT。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getWKT(callback) {
+      var me = this;
+      var getMapStatusService = new CommonMapService(Util.urlPathAppend(me.url,'prjCoordSys.wkt'), {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          withoutFormatSuffix: true,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+          projection: me.options.projection
+      });
+      return getMapStatusService.processAsync(callback);
     }
 
     /**
      * @function MapService.prototype.getTilesets
      * @description 切片列表信息查询服务。
-     * @param {RequestCallback} callback - 回调函数 。
-     * @returns {MapService} 获取服务信息。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTilesets(callback) {
         var me = this;
@@ -61,14 +81,8 @@ export class MapService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        tilesetsService.processAsync();
+        return tilesetsService.processAsync(callback);
     }
 }

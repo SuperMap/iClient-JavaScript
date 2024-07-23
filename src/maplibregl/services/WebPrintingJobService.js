@@ -1,18 +1,18 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import maplibregl from 'maplibre-gl';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { WebPrintingService } from '@supermapgis/iclient-common/iServer/WebPrintingService';
 /**
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 11.1.0
  * @modulecategory Services
- * @classdesc Web 打印服务类。
- *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
+ * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
+ *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @extends {ServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
@@ -37,42 +37,46 @@ export class WebPrintingJobService extends ServiceBase {
      * @function WebPrintingJobService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
       if (!params) {
         return;
       }
-      this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
+      return this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     }
 
     /**
      * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJob(jobId, callback) {
-      this._webPrintingService.getPrintingJob(jobId, callback);
+      return this._webPrintingService.getPrintingJob(jobId, callback);
     }
 
     /**
      * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
-      this._webPrintingService.getPrintingJobResult(jobId, callback);
+        return this._webPrintingService.getPrintingJobResult(jobId, callback);
     }
 
     /**
      * @function WebPrintingJobService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {
-      this._webPrintingService.getLayoutTemplates(callback);
+        return this._webPrintingService.getLayoutTemplates(callback);
     }
 
     _processParams(params) {

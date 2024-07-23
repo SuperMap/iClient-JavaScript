@@ -1,11 +1,11 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { OpenFileViewModel } from './OpenFileViewModel';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 /**
  * @class OpenFileView

@@ -51,33 +51,42 @@
   //加载类库资源文件
   function load(config) {
     var libsurl = config.libsurl;
+    var disturl = config.disturl;
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(excludes, 'maplibregl')) {
-      inputCSS(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.css');
-      inputScript(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.js');
+      inputCSS(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.css');
+      inputScript(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.js');
+    }
+    if (inArray(includes, 'maplibre-gl-enhance')) {
+      inputCSS(libsurl + '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.css');
+      inputScript(libsurl + '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.js');
+    }
+    if (inArray(includes, 'L7')) {
+      inputScript(libsurl + '/maplibregl-l7-render/0.0.1/maplibregl-l7-render.js');
+    }
+    if (inArray(includes, 'g2')) {
+      inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
     }
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
     if (inArray(includes, 'draw')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.js');
     }
-
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(libsurl + '/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
     }
     if (inArray(includes, 'compare')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.js');
     }
     if (inArray(includes, 'mapv')) {
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
     }
     if (inArray(includes, 'echarts')) {
-      inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
-      inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
+      inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
       inputScript(libsurl + '/maplibre-echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
@@ -87,7 +96,7 @@
       inputScript(libsurl + '/maplibre-echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'three')) {
-      inputScript(libsurl+ '/three/0.150.1/three.min.js');
+      inputScript(libsurl + '/three/0.150.1/three.min.js');
     }
     if (inArray(includes, 'three@0.121.1')) {
       inputScript(libsurl + '/three/0.121.1/build/three.js');
@@ -96,7 +105,7 @@
       inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
+      inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(libsurl + '/shapefile/shapefile.js');
@@ -121,9 +130,6 @@
     }
     if (inArray(includes, 'canvg')) {
       inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-    }
-    if (inArray(includes, 'convert')) {
-      inputScript(libsurl + '/xml-js/1.6.8/xml-js.min.js');
     }
     if (inArray(includes, 'LegacyJSONLoader')) {
       inputScript(libsurl + '/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
@@ -151,13 +157,13 @@
       inputScript(libsurl + '/three/0.129.0/examples/js/loaders/GLTFLoader.js');
     }
     if (inArray(includes, 'echarts-gl')) {
-      inputScript(libsurl + '/echarts-gl/1.1.2-fix/echarts-gl.min.js');
+      inputScript(libsurl + '/echarts-gl/2.0.9/echarts-gl.min.js');
     }
     if (inArray(includes, 'mapbox-print-pdf')) {
       inputScript(libsurl + '/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
     }
     if (inArray(includes, 'moment')) {
-      inputScript(libsurl + '/moment/2.29.4/moment.min.js');
+      inputScript(libsurl + '/moment/2.30.1/moment.min.js');
     }
     if (inArray(includes, 'lodash')) {
       inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
@@ -175,20 +181,28 @@
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
+    if (inArray(includes, 'snap')) {
+      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.min.js');
+    }
+    if (inArray(includes, 'ugcwasm')) {
+      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+    }
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
-        inputScript('../../dist/maplibregl/iclient-maplibregl-es6.min.js');
+        inputScript(disturl + '/maplibregl/iclient-maplibregl-es6.min.js');
       } else {
-        inputScript('../../dist/maplibregl/iclient-maplibregl.min.js');
+        inputScript(disturl + '/maplibregl/iclient-maplibregl.min.js');
       }
     }
   }
 
   load({
-    libsurl: 'https://iclient.supermap.io/web/libs'
+    libsurl: 'https://iclient.supermap.io/web/libs',
+    disturl: '../../dist'
   });
   window.isLocal = false;
   window.server = document.location.toString().match(/file:\/\//)
     ? 'http://localhost:8090'
     : document.location.protocol + '//' + document.location.host;
+  window.exampleWebSymbolBasePath = '../../dist/maplibregl/resources/symbols';
 })();

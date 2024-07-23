@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -15,7 +15,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @param {number} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。
  * @param {string} [options.type] -  类型：点 or 线。
  * @param {number} [options.offset=0] - 定位点偏移量。只当路由对象定位点时有意义。
- * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。即不忽略子对象之间的距离。
+ * @param {boolean} [options.isIgnoreGap=false] - 是否忽略子对象之间的距离。
  * @param {number} [options.startMeasure] - 定位线的起始 M 值。只当路由对象定位线时有意义。
  * @param {number} [options.endMeasure] - 定位线的终止 M 值。只当路由对象定位线时有意义。
  * @usage
@@ -34,7 +34,7 @@ export class RouteLocatorParameters {
 
         /**
          * @member {string} RouteLocatorParameters.prototype.dataset
-         * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
+         * @description 用于做路由定位分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
          */
         this.dataset = null;
 

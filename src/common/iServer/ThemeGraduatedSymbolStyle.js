@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServerStyle} from './ServerStyle';
@@ -8,7 +8,7 @@ import {Util} from '../commontypes/Util';
  * @class ThemeGraduatedSymbolStyle
  * @deprecatedclass SuperMap.ThemeGraduatedSymbolStyle
  * @category  iServer Map Theme
- * @classdesc 等级符号专题图正负零值显示风格类。
+ * @classdesc 等级符号专题图正负零值显示风格类。该类用于设置等级符号专题图中正值、负值、零值的显示风格。
  * @param {Object} options - 参数。
  * @param {boolean} [options.negativeDisplayed=false] - 是否显示负值。
  * @param {ServerStyle} [options.negativeStyle] - 负值的等级符号风格。

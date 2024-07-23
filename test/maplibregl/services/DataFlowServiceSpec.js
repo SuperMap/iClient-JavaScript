@@ -3,12 +3,13 @@ import {
     DataFlowService
 } from '../../../src/maplibregl/services/DataFlowService';
 
-import { Server } from 'mock-socket';
-var urlDataFlow = "ws:\//localhost:8800/";
+import { Server, WebSocket } from 'mock-socket';
+var urlDataFlow = "ws://localhost:8005";
 describe('maplibregl_DataFlowService', () => {
     var originalTimeout;
     var service;
-    var mockServer;
+    var mockServerBroadcast;
+    var mockServerSubscribe;
     beforeAll(() => {
         var e = {
             "type": "Feature",
@@ -20,15 +21,21 @@ describe('maplibregl_DataFlowService', () => {
                 "id": 1
             }
         };
-        mockServer = new Server(urlDataFlow);
-        mockServer.on('connection', socket => {
+        mockServerBroadcast = new Server(`${urlDataFlow}/broadcast`);
+
+        mockServerBroadcast.on('connection', socket => {
             socket.on('message', () => {
                 console.log("onmessage");
             });
             socket.on('close', () => { });
             socket.send(JSON.stringify(e));
-            socket.close();
+            // socket.close();
+
         });
+        mockServerSubscribe = new Server(`${urlDataFlow}/subscribe`);
+        mockServerSubscribe.on('connection', socket => {
+        })
+
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -44,8 +51,10 @@ describe('maplibregl_DataFlowService', () => {
         }
     });
     afterAll(() => {
-        mockServer.stop();
-        mockServer = null;
+        mockServerBroadcast.stop();
+        mockServerBroadcast = null;
+        mockServerSubscribe.stop();
+        mockServerSubscribe = null;
     });
 
     it('broadcast_Point', (done) => {
@@ -65,27 +74,20 @@ describe('maplibregl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
-        var timer;
-        try {
-            service = new DataFlowService(urlDataFlow);
-            service.initBroadcast();
-            service.on('broadcastSocketConnected', (e) => {
-                var dataFlow = service.dataFlow;
-                expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
-                expect(dataFlow.EVENT_TYPES.length).toEqual(8);
-                expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "broadcast");
-                timer = window.setInterval(broadcast_Point(service), 1000);
-            });
-            setTimeout(() => {
-                expect(service).not.toBeNull();
-                done();
-            }, 0)
-        } finally {
-            if (timer) {
-                window.clearInterval(timer);
-            }
-        }
+        service = new DataFlowService(urlDataFlow);
+        service.initBroadcast();
+        service.on('broadcastSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+            expect(dataFlow.EVENT_TYPES.length).toEqual(10);
+            expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast");
+            broadcast_Point(service);
+
+        });
+        service.on('broadcastSucceeded', (e) => {
+            done();
+        })
     });
 
     it('broadcast_LineString', (done) => {
@@ -109,24 +111,21 @@ describe('maplibregl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
+        service = new DataFlowService(urlDataFlow);
+        service.initBroadcast();
+        service.on('broadcastSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+            expect(dataFlow.EVENT_TYPES.length).toEqual(10);
+            expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast");
+            broadcast_LineString(service);
 
-        var timer;
-        try {
-            service = new DataFlowService(urlDataFlow);
-            service.initBroadcast();
-            service.on('broadcastSocketConnected', (e) => {
-                timer = window.setInterval(broadcast_LineString(service), 1000);
-            });
-            setTimeout(() => {
-                expect(service).not.toBeNull();
-                done();
-            }, 0)
-        } finally {
-            if (timer) {
-                window.clearInterval(timer);
-            }
+        });
+        service.on('broadcastSucceeded', (e) => {
+            done();
+        })
 
-        }
     });
 
     it('broadcast_Polygon', (done) => {
@@ -153,88 +152,64 @@ describe('maplibregl_DataFlowService', () => {
             flowService.broadcast(feature);
         }
 
+        service = new DataFlowService(urlDataFlow);
+        service.initBroadcast();
+        service.on('broadcastSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+            expect(dataFlow.EVENT_TYPES.length).toEqual(10);
+            expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast");
+            broadcast_Polygon(service);
 
-        var timer;
-        try {
-            service = new DataFlowService(urlDataFlow);
-            service.initBroadcast();
-            service.on('broadcastSocketConnected', (e) => {
-                timer = window.setInterval(broadcast_Polygon(service), 1000);
-            });
-            setTimeout(() => {
-                expect(service).not.toBeNull();
-                service.unSubscribe();
-                service.unBroadcast();
-                done();
-            }, 0)
-        } finally {
-            if (timer) {
-                window.clearInterval(timer);
-            }
-        }
+        });
+        service.on('broadcastSucceeded', (e) => {
+            done();
+        })
     });
 
     it('broadcast_MultiPolygon', (done) => {
         var broadcast_MultiPolygon = (flowService) => {
-
+            var feature = {
+                geometry: {
+                    coordinates: [[[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8765100055449]]], [[[115.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [115.381741960923, 39.8765100055449]]]],
+                    type: "MultiPolygon"
+                },
+                id: 4,
+                type: "Feature",
+                properties: { id: 4, time: new Date() }
+            };
             flowService.broadcast(feature);
         }
+        service = new DataFlowService(urlDataFlow);
+        service.initBroadcast();
+        service.on('broadcastSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+            expect(dataFlow.EVENT_TYPES.length).toEqual(10);
+            expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast");
+            broadcast_MultiPolygon(service);
 
-        var timer;
-        try {
-            service = new DataFlowService(urlDataFlow);
-            service.initBroadcast();
-            service.on('broadcastSocketConnected', (e) => {
-                timer = window.setInterval(broadcast_MultiPolygon(service), 1000);
-            });
-            setTimeout(() => {
-                expect(service).not.toBeNull();
-                service.unSubscribe();
-                service.unBroadcast();
-                done();
-            }, 0)
-        } finally {
-            if (timer) {
-                window.clearInterval(timer);
-            }
-        }
+        });
+        service.on('broadcastSucceeded', (e) => {
+            done();
+        })
+
     });
 
     // 设置设置排除字段。
     it('initSubscribe,setExcludeField', (done) => {
-        var socket = new WebSocket(urlDataFlow);
-        var service = new DataFlowService(urlDataFlow);
-        spyOn(service.dataFlow, '_connect').and.callFake(() => {
-            return socket;
-        });
-        spyOn(socket, "send").and.callFake(() => {
-        });
-        service.initSubscribe();
-        setTimeout(() => {
-            service.setExcludeField("id");
-            expect(service).not.toBeNull();
-            done();
-        }, 0)
-    });
-
-    it('broadcast', (done) => {
-        var feature = {
-            geometry: {
-                coordinates: new maplibregl.Point(5605, -3375),
-                type: "Point"
-            },
-            id: 1,
-            type: "Feature",
-            properties: {
-                id: 1,
-                time: new Date()
-            }
-        };
         service = new DataFlowService(urlDataFlow);
-        service.initBroadcast();
-        service.broadcast(feature);
-        expect(service.dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
-        done();
+        service.initSubscribe();
+        service.on('subscribeSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.subscribeWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.subscribeWebSocket.url).toBe(urlDataFlow + "/subscribe");
+            service.setExcludeField("id");
+            expect(service.options.excludeField).toBe("id");
+            done();
+        });
     });
 
     it('setGeometry', (done) => {
@@ -252,8 +227,13 @@ describe('maplibregl_DataFlowService', () => {
         };
         service = new DataFlowService(urlDataFlow);
         service.initSubscribe();
-        service.setGeometry(feature);
-        expect(service.options.geometry).not.toBeNull();
-        done();
+        service.on('subscribeSocketConnected', (e) => {
+            var dataFlow = service.dataFlow;
+            expect(dataFlow.subscribeWebSocket.binaryType).toBe("blob");
+            expect(dataFlow.subscribeWebSocket.url).toBe(urlDataFlow + "/subscribe");
+            service.setGeometry(feature);
+            expect(service.options.geometry.geometry.coordinates.x).toBe(5605)
+            done();
+        });
     });
 });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -10,14 +10,14 @@ import {DatasetInfo} from './DatasetInfo';
  * @class UGCSubLayer
  * @deprecatedclass SuperMap.UGCSubLayer
  * @category  iServer Map Layer
- * @classdesc 地图服务图层属性信息类。影像图层（Image）、专题图层（ServerTheme）、栅格图层（Grid）、矢量图层（Vector）等图层均继承该类。
+ * @classdesc 地图服务图层属性信息类。
  * @extends {UGCMapLayer}
  * @param {Object} options - 参数。
  * @param {DatasetInfo} options.datasetInfo - 数据集信息。
  * @param {string} [options.displayFilter] - 图层显示过滤条件。
  * @param {JoinItem} [options.joinItems] - 连接信息类。
  * @param {string} [options.representationField] - 存储制图表达信息的字段。
- * @param {LayerType} [options.ugcLayerType] - 图层类型。
+ * @param {ugcLayerType} [options.ugcLayerType] - SuperMap 图层类型。
  * @usage
  */
 export class UGCSubLayer extends UGCMapLayer {
@@ -51,8 +51,8 @@ export class UGCSubLayer extends UGCMapLayer {
         this.representationField = null;
 
         /**
-         * @member {LayerType} UGCSubLayer.prototype.ugcLayerType
-         * @description 图层类型。
+         * @member {ugcLayerType} UGCSubLayer.prototype.ugcLayerType
+         * @description SuperMap 图层类型。
          */
         this.ugcLayerType = null;
 

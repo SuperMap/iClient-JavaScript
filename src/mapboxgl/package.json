@@ -1,7 +1,7 @@
 {
-  "name": "@supermap/iclient-mapboxgl",
+  "name": "@supermapgis/iclient-mapboxgl",
   "description": "",
-  "version": "11.1.0",
+  "version": "11.2.0",
   "keywords": [
     "SuperMap",
     "MapboxGL v1"
@@ -15,13 +15,22 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
+    "@antv/g2": "^4.2.11",
+    "@mapbox/mapbox-gl-style-spec": "^14.3.0",
+    "@turf/center": "^6.5.0",
+    "@turf/turf": "6.5.0",
     "mapv": "2.0.62",
     "mapbox-gl": "1.13.2",
     "three": "0.150.1",
-    "@supermap/iclient-common": "11.1.0",
+    "@supermapgis/iclient-common": "11.2.0",
     "canvg": "3.0.10",
-    "xml-js": "1.6.11",
-    "flatgeobuf": "3.23.1",
-    "rbush": "^2.0.2"
+    "fast-xml-parser": "^4.2.7",
+    "flatgeobuf": "3.31.1",
+    "lodash.debounce": "^4.0.8",
+    "rbush": "^2.0.2",
+    "proj4": "2.11.0",
+    "flv.js": "^1.6.2",
+    "video.js": "^7.10.2",
+    "videojs-flvjs-es6": "^1.0.1"
   }
 }

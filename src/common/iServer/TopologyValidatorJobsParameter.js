@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -10,9 +10,9 @@ import { MappingParameters } from './MappingParameters';
  * @class TopologyValidatorJobsParameter
  * @deprecatedclass SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
- * @classdesc 拓扑检查分析任务参数类。
+ * @classdesc 拓扑检查分析任务参数类。此类用于设置拓扑检查分析的数据集、拓扑检查规则、容限等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.datasetTopology -检查对象所在的数据集名称。
  * @param {TopologyValidatorRule} [options.rule=TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
@@ -28,7 +28,7 @@ export class TopologyValidatorJobsParameter {
         }
         /**
          * @member {string} TopologyValidatorJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -40,13 +40,13 @@ export class TopologyValidatorJobsParameter {
 
         /**
          * @member {string} [TopologyValidatorJobsParameter.prototype.tolerance]
-         * @description 容限，指定的拓扑错误检查时使用的容限。
+         * @description 容限，指定的拓扑错误检查时使用的容限。单位与进行拓扑错误检查的数据集单位相同。取值范围为大于等于 0，小于 0 将抛出异常。（默认值：0.000001）
          */
         this.tolerance = "";
 
         /**
          * @member {TopologyValidatorRule} [TopologyValidatorJobsParameter.prototype.rule=TopologyValidatorRule.REGIONNOOVERLAP]
-         * @description 拓扑检查模式。
+         * @description 拓扑检查规则。
          */
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 

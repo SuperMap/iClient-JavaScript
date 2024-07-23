@@ -1,17 +1,17 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
 import * as Util from '../core/Util';
-import { MeasureMode } from '@supermap/iclient-common/REST';
-import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
-import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParameters';
+import { MeasureMode } from '@supermapgis/iclient-common/REST';
+import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-common/iServer/MeasureService';
+import { MeasureParameters } from '@supermapgis/iclient-common/iServer/MeasureParameters';
 
 /**
  * @class MeasureService
  * @deprecatedclassinstance L.supermap.measureService
- * @classdesc 量算服务类。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @category  iServer Map Measure
  * @modulecategory Services
  * @example
@@ -38,31 +38,32 @@ export var MeasureService = ServiceBase.extend({
 
     /**
      * @function MeasureService.prototype.measureDistance
-     * @description 测距。
+     * @description 距离量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance: function (params, callback) {
-        this.measure(MeasureMode.DISTANCE, params, callback);
-        return this;
+      return this.measure(MeasureMode.DISTANCE, params, callback);
     },
 
     /**
      * @function MeasureService.prototype.measureArea
-     * @description 测面积。
+     * @description 面积量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureArea: function (params, callback) {
-        this.measure(MeasureMode.AREA, params, callback);
-        return this;
+      return this.measure(MeasureMode.AREA, params, callback);
     },
 
     /**
      * @function MeasureService.measure
      * @param {MeasureMode} [type=MeasureMode.DISTANCE] - 量算模式。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measure: function (type, params, callback) {
         if (!(params instanceof MeasureParameters)) {
@@ -79,7 +80,7 @@ export var MeasureService = ServiceBase.extend({
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(params, callback);
+        return measureService.processAsync(params, callback);
     }
 });
 

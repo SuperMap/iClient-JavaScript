@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -8,15 +8,15 @@ import "../core/Base";
 import { BaiduCRS, TianDiTu_WGS84CRS, TianDiTu_MercatorCRS} from '../core/ExtendsCRS'
 import { crs as CRS } from '../core/Proj4Leaflet'
 import { toGeoJSON, getResolutionFromScaleDpi } from '../core/Util'
-import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
-import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { ThemeStyle } from '@supermap/iclient-common/style/ThemeStyle';
-import { Vector } from '@supermap/iclient-common/commontypes/Vector';
-import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { FetchRequest as Request } from '@supermapgis/iclient-common/util/FetchRequest';
+import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { ServerFeature } from '@supermapgis/iclient-common/iServer/ServerFeature';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { ThemeStyle } from '@supermapgis/iclient-common/style/ThemeStyle';
+import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
+import { Point } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 import {
     CartoCSSToLeaflet
 } from '../overlay/carto/CartoCSSToLeaflet';
@@ -76,7 +76,7 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权描述信息。
  * @fires WebMap#maploaded
  * @fires WebMap#coordconvertsuccess
  * @fires WebMap#coordconvertfailed

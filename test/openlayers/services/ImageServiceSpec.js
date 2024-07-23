@@ -1,7 +1,7 @@
 import { ImageSearchParameter, ImageService } from '../../../src/openlayers';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('ImageService', () => {
+describe('openlayers_ImageService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

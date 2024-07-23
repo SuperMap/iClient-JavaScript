@@ -25,6 +25,7 @@ var self = this;
 //}
 
 function build(nav,navOrder,level){
+    
      if(!nav){
          return;
      }
@@ -68,6 +69,7 @@ function build(nav,navOrder,level){
     }
 }
 function buildLi(obj){
+    
     ?>
      <li class="item" file-name="<?js= obj.fileName ?>" data-name="<?js= obj.longname ?>">
             <span class="title" title="<?js= obj.longname ?>">
@@ -109,8 +111,10 @@ function buildLi(obj){
             <?js
 
                 obj.methods.forEach(function (v) {
+                    var commentLength = v.comment?v.comment.split('\n').length:0;
+                    var funLineNo = v.meta.lineno + commentLength;
             ?>
-                <li data-version= "<?js= v.version||obj.version  ?>" data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                <li data-version= "<?js= v.version||obj.version  ?>" data-name="<?js= v.longname ?>" data-line="<?js= funLineNo ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
                 });
             }

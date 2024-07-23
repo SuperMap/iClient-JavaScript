@@ -15,7 +15,7 @@ export class ObjectDetection extends MachineLearningBase {
         super(options);
     }
     /**
-     * @function  ObjectDetection.prototype.predict
+     * @function ObjectDetection.prototype.predict
      * @description 对模型进行预测
      * @returns {Object} 预测后的数据
      */
@@ -34,7 +34,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function  ObjectDetection.prototype.handleResult
+     * @function ObjectDetection.prototype.handleResult
      * @description 对预测数据进行处理
      * @param {Object} result - 预测后的数据。
      * @returns {Object} 处理返回的数据
@@ -190,7 +190,7 @@ export class ObjectDetection extends MachineLearningBase {
     }
 
     /**
-     * @function  ObjectDetection.prototype.handleInputParams
+     * @function ObjectDetection.prototype.handleInputParams
      * @description 处理输入张量
      * @param {PixelData|ImageData|HTMLImageElement|HTMLCanvasElement| HTMLVideoElement|ImageBitmap} image - 图片对象。
      * @param {number} width - 图片宽度。

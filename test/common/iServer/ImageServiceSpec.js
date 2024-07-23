@@ -1,5 +1,5 @@
-import { ImageSearchParameter, ImageService } from '@supermap/iclient-common/iServer';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { ImageSearchParameter, ImageService } from '@supermapgis/iclient-common/iServer';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 describe('ImageService', () => {
     var originalTimeout;
@@ -43,8 +43,6 @@ describe('ImageService', () => {
                 expect(result[0].providers.length).toEqual(1);
                 expect(result[0].keywords.length).toEqual(6);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -53,20 +51,14 @@ describe('ImageService', () => {
                 done();
             }
         };
-        var getCollectionsProcessFailed = (res) => {};
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processCompleted: getCollectionsProcessCompleted,
-                processFailed: getCollectionsProcessFailed
-            }
-        });
+        service = new ImageService(requestUrl);
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/collections');
             return Promise.resolve(new Response(JSON.stringify(getCollectionsJson)));
         });
-        service.getCollections();
+        service.getCollections(getCollectionsProcessCompleted);
     });
 
     it('should call getCollections failed', function (done) {
@@ -76,8 +68,8 @@ describe('ImageService', () => {
                 expect(res.error.errorMsg).not.toBeNull();
                 expect(res.error.code).toEqual(400);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
+                
+                
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -88,18 +80,14 @@ describe('ImageService', () => {
             }
         };
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processFailed: getCollectionsProcessFailed
-            }
-        });
+        service = new ImageService(requestUrl);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/collections');
             return Promise.resolve(
                 new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"not found in resources."}}`)
             );
         });
-        service.getCollections();
+        service.getCollections(getCollectionsProcessFailed);
     });
 
     it('should call getCollectionByID successfully', function (done) {
@@ -113,8 +101,8 @@ describe('ImageService', () => {
                 expect(result.providers.length).toEqual(1);
                 expect(result.keywords.length).toEqual(6);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
+                
+                
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -124,17 +112,13 @@ describe('ImageService', () => {
             }
         };
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processCompleted: getCollectionByIDProcessCompleted
-            }
-        });
+        service = new ImageService(requestUrl);
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/collections/collectionId');
             return Promise.resolve(new Response(JSON.stringify(getCollectionByIDJson)));
         });
-        service.getCollectionByID('collectionId');
+        service.getCollectionByID('collectionId', getCollectionByIDProcessCompleted);
     });
 
     it('should call getCollectionByID parameter wrong', function (done) {
@@ -143,8 +127,8 @@ describe('ImageService', () => {
                 expect(res.error.description).not.toBeNull();
                 expect(res.error.code).toEqual(404);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
+                
+                
                 service.destroy();
                 done();
             } catch (exception) {
@@ -155,18 +139,14 @@ describe('ImageService', () => {
             }
         };
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processFailed: getCollectionByIDProcessFailed
-            }
-        });
+        service = new ImageService(requestUrl);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/collections/wrongId');
             return Promise.resolve(
                 new Response(`{"succeed":false,"error":{"code":404,"description":"not found in resources."}}`)
             );
         });
-        service.getCollectionByID('wrongId');
+        service.getCollectionByID('wrongId', getCollectionByIDProcessFailed);
     });
 
     it('should call search successfully', function (done) {
@@ -183,8 +163,8 @@ describe('ImageService', () => {
                 expect(result.features.length).toEqual(1);
                 expect(result.links.length).toEqual(1);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
+                
+                
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -194,31 +174,26 @@ describe('ImageService', () => {
             }
         };
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processCompleted: postItemSearchProcessCompleted
-            }
-        });
+        service = new ImageService(requestUrl);
 
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/search');
             return Promise.resolve(new Response(JSON.stringify(ItemSearchJson)));
         });
-        service.search(bodyParam);
+        service.search(bodyParam, postItemSearchProcessCompleted);
     });
 
     it('should call search parameter wrong', function (done) {
         var bodyParam = new ImageSearchParameter({
             bbox: ['fff']
         });
-        var postItemSearchProcessCompleted = (res) => {};
         var postItemSearchProcessFailed = (res) => {
             try {
                 expect(res.error.description).not.toBeNull();
                 expect(res.error.code).toEqual(400);
                 service.destroy();
-                expect(service.EVENT_TYPES).toBeNull();
-                expect(service.events).toBeNull();
+                
+                
 
                 done();
             } catch (exception) {
@@ -230,19 +205,14 @@ describe('ImageService', () => {
             }
         };
 
-        service = new ImageService(requestUrl, {
-            eventListeners: {
-                processCompleted: postItemSearchProcessCompleted,
-                processFailed: postItemSearchProcessFailed
-            }
-        });
+        service = new ImageService(requestUrl);
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             expect(url).toEqual(requestUrl + '/search');
             return Promise.resolve(
                 new Response(`{"succeed":false,"error":{"code":400,"description":"not found in resources."}}`)
             );
         });
-        service.search(bodyParam);
+        service.search(bodyParam, postItemSearchProcessFailed);
     });
 
     it('should call search options null', function (done) {

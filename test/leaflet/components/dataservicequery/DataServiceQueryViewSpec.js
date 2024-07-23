@@ -10,6 +10,7 @@ var dataServiceURL = GlobeParameter.dataServiceURL;
 describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
     var serviceResult;
     var originalTimeout;
+    var options;
     beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.id = 'map';
@@ -28,7 +29,12 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         tiledMapLayer(url).addTo(map);
 
         var dataSetNames = ['World:Countries'];
-        dataServiceQuery = dataServiceQueryView(dataServiceURL, dataSetNames);
+        options = {
+          onEachFeature(feature, layer) {
+          }
+        }
+        spyOn(options, 'onEachFeature');
+        dataServiceQuery = dataServiceQueryView(dataServiceURL, dataSetNames, options);
         dataServiceQuery.addTo(map);
     });
     beforeEach(() => {
@@ -67,7 +73,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
               expect(features[0].id).toBe(1);
               expect(features[1].id).toBe(2);
               expect(features[2].id).toBe(3);
-
+              expect(options.onEachFeature).toHaveBeenCalled();
               dataServiceQuery.off("getfeaturessucceeded", callbackFn);
               done();
           } catch (exception) {
@@ -337,6 +343,5 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             done();
         }
     })
-
 });
 

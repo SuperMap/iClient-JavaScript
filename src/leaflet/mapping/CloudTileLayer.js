@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -18,7 +18,7 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=18] - 最大缩放级别。
  * @param {string} [options.mapName='quanguo'] - 地图名称。
- * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
+ * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权描述信息。
  * @usage
  */
 export var CloudTileLayer = L.TileLayer.extend({

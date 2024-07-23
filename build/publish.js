@@ -11,10 +11,10 @@ fse.copySync(sourceDir, destDir, {
         return !(src.indexOf("include-") >= 0 || src.indexOf("resources") >= 0)
     }
 });
-if (key === 'mapboxgl') {
+if (key === 'mapboxgl' || key === 'maplibregl') {
     // 拷贝resources文件夹到src/mapboxgl
     const source = path.join(__dirname, "../dist/resources");
-    const target = path.join(__dirname, "../src/mapboxgl/resources");
+    const target = path.join(__dirname, `../src/${key}/resources`);
     fse.removeSync(target);
     fse.copySync(source, target);
 }

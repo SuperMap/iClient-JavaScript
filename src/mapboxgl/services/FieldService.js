@@ -1,14 +1,14 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { FieldService as CommonFieldService } from '@supermap/iclient-common/iServer/FieldService';
+import { FieldService as CommonFieldService } from '@supermapgis/iclient-common/iServer/FieldService';
 
 /**
  * @class FieldService
  * @category  iServer Data Field
- * @classdesc 字段服务类。
+ * @classdesc 字段服务类。提供方法：查询字段信息、查询字段统计信息等。
  * @modulecategory Services
  * @example
  * new FieldService(url).getFields(function(result){
@@ -33,10 +33,11 @@ export class FieldService extends ServiceBase {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。 
      */
     getFields(params, callback) {
-        this._fieldService.getFields(params, callback);
+      return this._fieldService.getFields(params, callback);
     }
 
     /**
@@ -46,6 +47,6 @@ export class FieldService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
-      this._fieldService.getFieldStatisticsInfo(params, callback);
+      return this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 }

@@ -100,6 +100,7 @@ import {
   Events,
   Feature,
   Geometry,
+  Geometry3D,
   Pixel,
   Size,
   CommonUtil,
@@ -129,6 +130,7 @@ import {
   IPortalDataStoreInfoParam,
   IPortalDataConnectionInfoParam,
   AggregationParameter,
+  AttachmentsParameters,
   BucketAggParameter,
   MetricsAggParameter,
   AreaSolarRadiationParameters,
@@ -139,6 +141,7 @@ import {
   BurstPipelineAnalystParameters,
   ChartQueryFilterParameter,
   ChartQueryParameters,
+  ChartSetting,
   ClipParameter,
   ColorDictionary,
   CommonServiceBase,
@@ -151,6 +154,7 @@ import {
   DatasetThiessenAnalystParameters,
   DatasourceConnectionInfo,
   DensityKernelAnalystParameters,
+  EditAttachmentsParameters,
   EditFeaturesParameters,
   FacilityAnalyst3DParameters,
   FacilityAnalystSinks3DParameters,
@@ -214,6 +218,16 @@ import {
   QueryByDistanceParameters,
   QueryByGeometryParameters,
   QueryBySQLParameters,
+  DatasetMinDistanceAnalystParameters,
+  TerrainCutFillCalculationParameters,
+  terrainAnalystSetting,
+  TerrainAspectCalculationParameters,
+  TerrainSlopeCalculationParameters,
+  GeometryMinDistanceAnalystParameters,
+  ConvexHullAnalystParameters,
+  TraceAnalystParameters,
+  ConnectedEdgesAnalystParameters,
+  GetLayersLegendInfoParameters,
   QueryParameters,
   Route,
   RouteCalculateMeasureParameters,
@@ -323,6 +337,9 @@ import {
   isCORS,
   setCORS,
   FetchRequest,
+  EncryptRequest,
+  getServiceKey,
+  GeometryAnalysis,
   ColorsPickerUtil,
   ArrayStatistic,
   CartoCSS,
@@ -364,12 +381,14 @@ import {
   BuffersAnalystJobsService,
   BurstPipelineAnalystService,
   ChartFeatureInfoSpecsService,
+  ChartAcronymClassifyService,
   ChartQueryService,
   ComputeWeightMatrixService,
   DatasetService,
   DatasourceService,
   DataFlowService,
   DensityAnalystService,
+  FeatureAttachmentsService,
   EditFeaturesService,
   FacilityAnalystSinks3DService,
   FacilityAnalystSources3DService,
@@ -407,6 +426,14 @@ import {
   QueryByDistanceService,
   QueryByGeometryService,
   QueryBySQLService,
+  MinDistanceAnalystService,
+  TerrainCutFillCalculationService,
+  TerrainAspectCalculationService,
+  TerrainSlopeCalculationService,
+  ConvexHullAnalystService,
+  TraceAnalystService,
+  ConnectedEdgesAnalystService,
+  GetLayersLegendInfoService,
   QueryService,
   RouteCalculateMeasureService,
   RouteLocatorService,
@@ -432,7 +459,12 @@ import {
   WebPrintingService,
   ImageCollectionService,
   ImageService,
-  KnowledgeGraph
+  KnowledgeGraph,
+  BoundsType,
+  CellSizeType,
+  ColourModeChart,
+  DisplayModeChart,
+  VideoFeature
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -465,7 +497,9 @@ SuperMap.isCORS = isCORS;
 SuperMap.setRequestTimeout = setRequestTimeout;
 SuperMap.getRequestTimeout = getRequestTimeout;
 SuperMap.FetchRequest = FetchRequest;
-
+SuperMap.EncryptRequest = EncryptRequest;
+SuperMap.getServiceKey = getServiceKey;
+SuperMap.GeometryAnalysis = GeometryAnalysis;
 // commontypes
 SuperMap.inherit = inheritExt;
 SuperMap.mixin = mixinExt;
@@ -480,6 +514,7 @@ SuperMap.Credential = Credential;
 SuperMap.Events = Events;
 SuperMap.Feature = Feature;
 SuperMap.Geometry = Geometry;
+SuperMap.Geometry3D = Geometry3D;
 SuperMap.Pixel = Pixel;
 SuperMap.Size = Size;
 SuperMap.Feature.Vector = FeatureVector;
@@ -541,6 +576,7 @@ SuperMap.AddressMatchService = AddressMatchService;
 SuperMap.AggregationParameter = AggregationParameter;
 SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
+SuperMap.AttachmentsParameters = AttachmentsParameters;
 SuperMap.BucketAggParameter = BucketAggParameter;
 SuperMap.BufferAnalystParameters = BufferAnalystParameters;
 SuperMap.BufferAnalystService = BufferAnalystService;
@@ -551,9 +587,11 @@ SuperMap.BufferSetting = BufferSetting;
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
 SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
 SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
+SuperMap.ChartAcronymClassifyService = ChartAcronymClassifyService;
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
 SuperMap.ChartQueryParameters = ChartQueryParameters;
 SuperMap.ChartQueryService = ChartQueryService;
+SuperMap.ChartSetting = ChartSetting;
 SuperMap.ClipParameter = ClipParameter;
 SuperMap.ColorDictionary = ColorDictionary;
 SuperMap.CommonServiceBase = CommonServiceBase;
@@ -572,6 +610,8 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 SuperMap.DatasourceService = DatasourceService;
 SuperMap.DensityAnalystService = DensityAnalystService;
 SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
+SuperMap.EditAttachmentsParameters = EditAttachmentsParameters;
+SuperMap.FeatureAttachmentsService = FeatureAttachmentsService;
 SuperMap.EditFeaturesParameters = EditFeaturesParameters;
 SuperMap.EditFeaturesService = EditFeaturesService;
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
@@ -686,6 +726,24 @@ SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
 SuperMap.QueryByGeometryService = QueryByGeometryService;
 SuperMap.QueryBySQLParameters = QueryBySQLParameters;
 SuperMap.QueryBySQLService = QueryBySQLService;
+SuperMap.DatasetMinDistanceAnalystParameters = DatasetMinDistanceAnalystParameters;
+SuperMap.MinDistanceAnalystService = MinDistanceAnalystService;
+SuperMap.TerrainCutFillCalculationParameters = TerrainCutFillCalculationParameters;
+SuperMap.TerrainCutFillCalculationService = TerrainCutFillCalculationService;
+SuperMap.terrainAnalystSetting = terrainAnalystSetting;
+SuperMap.TerrainAspectCalculationParameters = TerrainAspectCalculationParameters;
+SuperMap.TerrainAspectCalculationService = TerrainAspectCalculationService;
+SuperMap.TerrainSlopeCalculationParameters = TerrainSlopeCalculationParameters;
+SuperMap.TerrainSlopeCalculationService = TerrainSlopeCalculationService;
+SuperMap.GeometryMinDistanceAnalystParameters = GeometryMinDistanceAnalystParameters;
+SuperMap.ConvexHullAnalystParameters = ConvexHullAnalystParameters;
+SuperMap.ConvexHullAnalystService = ConvexHullAnalystService;
+SuperMap.TraceAnalystParameters = TraceAnalystParameters;
+SuperMap.TraceAnalystService = TraceAnalystService;
+SuperMap.ConnectedEdgesAnalystParameters = ConnectedEdgesAnalystParameters;
+SuperMap.ConnectedEdgesAnalystService = ConnectedEdgesAnalystService;
+SuperMap.GetLayersLegendInfoParameters = GetLayersLegendInfoParameters;
+SuperMap.GetLayersLegendInfoService = GetLayersLegendInfoService;
 SuperMap.QueryParameters = QueryParameters;
 SuperMap.QueryService = QueryService;
 SuperMap.RasterFunctionParameter = RasterFunctionParameter;
@@ -913,5 +971,10 @@ SuperMap.WebScaleOrientationType = WebScaleOrientationType;
 SuperMap.WebScaleType = WebScaleType;
 SuperMap.WebScaleUnit = WebScaleUnit;
 SuperMap.KnowledgeGraph = KnowledgeGraph
+SuperMap.BoundsType = BoundsType
+SuperMap.CellSizeType = CellSizeType
+SuperMap.ColourModeChart = ColourModeChart;
+SuperMap.DisplayModeChart = DisplayModeChart;
+SuperMap.VideoFeature = VideoFeature;
 
 export * from './index.all';

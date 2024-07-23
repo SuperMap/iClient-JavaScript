@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -15,7 +15,6 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
  * @extends {SpatialAnalystBase}
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
@@ -55,13 +54,8 @@ import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters
      *     "isIgnoreGap":false
      * });
  *
- * var routeCalculateMeasureService = new RouteCalculateMeasureService(spatialAnalystURL, {
-     *     eventListeners:{
-     *         processCompleted:calculateCompleted,
-     *         processFailed:calculateFailded
-     *     }
-     * );
-     * routeCalculateMeasureService.processAsync(parameters);
+ * var routeCalculateMeasureService = new RouteCalculateMeasureService(spatialAnalystURL);
+     * routeCalculateMeasureService.processAsync(parameters, calculateCompleted);
      *
      *  //执行
      * function calculateCompleted(){todo}
@@ -87,8 +81,10 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
      * @function RouteCalculateMeasureService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof RouteCalculateMeasureParameters)) {
             return;
         }
@@ -96,12 +92,12 @@ export class RouteCalculateMeasureService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

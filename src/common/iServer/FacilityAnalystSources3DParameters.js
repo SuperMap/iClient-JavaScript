@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
@@ -7,8 +7,7 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
  * @class FacilityAnalystSources3DParameters
  * @deprecatedclass SuperMap.FacilityAnalystSources3DParameters
  * @category  iServer FacilityAnalyst3D Sources
- * @classdesc 最近设施分析参数类(源查找资源)。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- *            设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
+ * @classdesc 源查找资源参数类。此类用于设置源查找中的权值字段信息、弧段或结点等参数，还可以对不确定流向是否有效进行设置。
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。

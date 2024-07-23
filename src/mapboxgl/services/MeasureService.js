@@ -1,16 +1,16 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
-import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
+import { Geometry } from '@supermapgis/iclient-common/commontypes/Geometry';
+import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-common/iServer/MeasureService';
 
 /**
  * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 量算服务类。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
@@ -32,20 +32,22 @@ export class MeasureService extends ServiceBase {
      * @function MeasureService.prototype.measureDistance
      * @description 距离量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
-        this.measure(params, 'DISTANCE', callback);
+        return this.measure(params, 'DISTANCE', callback);
     }
 
     /**
      * @function MeasureService.prototype.measureArea
      * @description 面积量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
-        this.measure(params, 'AREA', callback);
+        return this.measure(params, 'AREA', callback);
     }
 
     /**
@@ -53,7 +55,7 @@ export class MeasureService extends ServiceBase {
      * @description 量算。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 量算类型。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {MeasureService} 量算服务。
      */
     measure(params, type, callback) {
@@ -65,7 +67,7 @@ export class MeasureService extends ServiceBase {
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(me._processParam(params), callback);
+        return measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {

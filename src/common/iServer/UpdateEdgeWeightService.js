@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
@@ -13,16 +13,10 @@ import { UpdateEdgeWeightParameters } from './UpdateEdgeWeightParameters';
  * @extends {NetworkAnalystServiceBase}
  * @example
  *(start code)
- * var updateEdgeWeightService = new UpdateEdgeWeightService(url, {
- *     eventListeners: {
- *         "processCompleted": UpdateEdgeWeightCompleted,
- *		   "processFailed": UpdateEdgeWeightError
- *		   }
- * });
+ * var updateEdgeWeightService = new UpdateEdgeWeightService(url);
  * (end)
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -45,6 +39,8 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateEdgeWeightService.prototype.processAsync
      * @description 开始异步执行边的边的耗费权重的更新
      * @param {UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      * @example
      * (code)
      *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
@@ -57,7 +53,7 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
      *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
      * (end)
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof UpdateEdgeWeightParameters)) {
             return;
         }
@@ -66,12 +62,12 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
         var paramStr = me.parse(params);
         me.url = Util.urlPathAppend(me.url, paramStr);
         var data = params.edgeWeight ? params.edgeWeight : null;
-        me.request({
+        return me.request({
             method: "PUT",
             scope: me,
             data: data,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

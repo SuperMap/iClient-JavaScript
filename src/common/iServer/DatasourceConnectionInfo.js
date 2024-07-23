@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -52,9 +52,9 @@ export class DatasourceConnectionInfo {
         /**
          * @member {string} [DatasourceConnectionInfo.prototype.driver]
          * @description 使用 ODBC(Open Database Connectivity，开放数据库互连) 的数据库的驱动程序名。
-         * 其中，对于 SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
+         * 其中，对于 SQL Server 数据库与 SuperMap iServer 发布的 WMTS 服务，此为必设参数。
          * 对于 SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
-         * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
+         * 对于 SuperMap iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
          */
         this.driver = null;
 
@@ -90,16 +90,16 @@ export class DatasourceConnectionInfo {
 
         /**
          * @member {string} [DatasourceConnectionInfo.prototype.server]
-         * @description 数据库服务器名、文件名或服务地址。
-         * 1.对于 SDB 和 UDB 文件，为其文件的绝对路径。注意：当绝对路径的长度超过 UTF-8 编码格式的 260 字节长度，该数据源无法打开。
-         * 2.对于 Oracle 数据库，其服务器名为其 TNS 服务名称。
-         * 3.对于 SQL Server 数据库，其服务器名为其系统的 DSN(Database Source Name) 名称。
-         * 4.对于 PostgreSQL 数据库，其服务器名为 “IP:端口号”，默认的端口号是 5432。
-         * 5.对于 DB2 数据库，已经进行了编目，所以不需要进行服务器的设置。
-         * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
-         * 7.对于 GoogleMaps 数据源，其服务器地址，默认设置为 “{@link http://maps.google.com}”，且不可更改。
-         * 8.对于 SuperMapCould 数据源，为其服务地址。
-         * 9.对于 MAPWORLD 数据源，为其服务地址，默认设置为 “{@link http://www.tianditu.cn}”，且不可更改。
+         * @description 数据库服务器名、文件名或服务地址。<br>
+         * 1.对于 SDB 和 UDB 文件，为其文件的绝对路径。注意：当绝对路径的长度超过 UTF-8 编码格式的 260 字节长度，该数据源无法打开。<br>
+         * 2.对于 Oracle 数据库，其服务器名为其 TNS 服务名称。<br>
+         * 3.对于 SQL Server 数据库，其服务器名为其系统的 DSN(Database Source Name) 名称。<br>
+         * 4.对于 PostgreSQL 数据库，其服务器名为 “IP:端口号”，默认的端口号是 5432。<br>
+         * 5.对于 DB2 数据库，已经进行了编目，所以不需要进行服务器的设置。<br>
+         * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。<br>
+         * 7.对于 GoogleMaps 数据源，其服务器地址，默认设置为 “{@link http://maps.google.com}”，且不可更改。<br>
+         * 8.对于 SuperMapCould 数据源，为其服务地址。<br>
+         * 9.对于 MAPWORLD 数据源，为其服务地址，默认设置为 “{@link http://www.tianditu.cn}”，且不可更改。<br>
          * 10.对于 OGC 和 REST 数据源，为其服务地址。
          */
         this.server = null;

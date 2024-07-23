@@ -1,0 +1,181 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title data-i18n="resources.title_websymbol_DLG_I49"></title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+
+  <script>
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var baseServiceUrl = host + "/iserver/services/map-china400/rest/maps/China";
+    var serverUrl = "https://iserver.supermap.io/iserver/services/map-DLG_100W/restjsr/v1/vectortile/maps/DLGI49";
+    var map = new maplibregl.Map({
+      container: "map",
+      style: {
+        "sources": {
+          "raster-tiles": {
+            "tiles": [
+              baseServiceUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}"
+            ],
+            "type": "raster"
+          },
+          "DLGI49": {
+            "tiles": [
+              serverUrl + "/tiles/{z}/{x}/{y}.mvt"
+            ],
+            "type": "vector"
+          }
+        },
+
+        "name": "DLGI49",
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles"
+        }],
+        "version": 8
+      },
+      center: [
+        110.52,
+        34.0
+      ],
+      zoom: 6.8
+    });
+
+    // 创建行政界线-线图层
+    var createBOULLayer = function (value, symbolId) {
+      map.addLayer({
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "LineString"
+          ],
+          [
+            "==",
+            "GB",
+            value
+          ]
+        ],
+        "id": "BOUL@DLG_100W_unique_" + value + "_0(0_24)",
+        "source": "DLGI49",
+        "source-layer": "BOUL@DLG_100W",
+        "type": "line",
+        "symbol": symbolId
+      });
+    };
+
+    // 创建水系-线图层
+    var createHYDLLayer = function (value, symbolId) {
+      map.addLayer({
+        "id": "HYDL@DLG_100W_unique_" + value + "_0(0_24)",
+        "source": "DLGI49",
+        "source-layer": "HYDL@DLG_100W",
+        "type": "line",
+        "filter": [
+          "all",
+          [
+            "==",
+            "GB",
+            value
+          ],
+          [
+            ">",
+            "NAME",
+            ""
+          ]
+        ],
+        "symbol": symbolId
+      });
+    };
+
+    // 创建公路-线图层
+    var createLRDLLayer = function (value, symbolId) {
+      map.addLayer({
+        "filter": [
+          "all",
+          [
+            "==",
+            "$type",
+            "LineString"
+          ],
+          [
+            "==",
+            "GB",
+            value
+          ],
+          [
+            "any",
+            [
+              "==",
+              "RTEG",
+              "一"
+            ],
+            [
+              "==",
+              "RTEG",
+              "高"
+            ]
+          ]
+        ],
+        "id": "LRDL@DLG_100W_unique_" + value + "_0(0_24)",
+        "source": "DLGI49",
+        "source-layer": "LRDL@DLG_100W",
+        "type": "line",
+        "symbol": symbolId
+      });
+    };
+
+    map.on("load", function () {
+      // 配置基础路径
+      new maplibregl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
+      // 加载Web符号
+      var symbolIds = [
+        "line-963379",
+        "line-963381",
+        "line-962613",
+        "line-962604",
+        "line-964861",
+        "line-962597"
+      ];
+      map.loadSymbol(symbolIds, function (_error, symbols) {
+        symbols.forEach((symbol, index) => {
+          symbol && map.addSymbol(symbolIds[index], symbol);
+        });
+        createBOULLayer(630200, "line-963379");
+        createBOULLayer(640200, "line-963381");
+        createHYDLLayer(210101, "line-962613");
+        createLRDLLayer(420101, "line-962604");
+        createLRDLLayer(420201, "line-964861");
+        createLRDLLayer(420202, "line-962597");
+      });
+    });
+
+  </script>
+</body>
+
+</html>

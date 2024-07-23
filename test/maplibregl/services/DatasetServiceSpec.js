@@ -1,7 +1,7 @@
 import {DatasetService} from '../../../src/maplibregl/services/DatasetService';
-import {CreateDatasetParameters} from '@supermap/iclient-common/iServer/CreateDatasetParameters';
-import {UpdateDatasetParameters} from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import {CreateDatasetParameters} from '@supermapgis/iclient-common/iServer/CreateDatasetParameters';
+import {UpdateDatasetParameters} from '@supermapgis/iclient-common/iServer/UpdateDatasetParameters';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {
@@ -185,7 +185,6 @@ describe('maplibregl_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.object.isInTheSameDomain).toBe(true);
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.element).toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {

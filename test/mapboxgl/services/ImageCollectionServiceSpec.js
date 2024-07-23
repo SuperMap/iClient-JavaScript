@@ -1,6 +1,6 @@
 import { ImageRenderingRule, ImageCollectionService } from '../../../src/mapboxgl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-describe('ImageCollectionService', () => {
+describe('mapboxgl_ImageCollectionService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

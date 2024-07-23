@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,6 +7,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 import {QueryParameters} from './QueryParameters';
 import {ChartQueryParameters} from './ChartQueryParameters';
 import {GeoJSON} from '../format/GeoJSON';
+import fieldNames from './types'
 
 /**
  * @class ChartQueryService
@@ -19,10 +20,10 @@ import {GeoJSON} from '../format/GeoJSON';
  * @extends {CommonServiceBase}
  * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -59,14 +60,16 @@ export class ChartQueryService extends CommonServiceBase {
 
         /**
          * @member {boolean} ChartQueryService.prototype.returnContent
-         * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+         * 如果为 true，则直接返回新创建资源，即查询结果的表述。
+         * 如果为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = null;
 
         /**
          * @member {DataFormat} ChartQueryService.prototype.format
-         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-         *              参数格式为"ISERVER","GEOJSON",GEOJSON
+         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，
+         *              参数格式为 "ISERVER","GEOJSON"
          */
         this.format = DataFormat.GEOJSON;
 
@@ -101,8 +104,10 @@ export class ChartQueryService extends CommonServiceBase {
      * @function ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param {ChartQueryParameters} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         //todo重点需要添加代码的地方
         if (!(params instanceof ChartQueryParameters)) {
             return;
@@ -113,34 +118,59 @@ export class ChartQueryService extends CommonServiceBase {
         if (me.returnContent) {
             me.url = Util.urlAppend(me.url, 'returnContent=true');
         }
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
 
+    // 将features的字段名用内置中文或传递的fieldNamesKeys参数值替换
+    _tranformFeatureField(features, fieldNameFormatter) {
+      features.forEach(feature => {
+        feature.fieldNames.forEach((fieldName, i) => {
+          feature.fieldNames[i] = typeof fieldNameFormatter === 'function' && fieldNameFormatter(fieldName) || fieldNames[fieldName] || fieldName;
+        });
+      });
+    }
+
+    _transformFeatures(featuresParent, fieldNameFormatter, format) {
+      this._tranformFeatureField(featuresParent.features, fieldNameFormatter);
+      if(format === DataFormat.GEOJSON) {
+        featuresParent.features = new GeoJSON().toGeoJSON(featuresParent.features);
+      }
+    }
+
     /**
-     * @function ChartQueryService.prototype.serviceProcessCompleted
-     * @description 查询完成，执行此方法。
+     * @function ChartQueryService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
-        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
+        var fieldNameFormatter = me.fieldNameFormatter;
+        if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                // 属性查询和范围查询的返回结果
                 if (recordsets[i].features) {
-                    var geoJSONFormat = new GeoJSON();
-                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
+                    this._transformFeatures(recordsets[i], fieldNameFormatter, me.format)
+                }
+                // 点选查询的返回结果
+                if(recordsets[i].chartRecordsets) {
+                    recordsets[i].chartRecordsets.forEach(chartFeatureRecordset => {
+                      this._transformFeatures(chartFeatureRecordset, fieldNameFormatter, me.format)
+                    });
                 }
             }
-
         }
-        me.events.triggerEvent("processCompleted", {result: result, options});
+
+        return { result, options };
     }
 
     /**

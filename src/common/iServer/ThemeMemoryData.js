@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6,7 +6,8 @@
  * @class ThemeMemoryData
  * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
- * @classdesc 专题图内存数据类。
+ * @classdesc 专题图内存数据类。制作专题图时，如果设置了内存数据，则会制作基于内存数据的专题图。
+ * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  * @usage

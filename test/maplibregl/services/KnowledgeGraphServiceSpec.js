@@ -3,7 +3,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import '../../resources/KnowledgeGraphService';
 
 var knowledgegraphURL = 'http://fake:8090/iserver/services/knowledgeGraph-test/restjsr/graph';
-describe('KnowledgeGraphService', () => {
+describe('maplibregl_KnowledgeGraphService', () => {
   var originalTimeout;
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -32,95 +32,92 @@ describe('KnowledgeGraphService', () => {
     expect(knowledgeGraphService.crossOrigin).toBeFalsy();
   });
 
-  it('query', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+  it('findShortestPath', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(findShortestPathData));
+    });
+    knowledgeGraphService.findShortestPath({ startID: 38756, endID: 38757 }, (res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
-        expect(result.result.length).toEqual(2);
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
+        expect(res.result.edgeIDs).toEqual([69575, 66619]);
         done();
       } catch (exception) {
-        console.log("'query'案例失败：" + exception.name + ':' + exception.message);
+        console.log("'findShortestPath'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
+    });
+  });
+
+  it('query', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
     spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
       expect(testUrl).toBe(knowledgegraphURL + '/query.json?cypherQuery=cypherQuery');
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(queryData));
     });
     knowledgeGraphService.query('cypherQuery', (res) => {
-      expect(res.result).not.toBeNull();
-    });
-  });
-  it('getGraphMap', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.length).toEqual(6);
         done();
       } catch (exception) {
-        console.log("'getGraphMap'案例失败：" + exception.name + ':' + exception.message);
+        console.log("'query'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
+    });
+  });
+  it('getGraphMap', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
     spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
       expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(graphmapData));
     });
     knowledgeGraphService.getGraphMap('xxx图谱', (res) => {
-      expect(res.result).not.toBeNull();
-    });
-  });
-  it('getGraphMaps', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
         done();
       } catch (exception) {
-        console.log("'getGraphMaps'案例失败：" + exception.name + ':' + exception.message);
+        console.log("'getGraphMap'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
+    });
+  });
+  it('getGraphMaps', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
     spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
       expect(testUrl).toBe(knowledgegraphURL + '/graphmaps.json');
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(graphmaps));
     });
     knowledgeGraphService.getGraphMaps((res) => {
-      expect(res.result).not.toBeNull();
+      try {
+        expect(knowledgeGraphService).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        done();
+      } catch (exception) {
+        console.log("'getGraphMaps'案例失败：" + exception.name + ':' + exception.message);
+        expect(false).toBeTruthy();
+        done();
+      }
     });
   });
   it('getGraphMapData', (done) => {

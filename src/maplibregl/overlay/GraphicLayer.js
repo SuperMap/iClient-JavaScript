@@ -1,20 +1,21 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import maplibregl from 'maplibre-gl';
- import { GraphicLayerRenderer } from '@supermap/iclient-common/overlay/graphic/GraphicLayerRenderer';
- import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+ import { GraphicLayerRenderer } from '@supermapgis/iclient-common/overlay/graphic/GraphicLayerRenderer';
+ import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
 
  /**
   * @class GraphicLayer
   * @category  Visualization Graphic
-  * @classdesc 高效率点图层类。
+  * @classdesc 高效率点图层类。能够支持前端百万点数据的渲染，并支持 GeoJSON，TopoJSON，二维表等多种数据格式，支持修改样式，
+  * 支持属性筛选、鼠标事件等交互操作。
   * @version 11.1.0
   * @modulecategory Overlay
-  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
+  * @param {string} [id] - 图层 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
   * @param {Object} options - 参数。
-  * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
-  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
+  * @param {Array.<Graphic>} options.graphics - 点要素对象数组。
+  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色，目前只支持 rgba 数组。
   * @param {number} [options.radius=10] - 半径。
   * @param {number} [options.opacity=0.8] - 不透明度。
   * @param {Array.<number>} [options.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
@@ -63,7 +64,7 @@
          }, { targetElement: this.map.getCanvasContainer(), mapElement: this.map.getCanvas() });
      }
       /**
-      * @function GraphicLayer.prototype.onAdd
+      * @function GraphicLayer.prototype.render
       * @description 添加该图层。
       */
      render() {
@@ -75,12 +76,12 @@
       * @description 设置图层整体样式。
       * @param {Object} styleOptions - 样式对象。
       * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-      * @param {number} [styleOptions.radius=10] - 点半径。
+      * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
       * @param {number} [styleOptions.opacity=0.8] - 不透明度。
       * @param {Array.<number>}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
       * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
       * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
       * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
       */
@@ -130,8 +131,8 @@
      /**
       * @function GraphicLayer.prototype.getGraphicsByAttribute
       * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-      * @param {string} attrName - graphic 的某个属性名称。
-      * @param {string} attrValue - property 所对应的值。
+      * @param {string} attrName - 属性的 key 值。
+      * @param {string} attrValue - 属性的 value 值。
       * @returns {Array.<Graphic>} 一个匹配的 graphic 数组。
       */
      getGraphicsByAttribute(attrName, attrValue) {
@@ -140,8 +141,8 @@
 
      /**
       * @function GraphicLayer.prototype.removeGraphics
-      * @description 删除要素数组，默认将删除所有要素
-      * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组
+      * @description 删除要素数组，默认将删除所有要素。
+      * @param {Array.<Graphic>} [graphics=null] - 删除的 graphics 数组。
       */
      removeGraphics(graphics = null) {
          this.renderer && this.renderer.removeGraphics(graphics);
@@ -196,7 +197,7 @@
      /**
       * @function GraphicLayer.prototype.getState
       * @description 获取当前地图及图层状态。
-      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态信息。
       */
      getState() {
         return this.renderer.getState();

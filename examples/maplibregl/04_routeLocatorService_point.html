@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +105,7 @@
         "offset": 0,
         "isIgnoreGap": true
       });
-      routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocateServiceResult) {
+      routeLocatorService.routeLocate(routeLocatorParameters_point).then(function (routeLocateServiceResult) {
         var point = routeLocateServiceResult.result.resultGeometry.geometry.coordinates;
         map.addLayer({
           "id": "Point",

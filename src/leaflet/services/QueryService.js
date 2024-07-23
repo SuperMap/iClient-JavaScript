@@ -1,13 +1,13 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
+import { QueryService as CommonQueryService } from '@supermapgis/iclient-common/iServer/QueryService';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 
 /**
  * @class  QueryService
@@ -35,50 +35,54 @@ export var QueryService = ServiceBase.extend({
     },
     /**
      * @function QueryService.prototype.queryByBounds
-     * @description bounds 查询地图服务。
-     * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @description 范围查询地图服务。
+     * @param {QueryByBoundsParameters} params - 范围查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByBounds: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByBounds(params, callback, resultFormat);
+      return this._queryService.queryByBounds(params, callback, resultFormat);
     },
 
     /**
      * @function QueryService.prototype.queryByDistance
      * @description 地图距离查询服务。
-     * @param {QueryByDistanceParameters} params - Distance 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {QueryByDistanceParameters} params - 距离查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByDistance: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByDistance(params, callback, resultFormat);
+      return this._queryService.queryByDistance(params, callback, resultFormat);
     },
 
     /**
      * @function QueryService.prototype.queryBySQL
      * @description 地图 SQL 查询服务。
      * @param {QueryBySQLParameters} params - SQL 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryBySQL: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryBySQL(params, callback, resultFormat);
+      return this._queryService.queryBySQL(params, callback, resultFormat);
     },
 
     /**
      * @function QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务。
-     * @param {QueryByGeometryParameters} params - Geometry 查询相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {QueryByGeometryParameters} params - 几何查询相关参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByGeometry: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByGeometry(params, callback, resultFormat);
+      return this._queryService.queryByGeometry(params, callback, resultFormat);
     },
 
     _processParams: function(params) {

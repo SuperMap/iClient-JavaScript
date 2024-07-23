@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +60,8 @@
 
         new maplibregl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(
           datasetOverlayAnalystParameters,
-          function (serviceResult) {
+          'FGB'
+        ).then(function (serviceResult) {
             var FGBLayer = new maplibregl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               strategy: 'all',
@@ -70,9 +71,7 @@
               }
             });
             map.addLayer(FGBLayer);
-          },
-          'FGB'
-        );
+          });
       }
     </script>
   </body>

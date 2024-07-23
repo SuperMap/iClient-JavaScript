@@ -1,4 +1,4 @@
-﻿/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+﻿/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function () {
@@ -59,8 +59,14 @@
       inputScript(libsurl + '/mapbox-gl-js/1.13.2/mapbox-gl.js');
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.css');
-      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js');
+      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.css');
+      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.js');
+    }
+    if (inArray(includes, 'L7')) {
+      inputScript(libsurl + '/mapboxgl-l7-render/0.0.1/mapboxgl-l7-render.js');
+    }
+    if (inArray(includes, 'g2')) {
+      inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
     }
     if (inArray(includes, 'g6')) {
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
@@ -69,23 +75,21 @@
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
     if (inArray(includes, 'draw')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.js');
     }
-
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(libsurl + '/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
     }
     if (inArray(includes, 'compare')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.js');
     }
     if (inArray(includes, 'mapv')) {
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
     }
     if (inArray(includes, 'echarts')) {
-      inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
-      inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
+      inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
       inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
@@ -104,7 +108,7 @@
       inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
+      inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(libsurl + '/shapefile/shapefile.js');
@@ -130,8 +134,8 @@
     if (inArray(includes, 'canvg')) {
       inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
     }
-    if (inArray(includes, 'convert')) {
-      inputScript(libsurl + '/xml-js/1.6.8/xml-js.min.js');
+    if (inArray(includes, 'XMLParser')) {
+      inputScript(libsurl + '/fast-xml-parser/4.2.7/fxparser.min.js');
     }
     if (inArray(includes, 'LegacyJSONLoader')) {
       inputScript(libsurl + '/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
@@ -159,13 +163,13 @@
       inputScript(libsurl + '/three/0.129.0/examples/js/loaders/GLTFLoader.js');
     }
     if (inArray(includes, 'echarts-gl')) {
-      inputScript(libsurl + '/echarts-gl/1.1.2-fix/echarts-gl.min.js');
+      inputScript(libsurl + '/echarts-gl/2.0.9/echarts-gl.min.js');
     }
     if (inArray(includes, 'mapbox-print-pdf')) {
       inputScript(libsurl + '/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
     }
     if (inArray(includes, 'moment')) {
-      inputScript(libsurl + '/moment/2.29.4/moment.min.js');
+      inputScript(libsurl + '/moment/2.30.1/moment.min.js');
     }
     if (inArray(includes, 'lodash')) {
       inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
@@ -176,6 +180,13 @@
     if (inArray(includes, 'videojs')) {
       inputCSS(libsurl + '/video-js/7.10.2/video-js.min.css');
       inputScript(libsurl + '/video-js/7.10.2/video.min.js');
+    }
+    if (inArray(includes, 'flvjs')) {
+      inputScript(libsurl + '/flvjs/1.6.2/flv.js');
+      inputScript(libsurl + '/videojs-flvjs-es6/1.0.1/videojs-flvjs-es6.js');
+    }
+    if (inArray(includes, 'opencv')) {
+      inputScript(libsurl + '/opencv/3.4/opencv.js');
     }
     // dist
     if (!inArray(excludes, 'iclient-mapboxgl')) {
@@ -199,6 +210,12 @@
     if (inArray(includes, 'vue-cesium')) {
       inputScript(libsurl + '/vue-cesium/2.1.4/index.umd.min.js');
     }
+    if (inArray(includes, 'snap')) {
+      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.min.js');
+    }
+    if (inArray(includes, 'ugcwasm')) {
+      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+    }
   }
 
   load({
@@ -209,4 +226,5 @@
   window.server = document.location.toString().match(/file:\/\//)
     ? 'http://localhost:8090'
     : document.location.protocol + '//' + document.location.host;
+  window.exampleWebSymbolBasePath =  "../../dist/mapboxgl/resources/symbols";
 })();

@@ -1,0 +1,236 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_editFeatureAttachments"></title>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 65px;
+            top: 8px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .attachmentFile {
+            width: 225px;
+        }
+
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        .my-popup-class {
+            width: 200px;
+            min-height: 100px;
+            max-height: 200px;
+        }
+
+        .mapboxgl-popup-content {
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div class="panel panel-primary editPane" id="editPane">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.text_editSingle"></h5>
+        </div>
+        <div class='panel-body content file' style="padding-bottom: 0;">
+            <input type='file' id="attachmentFile" class='btn btn-default attachmentFile'
+                data-i18n="[value]resources.btn_addMarker" />&nbsp;
+        </div>
+        <div class='panel-body content'>
+            <input id="getAttachmentsInput" type='button' class='btn btn-default'
+                data-i18n="[value]resources.text_getAttachments" onclick='getAttachments()' />
+            <input id="resetFileInput" type='button' class='btn btn-default' data-i18n="[value]resources.btn_undoAdd"
+                onclick='resetFile()' />
+            <input id="commitInput" type='button' class='btn btn-default'
+                data-i18n="[value]resources.text_input_value_submit" onclick='commit()' />&nbsp;
+        </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
+        var map, featureId,
+            host = window.isLocal ? window.server : "https://iserver.supermap.io",
+            baseUrl = host + "/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}",
+            url = host + "/iserver/services/data-world/rest/data",
+            fileDom = document.getElementById('attachmentFile'),
+            getAttachmentsInputDom = document.getElementById('getAttachmentsInput'),
+            resetFileInputDom = document.getElementById('resetFileInput'),
+            commitInputDom = document.getElementById('commitInput'),
+            file,
+            showPosition,
+            lastFeatureTarget;
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [baseUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                }]
+            },
+            center: [-10, 15],
+            zoom: 2
+        });
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+
+        initFeature()
+        function initFeature() {
+            setDisabledAndTips(true, resources.msg_noFeature);
+            var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+                queryParameter: {
+                    name: "Countries@World",
+                    attributeFilter: "SMID > 0"
+                },
+                datasetNames: ["World:Countries"]
+            });
+            new mapboxgl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                var features = serviceResult.result.features.features
+                for (let i = 0; i < features.length; i++) {
+                    map.addSource("dataSource" + i, {
+                        type: "geojson",
+                        data: features[i]
+                    })
+                    map.addLayer({
+                        id: "layer" + i,
+                        source: "dataSource" + i,
+                        type: "fill",
+                        paint: {
+                            "fill-color": "#4692F3", /* 填充的颜色 */
+                            "fill-opacity": 0.5
+                        }
+                    })
+                    map.addLayer({
+                        id: 'outline' + i,
+                        type: 'line',
+                        source: 'dataSource' + i,
+                        layout: {},
+                        paint: {
+                            'line-color': '#4692F3',
+                            'line-width': 3,
+                        }
+                    });
+                    map.on('click', 'layer' + i, function (e) {
+                        var lineID = e.features[0].layer.id.substring(5);
+                        var outlineName = 'outline' + lineID;
+                        if (lastFeatureTarget) {
+                            map.setPaintProperty(lastFeatureTarget, 'line-color', '#4692F3');
+                        }
+                        if (e.target) {
+                            lastFeatureTarget = e.target;
+                            setDisabledAndTips(false, '');
+                            showPosition = e.lngLat;
+                        }
+                        lastFeatureTarget = outlineName
+                        map.setPaintProperty(outlineName, 'line-color', 'red');
+                        featureId = e.features[0].properties.SMID;
+                    })
+                }
+            });
+        }
+
+        function setDisabledAndTips(disabled, tooltip) {
+            fileDom.disabled = disabled;
+            getAttachmentsInputDom.disabled = disabled;
+            resetFileInputDom.disabled = disabled;
+            commitInputDom.disabled = disabled;
+
+            fileDom.setAttribute("title", tooltip);
+            getAttachmentsInputDom.setAttribute("title", tooltip);
+            resetFileInputDom.setAttribute("title", tooltip);
+            commitInputDom.setAttribute("title", tooltip);
+        }
+
+        function getAttachments() {
+            new mapboxgl.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+                if (!serviceResult.result.supportAttachments) {
+                    return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
+                }
+                $(".mapboxgl-popup").remove();
+                var params = new mapboxgl.supermap.AttachmentsParameters({
+                    dataSourceName: "World",
+                    dataSetName: "Countries",
+                    featureId: featureId,
+                });
+                new mapboxgl.supermap.FeatureService(url).getFeatureAttachments(params).then(res => {
+                    results = res.result;
+                    let innerHTML = '';
+                    if (results.length > 0) {
+                        results.forEach(function (result) {
+                            var link = `${url}/datasources/${params.dataSourceName}/datasets/${params.dataSetName}/features/${params.featureId}/attachments/${result.id}`;
+                            innerHTML += resources.text_attachmentFileName + ": " + "<a href=" + link + ">" + result.name + "</a>" + "<br>";
+                            innerHTML += resources.text_attachmentFileType + ": " + result.contentType + "<br>";
+                            innerHTML += resources.text_attachmentFileSize + ": " + result.size / 1024 + " KB";
+                            innerHTML += "<hr>";
+                        })
+                    }
+                    popup = new mapboxgl.Popup({ className: 'my-popup-class' })
+                        .setLngLat(showPosition)
+                        .setHTML(innerHTML || resources.text_noData + "</br>")
+                        .addTo(map);
+
+                })
+            })
+        }
+        function resetFile() {
+            fileDom.value = '';
+            file = null;
+        }
+        function commit() {
+            new mapboxgl.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+                if (!serviceResult.result.supportAttachments) {
+                    return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
+                }
+                file = fileDom.files[0];
+                if (file) {
+                    var params = new mapboxgl.supermap.EditAttachmentsParameters({
+                        dataSourceName: "World",
+                        dataSetName: "Countries",
+                        featureId: featureId,
+                        file: file,
+                        editType: 'add'
+                    });
+                    new mapboxgl.supermap.FeatureService(url).editFeatureAttachments(params).then(serviceResult => {
+                        resetFile();
+                        return widgets.alert.showAlert(resources.msg_submitSuccess, true);
+                    });
+                } else {
+                    return widgets.alert.showAlert(resources.msg_noAttachment, false);
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

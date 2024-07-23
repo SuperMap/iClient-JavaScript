@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class GeoCodingParameter
  * @deprecatedclass SuperMap.GeoCodingParameter
  * @category  iServer AddressMatch
- * @classdesc 地理正向匹配参数类。
+ * @classdesc 地理正向匹配参数类。地理正向匹配是指通过地址关键词查询相关地点。
+ * 此类用于设置地理正向匹配中的地点关键词、过滤字段等参数，还可以对返回结果进行一系列参数设置。
  * @param {Object} options - 参数。
  * @param {string} options.address - 地点关键词。
  * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。

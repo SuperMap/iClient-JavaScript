@@ -1,12 +1,12 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../core/Base';
- import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
- import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+ import { Theme as FeatureTheme } from '@supermapgis/iclient-common/overlay/feature/Theme';
+ import { LonLat } from '@supermapgis/iclient-common/commontypes/LonLat';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+ import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
  import { ThemeLayer } from './theme/ThemeLayer';
  import { CommontypesConversion } from '../core/CommontypesConversion';
 /**
@@ -27,11 +27,11 @@
  * @param {Object} [options.cache] - 缓存。
  * @param {Object} [options.charts] - 图表。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
- * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
- * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。
- * @param {number} options.chartsSetting.height - 专题要素（图表）高度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
+ * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
+ * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下可设的基础属性:</br>
+ * @param {number} options.chartsSetting.width - 专题要素（图表）宽度，单位为像素。
+ * @param {number} options.chartsSetting.height - 专题要素（图表）高度，单位为像素。
  * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
  * @param {number} [options.chartsSetting.XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
  * @param {number} [options.chartsSetting.YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
@@ -44,7 +44,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
 
     options: {
-        //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
+        //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表，默认值：true。
         isOverLay: true
     },
 
@@ -197,7 +197,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GraphThemeLayer.prototype.getShapesByFeatureID
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description 通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID: function (featureID) {
@@ -314,7 +314,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素（数据）。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars

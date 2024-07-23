@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -9,16 +9,16 @@
  * thanks maptalks
  */
 import maplibregl from "maplibre-gl";
-import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/ThreeLayerRenderer";
+import { ThreeLayerRenderer } from "@supermapgis/iclient-common/overlay/threejs/ThreeLayerRenderer";
 
 /**
  * @class ThreeLayer
  * @category  Visualization Three
- * @classdesc Three 图层类。
+ * @classdesc Three 图层类。Three.js 是一款开源的主流 3D 绘图 JS 引擎。 此类主要提供了 threejs 模型绘制、渲染3D场景的功能。
  * @version 11.1.0
  * @modulecategory Overlay
  * @param {string} id - 图层 ID。
- * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在v11.1.0后被弃用。
+ * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在 v11.1.0 后被弃用。
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          {@link THREE.WebGLRenderer}。

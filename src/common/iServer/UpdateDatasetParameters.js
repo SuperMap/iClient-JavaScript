@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class UpdateDatasetParameters
  * @deprecatedclass SuperMap.UpdateDatasetParameters
  * @category iServer Data Dataset
- * @classdesc 数据集信息更改参数类。
+ * @classdesc 数据集信息更改参数类。该类可用于更改数据集描述信息、投影坐标系等参数，
+ * 还可以更改矢量数据集的字符集、影像数据集的颜色调色板、栅格数据集的缺省像元值等参数。
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称。
  * @param {string} options.datasetName - 数据集名称。

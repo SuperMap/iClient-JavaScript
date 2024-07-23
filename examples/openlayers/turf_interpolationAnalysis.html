@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (https://github.com/Turfjs/turf/)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +74,8 @@
         map = new ol.Map({
             target: 'map',
             maxExtent: [-180.0, -85.05, 180.0, 85.05],
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+            controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
                 .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [106, 36],
@@ -143,7 +148,7 @@
 
             //只请求一次数据：
             if (!tinQueryResultLayer) {
-                new ol.supermap.QueryService(tinDataUrl).queryBySQL(param, function (serviceResult) {
+                new ol.supermap.QueryService(tinDataUrl).queryBySQL(param).then(function (serviceResult) {
                     interpolationAnalyst.resultFeatures = serviceResult.result.recordsets[0].features;
                     for (var i = 0; i < interpolationAnalyst.resultFeatures.features.length; i++) {
                         interpolationAnalyst.resultFeatures.features[i].properties.z = ~~(Math.random() * 9);

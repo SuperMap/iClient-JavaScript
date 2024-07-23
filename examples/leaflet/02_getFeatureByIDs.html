@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -31,16 +31,27 @@
             IDs: [233, 234],
             datasetNames: ["World:Countries"]
         });
+        // new L.supermap
+        //     .FeatureService(url)
+        //     .getFeaturesByIDs(idsParam, function (serviceResult) {
+        //         resultLayer = L.geoJSON(serviceResult.result.features, {
+        //             onEachFeature: function (feature, layer) {
+        //                 layer.bindPopup("ID: " + feature.properties.SMID +
+        //                     "<br>" + resources.text_country + "：" + feature.properties.COUNTRY);
+        //             }
+        //         }).addTo(map);
+        //     });
+        // 用法 2 Promise
         new L.supermap
             .FeatureService(url)
-            .getFeaturesByIDs(idsParam, function (serviceResult) {
-                resultLayer = L.geoJSON(serviceResult.result.features, {
+            .getFeaturesByIDs(idsParam).then((serviceResult) => {
+              resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("ID: " + feature.properties.SMID +
                             "<br>" + resources.text_country + "：" + feature.properties.COUNTRY);
                     }
                 }).addTo(map);
-            });
+            })
     }
 </script>
 </body>

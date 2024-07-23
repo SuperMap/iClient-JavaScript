@@ -1,15 +1,20 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import maplibregl from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
 
- /**
+/**
   * @function MapExtend
-  * @description  扩展了 maplibregl.Map 对图层相关的操作。
+  * @description 扩展 maplibregl.Map。
   * @private
   */
  export var MapExtend = (function () {
-   maplibregl.Map.prototype.overlayLayersManager = {};
+   maplibregl.Map = class MapEnhance extends maplibregl.Map {
+      constructor(options) {
+        super(options);
+        this.overlayLayersManager = {};
+      }
+   }
    if (maplibregl.Map.prototype.addLayerBak === undefined) {
      maplibregl.Map.prototype.addLayerBak = maplibregl.Map.prototype.addLayer;
      maplibregl.Map.prototype.addLayer = function (layer, before) {
@@ -31,6 +36,27 @@
        return this;
      };
    }
+    /**
+       * @function listLayers
+       * @category BaseTypes MapExtend
+       * @version 11.2.0
+       * @description 扩展mapboxgl.Map， 获取所有叠加图层;
+       * @returns {Array} 图层数组。
+       */
+    maplibregl.Map.prototype.listLayers = function () {
+      const layerList = [];
+      const originLayers = this.style._order || [];
+      layerList.push(...originLayers);
+      for (let key in this.overlayLayersManager) {
+        const layer = this.overlayLayersManager[key];
+        const layerId = layer.id;
+        if (!layerList.includes(layerId)) {
+          layerList.push(layerId);
+        }
+      }
+      return layerList;
+    };
+  
  
    maplibregl.Map.prototype.getLayer = function (id) {
      if (this.overlayLayersManager[id]) {
@@ -55,7 +81,14 @@
  
    maplibregl.Map.prototype.removeLayer = function (id) {
      if (this.overlayLayersManager[id]) {
+      const layer = this.overlayLayersManager[id];
        delete this.overlayLayersManager[id];
+       if (layer.type !== 'custom') {
+        if (layer.removeFromMap) {
+          layer.removeFromMap();
+        }
+        return this;
+      }
      }
      this.style.removeLayer(id);
      this._update(true);
@@ -134,7 +167,7 @@
     * @function MapExtend.prototype.moveTo
     * @description 将图层移动到某个图层之前。
     * @param {string} layerID -待插入的图层 ID。
-    * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+    * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
     */
    function moveLayer(layerID, beforeLayerID) {
      var layer = document.getElementById(layerID);
@@ -155,4 +188,3 @@
      }
    }
  })();
- 

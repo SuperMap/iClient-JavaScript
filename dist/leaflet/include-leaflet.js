@@ -60,8 +60,8 @@
           inputScript(libsurl + '/leaflet/1.9.4/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
-            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css');
-            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js');
+            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.css');
+            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript(libsurl + '/leaflet/plugins/leaflet.heat/leaflet-heat.js');
@@ -94,7 +94,7 @@
             inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
+          inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
             inputScript(libsurl + '/elasticsearch/16.7.3/elasticsearch.min.js');
@@ -147,11 +147,11 @@
             inputCSS(disturl + '/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.css');
+            inputCSS(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet-es6.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet-es6.min.js');
             } else {
-                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
@@ -170,6 +170,9 @@
         }
         if (inArray(includes, 'leaflet-mapbox-gl')) {
             inputScript(libsurl + '/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js');
+        }
+        if (inArray(includes, 'ugcwasm')) {
+          inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
         }
     }
 

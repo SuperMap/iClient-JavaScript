@@ -1,11 +1,11 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
 import '../core/Base';
 import {
     LogoBase64
-} from '@supermap/iclient-common/control/img/Logo';
+} from '@supermapgis/iclient-common/control/img/Logo';
 
 /**
  * @class Logo
@@ -76,8 +76,8 @@ export var Logo = L.Control.extend({
             }
         }
         var link = this.options.link;
-        div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
-            "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
+        var imgElement = "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'>";
+        div.innerHTML = link ? "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" + imgElement + "</a>" : imgElement;
         return div;
     }
 });

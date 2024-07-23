@@ -1,5 +1,10 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
+* echartsLayer(https://github.com/lzxue/echartsLayer)
 *********************************************************************-->
 <html>
 <head>
@@ -80,11 +85,9 @@
 
         var echartslayer = new EchartsLayer(map);
         echartslayer.chart.setOption(option = {
-
             GLMap: {
                 roam: true
             },
-            coordinateSystem: 'GLMap',
             title: {
                 text: resources.text_weiboChina,
                 subtext: 'From ThinkGIS',
@@ -102,25 +105,6 @@
                 data: [resources.text_strong, resources.text_middle, resources.text_weak],
                 textStyle: {
                     color: '#ccc'
-                }
-            },
-            geo: {
-                name: resources.text_strong,
-                type: 'scatter',
-                map: 'GLMap',
-                label: {
-                    emphasis: {
-                        show: false
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        areaColor: '#323c48',
-                        borderColor: '#111'
-                    },
-                    emphasis: {
-                        areaColor: '#2a333d'
-                    }
                 }
             },
             series: [{

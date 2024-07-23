@@ -1,22 +1,26 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import echarts from "echarts";
+import * as echarts from "echarts";
 import Attributions from '../core/Attributions'
 
 /**
  * @class EchartsLayer
  * @deprecatedclassinstance L.supermap.echartsLayer
- * @classdesc 百度 ECharts 图层类。
+ * @classdesc 百度 ECharts 图层类。ECharts 是一个使用 JavaScript 实现的开源可视化库，可以流畅的运行在 PC 和移动设备上，
+ * 兼容当前绝大部分浏览器（IE8/9/10/11，Chrome，Firefox，Safari 等）。<br>
+ * 提供直观，交互丰富，可高度个性化定制的数据可视化图表。
+ * 比如常规的折线图、柱状图、散点图、饼图、K线图，用于统计的盒形图，用于地理数据可视化的地图、热力图、线图，
+ * 用于关系数据可视化的关系图、treemap、旭日图，多维数据可视化的平行坐标，还有用于 BI 的漏斗图，仪表盘，并且支持图与图之间的混搭。
  * @category  Visualization ECharts
  * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} echartsOptions - 图表参数。
  * @param {Object} options - 参数。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
- * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权描述信息。
  * @usage
  */
 export const EchartsLayer = L.Layer.extend({
@@ -204,7 +208,7 @@ export const EchartsLayer = L.Layer.extend({
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
-        _div.style.zIndex = 10;
+        _div.style.zIndex = 200;
         this._echartsContainer = _div;
         this.getPane().appendChild(this._echartsContainer);
         const me = this;
@@ -329,7 +333,7 @@ LeafletMapCoordSys.create = function (ecModel) {
         leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || _getMapOffset(leafletMap));
     });
     ecModel.eachSeries(function (seriesModel) {
-        if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
+        if (seriesModel.get('coordinateSystem') === 'leaflet') {
             if (!coordSys) {
                 coordSys = new LeafletMapCoordSys(leafletMap);
             }

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -9,7 +9,10 @@ import Attributions from '../core/Attributions'
 /**
  * @class MapVLayer
  * @deprecatedclassinstance L.supermap.mapVLayer
- * @classdesc MapV 图层类。
+ * @classdesc MapV 图层类。MapV 是一款地理信息可视化开源库，MapV 图层可以用来展示大量地理信息数据，点、线、面的数据，每种数据也有不同的展示类型，如直接打点、热力图、网格、聚合等方式展示数据。<br>
+ * 展示大量的点数据：如热力图、网格、蜂窝状、点聚合、按颜色区间、按半径大小等方式。<br>
+ * 展示大量的线数据：如普通画线、高亮叠加、热力线数据展示等方式，适合展示大量轨迹的场景。<br>
+ * 展示大量的自定义面数据：按颜色区间来展示，如展示行政区划数据。
  * @category Visualization MapV
  * @modulecategory Overlay
  * @extends {L.Layer}
@@ -17,7 +20,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
- * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权描述信息。
  * @fires MapVLayer#loaded
  * @usage
  */
@@ -205,7 +208,7 @@ export var MapVLayer = L.Layer.extend({
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
         canvas.style.pointerEvents = "none";
-        canvas.style.zIndex = this.options.zIndex || 600;
+        canvas.style.zIndex = this.options.zIndex || 200;
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         if (!this.mapVOptions.context || this.mapVOptions.context === '2d') {

@@ -1,19 +1,20 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
- import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+ import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
  import {
   getMeterPerMapUnit as MeterPerMapUnit,
   getZoomByResolution,
-  scalesToResolutions
-} from '@supermap/iclient-common/util/MapCalculateUtil';
+  scalesToResolutions,
+  getDpi
+} from '@supermapgis/iclient-common/util/MapCalculateUtil';
 
  /**
  * @function toGeoJSON
  * @category BaseTypes Util
- * @description 将传入对象转为 GeoJSON 格式。
- * @param {Object} feature - 待转参数。
+ * @description 将 SuperMap iServer Feature JSON 对象或 Leaflet 对象转为 GeoJSON 格式。
+ * @param {Object} feature - SuperMap iServer Feature JSON 对象或 Leaflet 对象。
  * @usage
  * ```
  * // 浏览器
@@ -29,12 +30,27 @@
  * const result = toGeoJSON(feature);
  * ```
  */
- export var toGeoJSON = function(feature) {
-    if (!feature) {
-        return feature;
-    }
-    return new GeoJSONFormat().toGeoJSON(feature);
-};
+ export var toGeoJSON = function (feature) {
+   if (!feature) {
+     return feature;
+   }
+   if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(feature.type) != -1 || feature.coordinates) {
+     return feature;
+   }
+   if (feature.toGeoJSON) {
+     return feature.toGeoJSON();
+   }
+   if (feature instanceof L.LatLngBounds) {
+    return L.rectangle(feature).toGeoJSON();
+   }
+   if (feature instanceof L.Bounds) {
+    return L.rectangle([
+       [feature.getTopLeft().x, feature.getTopLeft().y],
+       [feature.getBottomRight().x, feature.getBottomRight().y]
+     ]).toGeoJSON();
+   }
+   return new GeoJSONFormat().toGeoJSON(feature);
+ };
 
  /**
  * @function toSuperMapGeometry
@@ -84,6 +100,7 @@ export var toSuperMapGeometry = function(geometry) {
 
     return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
 };
+
 export var getMeterPerMapUnit = MeterPerMapUnit;
 
 
@@ -230,5 +247,6 @@ export var getResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
 };
 export {
   getZoomByResolution,
-  scalesToResolutions
+  scalesToResolutions,
+  getDpi
 }

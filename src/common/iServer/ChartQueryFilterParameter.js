@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -78,7 +78,7 @@ export class ChartQueryFilterParameter {
         json += "\"isQueryLine\":" + this.isQueryLine + ",";
         json += "\"isQueryRegion\":" + this.isQueryRegion + ",";
         if (this.attributeFilter) {
-            json += "\"attributeFilter\": \"" + this.attributeFilter + "\",";
+            json += "\"attributeFilter\": \"" + this.attributeFilter.replace(/"/g, "'") + "\",";
         }
         json += "\"chartFeatureInfoSpecCode\":" + this.chartFeatureInfoSpecCode;
         json = "{" + json + "}";

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -14,8 +14,8 @@ import {
  * @param {Object} [options] - 可选参数。
  * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
  * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
- * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
- * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {string} [options.newline="\n"] - 用于格式化输出，newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出，表示的是缩进级别。
  * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
  * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @extends {Format}
@@ -39,13 +39,13 @@ export class JSONFormat extends Format {
 
         /**
          * @member {string} [JSONFormat.prototype.newline="\n"]
-         * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
+         * @description 用于格式化输出，newline 字符串会用在每一个名值对或数组项末尾。
          */
         this.newline = "\n";
 
         /**
          * @member {number} [JSONFormat.prototype.level=0]
-         * @description 用于格式化输出, 表示的是缩进级别。
+         * @description 用于格式化输出，表示的是缩进级别。
          */
         this.level = 0;
 

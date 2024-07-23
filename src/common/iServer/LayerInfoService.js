@@ -1,8 +1,9 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util as CommonUtil} from '../commontypes/Util';
 import { GetLayersInfoService } from './GetLayersInfoService';
+import { GetLayersLegendInfoService } from './GetLayersLegendInfoService';
 import { SetLayerInfoService } from './SetLayerInfoService';
 import { SetLayersInfoService } from './SetLayersInfoService';
 import { SetLayerStatusService } from './SetLayerStatusService';
@@ -35,7 +36,8 @@ export class LayerInfoService {
     /**
      * @function LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLayersInfo(callback) {
         var me = this;
@@ -43,20 +45,35 @@ export class LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        getLayersInfoService.processAsync();
+        return getLayersInfoService.processAsync(callback);
+    }
+
+    /**
+     * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @version 11.1.1
+     * @description 获取地图的图例信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getLayersLegendInfo(params, callback) {
+      var me = this;
+      var getLayersLegendInfoService = new GetLayersLegendInfoService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+      });
+      return getLayersLegendInfoService.processAsync(params, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerInfo(params, callback) {
         if (!params) {
@@ -74,20 +91,17 @@ export class LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        setLayerInfoService.processAsync(layerInfoParams);
+        return setLayerInfoService.processAsync(layerInfoParams, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以创建新的临时图层和修改现有的临时图层。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayersInfo(params, callback) {
         if (!params) {
@@ -105,21 +119,18 @@ export class LayerInfoService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             resourceID: resourceID,
             isTempLayers: isTempLayers
         });
-        setLayersInfoService.processAsync(layersInfo);
+        return setLayersInfoService.processAsync(layersInfo, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SetLayerStatusParameters} params - 子图层显示控制参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerStatus(params, callback) {
         if (!params) {
@@ -130,12 +141,8 @@ export class LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        setLayerStatusService.processAsync(params);
+        return setLayerStatusService.processAsync(params, callback);
     }
 }

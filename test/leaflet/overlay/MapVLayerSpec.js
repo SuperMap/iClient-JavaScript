@@ -1,5 +1,6 @@
 import {mapVLayer} from '../../../src/leaflet/overlay/MapVLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {RangeThemeLayer} from '../../../src/leaflet/overlay/RangeThemeLayer';
 import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL;
@@ -188,4 +189,18 @@ describe('leaflet_MapVLayer', () => {
         expect(topLeft.lng).toEqual(87.01171875);
         expect(topLeft.lat).toEqual(48.63290858589535);
     });
+
+    it('layer index fix', () => {
+      var canvas = layer.getCanvas();
+      expect(canvas).not.toBeNull();
+      var themeLayer = new RangeThemeLayer("ThemeLayer", {
+        isHoverAble:false,
+        opacity: 0.8,
+        alwaysMapCRS: true
+      });
+      themeLayer.addTo(map);
+      const themeLayerElement = document.getElementsByClassName('themeLayer')[0];
+      expect(+canvas.style.zIndex).toEqual(+themeLayerElement.style.zIndex);
+      expect(canvas.parentNode.nextSibling.classList.contains('themeLayer')).toBeTruthy();
+  });
 });

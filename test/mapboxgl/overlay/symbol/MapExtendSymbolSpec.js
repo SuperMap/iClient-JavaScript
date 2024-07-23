@@ -82,7 +82,31 @@ describe('MapExtendSymbol', () => {
         });
         map.loadSymbol("point-1", (error, symbol) => {
             expect(error).not.toBeNull();
-            expect(symbol).toBe(undefined);
+            expect(symbol).toBe(null);
+        })
+    });
+
+    it('map.loadSymbol symbols success', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response("{\"layout\":{\"icon-image\":\"point-1\"}}"));
+        });
+        map.loadSymbol(["point-1", "point-2"], (error, symbol) => {
+            expect(error).toBe(null);
+            expect(symbol[0].layout["icon-image"]).toBe("point-1");
+            expect(symbol[1].layout["icon-image"]).toBe("point-1");
+            done();
+        })
+    });
+
+    it('map.loadSymbol symbols error', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.reject();
+        });
+        map.loadSymbol(["error-1", "error-2"], (error, symbol) => {
+            expect(error).not.toBe(null);
+            expect(symbol[0]).toBe(null);
+            expect(symbol[1]).toBe(null);
+            done();
         })
     });
 
@@ -208,6 +232,23 @@ describe('MapExtendSymbol', () => {
         expect(layer).not.toBeNull();
     });
   
+    it('map.addLayer exists layerID', () => {
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue(["point-1", "point-2"]);
+        spyOn(map.symbolHandler, 'addLayer');
+        spyOn(map, 'addLayerBySymbolBak');
+        const mylayer = {
+            "id": "PopDensity_P@Population",
+            "source": "全国人口密度空间分布图",
+            "source-layer": "PopDensity_R@Population",
+            "type": "symbol",
+            "symbol": "start"
+        };
+        map.addLayer(mylayer);
+        expect(map.symbolHandler.getLayerIds).toHaveBeenCalled();
+        expect(map.symbolHandler.addLayer).not.toHaveBeenCalled();
+        expect(map.addLayerBySymbolBak).not.toHaveBeenCalled();
+    });
+  
     it('setFilter', () => {
         spyOn(map.style, 'setFilter');
         spyOn(map.style, 'getFilter')
@@ -270,5 +311,76 @@ describe('MapExtendSymbol', () => {
         const value = map.getSymbolProperty("line-1", 0, "line-width");
         expect(map.symbolHandler.getSymbolProperty).toHaveBeenCalled();
         expect(value).toBe(5);
+    });
+    it('map.getSymbol', () => {
+        spyOn(map.symbolHandler, 'getSymbol').and.returnValue({
+            paint: {
+                "icon-color": "red"
+            }
+        });
+        const value = map.getSymbol("point-1");
+        expect(map.symbolHandler.getSymbol).toHaveBeenCalled();
+        expect(value.paint["icon-color"]).toBe("red");
+    });
+    it('map.on', () => {
+        spyOn(map, 'onBak');
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: "point"
+        });
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue([]);
+        const listnener = () => {};
+        map.on("click", "point", listnener);
+        expect(map.onBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).not.toHaveBeenCalled();
+    });
+    it('map.on getLayerIds', () => {
+        spyOn(map, 'onBak');
+        spyOn(map.style, 'getLayer').and.returnValue(undefined);
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue(["point-1", "point-2"]);
+        map.on("click", "point", () => {});
+        expect(map.onBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).toHaveBeenCalled();
+    });
+    it('map.once', () => {
+        spyOn(map, 'onceBak');
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: "point"
+        });
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue([]);
+        map.once("click", "point", () => {});
+        expect(map.onceBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).not.toHaveBeenCalled();
+    });
+    it('map.once getLayerIds', () => {
+        spyOn(map, 'onceBak');
+        spyOn(map.style, 'getLayer').and.returnValue(undefined);
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue(["point-1", "point-2"]);
+        map.once("click", "point", () => {});
+        expect(map.onceBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).toHaveBeenCalled();
+    });
+    it('map.off', () => {
+        spyOn(map, 'offBak');
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: "point"
+        });
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue([]);
+        map.off("click", "point", () => {});
+        expect(map.offBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).not.toHaveBeenCalled();
+    });
+    it('map.off getLayerIds', () => {
+        spyOn(map, 'offBak');
+        spyOn(map.style, 'getLayer').and.returnValue(undefined);
+        spyOn(map.symbolHandler, 'getLayerIds').and.returnValue(["point-1", "point-2"]);
+        map.off("click", "point", () => {});
+        expect(map.offBak).toHaveBeenCalled();
+        expect(map.style.getLayer).toHaveBeenCalled();
+        expect(map.symbolHandler.getLayerIds).toHaveBeenCalled();
     });
 });

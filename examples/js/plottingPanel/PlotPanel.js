@@ -1,12 +1,13 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
-L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
+
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
+L.supermap.plotting.initPlotPanel = function (div, serverUrl, drawControl) {
     var plotPanel = document.getElementById(div);
 
     var treeNodeStyle = document.createElement("div");
     treeNodeStyle.style.height = '50%';
     treeNodeStyle.style.width = '100%';
     treeNodeStyle.style.border = '1px solid #617775';
-    treeNodeStyle.style.overflow ='scroll';
+    treeNodeStyle.style.overflow = 'scroll';
 
     var treeNode = document.createElement("div");
     treeNode.id = "tree";
@@ -21,7 +22,7 @@ L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
     iconNode.style.height = '100%';
     iconNode.style.width = '100%';
     iconNode.style.border = '1px solid #617775';
-    iconNode.style.overflow ='scroll';
+    iconNode.style.overflow = 'scroll';
 
     treeNodeStyle.appendChild(treeNode);
     iconNodeStyle.appendChild(iconNode);
@@ -29,7 +30,7 @@ L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
     plotPanel.appendChild(treeNodeStyle);
     plotPanel.appendChild(iconNodeStyle);
 
-    function beforeClickTreeNode(treeId, treeNode){
+    function beforeClickTreeNode(treeId, treeNode) {
         var tree = $.fn.zTree.getZTreeObj(treeId);
         if (treeNode.isParent) {
             tree.expandNode(treeNode);
@@ -49,7 +50,7 @@ L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
         },
         data: {
             simpleData: {
-                enable:true,
+                enable: true,
                 idKey: "id",
                 pIdKey: "pId",
                 rootPId: 0
@@ -61,16 +62,17 @@ L.supermap.plotting.initPlotPanel = function(div, serverUrl, drawControl){
     };
 
     var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
-    if(symbolLibManager.isInitializeOK()){
+    if (symbolLibManager.isInitializeOK()) {
         var symbolTreeData = analysisSymbolTree(symbolLibManager);
 
         $.fn.zTree.init($("#tree"), setting, symbolTreeData);
     } else {
-        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted, function(result){
-            if(result.libIDs.length !== 0){
+        symbolLibManager.on(SuperMap.Plot.Event.initializecompleted, function (result) {
+            if (result.libIDs.length !== 0) {
                 var symbolTreeData = analysisSymbolTree(symbolLibManager);
                 $.fn.zTree.init($("#tree"), setting, symbolTreeData);
-            }});
+            }
+        });
         symbolLibManager.initializeAsync();
     }
 }
@@ -80,17 +82,17 @@ function analysisSymbolTree(symbolLibManager) {
     var idIndex = addBasicCellTreeNodes(treeData);
     var idIndex = addRouteTreeNodes(treeData);
 
-    for(var i = 0; i < symbolLibManager.getSymbolLibNumber(); i++){
+    for (var i = 0; i < symbolLibManager.getSymbolLibNumber(); i++) {
         var symbolLib = symbolLibManager.getSymbolLibByIndex(i);
         var rootSymbolInfo = symbolLib.getRootSymbolInfo();
         var rootSymbolIconUrl = symbolLib.getRootSymbolIconUrl();
 
-        if(rootSymbolInfo.symbolNodeType === "SYMBOL_GROUP"){
+        if (rootSymbolInfo.symbolNodeType === "SYMBOL_GROUP") {
             var rootNode = new Object();
-            rootNode.id = idIndex+i;
+            rootNode.id = idIndex + i;
             rootNode.pId = 0;
             rootNode.name = rootSymbolInfo.symbolName;
-            rootNode.fullName = rootSymbolInfo.symbolName +"/";
+            rootNode.fullName = rootSymbolInfo.symbolName + "/";
             treeData.push(rootNode);
 
             idIndex = innerAnalysisSymbolTree(rootSymbolInfo.childNodes, treeData, rootNode, rootSymbolIconUrl);
@@ -101,9 +103,9 @@ function analysisSymbolTree(symbolLibManager) {
     return treeData;
 }
 
-function createDrawNodes(treeNode, iconNode, drawControl, serverUrl){
-    var drawNodeClick = function(){
-        if(drawControl !== null){
+function createDrawNodes(treeNode, iconNode, drawControl, serverUrl) {
+    var drawNodeClick = function () {
+        if (drawControl !== null) {
             drawControl.handler.libID = this.libID;
             drawControl.handler.code = this.symbolCode;
             drawControl.handler.serverUrl = this.serverUrl;
@@ -120,17 +122,17 @@ function createDrawNodes(treeNode, iconNode, drawControl, serverUrl){
     table.style.height = "100%";
     table.style.width = "100%";
     var i = 0;
-    var rowLength = (drawData.length%3 === 0) ? drawData.length/3 : drawData.length/3+1;
-    for(var j = 0; j < rowLength; j++){
+    var rowLength = (drawData.length % 3 === 0) ? drawData.length / 3 : drawData.length / 3 + 1;
+    for (var j = 0; j < rowLength; j++) {
         var tr = document.createElement("tr");
-        for(var k = 0; k < 3; k++){
-            if(drawData[i]){
+        for (var k = 0; k < 3; k++) {
+            if (drawData[i]) {
                 //存储菜单信息
                 var td = document.createElement("td");
                 var drawNode = document.createElement("div");
                 drawNode.onclick = drawNodeClick;
                 drawNode.style.textAlign = "center";
-                drawNode.id = drawData[i].libID+ ""+ drawData[i].symbolCode;
+                drawNode.id = drawData[i].libID + "" + drawData[i].symbolCode;
                 drawNode.libID = drawData[i].libID;
                 drawNode.symbolCode = drawData[i].symbolCode;
                 drawNode.serverUrl = serverUrl;
@@ -139,7 +141,7 @@ function createDrawNodes(treeNode, iconNode, drawControl, serverUrl){
                 img.src = drawData[i].icon;
                 //文本
                 var text = document.createElement("div");
-                text.innerHTML =  drawData[i].symbolName;
+                text.innerHTML = drawData[i].symbolName;
 
                 drawNode.appendChild(img);
                 drawNode.appendChild(text);
@@ -155,30 +157,30 @@ function createDrawNodes(treeNode, iconNode, drawControl, serverUrl){
     iconNode.appendChild(table);
 }
 
-function addBasicCellTreeNodes(treeData){
+function addBasicCellTreeNodes(treeData) {
     var cellRootNode = new Object();
     cellRootNode.id = 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "基本标号";
-    cellRootNode.fullName = "BasicCell" +"/";
+    cellRootNode.name = resources.text_commonSymbol;
+    cellRootNode.fullName = "BasicCell" + "/";
     cellRootNode.drawData = [];
     treeData.push(cellRootNode);
 
     var symbolCode = [24, 28, 29, 31, 34, 410, 32, 590, 360, 390, 400, 350, 26, 370, 380, 44, 3701, 3801, 4401, 48, 320
-        , 1019, 1022,1024,321,1023,1025
-        ,1013, 1014, 1016, 1017,1026
-        ,1001, 1003, 1004,1028,1029,3000];
-    var symbolName = ["折线", "平行四边形", "圆", "椭圆", "注记", "正多边形", "多边形", "贝赛尔曲线", "闭合贝赛尔曲线"
-        , "集结地", "大括号", "梯形", "矩形", "弓形", "扇形", "弧线","弓形", "扇形", "弧线", "平行线", "注记指示框"
-        , "同心圆", "组合圆","标注框","多角标注框","自由线",  "节点链"
-        , "跑道形", "八字形", "箭头线", "沿线注记","线型标注"
-        , "对象间连线", "多边形区域","扇形区域","铁丝网","直线箭头","图片"];
+        , 1019, 1022, 1024, 321, 1023, 1025
+        , 1013, 1014, 1016, 1017, 1026
+        , 1001, 1003, 1004, 1028, 1029, 3000];
+    var symbolName = [resources.text_foldLine, resources.text_parallelogram, resources.btn_circle, resources.text_elliptical, resources.text_textContent, resources.text_regularPolygon, resources.btn_polygon, resources.text_bezierCurves, resources.text_closeBezierCurves
+        , resources.text_rallyGround, resources.text_braces, resources.text_trapezium, resources.text_input_value_drawRectangle, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_parallel, resources.text_textNodeBox
+        , resources.text_concentricCircle, resources.text_combinedCircle, resources.text_textbox, resources.text_mutilAngleTextbox, resources.text_freeLine, resources.text_nodeChain
+        , resources.text_runway, resources.text_eight, resources.text_arrowLine, resources.text_textAlongLine, resources.text_linearText
+        , resources.text_objectLines, resources.text_polygonArea, resources.text_sectorArea, resources.text_barbedWire, resources.text_straightLineArrow, resources.option_picture];
     var cellId = cellRootNode.id + 1;
-    for(var i = 0; i < symbolCode.length; i++){
+    for (var i = 0; i < symbolCode.length; i++) {
         var drawCellNode = {
             id: cellId++,
             pId: 0,
-            icon:"../img/plottingPanel/" + cellRootNode.fullName + symbolCode[i] + ".png",
+            icon: "../img/plottingPanel/" + cellRootNode.fullName + symbolCode[i] + ".png",
             symbolCode: symbolCode[i],
             libID: 0,
             symbolName: symbolName[i]
@@ -189,22 +191,22 @@ function addBasicCellTreeNodes(treeData){
     return cellId;
 }
 
-function addRouteTreeNodes(treeData){
+function addRouteTreeNodes(treeData) {
     var cellRootNode = new Object();
     cellRootNode.id = 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "航线对象";
+    cellRootNode.name = resources.text_routeObj;
     cellRootNode.drawData = [];
     treeData.push(cellRootNode);
 
-    var symbolCode = [1005,1006,1007];
-    var symbolName = ["航线1","航线2","航线3"];
+    var symbolCode = [1005, 1006, 1007];
+    var symbolName = [resources.text_route1, resources.text_route2, resources.text_route3];
     var cellId = cellRootNode.id + 1;
-    for(var i = 0; i < symbolCode.length; i++){
+    for (var i = 0; i < symbolCode.length; i++) {
         var drawCellNode = {
             id: cellId++,
             pId: 0,
-            icon:"../img/plottingPanel/BasicCell/RouteIcon/" + symbolCode[i] + ".png",
+            icon: "../img/plottingPanel/BasicCell/RouteIcon/" + symbolCode[i] + ".png",
             symbolCode: symbolCode[i],
             libID: 0,
             symbolName: symbolName[i]
@@ -215,20 +217,20 @@ function addRouteTreeNodes(treeData){
     return cellId;
 }
 
-function innerAnalysisSymbolTree(childSymbolInfos, treeData, parentNode, rootSymbolIconUrl){
+function innerAnalysisSymbolTree(childSymbolInfos, treeData, parentNode, rootSymbolIconUrl) {
     var drawData = [];
-    var treeNodeId = parentNode.id+1;
-    for(var i = 0; i < childSymbolInfos.length; i++){
-        if(childSymbolInfos[i].symbolNodeType === "SYMBOL_GROUP"){
+    var treeNodeId = parentNode.id + 1;
+    for (var i = 0; i < childSymbolInfos.length; i++) {
+        if (childSymbolInfos[i].symbolNodeType === "SYMBOL_GROUP") {
             var treeNode = new Object();
             treeNode.id = treeNodeId++;
             treeNode.pId = parentNode.id;
             treeNode.name = childSymbolInfos[i].symbolName;
-            treeNode.fullName = parentNode.fullName + childSymbolInfos[i].symbolName+"/";
+            treeNode.fullName = parentNode.fullName + childSymbolInfos[i].symbolName + "/";
             treeData.push(treeNode);
 
             treeNodeId = innerAnalysisSymbolTree(childSymbolInfos[i].childNodes, treeData, treeNode, rootSymbolIconUrl);
-        } else if(childSymbolInfos[i].symbolNodeType === "SYMBOL_NODE"){
+        } else if (childSymbolInfos[i].symbolNodeType === "SYMBOL_NODE") {
             var drawNode = new Object();
             drawNode.id = treeNodeId++;
             drawNode.pId = parentNode.id;
@@ -240,7 +242,7 @@ function innerAnalysisSymbolTree(childSymbolInfos, treeData, parentNode, rootSym
         }
     }
 
-    if(drawData.length !== 0){
+    if (drawData.length !== 0) {
         parentNode.drawData = drawData;
     }
 

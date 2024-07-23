@@ -1,7 +1,7 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util } from "@supermap/iclient-common/commontypes/Util";
+import { Util } from "@supermapgis/iclient-common/commontypes/Util";
 import CompositeSymbolRender from "./CompositeSymbolRender";
 import SingleSymbolRender from "./SingleSymbolRender";
 import SymbolManager from "./SymbolManager";
@@ -19,7 +19,7 @@ class SymbolHandler {
         this.symbolManager = new SymbolManager();
         this.singleSymbolRender = new SingleSymbolRender(map);
         this.compositeSymbolRender = new CompositeSymbolRender(map);
-        this._layerSymbols = {};// 图层与symbol的映射关系
+        this._layerSymbols = {};// 图层与 symbol 的映射关系
     }
 
     _update(map) {
@@ -28,7 +28,7 @@ class SymbolHandler {
     }
 
     /**
-     * 添加符号图层
+     * 添加符号图层。
      * @param {Object} layer
      * @param {string} before
      */
@@ -36,7 +36,7 @@ class SymbolHandler {
         if (typeof layer.symbol === 'string') {
             const id = layer.symbol;
             if (id) {
-                const symbol = this.symbolManager.getSymbol(id);
+                const symbol = this.getSymbol(id);
                 if (!symbol) {
                     return this.map.fire('error', {
                         error: new Error(`Symbol "${id}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
@@ -52,7 +52,7 @@ class SymbolHandler {
     }
 
     /**
-     * 更新图层上的symbol
+     * 更新图层上的 symbol。
      * @param {string} layerId
      * @param {string | array} symbol
      */
@@ -75,7 +75,7 @@ class SymbolHandler {
     }
 
     /**
-     * 处理match表达式为多个图层
+     * 处理 match 表达式为多个图层。
      * @param {object} layer
      * @returns {array}
      */
@@ -85,6 +85,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(2);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -98,15 +99,23 @@ class SymbolHandler {
                         ]
                     ], symbol: r
                 });
+                defaultFilter.push([
+                    "!=",
+                    layer.symbol[1][1],
+                    expression[index - 1]
+                ]);
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
     }
 
     /**
-     * 处理match表达式为多个图层
+     * 处理 match 表达式为多个图层。
      * @param {object} layer
      * @returns {array}
      */
@@ -116,6 +125,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(1);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -125,22 +135,23 @@ class SymbolHandler {
                         expression[index - 1]
                     ], symbol: r
                 });
+                defaultFilter.push(['!', expression[index - 1]])
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
     }
 
     /**
-     * 将symbol表达式拆成filter
+     * 将 symbol 表达式拆成 filter。
      * @param {object} layer
      * @param {string} before
      */
     addExpressionLayer(layer, before) {
-        // symbol支持表达式的话，paint、layout不生效
-        delete layer.paint;
-        delete layer.layout;
         const rules = {
             match: this.getMatchLayers,
             case: this.getCaseLayers
@@ -153,14 +164,14 @@ class SymbolHandler {
             });
         }
         layers.forEach((l) => {
-            l.id = Util.createUniqueID(`${layer.id}_`);
+            l.id = Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.compositeSymbolRender.addLayerId(layer.id, l.id);
             this.addLayer(l, before);
         });
     }
 
     /**
-     * 通过symbol判断使用管理器
+     * 通过 symbol 判断使用管理器。
      * @param {object | array} symbol
      * @returns {SingleSymbolRender | CompositeSymbolRender}
      */
@@ -169,7 +180,7 @@ class SymbolHandler {
     }
 
     /**
-     * 将Web符号中的image添加到地图上
+     * 将 Web 符号中的 image 添加到地图上。
      * @param {object} symbol
      * @param {object} image
      */
@@ -177,20 +188,20 @@ class SymbolHandler {
         const { type, name } = getImageKey(symbol);
         const id = symbol[type] && symbol[type][name];
         if (id && !this.map.hasImage(id)) {
-            // 如果需要使用到image 的需要addImage
+            // 如果需要使用到 image 的需要 addImage
             this.map.addImage(id, image);
-            // 为了解决sdf问题，需要把load后的image信息存下
+            // 为了解决 sdf 问题，需要把 load 后的 image 信息存下
             this.symbolManager.addImageInfo(id, image);
         }
     }
 
     /**
-     * 给指定图层添加symbol
+     * 给指定图层添加 symbol。
      * @param {string} id
      * @param {object} symbol
      */
     addSymbol(id, symbol) {
-        if (this.symbolManager.getSymbol(id)) {
+        if (this.getSymbol(id)) {
             return this.map.fire('error', {
                 error: new Error('An symbol with this name already exists.')
             });
@@ -205,7 +216,7 @@ class SymbolHandler {
     }
 
     /**
-     * 设置layer 对应的 symbol属性值
+     * 设置 layer 对应的 symbol 属性值。
      * @param {string} layerId
      * @param {string | array} symbol
      */
@@ -214,16 +225,16 @@ class SymbolHandler {
     }
 
     /**
-     * 通过layerID获取symbol属性值
+     * 通过 layerID 获取 symbol 属性值。
      * @param {string} layerId
      * @return {string | array} symbol
      */
-    getSymbol(layerId) {
+    getLayerSymbol(layerId) {
         return this._layerSymbols[layerId];
     }
 
     /**
-     * 判断是否有symbol
+     * 判断是否有 symbol。
      * @return {boolean}
      */
     hasSymbol() {
@@ -231,7 +242,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除symbol
+     * 删除 symbol。
      * @param {string} id
      */
     removeSymbol(id) {
@@ -239,15 +250,15 @@ class SymbolHandler {
     }
 
     /**
-     * 通过symbolId获取symbol内容
+     * 通过 symbolId 获取 symbol 内容。
      * @param {string} symbolId
      */
-    getSymbolInfo(symbolId) {
+    getSymbol(symbolId) {
         return this.symbolManager.getSymbol(symbolId);
     }
 
     /**
-     * 获取组合图层的子图层IDs
+     * 获取组合图层的子图层 IDs。
      * @param {string} layerId
      * @returns {array}
      */
@@ -256,7 +267,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取子图层ID对应的组合图层
+     * 获取子图层 ID 对应的组合图层。
      * @param {string} layerId
      * @returns {string}
      */
@@ -265,7 +276,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除图层ID
+     * 删除图层 ID。
      * @param {string} layerId
      * @returns {string}
      */
@@ -274,13 +285,13 @@ class SymbolHandler {
     }
 
     /**
-     * 获取指定ID的layer
+     * 获取指定 ID 的layer。
      * @param {string} layerId
      * @returns {object}
      */
     getLayer(layerId) {
         const layer = this.map.getLayerBySymbolBak(layerId);
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (layer) {
             return symbol ? { ...layer, symbol } : layer;
         } else {
@@ -293,7 +304,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除指定图层
+     * 删除指定图层。
      * @param {string} layerId
      */
     removeLayer(layerId) {
@@ -307,7 +318,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取style
+     * 获取 style。
      * @returns {object}
      */
     getStyle() {
@@ -316,9 +327,9 @@ class SymbolHandler {
             style.layers = style.layers.reduce((pre, layer) => {
                 const compositeId = this.getLayerId(layer.id);
                 if (compositeId) {
-                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getSymbol(compositeId), id: compositeId })
-                } else if (this.getSymbol(layer.id)) {
-                    pre.push({ ...layer, symbol: this.getSymbol(layer.id) })
+                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getLayerSymbol(compositeId), id: compositeId })
+                } else if (this.getLayerSymbol(layer.id)) {
+                    pre.push({ ...layer, symbol: this.getLayerSymbol(layer.id) })
                 } else {
                     pre.push(layer);
                 }
@@ -329,7 +340,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取组合图层的子图层0 id
+     * 获取组合图层的子图层 ID。
      * @param {string} layerId
      * @returns {string | undefined}
      */
@@ -339,7 +350,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的moveLayer
+     * 扩展 map 的 moveLayer。
      * @param {string} layerId
      * @param {string | undefined} beforeId
      */
@@ -355,18 +366,18 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setFilter
+     * 扩展 map 的 setFilter。
      * @param {string} layerId
      * @param {Array} filter
      * @param {object} options
      */
     setFilter(layerId, filter, options) {
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (isMapboxExpression(symbol)) {
-            // 如果 symbol 是数据驱动，filter需要重新计算
+            // 如果 symbol 是数据驱动，filter 需要重新计算
             const realLayerId = this.getFirstLayerId(layerId);
             this.map.style.setFilter(realLayerId, filter, options);
-            const symbol = this.getSymbol(layerId);
+            const symbol = this.getLayerSymbol(layerId);
             this.setSymbol(layerId, symbol);
             return;
         }
@@ -379,7 +390,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getFilter
+     * 扩展 map 的 getFilter。
      * @param {string} layerId
      * @returns {object}
      */
@@ -391,7 +402,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setLayerZoomRange
+     * 扩展 map 的 setLayerZoomRange。
      * @param {string} layerId
      * @param {number} minzoom
      * @param {number} maxzoom
@@ -406,7 +417,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setPaintProperty
+     * 扩展 map 的 setPaintProperty。
      * @param {string} layerId
      * @param {string} name
      * @param {*} value
@@ -422,7 +433,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getPaintProperty
+     * 扩展 map 的 getPaintProperty。
      * @param {string} layerId
      * @param {string} name
      * @returns {object}
@@ -433,7 +444,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setLayoutProperty
+     * 扩展 map 的 setLayoutProperty。
      * @param {string} layerId
      * @param {string} name
      * @param {*} value
@@ -449,7 +460,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getLayoutProperty
+     * 扩展 map 的 getLayoutProperty。
      * @param {string} layerId
      * @param {string} name
      * @returns {object}
@@ -460,7 +471,7 @@ class SymbolHandler {
     }
 
     /**
-     * 遍历this._layerSymbols， 更新使用到symbolId的图层
+     * 遍历 this._layerSymbols，更新使用到 symbolId 的图层。
      * @param {string} symbolId 
      */
     updateLayerSymbol(symbolId) {
@@ -473,13 +484,13 @@ class SymbolHandler {
     }
 
     /**
-     * 更新符号
+     * 更新符号。
      * @param {string} symbolId 
      * @param {object | array} symbol 
      */
     updateSymbol(symbolId, symbol) {
         // symbol不存在
-        if (!this.symbolManager.getSymbol(symbolId)) {
+        if (!this.getSymbol(symbolId)) {
             return this.map.fire('error', {
                 error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
             });
@@ -496,14 +507,14 @@ class SymbolHandler {
     }
 
     /**
-     * 设置symbol属性值
+     * 设置 symbol 属性值。
      * @param {string} symbolId 
      * @param {number} symbolIndex 
      * @param {string} name 
      * @param {any} value
      */
     setSymbolProperty(symbolId, symbolIndex, name, value) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             return this.map.fire('error', {
@@ -540,14 +551,14 @@ class SymbolHandler {
     }
 
     /**
-     * 获取symbol的属性值
+     * 获取 symbol 的属性值。
      * @param {string} symbolId 
      * @param {number} symbolIndex 
      * @param {string} name 
      * @returns {any}
      */
     getSymbolProperty(symbolId, symbolIndex, name) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             this.map.fire('error', {

@@ -1,5 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
-var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 
 var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
     "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -13,11 +12,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
             "sprite": "https://iclient.supermap.io/web/styles/street/sprite",
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -997,11 +996,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
             "sprite": "https://iclient.supermap.io/web/styles/dark/sprite",
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -1898,11 +1897,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
             "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -2990,10 +2989,10 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -3991,11 +3990,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
             "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -5242,10 +5241,10 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 }
             },
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",

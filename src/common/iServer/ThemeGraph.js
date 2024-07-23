@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
@@ -15,7 +15,9 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @class ThemeGraph
  * @deprecatedclass SuperMap.ThemeGraph
  * @category  iServer Map Theme
- * @classdesc 统计专题图类。
+ * @classdesc 统计专题图类。统计专题图是通过为每个要素或记录绘制统计图来反映其对应的专题变量值的大小。
+ * 统计专题图可以基于多个变量，反映多种属性，即可以将多个变量的值绘制在一个统计图上。通过统计专题图可以在区域本身与各区域之间形成横向和纵向的对比。
+ * 多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {Array.<ThemeGraphItem>} options.items - 统计专题图子项集合。
@@ -24,7 +26,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @param {ThemeGraphAxes} [options.graphAxes] - 统计图中坐标轴样式相关信息。
  * @param {ThemeGraphSize} [options.graphSize=0] - 统计符号的最大最小尺寸。
  * @param {boolean} [options.graphSizeFixed=false] - 缩放地图时统计图符号是否固定大小。
- * @param {ThemeGraphText} [options.graphText] - 统计图上的文字是否可见以及文字标注风格。
+ * @param {ThemeGraphText} [options.graphText] - 统计图上的文字标注是否可见以及文字标注风格。
  * @param {GraphAxesTextDisplayMode} [options.graphAxesTextDisplayMode=GraphAxesTextDisplayMode.NONE] - 统计专题图坐标轴文本显示模式。
  * @param {ThemeGraphType} [options.graphType=ThemeGraphType.AREA] - 统计专题图类型。
  * @param {Array.<number>} [options.memoryKeys] - 以内存数组方式制作专题图时的键数组。
@@ -74,7 +76,7 @@ export class ThemeGraph extends Theme {
 
         /**
          * @member {ThemeGraphText} ThemeGraph.prototype.graphText
-         * @description 统计图上的文字是否可见以及文字标注风格。
+         * @description 统计图上的文字标注是否可见以及文字标注风格。
          */
         this.graphText =  new ThemeGraphText();
 
@@ -168,13 +170,8 @@ export class ThemeGraph extends Theme {
          *                   datasetNames: ["BaseMap_R"]
          *               }),
          *                   //与服务端交互
-         *               themeService=new ThemeService(url, {
-         *                   eventListeners: {
-         *                       "processCompleted": ThemeCompleted,
-         *                        "processFailed": themeFailed
-         *                  }
-         *              });
-         *       themeService.processAsync(themeParameters);
+         *               themeService=new ThemeService(url);
+         *       themeService.processAsync(themeParameters, ThemeCompleted);
          *   }
          */
         this.memoryKeys = null;
