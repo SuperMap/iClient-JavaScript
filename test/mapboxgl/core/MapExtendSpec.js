@@ -5,6 +5,7 @@ import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
 import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
+import { CustomOverlayLayer } from '../../../src/mapboxgl/overlay/Base';
 
 describe('MapExtend mapboxgl', () => {
   let originalTimeout, testDiv;
@@ -371,15 +372,24 @@ describe('MapExtend mapboxgl', () => {
       for (const key in options) {
         spyOn(options, key).and.callThrough();
       }
+      
+      class L7LayerTest extends CustomOverlayLayer {
+        constructor() {
+          const optionsData = {
+            id: 'l7_layer_1',
+            sourceId: 'l7_layer_1',
+            events: ['click'],
+            query: true,
+            interaction: true,
+            ...options
+          };
+          for (const key in optionsData) {
+            this[key] = optionsData;
+          }
+        }
+      }
       map.overlayLayersManager = {
-        l7_layer_1: {
-          id: 'l7_layer_1',
-          sourceId: 'l7_layer_1',
-          events: ['click'],
-          query: true,
-          interaction: true,
-          ...options
-        },
+        l7_layer_1: new L7LayerTest(),
         heatmap_1: { id: 'heatmap_1' }
       };
       expect(map.getSource('l7_layer_1')).not.toBeUndefined();

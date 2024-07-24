@@ -4,6 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import { decryptSources } from './decryptSource';
 import { getServiceKey } from '@supermapgis/iclient-common/util/EncryptRequest';
+import { CustomOverlayLayer } from '../overlay/Base';
 
 /**
  * @function MapExtend
@@ -38,34 +39,25 @@ export var MapExtend = (function () {
       }
   
       getSource(sourceId) {
-        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId && item instanceof CustomOverlayLayer);
         if (customOverlayerLayer) {
-          if (customOverlayerLayer.getSource) {
-            return customOverlayerLayer.getSource();
-          }
-          return;
+          return customOverlayerLayer.getSource();
         }
         return originMapProto.getSource.call(this, sourceId);
       }
   
       removeSource(sourceId) {
-        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId && item instanceof CustomOverlayLayer);
         if (customOverlayerLayer) {
-          if (customOverlayerLayer.removeSource) {
-            return customOverlayerLayer.removeSource();
-          }
-          return;
+          return customOverlayerLayer.removeSource();
         }
         return originMapProto.removeSource.call(this, sourceId);
       }
   
       isSourceLoaded(sourceId) {
-        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId && item instanceof CustomOverlayLayer);
         if (customOverlayerLayer) {
-          if (customOverlayerLayer.isSourceLoaded) {
-            return customOverlayerLayer.isSourceLoaded();
-          }
-          return;
+          return customOverlayerLayer.isSourceLoaded();
         }
         return originMapProto.isSourceLoaded.call(this, sourceId);
       }
@@ -284,9 +276,9 @@ export var MapExtend = (function () {
       }
   
       querySourceFeatures(sourceId, paramters) {
-        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+        const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId && item instanceof CustomOverlayLayer);
         if (customOverlayerLayer) {
-          if (customOverlayerLayer.query && customOverlayerLayer.querySourceFeatures) {
+          if (customOverlayerLayer.query) {
             return customOverlayerLayer.querySourceFeatures(paramters);
           }
           return;
