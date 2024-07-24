@@ -1,6 +1,6 @@
 import { GraticuleLayer } from '../../../src/mapboxgl/overlay/GraticuleLayer';
 import mapboxgl from 'mapbox-gl';
-import { Feature } from '@supermap/iclient-common';
+// import { Feature } from '@supermap/iclient-common';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('mapboxgl_GraticuleLayer', () => {
@@ -124,6 +124,32 @@ describe('mapboxgl_GraticuleLayer', () => {
     it('setIntervals', () => {
         graticuleLayer.setIntervals(5);
         expect(graticuleLayer.renderer.options.interval).toEqual(5);
+    });
+
+    it('getDefaultExtent must return degree', () => {
+      map.getCRS = () => {
+        return {
+          extent: [
+            -20037508.3427892,
+            -20037508.3427892,
+            20037508.3427892,
+            20037508.3427892
+          ],
+          lngLatExtent: [
+            -179.99999999999963,
+            -85.05112877980658,
+            179.99999999999963,
+            85.05112877980656
+          ]
+        };
+      };
+      var extent = graticuleLayer.getDefaultExtent();
+      expect(extent).toEqual([
+        -179.99999999999963,
+        -85.05112877980658,
+        179.99999999999963,
+        85.05112877980656
+      ]);
     });
 
     it('_calcInterval', () => {

@@ -255,7 +255,7 @@ export class GraticuleLayer {
 
   getDefaultExtent(extent, map = this.map) {
     const crs = (map.getCRS && map.getCRS()) || {};
-    let { extent: crsExtent } = crs;
+    let { lngLatExtent: crsExtent } = crs;
     if (!crsExtent) {
       crsExtent = [-180, -85.05119, 180, 85.05119];
     }
