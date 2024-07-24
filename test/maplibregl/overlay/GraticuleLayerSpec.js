@@ -84,6 +84,32 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(visible).toBe('visible');
     });
 
+    it('getDefaultExtent must return degree', () => {
+      map.getCRS = () => {
+        return {
+          extent: [
+            -20037508.3427892,
+            -20037508.3427892,
+            20037508.3427892,
+            20037508.3427892
+          ],
+          lngLatExtent: [
+            -179.99999999999963,
+            -85.05112877980658,
+            179.99999999999963,
+            85.05112877980656
+          ]
+        };
+      };
+      var extent = graticuleLayer.getDefaultExtent();
+      expect(extent).toEqual([
+        -179.99999999999963,
+        -85.05112877980658,
+        179.99999999999963,
+        85.05112877980656
+      ]);
+    });
+
     it('setMinZoom', () => {
         graticuleLayer.setMinZoom(0);
         expect(graticuleLayer.options.minZoom).toEqual(0);
