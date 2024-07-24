@@ -369,60 +369,61 @@ describe('MapExtend mapboxgl', () => {
         on: function () {},
         off: function () {}
       };
-      for (const key in options) {
-        spyOn(options, key).and.callThrough();
-      }
       
       class L7LayerTest extends CustomOverlayLayer {
         constructor() {
-          const optionsData = {
-            id: 'l7_layer_1',
-            sourceId: 'l7_layer_1',
-            events: ['click'],
-            query: true,
-            interaction: true,
-            ...options
-          };
-          for (const key in optionsData) {
-            this[key] = optionsData;
-          }
+          super({ sourceId: 'l7_layer_1', query: true, interaction: true, events: ['click'] });
+          this.id = 'l7_layer_1';
+          this.sourceId = 'l7_layer_1';
+        }
+
+        getSource() {
+          return {};
+        }
+
+        getLayer() {
+          return {}
         }
       }
+      const l7_layer_1 = new L7LayerTest();
+      for (const key in options) {
+        spyOn(l7_layer_1, key).and.callThrough();
+      }
       map.overlayLayersManager = {
-        l7_layer_1: new L7LayerTest(),
+        l7_layer_1,
         heatmap_1: { id: 'heatmap_1' }
       };
       expect(map.getSource('l7_layer_1')).not.toBeUndefined();
       expect(map.getSource('raster-tiles')).not.toBeUndefined();
-      expect(options.getSource.calls.count()).toEqual(1);
+      expect(l7_layer_1.getSource.calls.count()).toEqual(1);
       expect(map.isSourceLoaded('l7_layer_1')).toBeTruthy();
       expect(map.isSourceLoaded('raster-tiles')).toBeTruthy();
       expect(map.getLayer('l7_layer_1')).not.toBeUndefined();
       expect(map.getLayer('simple-tiles')).not.toBeUndefined();
       expect(map.getLayer('heatmap_1')).toEqual(map.overlayLayersManager['heatmap_1']);
-      expect(options.getLayer.calls.count()).toEqual(1);
+      expect(l7_layer_1.getLayer.calls.count()).toEqual(1);
       const layerToAdd = { type: 'custom', id: 'add1', onAdd() {}, onRemove() {}, render() {} };
       map.addLayer(layerToAdd);
       expect(map.addLayer.calls.count()).toEqual(1);
       map.queryRenderedFeatures([0, 0], { layers: ['l7_layer_1', 'simple-tiles'] });
-      expect(options.queryRenderedFeatures.calls.count()).toEqual(1);
+      expect(l7_layer_1.queryRenderedFeatures.calls.count()).toEqual(1);
       map.querySourceFeatures('l7_layer_1');
       map.querySourceFeatures('raster-tiles');
-      expect(options.querySourceFeatures.calls.count()).toEqual(1);
+      expect(l7_layer_1.querySourceFeatures.calls.count()).toEqual(1);
       const cb = () => {};
       map.on('click', 'l7_layer_1', cb);
       map.on('click',cb);
-      expect(options.on.calls.count()).toEqual(1);
+      expect(l7_layer_1.on.calls.count()).toEqual(1);
       map.once('click', 'l7_layer_1', cb);
       map.once('click', cb);
-      expect(options.once.calls.count()).toEqual(1);
+      expect(l7_layer_1.once.calls.count()).toEqual(1);
       map.off('click', 'l7_layer_1', cb);
       map.off('click', cb);
-      expect(options.off.calls.count()).toEqual(1);
+      expect(l7_layer_1.off.calls.count()).toEqual(1);
       map.removeSource('l7_layer_1');
       map.removeLayer('simple-tiles');
       map.removeSource('raster-tiles');
-      expect(options.removeSource.calls.count()).toEqual(1);
+      expect(l7_layer_1.removeSource.calls.count()).toEqual(1);
       map.remove();
       done();
     });
