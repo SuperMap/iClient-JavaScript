@@ -319,15 +319,7 @@
         }
         ol.supermap.SecurityManager.destroyToken(serviceUrl);
         ol.supermap.SecurityManager.registerToken(serviceUrl, key);
-        var iPortalService = new ol.supermap.iPortalService(serviceUrl);
-        iPortalService.load().then(function (json) {
-            if (json && json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error), false);
-            } else {
-                widgets.alert.showAlert("proxiedUrl:" + iPortalService.proxiedUrl, true);
-            }
-
-        });
+        requestService(serviceUrl);
     }
 
     function getPortalTokenServiceUrl() {
