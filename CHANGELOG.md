@@ -1,3 +1,174 @@
+# 11.2.0 #
+
+## 重要
+自11i (2024) 版本(v11.2.0)开始，原 @supermap 下 npm 仓库调整至 [@supermapgis](https://www.npmjs.com/org/supermapgis) ，建议各位开发者升级并使用新仓库地址。
+## 新特性
+
+### 提供基于 WebAssembly 技术的 Geometry 分析 API
+ - 基于 SuperMap UGC 内核和 WebAssembly 技术，提供若干个 Geometry 级的空间分析接口，满足常用 Web 前端空间分析或离线分析需求
+![1120-1](https://iclient.supermap.io/web/img/whatsNewWebAssembly.gif)
+
+### iClient for MapboxGL，MapLibreGL 提供更多地图可视化效果
+ - 集成 AntV L7 可视化库，提供三维、粒子等 60+ 绚丽的可视化类型
+![1120-2](https://iclient.supermap.io/web/img/whatsNewL7.png)
+
+### iClient for MapboxGL 支持快速对接Web地图成果
+ - 基于 WebMap 3.x 规范，支持加载地图工作室制作的 Web 地图，并方便的集成到其他 Web 项目中使用
+![1120-3](https://iclient.supermap.io/web/img/whatsNewWebMap3.png)
+
+### iClient for MapBoxGL 新增Web视频GIS能力
+ - 支持对接并可视化 SuperMap iServer 发布的视频服务
+ - 可在 Web 地图中查询视频列表、播放视频流，并以真实坐标系范围叠加视频，或在视频中叠加空间要素
+![1120-4](https://iclient.supermap.io/web/img/whatsNewLVideoMap.gif)
+
+### iClient for MapLibreGL支持地理、投影全坐标系
+ - 支持根据 EPSG 定义或 WKT 信息，渲染本地坐标系、城市坐标系、海外等特殊坐标系的地图和要素
+![1120-5](https://iclient.supermap.io/web/img/whatsNewCoor.png)
+
+## API changes
+
+### for Leaflet
+ - 新增基于 WebAssembly 的 [Geometry](https://iclient.supermap.io/docs/leaflet/GeometryAnalysis.html) 分析处理接口
+ - [L.supermap.FeatureService](https://iclient.supermap.io/docs/leaflet/FeatureService.html) 新增 [getFeatureAttachments](https://iclient.supermap.io/docs/leaflet/FeatureService.html#getFeatureAttachments) 接口，支持要素附件查询功能
+ - [L.supermap.FeatureService](https://iclient.supermap.io/docs/leaflet/FeatureService.html) 新增 [editFeatureAttachments](https://iclient.supermap.io/docs/leaflet/FeatureService.html#editFeatureAttachments) 接口，支持要素附件编辑功能
+ - [L.supermap.FeatureService](https://iclient.supermap.io/docs/leaflet/FeatureService.html) 新增 [getFeaturesCount](https://iclient.supermap.io/docs/leaflet/FeatureService.html#getFeaturesCount) 接口，支持获取要素数量
+ - [L.supermap.FeatureService](https://iclient.supermap.io/docs/leaflet/FeatureService.html) 新增 [getFeaturesDatasetInfo](https://iclient.supermap.io/docs/leaflet/FeatureService.html#getFeaturesDatasetInfo) 接口，支持获取要素数据集信息
+ - [L.supermap.GetFeaturesByBoundsParameters](https://iclient.supermap.io/docs/leaflet/GetFeaturesByBoundsParameters.html)、[GetFeaturesByBufferParameters](https://iclient.supermap.io/docs/leaflet/GetFeaturesByBufferParameters.html)、[GetFeaturesByGeometryParameters](https://iclient.supermap.io/docs/leaflet/GetFeaturesByGeometryParameters.html)、[GetFeaturesByIDsParameters](https://iclient.supermap.io/docs/leaflet/GetFeaturesByIDsParameters.html)、[GetFeaturesBySQLParameters](https://iclient.supermap.io/docs/leaflet/GetFeaturesBySQLParameters.html) 数据查询参数类新增 returnFeaturesOnly 参数，支持设置是否仅返回要素信息，将该值设置为 true 可以获得更好的查询性能
+ - [L.supermap.GetGridCellInfosParameters](https://iclient.supermap.io/docs/leaflet/GetGridCellInfosParameters.html) 参数类新增 [bounds](https://iclient.supermap.io/docs/leaflet/GetGridCellInfosParameters.html#bounds) 参数，[L.supermap.GridCellInfosService.getGridCellInfos](https://iclient.supermap.io/docs/leaflet/GridCellInfosService.html#getGridCellInfos) 栅格查询支持查询指定范围内的栅格值
+ - 优化 [L.supermap.initMap](https://iclient.supermap.io/docs/leaflet/global.html#initMap) 接口，自动判断 SuperMap iServer 地图服务的缓存状态和比例尺级别，简化地图服务浏览代码编写
+ - [L.supermap.TiledMapLayer](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 新增 [chartSetting](https://iclient.supermap.io/docs/leaflet/ChartSetting.html) 参数，支持设置海图显示参数
+ - [L.supermap.ChartService](https://iclient.supermap.io/docs/leaflet/ChartService.html) 新增 [getChartAcronymClassify](https://iclient.supermap.io/docs/leaflet/ChartService.html#getChartAcronymClassify) 接口，支持获取海图物标分组
+ - [L.supermap.FindServiceAreasParameters](https://iclient.supermap.io/docs/leaflet/FindServiceAreasParameters.html) 新增 [isReturnComplexArea](https://iclient.supermap.io/docs/leaflet/FindServiceAreasParameters.html#isReturnComplexArea) 参数支持设置是否返回详细服务区面，新增 [serviceBufferRadius](https://iclient.supermap.io/docs/leaflet/FindServiceAreasParameters.html#serviceBufferRadius) 参数支持设置缓冲区半径
+
+
+
+### for OpenLayers
+ - 新增基于 WebAssembly 的 [Geometry](https://iclient.supermap.io/docs/openlayers/GeometryAnalysis.html) 分析处理接口
+ - [支持加载加密的 SuperMap iServer 矢量瓦片服务](https://iclient.supermap.io/docs/openlayers/VectorTileSuperMapRest.html)
+ - [ol.supermap.FeatureService](https://iclient.supermap.io/docs/openlayers/FeatureService.html) 新增 [getFeatureAttachments](https://iclient.supermap.io/docs/openlayers/FeatureService.html#getFeatureAttachments) 接口，支持要素附件查询功能
+ - [ol.supermap.FeatureService](https://iclient.supermap.io/docs/openlayers/FeatureService.html) 新增 [editFeatureAttachments](https://iclient.supermap.io/docs/openlayers/FeatureService.html#editFeatureAttachments) 接口，支持要素附件编辑功能
+ - [ol.supermap.FeatureService](https://iclient.supermap.io/docs/openlayers/FeatureService.html) 新增 [getFeaturesCount](https://iclient.supermap.io/docs/openlayers/FeatureService.html#getFeaturesCount) 接口，支持获取要素数量
+ - [ol.supermap.FeatureService](https://iclient.supermap.io/docs/openlayers/FeatureService.html) 新增 [getFeaturesDatasetInfo](https://iclient.supermap.io/docs/openlayers/FeatureService.html#getFeaturesDatasetInfo) 接口，支持获取要素数据集信息
+ - [GetFeaturesByBoundsParameters](https://iclient.supermap.io/docs/openlayers/GetFeaturesByBoundsParameters.html)、[GetFeaturesByBufferParameters](https://iclient.supermap.io/docs/openlayers/GetFeaturesByBufferParameters.html)、[GetFeaturesByGeometryParameters](https://iclient.supermap.io/docs/openlayers/GetFeaturesByGeometryParameters.html)、[GetFeaturesByIDsParameters](https://iclient.supermap.io/docs/openlayers/GetFeaturesByIDsParameters.html)、[GetFeaturesBySQLParameters](https://iclient.supermap.io/docs/openlayers/GetFeaturesBySQLParameters.html) 数据查询参数类新增 returnFeaturesOnly 参数，支持设置是否仅返回要素信息，将该值设置为 true 可以获得更好的查询性能
+ - [ol.supermap.GetGridCellInfosParameters](https://iclient.supermap.io/docs/openlayers/GetGridCellInfosParameters.html) 参数类新增 [bounds](https://iclient.supermap.io/docs/openlayers/GetGridCellInfosParameters.html#bounds) 参数，[ol.supermap.GridCellInfosService.getGridCellInfos](https://iclient.supermap.io/docs/openlayers/GridCellInfosService.html#getGridCellInfos) 栅格查询支持查询指定范围内的栅格值
+ - 优化 [ol.supermap.initMap](https://iclient.supermap.io/docs/openlayers/global.html#initMap) 接口，自动判断 SuperMap iServer 地图服务的缓存状态和比例尺级别，简化地图服务浏览代码编写
+ - [ol.supermap.TileSuperMapRest](https://iclient.supermap.io/docs/openlayers/TileSuperMapRest.html) 新增 [chartSetting](https://iclient.supermap.io/docs/openlayers/ChartSetting.html) 参数，支持设置海图显示参数
+ - [ol.supermap.ChartService](https://iclient.supermap.io/docs/openlayers/ChartService.html) 新增 [getChartAcronymClassify](https://iclient.supermap.io/docs/openlayers/ChartService.html#getChartAcronymClassify) 接口，支持获取海图物标分组
+ - [ol.supermap.FindServiceAreasParameters](https://iclient.supermap.io/docs/openlayers/FindServiceAreasParameters.html) 新增 [isReturnComplexArea](https://iclient.supermap.io/docs/openlayers/FindServiceAreasParameters.html#isReturnComplexArea) 参数支持设置是否返回详细服务区面，新增 [serviceBufferRadius](https://iclient.supermap.io/docs/openlayers/FindServiceAreasParameters.html#serviceBufferRadius) 参数支持设置缓冲区半径
+
+
+### for MapboxGL
+ - 新增基于 WebAssembly 的 [Geometry](https://iclient.supermap.io/docs/mapboxgl/GeometryAnalysis.html) 分析处理接口
+ - mapboxgl 新增 [VideoLayer](https://iclient.supermap.io/docs/mapboxgl/VideoLayer.html)，支持视频流播放、视频查询、视频投放到地图
+ - mapboxgl 新增 [L7Layer](https://iclient.supermap.io/docs/mapboxgl/L7Layer.html)
+ - mapboxgl [webmap](https://iclient.supermap.io/docs/mapboxgl/WebMap.html) 支持加载 SuperMap iPortal 地图工作室制作的地图
+ - [支持加载加密的 SuperMap iServer 矢量瓦片服务](https://iclient.supermap.io/docs/mapboxgl/decryptSources.html)
+ - [mapboxgl.supermap.FeatureService](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html) 新增 [getFeatureAttachments](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html#getFeatureAttachments) 接口，支持要素附件查询功能
+ - [mapboxgl.supermap.FeatureService](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html) 新增 [editFeatureAttachments](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html#editFeatureAttachments) 接口，支持要素附件编辑功能
+ - [mapboxgl.supermap.FeatureService](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html) 新增 [getFeaturesCount](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html#getFeaturesCount) 接口，支持获取要素数量
+ - [mapboxgl.supermap.FeatureService](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html) 新增 [getFeaturesDatasetInfo](https://iclient.supermap.io/docs/mapboxgl/FeatureService.html#getFeaturesDatasetInfo) 接口，支持获取要素数据集信息
+ - [GetFeaturesByBoundsParameters](https://iclient.supermap.io/docs/mapboxgl/GetFeaturesByBoundsParameters.html)、[GetFeaturesByBufferParameters](https://iclient.supermap.io/docs/mapboxgl/GetFeaturesByBufferParameters.html)、[GetFeaturesByGeometryParameters](https://iclient.supermap.io/docs/mapboxgl/GetFeaturesByGeometryParameters.html)、[GetFeaturesByIDsParameters](https://iclient.supermap.io/docs/mapboxgl/GetFeaturesByIDsParameters.html)、[GetFeaturesBySQLParameters](https://iclient.supermap.io/docs/mapboxgl/GetFeaturesBySQLParameters.html) 数据查询参数类新增 returnFeaturesOnly 参数，支持设置是否仅返回要素信息，将该值设置为 true 可以获得更好的查询性能
+ - [mapboxgl.supermap.GetGridCellInfosParameters](https://iclient.supermap.io/docs/mapboxgl/GetGridCellInfosParameters.html) 参数类新增 [bounds](https://iclient.supermap.io/docs/mapboxgl/GetGridCellInfosParameters.html#bounds) 参数，[mapboxgl.supermap.GridCellInfosService.getGridCellInfos](https://iclient.supermap.io/docs/mapboxgl/GridCellInfosService.html#getGridCellInfos) 栅格查询支持查询指定范围内的栅格值
+ - [mapboxgl.supermap.ChartService](https://iclient.supermap.io/docs/mapboxgl/ChartService.html) 新增 [getChartAcronymClassify](https://iclient.supermap.io/docs/mapboxgl/ChartService.html#getChartAcronymClassify) 接口，支持获取海图物标分组
+ - [mapboxgl.supermap.FindServiceAreasParameters](https://iclient.supermap.io/docs/mapboxgl/FindServiceAreasParameters.html) 新增 [isReturnComplexArea](https://iclient.supermap.io/docs/mapboxgl/FindServiceAreasParameters.html#isReturnComplexArea) 参数支持设置是否返回详细服务区面，新增 [serviceBufferRadius](https://iclient.supermap.io/docs/mapboxgl/FindServiceAreasParameters.html#serviceBufferRadius) 参数支持设置缓冲区半径
+
+
+### for MaplibreGL
+  - [支持渲染多种坐标系的地图和要素，如城市坐标系、海外特殊坐标系等（需具备 epsg 定义或 wkt 信息和引入 maplibre-gl-enhance.js）](https://iclient.supermap.io/examples/maplibregl/examples.html#multiCoordSys)
+ - 新增基于 WebAssembly 的 [Geometry](https://iclient.supermap.io/docs/maplibregl/GeometryAnalysis.html) 分析处理接口
+ - maplibregl 新增 [L7Layer](https://iclient.supermap.io/docs/maplibregl/L7Layer.html)
+ - [maplibregl.supermap.FeatureService](https://iclient.supermap.io/docs/maplibregl/FeatureService.html) 新增 [getFeatureAttachments](https://iclient.supermap.io/docs/maplibregl/FeatureService.html#getFeatureAttachments) 接口，支持要素附件查询功能
+ - [maplibregl.supermap.FeatureService](https://iclient.supermap.io/docs/maplibregl/FeatureService.html) 新增 [editFeatureAttachments](https://iclient.supermap.io/docs/maplibregl/FeatureService.html#editFeatureAttachments) 接口，支持要素附件编辑功能
+ - [maplibregl.supermap.FeatureService](https://iclient.supermap.io/docs/maplibregl/FeatureService.html) 新增 [getFeaturesCount](https://iclient.supermap.io/docs/maplibregl/FeatureService.html#getFeaturesCount) 接口，支持获取要素数量
+ - [maplibregl.supermap.FeatureService](https://iclient.supermap.io/docs/maplibregl/FeatureService.html) 新增 [getFeaturesDatasetInfo](https://iclient.supermap.io/docs/maplibregl/FeatureService.html#getFeaturesDatasetInfo) 接口，支持获取要素数据集信息
+ - [GetFeaturesByBoundsParameters](https://iclient.supermap.io/docs/maplibregl/GetFeaturesByBoundsParameters.html)、[GetFeaturesByBufferParameters](https://iclient.supermap.io/docs/maplibregl/GetFeaturesByBufferParameters.html)、[GetFeaturesByGeometryParameters](https://iclient.supermap.io/docs/maplibregl/GetFeaturesByGeometryParameters.html)、[GetFeaturesByIDsParameters](https://iclient.supermap.io/docs/maplibregl/GetFeaturesByIDsParameters.html)、[GetFeaturesBySQLParameters](https://iclient.supermap.io/docs/maplibregl/GetFeaturesBySQLParameters.html) 数据查询参数类新增 returnFeaturesOnly 参数，支持设置是否仅返回要素信息，将该值设置为 true 可以获得更好的查询性能
+ - [maplibregl.supermap.GetGridCellInfosParameters](https://iclient.supermap.io/docs/maplibregl/GetGridCellInfosParameters.html) 参数类新增 [bounds](https://iclient.supermap.io/docs/maplibregl/GetGridCellInfosParameters.html#bounds) 参数，[maplibregl.supermap.GridCellInfosService.getGridCellInfos](https://iclient.supermap.io/docs/maplibregl/GridCellInfosService.html#getGridCellInfos) 栅格查询支持查询指定范围内的栅格值
+ - [maplibregl.supermap.ChartService](https://iclient.supermap.io/docs/maplibregl/ChartService.html) 新增 [getChartAcronymClassify](https://iclient.supermap.io/docs/maplibregl/ChartService.html#getChartAcronymClassify) 接口，支持获取海图物标分组
+ - [maplibregl.supermap.FindServiceAreasParameters](https://iclient.supermap.io/docs/maplibregl/FindServiceAreasParameters.html) 新增 [isReturnComplexArea](https://iclient.supermap.io/docs/maplibregl/FindServiceAreasParameters.html#isReturnComplexArea) 参数支持设置是否返回详细服务区面，新增[serviceBufferRadius](https://iclient.supermap.io/docs/maplibregl/FindServiceAreasParameters.html#serviceBufferRadius) 参数支持设置缓冲区半径
+
+### Components
+
+ - vue-iclient-mapboxgl
+   - 新增时间选择框组件([sm-time-picker](https://iclient.supermap.io/web/apis/vue/zh/api/common/time-picker.html))
+   - 属性表组件([sm-attributes](https://iclient.supermap.io/web/apis/vue/zh/api/common/attributes.html))新增 [table.showRowSelection](https://iclient.supermap.io/web/apis/vue/zh/api/common/attributes.html#table) 属性，支持设置列表项是否可选择
+   - 图表([sm-chart](https://iclient.supermap.io/web/apis/vue/zh/api/chart/echart.html))组件支持对相同字段进行统计，新增 [datasetOptions.statisticFunction](https://iclient.supermap.io/web/apis/vue/zh/api/chart/echart.html#datasetoptions) 参数，支持设置图表统计方式。内置最小值、最大值、求和、平均值、计数、众数、中位数、方差、标准差，也可以自定义方法。
+
+
+## Fixed
+
+### for Leaflet
+
+ - [L.Polyline](https://leafletjs.com/reference.html#polyline-togeojson), [L.Polygon](https://leafletjs.com/reference.html#polygon-togeojson), [L.Marker](https://leafletjs.com/reference.html#marker-togeojson), [L.CircleMarker](https://leafletjs.com/reference.html#circlemarker-togeojson), [L.Circle](https://leafletjs.com/reference.html#circle-togeojson), [L.LayerGroup](https://leafletjs.com/reference.html#layergroup-togeojson) 对象的 toGeoJSON 方法结果默认小数位置由 10 调整为 15，并支持通过 L.toGeoJSONPrecision 配置
+ - 修复 [L.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/docs/leaflet/DatasetThiessenAnalystParameters.html)，传入 [L.Polygon](https://leafletjs.com/reference.html#polygon) | [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 [clipRegion](https://iclient.supermap.io/docs/leaflet/DatasetThiessenAnalystParameters.html#clipRegion) 报错的问题
+ - 修复 [L.supermap.EchartsLayer](https://iclient.supermap.io/docs/leaflet/EchartsLayer.html) 与 [L.supermap.RangeThemeLayer](https://iclient.supermap.io/docs/leaflet/RangeThemeLayer.html) 叠加时的顺序不正确的问题
+ - 修复 [L.supermap.DataServiceQueryView](https://iclient.supermap.io/docs/leaflet/DataServiceQueryView.html) 设置 [onEachFeature](https://iclient.supermap.io/docs/leaflet/DataServiceQueryView.html) 参数不生效的问题
+
+
+### for OpenLayers
+
+ - 修复 [ol.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/docs/openlayers/DatasetThiessenAnalystParameters.html)，传入 [ol.geom.Polygon](https://openlayers.org/en/v6.14.1/apidoc/module-ol_geom_Polygon-Polygon.html) | [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 [clipRegion](https://iclient.supermap.io/docs/openlayers/DatasetThiessenAnalystParameters.html#clipRegion) 报错的问题
+ - 修复打印服务接口响应正常，但是提示打印失败的问题
+
+
+
+### for MapboxGL
+
+ - 修复 [mapboxgl.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/docs/mapboxgl/DatasetThiessenAnalystParameters.html)，传入 [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 [clipRegion](https://iclient.supermap.io/docs/mapboxgl/DatasetThiessenAnalystParameters.html#clipRegion) 报错的问题
+
+
+### Component
+
+- vue-iclient-mapboxgl
+
+   - 修复指标组件([sm-indicator](https://iclient.supermap.io/web/apis/vue/zh/api/common/indicator.html))配置小数位数参数无效的问题
+   - 优化地图组件([sm-web-map](https://iclient.supermap.io/web/apis/vue/zh/api/web-map/map.html))显示半透明背景色文本标签、数字文本标签、英文字符文本标签的显示效果。
+   - 修复地图组件([sm-web-map](https://iclient.supermap.io/web/apis/vue/zh/api/web-map/map.html))动态标记图层无法通过图层列表控制显隐的问题
+   - 修复地图倾斜时比例尺组件([sm-scale](https://iclient.supermap.io/web/apis/vue/zh/api/control/scale.html))比例尺值不对的问题
+   - 优化属性表([sm-attributes](https://iclient.supermap.io/web/apis/vue/zh/api/common/attributes.html))组件针对SuperMap REST 地图服务/数据服务分页请求时性能
+   - 优化基础组件主色、功能色、文字对比度等样式集交互反馈
+
+
+## Examples
+
+### for Leaflet
+
+SuperMap iServer-数据
+ - 新增[属性表](https://iclient.supermap.io/examples/leaflet/editor.html#02_attributes)示例
+ - 新增[要素编辑](https://iclient.supermap.io/examples/leaflet/editor.html#drawAndEditFeatures)示例
+ - 修改[栅格查询](https://iclient.supermap.io/examples/leaflet/editor.html#02_getGridCellInfos)示例，支持面查询
+ - 新增[要素关联附件](https://iclient.supermap.io/examples/leaflet/editor.html#02_FeatureAttachment)示例
+
+SuperMap iServer-地图
+ - 新增[海图](https://iclient.supermap.io/examples/leaflet/editor.html#01_chartService)示例
+
+### for OpenLayers
+SuperMap iServer-数据
+ - 新增[属性表](https://iclient.supermap.io/examples/openlayers/editor.html#02_attributes)示例
+ - 新增[要素编辑](https://iclient.supermap.io/examples/openlayers/editor.html#drawAndEditFeatures)示例
+ - 修改[栅格查询](https://iclient.supermap.io/examples/openlayers/editor.html#02_getGridCellInfos)示例，支持面查询
+ - 新增[要素关联附件](https://iclient.supermap.io/examples/openlayers/editor.html#02_FeatureAttachment)示例
+  
+SuperMap iServer-地图
+ - 新增[海图](https://iclient.supermap.io/examples/openlayers/editor.html#01_chartService)示例
+
+### for MapboxGL
+SuperMap iServer-数据
+ - 新增[属性表](https://iclient.supermap.io/examples/mapboxgl/editor.html#02_attributes)示例
+ - 新增[要素编辑](https://iclient.supermap.io/examples/mapboxgl/editor.html#drawAndEditFeatures)示例
+ - 修改[栅格查询](https://iclient.supermap.io/examples/mapboxgl/editor.html#02_getGridCellInfos)示例，支持面查询
+ - 新增[要素关联附件](https://iclient.supermap.io/examples/mapboxgl/editor.html#02_FeatureAttachment)示例
+  
+SuperMap iServer-地图
+ - 新增[海图](https://iclient.supermap.io/examples/mapboxgl/editor.html#01_chartService)示例
+
+### for MaplibreGL
+SuperMap iServer-数据
+ - 新增[属性表](https://iclient.supermap.io/examples/maplibregl/editor.html#02_attributes)示例
+ - 新增[要素编辑](https://iclient.supermap.io/examples/maplibregl/editor.html#drawAndEditFeatures)示例
+ - 修改[栅格查询](https://iclient.supermap.io/examples/maplibregl/editor.html#02_getGridCellInfos)示例，支持面查询
+ - 新增[要素关联附件](https://iclient.supermap.io/examples/maplibregl/editor.html#02_FeatureAttachment)示例
+
+
 # 11.1.1 #
 
 ## 新特性
