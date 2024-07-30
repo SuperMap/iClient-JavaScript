@@ -8,7 +8,7 @@
   "disqus": "",
   "tags": {
     "allowUnknownTags": true,
-    "linkdoc-maplibregl": "https://maplibre.org/maplibre-gl-js-docs/api/"
+    "linkdoc-maplibregl": "https://maplibre.org/maplibre-gl-js/docs/API/"
   },
   "i18n": {
     "defaultLang": "en",

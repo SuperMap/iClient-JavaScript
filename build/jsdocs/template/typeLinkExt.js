@@ -1,7 +1,7 @@
 var olapi = "https://openlayers.org/en/v6.14.1/apidoc/";
 var lfapi = "https://leafletjs.com/reference.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
-var mlbglapi = "https://maplibre.org/maplibre-gl-js-docs/api/";
+var mlbglapi = "https://maplibre.org/maplibre-gl-js/docs/API/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
 var geojsonapi = "https://geojson.org";
@@ -84,9 +84,9 @@ var typeLinks = {
     "mapboxgl.source": 'https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson',
 
     //maplibregl
-    "maplibregl.Map": mlbglapi + '#map',
-    "maplibregl.Evented": mlbglapi + '#Evented',
-    "maplibregl.LngLatBounds": mlbglapi + '#lnglatbounds',
+    "maplibregl.Map": mlbglapi + 'classes/Map/',
+    "maplibregl.Evented": mlbglapi + 'classes/Evented/',
+    "maplibregl.LngLatBounds": mlbglapi + 'classes/LngLatBounds/',
 
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
