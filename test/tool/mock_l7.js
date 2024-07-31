@@ -82,9 +82,6 @@ class Layer {
         return res;
       }
     }
-    if (this.rawConfig.visible === void 0) {
-      this.rawConfig.visible = true;
-    }
   }
   source(data, options = {}) {
     const parser = options.parser || { type: "geojson" };
@@ -211,6 +208,10 @@ class Layer {
       return cb();
     }
     return cb(this.layerSource.originData);
+  }
+
+  isVisible() {
+    return this.rawConfig.visible !== false;
   }
 }
 const PointLayer = Layer;

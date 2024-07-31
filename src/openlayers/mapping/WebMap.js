@@ -9,6 +9,7 @@ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityMa
 import { Events } from '@supermapgis/iclient-common/commontypes/Events';
 import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { parseCondition, parseConditionFeature } from '@supermapgis/iclient-common/util/FilterCondition';
+import { createLinesData } from '@supermapgis/iclient-common/mapping/utils/util';
 import { Util } from '../core/Util';
 import { getFeatureBySQL, queryFeatureBySQL, getFeatureProperties } from './webmap/Util';
 import { StyleUtils } from '../core/StyleUtils';
@@ -16,8 +17,6 @@ import { TileSuperMapRest, Tianditu, BaiduMap } from '../mapping';
 import { VectorTileSuperMapRest, Graphic as GraphicSource, MapboxStyles, OverlayGraphic } from '../overlay';
 import { DataFlowService } from '../services';
 
-import provincialCenterData from './webmap/config/ProvinceCenter.json'; // eslint-disable-line import/extensions
-import municipalCenterData from './webmap/config/MunicipalCenter.json'; // eslint-disable-line import/extensions
 import SampleDataInfo from './webmap/config/SampleDataInfo.json'; // eslint-disable-line import/extensions
 
 import GeoJSON from 'ol/format/GeoJSON';
@@ -4617,51 +4616,7 @@ export class WebMap extends Observable {
    * @returns {Array} 线数据
    */
   createLinesData(layerInfo, properties) {
-    let data = [];
-    if (properties && properties.length) {
-      // 重新获取数据
-      let from = layerInfo.from,
-        to = layerInfo.to,
-        fromCoord,
-        toCoord;
-      if (from.type === 'XY_FIELD' && from['xField'] && from['yField'] && to['xField'] && to['yField']) {
-        properties.forEach((property) => {
-          let fromX = property[from['xField']],
-            fromY = property[from['yField']],
-            toX = property[to['xField']],
-            toY = property[to['yField']];
-          if (!fromX || !fromY || !toX || !toY) {
-            return;
-          }
-
-          fromCoord = [property[from['xField']], property[from['yField']]];
-          toCoord = [property[to['xField']], property[to['yField']]];
-          data.push({
-            coords: [fromCoord, toCoord]
-          });
-        });
-      } else if (from.type === 'PLACE_FIELD' && from['field'] && to['field']) {
-        const centerDatas = provincialCenterData.concat(municipalCenterData);
-
-        properties.forEach((property) => {
-          let fromField = property[from['field']],
-            toField = property[to['field']];
-          fromCoord = centerDatas.find((item) => {
-            return Util.isMatchAdministrativeName(item.name, fromField);
-          });
-          toCoord = centerDatas.find((item) => {
-            return Util.isMatchAdministrativeName(item.name, toField);
-          });
-          if (!fromCoord || !toCoord) {
-            return;
-          }
-          data.push({
-            coords: [fromCoord.coord, toCoord.coord]
-          });
-        });
-      }
-    }
-    return data;
+    return createLinesData(layerInfo, properties);
   }
 
   /**

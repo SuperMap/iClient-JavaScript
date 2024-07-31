@@ -2,10 +2,14 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { Util } from '../core/Util';
-import { WebMap as WebMapV2 } from './webmap/v2/WebMap';
-import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
+import { WebMapService } from '@supermapgis/iclient-common/mapping/WebMapService';
+import { transformServerUrl } from '@supermapgis/iclient-common/mapping/utils/util';
+import cloneDeep from 'lodash.clonedeep';
+import { WebMap as WebMapV2 } from './webmap/WebMapV2';
+import { WebMap as WebMapV3 } from './webmap/WebMapV3';
+import { MapStyle } from './webmap/MapStyle';
+
+const WORLD_WIDTH = 360;
 
 /**
  * @class WebMap
@@ -22,11 +26,16 @@ import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
  * @param {number} id - iPortal|Online 地图 ID。
  * @param {Object} options - 基础参数。
  * @param {string} [options.target='map'] - 地图容器 ID。
- * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
- * @param {string} [options.credentialKey] - 凭证密钥。
- * @param {string} [options.credentialValue] - 凭证值。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.excludePortalProxyUrl] - 服务端传递过来的 URL 是否带有代理。
+ * @param {string} [options.server="https://www.supermapol.com"] - SuperMap iPortal/Online 服务器地址。当设置 `id` 时有效。
+ * @param {string} [options.accessToken] - 用于访问 SuperMap iPortal 、SuperMap Online 中受保护的服务。当设置 `id` 时有效。
+ * @param {string} [options.accessKey] - SuperMap iServer 提供的一种基于 Token（令牌）的用户身份验证机制。当设置 `id` 时有效。
+ * @param {String} [options.tiandituKey] - 用于访问天地图的服务。当设置 `id` 时有效。
+ * @param {String} [options.googleMapsAPIKey] - 用于访问谷歌地图。当设置 `id` 时有效。
+ * @param {String} [options.googleMapsLanguage] - 用于定义在谷歌地图图块上显示标签的语言。当设置 `id` 且底图为谷歌地图时有效。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。当设置 `id` 时有效。
+ * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。当设置 `id` 时有效。
+ * @param {boolean} [options.ignoreBaseProjection = 'false'] - 是否忽略底图坐标系和叠加图层坐标系不一致。
+ * @param {String} [options.iportalServiceProxyUrlPrefix] - iportal的代理服务地址前缀。
  * @param {Object} mapOptions - 地图参数。
  * @param {string} [mapOptions.center] - 中心点。
  * @param {string} [mapOptions.zoom] - 缩放级别。
@@ -41,155 +50,447 @@ import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
  * @usage
  */
 export class WebMap extends mapboxgl.Evented {
-  constructor(id, options = {}, mapOptions) {
+  constructor(
+    id,
+    options = {},
+    mapOptions = {},
+    map,
+    layerFilter = function () {
+      return true;
+    }
+  ) {
     super();
     this.mapId = id;
+    if (typeof id === 'string' || typeof id === 'number') {
+      this.mapId = id;
+    } else if (id !== null && typeof id === 'object') {
+      this.webMapInfo = id;
+    }
+    if (!this.mapId && !mapOptions.center && !mapOptions.zoom) {
+      mapOptions.center = [0, 0];
+      mapOptions.zoom = 0;
+    }
     this.options = Object.assign({}, options);
-    this.options.server = this._formatServerUrl(options.server);
+    this.options.serverUrl = transformServerUrl(options.server);
     this.options.target = options.target || 'map';
     this.options.withCredentials = options.withCredentials || false;
     this.mapOptions = mapOptions;
-    this._createWebMap();
-  }
-  /**
-   * @function WebMap.prototype.resize
-   * @description 地图 resize。
-   */
-  resize() {
-    this.map.resize();
-  }
-
-  /**
-   * @function WebMap.prototype.setMapId
-   * @param {string} mapId - webMap 地图 ID。
-   * @description 设置 WebMap ID。
-   */
-  setMapId(mapId) {
-    this.mapId = mapId;
-    this._createWebMap();
-  }
-
-  /**
-   * @function WebMap.prototype.setWebMapOptions
-   * @param {Object} webMapOptions - webMap 参数。
-   * @description 设置 webMap 参数。
-   */
-  setWebMapOptions(webMapOptions) {
-    const server = this._formatServerUrl(webMapOptions.server);
-    this.options.server = server;
-    this._createWebMap();
-  }
-
-  /**
-   * @function WebMap.prototype.setMapOptions
-   * @param {Object} mapOptions - map 参数。
-   * @description 设置 map 参数。
-   */
-  setMapOptions(mapOptions) {
-    let { center, zoom, maxBounds, minZoom, maxZoom, isWorldCopy, bearing, pitch } = mapOptions;
-    center && center.length && this.map.setCenter(center);
-    zoom && this.map.setZoom(zoom);
-    maxBounds && this.map.setMaxBounds(maxBounds);
-    minZoom && this.map.setMinZoom(minZoom);
-    maxZoom && this.map.setMaxZoom(maxZoom);
-    isWorldCopy && this.map.setRenderWorldCopies(isWorldCopy);
-    bearing && this.map.setBearing(bearing);
-    pitch && this.map.setPitch(pitch);
-  }
-
-  /**
-   * @private
-   * @function WebMap.prototype._createWebMap
-   * @description 登陆窗口后添加地图图层。
-   */
-  _createWebMap() {
-    const mapUrl = Util.transformUrl(
-      Object.assign({ url: `${this.options.server}web/maps/${this.mapId}/map` }, this.options)
-    );
-    this._getMapInfo(mapUrl);
-  }
-
-  /**
-   * @private
-   * @function WebMap.prototype._formatServerUrl
-   * @description 格式化服务地址
-   */
-  _formatServerUrl(server) {
-    let urlArr = server.split('');
-    if (urlArr[urlArr.length - 1] !== '/') {
-      server += '/';
+    this.layerFilter = layerFilter;
+    this.webMapService = new WebMapService(id, options);
+    this.eventTypes = [
+      'getmapinfofailed',
+      'getlayerdatasourcefailed',
+      'projectionisnotmatch',
+      'mapinitialized',
+      'notsupportbaidumap',
+      'dataflowfeatureupdated',
+      'addlayerssucceeded',
+      'getlayersfailed',
+      'beforeremovemap',
+      'crsnotsupport'
+    ];
+    this._mapInitializedHandler = this._mapInitializedHandler.bind(this);
+    this._addLayersSucceededHandler = this._addLayersSucceededHandler.bind(this);
+    if (map) {
+      this.map = map;
+      this._appendLayers = true;
     }
-    return server;
+    this._initWebMap(!this.map);
   }
 
-  /**
-   * @private
-   * @function WebMap.prototype._getMapInfo
-   * @description 获取地图的 JSON 信息。
-   * @param {string} mapUrl - 请求地图的 url。
-   */
-  _getMapInfo(mapUrl) {
-    FetchRequest.get(mapUrl, null, { withCredentials: this.options.withCredentials })
-      .then((response) => {
-        return response.json();
-      })
-      .then((mapInfo) => {
-        this.webMapInstance = this._initMap(mapInfo);
-        this._registerWebMapEvents();
-        this.webMapInstance.initializeMap(mapInfo);
-      })
+  resize(keepBounds = false) {
+    this.map && this.map.resize();
+    this._handler && this._handler.echartsLayerResize();
+    const mapContainerStyle = window.getComputedStyle(document.getElementById(this.options.target));
+    const { bounds } = this.mapOptions;
+    if (keepBounds && this.map && bounds && mapContainerStyle) {
+      const zoom = this._getResizedZoom(bounds, mapContainerStyle);
+      if (zoom !== this.map.getZoom()) {
+        this.map && this.map.setZoom(zoom);
+      }
+    }
+  }
+
+  setCrs(crs) {
+    if (this.map) {
+      this.mapOptions.crs = crs;
+      if (this.mapOptions.crs) {
+        if (crs.epsgCode) {
+          this.mapOptions.crs = new mapboxgl.CRS(
+            this.mapOptions.crs.epsgCode,
+            this.mapOptions.crs.WKT,
+            this.mapOptions.crs.extent,
+            this.mapOptions.crs.unit
+          );
+          this.map.setCRS(this.mapOptions.crs);
+        } else {
+          this.map.setCRS(mapboxgl.CRS.get(crs));
+        }
+      }
+    }
+  }
+
+  setCenter(center) {
+    if (this.map && this._centerValid(center)) {
+      this.mapOptions.center = center;
+      const { lng, lat } = this.map.getCenter();
+      if (center[0] !== +lng.toFixed(4) || center[1] !== +lat.toFixed(4)) {
+        this.map.setCenter(center, { from: 'setCenter' });
+      }
+    }
+  }
+
+  setRenderWorldCopies(renderWorldCopies) {
+    if (this.map) {
+      this.mapOptions.renderWorldCopies = renderWorldCopies;
+      this.map.setRenderWorldCopies(renderWorldCopies);
+    }
+  }
+
+  setBearing(bearing) {
+    if (this.map) {
+      this.mapOptions.bearing = bearing;
+      if (bearing !== +this.map.getBearing().toFixed(2)) {
+        (bearing || bearing === 0) && this.map.setBearing(bearing);
+      }
+    }
+  }
+
+  setPitch(pitch) {
+    if (this.map) {
+      this.mapOptions.pitch = pitch;
+      if (pitch !== +this.map.getPitch().toFixed(2)) {
+        (pitch || pitch === 0) && this.map.setPitch(pitch);
+      }
+    }
+  }
+
+  setStyle(style) {
+    if (this.map) {
+      this.mapOptions.style = style;
+      this._initWebMap();
+    }
+  }
+
+  setRasterTileSize(tileSize) {
+    if (!this.map || tileSize <= 0) {
+      return;
+    }
+    const sources = this.map.getStyle().sources;
+    Object.keys(sources).forEach((sourceId) => {
+      if (sources[sourceId].type === 'raster' && sources[sourceId].rasterSource === 'iserver') {
+        this._updateRasterSource(sourceId, { tileSize });
+      }
+    });
+  }
+
+  setMaxBounds(maxBounds) {
+    if (this.map) {
+      this.mapOptions.maxBounds = maxBounds;
+      maxBounds && this.map.setMaxBounds(maxBounds);
+    }
+  }
+
+  setMinZoom(minZoom) {
+    if (this.map) {
+      this.mapOptions.minZoom = minZoom;
+      (minZoom || minZoom === 0) && this.map.setMinZoom(minZoom);
+    }
+  }
+
+  setMaxZoom(maxZoom) {
+    if (this.map) {
+      this.mapOptions.maxZoom = maxZoom;
+      (maxZoom || maxZoom === 0) && this.map.setMaxZoom(maxZoom);
+    }
+  }
+
+  getAppreciableLayers() {
+    return (this._handler && this._handler.getAppreciableLayers()) || [];
+  }
+
+  getLegendInfo() {
+    return (this._handler && this._handler.getLegendInfo()) || [];
+  }
+
+  getLayerCatalog() {
+    return (this._handler && this._handler.getLayerCatalog()) || [];
+  }
+
+  updateOverlayLayer(layerInfo, features, mergeByField) {
+    this._handler && this._handler.updateOverlayLayer(layerInfo, features, mergeByField);
+  }
+
+  getCacheLayerIds() {
+    return (
+      this._cacheLayerIds ||
+      this._cacheCleanLayers.reduce((ids, item) => {
+        ids.push(...item.renderLayers);
+        return ids;
+      }, [])
+    );
+  }
+
+  copyLayer(id, layerInfo) {
+    return this._handler && this._handler.copyLayer(id, layerInfo);
+  }
+
+  cleanLayers() {
+    this._taskID = null;
+    const sourceList = [];
+    if (this.map) {
+      for (const item of this._cacheCleanLayers) {
+        item.renderLayers.forEach((layerId) => {
+          if (this.map.getLayer(layerId)) {
+            this.map.removeLayer(layerId);
+          }
+        });
+        if (this.map.getSource(item.renderSource.id) && !item.l7Layer) {
+          sourceList.push(item.renderSource.id);
+        }
+      }
+      Array.from(new Set(sourceList)).forEach((sourceId) => {
+        this.map.removeSource(sourceId);
+      });
+    }
+    this._cacheCleanLayers = [];
+  }
+
+  clean() {
+    if (this.map) {
+      this.fire('beforeremovemap', { map: this.map });
+      if (this._handler) {
+        this._handler.clean();
+        this._handler = null;
+      }
+      this.map = null;
+      if (this.mapOptions && (this.mapId || this.webMapInfo)) {
+        this.mapOptions.center = null;
+        this.mapOptions.zoom = null;
+      }
+    }
+  }
+
+  _initWebMap(clean = true) {
+    clean && this.clean();
+    if (this.webMapInfo) {
+      // 传入是webmap对象
+      const mapInfo = this.webMapInfo;
+      mapInfo.mapParams = {
+        title: this.webMapInfo.title,
+        description: this.webMapInfo.description
+      };
+      this.mapParams = mapInfo.mapParams;
+      Promise.resolve()
+        .then(() => {
+          this._getMapInfo(mapInfo);
+        })
+        .catch((error) => {
+          this.fire('getmapinfofailed', { error });
+        });
+      return;
+    } else if (!this.mapId || !this.options.serverUrl) {
+      Promise.resolve()
+        .then(() => {
+          this._createMap('MapStyle');
+        })
+        .catch((error) => {
+          this.fire('getmapinfofailed', { error });
+        });
+      return;
+    }
+    this._taskID = new Date();
+    this.getMapInfo(this._taskID);
+  }
+
+  setZoom(zoom) {
+    if (this.map) {
+      this.mapOptions.zoom = zoom;
+      if (zoom !== +this.map.getZoom().toFixed(2)) {
+        (zoom || zoom === 0) && this.map.setZoom(zoom, { from: 'setZoom' });
+      }
+    }
+  }
+
+  setServerUrl(serverUrl) {
+    this.options.serverUrl = transformServerUrl(serverUrl);
+    this.webMapService.setServerUrl(this.options.serverUrl);
+  }
+
+  setWithCredentials(withCredentials) {
+    this.options.withCredentials = withCredentials;
+    this.webMapService.setWithCredentials(withCredentials);
+  }
+
+  setProxy(proxy) {
+    this.options.proxy = proxy;
+    this.webMapService.setProxy(proxy);
+  }
+
+  setMapId(mapId) {
+    if (typeof mapId === 'string' || typeof mapId === 'number') {
+      this.mapId = mapId;
+      this.webMapInfo = null;
+    } else if (mapId !== null && typeof mapId === 'object') {
+      this.webMapInfo = mapId;
+    }
+    this.webMapService.setMapId(mapId);
+    if (!mapId) {
+      return;
+    }
+    setTimeout(() => {
+      this._initWebMap();
+    }, 0);
+  }
+
+  getMapInfo(_taskID) {
+    this.options.serverUrl = this.options.serverUrl && this.webMapService.handleServerUrl(this.options.serverUrl);
+    this.webMapService
+      .getMapInfo()
+      .then(
+        (mapInfo) => {
+          if (this._taskID !== _taskID) {
+            return;
+          }
+          // 存储地图的名称以及描述等信息，返回给用户
+          this.mapParams = mapInfo.mapParams;
+          this._getMapInfo(mapInfo);
+        },
+        (error) => {
+          throw error;
+        }
+      )
       .catch((error) => {
-        /**
-         * @event WebMap#getmapfailed
-         * @description 获取地图信息失败。
-         * @property {Object} error - 失败原因。
-         */
-        this.fire('getmapfailed', { error: error });
+        this.fire('getmapinfofailed', { error });
+        console.log(error);
       });
   }
 
-  /**
-   * @private
-   * @function WebMap.prototype._initMap
-   * @param {object} mapInfo - 地图信息。
-   * @description 初始化 WebMap 实例
-   */
-  _initMap(mapInfo) {
-    const WebMap = this._getMapFactory(mapInfo.version);
-    const webMapInstance = new WebMap(this.mapId, this.options, this.mapOptions);
-    webMapInstance.setEventedParent(this);
-    return webMapInstance;
+  _createMapStyle(commonOptions, mapOptions) {
+    const mapStyleHandler = new MapStyle(this.mapId, commonOptions, mapOptions);
+    return mapStyleHandler;
   }
 
-  _getMapFactory(version) {
-    if (this._isWebMapV3(version)) {
-      return WebMapV3;
+  _createWebMapV2(commonOptions, mapOptions) {
+    const webMapHandler = new WebMapV2(this.mapId, commonOptions, mapOptions, this.layerFilter);
+    return webMapHandler;
+  }
+
+  _createWebMapV3(commonOptions, mapOptions) {
+    const webMapHandler = new WebMapV3(
+      this.mapId,
+      {
+        ...commonOptions,
+        server: this.options.serverUrl,
+        iportalServiceProxyUrl: this.webMapService.iportalServiceProxyUrl
+      },
+      mapOptions
+    );
+    return webMapHandler;
+  }
+
+  _mapInitializedHandler({ map }) {
+    this.map = map;
+    this.fire('mapinitialized', { map: this.map });
+  }
+
+  _addLayersSucceededHandler({ mapparams, layers, cacheLayerIds }) {
+    this.mapParams = mapparams;
+    this._cacheCleanLayers = layers;
+    this._cacheLayerIds = cacheLayerIds;
+    this.fire('addlayerssucceeded', {
+      map: this.map,
+      mapparams: this.mapParams,
+      layers,
+      cacheLayerIds
+    });
+  }
+
+  _getMapInfo(mapInfo) {
+    const type = +mapInfo.version.split('.')[0] >= 3 ? 'WebMap3' : 'WebMap2';
+    this._createMap(type, mapInfo);
+  }
+
+  _createMap(type, mapInfo) {
+    const commonOptions = {
+      ...this.options,
+      iportalServiceProxyUrlPrefix: this.webMapService.iportalServiceProxyUrl,
+      serverUrl: this.options.serverUrl,
+      withCredentials: this.options.withCredentials,
+      target: this.options.target
+    };
+    const commonEvents = {
+      ...this.eventTypes.reduce((events, name) => {
+        events[name] = (params) => {
+          this.fire(name, params);
+        };
+        return events;
+      }, {}),
+      mapinitialized: this._mapInitializedHandler,
+      addlayerssucceeded: this._addLayersSucceededHandler
+    };
+    const mapOptions = cloneDeep(this.mapOptions);
+    switch (type) {
+      case 'MapStyle':
+        this._handler = this._createMapStyle(commonOptions, mapOptions);
+        break;
+      case 'WebMap3':
+        this._handler = this._createWebMapV3(commonOptions, mapOptions);
+        break;
+      default:
+        this._handler = this._createWebMapV2(commonOptions, mapOptions);
+        break;
     }
-    return WebMapV2;
+    // this._handler.setEventedParent(this);
+    for (const type in commonEvents) {
+      this._handler.on(type, commonEvents[type]);
+    }
+    let _mapInfo = {};
+    if (mapInfo) {
+      _mapInfo = {
+        ...mapInfo,
+        layers: typeof this.layerFilter === 'function' ? mapInfo.layers.filter(this.layerFilter) : mapInfo.layers
+      };
+    }
+    this._handler.initializeMap(_mapInfo, this.map);
   }
 
-  /**
-   * @private
-   * @function WebMap.prototype._registerWebMapEvents
-   * @description 注册 WebMap 事件
-   */
-  _registerWebMapEvents() {
-    if (!this.webMapInstance) {
+  _updateRasterSource(sourceId, options) {
+    if (!sourceId) {
       return;
     }
-    this.webMapInstance.on('mapinitialized', () => {
-      this.map = this.webMapInstance.map;
-    });
-    this.webMapInstance.on('addlayerssucceeded', ({ mapparams }) => {
-      this.mapParams = mapparams;
-    });
+    const source = this.map.getSource(sourceId);
+
+    Object.assign(source, options);
+    this.map.style.sourceCaches[sourceId].clearTiles();
+    this.map.style.sourceCaches[sourceId].update(this.map.transform);
+    this.map.triggerRepaint();
+  }
+
+  _getResizedZoom(bounds, mapContainerStyle, tileSize = 512, worldWidth = WORLD_WIDTH) {
+    const { width, height } = mapContainerStyle;
+    const lngArcLength = Math.abs(bounds.getEast() - bounds.getWest());
+    const latArcLength = Math.abs(this._getBoundsRadian(bounds.getSouth()) - this._getBoundsRadian(bounds.getNorth()));
+    const lngResizeZoom = +Math.log2(worldWidth / ((lngArcLength / parseInt(width)) * tileSize)).toFixed(2);
+    const latResizeZoom = +Math.log2(worldWidth / ((latArcLength / parseInt(height)) * tileSize)).toFixed(2);
+    if (lngResizeZoom <= latResizeZoom) {
+      return lngResizeZoom;
+    }
+    return latResizeZoom;
+  }
+
+  _getBoundsRadian(point) {
+    return (180 / Math.PI) * Math.log(Math.tan(Math.PI / 4 + (point * Math.PI) / 360));
+  }
+
+  _centerValid(center) {
+    if (center && (center.length > 0 || typeof center === mapboxgl.LngLat || center.lng)) {
+      return true;
+    }
+    return false;
   }
 
   _getWebMapInstance() {
-    return this.webMapInstance;
-  }
-
-  _isWebMapV3(version) {
-    return version.startsWith('3.');
+    return this._handler;
   }
 }

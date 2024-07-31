@@ -29,6 +29,7 @@ export const EchartsLayer = L.Layer.extend({
     _echartsContainer: null,
     _map: null,
     _ec: null,
+    chart: null,
     _echartsOptions: null,
 
     options: {
@@ -77,6 +78,7 @@ export const EchartsLayer = L.Layer.extend({
         this._initEchartsContainer();
         this._ec = echarts.init(this._echartsContainer);
         this._ec.leafletMap= map;
+        this.chart = this._ec;
         const me = this;
         map.on("zoomstart", function () {
             me._disableEchartsContainer();

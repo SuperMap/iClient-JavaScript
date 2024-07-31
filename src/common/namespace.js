@@ -464,7 +464,11 @@ import {
   CellSizeType,
   ColourModeChart,
   DisplayModeChart,
-  VideoFeature
+  VideoFeature,
+  createWebMapBaseExtending,
+  WebMapService,
+  epsgDefine,
+  toEpsgCode
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -976,5 +980,9 @@ SuperMap.CellSizeType = CellSizeType
 SuperMap.ColourModeChart = ColourModeChart;
 SuperMap.DisplayModeChart = DisplayModeChart;
 SuperMap.VideoFeature = VideoFeature;
+SuperMap.createWebMapBaseExtending = createWebMapBaseExtending;
+SuperMap.WebMapService = WebMapService;
+SuperMap.epsgDefine = epsgDefine;
+SuperMap.toEpsgCode = toEpsgCode;
 
 export * from './index.all';

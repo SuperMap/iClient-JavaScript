@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
-import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
+import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/WebMapV3';
 import '../../resources/WebMapV3.js';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';

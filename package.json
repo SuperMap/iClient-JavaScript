@@ -142,6 +142,7 @@
     "@supermapgis/iclient-common": "file:src/common",
     "@supermapgis/tile-decryptor": "^1.0.0",
     "@turf/center": "^6.5.0",
+    "@turf/meta": "^6.5.0",
     "@turf/turf": "6.5.0",
     "canvg": "3.0.10",
     "echarts": "5.5.0",

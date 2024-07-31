@@ -112,7 +112,7 @@ export class L7Layer extends CustomOverlayLayer {
     const rawConfig = this.l7layer.rawConfig;
     const layerInfo = {
       ...rawConfig,
-      layout: { ...rawConfig.layout, visibility: rawConfig.visible ? 'visible' : 'none' },
+      layout: { ...rawConfig.layout, visibility: this.l7layer.isVisible() ? 'visible' : 'none' },
       minzoom: this.l7layer.minZoom,
       maxzoom: this.l7layer.maxZoom,
       id: this.id,
@@ -292,7 +292,7 @@ export class L7Layer extends CustomOverlayLayer {
   }
 
   queryRenderedFeatures(geometry, options, cb) {
-    if (!this.l7layer || !this.l7layer.rawConfig.visible) {
+    if (!this.l7layer || !this.l7layer.isVisible()) {
       return cb([]);
     }
     let box = geometry;
@@ -326,7 +326,7 @@ export class L7Layer extends CustomOverlayLayer {
   }
 
   querySourceFeatures() {
-    if (!this.l7layer || !this.l7layer.rawConfig.visible) {
+    if (!this.l7layer || !this.l7layer.isVisible()) {
       return [];
     }
     const { layerSource, pickingService } = this.l7layer;

@@ -3,8 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { Util } from '../../../core/Util';
-import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../../utils/L7LayerUtil';
+import { Util } from '../../core/Util';
+import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../utils/L7LayerUtil';
+import { createMapClassExtending } from './MapBase';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -160,7 +161,7 @@ export const LEGEND_STYLE_TYPES = {
   STYLE: 'style'
 };
 
-export class WebMap extends mapboxgl.Evented {
+export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
   constructor(mapId, options, mapOptions = {}) {
     super();
     this.mapId = mapId;
@@ -205,6 +206,23 @@ export class WebMap extends mapboxgl.Evented {
     this._createMap();
   }
 
+  clean() {
+    if (this.map) {
+      const scene = this.map.$l7scene;
+      if (scene) {
+        scene.removeAllLayer();
+      }
+      this.map.remove();
+      this.map = null;
+      this._legendList = [];
+      this._mapResourceInfo = {};
+      this._sprite = '';
+      this._spriteDatas = {};
+      this.mapOptions = {};
+      this.options = {};
+    }
+  }
+
   /**
    * @function WebMap.prototype.getAppreciableLayers
    * @description 获取可感知图层列表。
@@ -223,7 +241,7 @@ export class WebMap extends mapboxgl.Evented {
 
   async copyLayer(id, layerInfo = {}) {
     const matchLayer = this._mapInfo.layers.find(layer => layer.id === id);
-    if (!matchLayer || this.getLayerOnMap(layerInfo.id)) {
+    if (!matchLayer || this._getLayerOnMap(layerInfo.id)) {
       return;
     }
     const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
@@ -523,7 +541,7 @@ export class WebMap extends mapboxgl.Evented {
     }
     for (const layer of layersToMap) {
       const originId = layer.id;
-      if (this.getLayerOnMap(layer.id)) {
+      if (this._getLayerOnMap(layer.id)) {
         const layerId = layer.id + timestamp;
         layer.id = layerId;
       }
@@ -553,7 +571,7 @@ export class WebMap extends mapboxgl.Evented {
     };
   }
 
-  getLayerOnMap(layerId) {
+  _getLayerOnMap(layerId) {
     const overlayLayer = this.map.overlayLayersManager[layerId];
     if (overlayLayer) {
       return overlayLayer;
@@ -659,24 +677,7 @@ export class WebMap extends mapboxgl.Evented {
     return results;
   }
 
-  clean() {
-    if (this.map) {
-      const scene = this.map.$l7scene;
-      if (scene) {
-        scene.removeAllLayer();
-      }
-      this.map.remove();
-      this.map = null;
-      this._legendList = [];
-      this._mapResourceInfo = {};
-      this._sprite = '';
-      this._spriteDatas = {};
-      this.mapOptions = {};
-      this.options = {};
-    }
-  }
-
-  excludeSource(key) {
+  _excludeSource(key) {
     for (let i = 0; i < this.excludeSourceNames.length; i++) {
       if (key && key.match(this.excludeSourceNames[i])) {
         return false;
@@ -730,7 +731,7 @@ export class WebMap extends mapboxgl.Evented {
     const selfLayerIds = this._getSelfLayerIds();
     const extraLayers = layersOnMap
       .filter((layer) => !selfLayerIds.some((id) => id === layer.id))
-      .filter((layer) => this.excludeSource(layer.source))
+      .filter((layer) => this._excludeSource(layer.source))
       .filter((layer) => !layer.id.includes('-SM-'));
     return selfLayers.concat(extraLayers);
   }

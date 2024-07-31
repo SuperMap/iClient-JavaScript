@@ -4,6 +4,8 @@
  import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
  import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
  import { getMeterPerMapUnit, scalesToResolutions, getZoomByResolution, getDpi } from '@supermapgis/iclient-common/util/MapCalculateUtil';
+ import { isString, isArray } from '@supermapgis/iclient-common/util/BaseUtil';
+ import { isMatchAdministrativeName } from '@supermapgis/iclient-common/mapping/utils/util';
  import * as olUtil from 'ol/util';
  import Geometry from 'ol/geom/Geometry';
  import { getVectorContext } from 'ol/render';
@@ -464,12 +466,6 @@
   }
  }
 
-function isString(str) {
-  return typeof str === 'string' && str.constructor === String;
-}
-function isArray(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
-}
  function unsetMask(layers) {
    const todoLayers = Array.isArray(layers) ? layers : [layers];
    for (let index = 0; index < todoLayers.length; index++) {
@@ -485,16 +481,4 @@ function isArray(obj) {
      delete layer.extentBak_;
      layer.changed();
    }
- }
-
- function isMatchAdministrativeName(featureName, fieldName) {
-   if (isString(fieldName)) {
-     let shortName = featureName.substr(0, 2);
-     // 张家口市和张家界市 特殊处理
-     if (shortName === '张家') {
-       shortName = featureName.substr(0, 3);
-     }
-     return !!fieldName.match(new RegExp(shortName));
-   }
-   return false;
  }
