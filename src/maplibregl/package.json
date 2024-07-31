@@ -15,6 +15,7 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
+    "@maplibre/maplibre-gl-style-spec": "^20.3.0",
     "maplibre-gl": "4.3.2",
     "mapv": "2.0.62",
     "three": "0.150.1",

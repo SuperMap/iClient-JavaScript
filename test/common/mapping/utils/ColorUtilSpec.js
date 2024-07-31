@@ -1,4 +1,4 @@
-import Color from '../../../../src/mapboxgl/mapping/utils/Color';
+import Color from '../../../../src/common/mapping/utils/Color';
 
 describe('ColorUtil', () => {
   it('toColor', (done) => {

@@ -5,7 +5,7 @@ import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
 import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
-import { CustomOverlayLayer } from '../../../src/mapboxgl/overlay/Base';
+import { CustomOverlayLayer } from '../../../src/common/overlay/Base';
 
 describe('MapExtend mapboxgl', () => {
   let originalTimeout, testDiv;

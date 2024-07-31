@@ -1,10 +1,9 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { Util } from '../../../core/Util';
-import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../../utils/L7LayerUtil';
+import { FetchRequest } from '../util/FetchRequest';
+import { getLayerInfosFromCatalogs, mergeFeatures, transformUrl } from './utils/util';
+import { SourceListModel } from './utils/SourceListModelV3';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -159,18 +158,16 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-
-export class WebMap extends mapboxgl.Evented {
-  constructor(mapId, options, mapOptions = {}) {
+export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRepoName, l7LayerUtil }) {
+  return class WebMap extends SuperClass {
+    constructor(mapId, options, mapOptions = {}) {
     super();
     this.mapId = mapId;
     this.options = options;
     this.mapOptions = mapOptions;
-    this._legendList = [];
     this._mapResourceInfo = {};
     this._sprite = '';
     this._spriteDatas = {};
-    this.excludeSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', /tracklayer-\d+-line/];
     this._appendLayers = false;
     this._baseProjection = '';
   }
@@ -205,32 +202,33 @@ export class WebMap extends mapboxgl.Evented {
     this._createMap();
   }
 
-  /**
-   * @function WebMap.prototype.getAppreciableLayers
-   * @description 获取可感知图层列表。
-   */
-  getAppreciableLayers() {
-    return this._generateLayers();
-  }
-
-  getLayerCatalog() {
-    return this._generateLayerCatalog();
-  }
-
-  getLegendInfo() {
-    return this._legendList;
+  clean(removeMap = true) {
+    if (this.map) {
+      const scene = this.map.$l7scene;
+      if (scene) {
+        scene.removeAllLayer();
+      }
+      removeMap && this.map.remove();
+      this.map = null;
+      this._legendList = [];
+      this._mapResourceInfo = {};
+      this._sprite = '';
+      this._spriteDatas = {};
+      this.mapOptions = {};
+      this.options = {};
+    }
   }
 
   async copyLayer(id, layerInfo = {}) {
     const matchLayer = this._mapInfo.layers.find(layer => layer.id === id);
-    if (!matchLayer || this.getLayerOnMap(layerInfo.id)) {
+    if (!matchLayer || this._getLayerOnMap(layerInfo.id)) {
       return;
     }
     const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
     const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
-    if (isL7Layer(copyLayer)) {
+    if (l7LayerUtil.isL7Layer(copyLayer)) {
       const layers = [copyLayer];
-      await addL7Layers({
+      await l7LayerUtil.addL7Layers({
         map: this.map,
         webMapInfo: { ...this._mapInfo, layers, sources: this._mapInfo.sources },
         l7Layers: layers,
@@ -249,58 +247,13 @@ export class WebMap extends mapboxgl.Evented {
   updateOverlayLayer(layerInfo, features, mergeByField) {
     if (layerInfo.renderSource.type === 'geojson') {
       const sourceId = layerInfo.renderSource.id;
-      features = this._mergeFeatures(sourceId, features, mergeByField);
+      features = mergeFeatures({ sourceId, features, mergeByField, map: this.map });
       const featureCollection = {
         type: 'FeatureCollection',
         features
       };
       this.map.getSource(sourceId).setData(featureCollection);
     }
-  }
-
-  _mergeFeatures(sourceId, features, mergeByField) {
-    if (!(features instanceof Array)) {
-      return features;
-    }
-    features = features.map((feature, index) => {
-      if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
-        feature.properties.index = index;
-      }
-      return feature;
-    });
-    if (!features.length || !mergeByField && features[0].geometry) {
-      return features;
-    }
-    const source = this.map.getSource(sourceId);
-    if ((!source || !source._data.features) && features[0].geometry) {
-      return features;
-    }
-    const prevFeatures = source && source._data && source._data.features;
-    const nextFeatures = [];
-    if (!mergeByField && prevFeatures) {
-      return prevFeatures;
-    }
-    features.forEach((feature) => {
-      const prevFeature = prevFeatures.find((item) => {
-        if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
-          return (
-            JSON.stringify(item.properties[mergeByField] || '') ===
-            JSON.stringify(feature.properties[mergeByField] || '')
-          );
-        } else {
-          return +item.properties[mergeByField] === +feature.properties[mergeByField];
-        }
-      });
-      if (prevFeature) {
-        nextFeatures.push({
-          ...prevFeature,
-          ...feature
-        });
-      } else if (feature.geometry) {
-        nextFeatures.push(feature);
-      }
-    });
-    return nextFeatures;
   }
 
   /**
@@ -311,7 +264,7 @@ export class WebMap extends mapboxgl.Evented {
   _createMap() {
     let {
       name = '',
-      center = new mapboxgl.LngLat(0, 0),
+      center = new mapRepo.LngLat(0, 0),
       zoom = 0,
       bearing = 0,
       pitch = 0,
@@ -355,7 +308,7 @@ export class WebMap extends mapboxgl.Evented {
       pitch,
       localIdeographFontFamily: fontFamilys || ''
     };
-    this.map = new mapboxgl.Map(mapOptions);
+    this.map = new MapManager(mapOptions);
     this._sprite = sprite;
     this.fire('mapinitialized', { map: this.map });
     this.map.on('load', () => {
@@ -368,8 +321,8 @@ export class WebMap extends mapboxgl.Evented {
     let baseProjection = crs;
     if (typeof crs === 'object') {
       baseProjection = crs.name;
-      if (!mapboxgl.CRS) {
-        const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
+      if (!mapRepo.CRS) {
+        const error = `The EPSG code ${baseProjection} needs to include ${mapRepoName}-enhance.js. Refer to the example: https://iclient.supermap.io/examples/${mapRepoName.replace('-', '')}/editor.html#mvtVectorTile_2362`;
         this.fire('getmapinfofailed', { error: error });
         console.error(error);
         return;
@@ -381,8 +334,8 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _setCRS({ name, wkt, extent }) {
-    const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
-    mapboxgl.CRS.set(crs);
+    const crs = new mapRepo.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
+    mapRepo.CRS.set(crs);
   }
 
   /**
@@ -443,7 +396,7 @@ export class WebMap extends mapboxgl.Evented {
    * @description 获取地图关联信息的 JSON 信息。
    */
   _getMapRelatedInfo() {
-    const mapResourceUrl = Util.transformUrl(
+    const mapResourceUrl = transformUrl(
       Object.assign({ url: `${this.options.server}web/maps/${this.mapId}` }, this.options)
     );
     return FetchRequest.get(mapResourceUrl, null, { withCredentials: this.options.withCredentials }).then((response) =>
@@ -465,7 +418,7 @@ export class WebMap extends mapboxgl.Evented {
         metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
       });
       Object.assign(this._mapResourceInfo, { catalogs });
-      const mapboxglLayers = layers.filter((layer) => !isL7Layer(layer));
+      const mapboxglLayers = layers.filter((layer) => !l7LayerUtil.isL7Layer(layer));
       mapboxglLayers.forEach((layer) => {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         // L7才会用到此属性
@@ -474,9 +427,9 @@ export class WebMap extends mapboxgl.Evented {
         }
         this.map.addLayer(layer);
       });
-      const l7Layers = layers.filter((layer) => isL7Layer(layer));
+      const l7Layers = layers.filter((layer) => l7LayerUtil.isL7Layer(layer));
       if (l7Layers.length > 0) {
-        await addL7Layers({
+        await l7LayerUtil.addL7Layers({
           map: this.map,
           webMapInfo: { ...this._mapInfo, layers, sources },
           l7Layers,
@@ -523,7 +476,7 @@ export class WebMap extends mapboxgl.Evented {
     }
     for (const layer of layersToMap) {
       const originId = layer.id;
-      if (this.getLayerOnMap(layer.id)) {
+      if (this._getLayerOnMap(layer.id)) {
         const layerId = layer.id + timestamp;
         layer.id = layerId;
       }
@@ -553,12 +506,12 @@ export class WebMap extends mapboxgl.Evented {
     };
   }
 
-  getLayerOnMap(layerId) {
+  _getLayerOnMap(layerId) {
     const overlayLayer = this.map.overlayLayersManager[layerId];
     if (overlayLayer) {
       return overlayLayer;
     }
-    const l7MarkerLayers = getL7MarkerLayers();
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
     const l7MarkerLayer = l7MarkerLayers[layerId];
     if (l7MarkerLayer) {
       return l7MarkerLayer;
@@ -636,194 +589,15 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
-    const appreciableLayers = this.getAppreciableLayers();
-    const selfLayerIds = this._getSelfLayerIds();
-    const matchLayers = appreciableLayers.filter((item) => selfLayerIds.some((id) => id === item.id));
-    this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: matchLayers });
-  }
-
-  _getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
-    const results = [];
-    for (let i = 0; i < catalogs.length; i++) {
-      const catalogType = catalogs[i][catalogTypeField];
-      if (catalogType !== 'group') {
-        results.push(catalogs[i]);
-        continue;
-      }
-      const { children } = catalogs[i];
-      if (children && children.length > 0) {
-        const result = this._getLayerInfosFromCatalogs(children, catalogTypeField);
-        results.push(...result);
-      }
-    }
-    return results;
-  }
-
-  clean() {
-    if (this.map) {
-      const scene = this.map.$l7scene;
-      if (scene) {
-        scene.removeAllLayer();
-      }
-      this.map.remove();
-      this.map = null;
-      this._legendList = [];
-      this._mapResourceInfo = {};
-      this._sprite = '';
-      this._spriteDatas = {};
-      this.mapOptions = {};
-      this.options = {};
-    }
-  }
-
-  excludeSource(key) {
-    for (let i = 0; i < this.excludeSourceNames.length; i++) {
-      if (key && key.match(this.excludeSourceNames[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  _getSelfLayerIds() {
-    return this._mapInfo.layers.map((item) => item.id);
-  }
-
-  _getLayersOnMap() {
-    const selfLayers = [].concat(this._mapInfo.layers).map((item) => {
-      const layer = Object.assign({}, item);
-      if (item['source-layer']) {
-        layer.sourceLayer = item['source-layer'];
-        delete layer['source-layer'];
-      }
-      return layer;
+    this._sourceListModel = new SourceListModel({
+      map: this.map,
+      appendLayers: this._appendLayers,
+      mapInfo: this._mapInfo,
+      mapResourceInfo: this._mapResourceInfo,
+      legendList: this._legendList,
+      l7LayerUtil
     });
-    if (this._appendLayers) {
-      return selfLayers;
-    }
-    const layersOnMap = this.map.getStyle().layers.map((layer) => {
-      const nextLayer = this.map.getLayer(layer.id);
-      return { ...nextLayer, layout: Object.assign({}, layer.layout, nextLayer.layout) };
-    });
-    for (const layerId in this.map.overlayLayersManager) {
-      const overlayLayer = this.map.overlayLayersManager[layerId];
-      if (overlayLayer.id && !layersOnMap.some((item) => item.id === overlayLayer.id)) {
-        const visibility =
-          overlayLayer.visibility === 'visible' ||
-          overlayLayer.visibility ||
-          overlayLayer.visible ||
-          (!('visible' in overlayLayer) && !('visibility' in overlayLayer))
-            ? 'visible'
-            : 'none';
-        let source = overlayLayer.source || overlayLayer.sourceId;
-        if (typeof source === 'object') {
-          source = overlayLayer.id;
-        }
-        layersOnMap.push({
-          id: overlayLayer.id,
-          layout: { visibility },
-          source,
-          type: overlayLayer.type
-        });
-      }
-    }
-    const selfLayerIds = this._getSelfLayerIds();
-    const extraLayers = layersOnMap
-      .filter((layer) => !selfLayerIds.some((id) => id === layer.id))
-      .filter((layer) => this.excludeSource(layer.source))
-      .filter((layer) => !layer.id.includes('-SM-'));
-    return selfLayers.concat(extraLayers);
-  }
-
-  /**
-   * @private
-   * @function WebMap.prototype._generateV2LayersStructure
-   * @description emit 图层加载成功事件。
-   */
-  _generateLayers() {
-    const allLayersOnMap = this._getLayersOnMap();
-    const { catalogs = [], datas = [] } = this._mapResourceInfo;
-    const projectCataglogs = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
-    const metadataCatalogs = this._getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
-    const l7MarkerLayers = getL7MarkerLayers();
-    const layers = allLayersOnMap.reduce((layersList, layer) => {
-      const containLayer = metadataCatalogs.find((item) => {
-        if (item.parts && item.id !== layer.id) {
-          return item.parts.includes(layer.id);
-        }
-        return false;
-      });
-      if (containLayer) {
-        return layersList;
-      }
-      const matchProjectCatalog = projectCataglogs.find((item) => item.id === layer.id) || {};
-      const matchMetadataCatalog = metadataCatalogs.find((item) => item.id === layer.id) || {};
-      const { msDatasetId } = matchProjectCatalog;
-      const { title = layer.id, parts } = matchMetadataCatalog;
-      let dataSource = {};
-      if (msDatasetId) {
-        for (const data of datas) {
-          const matchData = data.datasets && data.datasets.find((dataset) => dataset.msDatasetId === msDatasetId);
-          if (matchData) {
-            dataSource = {
-              serverId: matchData.datasetId,
-              type: data.sourceType
-            }
-            if (data.sourceType === 'REST_DATA') {
-              const [serverUrl, datasourceName] = data.url.split('/rest/data/datasources/');
-              dataSource.url = `${serverUrl}/rest/data`;
-              dataSource.dataSourceName = `${datasourceName}:${matchData.datasetName}`;
-              delete dataSource.serverId;
-            }
-            break;
-          }
-        }
-      }
-      const sourceOnMap = this.map.getSource(layer.source);
-      if (!Object.keys(dataSource).length && sourceOnMap && sourceOnMap.type === 'vector') {
-        const matchSource = this._mapInfo.sources[layer.source] || sourceOnMap;
-        if (matchSource.tiles && matchSource.tiles[0].includes('/rest/maps/')) {
-          const tileUrl = matchSource.tiles[0];
-          const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
-          const [mapName] = leftParts.split('/tileFeature');
-          dataSource.url = `${serverUrl}/rest/maps`;
-          dataSource.mapName = mapName;
-          dataSource.type = 'REST_MAP';
-        }
-      }
-      const layout = layer.layout || {};
-      const overlayLayers = this._formatLayer({
-        id: layer.id,
-        type: layer.type,
-        title,
-        visible: layout.visibility ? layout.visibility === 'visible' : true,
-        renderSource: sourceOnMap && {
-          id: layer.source,
-          type: sourceOnMap && sourceOnMap.type,
-          sourceLayer: layer.sourceLayer
-        },
-        renderLayers: this._getRenderLayers(parts, layer.id),
-        dataSource,
-        themeSetting: {}
-      });
-      if (l7MarkerLayers[layer.id]) {
-        overlayLayers.l7MarkerLayer = l7MarkerLayers[layer.id];
-      }
-      if (isL7Layer(layer)) {
-        overlayLayers.l7Layer = true;
-      }
-      const matchThemeFields = this._legendList
-        .filter((item) => item.layerId === layer.id)
-        .map((item) => item.themeField)
-        .filter((item) => !!item);
-      const validThemeFields = Array.from(new Set(matchThemeFields));
-      if (validThemeFields.length > 0) {
-        overlayLayers.themeSetting = { themeField: validThemeFields };
-      }
-      layersList.push(overlayLayers);
-      return layersList;
-    }, []);
-    return layers;
+    this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this.getSelfAppreciableLayers() });
   }
 
   _renameLayerIdsContent(layerIds, layerIdRenameMapList) {
@@ -834,114 +608,6 @@ export class WebMap extends mapboxgl.Evented {
       const matchItem = layerIdRenameMapList.find((item) => item.originId === id);
       return matchItem.renderId;
     });
-  }
-
-  _generateLayerCatalog() {
-    const { layerCatalog } = this._mapInfo.metadata;
-    const layerIdsFromCatalog = layerCatalog.reduce((ids, item) => {
-      const list = this._collectChildrenKey([item], ['id', 'parts']);
-      ids.push(...list);
-      return ids;
-    }, []);
-    const allLayersOnMap = this._getLayersOnMap();
-    const extraLayers = allLayersOnMap.filter((layer) => !layerIdsFromCatalog.some((id) => id === layer.id));
-    const layerCatalogs = layerCatalog.concat(extraLayers);
-    const appreciableLayers = this.getAppreciableLayers();
-    const formatLayerCatalog = this._createFormatCatalogs(layerCatalogs, appreciableLayers);
-    return formatLayerCatalog;
-  }
-
-  _createFormatCatalogs(catalogs, appreciableLayers) {
-    const l7MarkerLayers = getL7MarkerLayers();
-    const formatCatalogs = catalogs.map((catalog) => {
-      let formatItem;
-      const { id, title = id, type, visible, children, parts } = catalog;
-      if (catalog.type === 'group') {
-        formatItem = {
-          children: this._createFormatCatalogs(children, appreciableLayers),
-          id,
-          title,
-          type,
-          visible
-        };
-      } else {
-        const matchLayer = appreciableLayers.find((layer) => layer.id === id);
-        formatItem = this._formatLayer({
-          dataSource: matchLayer.dataSource,
-          id,
-          type: matchLayer.type,
-          title,
-          visible: matchLayer.visible,
-          renderSource: matchLayer.renderSource,
-          renderLayers: this._getRenderLayers(parts, id),
-          themeSetting: matchLayer.themeSetting
-        });
-        if (l7MarkerLayers[id]) {
-          formatItem.l7MarkerLayer = l7MarkerLayers[id];
-        }
-        if (matchLayer.l7Layer) {
-          formatItem.l7Layer = matchLayer.l7Layer;
-        }
-      }
-      return formatItem;
-    });
-    return formatCatalogs;
-  }
-
-  _collectChildrenKey(catalogs, keys, list = []) {
-    for (const data of catalogs) {
-      if (data.type === 'group') {
-        this._collectChildrenKey(data.children, keys, list);
-        continue;
-      }
-      keys.forEach((item) => {
-        if (!(item in data)) {
-          return;
-        }
-        const value = data[item];
-        if (value instanceof Array) {
-          list.push(...value);
-          return;
-        }
-        list.push(value);
-      });
-    }
-    return list;
-  }
-
-  _getRenderLayers(layerIds, layerId) {
-    if (layerIds) {
-      if (layerIds.includes(layerId)) {
-        return layerIds;
-      } else {
-        return [layerId, ...layerIds];
-      }
-    } else {
-      return [layerId];
-    }
-  }
-
-  _formatLayer(option) {
-    const {
-      dataSource = {},
-      id,
-      title,
-      type,
-      visible = true,
-      renderSource = {},
-      renderLayers = [],
-      themeSetting = {}
-    } = option;
-    return {
-      dataSource,
-      id,
-      title,
-      type,
-      visible,
-      renderSource,
-      renderLayers,
-      themeSetting
-    };
   }
 
   _parseRendererStyleData(renderer) {
@@ -995,7 +661,7 @@ export class WebMap extends mapboxgl.Evented {
 
   _createLegendInfo() {
     const { catalogs = [] } = this._mapResourceInfo;
-    const originLayers = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
+    const originLayers = getLayerInfosFromCatalogs(catalogs, 'catalogType');
     for (const layer of originLayers) {
       const { renderer, label } = layer.visualization || {};
       if (!renderer) {
@@ -1712,4 +1378,5 @@ export class WebMap extends mapboxgl.Evented {
     }
     return filterLayerIds;
   }
+  } 
 }

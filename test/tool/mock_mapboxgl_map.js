@@ -33,7 +33,7 @@ const Map = function (options) {
   this.zoom = this.options.zoom || 0;
   this._container = this.options.container || 'map';
   this._layers = {};
-  this.style = {};
+  this._layersList = [];
   this.getContainer = function () {
     return this._container;
   };
@@ -48,17 +48,21 @@ const Map = function (options) {
       ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1])
       : new mapboxgl.LngLat(0, 0);
   }
-  this.resize = function () {};
+  this.resize = jasmine.createSpy('resize').and.callFake(() => {});
   this.style = {
     ...options.style,
-    addGlyphs: function() {},
-    addSprite: function() {}
+    addGlyphs: jasmine.createSpy('addGlyphs').and.callFake(() => {}),
+    addSprite: jasmine.createSpy('addSprite').and.callFake(() => {}),
+    _layers: this._layers,
   };
   this.setStyle = function (style, options) {
     if (style.layers) {
       for (let i = 0, list = style.layers; i < list.length; i += 1) {
         const layer = list[i];
         this._layers[layer.id] = list[i];
+        if (!this._layersList.find(item => item.id === layer.id)) {
+          this._layersList.push(layer);
+        }
       }
     }
     this.sources = style.sources;
@@ -110,8 +114,8 @@ const Map = function (options) {
   this.getStyle = function () {
     return {
       version: 8,
-      source: this._sources,
-      layers: Object.values(this._layers)
+      sources: this._sources,
+      layers: this._layersList
     };
   };
 
@@ -135,12 +139,20 @@ const Map = function (options) {
   };
 
   this.getSource = function (name) {
-    if (this._sources[name]?.type === 'video') {
+    const sourceInfo = this._sources[name];
+    if (sourceInfo && sourceInfo.type === 'video') {
       return {
         play: function () {}
       };
     }
-    return this._sources[name];
+    if (sourceInfo && sourceInfo.type === 'geojson') {
+      return {
+        ...sourceInfo,
+        setData: jasmine.createSpy('setData').and.callFake(() => {}),
+        _data: this._sources[name].data,
+      };
+    }
+    return sourceInfo;
   };
 
   this.loaded = function () {
@@ -165,6 +177,13 @@ const Map = function (options) {
   this.off = function () {};
   this.addLayer = function (layer, before) {
     this._layers[layer.id] = layer;
+    if (layer.source instanceof Object){
+      this.addSource(layer.id, Object.assign({}, layer.source))
+      this._layers[layer.id].source = layer.id;
+    }
+    if (!this._layersList.find(item => item.id === layer.id)) {
+      this._layersList.push(layer);
+    }
     if (layer.onAdd) {
       layer.onAdd(this);
     }
@@ -174,12 +193,39 @@ const Map = function (options) {
     return this;
   };
 
-  this.addStyle = function (style, before) {
+  this.addStyle = jasmine.createSpy('addStyle').and.callFake(function (style, before) {
+    if (style.sources) {
+      for (const key in style.sources) {
+        this.addSource(key, style.sources[key]);
+      }
+    }
+    if (style.layers) {
+      style.layers.forEach(layer => {
+        if (layer.type !== 'background') {
+          this.addLayer(layer);
+        }
+      });
+    }
     return style;
-  };
+  });
 
   this.removeLayer = function (layerId) {};
-  this.moveLayer = function (layerId) {};
+  this.moveLayer = function (layerId, beforeId) {
+    const matchLayerIndex = this._layersList.findIndex(item => item.id === layerId);
+    if (matchLayerIndex === -1) {
+      return;
+    }
+    const beforeIndex = this._layersList.findIndex(item => item.id === beforeId);
+    const layer = this._layersList[matchLayerIndex];
+    if (beforeIndex > -1) {
+      const insertIndex = beforeIndex < matchLayerIndex ? beforeIndex : beforeIndex - 1;
+      this._layersList.splice(matchLayerIndex, 1);
+      this._layersList.splice(insertIndex, 0, layer);
+      return;
+    }
+    this._layersList.splice(matchLayerIndex, 1);
+    this._layersList.push(layer);
+  };
   this.getFilter = function (layerId) {};
   this.setFilter = function (layerId, filter) {};
   this.getLayer = function (id) {
@@ -325,7 +371,7 @@ const Map = function (options) {
   this.getCRS = () => {
     return {
       epsgCode: this.options.crs,
-      getExtent: () => jest.fn()
+      getExtent: () => jasmine.createSpy('getExtent')
     };
   };
   this.setCRS = () => {};
@@ -337,6 +383,20 @@ const Map = function (options) {
   }, 0);
 };
 
+class CRS {
+  static get() {
+    return {
+      getExtent: function () {
+          return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+      },
+      unit: 'm',
+      getOrigin: () => jest.fn()
+    };
+  }
+
+  static set() {}
+}
+
 export default Map;
 var mapboxglMock = { Map };
-export { mapboxglMock };
+export { mapboxglMock, CRS };

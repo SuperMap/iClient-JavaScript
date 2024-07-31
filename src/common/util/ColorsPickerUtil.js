@@ -174,4 +174,16 @@ export class ColorsPickerUtil  {
         }
         return ret;
     }
+
+    /**
+     * @function ColorsPickerUtil.getColorWithOpacity
+     * @description 设置颜色透明度
+     * @param {string} color - 颜色。
+     * @param {number} a - 透明度,区间[0,1]。
+     * @returns {string} rgba颜色值
+     */
+
+    static getColorWithOpacity (color, opacity){
+        return ColorRender.alpha(color, opacity);
+    }
 }
