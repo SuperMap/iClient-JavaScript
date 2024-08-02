@@ -16,11 +16,12 @@ import { SourceListModel } from '../utils/SourceListModel';
 export class WebMap extends createWebMapBaseExtending(createMapClassExtending(mapboxgl.Evented), 'fire') {
   constructor(
     id,
-    options = {},
-    mapOptions = {},
-    layerFilter = function () {
-      return true;
-    }
+    options = {
+      layerFilter: function () {
+        return true;
+      }
+    },
+    mapOptions = { style: { version: 8, sources: {}, layers: [] } }
   ) {
     super(id, options, mapOptions);
     if (typeof id === 'string' || typeof id === 'number') {
@@ -35,7 +36,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     this.bearing = mapOptions.bearing;
     this.pitch = mapOptions.pitch;
     this.rasterTileSize = mapOptions.rasterTileSize || 256;
-    this.layerFilter = layerFilter;
+    this.layerFilter = options.layerFilter;
     this.checkSameLayer = options.checkSameLayer;
     this._legendList = [];
     this._taskID = new Date();
@@ -57,18 +58,19 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     this._getMapInfo(mapInfo, this._taskID);
   }
 
-  clean() {
+  clean(removeMap = true) {
     if (this.map) {
       this.stopCanvg();
-      this.map.remove();
+      removeMap && this.map.remove();
       this.map = null;
       this._legendList = [];
       this._sourceListModel = null;
       this.center = null;
       this.zoom = null;
-      this._dataflowService &&
-        this._dataflowService.off('messageSucceeded', this._handleDataflowFeaturesCallback) &&
+      if (this._dataflowService) {
+        this._dataflowService.off('messageSucceeded', this._handleDataflowFeaturesCallback);
         this._dataflowService.off('subscribesucceeded', this._initDataflowLayerCallback);
+      }
       this._unprojectProjection = null;
       this._cacheLayerId = new Map();
     }
@@ -352,10 +354,11 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
               layerIds.push(item.id);
             }
           });
-          this._cacheLayerId.set(
-            layerInfo.layerID || layerInfo.name,
-            layerIds.map((layerId) => ({ layerId, name: layerId }))
-          );
+          this._setCacheLayer({
+            parentLayerId: layerInfo.layerID || layerInfo.name,
+            layerInfo,
+            subRenderLayers: layerIds.map((layerId) => ({ layerId, name: layerId }))
+          });
           addedCallback && addedCallback();
         },
         (error) => {
@@ -518,16 +521,17 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       this._createMigrationLayer(layerInfo, features);
     } else if (layerType === 'RANK_SYMBOL') {
       this._createRankSymbolLayer(layerInfo, features);
-    } else if (layerType === 'DATAFLOW_POINT_TRACK' || layerType === 'DATAFLOW_HEAT') {
+    } else if (this._isDataflowLayer(layerType)) {
       this._createDataflowLayer(layerInfo);
     }
   }
 
   _initGraticuleLayer(graticuleInfo) {
     const options = this._createGraticuleOptions(graticuleInfo);
-    const graticuleLayers = new mapboxgl.supermap.GraticuleLayer(options);
-    this.map.addLayer(graticuleLayers);
-    this._setGraticuleDash(graticuleInfo.lineDash, graticuleLayers);
+    const graticuleLayer = new mapboxgl.supermap.GraticuleLayer(options);
+    this._addLayer(graticuleLayer);
+    this._setGraticuleDash(graticuleInfo.lineDash, graticuleLayer);
+    this._graticuleLayer = graticuleLayer;
   }
 
   _createGraticuleOptions(graticuleInfo) {
@@ -562,7 +566,8 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       extent,
       interval: interval && interval[0],
       lngLabelStyle: lonLabelStyle,
-      latLabelStyle
+      latLabelStyle,
+      layerID: `graticuleLayer_${+new Date()}`
     };
   }
 
@@ -582,8 +587,14 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     const isLabel = Boolean(labelLayerVisible);
     const labelUrl = tiandituUrls.labelUrl;
     const tiandituUrl = tiandituUrls.tiandituUrl;
-    this._addBaselayer(tiandituUrl, name, visible);
-    isLabel && this._addBaselayer(labelUrl, `${name}-label`, visible);
+    this._addBaselayer({ url: tiandituUrl, layerID: name, visibility: visible });
+    isLabel &&
+      this._addBaselayer({
+        url: labelUrl,
+        layerID: this._getTdtLabelLayerName(name),
+        parentLayerId: name,
+        visibility: visible
+      });
     addedCallback && addedCallback();
   }
 
@@ -595,15 +606,15 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
           const layerId = layerInfo.layerID || layerInfo.name;
           if (result.isMatched) {
             const wmtsUrl = this._getWMTSUrl(Object.assign({}, layerInfo, result));
-            this._addBaselayer(
-              [wmtsUrl],
-              layerId,
-              layerInfo.visible,
-              result.matchMinZoom,
-              result.matchMaxZoom,
-              false,
-              result.bounds
-            );
+            this._addBaselayer({
+              url: [wmtsUrl],
+              layerID: layerId,
+              visibility: layerInfo.visible,
+              minzoom: result.matchMinZoom,
+              maxzoom: result.matchMaxZoom,
+              isIserver: false,
+              bounds: result.bounds
+            });
             addedCallback && addedCallback();
           }
         },
@@ -640,7 +651,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       return imageUrl;
     });
 
-    this._addBaselayer(urls, layerName, layerInfo.visible);
+    this._addBaselayer({ url: urls, layerID: layerName, visibility: layerInfo.visible });
     addedCallback && addedCallback();
   }
 
@@ -679,7 +690,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       urlArr = [url];
     }
     const layerId = layerInfo.layerID || layerInfo.name;
-    this._addBaselayer(urlArr, layerId, layerInfo.visible);
+    this._addBaselayer({ url: urlArr, layerID: layerId, visibility: layerInfo.visible });
     addedCallback && addedCallback();
   }
 
@@ -687,7 +698,14 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     const url = layerInfo.url;
     const layerId = layerInfo.layerID || layerInfo.name;
     const { minzoom, maxzoom } = layerInfo;
-    this._addBaselayer([url], layerId, layerInfo.visible, minzoom, maxzoom, true);
+    this._addBaselayer({
+      url: [url],
+      layerID: layerId,
+      visibility: layerInfo.visible,
+      minzoom,
+      maxzoom,
+      isIserver: true
+    });
     addedCallback && addedCallback();
   }
 
@@ -699,7 +717,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
           const layerId = layerInfo.layerID || layerInfo.name;
           if (result) {
             const wmsUrl = this._getWMSUrl(layerInfo, result.version);
-            this._addBaselayer([wmsUrl], layerId, layerInfo.visible);
+            this._addBaselayer({ url: [wmsUrl], layerID: layerId, visibility: layerInfo.visible });
             addedCallback && addedCallback();
           }
         },
@@ -720,7 +738,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
 
   _createVectorLayer(layerInfo, features) {
     const type = layerInfo.featureType;
-    const { layerID, minzoom, maxzoom, style, visible } = layerInfo;
+    const { layerID, minzoom, maxzoom, style, visible, parentLayerId = layerID } = layerInfo;
     const layerSource = this.map.getSource(layerID);
     const sourceData = {
       type: 'FeatureCollection',
@@ -757,12 +775,28 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
         }
       };
       const newLayerID = index === 0 ? layerID : `${layerID}-additional-${index}`;
-      this._addOverlayToMap(type, layerID, newLayerID, layerStyle, minzoom, maxzoom);
+      this._addOverlayToMap({
+        type,
+        source: layerID,
+        layerID: newLayerID,
+        parentLayerId,
+        layerStyle,
+        minzoom,
+        maxzoom
+      });
     });
     // 如果面有边框
     type === 'POLYGON' &&
       style.strokeColor &&
-      this._addStrokeLineForPoly(style, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
+      this._addStrokeLineForPoly({
+        style,
+        source: layerID,
+        layerID: layerID + '-strokeLine',
+        parentLayerId: layerID,
+        visible,
+        minzoom,
+        maxzoom
+      });
   }
 
   _getWMSUrl(mapInfo, version = '1.1.1') {
@@ -795,7 +829,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     const sumInfo = {};
     const { baseLayer, layers = [] } = mapInfo;
     if (!this.checkSameLayer) {
-      const baseInfo = this._generateUniqueLayerId(baseLayer.name, 0);
+      const baseInfo = this._generateUniqueLayerId({ layerId: baseLayer.name, repeatIndex: 0 });
       baseLayer.title = baseLayer.name;
       baseLayer.name = baseInfo.newId;
     }
@@ -811,7 +845,11 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       }
       let layerID = sumInfo[layer.name] ? `${layer.name}-${sumInfo[layer.name]}` : layer.name;
       if (!this.checkSameLayer || layer.layerType !== 'raster') {
-        const { newId, newIndex } = this._generateUniqueLayerId(layerID, sumInfo[layer.name]);
+        const { newId, newIndex } = this._generateUniqueLayerId({
+          layerId: layerID,
+          repeatIndex: sumInfo[layer.name],
+          layerType: layer.layerType
+        });
         sumInfo[layer.name] = newIndex;
         layerID = newId;
       }
@@ -822,18 +860,22 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     return mapInfo;
   }
 
-  _generateUniqueLayerId(newId, index) {
-    if (this.map.getLayer(newId)) {
-      index++;
+  _generateUniqueLayerId(options) {
+    let { layerId, repeatIndex, layerType } = options;
+    if (this.map.getLayer(layerId)) {
+      repeatIndex++;
       // 判断是否带有-index后缀
-      if (newId.match(/-\d+&/gi)) {
-        newId = newId.replace(/\d+$/gi, index);
+      if (layerId.match(/-\d+&/gi)) {
+        layerId = layerId.replace(/\d+$/gi, repeatIndex);
       } else {
-        newId = `${newId}-${index}`;
+        layerId = `${layerId}-${repeatIndex}`;
       }
-      return this._generateUniqueLayerId(newId, index);
+      return this._generateUniqueLayerId({ ...options, layerId, repeatIndex });
     } else {
-      return { newId, newIndex: index };
+      if (this._isDataflowLayer(layerType)) {
+        return { newId: `${layerId}_${+new Date()}`, newIndex: repeatIndex + 1 };
+      }
+      return { newId: layerId, newIndex: repeatIndex };
     }
   }
 
@@ -944,10 +986,11 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
         this._updateDataFlowFeature(layerID, feature, layerInfo, 'point');
       }
       if (layerInfo.labelStyle && layerInfo.visible) {
-        if (!this.map.getSource(layerID + '-label')) {
+        const labelSymbolLayerId = this._getSymbolLabelLayerName(layerID);
+        if (!this.map.getSource(labelSymbolLayerId)) {
           this._addLabelLayer(layerInfo, [feature], true);
         } else {
-          this._updateDataFlowFeature(layerID + '-label', feature, layerInfo);
+          this._updateDataFlowFeature(labelSymbolLayerId, feature, layerInfo);
         }
       }
       if (layerInfo.lineStyle && layerInfo.visible) {
@@ -966,7 +1009,8 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
               style: layerInfo.lineStyle,
               featureType: 'LINE',
               visible: 'visible',
-              layerID: layerID + '-line'
+              layerID: layerID + '-line',
+              parentLayerId: layerID
             },
             [lineFeature]
           );
@@ -1103,7 +1147,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       };
       layerStyle.style = this._transformStyleToMapBoxGl(layerInfo.style, featureType, expression, 'circle-radius');
       const layerID = layerInfo.layerID;
-      this._addOverlayToMap(featureType, source, layerID, layerStyle, minzoom, maxzoom);
+      this._addOverlayToMap({ type: featureType, source, layerID, layerStyle, minzoom, maxzoom });
       this._addLayerSucceeded({ layerInfo, features });
     }
   }
@@ -1141,7 +1185,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
   }
 
   _addLabelLayer(layerInfo, features, addSource = false) {
-    const labelLayerId = `${layerInfo.layerID}-label`;
+    const labelLayerId = this._getSymbolLabelLayerName(layerInfo.layerID);
     if (this.map.getLayer(labelLayerId)) {
       return;
     }
@@ -1196,25 +1240,28 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
         'icon-text-fit-padding': [2, 4, 2, 4]
       });
     }
-    this._addLayer({
-      id: labelLayerId,
-      type: 'symbol',
-      source:
-        this.map.getSource(layerInfo.layerID) && !addSource
-          ? layerInfo.layerID
-          : {
-              type: 'geojson',
-              data: { type: 'FeatureCollection', features: features }
-            },
-      paint: {
-        'text-color': labelStyle.fill,
-        'text-halo-color': textHaloColor,
-        'text-halo-width': textHaloWidth
+    this._addLayer(
+      {
+        id: labelLayerId,
+        type: 'symbol',
+        source:
+          this.map.getSource(layerInfo.layerID) && !addSource
+            ? layerInfo.layerID
+            : {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: features }
+              },
+        paint: {
+          'text-color': labelStyle.fill,
+          'text-halo-color': textHaloColor,
+          'text-halo-width': textHaloWidth
+        },
+        layout,
+        minzoom: minzoom || 0,
+        maxzoom: maxzoom || 22
       },
-      layout,
-      minzoom: minzoom || 0,
-      maxzoom: maxzoom || 22
-    });
+      layerInfo.layerID
+    );
   }
 
   _createSymbolLayer(layerInfo, features, textSizeExpresion, textRotateExpresion, addToMap = true, filter) {
@@ -1387,7 +1434,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
             visibility: layerInfo.visible
           }
         };
-        this._addOverlayToMap('POINT', layerID, layerID, layerStyle, minzoom, maxzoom);
+        this._addOverlayToMap({ type: 'POINT', source: layerID, layerID, layerStyle, minzoom, maxzoom });
         if (addToMap) {
           this._addLayerSucceeded({ layerInfo, features });
         }
@@ -1507,14 +1554,34 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     }
 
     const visible = layerInfo.visible;
-    const layerCreateFcuntion = (type, sourceID, layerID, style, minzoom, maxzoom, filter) => {
+    const layerCreateFcuntion = ({
+      type,
+      sourceID,
+      layerID,
+      parentLayerId,
+      beforeId,
+      style,
+      minzoom,
+      maxzoom,
+      filter
+    }) => {
       const layerStyle = {
         style: this._transformStyleToMapBoxGl({ ...style }, type),
         layout: {
           visibility: visible
         }
       };
-      this._addOverlayToMap(type, sourceID, layerID, layerStyle, minzoom, maxzoom, filter);
+      this._addOverlayToMap({
+        type,
+        source: sourceID,
+        layerID,
+        parentLayerId,
+        beforeId,
+        layerStyle,
+        minzoom,
+        maxzoom,
+        filter
+      });
     };
     if (['POLYGON', 'LINE'].includes(type)) {
       // linedash不能用表达式处理，需用多个图层
@@ -1534,69 +1601,77 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
           if (!fristName) {
             fristName = additionalLayerName;
           }
-          layerCreateFcuntion(
-            'LINE',
+          layerCreateFcuntion({
+            type: 'LINE',
             sourceID,
-            additionalLayerName,
-            {
+            layerID: additionalLayerName,
+            parentLayerId: layerID,
+            style: {
               ...style,
               ...expressionMap,
               lineDash: lineDashExpression[index + 1]
             },
             minzoom,
             maxzoom,
-            filterExpression
-          );
+            filter: filterExpression
+          });
         }
         if (defaultFilterExpression.length > 1) {
-          layerCreateFcuntion(
-            'LINE',
+          layerCreateFcuntion({
+            type: 'LINE',
             sourceID,
-            tempLayerID,
-            {
+            layerID: tempLayerID,
+            parentLayerId: layerID,
+            style: {
               ...style,
               ...expressionMap,
               lineDash: lineDashExpression[lineDashExpression.length]
             },
             minzoom,
             maxzoom,
-            defaultFilterExpression
-          );
+            filter: defaultFilterExpression
+          });
         }
         handlerLine = true;
       }
       // 没有自定义虚线的情况
       if (type === 'LINE' && !handlerLine) {
-        layerCreateFcuntion(
-          'LINE',
+        layerCreateFcuntion({
+          type: 'LINE',
           sourceID,
           layerID,
-          { ...style, ...expressionMap },
+          style: { ...style, ...expressionMap },
           minzoom,
           maxzoom,
-          defaultFilterExpression
-        );
+          filter: defaultFilterExpression
+        });
       }
       // 面
       if (type === 'POLYGON') {
-        layerCreateFcuntion('POLYGON', sourceID, layerID, { ...style, ...expressionMap }, minzoom, maxzoom);
+        layerCreateFcuntion({
+          type: 'POLYGON',
+          sourceID,
+          layerID,
+          beforeId: fristName,
+          style: { ...style, ...expressionMap },
+          minzoom,
+          maxzoom
+        });
         if (fristName) {
           this.map.moveLayer(layerID, fristName);
         }
         // 面且没有虚线
         if (!handlerLine) {
-          layerCreateFcuntion(
-            'LINE',
+          layerCreateFcuntion({
+            type: 'LINE',
             sourceID,
-            layerID + '-strokeLine',
-            { ...style, ...expressionMap },
+            layerID: layerID + '-strokeLine',
+            parentLayerId: layerID,
+            style: { ...style, ...expressionMap },
             minzoom,
             maxzoom,
-            defaultFilterExpression
-          );
-          if (fristName) {
-            this.map.moveLayer(layerID + '-strokeLine', fristName);
-          }
+            filter: defaultFilterExpression
+          });
         }
       }
     } else {
@@ -1647,7 +1722,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
         if (filterExpression.length > 1) {
           layerOptions.filter = filterExpression;
         }
-        this._addLayer(layerOptions);
+        this._addLayer(layerOptions, layerID);
       }
       // IMAGE_POINT 或者 SVG_POINT
       const imageInfoExpression = expressionMap.imageInfo || [];
@@ -1744,23 +1819,26 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
             }
             iconSizeExpression.push(1);
 
-            this._addLayer({
-              id: `${layerID}-additional-image`,
-              type: 'symbol',
-              source: sourceID,
-              layout: {
-                'icon-image': imageExpresssion,
-                'icon-anchor': 'bottom-right',
-                'icon-size': iconSizeExpression,
-                'icon-allow-overlap': true,
-                visibility: layerInfo.visible,
-                'icon-offset': symbolStyle.offsetX || [0, 0],
-                'icon-rotate': symbolStyle.rotation || 0
+            this._addLayer(
+              {
+                id: `${layerID}-additional-image`,
+                type: 'symbol',
+                source: sourceID,
+                layout: {
+                  'icon-image': imageExpresssion,
+                  'icon-anchor': 'bottom-right',
+                  'icon-size': iconSizeExpression,
+                  'icon-allow-overlap': true,
+                  visibility: layerInfo.visible,
+                  'icon-offset': symbolStyle.offsetX || [0, 0],
+                  'icon-rotate': symbolStyle.rotation || 0
+                },
+                minzoom: minzoom || 0,
+                maxzoom: maxzoom || 22,
+                filter: imagefilterExpression
               },
-              minzoom: minzoom || 0,
-              maxzoom: maxzoom || 22,
-              filter: imagefilterExpression
-            });
+              layerID
+            );
           }
           if (svgExpresssion.length > 1) {
             const iconSizeExpression = ['match', ['get', 'index']];
@@ -1773,26 +1851,29 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
               iconSizeExpression.push(iconSize);
             }
             iconSizeExpression.push(1);
-            this._addLayer({
-              id: `${layerID}-additional-svg`,
-              type: 'symbol',
-              source: sourceID,
-              layout: {
-                'icon-image': svgExpresssion,
-                'icon-anchor': 'bottom-right',
-                'icon-size': 1,
-                'icon-allow-overlap': true,
-                visibility: layerInfo.visible,
-                'icon-offset': symbolStyle.offsetX || [0, 0],
-                'icon-rotate': symbolStyle.rotation || 0
+            this._addLayer(
+              {
+                id: `${layerID}-additional-svg`,
+                type: 'symbol',
+                source: sourceID,
+                layout: {
+                  'icon-image': svgExpresssion,
+                  'icon-anchor': 'bottom-right',
+                  'icon-size': 1,
+                  'icon-allow-overlap': true,
+                  visibility: layerInfo.visible,
+                  'icon-offset': symbolStyle.offsetX || [0, 0],
+                  'icon-rotate': symbolStyle.rotation || 0
+                },
+                paint: {
+                  'icon-color': symbolStyle.fillColor
+                },
+                minzoom: minzoom || 0,
+                maxzoom: maxzoom || 22,
+                filter: svgfilterExpression
               },
-              paint: {
-                'icon-color': symbolStyle.fillColor
-              },
-              minzoom: minzoom || 0,
-              maxzoom: maxzoom || 22,
-              filter: svgfilterExpression
-            });
+              layerID
+            );
           }
         });
       }
@@ -1819,15 +1900,15 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
           defaultFilterExpression.length > 1 ? defaultFilterExpression : undefined
         );
       } else {
-        layerCreateFcuntion(
-          'POINT',
+        layerCreateFcuntion({
+          type: 'POINT',
           sourceID,
           layerID,
-          { ...style, ...expressionMap },
+          style: { ...style, ...expressionMap },
           minzoom,
           maxzoom,
-          defaultFilterExpression.length > 1 ? defaultFilterExpression : undefined
-        );
+          filter: defaultFilterExpression.length > 1 ? defaultFilterExpression : undefined
+        });
       }
     }
     this._addLayerSucceeded({ layerInfo, features });
@@ -1951,30 +2032,36 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
         // image-marker  svg-marker
         if (geomType === 'POINT' || geomType === 'TEXT') {
           if (!iconImageUrl) {
-            this._addLayer({
-              id: layerID,
-              type: 'circle',
-              source: source,
-              paint: this._transformStyleToMapBoxGl(defaultStyle, geomType),
-              layout: {},
-              minzoom: minzoom || 0,
-              maxzoom: maxzoom || 22
-            });
+            this._addLayer(
+              {
+                id: layerID,
+                type: 'circle',
+                source: source,
+                paint: this._transformStyleToMapBoxGl(defaultStyle, geomType),
+                layout: {},
+                minzoom: minzoom || 0,
+                maxzoom: maxzoom || 22
+              },
+              markerLayerID
+            );
             continue;
           }
-          this._addLayer({
-            id: layerID,
-            type: 'symbol',
-            source: source,
-            layout: {
-              'icon-image': iconImageUrl,
-              'icon-allow-overlap': true,
-              'icon-size': defaultStyle.scale || 1,
-              visibility: layerInfo.visible
+          this._addLayer(
+            {
+              id: layerID,
+              type: 'symbol',
+              source: source,
+              layout: {
+                'icon-image': iconImageUrl,
+                'icon-allow-overlap': true,
+                'icon-size': defaultStyle.scale || 1,
+                visibility: layerInfo.visible
+              },
+              minzoom: minzoom || 0,
+              maxzoom: maxzoom || 22
             },
-            minzoom: minzoom || 0,
-            maxzoom: maxzoom || 22
-          });
+            markerLayerID
+          );
         } else {
           // line-polygon-marker
           const layeStyle = {
@@ -1990,11 +2077,27 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
           layeStyle.layout.visibility = visible;
           // get style
           layeStyle.style = this._transformStyleToMapBoxGl(defaultStyle, geomType);
-          this._addOverlayToMap(geomType, source, layerID, layeStyle, minzoom, maxzoom);
+          this._addOverlayToMap({
+            type: geomType,
+            source,
+            layerID,
+            parentLayerId: markerLayerID,
+            layeStyle,
+            minzoom,
+            maxzoom
+          });
           // 若面有边框
           geomType === 'POLYGON' &&
             defaultStyle.strokeColor &&
-            this._addStrokeLineForPoly(defaultStyle, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
+            this._addStrokeLineForPoly({
+              style: defaultStyle,
+              source: layerID,
+              layerID: layerID + '-strokeLine',
+              parentLayerId: markerLayerID,
+              visible,
+              minzoom,
+              maxzoom
+            });
         }
       }
       this._addLayerSucceeded({ layerInfo, features });
@@ -2123,11 +2226,19 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     layerStyle.style = this._transformStyleToMapBoxGl(style, featureType, expression);
     // 添加图层
     const layerID = layerInfo.layerID;
-    this._addOverlayToMap(featureType, source, layerID, layerStyle, minzoom, maxzoom);
+    this._addOverlayToMap({ type: featureType, source, layerID, layerStyle, minzoom, maxzoom });
     // 如果面有边框
     featureType === 'POLYGON' &&
       style.strokeColor &&
-      this._addStrokeLineForPoly(style, layerID, layerID + '-strokeLine', visible, minzoom, maxzoom);
+      this._addStrokeLineForPoly({
+        style,
+        source: layerID,
+        layerID: layerID + '-strokeLine',
+        parentLayerId: layerID,
+        visible,
+        minzoom,
+        maxzoom
+      });
     this._addLayerSucceeded({ layerInfo, features });
   }
 
@@ -2140,84 +2251,14 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
        * @property {Object} mapparams - 地图信息。
        * @property {string} mapParams.title - 地图标题。
        * @property {string} mapParams.description - 地图描述。
-       * @property {Array.<Object>} layers - 地图上所有的图层对象。
        */
-
-      const cacheLayerToAddList = Array.from(this._cacheLayerId.values());
-      const flatCacheLayerId = cacheLayerToAddList.reduce((list, layers) => {
-        const layerIds = layers.map((item) => item.layerId);
-        list.push(...layerIds);
-        return list;
-      }, []);
-      const layersFromMapInfo = [];
-      // this._mapInfo.layers 是有序的
-      [this._mapInfo.baseLayer].concat(this._mapInfo.layers).forEach((layerInfo) => {
-        const targetLayerId = layerInfo.layerID || layerInfo.name;
-        const targetLayerVisible =
-          layerInfo.visible === void 0 || layerInfo.visible === 'visible' || layerInfo.visible === true;
-        const matchLayers = this._cacheLayerId.get(targetLayerId);
-        matchLayers &&
-          matchLayers.forEach(({ layerId, name, ignore }) => {
-            ignore !== false &&
-              layersFromMapInfo.push({
-                ...layerInfo,
-                id: layerId,
-                name,
-                visible: targetLayerVisible
-              });
-          });
-        if (this.map.getLayer(`${targetLayerId}-strokeLine`)) {
-          layersFromMapInfo.push({
-            id: `${targetLayerId}-strokeLine`,
-            visible: targetLayerVisible
-          });
-        }
-        const expandLayers = flatCacheLayerId.map((item) => item.includes(targetLayerId));
-        for (let index = 1; index < expandLayers.length + 1; index++) {
-          const layerTypes = [
-            'additional',
-            'additional-image',
-            'additional-svg',
-            'additional-linedasharray',
-            'additional-symbol',
-            'POINT',
-            'TEXT',
-            'LINESTRING',
-            'POLYGON'
-          ];
-          const layers = layerTypes.filter((type) => this.map.getLayer(`${targetLayerId}-${type}-${index}`));
-          if (layers.length) {
-            layers.forEach((layer) => {
-              layersFromMapInfo.push({
-                id: `${targetLayerId}-${layer}-${index}`,
-                visible: targetLayerVisible
-              });
-            });
-          } else {
-            break;
-          }
-        }
-        if (this.map.getLayer(`${targetLayerId}-label`)) {
-          layersFromMapInfo.push({
-            id: `${targetLayerId}-label`,
-            visible: targetLayerVisible
-          });
-        }
-      });
-      this._sourceListModel = new SourceListModel({
-        map: this.map,
-        layers: layersFromMapInfo,
-        appendLayers: this._appendLayers
-      });
+      this.addLayersSucceededLen = this._cacheLayerId.size;
       const appreciableLayers = this.getAppreciableLayers();
       this._rectifyLayersOrder(appreciableLayers);
-      const matchLayers = appreciableLayers.filter((item) =>
-        item.renderLayers.some((id) => flatCacheLayerId.some((layerId) => layerId === id))
-      );
+      const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
       this.fire('addlayerssucceeded', {
+        ...layerOptions,
         map: this.map,
-        layers: matchLayers,
-        cacheLayerIds: flatCacheLayerId,
         mapparams: this._mapInfo.mapParams
       });
     }
@@ -2227,12 +2268,20 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     const renderLayers = appreciableLayers.reduce((layers, layer) => {
       return layers.concat(layer.renderLayers);
     }, []);
+    const labelLayerIds = [];
     const exsitLayers = renderLayers.filter((layerId) => !!this.map.getLayer(layerId));
     for (let index = exsitLayers.length - 1; index > -1; index--) {
       const targetlayerId = exsitLayers[index];
-      let beforLayerId = exsitLayers[index + 1] ? exsitLayers[index + 1] : undefined;
+      const beforLayerId = exsitLayers.slice(index + 1).find((id) => this.map.style._layers[id]);
       this.map.moveLayer(targetlayerId, beforLayerId);
+      const labelLayerId = this._getSymbolLabelLayerName(targetlayerId);
+      if (this.map.getLayer(labelLayerId)) {
+        labelLayerIds.push(labelLayerId);
+      }
     }
+    labelLayerIds.reverse().forEach((layerId) => {
+      this.map.moveLayer(layerId);
+    });
   }
 
   _getParamString(obj, existingUrl, uppercase = false) {
@@ -2320,7 +2369,7 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
    * @param {Object} style - mabgl style
    * @param {String} type - 图层类型
    */
-  _addOverlayToMap(type, source, layerID, layerStyle, minzoom, maxzoom, filter) {
+  _addOverlayToMap({ type, source, layerID, parentLayerId, beforeId, layerStyle, minzoom, maxzoom, filter }) {
     const mbglTypeMap = {
       POINT: 'circle',
       LINE: 'line',
@@ -2340,11 +2389,20 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       if (filter) {
         style.filter = filter;
       }
-      this._addLayer(style);
+      this._addLayer(style, parentLayerId, beforeId);
     }
   }
 
-  _addBaselayer(url, layerID, visibility = true, minzoom = 0, maxzoom = 22, isIserver = false, bounds) {
+  _addBaselayer({
+    url,
+    layerID,
+    parentLayerId,
+    visibility = true,
+    minzoom = 0,
+    maxzoom = 22,
+    isIserver = false,
+    bounds
+  }) {
     const source = {
       type: 'raster',
       tiles: url,
@@ -2361,16 +2419,19 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     if (bounds) {
       source.bounds = bounds;
     }
-    this._addLayer({
-      id: layerID,
-      type: 'raster',
-      source: source,
-      minzoom: minzoom || 0,
-      maxzoom: maxzoom || 22,
-      layout: {
-        visibility: visibility ? 'visible' : 'none'
-      }
-    });
+    this._addLayer(
+      {
+        id: layerID,
+        type: 'raster',
+        source: source,
+        minzoom: minzoom || 0,
+        maxzoom: maxzoom || 22,
+        layout: {
+          visibility: visibility ? 'visible' : 'none'
+        }
+      },
+      parentLayerId
+    );
     this.baseLayerProxy = null;
   }
 
@@ -2380,14 +2441,14 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
    * @description 添加面的边框。
    * @param {Object} style - mabgl style
    */
-  _addStrokeLineForPoly(style, source, layerID, visible, minzoom, maxzoom) {
+  _addStrokeLineForPoly({ style, source, layerID, parentLayerId, visible, minzoom, maxzoom }) {
     const lineStyle = {
       style: this._transformStyleToMapBoxGl(style, 'LINE'),
       layout: {
         visibility: visible
       }
     };
-    this._addOverlayToMap('LINE', source, layerID, lineStyle, minzoom, maxzoom);
+    this._addOverlayToMap({ type: 'LINE', source, layerID, parentLayerId, layerStyle: lineStyle, minzoom, maxzoom });
   }
 
   _initLegendConfigInfo(layerInfo, style) {
@@ -2708,22 +2769,98 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
     return this._fetchRequest(baseUrl, 'json', options);
   }
 
-  _addLayer(layerInfo) {
+  _addLayer(layerInfo, parentLayerId = layerInfo.id, beforeId) {
     const { id } = layerInfo;
-    layerInfo = Object.assign(layerInfo, { id });
-    if (!this._cacheLayerId.has(id)) {
-      this._cacheLayerId.set(id, [{ layerId: id, name: layerInfo.name }]);
-    }
-
     if (this.map.getLayer(id)) {
       if (this.checkSameLayer && this._isSameRasterLayer(id, layerInfo)) {
-        this._cacheLayerId.set(id, [{ layerId: id, name: layerInfo.name, ignore: false }]);
+        this._setCacheLayer({ layerInfo, parentLayerId, id, ignore: true, beforeId });
         return;
       }
       this._updateLayer(layerInfo);
       return;
     }
-    this.map.addLayer(layerInfo);
+    const nextLayerInfo = Object.assign(layerInfo, { metadata: { parentLayerId }});
+    this.map.addLayer(nextLayerInfo);
+    this._setCacheLayer({ layerInfo, parentLayerId, id, beforeId });
+  }
+
+  _setCacheLayer({ parentLayerId, layerInfo, ignore = false, beforeId, subRenderLayers }) {
+    const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, name: layerInfo.name, ignore }];
+    if (!this._cacheLayerId.has(parentLayerId)) {
+      this._cacheLayerId.set(parentLayerId, renderLayers);
+    } else {
+      const renderLayerList = this._cacheLayerId.get(parentLayerId);
+      let matchIndex = -1;
+      if (beforeId) {
+        matchIndex = renderLayerList.findIndex((item) => item.layerId === beforeId);
+      }
+      const matchInsertIndex = matchIndex < 0 ? renderLayerList.length : matchIndex;
+      renderLayerList.splice(matchInsertIndex, 0, ...renderLayers);
+    }
+    const layersFromMapInfo = [];
+    const layerList = [this._mapInfo.baseLayer].concat(this._mapInfo.layers);
+    if (this._graticuleLayer) {
+      const { id: layerID, visible } = this._graticuleLayer;
+      layerList.push({ layerID, visible });
+    }
+    // this._mapInfo.layers 是有序的
+    layerList.forEach((layerInfo) => {
+      const targetLayerId = layerInfo.layerID || layerInfo.name;
+      const targetLayerVisible =
+        layerInfo.visible === void 0 || layerInfo.visible === 'visible' || layerInfo.visible === true;
+      const matchLayers = this._cacheLayerId.get(targetLayerId);
+      if (matchLayers) {
+        const renderLayers = matchLayers.filter((item) => !item.ignore).map((item) => item.layerId);
+        if (!renderLayers.length) {
+          return;
+        }
+        const matchMainLayer = matchLayers.find((item) => item.layerId === targetLayerId);
+        layersFromMapInfo.push({
+          ...layerInfo,
+          id: targetLayerId,
+          name: matchMainLayer && matchMainLayer.name,
+          visible: targetLayerVisible,
+          renderLayers
+        });
+      }
+    });
+    this._changeSourceListModel(layersFromMapInfo);
+    const appreciableLayers = this.getAppreciableLayers();
+    if (this.addLayersSucceededLen && this._cacheLayerId.size !== this.addLayersSucceededLen) {
+      this._rectifyLayersOrder(appreciableLayers);
+      this.addLayersSucceededLen = this._cacheLayerId.size;
+    }
+    const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
+    this.fire('addlayerchanged', layerOptions);
+  }
+
+  _changeSourceListModel(layersFromMapInfo) {
+    if (!this._sourceListModel) {
+      this._sourceListModel = new SourceListModel({
+        map: this.map,
+        layers: layersFromMapInfo,
+        appendLayers: this._appendLayers
+      });
+    } else {
+      this._sourceListModel.setSelfLayers(layersFromMapInfo);
+    }
+  }
+
+  _getSelfAppreciableLayers(appreciableLayers) {
+    const cacheLayerToAddList = Array.from(this._cacheLayerId.values());
+    const flatCacheLayerId = cacheLayerToAddList.reduce((list, layers) => {
+      const layerIds = layers.map((item) => item.layerId);
+      list.push(...layerIds);
+      return list;
+    }, []);
+    const matchLayers = appreciableLayers.filter((item) =>
+      item.renderLayers.some((id) => flatCacheLayerId.some((layerId) => layerId === id))
+    );
+    return {
+      layers: matchLayers,
+      cacheLayerIds: flatCacheLayerId,
+      allLoaded: this._cacheLayerId.size === this.addLayersSucceededLen
+    };
   }
 
   _isSameRasterLayer(id, layerInfo) {
@@ -2852,5 +2989,17 @@ export class WebMap extends createWebMapBaseExtending(createMapClassExtending(ma
       sum += (p2[0] - p1[0]) * (p1[1] + p2[1]);
     }
     return sum;
+  }
+
+  _getTdtLabelLayerName(layerId) {
+    return `${layerId}-tdt-label`;
+  }
+
+  _getSymbolLabelLayerName(layerId) {
+    return `${layerId}-label`;
+  }
+
+  _isDataflowLayer(layerType) {
+    return layerType === 'DATAFLOW_POINT_TRACK' || layerType === 'DATAFLOW_HEAT';
   }
 }

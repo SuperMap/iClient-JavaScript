@@ -97,7 +97,7 @@ export var MapExtend = (function () {
             : this._moveToHandler(id, beforeId);
           return this;
         }
-        if (this.style._layers[id] && this.style._layers[beforeId]) {
+        if (this.style._layers[id]) {
           this.style.moveLayer(id, beforeId);
           this._update(true);
         }

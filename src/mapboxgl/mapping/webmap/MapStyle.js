@@ -65,9 +65,9 @@ export class MapStyle extends createMapClassExtending(mapboxgl.Evented) {
     });
   }
 
-  clean() {
+  clean(removeMap = true) {
     if (this.map) {
-      this.map.remove();
+      removeMap && this.map.remove();
       this.map = null;
       this._sourceListModel = null;
     }

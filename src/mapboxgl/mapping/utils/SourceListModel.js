@@ -6,6 +6,11 @@ export class SourceListModel {
     this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
     this.excludeSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', /tracklayer-\d+-line/];
+    this.excludeLayerTypes = ['background'];
+  }
+
+  setSelfLayers(layers) {
+    this.layers = layers;
   }
 
   getLayers() {
@@ -28,9 +33,9 @@ export class SourceListModel {
   }
 
   _initLayers() {
-    const layersOnMap = this.map.getStyle().layers.map(layer => this.map.getLayer(layer.id));
+    const layersOnMap = this.map.getStyle().layers.map((layer) => this.map.getLayer(layer.id));
     const overlayLayers = Object.values(this.map.overlayLayersManager).reduce((layers, overlayLayer) => {
-      if (overlayLayer.id && !layers.some(item => item.id === overlayLayer.id)) {
+      if (overlayLayer.id && !layers.some((item) => item.id === overlayLayer.id)) {
         const visibility =
           overlayLayer.visibility === 'visible' ||
           overlayLayer.visibility ||
@@ -53,27 +58,30 @@ export class SourceListModel {
     }, []);
     const renderLayers = layersOnMap
       .concat(overlayLayers)
-      .filter(layer => !this.appendLayers || this.layers.some(item => layer.id === item.id));
-    const nextLayers = renderLayers
-      .filter(layer => this.excludeSource(layer.source))
-      .filter(layer => !layer.id.includes('-SM-'));
+      .filter((layer) => !this.appendLayers || this.layers.some((item) => this._isBelongToMapJSON(item, layer)));
+    const nextLayers = renderLayers.filter(
+      (layer) =>
+        !layer.id.includes('-SM-') &&
+        !this.excludeLayerTypes.some((item) => item === layer.type) &&
+        this.excludeSource(layer.source)
+    );
     const selfLayers = [];
     const selfLayerIds = [];
     // 排序
-    this.layers.forEach(item => {
-      const matchLayer = nextLayers.find(layer => layer.id === item.id);
-      if (matchLayer) {
-        selfLayers.push(matchLayer);
-        selfLayerIds.push(matchLayer.id);
+    this.layers.forEach((item) => {
+      const matchLayer = nextLayers.find((layer) => this._isBelongToMapJSON(item, layer));
+      if (matchLayer && matchLayer.id === item.id) {
+        selfLayers.push({ ...matchLayer, layerInfo: item });
+        selfLayerIds.push(...item.renderLayers);
       }
     });
-    const otherLayers = nextLayers.filter(item => !selfLayerIds.includes(item.id));
+    const otherLayers = nextLayers.filter((item) => !selfLayerIds.includes(item.id));
     return selfLayers.concat(otherLayers);
   }
 
   _initSource(detailLayers) {
     const datas = detailLayers.reduce((sourceList, layer) => {
-      let matchItem = sourceList.find(item => {
+      let matchItem = sourceList.find((item) => {
         const sourceId = layer.renderSource.id || layer.id;
         return item.id === sourceId;
       });
@@ -92,23 +100,27 @@ export class SourceListModel {
   _initAppreciableLayers(detailLayers) {
     // dv 没有关联一个可感知图层对应对个渲染图层的关系，默认相同source的layer就是渲染图层
     return detailLayers.reduce((layers, layer) => {
-      let matchLayer = layers.find(item => {
-        const layerId = layer.sourceLayer || layer.source || layer.id;
+      const layerId = this._createAppreciableLayerId(layer);
+      let matchLayer = layers.find((item) => {
         return item.id === layerId;
       });
       if (!matchLayer) {
         matchLayer = this._createCommonFields(layer);
         layers.push(matchLayer);
       }
-      matchLayer.renderLayers.push(layer.id);
+      if (layer.layerInfo) {
+        matchLayer.renderLayers.push(...layer.layerInfo.renderLayers);
+      } else {
+        matchLayer.renderLayers.push(layer.id);
+      }
       return layers;
     }, []);
   }
 
   _createCommonFields(layer) {
-    const layerInfo = this.layers.find(layerItem => layer.id === layerItem.id) || {};
+    const layerInfo = layer.layerInfo || {};
     // type: background overlaymanager layers 只有 id
-    const layerId = layer.sourceLayer || layer.source || layer.id;
+    const layerId = this._createAppreciableLayerId(layer);
     const {
       dataSource,
       themeSetting = {},
@@ -122,10 +134,12 @@ export class SourceListModel {
       title: name,
       type: layer.type,
       visible,
-      renderSource: {
-        id: layer.source,
-        type: sourceOnMap && sourceOnMap.type
-      },
+      renderSource: sourceOnMap
+        ? {
+            id: layer.source,
+            type: sourceOnMap.type
+          }
+        : {},
       renderLayers: [],
       dataSource: dataSource || (serverId ? { serverId } : {}),
       themeSetting
@@ -134,5 +148,16 @@ export class SourceListModel {
       fields.renderSource.sourceLayer = layer.sourceLayer;
     }
     return fields;
+  }
+
+  _isBelongToMapJSON(layerFromMapJSON, layerOnMap) {
+    return layerFromMapJSON.renderLayers.some((subLayerId) => subLayerId === layerOnMap.id);
+  }
+
+  _createAppreciableLayerId(layer) {
+    // 往空地图上追加图层 且 只有一个webmap this.layers是空
+    // layer.sourceLayer 针对 MapboxStyle
+    const metadata = layer.metadata || {};
+    return metadata.parentLayerId || layer.sourceLayer || layer.source || layer.id;
   }
 }

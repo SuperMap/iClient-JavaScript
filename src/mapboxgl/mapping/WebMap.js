@@ -52,12 +52,12 @@ const WORLD_WIDTH = 360;
 export class WebMap extends mapboxgl.Evented {
   constructor(
     id,
-    options = {},
-    mapOptions = {},
-    map,
-    layerFilter = function () {
-      return true;
-    }
+    options = {
+      layerFilter: function () {
+        return true;
+      }
+    },
+    mapOptions = { style: { version: 8, sources: {}, layers: [] } }
   ) {
     super();
     this.mapId = id;
@@ -70,12 +70,15 @@ export class WebMap extends mapboxgl.Evented {
       mapOptions.center = [0, 0];
       mapOptions.zoom = 0;
     }
+    if (options.map) {
+      this.map = options.map;
+    }
     this.options = Object.assign({}, options);
+    delete this.options.map;
     this.options.serverUrl = transformServerUrl(options.server);
     this.options.target = options.target || 'map';
     this.options.withCredentials = options.withCredentials || false;
     this.mapOptions = mapOptions;
-    this.layerFilter = layerFilter;
     this.webMapService = new WebMapService(id, options);
     this.eventTypes = [
       'getmapinfofailed',
@@ -85,16 +88,14 @@ export class WebMap extends mapboxgl.Evented {
       'notsupportbaidumap',
       'dataflowfeatureupdated',
       'addlayerssucceeded',
+      'addlayerchanged',
       'getlayersfailed',
       'beforeremovemap',
       'crsnotsupport'
     ];
     this._mapInitializedHandler = this._mapInitializedHandler.bind(this);
     this._addLayersSucceededHandler = this._addLayersSucceededHandler.bind(this);
-    if (map) {
-      this.map = map;
-      this._appendLayers = true;
-    }
+    this._addLayerChangedHandler = this._addLayerChangedHandler.bind(this);
     this._initWebMap(!this.map);
   }
 
@@ -221,46 +222,15 @@ export class WebMap extends mapboxgl.Evented {
     this._handler && this._handler.updateOverlayLayer(layerInfo, features, mergeByField);
   }
 
-  getCacheLayerIds() {
-    return (
-      this._cacheLayerIds ||
-      this._cacheCleanLayers.reduce((ids, item) => {
-        ids.push(...item.renderLayers);
-        return ids;
-      }, [])
-    );
-  }
-
   copyLayer(id, layerInfo) {
     return this._handler && this._handler.copyLayer(id, layerInfo);
   }
 
-  cleanLayers() {
-    this._taskID = null;
-    const sourceList = [];
+  clean(removeMap = true) {
     if (this.map) {
-      for (const item of this._cacheCleanLayers) {
-        item.renderLayers.forEach((layerId) => {
-          if (this.map.getLayer(layerId)) {
-            this.map.removeLayer(layerId);
-          }
-        });
-        if (this.map.getSource(item.renderSource.id) && !item.l7Layer) {
-          sourceList.push(item.renderSource.id);
-        }
-      }
-      Array.from(new Set(sourceList)).forEach((sourceId) => {
-        this.map.removeSource(sourceId);
-      });
-    }
-    this._cacheCleanLayers = [];
-  }
-
-  clean() {
-    if (this.map) {
-      this.fire('beforeremovemap', { map: this.map });
+      removeMap && this.fire('beforeremovemap', { map: this.map });
       if (this._handler) {
-        this._handler.clean();
+        this._handler.clean(removeMap);
         this._handler = null;
       }
       this.map = null;
@@ -269,6 +239,29 @@ export class WebMap extends mapboxgl.Evented {
         this.mapOptions.zoom = null;
       }
     }
+  }
+
+  cleanLayers() {
+    // 清空追加的地图图层以及对应的事件
+    if (!this.map) {
+      return;
+    }
+    const sourceList = [];
+    for (const item of this._cacheCleanLayers) {
+      item.renderLayers.forEach((layerId) => {
+        if (this.map.getLayer(layerId)) {
+          this.map.removeLayer(layerId);
+        }
+      });
+      if (this.map.getSource(item.renderSource.id) && !item.l7Layer) {
+        sourceList.push(item.renderSource.id);
+      }
+    }
+    Array.from(new Set(sourceList)).forEach((sourceId) => {
+      this.map.removeSource(sourceId);
+    });
+    this._cacheCleanLayers = [];
+    this.clean(false);
   }
 
   _initWebMap(clean = true) {
@@ -372,7 +365,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _createWebMapV2(commonOptions, mapOptions) {
-    const webMapHandler = new WebMapV2(this.mapId, commonOptions, mapOptions, this.layerFilter);
+    const webMapHandler = new WebMapV2(this.mapId, commonOptions, mapOptions);
     return webMapHandler;
   }
 
@@ -394,16 +387,14 @@ export class WebMap extends mapboxgl.Evented {
     this.fire('mapinitialized', { map: this.map });
   }
 
-  _addLayersSucceededHandler({ mapparams, layers, cacheLayerIds }) {
-    this.mapParams = mapparams;
-    this._cacheCleanLayers = layers;
-    this._cacheLayerIds = cacheLayerIds;
-    this.fire('addlayerssucceeded', {
-      map: this.map,
-      mapparams: this.mapParams,
-      layers,
-      cacheLayerIds
-    });
+  _addLayersSucceededHandler(params) {
+    this.mapParams = params.mapparams;
+    this.fire('addlayerssucceeded', params);
+  }
+
+  _addLayerChangedHandler(params) {
+    this._cacheCleanLayers = params.layers;
+    this.fire('addlayerchanged', params);
   }
 
   _getMapInfo(mapInfo) {
@@ -415,9 +406,7 @@ export class WebMap extends mapboxgl.Evented {
     const commonOptions = {
       ...this.options,
       iportalServiceProxyUrlPrefix: this.webMapService.iportalServiceProxyUrl,
-      serverUrl: this.options.serverUrl,
-      withCredentials: this.options.withCredentials,
-      target: this.options.target
+      serverUrl: this.options.serverUrl
     };
     const commonEvents = {
       ...this.eventTypes.reduce((events, name) => {
@@ -427,7 +416,8 @@ export class WebMap extends mapboxgl.Evented {
         return events;
       }, {}),
       mapinitialized: this._mapInitializedHandler,
-      addlayerssucceeded: this._addLayersSucceededHandler
+      addlayerssucceeded: this._addLayersSucceededHandler,
+      addlayerchanged: this._addLayerChangedHandler
     };
     const mapOptions = cloneDeep(this.mapOptions);
     switch (type) {
@@ -446,10 +436,11 @@ export class WebMap extends mapboxgl.Evented {
       this._handler.on(type, commonEvents[type]);
     }
     let _mapInfo = {};
+    const layerFilter = this.options.layerFilter;
     if (mapInfo) {
       _mapInfo = {
         ...mapInfo,
-        layers: typeof this.layerFilter === 'function' ? mapInfo.layers.filter(this.layerFilter) : mapInfo.layers
+        layers: typeof layerFilter === 'function' ? mapInfo.layers.filter(layerFilter) : mapInfo.layers
       };
     }
     this._handler.initializeMap(_mapInfo, this.map);

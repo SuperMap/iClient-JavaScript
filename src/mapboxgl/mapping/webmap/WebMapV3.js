@@ -206,13 +206,13 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     this._createMap();
   }
 
-  clean() {
+  clean(removeMap = true) {
     if (this.map) {
       const scene = this.map.$l7scene;
       if (scene) {
         scene.removeAllLayer();
       }
-      this.map.remove();
+      removeMap && this.map.remove();
       this.map = null;
       this._legendList = [];
       this._mapResourceInfo = {};
