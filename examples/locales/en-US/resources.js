@@ -1690,6 +1690,8 @@ window.examplesResources = {
         "text_prevPage": "Prev",
         "text_nextPage": "Next",
         "text_lastPage": "Last",
+        "text_queryDistance": "Query Distance(Degree)",
+        "text_queryDistanceLimit": "The query distance must be greater than zero",
 
         "btn_previous":"Previous",
         "btn_next":"Next",
@@ -1930,6 +1932,8 @@ window.examplesResources = {
         "msg_login_failed":"wrong user name or password",
         "msg_addPath": "Please add the path for buffer analysis.",
         "msg_bufferAnalyst": "Please do the buffer analysis at first to get the scope of the query.",
+        "msg_centerPoint": "Please select a service center point!",
+        "msg_destination": "Please select the delivery destination!",
         "msg_eventPoint": "Please choose a event point!",
         "msg_check": "The number of sites should be greater than 2",
         "msg_findPath": "The number of sites is wrong",

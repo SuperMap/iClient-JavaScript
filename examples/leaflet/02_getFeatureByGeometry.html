@@ -6,14 +6,35 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getFeatureByGeometry"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_queryByGeometry"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_point" onclick="query('Marker')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_line" onclick="query('Line')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_rectangle" onclick="query('Rectangle')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_polygon" onclick="query('Polygon')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="leaflet-geoman" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, resultLayer,
+    var map, resultLayer, geo,
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
         url = host + "/iserver/services/data-world/rest/data";
     map = L.map('map', {
@@ -24,26 +45,39 @@
         zoom: 2
     });
     new L.supermap.TiledMapLayer(baseUrl).addTo(map);
-    query();
+    map.on('pm:create', drawCompleted);
 
-    function query() {
-        var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]], {color: 'red'});
-        polygon.addTo(map);
-        polygon.bindPopup(resources.text_boundsQueryMode+'：INTERSECT').openPopup();
+    function query(type) {
+      clearFeatures();
+      map.pm.enableDraw(type);
+    }
+
+    function drawCompleted(e) {
+        clearFeatures();
+        geo = e.layer;
         var geometryParam = new L.supermap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
-            geometry: polygon,
+            geometry: geo,
             spatialQueryMode: "INTERSECT"
         });
         new L.supermap
             .FeatureService(url)
             .getFeaturesByGeometry(geometryParam).then(function (serviceResult) {
-                resultLayer = L.geoJSON(serviceResult.result.features, {
+                resultLayer = L.geoJSON(serviceResult.result.features, {color: 'red'}, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(resources.text_country + "：" + feature.properties.COUNTRY);
                     }
                 }).addTo(map);
             });
+    }
+
+    function clearFeatures() {
+      map.pm.disableDraw();
+      if (geo) {
+        geo.pm.remove();
+        geo = null;
+      }
+      resultLayer && map.removeLayer(resultLayer);
     }
 </script>
 </body>

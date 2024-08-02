@@ -6,13 +6,50 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_closestFacilitiesService"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 320px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_closestFacilitiesService"></h5></div>
+  <div class='panel-body content'>
+      <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_weightField"></span>
+              <select class='form-control' id='edgeWeightNames'>
+                  <option>length</option>
+                  <option>time</option>
+              </select>
+          </div>
+      </div>
+      <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_turnField"></span>
+              <select class='form-control' id='turnNodeWeightNames'>
+                  <option>TurnCost</option>
+              </select>
+          </div>
+      </div>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_eventPoint" onclick="selectEventPoint()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_submit" onclick="findClosestFacilities()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearElements(true)"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
-    var map, options,
+    var map, options, source, eventPoint, pathLayer, draw,
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
@@ -39,11 +76,16 @@
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest(options)
         });
+        source = new ol.source.Vector();
+        var vectorLayer = new ol.layer.Vector({
+            source: source
+        });
         map.addLayer(layer);
-        findClosetFacilitiesProcess();
+        map.addLayer(vectorLayer);
+        init();
     });
 
-    function findClosetFacilitiesProcess() {
+    function init() {
         //添加设施点
         var facilityPoint1 = new ol.geom.Point([2500, -3500]);
         var facilityPoint2 = new ol.geom.Point([5500, -2500]);
@@ -65,21 +107,37 @@
         var facilityLayer = new ol.layer.Vector({
             source: facilitySource
         });
-        //添加事件点
-        var eventPoint = new ol.geom.Point([5000, -3700]);
-        var eventFeature = new ol.Feature(eventPoint);
-        var iconStyle_event = new ol.style.Style({
-            image: new ol.style.Icon(({
-                src: '../img/marker.png'
-            }))
+        map.addLayer(facilityLayer);
+    }
+
+    function selectEventPoint() {
+        clearElements(true);
+        draw = new ol.interaction.Draw({
+          source: source,
+          type: 'Point'
         });
-        eventFeature.setStyle(iconStyle_event);
-        var eventSource = new ol.source.Vector({
-            features: [eventFeature]
+        draw.on('drawend', function(e) {
+          var feature = e.feature;
+          if (feature) {
+            // 设置事件点的样式
+            var iconStyle = new ol.style.Style({
+              image: new ol.style.Icon({
+                src: '../img/marker-icon.png'
+              }),
+            });
+            feature.setStyle(iconStyle);
+            eventPoint = feature;
+            draw && map.removeInteraction(draw);
+          }
         });
-        var eventLayer = new ol.layer.Vector({
-            source: eventSource
-        });
+        map.addInteraction(draw);
+    }
+
+    function findClosestFacilities() {
+        clearElements();
+        if (!eventPoint) {
+          return widgets.alert.showAlert(resources.msg_eventPoint, false);
+        }  
         //创建最近设施分析参数实例
         var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -98,7 +156,7 @@
         });
         var findClosetFacilitiesParameter = new ol.supermap.FindClosestFacilitiesParameters({
             //事件点,必设参数
-            event: new ol.geom.Point([5000, -3700]),
+            event: eventPoint.getGeometry(),
             //要查找的设施点数量。默认值为1
             expectFacilityCount: 1,
             //设施点集合,必设
@@ -112,7 +170,7 @@
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
-                var pathLayer = new ol.layer.Vector({
+                pathLayer = new ol.layer.Vector({
                     source: vectorSource,
                     style: new ol.style.Style({
                         stroke: new ol.style.Stroke({
@@ -126,9 +184,16 @@
                 });
                 map.addLayer(pathLayer);
             });
-            map.addLayer(facilityLayer);
-            map.addLayer(eventLayer);
         });
+    }
+
+    function clearElements(clearPoint) {
+      draw && map.removeInteraction(draw);
+      map.removeLayer(pathLayer);
+      if (clearPoint) {
+        eventPoint = null;
+        source.clear();
+      }
     }
 </script>
 </body>

@@ -6,10 +6,35 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mapQueryByDistance"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 240px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+  </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_queryByDistance"></h5></div>
+  <div class='panel-body content'>
+      <div class='panel'>
+        <div class='input-group'>
+          <span class='input-group-addon' data-i18n="resources.text_queryDistance"></span>
+          <input type="number" min="0" class="form-control" id="distance" placeholder="10" />
+        </div>
+      </div>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var decodeMarkers = [];
@@ -45,17 +70,23 @@
     map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    function query() {
+    function addMarker() {
         //添加查询中心点
         var img = new Image();
         img.src = '../img/markerbig_select.png';
-        var marker = new mapboxgl.Marker(img).setLngLat([104, 30]);
-        decodeMarkers.push(marker);
+        var marker = new mapboxgl.Marker(img).setLngLat([104, 30]).addTo(map);
+    }
 
+    function query() {
+        clearFeatures();
+        var distance = document.getElementById("distance").value || 10;
+        if (distance <= 0) {
+          return widgets.alert.showAlert(resources.text_queryDistanceLimit, false);
+        }
         var point = new mapboxgl.LngLat(104, 30);
         var param = new mapboxgl.supermap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
-            distance: 10,
+            distance: distance,
             geometry: point
         });
 
@@ -64,13 +95,12 @@
     }
 
     map.on('load', function () {
-        query();
+        addMarker();
     });
 
     function callback(serviceResult) {
         var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
         var features = recordsets && recordsets[0] && recordsets[0].features;
-        decodeMarkers[0].addTo(map);
         map.addLayer({
             "id": "points",
             "type": "circle",
@@ -87,6 +117,13 @@
                 "data": features
             }
         });
+    }
+
+    function clearFeatures() {
+      if (map.getLayer('points')) {
+        map.removeLayer('points');
+        map.removeSource('points');
+      }
     }
 </script>
 </body>

@@ -6,22 +6,33 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findPath"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_findPath"></h5>
+  </div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_sites" onclick="selectPoints()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_submit" onclick="findPathProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearElements(true)"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
-<div id="stopMarker1">
-    <img src="../img/marker.png"/>
-</div>
-<div id="stopMarker2">
-    <img src="../img/marker.png"/>
-</div>
-<div id="stopMarker3">
-    <img src="../img/marker.png"/>
-</div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
-    var map,
+    var map, draw, source, nodeArray = [], pathLayer, guideLayer,
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //最佳路径分析是按照站点添加顺序对站点进行访问的
@@ -49,30 +60,41 @@
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest(options)
         });
+        source = new ol.source.Vector();
+        var vectorLayer = new ol.layer.Vector({
+            source: source
+        });
         map.addLayer(layer);
-        findPathProcess();
+        map.addLayer(vectorLayer);
     });
 
+    function selectPoints() {
+      clearElements(true);
+      draw = new ol.interaction.Draw({
+        source: source,
+        type: 'Point'
+      });
+      draw.on('drawend', function(e) {
+        var feature = e.feature;
+        if (feature) {
+          // 设置点的样式
+          var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+              src: '../img/marker.png'
+            }),
+          });
+          feature.setStyle(iconStyle);
+          nodeArray.push(feature.getGeometry());
+        }
+      });
+      map.addInteraction(draw);
+    }
+
     function findPathProcess() {
-        //添加站点
-        var stopMarker1 = new ol.Overlay({
-            element: document.getElementById('stopMarker1'),
-            positioning: 'center-center',
-            position: [4000, -3000]
-        });
-        var stopMarker2 = new ol.Overlay({
-            element: document.getElementById('stopMarker2'),
-            positioning: 'center-center',
-            position: [5500, -2500]
-        });
-        var stopMarker3 = new ol.Overlay({
-            element: document.getElementById('stopMarker3'),
-            positioning: 'center-center',
-            position: [6900, -4000]
-        });
-        map.addOverlay(stopMarker1);
-        map.addOverlay(stopMarker2);
-        map.addOverlay(stopMarker3);
+        if (nodeArray.length < 2) {
+          return widgets.alert.showAlert(resources.msg_check, false);
+        }
+        clearElements();
 
         //创建最佳路径分析参数实例
         var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
@@ -91,7 +113,7 @@
         });
         var findPathParameter = new ol.supermap.FindPathParameters({
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
+            nodes: nodeArray,
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
@@ -118,7 +140,7 @@
                 var routeSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
-                var pathLayer = new ol.layer.Vector({
+                pathLayer = new ol.layer.Vector({
                     source: routeSource,
                     style: routeLayerStyle
                 });
@@ -127,13 +149,23 @@
                 var guideSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(result.pathGuideItems)
                 });
-                var guideLayer = new ol.layer.Vector({
+                guideLayer = new ol.layer.Vector({
                     source: guideSource,
                     style: guideLayerStyle
                 });
                 map.addLayer(guideLayer);
             });
         });
+    }
+
+    function clearElements(clear) {
+      draw && map.removeInteraction(draw);
+      map.removeLayer(pathLayer);
+      map.removeLayer(guideLayer);
+      if (clear) {
+        nodeArray = [];
+        source.clear();
+      }
     }
 </script>
 </body>

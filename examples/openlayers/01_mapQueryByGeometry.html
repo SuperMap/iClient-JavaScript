@@ -6,13 +6,34 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mapQueryByGeometry"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_queryByGeometry"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_point" onclick="query('Point')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_line" onclick="query('LineString')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_rectangle" onclick="query('Circle')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_polygon" onclick="query('Polygon')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
-    var map, vectorLayer, resultLayer,
+    var map, source, resultLayer, draw,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
@@ -32,32 +53,30 @@
         }),
         projection: 'EPSG:4326'
     });
+    source = new ol.source.Vector();
+    var vectorLayer = new ol.layer.Vector({
+        source: source
+    });
     map.addLayer(layer);
-    query();
+    map.addLayer(vectorLayer);
 
-    function query() {
-        var polygon = new ol.geom.Polygon([[[0, 0], [-30, 0], [-10, 30], [0, 0]]]);
-        var polygonSource = new ol.source.Vector({
-            features: [new ol.Feature(polygon)],
-            wrapX: false
-        });
-        vectorLayer = new ol.layer.Vector({
-            source: polygonSource,
-            style: new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'red',
-                    width: 3
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 0, 255, 0.1)'
-                })
-            })
-        });
-        map.addLayer(vectorLayer);
+    function query(type) {
+      clearFeatures();
+      draw = new ol.interaction.Draw({
+        source: source,
+        type: type,
+        geometryFunction: type ==='Circle' && ol.interaction.Draw.createBox()
+      });
+      map.addInteraction(draw);
+      draw.on('drawend', drawCompleted);
+    }
 
+    function drawCompleted(e) {
+        clearFeatures()
+        geo = e.feature.getGeometry();
         var param = new ol.supermap.QueryByGeometryParameters({
-            queryParams: {name: "Capitals@World.1"},
-            geometry: polygon
+            queryParams: {name: "Countries@World"},
+            geometry: geo
         });
         new ol.supermap.QueryService(url).queryByGeometry(param).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
@@ -65,10 +84,25 @@
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({
-                source: vectorSource
+                source: vectorSource,
+                style: new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'red',
+                        width: 2
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                })
             });
             map.addLayer(resultLayer);
         });
+    }
+
+    function clearFeatures() { 
+      draw && map.removeInteraction(draw);
+      map.removeLayer(resultLayer);
+      source.clear();
     }
 </script>
 </body>

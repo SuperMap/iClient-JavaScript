@@ -6,18 +6,39 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mapQueryByGeometry"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        #toolbar {
+          position: absolute;
+          top: 50px;
+          right: 10px;
+          text-align: center;
+          z-index: 100;
+          border-radius: 4px;
+        }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_queryByGeometry"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_point" onclick="query('point')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_line" onclick="query('line')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_rectangle" onclick="query('rectangle')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_polygon" onclick="query('polygon')"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="draw,mapboxgl-draw-rectangle-drag" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-
+    var geo;
     var map = new mapboxgl.Map({
         container: 'map',
         style: {
@@ -45,33 +66,38 @@
     map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    map.on('load', function () {
-        query();
-    });
-
-    function query() {
-        var geo = {
-            'type': 'Feature',
-            'geometry': {
-                'type': 'Polygon',
-                'coordinates': [[[0, 0], [-30, 0], [-10, 30], [0, 0]]],
-            }
+    initDraw();
+    function initDraw() {
+        const modes = MapboxDraw.modes;
+        modes.simple_select.onDrag = function (state, e) {
+          return;
         };
-        map.addLayer({
-            'id': 'polygonLayer',
-            'type': 'fill',
-            'source': {
-                'type': 'geojson',
-                'data': geo
-            },
-            'paint': {
-                'fill-outline-color': 'red',
-                'fill-color': 'rgba(0, 0, 255, 0.1)'
+        draw = new MapboxDraw({
+            displayControlsDefault: false,
+            modes: {
+                ...modes,
+                draw_rectangle_drag: mapboxGLDrawRectangleDrag
             }
         });
+        map.addControl(draw, 'top-left');
+        map.on('draw.create', drawCompleted);
+    }
 
+    function query(type) {
+      clearFeatures();
+      var drawTypeMap = {
+          polygon: 'draw_polygon',
+          line: 'draw_line_string',
+          point: 'draw_point',
+          rectangle: 'draw_rectangle_drag'
+      }
+      draw.changeMode(drawTypeMap[type]);
+    }
+
+    function drawCompleted(e) {
+        geo = e.features[0];
         var param = new mapboxgl.supermap.QueryByGeometryParameters({
-            queryParams: {name: "Capitals@World.1"},
+            queryParams: {name: "Countries@World"},
             geometry: geo
         });
 
@@ -79,15 +105,11 @@
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             var features = recordsets && recordsets[0] && recordsets[0].features;
             map.addLayer({
-                "id": "points",
-                "type": "circle",
-                "paint": {
-                    "circle-radius": 6,
-                    "circle-color": "#007cbf",
-                    "circle-opacity": 0.1,
-                    "circle-stroke-width": 2,
-                    "circle-stroke-color": "#007cbf",
-                    "circle-stroke-opacity": 0.5
+                "id": "fills",
+                "type": "fill",
+                'paint': {
+                  'fill-outline-color': 'red',
+                  'fill-color': 'rgba(0, 0, 255, 0.1)'
                 },
                 "source": {
                     "type": "geojson",
@@ -95,6 +117,17 @@
                 }
             });
         });
+    }
+
+    function clearFeatures() {
+      if (geo) {
+        draw.delete(geo.id);
+        geo = null;
+      }
+      if (map.getLayer('fills')) {
+        map.removeLayer('fills');
+        map.removeSource('fills');
+      }
     }
 </script>
 </body>

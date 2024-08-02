@@ -1646,6 +1646,8 @@ window.examplesResources = {
         "text_prevPage": "上一页",
         "text_nextPage": "下一页",
         "text_lastPage": "尾页",
+        "text_queryDistance": "查询距离(度)",
+        "text_queryDistanceLimit": "查询距离必须大于零",
 
 
 
@@ -1891,6 +1893,8 @@ window.examplesResources = {
         "msg_login_failed":"用户名或密码错误。",
         "msg_addPath": "请生成路径，用于缓冲区分析",
         "msg_bufferAnalyst": "请先做缓冲区分析，以得到查询的范围",
+        "msg_centerPoint": "请选择服务中心点！",
+        "msg_destination": "请选择配送目标！",
         "msg_eventPoint": "请选择事件点！",
         "msg_check": "站点数目应大于2个",
         "msg_findPath": "站点数目有误",
