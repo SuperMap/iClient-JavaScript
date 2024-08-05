@@ -66,7 +66,7 @@
    ChartView
  } from '@supermapgis/iclient-common/namespace';
  
- import { WebMap, initMap, VideoMap, SourceListModel } from './mapping';
+ import { WebMap, initMap, VideoMap } from './mapping';
  import mapboxgl from 'mapbox-gl';
  
  mapboxgl.supermap = {...SuperMap, ...mapboxgl.supermap};
@@ -78,7 +78,6 @@
  mapboxgl.supermap.WebMap = WebMap;
  mapboxgl.supermap.VideoMap = VideoMap;
  mapboxgl.supermap.initMap = initMap;
- mapboxgl.supermap.SourceListModel = SourceListModel;
  mapboxgl.supermap.Graphic = Graphic;
  mapboxgl.supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
  mapboxgl.supermap.map.setBackground = setBackground;

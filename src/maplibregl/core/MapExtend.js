@@ -180,11 +180,13 @@ import maplibregl from 'maplibre-gl';
          });
        }
      }
-     if (layer && beforeLayer) {
-       beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-     } else {
+     if (layer) {
+      if (beforeLayer) {
+        beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+      } else {
        //当没有传入beforeLayerID ，则默认将图层移动到最上面
        layer.parentNode.appendChild(layer);
-     }
+      }
+    }
    }
  })();

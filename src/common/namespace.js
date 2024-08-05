@@ -468,6 +468,7 @@ import {
   createWebMapBaseExtending,
   WebMapService,
   epsgDefine,
+  SourceListModel,
   toEpsgCode
 } from './index.all';
 
@@ -984,5 +985,6 @@ SuperMap.createWebMapBaseExtending = createWebMapBaseExtending;
 SuperMap.WebMapService = WebMapService;
 SuperMap.epsgDefine = epsgDefine;
 SuperMap.toEpsgCode = toEpsgCode;
+SuperMap.SourceListModel = SourceListModel;
 
 export * from './index.all';

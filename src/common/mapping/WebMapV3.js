@@ -1,11 +1,8 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { Util } from '../../core/Util';
-import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../utils/L7LayerUtil';
-import { createMapClassExtending } from './MapBase';
+import { FetchRequest } from '../util/FetchRequest';
+import { transformUrl } from './utils/util';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -160,9 +157,9 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-
-export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
-  constructor(mapId, options, mapOptions = {}) {
+export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, l7LayerUtil }) {
+  return class WebMap extends SuperClass {
+    constructor(mapId, options, mapOptions = {}) {
     super();
     this.mapId = mapId;
     this.options = options;
@@ -212,6 +209,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
       if (scene) {
         scene.removeAllLayer();
       }
+      this.map.remove();
       removeMap && this.map.remove();
       this.map = null;
       this._legendList = [];
@@ -246,9 +244,9 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     }
     const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
     const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
-    if (isL7Layer(copyLayer)) {
+    if (l7LayerUtil.isL7Layer(copyLayer)) {
       const layers = [copyLayer];
-      await addL7Layers({
+      await l7LayerUtil.addL7Layers({
         map: this.map,
         webMapInfo: { ...this._mapInfo, layers, sources: this._mapInfo.sources },
         l7Layers: layers,
@@ -329,7 +327,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
   _createMap() {
     let {
       name = '',
-      center = new mapboxgl.LngLat(0, 0),
+      center = new mapRepo.LngLat(0, 0),
       zoom = 0,
       bearing = 0,
       pitch = 0,
@@ -373,7 +371,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
       pitch,
       localIdeographFontFamily: fontFamilys || ''
     };
-    this.map = new mapboxgl.Map(mapOptions);
+    this.map = new MapManager(mapOptions);
     this._sprite = sprite;
     this.fire('mapinitialized', { map: this.map });
     this.map.on('load', () => {
@@ -386,7 +384,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     let baseProjection = crs;
     if (typeof crs === 'object') {
       baseProjection = crs.name;
-      if (!mapboxgl.CRS) {
+      if (!mapRepo.CRS) {
         const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
         this.fire('getmapinfofailed', { error: error });
         console.error(error);
@@ -399,8 +397,8 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
   }
 
   _setCRS({ name, wkt, extent }) {
-    const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
-    mapboxgl.CRS.set(crs);
+    const crs = new mapRepo.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
+    mapRepo.IMAGECRS.set(crs);
   }
 
   /**
@@ -461,7 +459,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
    * @description 获取地图关联信息的 JSON 信息。
    */
   _getMapRelatedInfo() {
-    const mapResourceUrl = Util.transformUrl(
+    const mapResourceUrl = transformUrl(
       Object.assign({ url: `${this.options.server}web/maps/${this.mapId}` }, this.options)
     );
     return FetchRequest.get(mapResourceUrl, null, { withCredentials: this.options.withCredentials }).then((response) =>
@@ -483,7 +481,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
         metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
       });
       Object.assign(this._mapResourceInfo, { catalogs });
-      const mapboxglLayers = layers.filter((layer) => !isL7Layer(layer));
+      const mapboxglLayers = layers.filter((layer) => !l7LayerUtil.isL7Layer(layer));
       mapboxglLayers.forEach((layer) => {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         // L7才会用到此属性
@@ -492,9 +490,9 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
         }
         this.map.addLayer(layer);
       });
-      const l7Layers = layers.filter((layer) => isL7Layer(layer));
+      const l7Layers = layers.filter((layer) => l7LayerUtil.isL7Layer(layer));
       if (l7Layers.length > 0) {
-        await addL7Layers({
+        await l7LayerUtil.addL7Layers({
           map: this.map,
           webMapInfo: { ...this._mapInfo, layers, sources },
           l7Layers,
@@ -576,7 +574,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     if (overlayLayer) {
       return overlayLayer;
     }
-    const l7MarkerLayers = getL7MarkerLayers();
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
     const l7MarkerLayer = l7MarkerLayers[layerId];
     if (l7MarkerLayer) {
       return l7MarkerLayer;
@@ -746,7 +744,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     const { catalogs = [], datas = [] } = this._mapResourceInfo;
     const projectCataglogs = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
     const metadataCatalogs = this._getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
-    const l7MarkerLayers = getL7MarkerLayers();
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
     const layers = allLayersOnMap.reduce((layersList, layer) => {
       const containLayer = metadataCatalogs.find((item) => {
         if (item.parts && item.id !== layer.id) {
@@ -810,7 +808,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
       if (l7MarkerLayers[layer.id]) {
         overlayLayers.l7MarkerLayer = l7MarkerLayers[layer.id];
       }
-      if (isL7Layer(layer)) {
+      if (l7LayerUtil.isL7Layer(layer)) {
         overlayLayers.l7Layer = true;
       }
       const matchThemeFields = this._legendList
@@ -853,7 +851,7 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
   }
 
   _createFormatCatalogs(catalogs, appreciableLayers) {
-    const l7MarkerLayers = getL7MarkerLayers();
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
     const formatCatalogs = catalogs.map((catalog) => {
       let formatItem;
       const { id, title = id, type, visible, children, parts } = catalog;
@@ -1713,4 +1711,5 @@ export class WebMap extends createMapClassExtending(mapboxgl.Evented) {
     }
     return filterLayerIds;
   }
+  } 
 }

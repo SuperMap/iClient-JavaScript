@@ -69,3 +69,40 @@ export function transformServerUrl(serverUrl) {
   }
   return serverUrl;
 }
+
+ /**
+   * @description url 拼接代理或者凭证信息
+   * @param {string} point - 待转换的 url
+   * @returns {string} 转换后的 url
+   */
+ export function transformUrl({ url, server, excludePortalProxyUrl, credentialValue, credentialKey }) {
+  let mapUrl = url.indexOf('.json') === -1 ? `${url}.json` : url;
+  let filter = 'getUrlResource.json?url=';
+  if (excludePortalProxyUrl && server.indexOf(filter) > -1) {
+    //大屏需求,或者有加上代理的
+    let urlArray = server.split(filter);
+    if (urlArray.length > 1) {
+      mapUrl = urlArray[0] + filter + mapUrl;
+    }
+  }
+  if (credentialValue && credentialKey) {
+    mapUrl += '?' + credentialKey + '=' + credentialValue;
+  }
+  return mapUrl;
+}
+
+ /**
+     * 检测数据是否为number
+     * @param value 值，未知数据类型
+     * @returns {boolean}
+     */
+ export function isNumber(value) {
+  if (value === "") {
+      return false;
+  }
+  let mdata = Number(value);
+  if (mdata === 0) {
+      return true;
+  }
+  return !isNaN(mdata);
+}

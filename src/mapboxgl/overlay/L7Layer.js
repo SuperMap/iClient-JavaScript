@@ -5,7 +5,11 @@ import mapboxgl from 'mapbox-gl';
 import * as L7 from './L7/l7-render';
 import { Scene, Mapbox } from './L7/l7-render';
 import { CustomOverlayLayer } from './Base';
-import { getL7Filter } from '../mapping/utils/L7LayerUtil';
+import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
+import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
+import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
+
+const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec });
 
 /**
  * @class L7Layer
@@ -156,7 +160,7 @@ export class L7Layer extends CustomOverlayLayer {
       return;
     }
     const { filter } = this.l7layer.rawConfig;
-    let { field: filterFields = [], values } = getL7Filter(filter, this.id) || {};
+    let { field: filterFields = [], values } = l7LayerUtil.getL7Filter(filter, this.id) || {};
     if (!filterFields.length && this.selectedDatas[0]) {
       filterFields = Object.keys(this.selectedDatas[0].properties || {});
     }
@@ -181,7 +185,7 @@ export class L7Layer extends CustomOverlayLayer {
       return;
     }
     if (filter instanceof Array) {
-      const { field: filterFields, values: filterValues } = getL7Filter(filter);
+      const { field: filterFields, values: filterValues } = l7LayerUtil.getL7Filter(filter);
       this.l7layer.filter(filterFields, filterValues);
       return;
     }
