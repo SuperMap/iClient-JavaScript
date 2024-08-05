@@ -660,7 +660,7 @@
 
 #### 上线Storybook 组件故事，优化、统一组件样式，新增统一样式的基础组件(基于Ant Design Vue)
 
-#### 视频组件新增支持 rtmp, flv, m3u8 视频流格式
+#### 视频组件新增支持 flv, m3u8 视频流格式
 
 #### 地图组件支持显示经纬网，单值专题图支持显示自定义样式，数据流图层支持墨卡托坐标系
 
@@ -714,7 +714,7 @@
 
 - vue-iclient-mapboxgl
 
-  - 视频(sm-video-player)组件新增支持 rtmp, flv, m3u8 视频流格式
+  - 视频(sm-video-player)组件新增支持 flv, m3u8 视频流格式
 
   - 地图(sm-web-map)组件
 
