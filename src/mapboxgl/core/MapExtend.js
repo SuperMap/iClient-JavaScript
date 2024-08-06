@@ -4,7 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import { decryptSources } from './decryptSource';
 import { getServiceKey } from '@supermapgis/iclient-common/util/EncryptRequest';
-import { CustomOverlayLayer } from '../overlay/Base';
+import { CustomOverlayLayer } from '@supermapgis/iclient-common/overlay/Base';
 
 /**
  * @function MapExtend
