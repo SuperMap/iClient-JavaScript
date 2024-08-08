@@ -2830,10 +2830,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (!firstSelfLayerIdOnMap) {
         return;
       }
-      const firstSelfLayerIndex = this.map.getStyle().layers.findIndex((item) => item.id === firstSelfLayerIdOnMap);
-      const extraLayerIdsOnMap = this.map.getStyle().layers.filter(item => !selfLayerIds.some(id => id === item.id)).map(item => item.id);
+      const layersOnMap = this.map.getStyle().layers;
+      const firstSelfLayerIndex = layersOnMap.findIndex((item) => item.id === firstSelfLayerIdOnMap);
+      const extraLayerIdsOnMap = layersOnMap.filter(item => !selfLayerIds.some(id => id === item.id)).map(item => item.id);
       for (const layerId of extraLayerIdsOnMap) {
-        const matchIndex = this.map.getStyle().layers.findIndex((item) => item.id === layerId);
+        const matchIndex = layersOnMap.findIndex((item) => item.id === layerId);
         if (matchIndex > firstSelfLayerIndex) {
           return layerId;
         }

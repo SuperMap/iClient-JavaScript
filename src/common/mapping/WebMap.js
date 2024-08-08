@@ -71,11 +71,11 @@
       }
       this.options = Object.assign({}, options);
       delete this.options.map;
-      this.options.serverUrl = transformServerUrl(options.server);
+      this._setServer(options.server || 'https://www.supermapol.com');
       this.options.target = options.target || 'map';
       this.options.withCredentials = options.withCredentials || false;
       this.mapOptions = mapOptions;
-      this.webMapService = new WebMapService(id, options);
+      this.webMapService = new WebMapService(id, this.options);
       this.eventTypes = [
         'getmapinfofailed',
         'getlayerdatasourcefailed',
@@ -303,7 +303,7 @@
     }
   
     setServerUrl(serverUrl) {
-      this.options.serverUrl = transformServerUrl(serverUrl);
+      this._setServer(serverUrl);
       this.webMapService.setServerUrl(this.options.serverUrl);
     }
   
@@ -334,7 +334,6 @@
     }
   
     getMapInfo(_taskID) {
-      this.options.serverUrl = this.options.serverUrl && this.webMapService.handleServerUrl(this.options.serverUrl);
       this.webMapService
         .getMapInfo()
         .then(
@@ -355,17 +354,9 @@
           console.log(error);
         });
     }
-  
-    _createMapStyle() {
-      throw new Error('MapStyle is not implemented');
-    }
-  
-    _createWebMapV2() {
-      throw new Error('WebMapV2 is not implemented');
-    }
-  
-    _createWebMapV3() {
-      throw new Error('WebMapV3 is not implemented');
+
+    _createWebMapFactory() {
+      throw new Error('_createWebMapFactory is not implemented');
     }
   
     _mapInitializedHandler({ map }) {
@@ -392,8 +383,7 @@
     _createMap(type, mapInfo) {
       const commonOptions = {
         ...this.options,
-        iportalServiceProxyUrlPrefix: this.webMapService.iportalServiceProxyUrl,
-        serverUrl: this.options.serverUrl
+        iportalServiceProxyUrlPrefix: this.webMapService.iportalServiceProxyUrl
       };
       const commonEvents = {
         ...this.eventTypes.reduce((events, name) => {
@@ -407,17 +397,8 @@
         addlayerchanged: this._addLayerChangedHandler
       };
       const mapOptions = cloneDeep(this.mapOptions);
-      switch (type) {
-        case 'MapStyle':
-          this._handler = this._createMapStyle(commonOptions, mapOptions);
-          break;
-        case 'WebMap3':
-          this._handler = this._createWebMapV3(commonOptions, mapOptions);
-          break;
-        default:
-          this._handler = this._createWebMapV2(commonOptions, mapOptions);
-          break;
-      }
+      const WebMapFactory = this._createWebMapFactory(type);
+      this._handler = new WebMapFactory(this.mapId, commonOptions, mapOptions);
       // this._handler.setEventedParent(this);
       for (const type in commonEvents) {
         this._handler.on(type, commonEvents[type]);
@@ -470,6 +451,11 @@
   
     _getWebMapInstance() {
       return this._handler;
+    }
+
+    _setServer(url) {
+      this.options.server = transformServerUrl(url);
+      this.options.serverUrl = this.options.server;
     }
   }
 }

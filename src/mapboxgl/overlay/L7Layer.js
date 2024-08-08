@@ -24,8 +24,9 @@ const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec });
  */
 
 export class L7Layer extends L7LayerBase {
-  constructor({ type, options = {} }) {
-    super({ type, sourceId: options.source });
+  constructor(params) {
+    const { type, options = {} } = params;
+    super(params);
     if (type !== 'ThreeLayer') {
       this.l7layer = new L7[type]({ ...options, name: this.id });
       this.setDataFn = this.l7layer.setData.bind(this.l7layer);

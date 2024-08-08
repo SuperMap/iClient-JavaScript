@@ -14,30 +14,21 @@ import MapManager from './webmap/MapManager';
 const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7});
 
 export class WebMap extends createWebMapExtending(maplibregl.Evented, { LngLat: maplibregl.LngLat, CRS: maplibregl.CRS }) {
-
-  _createWebMapV2(commonOptions, mapOptions) {
-    const WebMapV2 = createWebMapV2Extending(createWebMapBaseExtending(createMapClassExtending(maplibregl.Evented), 'fire'), { MapManager, mapRepo: maplibregl });
-    const webMapHandler = new WebMapV2(this.mapId, commonOptions, mapOptions, this.layerFilter);
-    return webMapHandler;
+  _createWebMapFactory(type) {
+    const commonFactoryOptions = { MapManager, mapRepo: maplibregl };
+    switch (type) {
+      case 'MapStyle':
+        return createMapStyleExtending(createMapClassExtending(maplibregl.Evented), commonFactoryOptions);
+      case 'WebMap3':
+        return createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), {
+          ...commonFactoryOptions,
+          l7LayerUtil
+        });
+      default:
+        return createWebMapV2Extending(
+          createWebMapBaseExtending(createMapClassExtending(maplibregl.Evented), 'fire'),
+          commonFactoryOptions
+        );
+    }
   }
-
-  _createWebMapV3(commonOptions, mapOptions) {
-    const WebMapV3 = createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), { MapManager, mapRepo: maplibregl, l7LayerUtil });
-    const webMapHandler = new WebMapV3(
-      this.mapId,
-      {
-        ...commonOptions,
-        server: this.options.serverUrl,
-        iportalServiceProxyUrl: this.webMapService.iportalServiceProxyUrl
-      },
-      mapOptions
-    );
-    return webMapHandler;
-  }
-
-  _createMapStyle(commonOptions, mapOptions) {
-     const MapStyle = createMapStyleExtending(createMapClassExtending(maplibregl.Evented), { MapManager, mapRepo: maplibregl });
-     const mapStyleHandler = new MapStyle(this.mapId, commonOptions, mapOptions);
-     return mapStyleHandler;
-   }
 }
