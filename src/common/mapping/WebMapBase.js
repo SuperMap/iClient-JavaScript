@@ -392,51 +392,6 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
       return features;
     }
   
-    mergeFeatures(layerId, features, mergeByField) {
-      if (!(features instanceof Array)) {
-        return features;
-      }
-      features = features.map((feature, index) => {
-        if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
-          feature.properties.index = index;
-        }
-        return feature;
-      });
-      if (!features.length || !mergeByField && features[0].geometry) {
-        return features;
-      }
-      const source = this.map.getSource(layerId);
-      if ((!source || !source._data.features) && features[0].geometry) {
-        return features;
-      }
-      const prevFeatures = source && source._data && source._data.features;
-      const nextFeatures = [];
-      if (!mergeByField && prevFeatures) {
-        return prevFeatures;
-      }
-      features.forEach((feature) => {
-        const prevFeature = prevFeatures.find((item) => {
-          if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
-            return (
-              JSON.stringify(item.properties[mergeByField] || '') ===
-              JSON.stringify(feature.properties[mergeByField] || '')
-            );
-          } else {
-            return +item.properties[mergeByField] === +feature.properties[mergeByField];
-          }
-        });
-        if (prevFeature) {
-          nextFeatures.push({
-            ...prevFeature,
-            ...feature
-          });
-        } else if (feature.geometry) {
-          nextFeatures.push(feature);
-        }
-      });
-      return nextFeatures;
-    }
-  
     getFilterFeatures(filterCondition, allFeatures) {
       if (!filterCondition) {
         return allFeatures;

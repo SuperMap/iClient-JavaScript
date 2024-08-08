@@ -101,16 +101,18 @@ export class L7LayerBase extends CustomOverlayLayer {
       return;
     }
     const rawConfig = this.l7layer.rawConfig;
+    const visibility = this.l7layer.isVisible() ? 'visible' : 'none';
     const layerInfo = {
       ...rawConfig,
-      layout: { ...rawConfig.layout, visibility: this.l7layer.isVisible() ? 'visible' : 'none' },
+      layout: { ...rawConfig.layout, visibility },
       minzoom: this.l7layer.minZoom,
       maxzoom: this.l7layer.maxZoom,
       id: this.id,
       l7layer: this.l7layer,
       scene: this.scene,
       setSelectedDatas: this.setSelectedDatasFn,
-      reRender: this.reRenderFn
+      reRender: this.reRenderFn,
+      visibility
     };
     delete layerInfo.sourceId;
     delete layerInfo.layerID;

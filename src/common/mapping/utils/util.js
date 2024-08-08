@@ -106,3 +106,65 @@ export function transformServerUrl(serverUrl) {
   }
   return !isNaN(mdata);
 }
+
+export function mergeFeatures({ sourceId, features, mergeByField, map }) {
+  if (!(features instanceof Array)) {
+    return features;
+  }
+  features = features.map((feature, index) => {
+    if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
+      feature.properties.index = index;
+    }
+    return feature;
+  });
+  if (!features.length || !mergeByField && features[0].geometry) {
+    return features;
+  }
+  const source = map.getSource(sourceId);
+  if ((!source || !source._data.features) && features[0].geometry) {
+    return features;
+  }
+  const prevFeatures = source && source._data && source._data.features;
+  const nextFeatures = [];
+  if (!mergeByField && prevFeatures) {
+    return prevFeatures;
+  }
+  features.forEach((feature) => {
+    const prevFeature = prevFeatures.find((item) => {
+      if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
+        return (
+          JSON.stringify(item.properties[mergeByField] || '') ===
+          JSON.stringify(feature.properties[mergeByField] || '')
+        );
+      } else {
+        return +item.properties[mergeByField] === +feature.properties[mergeByField];
+      }
+    });
+    if (prevFeature) {
+      nextFeatures.push({
+        ...prevFeature,
+        ...feature
+      });
+    } else if (feature.geometry) {
+      nextFeatures.push(feature);
+    }
+  });
+  return nextFeatures;
+}
+
+export function getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
+  const results = [];
+  for (let i = 0; i < catalogs.length; i++) {
+    const catalogType = catalogs[i][catalogTypeField];
+    if (catalogType !== 'group') {
+      results.push(catalogs[i]);
+      continue;
+    }
+    const { children } = catalogs[i];
+    if (children && children.length > 0) {
+      const result = getLayerInfosFromCatalogs(children, catalogTypeField);
+      results.push(...result);
+    }
+  }
+  return results;
+}

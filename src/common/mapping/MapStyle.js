@@ -1,13 +1,9 @@
-import { WebMapService } from "./WebMapService";
-import { SourceListModel } from './utils/SourceListModel';
+import { WebMapService } from './WebMapService';
+import { SourceListModel } from './utils/SourceListModelV2';
 
 export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
   return class MapStyle extends SuperClass {
-    constructor(
-      id,
-      options = {},
-      mapOptions = {}
-    ) {
+    constructor(id, options = {}, mapOptions = {}) {
       super();
       this.options = options;
       this.mapOptions = mapOptions;
@@ -15,7 +11,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
       this._layerIdRenameMapList = [];
       this._appendLayers = false;
     }
-  
+
     initializeMap(_, map) {
       if (map) {
         this._appendLayers = true;
@@ -62,38 +58,25 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         this._sendMapToUser();
       });
     }
-  
+
     clean(removeMap = true) {
       if (this.map) {
-        this.map.remove();
         removeMap && this.map.remove();
         this.map = null;
         this._sourceListModel = null;
       }
     }
-  
-    getLayerCatalog() {
-      return this._sourceListModel && this._sourceListModel.getSourceList() || [];
-    }
-  
-    getLegendInfo() {
-      return [];
-    }
-  
-    getAppreciableLayers() {
-      return this._sourceListModel && this._sourceListModel.getLayers() || [];
-    }
-  
+
     _addLayersToMap() {
       const { sources, layers, layerIdMapList } = this._setUniqueId(this.mapOptions.style);
-      layers.forEach(layer => {
+      layers.forEach((layer) => {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         this.map.addLayer(layer);
       });
       this._layerIdRenameMapList = layerIdMapList;
       this._sendMapToUser();
     }
-  
+
     _setUniqueId(style) {
       const layersToMap = JSON.parse(JSON.stringify(style.layers));
       const nextSources = {};
@@ -125,36 +108,34 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         layerIdMapList: layerIdToChange
       };
     }
-  
+
     _generateAppreciableLayers() {
       const layers = this.mapOptions.style.layers.map((layer) => {
-        const matchLayer = this._layerIdRenameMapList.find(item => item.originId === layer.id) || { renderId: layer.id };
+        const matchLayer = this._layerIdRenameMapList.find((item) => item.originId === layer.id) || {
+          renderId: layer.id
+        };
         const overlayLayers = {
           id: matchLayer.renderId,
-          name: layer.id
+          name: layer.id,
+          renderLayers: [matchLayer.renderId]
         };
         return overlayLayers;
       });
       return layers;
     }
-  
+
     _sendMapToUser() {
-      const appreciableLayers = this._generateAppreciableLayers();
+      const layersFromStyle = this._generateAppreciableLayers();
       this._sourceListModel = new SourceListModel({
         map: this.map,
-        layers: appreciableLayers,
+        layers: layersFromStyle,
         appendLayers: this._appendLayers
       });
-      const matchLayers = this.getAppreciableLayers().filter((item) =>
-        appreciableLayers.some((layer) => layer.id === item.id)
-      );
       this.fire('addlayerssucceeded', {
         map: this.map,
         mapparams: { title: this.mapOptions.name, description: '' },
-        layers: matchLayers
+        layers: this.getSelfAppreciableLayers()
       });
     }
-  
-  }
+  };
 }
-

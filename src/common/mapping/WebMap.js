@@ -89,6 +89,7 @@
         'beforeremovemap',
         'crsnotsupport'
       ];
+      this._cacheCleanLayers = [];
       this._mapInitializedHandler = this._mapInitializedHandler.bind(this);
       this._addLayersSucceededHandler = this._addLayersSucceededHandler.bind(this);
       this._addLayerChangedHandler = this._addLayerChangedHandler.bind(this);
@@ -374,6 +375,7 @@
   
     _addLayersSucceededHandler(params) {
       this.mapParams = params.mapparams;
+      this._cacheCleanLayers = params.layers;
       this.fire('addlayerssucceeded', params);
     }
   

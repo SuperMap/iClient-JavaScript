@@ -2,6 +2,8 @@ export function createMapClassExtending(SuperClass = class {}) {
   return class MapBase extends SuperClass {
     constructor() {
       super();
+      this._sourceListModel = null;
+      this._legendList = [];
     }
 
     initializeMap() {
@@ -13,15 +15,19 @@ export function createMapClassExtending(SuperClass = class {}) {
     }
 
     getLayerCatalog() {
-      throw new Error('getLayerCatalog is not implemented');
-    }
-
-    getLegendInfo() {
-      throw new Error('getLegendInfo is not implemented');
+      return (this._sourceListModel && this._sourceListModel.getSourceList()) || [];
     }
 
     getAppreciableLayers() {
-      throw new Error('getAppreciableLayers is not implemented');
+      return (this._sourceListModel && this._sourceListModel.getLayers()) || [];
+    }
+
+    getLegendInfo() {
+      return this._legendList;
+    }
+
+    getSelfAppreciableLayers(appreciableLayers) {
+      return (this._sourceListModel && this._sourceListModel.getSelfLayers(appreciableLayers)) || [];
     }
 
     echartsLayerResize() {}

@@ -8,7 +8,8 @@ import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
 import { FetchRequest } from '../util/FetchRequest';
-import { SourceListModel } from './utils/SourceListModel';
+import { SourceListModel } from './utils/SourceListModelV2';
+import { mergeFeatures } from './utils/util';
 
 export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   return class WebMap extends SuperClass {
@@ -36,7 +37,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this.rasterTileSize = mapOptions.rasterTileSize || 256;
       this.layerFilter = options.layerFilter;
       this.checkSameLayer = options.checkSameLayer;
-      this._legendList = [];
       this._taskID = new Date();
       this._cacheLayerId = new Map();
       this._layerTimerList = [];
@@ -78,18 +78,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         });
         this._layerTimerList = [];
       }
-    }
-  
-    getLayerCatalog() {
-      return (this._sourceListModel && this._sourceListModel.getSourceList()) || [];
-    }
-  
-    getLegendInfo() {
-      return this._legendList;
-    }
-  
-    getAppreciableLayers() {
-      return (this._sourceListModel && this._sourceListModel.getLayers()) || [];
     }
   
     _initWebMap() {}
@@ -355,7 +343,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             this._setCacheLayer({
               parentLayerId: layerInfo.layerID || layerInfo.name,
               layerInfo,
-              subRenderLayers: layerIds.map((layerId) => ({ layerId, name: layerId }))
+              subRenderLayers: layerIds.map((layerId) => ({ layerId }))
             });
             addedCallback && addedCallback();
           },
@@ -465,7 +453,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     _initOverlayLayer(layerInfo, features = [], mergeByField) {
       const { layerID, layerType, visible, style, featureType, projection } = layerInfo;
       layerInfo.visible = visible ? 'visible' : 'none';
-      features = this.mergeFeatures(layerID, features, mergeByField);
+      features = mergeFeatures({ sourceId: layerID, features, mergeByField, map: this.map });
       if (layerType === 'restMap') {
         this._createRestMapLayer(features, layerInfo);
         return;
@@ -2252,8 +2240,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
          */
         this.addLayersSucceededLen = this._cacheLayerId.size;
         const appreciableLayers = this.getAppreciableLayers();
-        this._rectifyLayersOrder(appreciableLayers);
         const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
+        this._rectifyLayersOrder(layerOptions.layers);
         this.fire('addlayerssucceeded', {
           ...layerOptions,
           map: this.map,
@@ -2262,7 +2250,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       }
     }
   
-    _rectifyLayersOrder(appreciableLayers) {
+    _rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
       const renderLayers = appreciableLayers.reduce((layers, layer) => {
         return layers.concat(layer.renderLayers);
       }, []);
@@ -2270,7 +2258,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const exsitLayers = renderLayers.filter((layerId) => !!this.map.getLayer(layerId));
       for (let index = exsitLayers.length - 1; index > -1; index--) {
         const targetlayerId = exsitLayers[index];
-        const beforLayerId = exsitLayers.slice(index + 1).find((id) => this.map.style._layers[id]);
+        const afterLayers = exsitLayers.slice(index + 1);
+        let beforLayerId = afterLayers.find((id) => this.map.style._layers[id]);
+        if (!afterLayers.length) {
+          beforLayerId = topLayerBeforeId;
+        }
         this.map.moveLayer(targetlayerId, beforLayerId);
         const labelLayerId = this._getSymbolLabelLayerName(targetlayerId);
         if (this.map.getLayer(labelLayerId)) {
@@ -2783,7 +2775,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _setCacheLayer({ parentLayerId, layerInfo, ignore = false, beforeId, subRenderLayers }) {
-      const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, name: layerInfo.name, ignore }];
+      const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, ignore }];
       if (!this._cacheLayerId.has(parentLayerId)) {
         this._cacheLayerId.set(parentLayerId, renderLayers);
       } else {
@@ -2812,11 +2804,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           if (!renderLayers.length) {
             return;
           }
-          const matchMainLayer = matchLayers.find((item) => item.layerId === targetLayerId);
           layersFromMapInfo.push({
             ...layerInfo,
             id: targetLayerId,
-            name: matchMainLayer && matchMainLayer.name,
             visible: targetLayerVisible,
             renderLayers
           });
@@ -2825,11 +2815,29 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this._changeSourceListModel(layersFromMapInfo);
       const appreciableLayers = this.getAppreciableLayers();
       if (this.addLayersSucceededLen && this._cacheLayerId.size !== this.addLayersSucceededLen) {
-        this._rectifyLayersOrder(appreciableLayers);
+        const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers)
+        const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
+        this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
         this.addLayersSucceededLen = this._cacheLayerId.size;
       }
-      const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
-      this.fire('addlayerchanged', layerOptions);
+      this.fire('addlayerchanged', this._getSelfAppreciableLayers(appreciableLayers));
+    }
+
+    _findTopLayerBeforeId(selfAppreciableLayers) {
+      // fix 追加图层，异步的图层回来排序错乱
+      const selfLayerIds = selfAppreciableLayers.reduce((ids, item) => ids.concat(item.renderLayers), []);
+      const firstSelfLayerIdOnMap = selfLayerIds.find((id) => this.map.style._layers[id]);
+      if (!firstSelfLayerIdOnMap) {
+        return;
+      }
+      const firstSelfLayerIndex = this.map.getStyle().layers.findIndex((item) => item.id === firstSelfLayerIdOnMap);
+      const extraLayerIdsOnMap = this.map.getStyle().layers.filter(item => !selfLayerIds.some(id => id === item.id)).map(item => item.id);
+      for (const layerId of extraLayerIdsOnMap) {
+        const matchIndex = this.map.getStyle().layers.findIndex((item) => item.id === layerId);
+        if (matchIndex > firstSelfLayerIndex) {
+          return layerId;
+        }
+      }
     }
   
     _changeSourceListModel(layersFromMapInfo) {
@@ -2845,18 +2853,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _getSelfAppreciableLayers(appreciableLayers) {
-      const cacheLayerToAddList = Array.from(this._cacheLayerId.values());
-      const flatCacheLayerId = cacheLayerToAddList.reduce((list, layers) => {
-        const layerIds = layers.map((item) => item.layerId);
-        list.push(...layerIds);
-        return list;
-      }, []);
-      const matchLayers = appreciableLayers.filter((item) =>
-        item.renderLayers.some((id) => flatCacheLayerId.some((layerId) => layerId === id))
-      );
       return {
-        layers: matchLayers,
-        cacheLayerIds: flatCacheLayerId,
+        layers: this.getSelfAppreciableLayers(appreciableLayers),
         allLoaded: this._cacheLayerId.size === this.addLayersSucceededLen
       };
     }

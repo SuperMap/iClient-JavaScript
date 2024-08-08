@@ -1764,7 +1764,6 @@ export function L7LayerUtil(config) {
       console.error(errorMsg);
       throw new Error(errorMsg);
     }
-    console.log('g2', G2);
     const chart = new G2.Chart({
       container: el,
       width,
