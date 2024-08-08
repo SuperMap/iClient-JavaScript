@@ -15,7 +15,7 @@ const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 }
 export class WebMap extends createWebMapExtending(mapboxgl.Evented, { mapRepo: mapboxgl }) {
 
   _createWebMapV2(commonOptions, mapOptions) {
-    const WebMapV2 = createWebMapV2Extending(createWebMapBaseExtending(createMapClassExtending(mapboxgl.Evented)), { MapManager, mapRepo: mapboxgl });
+    const WebMapV2 = createWebMapV2Extending(createWebMapBaseExtending(createMapClassExtending(mapboxgl.Evented), 'fire'), { MapManager, mapRepo: mapboxgl });
     const webMapHandler = new WebMapV2(this.mapId, commonOptions, mapOptions, this.layerFilter);
     return webMapHandler;
   }
@@ -35,7 +35,7 @@ export class WebMap extends createWebMapExtending(mapboxgl.Evented, { mapRepo: m
   }
 
   _createMapStyle(commonOptions, mapOptions) {
-    const MapStyle = createMapStyleExtending(mapboxgl.Evented, { mapRepo: mapboxgl });
+    const MapStyle = createMapStyleExtending(createMapClassExtending(mapboxgl.Evented), { MapManager, mapRepo: mapboxgl });
     const mapStyleHandler = new MapStyle(this.mapId, commonOptions, mapOptions);
     return mapStyleHandler;
   }
