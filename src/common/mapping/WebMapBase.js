@@ -364,7 +364,6 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
       const themeSetting = parameters.themeSetting;
       const themeField = themeSetting.themeField;
       const styleGroups = this.getRankStyleGroup(themeField, features, parameters);
-      // @ts-ignore
       return styleGroups ? { parameters, styleGroups } : false;
     }
   
@@ -527,9 +526,10 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
         default:
           if (Util.isArray(str)) {
             dashArr = str;
+          } else {
+            str = StringExt.trim(str).replace(/\s+/g, ',');
+            dashArr = str.replace(/\[|\]/gi, '').split(',');
           }
-          str = StringExt.trim(str).replace(/\s+/g, ',');
-          dashArr = str.replace(/\[|\]/gi, '').split(',');
           break;
       }
       dashArr = type === 'array' ? dashArr : dashArr.join(',');
@@ -582,7 +582,6 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
           (val || val === 0) && !isNaN(+val) && values.push(parseFloat(val));
         }
       }, this);
-  
       let segements =
         values && values.length && ArrayStatistic.getArraySegments(values, segmentMethod, segmentCount);
       if (segements) {
@@ -726,7 +725,6 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
             return;
           }
           coordEach(feature, (coordinates) => {
-            // @ts-ignore
             let transCoordinates = this._unproject(coordinates);
             coordinates[0] = transCoordinates[0];
             coordinates[1] = transCoordinates[1];
@@ -949,15 +947,12 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
   
       if (animationSetting.show) {
         // 开启动画
-        // @ts-ignore
         pointSeries[0].type = 'effectScatter';
-        // @ts-ignore
         pointSeries[0].rippleEffect = {
           brushType: 'stroke'
         };
       } else {
         // 关闭动画
-        // @ts-ignore
         pointSeries[0].type = 'scatter';
       }
   
@@ -995,11 +990,8 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
       ];
   
       if (lineData.length >= MAX_MIGRATION_ANIMATION_COUNT) {
-        // @ts-ignore
         linesSeries[0].large = true;
-        // @ts-ignore
         linesSeries[0].largeThreshold = 100;
-        // @ts-ignore
         linesSeries[0].blendMode = 'lighter';
       }
   

@@ -4,7 +4,7 @@ import { Util } from '../commontypes/Util';
 import { QueryBySQLService } from '../iServer/QueryBySQLService';
 import { FilterParameter } from '../iServer/FilterParameter';
 import { QueryOption } from "../REST";
-import { QueryBySQLParameters } from "../iServer";
+import { GetFeaturesBySQLParameters, GetFeaturesBySQLService, QueryBySQLParameters } from "../iServer";
 import { FileReaderUtil } from '../components/util/FileReaderUtil';
 import { transformServerUrl } from "./utils/util";
 
@@ -28,7 +28,7 @@ const MB_SCALEDENOMINATOR_4326 = [
 ];
 
 export class WebMapService {
-  constructor(mapId, options) {
+  constructor(mapId, options = {}) {
     if (typeof mapId === 'string' || typeof mapId === 'number') {
       this.mapId = mapId;
     } else if (mapId !== null && typeof mapId === 'object') {
@@ -182,10 +182,10 @@ export class WebMapService {
           return response.text();
         })
         .then(capabilitiesText => {
-          const parser = new XMLParser();
+          const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' });
           const capabilities = parser.parse(capabilitiesText);
           const wmsCapabilities = capabilities.WMT_MS_Capabilities || capabilities.WMS_Capabilities;
-          resolve({ version: wmsCapabilities['_attributes']['version'] });
+          resolve({ version: wmsCapabilities['@_version'] });
         });
     });
   }
@@ -229,6 +229,8 @@ export class WebMapService {
           // 用于决定哪些字段必须返回数组格式
           const alwaysArray = ['Layer', 'TileMatrixSet', 'ows:Operation', 'ows:Get', 'ResourceURL', 'Style'];
           const parser = new XMLParser({
+            ignoreAttributes: false,
+            attributeNamePrefix: '@_',
             //name: is either tagname, or attribute name
             isArray: (name) => { 
                 if(alwaysArray.indexOf(name) !== -1) {
@@ -245,7 +247,7 @@ export class WebMapService {
               operations = [operations];
             }
             const operation = operations.find(item => {
-              return item._attributes.name === 'GetTile';
+              return item['@_name'] === 'GetTile';
             });
             if (operation) {
               let getConstraints = operation['ows:DCP']['ows:HTTP']['ows:Get'];
@@ -253,10 +255,10 @@ export class WebMapService {
                 getConstraints = [getConstraints];
               }
               const getConstraint = getConstraints.find(item => {
-                return item['ows:Constraint']['ows:AllowedValues']['ows:Value']['_text'] === 'KVP';
+                return item['ows:Constraint']['ows:AllowedValues']['ows:Value'] === 'KVP';
               });
               if (getConstraint) {
-                kvpResourceUrl = getConstraint['_attributes']['xlink:href'];
+                kvpResourceUrl = getConstraint['@_xlink:href'];
               }
             }
           }
@@ -264,11 +266,11 @@ export class WebMapService {
           for (let i = 0; i < tileMatrixSet.length; i++) {
             if (
               tileMatrixSet[i]['ows:Identifier'] &&
-              (tileMatrixSet[i]['ows:Identifier']['_text'] + '') === layerInfo.tileMatrixSet
+              (tileMatrixSet[i]['ows:Identifier'] + '') === layerInfo.tileMatrixSet
             ) {
               if (
                 tileMatrixSet[i]['WellKnownScaleSet'] &&
-                DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet']['_text'])
+                DEFAULT_WELLKNOWNSCALESET.includes(tileMatrixSet[i]['WellKnownScaleSet'])
               ) {
                 isMatched = true;
               } else {
@@ -282,8 +284,8 @@ export class WebMapService {
                   mapCRS === 'EPSG:3857' ? [-2.0037508342789248e7, 2.0037508342789087e7] : [-180, 90];
                 for (let j = 0; j < tileMatrixSet[i].TileMatrix.length; j++) {
                   const tileMatrix = tileMatrixSet[i].TileMatrix[j];
-                  const identifier = tileMatrix['ows:Identifier']['_text'];
-                  const topLeftCorner = [...tileMatrix['TopLeftCorner']['_text'].split(' ')];
+                  const identifier = tileMatrix['ows:Identifier'];
+                  const topLeftCorner = [...tileMatrix['TopLeftCorner'].split(' ')];
                   if (
                     (!this.numberEqual(topLeftCorner[0], defaultCRSTopLeftCorner[0]) ||
                       !this.numberEqual(topLeftCorner[1], defaultCRSTopLeftCorner[1])) &&
@@ -296,7 +298,7 @@ export class WebMapService {
                   if (!defaultScaleDenominator) {
                     break;
                   }
-                  const scaleDenominator = parseFloat(tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text']);
+                  const scaleDenominator = parseFloat(tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']);
                   if (this.numberEqual(defaultScaleDenominator, scaleDenominator)) {
                     matchedScaleDenominator[+identifier] = scaleDenominator;
                   } else {
@@ -321,19 +323,19 @@ export class WebMapService {
               break;
             }
           }
-          const layer = content.Layer.find(item => {
-            return item['ows:Identifier']['_text'] === layerInfo.layer;
+          const layer = content.Layer && content.Layer.find(item => {
+            return item['ows:Identifier'] === layerInfo.layer;
           });
           if (layer) {
             let styles = layer.Style;
             if (Array.isArray(layer.Style)) {
-              style = styles[0]['ows:Identifier'] ? styles[0]['ows:Identifier']['_text'] : '';
+              style = styles[0]['ows:Identifier'] ? styles[0]['ows:Identifier'] : '';
             } else {
-              style = styles['ows:Identifier'] ? styles['ows:Identifier']['_text'] : '';
+              style = styles['ows:Identifier'] ? styles['ows:Identifier'] : '';
             }
             if (layer['ows:WGS84BoundingBox']) {
-              const lowerCorner = layer['ows:WGS84BoundingBox']['ows:LowerCorner']['_text'].split(' ');
-              const upperCorner = layer['ows:WGS84BoundingBox']['ows:UpperCorner']['_text'].split(' ');
+              const lowerCorner = layer['ows:WGS84BoundingBox']['ows:LowerCorner'].split(' ');
+              const upperCorner = layer['ows:WGS84BoundingBox']['ows:UpperCorner'].split(' ');
               bounds = [
                 parseFloat(lowerCorner[0]),
                 parseFloat(lowerCorner[1]),
@@ -346,10 +348,10 @@ export class WebMapService {
               resourceUrls = [resourceUrls];
             }
             const resourceUrl = resourceUrls.find(item => {
-              return item._attributes.resourceType === 'tile';
+              return item['@_resourceType'] === 'tile';
             });
             if (resourceUrl) {
-              restResourceURL = resourceUrl._attributes.template;
+              restResourceURL = resourceUrl['@_template'];
             }
           }
           resolve({ isMatched, matchMaxZoom, matchMinZoom, style, bounds, restResourceURL, kvpResourceUrl });
@@ -1188,11 +1190,11 @@ export class WebMapService {
     baseProjection
   ) {
     let getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-    getFeatureParam = new SuperMap.FilterParameter({
+    getFeatureParam = new FilterParameter({
       name: datasetNames.join().replace(':', '@'),
       attributeFilter: null
     });
-    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+    getFeatureBySQLParams = new GetFeaturesBySQLParameters({
       queryParameter: getFeatureParam,
       datasetNames: datasetNames,
       fromIndex: 0,
@@ -1235,7 +1237,7 @@ export class WebMapService {
       }
     };
     const serviceUrl = this.handleParentRes(url);
-    getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(serviceUrl, options);
+    getFeatureBySQLService = new GetFeaturesBySQLService(serviceUrl, options);
     getFeatureBySQLService.processAsync(getFeatureBySQLParams);
   }
 
