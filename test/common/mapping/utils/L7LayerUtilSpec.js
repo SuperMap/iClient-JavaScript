@@ -1,9 +1,41 @@
-import { addL7Layers, isL7Layer, getL7Filter } from '../../../../src/mapboxgl/mapping/utils/L7LayerUtil';
+import { L7LayerUtil } from '../../../../src/common/mapping/utils/L7LayerUtil';
+import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import * as mockL7 from '../../../tool/mock_l7';
-import * as L7 from '../../../../src/mapboxgl/overlay/L7/l7-render';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
+import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 
 describe('L7LayerUtil', () => {
+  const L7 = {
+    Marker: class {
+      setLnglat() {}
+    },
+    MarkerLayer: class {
+      addMarker() {}
+    },
+    LineLayer: mockL7.PointLayer,
+    PointLayer: mockL7.PointLayer,
+    HeatmapLayer: mockL7.PointLayer,
+    PolygonLayer: mockL7.PolygonLayer
+  };
+  const L7Layer = class {
+    constructor(params) {
+      const { type, options = {} } = params;
+      const id = options.layerID;
+      this.l7layer = new L7[type](options);
+      this.id = id;
+    }
+
+    getL7Layer() {
+      return this.l7layer;
+    }
+
+    getLayer() {
+      return this.l7layer.rawConfig;
+    }
+
+    reRender() {}
+  };
+  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
   const mapstudioWebMap_L7LayersRes = JSON.parse(mapstudioWebMap_L7Layers);
 
   const scene = new mockL7.Scene();
@@ -26,7 +58,7 @@ describe('L7LayerUtil', () => {
   const addOptions = {
     map,
     webMapInfo: { ...mapstudioWebMap_L7LayersRes },
-    l7Layers: mapstudioWebMap_L7LayersRes.layers.filter((layer) => isL7Layer(layer)),
+    l7Layers: mapstudioWebMap_L7LayersRes.layers.filter((layer) => l7LayerUtil.isL7Layer(layer)),
     spriteDatas: {
       shape7: {
         sdf: true,
@@ -141,7 +173,7 @@ describe('L7LayerUtil', () => {
       l7Layers: layers
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
-    addL7Layers(nextOptions).then(() => {
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
       expect(layerMaplist['国内航班数据_100']).toBeTruthy();
       expect(layerMaplist['ms_composite_国内航班数据_100']).toBeTruthy();
@@ -244,7 +276,7 @@ describe('L7LayerUtil', () => {
       l7Layers: layers
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
-    addL7Layers(nextOptions).then(() => {
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
       spy.calls.reset();
       done();
@@ -359,7 +391,7 @@ describe('L7LayerUtil', () => {
     };
     const spy1 = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     const spy2 = spyOn(nextOptions.options, 'emitterEvent');
-    addL7Layers(nextOptions).then(() => {
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
       expect(nextOptions.options.emitterEvent).toHaveBeenCalledTimes(1);
       expect(layerMaplist['ms_New_LINE_1716864449916_8']).toBeUndefined();
@@ -487,7 +519,7 @@ describe('L7LayerUtil', () => {
       }
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
-    addL7Layers(nextOptions).then(() => {
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
       expect(layerMaplist['县级行政区划@link_outline(0_24)'].getLayer().featureId).toBe('SmID');
       spy.calls.reset();
@@ -551,7 +583,7 @@ describe('L7LayerUtil', () => {
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     const spy1 = spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
-    addL7Layers(nextOptions).then(() => {
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
       const iclientL7Layer = layerMaplist['县级行政区划@link_outline(0_24)'];
       const spy2 = spyOn(iclientL7Layer, 'reRender').and.callThrough();
       setTimeout(() => {
@@ -567,7 +599,7 @@ describe('L7LayerUtil', () => {
 
   it('filter expression', () => {
     const expr = ['any', ['all', ['==', ['get', 'smpid'], 5], ['==', ['get', '新建字段'], '']]];
-    const result = getL7Filter(expr);
+    const result = l7LayerUtil.getL7Filter(expr);
     expect(result.field).toEqual(['smpid', '新建字段']);
     expect(result.values).not.toBeUndefined();
   });

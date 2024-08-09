@@ -224,3 +224,7 @@ import './common/lang/LangSpec.js';
 import './common/util/EncryptRequestSpec';
 import './common/util/MapCalculateUtilSpec';
 import './common/util/GeometryAnalysisSpec.js';
+
+import './common/mapping/utils/L7LayerUtilSpec';
+import './common/mapping/WebMapServiceSpec';
+import './common/mapping/WebMapBaseSpec';
