@@ -174,18 +174,20 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(points[0][1]).toEqual(80);
   });
 
-  it('onRemove', () => {
-    graticuleLayer.onRemove();
-    expect(graticuleLayer.renderer.canvas).toBeNull();
-  });
-
   it('_initialize visible', (done) => {
-    setTimeout(() => {
+    try {
       const graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_test', visible: false });
       map.addLayer(graticuleLayer);
       var visible = map.getLayoutProperty('graticuleLayer_test_line', 'visibility');
       expect(visible).toBe('none');
       done();
-    }, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  
+  it('onRemove', () => {
+    graticuleLayer.onRemove();
+    expect(graticuleLayer.renderer.canvas).toBeNull();
   });
 });
