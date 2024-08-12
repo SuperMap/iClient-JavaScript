@@ -174,33 +174,6 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(points[0][1]).toEqual(80);
   });
 
-  xit('_setLayerTop add newlayer', () => {
-    console.log('_setLayerTop add newlayer');
-    try {
-      map.addSource('queryDatas', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: [{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[[0, 0][(10, 5)], [-10, 5]]] } }]
-        }
-      });
-      map.addLayer({
-        id: 'queryDatas',
-        type: 'fill',
-        source: 'queryDatas',
-        paint: {
-          'fill-color': '#008080',
-          'fill-opacity': 0.4
-        },
-        filter: ['==', '$type', 'Polygon']
-      });
-      expect(true).toBeTruthy();
-    } catch (e) {
-      expect(false).toBeTruthy();
-      console.log(e);
-    }
-  });
-
   it('onRemove', () => {
     graticuleLayer.onRemove();
     expect(graticuleLayer.renderer.canvas).toBeNull();
