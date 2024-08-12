@@ -23,10 +23,16 @@ export class SourceListModel extends AppreciableLayerBase {
   }
 
   createAppreciableLayerId(layer) {
+    // 针对传入 layers
+    if (layer.layerInfo && layer.layerInfo.id) {
+      return layer.layerInfo.id;
+    }
     // 往空地图上追加图层 且 只有一个webmap this.layers是空
-    // layer.sourceLayer 针对 MapboxStyle
-    const metadata = layer.metadata || {};
-    return metadata.parentLayerId || layer.sourceLayer || layer.source || layer.id;
+    if (layer.metadata && layer.metadata.parentLayerId) {
+      return layer.metadata.parentLayerId;
+    }
+    // 针对 MapboxStyle 或者其它额外的 layer
+    return layer.sourceLayer || layer.source || layer.id;
   }
 
   _initLayers() {
@@ -39,8 +45,9 @@ export class SourceListModel extends AppreciableLayerBase {
     const selfLayerIds = [];
     // 排序
     this.layers.forEach((item) => {
-      const matchLayer = nextLayers.find((layer) => this._isBelongToMapJSON(item, layer));
-      if (matchLayer && matchLayer.id === item.id) {
+      const matchLayers = nextLayers.filter((layer) => this._isBelongToMapJSON(item, layer));
+      const matchLayer = matchLayers.find(renderLayer => renderLayer.id === item.id);
+      if (matchLayer) {
         selfLayers.push({
           ...matchLayer,
           layerInfo: { ...item, dataSource: item.dataSource || (item.serverId && { serverId: item.serverId }) }

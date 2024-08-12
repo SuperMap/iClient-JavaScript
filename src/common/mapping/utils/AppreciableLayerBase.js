@@ -42,7 +42,7 @@ export class AppreciableLayerBase {
         return item.id === layerId;
       });
       if (!matchLayer) {
-        matchLayer = this._createCommonFields(layer);
+        matchLayer = this._createCommonFields(layer, layerId);
         layers.push(matchLayer);
       }
       const nextRenderLayers = matchLayer.renderLayers.concat(
@@ -137,10 +137,9 @@ export class AppreciableLayerBase {
     return layersOnMap;
   }
 
-  _createCommonFields(layer) {
+  _createCommonFields(layer, layerId) {
     const layerInfo = layer.layerInfo || {};
     // type: background overlaymanager layers 只有 id
-    const layerId = this.createAppreciableLayerId(layer);
     const {
       dataSource = {},
       themeSetting = {},

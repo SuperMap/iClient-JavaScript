@@ -342,7 +342,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             });
             this._setCacheLayer({
               parentLayerId: layerInfo.layerID || layerInfo.name,
-              layerInfo,
               subRenderLayers: layerIds.map((layerId) => ({ layerId }))
             });
             addedCallback && addedCallback();
@@ -515,9 +514,13 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     _initGraticuleLayer(graticuleInfo) {
       const options = this._createGraticuleOptions(graticuleInfo);
       const graticuleLayer = new mapRepo.supermap.GraticuleLayer(options);
-      this._addLayer(graticuleLayer);
       this._setGraticuleDash(graticuleInfo.lineDash, graticuleLayer);
       this._graticuleLayer = graticuleLayer;
+      this.map.addLayer(graticuleLayer);
+      this._setCacheLayer({
+        parentLayerId: graticuleLayer.id,
+        subRenderLayers: [{ layerId: graticuleLayer.id }, { layerId: graticuleLayer.sourceId }]
+      });
     }
   
     _createGraticuleOptions(graticuleInfo) {
@@ -2791,7 +2794,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const layerList = [this._mapInfo.baseLayer].concat(this._mapInfo.layers);
       if (this._graticuleLayer) {
         const { id: layerID, visible } = this._graticuleLayer;
-        layerList.push({ layerID, visible });
+        layerList.push({ layerID, visible, name: 'GraticuleLayer' });
       }
       // this._mapInfo.layers 是有序的
       layerList.forEach((layerInfo) => {
