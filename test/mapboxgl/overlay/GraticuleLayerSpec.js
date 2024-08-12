@@ -45,7 +45,7 @@ describe('mapboxgl_GraticuleLayer', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     if (!map.getLayer('graticuleLayer_1')) {
       graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_1' });
-      graticuleLayer.onAdd(map);
+      map.addLayer(graticuleLayer);
     }
   });
 
@@ -69,16 +69,6 @@ describe('mapboxgl_GraticuleLayer', () => {
       expect(graticuleLayer.mapContainer).not.toBeNull();
       expect(graticuleLayer.features).not.toBeNull();
       expect(graticuleLayer.options).not.toBeNull();
-      done();
-    }, 0);
-  });
-
-  it('_initialize visible', (done) => {
-    setTimeout(() => {
-      const graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_test', visible: false });
-      graticuleLayer.onAdd(map);
-      var visible = map.getLayoutProperty('graticuleLayer_test_line', 'visibility');
-      expect(visible).toBe('none');
       done();
     }, 0);
   });
@@ -108,12 +98,17 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setExtent', () => {
-    graticuleLayer.setExtent([
-      [0, 0],
-      [50, 50]
-    ]);
-    expect(graticuleLayer.options.extent[0]).toEqual(0);
-    expect(graticuleLayer.options.extent[3]).toEqual(50);
+    try {
+      graticuleLayer.setExtent([
+        [0, 0],
+        [50, 50]
+      ]);
+      expect(graticuleLayer.options.extent[0]).toEqual(0);
+      expect(graticuleLayer.options.extent[3]).toEqual(50);
+    } catch (e) {
+      expect(false).toBeTruthy();
+      console.log(e);
+    }
   });
 
   it('setStrokeStyle', () => {
@@ -132,34 +127,24 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setIntervals', () => {
-    graticuleLayer.setIntervals(5);
-    expect(graticuleLayer.renderer.options.interval).toEqual(5);
+    try {
+      graticuleLayer.setIntervals(5);
+      expect(graticuleLayer.renderer.options.interval).toEqual(5);
+    } catch (e) {
+      expect(false).toBeTruthy();
+      console.log(e);
+    }
   });
 
   it('getDefaultExtent must return degree', () => {
     map.getCRS = () => {
       return {
-        extent: [
-          -20037508.3427892,
-          -20037508.3427892,
-          20037508.3427892,
-          20037508.3427892
-        ],
-        lngLatExtent: [
-          -179.99999999999963,
-          -85.05112877980658,
-          179.99999999999963,
-          85.05112877980656
-        ]
+        extent: [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892],
+        lngLatExtent: [-179.99999999999963, -85.05112877980658, 179.99999999999963, 85.05112877980656]
       };
     };
     var extent = graticuleLayer.getDefaultExtent();
-    expect(extent).toEqual([
-      -179.99999999999963,
-      -85.05112877980658,
-      179.99999999999963,
-      85.05112877980656
-    ]);
+    expect(extent).toEqual([-179.99999999999963, -85.05112877980658, 179.99999999999963, 85.05112877980656]);
   });
 
   it('_calcInterval', () => {
@@ -189,8 +174,45 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(points[0][1]).toEqual(80);
   });
 
+  xit('_setLayerTop add newlayer', () => {
+    console.log('_setLayerTop add newlayer');
+    try {
+      map.addSource('queryDatas', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[[0, 0][(10, 5)], [-10, 5]]] } }]
+        }
+      });
+      map.addLayer({
+        id: 'queryDatas',
+        type: 'fill',
+        source: 'queryDatas',
+        paint: {
+          'fill-color': '#008080',
+          'fill-opacity': 0.4
+        },
+        filter: ['==', '$type', 'Polygon']
+      });
+      expect(true).toBeTruthy();
+    } catch (e) {
+      expect(false).toBeTruthy();
+      console.log(e);
+    }
+  });
+
   it('onRemove', () => {
     graticuleLayer.onRemove();
     expect(graticuleLayer.renderer.canvas).toBeNull();
+  });
+
+  it('_initialize visible', (done) => {
+    setTimeout(() => {
+      const graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_test', visible: false });
+      map.addLayer(graticuleLayer);
+      var visible = map.getLayoutProperty('graticuleLayer_test_line', 'visibility');
+      expect(visible).toBe('none');
+      done();
+    }, 0);
   });
 });

@@ -1,6 +1,5 @@
 import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
 import maplibregl from 'maplibre-gl';
-import { Feature } from '@supermapgis/iclient-common';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl_GraticuleLayer', () => {
@@ -43,10 +42,9 @@ describe('maplibregl_GraticuleLayer', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        debugger
         if (!map.getLayer('graticuleLayer_1')) {
             graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
-            graticuleLayer.onAdd(map);
+            map.addLayer(graticuleLayer);
         }
     });
 
@@ -126,12 +124,17 @@ describe('maplibregl_GraticuleLayer', () => {
     });
 
     it('setExtent', () => {
+      try{
         graticuleLayer.setExtent([
             [0, 0],
             [50, 50]
         ]);
         expect(graticuleLayer.options.extent[0]).toEqual(0);
         expect(graticuleLayer.options.extent[3]).toEqual(50);
+      } catch (e) {
+        expect(false).toBeTruthy();
+        console.log(e);
+      }
     });
 
     it('setStrokeStyle', () => {
@@ -150,8 +153,13 @@ describe('maplibregl_GraticuleLayer', () => {
     });
 
     it('setIntervals', () => {
+      try{
         graticuleLayer.setIntervals(5);
         expect(graticuleLayer.renderer.options.interval).toEqual(5);
+      } catch (e) {
+        expect(false).toBeTruthy();
+        console.log(e);
+      }
     });
 
     it('_calcInterval', () => {
