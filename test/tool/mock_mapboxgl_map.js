@@ -33,7 +33,6 @@ const Map = function (options) {
   this.zoom = this.options.zoom || 0;
   this._container = this.options.container || 'map';
   this._layers = {};
-  this.style = {};
   this.getContainer = function () {
     return this._container;
   };
@@ -48,11 +47,12 @@ const Map = function (options) {
       ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1])
       : new mapboxgl.LngLat(0, 0);
   }
-  this.resize = function () {};
+  this.resize = jasmine.createSpy('resize').and.callFake(() => {});
   this.style = {
     ...options.style,
-    addGlyphs: function() {},
-    addSprite: function() {}
+    addGlyphs: jasmine.createSpy('addGlyphs').and.callFake(() => {}),
+    addSprite: jasmine.createSpy('addSprite').and.callFake(() => {}),
+    _layers: this._layers,
   };
   this.setStyle = function (style, options) {
     if (style.layers) {
@@ -110,7 +110,7 @@ const Map = function (options) {
   this.getStyle = function () {
     return {
       version: 8,
-      source: this._sources,
+      sources: this._sources,
       layers: Object.values(this._layers)
     };
   };
@@ -135,12 +135,19 @@ const Map = function (options) {
   };
 
   this.getSource = function (name) {
-    if (this._sources[name]?.type === 'video') {
+    const sourceInfo = this._sources[name];
+    if (sourceInfo && sourceInfo.type === 'video') {
       return {
         play: function () {}
       };
     }
-    return this._sources[name];
+    if (sourceInfo && sourceInfo.type === 'geojson') {
+      return {
+        ...sourceInfo,
+        setData: jasmine.createSpy('setData').and.callFake(() => {})
+      };
+    }
+    return sourceInfo;
   };
 
   this.loaded = function () {
@@ -165,6 +172,10 @@ const Map = function (options) {
   this.off = function () {};
   this.addLayer = function (layer, before) {
     this._layers[layer.id] = layer;
+    if (layer.source instanceof Object){
+      this.addSource(layer.id, Object.assign({}, layer.source))
+      this._layers[layer.id].source = layer.id;
+    }
     if (layer.onAdd) {
       layer.onAdd(this);
     }
@@ -175,6 +186,16 @@ const Map = function (options) {
   };
 
   this.addStyle = function (style, before) {
+    if (style.sources) {
+      for (const key in style.sources) {
+        this.addSource(key, style.sources[key]);
+      }
+    }
+    if (style.layers) {
+      style.layers.forEach(layer => {
+        this.addLayer(layer);
+      })
+    }
     return style;
   };
 
@@ -325,7 +346,7 @@ const Map = function (options) {
   this.getCRS = () => {
     return {
       epsgCode: this.options.crs,
-      getExtent: () => jest.fn()
+      getExtent: () => jasmine.createSpy('getExtent')
     };
   };
   this.setCRS = () => {};
@@ -337,6 +358,20 @@ const Map = function (options) {
   }, 0);
 };
 
+class CRS {
+  static get() {
+    return {
+      getExtent: function () {
+          return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+      },
+      unit: 'm',
+      getOrigin: () => jest.fn()
+    };
+  }
+
+  static set() {}
+}
+
 export default Map;
 var mapboxglMock = { Map };
-export { mapboxglMock };
+export { mapboxglMock, CRS };

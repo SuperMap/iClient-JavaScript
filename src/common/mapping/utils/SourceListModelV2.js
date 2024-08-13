@@ -22,19 +22,6 @@ export class SourceListModel extends AppreciableLayerBase {
     return this._initSourceList(appreciableLayers);
   }
 
-  createAppreciableLayerId(layer) {
-    // 针对传入 layers
-    if (layer.layerInfo && layer.layerInfo.id) {
-      return layer.layerInfo.id;
-    }
-    // 往空地图上追加图层 且 只有一个webmap this.layers是空
-    if (layer.metadata && layer.metadata.parentLayerId) {
-      return layer.metadata.parentLayerId;
-    }
-    // 针对 MapboxStyle 或者其它额外的 layer
-    return layer.sourceLayer || layer.source || layer.id;
-  }
-
   _initLayers() {
     const layersOnMap = this._getAllLayersOnMap();
     let nextLayers = layersOnMap;

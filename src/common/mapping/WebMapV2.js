@@ -1132,9 +1132,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         const layerStyle = {
           layout: {
             visibility: layerInfo.visible
-          }
+          },
+          style: this._transformStyleToMapBoxGl(layerInfo.style, featureType, expression, 'circle-radius')
         };
-        layerStyle.style = this._transformStyleToMapBoxGl(layerInfo.style, featureType, expression, 'circle-radius');
         const layerID = layerInfo.layerID;
         this._addOverlayToMap({ type: featureType, source, layerID, layerStyle, minzoom, maxzoom });
         this._addLayerSucceeded({ layerInfo, features });
@@ -1184,7 +1184,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (!properties || !properties[textField]) {
         return;
       }
-      let { backgroundFill } = labelStyle;
+      let { backgroundFill = [255, 255, 255, 0] } = labelStyle;
       const fontFamily = labelStyle.fontFamily;
       const { minzoom, maxzoom } = layerInfo;
       const textSize = parseFloat(labelStyle.fontSize || 14);
@@ -2053,25 +2053,25 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             );
           } else {
             // line-polygon-marker
-            const layeStyle = {
-              layout: {}
+            const layerStyle = {
+              layout: {},
+              // get style
+              style: this._transformStyleToMapBoxGl(defaultStyle, geomType)
             };
             if (geomType === 'LINESTRING' && defaultStyle.lineCap) {
               geomType = 'LINE';
-              layeStyle.layout = {
+              layerStyle.layout = {
                 'line-cap': defaultStyle.lineCap
               };
             }
             const visible = layerInfo.visible;
-            layeStyle.layout.visibility = visible;
-            // get style
-            layeStyle.style = this._transformStyleToMapBoxGl(defaultStyle, geomType);
+            layerStyle.layout.visibility = visible;
             this._addOverlayToMap({
               type: geomType,
               source,
               layerID,
               parentLayerId: markerLayerID,
-              layeStyle,
+              layerStyle,
               minzoom,
               maxzoom
             });

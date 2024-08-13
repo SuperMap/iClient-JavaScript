@@ -335,7 +335,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, l7Lay
 
   _setCRS({ name, wkt, extent }) {
     const crs = new mapRepo.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
-    mapRepo.IMAGECRS.set(crs);
+    mapRepo.CRS.set(crs);
   }
 
   /**

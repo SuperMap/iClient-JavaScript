@@ -170,6 +170,22 @@ const StyleRenderType = {
 
 const L7_WIDTH_MULTIPLE = 0.5;
 
+export function isL7Layer(layer) {
+  const layout = layer.layout || {};
+  return (
+    (layer.type === 'circle' && layout['circle-animate-rings']) || // 动画点
+    layer.type === 'radar' || // 雷达图
+    layer.type === 'point-extrusion' || // 3D柱状图
+    layer.type === 'line-curve' || // OD
+    layer.type === 'line-curve-extrusion' || // OD-3D
+    layer.type === 'line-extrusion' || // 3D线
+    layer.type === 'chart' || // 统计专题图
+    (layer.type === 'heatmap' && layout['heatmap-shape']) || // L7-2D热力图
+    layer.type === 'heatmap-extrusion' || // L7-3D热力图
+    (layer.type === 'symbol' && layout['text-z-offset'] > 0)
+  );
+}
+
 export function L7LayerUtil(config) {
   const { featureFilter, expression, spec, L7Layer, L7 } = config;
 
@@ -2012,22 +2028,6 @@ export function L7LayerUtil(config) {
         return result;
       }
     };
-  }
-
-  function isL7Layer(layer) {
-    const layout = layer.layout || {};
-    return (
-      (layer.type === 'circle' && layout['circle-animate-rings']) || // 动画点
-      layer.type === 'radar' || // 雷达图
-      layer.type === 'point-extrusion' || // 3D柱状图
-      layer.type === 'line-curve' || // OD
-      layer.type === 'line-curve-extrusion' || // OD-3D
-      layer.type === 'line-extrusion' || // 3D线
-      layer.type === 'chart' || // 统计专题图
-      (layer.type === 'heatmap' && layout['heatmap-shape']) || // L7-2D热力图
-      layer.type === 'heatmap-extrusion' || // L7-3D热力图
-      (layer.type === 'symbol' && layout['text-z-offset'] > 0)
-    );
   }
 
   return {

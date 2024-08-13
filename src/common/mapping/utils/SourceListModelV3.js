@@ -34,12 +34,6 @@ export class SourceListModel extends AppreciableLayerBase {
     return extraSourceList.concat(sourceList);
   }
 
-  createAppreciableLayerId(layer) {
-    // 往空地图上追加图层 且 只有一个webmap this.layers是空
-    // layer.sourceLayer 针对 MapboxStyle
-    return layer.id;
-  }
-
   _initLayers() {
     const layersOnMap = this._getAllLayersOnMap();
     let nextLayers = layersOnMap;
@@ -84,7 +78,7 @@ export class SourceListModel extends AppreciableLayerBase {
     const l7MarkerLayers = this._l7LayerUtil.getL7MarkerLayers();
     const layerDatas = metadataCatalogs.map(layerCatalog => {
       const layer = this._mapInfo.layers.find(item => item.id === layerCatalog.id) || {};
-      const layerInfo = { title: layerCatalog.title, renderLayers: this._getRenderLayers(layerCatalog.parts, layerCatalog.id) };
+      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers: this._getRenderLayers(layerCatalog.parts, layerCatalog.id) };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
       const { msDatasetId } = matchProjectCatalog;
       let dataSource = {};

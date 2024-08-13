@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager'
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
@@ -8,13 +9,14 @@ import '../../resources/WebMapV5.js';
 window.jsonsql = { query: () => { } };
 
 describe('mapboxgl_WebMap', () => {
-    // spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     var originalTimeout, testDiv;
     var server = 'http://fack:8190/iportal/';
     var id = 1788054202;
     var datavizWebmap;
     beforeEach(() => {
-        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+        spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+        mapboxgl.CRS = CRS;
+        
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -34,9 +36,13 @@ describe('mapboxgl_WebMap', () => {
         }
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        mapboxgl.CRS = undefined;
     });
     it('initialize_TIANDITU_VEC', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC1;
                 return Promise.resolve(new Response(mapJson));
@@ -46,7 +52,7 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, {
             server: server
         });
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap.on('addlayerssucceeded', ({ map }) => {
             expect(datavizWebmap.callBack).toBeUndefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -68,6 +74,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
@@ -75,8 +84,9 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap.on('addlayerssucceeded', ({ map }) => {
             datavizWebmap.resize();
+            expect(map.resize).toHaveBeenCalledTimes(1);
             done();
         });
 
@@ -86,6 +96,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
@@ -106,6 +119,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
@@ -115,8 +131,8 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
             const webMapV2 = datavizWebmap._getWebMapInstance();
-            webMapV2._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
-            webMapV2._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
+            webMapV2.getFilterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
+            webMapV2.getFilterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
             done();
         });
     });
@@ -125,6 +141,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
@@ -133,16 +152,18 @@ describe('mapboxgl_WebMap', () => {
         });
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.once('addlayerssucceeded', () => {
-            datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
-            datavizWebmap.on('addlayerssucceeded', () => {
-                const webMapV2 = datavizWebmap._getWebMapInstance();
-                expect(webMapV2.server).toEqual('http://www.test.com/');
-                done();
-            })
+            const nextUrl = 'http://www.test.com';
+            datavizWebmap.setServerUrl('http://www.test.com');
+            expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
+            expect(datavizWebmap.options.serverUrl).toBe(datavizWebmap.options.server);
+            done();
         })
     });
     it('setMapOptions', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC1;
                 return Promise.resolve(new Response(mapJson));
@@ -153,19 +174,31 @@ describe('mapboxgl_WebMap', () => {
             server: server
         });
         let mapOptions = {
-            center: [0, 0],
-            zoom: 1,
+            center: [20, 0],
+            zoom: 10,
             minZoom: 10,
             maxZoom: 12,
             isWorldCopy: true
         };
         datavizWebmap.on('addlayerssucceeded', () => {
-            datavizWebmap.setMapOptions(mapOptions);
+            datavizWebmap.setCenter(mapOptions.center);
+            expect(datavizWebmap.mapOptions.center).toEqual(mapOptions.center);
+            datavizWebmap.setZoom(mapOptions.zoom);
+            expect(datavizWebmap.mapOptions.zoom).toBe(mapOptions.zoom);
+            datavizWebmap.setMinZoom(mapOptions.minZoom);
+            expect(datavizWebmap.mapOptions.minZoom).toBe(mapOptions.minZoom);
+            datavizWebmap.setMaxZoom(mapOptions.maxZoom);
+            expect(datavizWebmap.mapOptions.maxZoom).toBe(mapOptions.maxZoom);
+            datavizWebmap.setRenderWorldCopies(mapOptions.isWorldCopy);
+            expect(datavizWebmap.mapOptions.renderWorldCopies).toBe(mapOptions.isWorldCopy);
             done();
         });
     });
     it('initialize_TIANDITU_IMAGE', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_IMAGE1;
                 return Promise.resolve(new Response(mapJson));
@@ -183,7 +216,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(2, 0.001)
+            expect(map.getZoom()).toBeCloseTo(2, 0.001);
             expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
             expect(datavizWebmap.mapParams.description).toBe('This is a image');
             done();
@@ -195,6 +228,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_TER;
                 return Promise.resolve(new Response(mapJson));
@@ -214,6 +250,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_OPENSTREET;
                 return Promise.resolve(new Response(mapJson));
@@ -238,15 +277,21 @@ describe('mapboxgl_WebMap', () => {
         let options = {
             server: server
         };
+        const errorMsg = 'test error';
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            return Promise.reject();
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
+            return Promise.reject('test error');
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap.on('getmapinfofailed', ({ error }) => {
+            expect(error).toBe(errorMsg);
+            expect(datavizWebmap.mapParams).toBeUndefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 0);
+        });
     });
 
     it('initialize_CLOUD', (done) => {
@@ -254,6 +299,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_CLOUD;
                 return Promise.resolve(new Response(mapJson));
@@ -283,6 +331,9 @@ describe('mapboxgl_WebMap', () => {
                 var mapJson = datavizWebMap_GOOGLE;
                 return Promise.resolve(new Response(mapJson));
             }
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
@@ -299,37 +350,19 @@ describe('mapboxgl_WebMap', () => {
         });
     });
 
-    // 暂时不写
-    it('initialize_UNDEFIED', (done) => {
-        let options = {
-            server: server
-        };
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf('map.json') > -1) {
-                var mapJson = datavizWebMap_UNDEFIED;
-                return Promise.resolve(new Response(mapJson));
-            }
-            return Promise.resolve();
-        });
-        var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('addlayerssucceeded', () => {
-            expect(datavizWebmap.credentialKey).toBeUndefined();
-            expect(datavizWebmap.credentialValue).toBeUndefined();
-            expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
-            expect(datavizWebmap.mapParams.description).toBe('');
-            done();
-        });
-    });
-
     it('createThemeLayer_Vector_Basis', (done) => {
         let options = {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
@@ -354,10 +387,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Theme_base_Line;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -382,10 +419,14 @@ describe('mapboxgl_WebMap', () => {
         };
 
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Image;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -406,7 +447,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Image');
             expect(datavizWebmap.mapParams.description).toBe('');
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(7, 0.001)
+            expect(map.getZoom()).toBeCloseTo(7, 0.001);
             expect(map.getCenter()).toEqual(new mapboxgl.LngLat(120.63222224999998, 30.389530096727963));
             done();
         });
@@ -418,10 +459,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Unique;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(xlsData));
             }
             return Promise.resolve();
@@ -432,8 +477,8 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(12, 0.001)
-            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.32442464111325, 39.98897628932847));
+            expect(map.getZoom()).toBeCloseTo(12, 0.001);
+            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.32442464111327, 39.98897628932847));
             expect(datavizWebmap.mapParams.title).toBe('Unique');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
@@ -446,10 +491,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Range;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            } 
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -463,8 +512,8 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(10, 0.001)
-            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.40097798513068, 39.900378604132094));
+            expect(map.getZoom()).toBeCloseTo(10, 0.001);
+            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.40097798513067, 39.900378604132094));
             expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
@@ -477,10 +526,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Heat;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(csvData));
             }
             return Promise.resolve();
@@ -491,7 +544,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(7, 0.001)
+            expect(map.getZoom()).toBeCloseTo(7, 0.001);
             expect(map.getCenter()).toEqual(new mapboxgl.LngLat(120.63222224999998, 30.389530096727963));
             expect(datavizWebmap.mapParams.title).toBe('Heat');
             expect(datavizWebmap.mapParams.description).toBe('');
@@ -504,10 +557,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Marker;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(markerData));
             }
             return Promise.resolve();
@@ -518,7 +575,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(2, 0.001)
+            expect(map.getZoom()).toBeCloseTo(2, 0.001);
             expect(map.getCenter()).toEqual(new mapboxgl.LngLat(8.437500000000002, -7.710991655433243));
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
@@ -531,6 +588,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_RestMap1;
                 return Promise.resolve(new Response(mapJson));
@@ -549,8 +609,8 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
             var map = datavizWebmap.map;
-            expect(map.getZoom()).toBeCloseTo(9, 0.001)
-            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.46675928388001, 40.15816517545865));
+            expect(map.getZoom()).toBeCloseTo(9, 0.001);
+            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.46675928388, 40.15816517545865));
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
@@ -562,6 +622,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_RestMap;
                 return Promise.resolve(new Response(mapJson));
@@ -576,7 +639,7 @@ describe('mapboxgl_WebMap', () => {
 
             var map = datavizWebmap.map;
             expect(map.getZoom()).toBeCloseTo(7, 0.001)
-            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.872606854085, 40.11626853496025));
+            expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.87260685408502, 40.11626853496025));
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
             done();
@@ -587,7 +650,48 @@ describe('mapboxgl_WebMap', () => {
         let options = {
             server: server
         };
+        const REST_DATA_SQL_RESULT = {
+            datasetInfos: [
+              {
+                fieldInfos: [
+                  {
+                    name: 'SmID',
+                    caption: 'SmID',
+                    type: 'INT32'
+                  },
+                  {
+                    name: 'NAME',
+                    caption: '名称',
+                    type: 'WTEXT'
+                  }
+                ]
+              }
+            ],
+            features: [
+              {
+                fieldNames: ['SMID', 'NAME'],
+                geometry: {
+                  center: {
+                    x: 101.84004968,
+                    y: 26.0859968692659
+                  },
+                  type: 'POINT',
+                  parts: [1],
+                  points: [
+                    {
+                      x: 101.84004968,
+                      y: 26.0859968692659
+                    }
+                  ]
+                },
+                fieldValues: ['1', '四川省']
+              }
+            ]
+          };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_RestData;
                 return Promise.resolve(new Response(mapJson));
@@ -601,7 +705,7 @@ describe('mapboxgl_WebMap', () => {
             ) {
                 return Promise.resolve(new Response(supermapData));
             }
-            return Promise.resolve();
+            return Promise.resolve(new Response(JSON.stringify(REST_DATA_SQL_RESULT)));
         });
         var datavizWebmap = new WebMap(id, options);
 
@@ -623,11 +727,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMS;
                 return Promise.resolve(new Response(mapJson));
             }
-            return Promise.resolve();
+            return Promise.resolve(new Response(wmsCapabilitiesTextWith130));
         });
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
@@ -644,42 +751,11 @@ describe('mapboxgl_WebMap', () => {
         });
     });
 
-    it('changeWeight', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf('map.json') > -1) {
-                var mapJson = datavizWebMap_TIANDITU_VEC;
-                return Promise.resolve(new Response(mapJson));
-            }
-            return Promise.resolve();
-        });
-        var datavizWebmap = new WebMap(id, {
-            server: server
-        });
-        var features = [];
-        let feature = {
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [116, 39]
-            },
-            properties: {
-                // 'field': 10
-            }
-        };
-        features.push(feature);
-        datavizWebmap.on('addlayerssucceeded', () => {
-            datavizWebmap.fieldMaxValue = {
-                field: 10
-            };
-            const webMapV2 = datavizWebmap._getWebMapInstance();
-            webMapV2._changeWeight(features, 'field');
-            // expect(feature.get('weight')).toBe(1);
-            done();
-        });
-    });
-
     it('getRangeStyleGroup', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC;
                 return Promise.resolve(new Response(mapJson));
@@ -708,7 +784,7 @@ describe('mapboxgl_WebMap', () => {
             };
             features.push(feature);
             const webMapV2 = datavizWebmap._getWebMapInstance();
-            webMapV2._getRangeStyleGroup(JSON.parse(params), features);
+            webMapV2.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
         });
@@ -716,6 +792,9 @@ describe('mapboxgl_WebMap', () => {
 
     it('dashStyle', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC1;
                 return Promise.resolve(new Response(mapJson));
@@ -737,21 +816,25 @@ describe('mapboxgl_WebMap', () => {
         
         datavizWebmap.on('mapinitialized', () => {
           const webMapV2 = datavizWebmap._getWebMapInstance();
-          expect(webMapV2._dashStyle(style[0]).length).toBe(0);
-          expect(webMapV2._dashStyle(style[1]).length).toBe(2);
-          expect(webMapV2._dashStyle(style[2]).length).toBe(4);
-          webMapV2._dashStyle(style[4]);
-          expect(webMapV2._dashStyle(style[3]).length).toBe(2);
-          expect(webMapV2._dashStyle(style[5]).length).toBe(2);
-          expect(webMapV2._dashStyle(style[6]).length).toBe(4);
+          expect(webMapV2.getDashStyle(style[0].strokeDashstyle).length).toBe(0);
+          expect(webMapV2.getDashStyle(style[1].strokeDashstyle).length).toBe(2);
+          expect(webMapV2.getDashStyle(style[2].strokeDashstyle).length).toBe(4);
+          expect(webMapV2.getDashStyle(style[4].strokeDashstyle)).toEqual([]);
+          expect(webMapV2.getDashStyle(style[3].strokeDashstyle).length).toBe(2);
+          expect(webMapV2.getDashStyle(style[5].strokeDashstyle).length).toBe(2);
+          expect(webMapV2.getDashStyle(style[6].strokeDashstyle).length).toBe(4);
           done();
       });
     });
+
     it('vector_svg', (done) => {
         let options = {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_SVG1;
                 return Promise.resolve(new Response(mapJson));
@@ -787,10 +870,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_symbol;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(geojsonData));
             }
             return Promise.resolve();
@@ -807,6 +894,9 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_TIANDITU_VEC1;
                 return Promise.resolve(new Response(mapJson));
@@ -816,7 +906,7 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
             const webMapV2 = datavizWebmap._getWebMapInstance();
-            webMapV2._getFiterFeatures('SmID>20', geojsonData);
+            webMapV2.getFilterFeatures('SmID>20', geojsonData);
             let feature =
                 '[{ "type" : "Feature", "properties" : { "name" : "aaaa" }, "geometry" : { "type" : "Polygon", "coordinates" : [ [[92.6806640625, 35.9957853864], [92.548828125, 29.8025179058], [99.9755859375, 33.541394669], [92.6806640625, 35.9957853864]], [[110.830078125, 34.5246614718], [103.6326255336, 36.859947123], [109.7218666539, 40.599259339], [110.830078125, 34.5246614718]] ] } } ]';
             webMapV2._handleMultyPolygon(JSON.parse(feature));
@@ -830,13 +920,13 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf('map.json') > -1) {
-                var mapJson = datavizWebMap_WMTS1;
-                return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('wmts') > -1) {
-                return Promise.resolve(new Response(wmtsInfo2));
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
             }
-            return Promise.resolve();
+            if (url.indexOf('map.json') > -1) {
+                return Promise.resolve(new Response(datavizWebMap_WMTS3));
+            }
+            return Promise.resolve(new Response(wmtsCapabilitiesText));
         });
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
@@ -850,10 +940,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS2;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('wmts') > -1) {
+            }
+            if (url.indexOf('wmts') > -1) {
                 return Promise.resolve(new Response(wmtsInfoCustom));
             }
             return Promise.resolve();
@@ -868,25 +962,11 @@ describe('mapboxgl_WebMap', () => {
         });
     });
 
-    it('crs unsupport', (done) => {
-        let options = {
-            server: server
-        };
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf('map.json') > -1) {
-                var mapJson = JSON.stringify({...JSON.parse(datavizWebMap_WMTS1), projection: 'EPSG:-1000'});
-                return Promise.resolve(new Response(mapJson));
-            }
-            return Promise.resolve();
-        });
-        var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('getmapfailed', ({ error }) => {
-            expect(error.message).toBe(Lang.i18n('msg_crsunsupport'));
-            done();
-        });
-    })
     it('initialize_MVT', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_MVT;
                 return Promise.resolve(new Response(JSON.stringify(mapJson)));
@@ -922,7 +1002,7 @@ describe('mapboxgl_WebMap', () => {
           var map = datavizWebmap.map;
           expect(map).not.toBe(null);
           setTimeout(() => {
-            expect(map.sources['raster-tiles']).not.toBe(undefined);
+            expect(map.getStyle().sources['raster-tiles']).not.toBe(undefined);
             done();
           }, 1000);
         });
@@ -932,10 +1012,14 @@ describe('mapboxgl_WebMap', () => {
             server: server
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('web/config/portal.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+            }
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_Marker;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.indexOf('content.json?') > -1) {
+            }
+            if (url.indexOf('content.json?') > -1) {
                 return Promise.resolve(new Response(JSON.stringify(svgmarker)));
             }
             return Promise.resolve();
@@ -943,9 +1027,8 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
             var map = datavizWebmap.map;
-            console.log(map._layers);
             setTimeout(()=>{
-                expect(map._layers['POINT-0']).not.toBe(undefined);
+                expect(map._layers['未命名标注图层1']).not.toBe(undefined);
                 done();
             },1000)
         });

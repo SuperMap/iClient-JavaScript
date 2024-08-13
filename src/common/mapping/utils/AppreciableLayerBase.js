@@ -6,7 +6,6 @@ export class AppreciableLayerBase {
     this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
     this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', /tracklayer-\d+-line/];
-    this.unexpectedLayerTypes = ['background'];
   }
 
   setSelfLayers(layers) {
@@ -30,14 +29,23 @@ export class AppreciableLayerBase {
     return this.filterExpectedLayers(selfLayers.concat(extraLayers));
   }
 
-  createAppreciableLayerId() {
-    throw new Error('createAppreciableLayerId is not implemented');
+  _createAppreciableLayerId(layer) {
+    // 针对传入 layers
+    if (layer.layerInfo && layer.layerInfo.id) {
+      return layer.layerInfo.id;
+    }
+    // 往空地图上追加图层 且 只有一个webmap this.layers是空
+    if (layer.metadata && layer.metadata.parentLayerId) {
+      return layer.metadata.parentLayerId;
+    }
+    // 针对 MapboxStyle 或者其它额外的 layer
+    return layer.sourceLayer || layer.source || layer.id;
   }
 
   _initAppreciableLayers(detailLayers) {
     // dv 没有关联一个可感知图层对应对个渲染图层的关系，默认相同source的layer就是渲染图层
     return detailLayers.reduce((layers, layer) => {
-      const layerId = this.createAppreciableLayerId(layer);
+      const layerId = this._createAppreciableLayerId(layer);
       let matchLayer = layers.find((item) => {
         return item.id === layerId;
       });
@@ -85,11 +93,7 @@ export class AppreciableLayerBase {
   }
 
   _excludeLayer(layer) {
-    return (
-      !layer.id.includes('-SM-') &&
-      !this.unexpectedLayerTypes.some((item) => item === layer.type) &&
-      this._excludeSource(layer.source)
-    );
+    return !layer.id.includes('-SM-') && this._excludeSource(layer.source);
   }
 
   _pickLayerFields(layer) {
