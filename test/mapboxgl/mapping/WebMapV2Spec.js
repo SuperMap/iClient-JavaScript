@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
+import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { createWebMapV2Extending } from '@supermapgis/iclient-common/mapping/WebMapV2';
 import { createMapClassExtending } from '@supermapgis/iclient-common/mapping/MapBase';
@@ -926,7 +927,7 @@ describe('mapboxgl_WebMap', () => {
       //   datavizWebmap.on('mapinitialized', callback);
       // });
 
-      xit('add markerLayer correctly', done => {
+      it('add markerLayer correctly', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('web/datas/123456/content.json') > -1) {
             return Promise.resolve(new Response(JSON.stringify(layerData_geojson['MARKER_GEOJSON'])));
@@ -934,9 +935,9 @@ describe('mapboxgl_WebMap', () => {
           return Promise.resolve();
         });
         const id = markerLayer;
-        const datavizWebmap = new WebMapV2(id, { ...commonOption });
+        const datavizWebmap = new WebMap(id, { ...commonOption });
         const callback = function (data) {
-          expect(datavizWebmap.getAppreciableLayers().length).toBeGreaterThan(id.layers.length + 1);
+          expect(datavizWebmap.getAppreciableLayers().length).toEqual(id.layers.length + 1);
           done();
         };
         datavizWebmap.on('addlayerssucceeded',callback);
@@ -982,7 +983,7 @@ describe('mapboxgl_WebMap', () => {
       //   datavizWebmap.on('addlayerssucceeded',callback);
       // });
     
-      xit('markerLayer point linstring and text', done => {
+      it('markerLayer point linstring and text', done => {
         const content = '{"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"dv_v5_markerStyle":{"strokeColor":"#0081E2","strokeOpacity":1,"strokeWidth":5,"lineCap":"round","lineDash":"solid"},"dv_v5_markerInfo":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"geometry":{"type":"LineString","coordinates":[[103.21230856170534,35.93252826339496],[96.80142450317665,31.772281946203208]]}},{"type":"Feature","properties":{"dataViz_title":"这是文字"},"dv_v5_markerStyle":{"text":"这是文字","font":"33px 宋体","placement":"point","textAlign":"right","fillColor":"#595959","backgroundFill":"#ee8b8b","borderColor":"rgba(255,255,255,0)","borderWidth":4,"padding":[8,8,8,8],"maxWidth":358},"dv_v5_markerInfo":{"dataViz_title":"这是文字"},"geometry":{"type":"Point","coordinates":[101.56249999999991,26.728112105878537]}},{"type":"Feature","properties":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"dv_v5_markerStyle":{"src":"http://172.16.14.44:8190/iportal/apps/dataviz/static/imgs/markers/mark_red.png","scale":1,"anchor":[0.5,0.5],"imgWidth":48,"imgHeight":43},"dv_v5_markerInfo":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"geometry":{"type":"Point","coordinates":[93.72012106170533,30.646288585669723]}},{"type":"Feature","properties":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"dv_v5_markerStyle":{"src":"http://172.16.14.44:8190/iportal/apps/dataviz/static/imgs/markers//ktv_red.png","scale":1,"anchor":[0.5,0.5],"imgWidth":48,"imgHeight":43},"dv_v5_markerInfo":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"geometry":{"type":"Point","coordinates":[95.91738668670534,35.145840549134476]}},{"type":"Feature","properties":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"dv_v5_markerStyle":{"radius":10,"fillColor":"#53C41A","fillOpacity":0.73,"strokeColor":"#e20057","strokeOpacity":1,"strokeWidth":4},"dv_v5_markerInfo":{"dataViz_title":"","dataViz_description":"","dataViz_imgUrl":"","dataViz_url":"","dataViz_videoUrl":""},"geometry":{"type":"Point","coordinates":[101.36660543670533,38.107643862311676]}}]}';
         const newLayerData_geojson = {
           ...layerData_geojson['MARKER_GEOJSON'],
@@ -990,7 +991,7 @@ describe('mapboxgl_WebMap', () => {
         };
         const contentData = JSON.parse(content);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('web/datas/123456/content.json') > -1) {
+          if (url.indexOf('web/datas/1795361105/content.json') > -1) {
             return Promise.resolve(new Response(JSON.stringify(newLayerData_geojson)));
           };
           return Promise.resolve();
@@ -1005,17 +1006,19 @@ describe('mapboxgl_WebMap', () => {
           ...markerLayer,
           layers
         };
-        const datavizWebmap = new WebMapV2(id, { ...commonOption });
+        const datavizWebmap = new WebMap(id, { ...commonOption });
         const callback = function (data) {
           const appreciableLayers = datavizWebmap.getAppreciableLayers();
-          expect(appreciableLayers.length).toBe(contentData.features.length + 1);
+          expect(appreciableLayers.length).toBe(layers.length + 1);
           const layerID = layers[0].name;
           const firstMarkerLayer = appreciableLayers.find(item => item.id === layerID);
           expect(firstMarkerLayer).toBeTruthy();
           expect(firstMarkerLayer.type).toBe('line');
           expect(appreciableLayers.some(item => item.id.includes(`${layerID}-LINESTRING`))).toBeFalsy();
-          expect(appreciableLayers.some(item => item.id.includes(`${layerID}-TEXT`))).toBeTruthy();
-          expect(appreciableLayers.filter(item => item.id.includes(`${layerID}-POINT-`))).toHaveLength(3);
+          expect(appreciableLayers.some(item => item.renderLayers.includes(`${layerID}-TEXT-1`))).toBeTruthy();
+          expect(appreciableLayers.some(item => item.renderLayers.includes(`${layerID}-POINT-4`))).toBeTruthy();
+          expect(appreciableLayers.some(item => item.renderLayers.includes(`${layerID}-POINT-2`))).toBeTruthy();
+          expect(appreciableLayers.some(item => item.renderLayers.includes(`${layerID}-POINT-3`))).toBeTruthy();
           done();
         };
         datavizWebmap.on('addlayerssucceeded',callback);
@@ -1037,7 +1040,10 @@ describe('mapboxgl_WebMap', () => {
       //   datavizWebmap.on('addlayerssucceeded', callback);
       // });
     
-      xit('add ranksymbolLayer', done => {
+      it('add ranksymbolLayer', done => {
+        spyOn(ArrayStatistic, 'getArraySegments').and.callFake(() => {
+          return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
+        });
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('web/datas/676516522/content.json') > -1) {
             return Promise.resolve(new Response(layerData_CSV));
@@ -1045,7 +1051,7 @@ describe('mapboxgl_WebMap', () => {
           return Promise.resolve();
         });
         const id = ranksymbolLayer;
-        const datavizWebmap = new WebMapV2(id, { ...commonOption });
+        const datavizWebmap = new WebMap(id, { ...commonOption });
         const callback = function (data) {
           expect(datavizWebmap.getAppreciableLayers().length).toBe(id.layers.length + 1);
           done();
@@ -1066,7 +1072,7 @@ describe('mapboxgl_WebMap', () => {
           }
           return Promise.resolve();
         });
-        const datavizWebmap = new WebMapV2(dataflowLayer, { ...commonOption, map: commonMap }, undefined);
+        const datavizWebmap = new WebMap(dataflowLayer, { ...commonOption, map: commonMap }, undefined);
         const callback = function (data) {
           expect(datavizWebmap.getAppreciableLayers().length).toBeGreaterThanOrEqual(data.layers.length);
           datavizWebmap.updateOverlayLayer({ ...dataflowLayer.layers[0], id: dataflowLayer.layers[0].name } );
@@ -1128,7 +1134,7 @@ describe('mapboxgl_WebMap', () => {
       //   done();
       // });
     
-      xit('setStyle', done => {
+      it('setStyle', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('portal.json') > -1) {
             return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1144,14 +1150,12 @@ describe('mapboxgl_WebMap', () => {
           layers: [{id: 'test'}],
           color: '#fff'
         };
-        const datavizWebmap = new WebMapV2(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
+        const datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
         
         const spy = spyOn(datavizWebmap, '_initWebMap');
-        datavizWebmap.on({
-          addlayerssucceeded: e => {
+        datavizWebmap.on('addlayerssucceeded', e => {
             expect(e.map).not.toBeNull();
             done();
-          }
         });
         datavizWebmap.setMapId('');
         datavizWebmap.setStyle(style);
@@ -1159,7 +1163,7 @@ describe('mapboxgl_WebMap', () => {
         expect(datavizWebmap.mapOptions.style).toEqual(style);
       });
     
-      xit('setRasterTileSize', done => {
+      it('setRasterTileSize', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('portal.json') > -1) {
             return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1171,10 +1175,9 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
           }
         });
-        const datavizWebmap = new WebMapV2(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
-        datavizWebmap.on(
-          'addlayerssucceeded', () => {
-            const spy = spyOn(datavizWebmap._handler, '_updateRasterSource');
+        const datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
+        datavizWebmap.on('addlayerssucceeded', () => {
+            const spy = spyOn(datavizWebmap, '_updateRasterSource');
             datavizWebmap.setRasterTileSize(-1);
             expect(spy).not.toHaveBeenCalled();
             datavizWebmap.setRasterTileSize(2);
@@ -1184,7 +1187,7 @@ describe('mapboxgl_WebMap', () => {
         );
       });
     
-      xit('setLayersVisible', done => {
+      it('cleanLayers', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('portal.json') > -1) {
             return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1196,85 +1199,25 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
           }
         });
-        const datavizWebmap = new WebMapV2(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
-        const callback = function (data) {
-          const appreciableLayers = datavizWebmap.getAppreciableLayers();
-          const renderLayersLen = appreciableLayers.reduce((sum, item) => {
-            return sum + item.renderLayers.length;
-          }, 0);
-          expect(appreciableLayers.length).toBe(uniqueLayer_polygon.layers.length + 1);
-          expect(datavizWebmap.cacheLayerIds.length).toBe(renderLayersLen);
-          const ignoreIds = ['China'];
-          const spy1 = spyOn(datavizWebmap.map, 'setLayoutProperty');
-          datavizWebmap.setLayersVisible(false, ignoreIds);
-          expect(spy1.mock.calls.length).toBe(renderLayersLen - 1);
-          spy1.mockClear();
-          const spy2 = spyOn(datavizWebmap.map, 'setLayoutProperty');
-          datavizWebmap.setLayersVisible(true);
-          expect(spy2.mock.calls.length).toBe(renderLayersLen);
-          spy1.mockClear();
-          spy2.mockClear();
-          const viewModel2 = new WebMapV2(
-            id,
-            { ...commonOption, checkSameLayer: true },
-            { ...commonMapOptions },
-            data.map
-          );
-          viewModel2.on(
-            'addlayerssucceeded', () => {
-              const appreciableLayers = viewModel2.getAppreciableLayers();
-              expect(appreciableLayers.length).toBe(uniqueLayer_polygon.layers.length);
-              const renderLayersLen = appreciableLayers.reduce((sum, item) => {
-                return sum + item.renderLayers.length;
-              }, 0) + 1;
-              expect(viewModel2.cacheLayerIds.length).toBe(renderLayersLen);
-              const ignoreIds = ['China'];
-              const spy1 = spyOn(viewModel2.map, 'setLayoutProperty');
-              viewModel2.setLayersVisible(false, ignoreIds);
-              expect(spy1.mock.calls.length).toBe(renderLayersLen - 1);
-              spy1.mockClear();
-              const spy2 = spyOn(viewModel2.map, 'setLayoutProperty');
-              viewModel2.setLayersVisible(true);
-              expect(spy2.mock.calls.length).toBe(renderLayersLen);
-              done();
-            });
-        };
-        datavizWebmap.on('addlayerssucceeded',callback);
-      });
-    
-      xit('cleanLayers', done => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('portal.json') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
-          } else if (url.indexOf('1788054202/map.json') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(uniqueLayer_polygon)));
-          } else if (url.indexOf('datas/1960447494/content.json') > -1) {
-            return Promise.resolve(new Response(layerData_CSV));
-          } else if (url.indexOf('datas/144371940/content.json')) {
-            return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
-          }
-        });
-        const datavizWebmap = new WebMapV2(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
+        const datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
         const callback = function (data) {
           expect(datavizWebmap.getAppreciableLayers().length).toBe(uniqueLayer_polygon.layers.length + 1);
           expect(datavizWebmap._cacheCleanLayers.length).not.toBe(0);
-          datavizWebmap.cleanLayers();
-          expect(datavizWebmap._cacheCleanLayers.length).toBe(0);
           const getSourceSpy = spyOn(data.map, 'getSource').and.callFake(() => true);
           const removeSourceSpy = spyOn(data.map, 'removeSource');
-          datavizWebmap._cacheCleanLayers = [{
-            renderLayers: ['layer1'],
-            renderSource: { id: 'source1' },
-            l7Layer: true
-          }, {
-            renderLayers: ['layer2'],
-            renderSource: { id: 'source2' }
-          }];
-          datavizWebmap.cleanLayers();
-          expect(getSourceSpy).toHaveBeenCalledTimes(2);
-          expect(removeSourceSpy).toHaveBeenCalledTimes(1);
-          expect(datavizWebmap._cacheCleanLayers.length).toBe(0);
-          done();
+            datavizWebmap._cacheCleanLayers = [{
+              renderLayers: ['layer1'],
+              renderSource: { id: 'source1' },
+              l7Layer: true
+            }, {
+              renderLayers: ['layer2'],
+              renderSource: { id: 'source2' }
+            }];
+            datavizWebmap.cleanLayers();
+            expect(getSourceSpy).toHaveBeenCalledTimes(2);
+            expect(removeSourceSpy).toHaveBeenCalledTimes(1);
+            expect(datavizWebmap._cacheCleanLayers.length).toBe(0);
+            done();
         };
         datavizWebmap.on('addlayerssucceeded',callback);
       });
@@ -1328,7 +1271,7 @@ describe('mapboxgl_WebMap', () => {
       //   datavizWebmap.on('addlayerssucceeded',callback);
       // });
     
-      xit('updateOverlayLayer GraphicLayer', done => {
+      it('updateOverlayLayer GraphicLayer', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('web/datas/1920557079/content.json') > -1) {
             return Promise.resolve(new Response(layerData_CSV));
@@ -1338,7 +1281,7 @@ describe('mapboxgl_WebMap', () => {
           return Promise.resolve();
         });
         const id = vectorLayer_point;
-        const datavizWebmap = new WebMapV2(id, { ...commonOption, map: commonMap }, undefined);
+        const datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, undefined);
         const callback = function (data) {
           const sourceData1 = data.map.getSource('浙江省高等院校(3)')._data.features;
           expect(sourceData1.length).toBe(2);
@@ -1363,14 +1306,14 @@ describe('mapboxgl_WebMap', () => {
               geometry: { type: 'Point', coordinates: [Array] }
             }
           ]
-          const spy = spyOn(datavizWebmap._handler, '_createGraphicLayer');
+          const spy = spyOn(datavizWebmap._handler, '_createGraphicLayer').and.callThrough();
           datavizWebmap.updateOverlayLayer(layerInfo, features);
           expect(spy).toHaveBeenCalled();
           const sourceData2 = data.map.getSource('浙江省高等院校(3)')._data.features;
           expect(sourceData2.length).toBe(1);
           done();
         };
-        datavizWebmap.on('addlayerssucceeded',callback);
+        datavizWebmap.on('addlayerssucceeded', callback);
       });
     
       // it('add baselayer which is baidu', done => {
@@ -1521,10 +1464,13 @@ describe('mapboxgl_WebMap', () => {
       //       done();
       //     });
       // });
-      xit('crs not support', done => {
-        const datavizWebmap = new WebMapV2(baseLayers['BAIDU']);
+      it('crs not support', done => {
+        mapboxgl.CRS.get = function() {
+          return '';
+      }
+        const datavizWebmap = new WebMap(baseLayers['BAIDU']);
         const callback = ({ error }) => {
-          expect(error.message).toBe('webmap.crsNotSupport');
+          expect(error.message).toBe('Unsupported coordinate system!');
           done();
         };
         datavizWebmap.on('getmapinfofailed', callback);
@@ -1578,7 +1524,7 @@ describe('mapboxgl_WebMap', () => {
       //   datavizWebmap.on('addlayerssucceeded', callback);
       // });
 
-      xit('add wmsLayer with correct url and version is less than 1.3', done => {
+      it('add wmsLayer with correct url and version is less than 1.3', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('map-world/wms130') > -1) {
             return Promise.resolve(new Response(wmsCapabilitiesText));
@@ -1594,7 +1540,7 @@ describe('mapboxgl_WebMap', () => {
             }
           ]
         };
-        const datavizWebmap = new WebMapV2(mapData);
+        const datavizWebmap = new WebMap(mapData);
         const callback = function (data) {
           expect(datavizWebmap.getAppreciableLayers().length).toBe(mapData.layers.length + 1);
           expect(data).not.toBeUndefined();
@@ -1603,7 +1549,7 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap.on('addlayerssucceeded',callback);
       });
     
-      xit('add wmsLayer with correct url and version is 1.3.0', done => {
+      it('add wmsLayer with correct url and version is 1.3.0', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('map-world/wms130') > -1) {
             return Promise.resolve(new Response(wmsCapabilitiesTextWith130));
@@ -1617,7 +1563,7 @@ describe('mapboxgl_WebMap', () => {
           );
           done();
         };
-        const datavizWebmap = new WebMapV2({
+        const datavizWebmap = new WebMap({
           ...wmsLayer,
           projection: 'EPSG:4326',
           center: { x: 0, y: 0 },
@@ -1631,14 +1577,14 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap.on('addlayerssucceeded',callback);
       });
     
-      xit('add wmtsLayer with correct url', done => {
+      it('add wmtsLayer with correct url', done => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
           if (url.indexOf('map-china400/wmts100') > -1) {
             return Promise.resolve(new Response(wmtsCapabilitiesText));
           }
           return Promise.resolve();
         });
-        const datavizWebmap = new WebMapV2(baseLayers['WMTS'], { ...commonOption });
+        const datavizWebmap = new WebMap(baseLayers['WMTS'], { ...commonOption });
         const callback = function (data) {
           expect(datavizWebmap.getAppreciableLayers().length).toBe(baseLayers['WMTS'].layers.length + 1);
           expect(data).not.toBeUndefined();
@@ -1698,7 +1644,7 @@ describe('mapboxgl_WebMap', () => {
       // });
 
       xit('add online map', done => {
-        const datavizWebmap = new WebMapV2(baseLayers['TILE'], {
+        const datavizWebmap = new WebMap(baseLayers['TILE'], {
           isSuperMapOnline: true,
           serverUrl: 'https://www.supermapol.com'
         });
@@ -2049,7 +1995,6 @@ describe('mapboxgl_WebMap', () => {
         const datavizWebmap = new WebMapV2(id, { ...commonOption });
         const callback = function (data) {
           const appreciableLayers = datavizWebmap.getAppreciableLayers();
-          console.log('appreciableLayers', appreciableLayers);
           expect(appreciableLayers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
           expect(appreciableLayers[2].id).toBe('民航数据');
           done();
@@ -2072,7 +2017,6 @@ describe('mapboxgl_WebMap', () => {
         const datavizWebmap = new WebMapV2(id, { ...commonOption });
         const callback = function (data) {
           const appreciableLayers = datavizWebmap.getAppreciableLayers();
-          console.log('appreciableLayers', appreciableLayers);
           expect(appreciableLayers.length).toBe(3);
           expect(appreciableLayers[0].id).toBe('China');
           expect(appreciableLayers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
@@ -2082,7 +2026,6 @@ describe('mapboxgl_WebMap', () => {
           WebMap.on(
             'addlayerssucceeded', () => {
               const appreciableLayers = WebMap.getAppreciableLayers();
-              console.log('appreciableLayers1', appreciableLayers);
               expect(appreciableLayers.length).toBe(2);
               expect(appreciableLayers[0].id).toBe('China-1');
               expect(appreciableLayers[1].id).toBe('民航数据-1');
