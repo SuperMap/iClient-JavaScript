@@ -1179,3 +1179,1750 @@ var iportal_serviceProxy = {
     cacheConfig: null
   }
 };
+
+var webmap_MAPBOXSTYLE_Tile = {
+  extent: {
+    leftBottom: {
+      x: -180,
+      y: -85.0511287798065
+    },
+    rightTop: {
+      x: 180,
+      y: 85.05112877980648
+    }
+  },
+  maxScale: '1:144447.92746805',
+  level: 8,
+  center: {
+    x: 117.0513716776266,
+    y: 40.03871230682322
+  },
+  baseLayer: {
+    layerType: 'MAPBOXSTYLE',
+    name: 'China_4326',
+    dataSource: {
+      type: 'EXTERNAL',
+      url: 'https://fakeiportal.supermap.io/iserver/services/map-china400/restjsr/v1/vectortile/maps/China_4326'
+    }
+  },
+  layers: [
+      {
+          "maxzoom": 12,
+          "id": "CHINA_DARK",
+          "source": "CHINA_DARK",
+          "type": "raster",
+          "minzoom": 0
+      },
+      {
+          "layout": {
+              "visibility": "visible"
+          },
+          "metadata": {},
+          "maxzoom": 24,
+          "paint": {
+              "fill-extrusion-height": [
+                  "*",
+                  30000,
+                  1
+              ],
+              "fill-extrusion-opacity": 0.9,
+              "fill-extrusion-base": [
+                  "*",
+                  1000,
+                  1
+              ],
+              "fill-extrusion-vertical-gradient": true,
+              "fill-extrusion-translate-anchor": "map",
+              "fill-extrusion-color": "#826DBA",
+              "fill-extrusion-translate": [
+                  0,
+                  0
+              ]
+          },
+          "id": "未命名数据(8)",
+          "source": "40654641",
+          "source-layer": "40654641$geometry",
+          "type": "fill-extrusion",
+          "minzoom": 0
+      }
+  ],
+  description: '',
+  projection: 'EPSG:4326',
+  minScale: '1:591658710.9091309',
+  title: 'test',
+  version: '2.3.0'
+};
+
+var uniqueLayer_polygon = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427891 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427891 }
+  },
+  "level": 5,
+  "center": { "x": 11810617.9363554, "y": 4275239.3340175 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+    {
+      "layerType": "UNIQUE",
+      "visible": true,
+      "themeSetting": {
+        "themeField": "行政区划_c",
+        "customSettings": {
+          "四川省": {
+            "strokeWidth": 1,
+            "fillColor": "#e6f599",
+            "fillOpacity": 0.9,
+            "lineDash": "solid",
+            "strokeColor": "#ffffff",
+            "type": "POLYGON",
+            "strokeOpacity": 1
+          }
+        },
+        "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+      },
+      "name": "市级行政区划_1_2",
+      "featureType": "POLYGON",
+      "style": {
+        "strokeWidth": 1,
+        "fillColor": "#3288bd",
+        "fillOpacity": 0.9,
+        "lineDash": "solid",
+        "strokeColor": "#ffffff",
+        "type": "POLYGON",
+        "strokeOpacity": 1
+      },
+      "projection": "EPSG:4326",
+      "enableFields": ["Shape_Area", "Shape_Leng", "UserID", "分县连接成", "行政区划_1", "行政区划_2", "行政区划_c"],
+      "dataSource": { "type": "PORTAL_DATA", "serverId": "1960447494" }
+    },
+    {
+      "layerType": "UNIQUE",
+      "visible": true,
+      "themeSetting": {
+        "themeField": "SmID",
+        "customSettings": {
+          "1": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#d53e4f",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "2": {
+            "strokeWidth": 4,
+            "lineDash": "dot",
+            "strokeColor": "#da231b",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "3": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#fca869",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "4": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#fdc47a",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "5": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#fee08b",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "6": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#feea9c",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "7": {
+            "strokeWidth": 2,
+            "lineDash": "dot",
+            "strokeColor": "#feade8",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "8": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#ffffbf",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "9": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#f6fbb2",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "10": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#eef8a5",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "11": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#e6f598",
+            "type": "LINE",
+            "strokeOpacity": 1
+          },
+          "12": {
+            "strokeWidth": 2,
+            "lineDash": "solid",
+            "strokeColor": "#ccea96",
+            "type": "LINE",
+            "strokeOpacity": 1
+          }
+        },
+        "colors": [
+          "#D53E4F",
+          "#FC8D59",
+          "#FEE08B",
+          "#FFFFBF",
+          "#E6F598",
+          "#99D594",
+          "#3288BD"
+        ]
+      },
+      "name": "北京市轨道交通线路(2)",
+      "featureType": "LINE",
+      "style": {
+        "strokeWidth": 2,
+        "lineDash": "solid",
+        "strokeColor": "#3288bd",
+        "type": "LINE",
+        "strokeOpacity": 1
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "SmID",
+        "标准名称",
+        "起点x",
+        "起点y",
+        "终点x",
+        "终点y"
+      ],
+      "dataSource": {
+        "accessType": "DIRECT",
+        "type": "PORTAL_DATA",
+        "serverId": "144371940"
+      }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "title": "unique_民航数据",
+  "version": "1.0"
+}
+
+var layerData_CSV = `{
+  "fileName": "民航数据.csv",
+  "type": "CSV",
+  "lineNumber": 222,
+  "content": {
+    "colTitles": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "geometry",
+      "机场",
+      "X坐标",
+      "Y坐标",
+      "名次",
+      "2017旅客吞吐量（人次）",
+      "2016旅客吞吐量（人次）",
+      "同比增速%",
+      "张家界"
+    ],
+    "rows": [
+      [
+        "40.07108",
+        "116.588918",
+        "",
+        "Point",
+        "北京/首都",
+        "116.588918",
+        "40.07108",
+        "1",
+        "95786296 ",
+        "94393454 ",
+        "-1.5",
+        "94393454 "
+      ],
+      [
+        "40.07108",
+        "116.588918",
+        "",
+        "Point",
+        "北京/首都",
+        "116.588918",
+        "40.07108",
+        "",
+        "95786296 ",
+        "94393454 ",
+        "-1.5",
+        "94393454 "
+      ]
+    ]
+  }
+}`
+
+var layerData_geojson = {
+  "MARKER_GEOJSON": {
+    "fileName": "未命名标注图层1(5).geojson",
+    "type": "GEOJSON",
+    "lineNumber": null,
+    "content": "{\"type\":\"FeatureCollection\",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"urn:ogc:def:crs:OGC:1.3:CRS84\"}},\"features\":[{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"我是文本\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":0},\"dv_v5_markerStyle\":{\"text\":\"我是文本\",\"font\":\"bolditalic13pxSimSun\",\"placement\":\"point\",\"textAlign\":\"right\",\"fillColor\":\"#cd3232\",\"backgroundFill\":\"#ffffff\",\"borderColor\":\"rgba(255,255,255,0)\",\"borderWidth\":4,\"padding\":[8,8,8,8],\"maxWidth\":416},\"dv_v5_markerInfo\":{\"dataViz_title\":\"我是文本\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":0},\"geometry\":{\"type\":\"Point\",\"coordinates\":[-59.0625000000001,71.7464317190415]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe\"},\"dv_v5_markerStyle\":{\"text\":\"我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe\",\"font\":\"13pxMicrosoftYaHei\",\"placement\":\"point\",\"textAlign\":\"center\",\"fillColor\":\"#595959\",\"backgroundFill\":\"#ffffff\",\"borderColor\":\"rgba(255,255,255,0)\",\"borderWidth\":4,\"padding\":[8,8,8,8],\"maxWidth\":\"29\"},\"dv_v5_markerInfo\":{\"dataViz_title\":\"我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe我是文本1dlwe\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[19.7553661199999,71.9513366105074]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":2},\"dv_v5_markerStyle\":{\"src\":\"http://fakeiportal.supermap.io/iportal/apps/dataviz/static/imgs/markers/mark_red.png\",\"scale\":1,\"anchor\":[0.5,0.5],\"imgWidth\":48,\"imgHeight\":43},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":2},\"geometry\":{\"type\":\"Point\",\"coordinates\":[-18.3891651300001,75.8340696501]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":3},\"dv_v5_markerStyle\":{\"src\":\"http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/custom-file-metro.png\",\"scale\":2,\"anchor\":[0.5,0.5],\"imgWidth\":24,\"imgHeight\":24,\"radius\":48},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":3},\"geometry\":{\"type\":\"Point\",\"coordinates\":[-30.8616564718442,80.7503359885087]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":4},\"dv_v5_markerStyle\":{\"src\":\"http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/custom-file-favicon.svg\",\"scale\":1.5,\"anchor\":[0.5,0.5],\"imgWidth\":48,\"imgHeight\":43,\"radius\":48},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":4},\"geometry\":{\"type\":\"Point\",\"coordinates\":[34.731671470548,53.3601141840066]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":5},\"dv_v5_markerStyle\":{\"strokeColor\":\"#0081E2\",\"strokeOpacity\":1,\"strokeWidth\":5,\"lineCap\":\"round\",\"lineDash\":\"solid\"},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":5},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[-156.518328529452,81.3686412933172],[-147.377703529452,81.7302357601159]]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":6},\"dv_v5_markerStyle\":{\"fillColor\":\"#53C41A\",\"fillOpacity\":0.35,\"strokeColor\":\"#0081E2\",\"strokeOpacity\":1,\"strokeWidth\":3,\"lineCap\":\"round\",\"lineDash\":\"solid\"},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":6},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-165.307391029452,75.0629840388823],[-151.244891029452,75.0629840388823],[-151.244891029452,77.3232733417324],[-165.307391029452,77.3232733417324],[-165.307391029452,75.0629840388823]]]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"中间文本\\r\\n我换行了\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":7},\"dv_v5_markerStyle\":{\"text\":\"中间文本\\r\\n我换行了\",\"font\":\"bold13pxMicrosoftYaHei\",\"placement\":\"point\",\"textAlign\":\"justify\",\"fillColor\":\"#ffffff\",\"backgroundFill\":\"#8a5252\",\"borderColor\":\"rgba(255,255,255,0)\",\"borderWidth\":4,\"padding\":[8,8,8,8],\"maxWidth\":\"29\"},\"dv_v5_markerInfo\":{\"dataViz_title\":\"中间文本\\r\\n我换行了\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\",\"dataviz_featureID\":7},\"geometry\":{\"type\":\"Point\",\"coordinates\":[-45.073016029452,59.2010171836507]}},{\"type\":\"Feature\",\"properties\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\"},\"dv_v5_markerStyle\":{\"radius\":10,\"fillColor\":\"#de2b41\",\"fillOpacity\":1,\"strokeColor\":\"#0081E2\",\"strokeOpacity\":1,\"strokeWidth\":1},\"dv_v5_markerInfo\":{\"dataViz_title\":\"\",\"dataViz_description\":\"\",\"dataViz_imgUrl\":\"\",\"dataViz_url\":\"\",\"dataViz_videoUrl\":\"\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[99.3027455600002,37.2715717585448]}}]}"
+  },
+  "POINT_GEOJSON": {
+    "fileName": "jiuzhaigou2.json",
+    "type": "JSON",
+    "lineNumber": null,
+    "content": "{  \"type\": \"FeatureCollection\",  \"features\": [    {      \"type\": \"Feature\",      \"properties\": {        \"title\": \"11111\",        \"subtitle\": \"树正沟景点-犀牛海\",        \"imgUrl\": \"./static/templates/jiuzhaigou/img/xiniuhai.png\",        \"description\": \"犀牛海是一-座长约2.2公里、 水深17米、海拔高度2400米、最深的地方可以达到40多米的天然湖泊。是树正沟最大的海子，水域开阔，湖面蓝得醉人，犀牛海也是九寨沟内景色变化最多的海子。清晨时分，山坡上云雾飘渺，有树林的影子倒映在水面，形成如梦似幻的奇观。\"      },      \"geometry\": {        \"type\": \"Point\",        \"coordinates\": [103.89125483150947, 33.190474732727324]      }    },    {      \"type\": \"Feature\",      \"properties\": {        \"title\": \"22222\",        \"subtitle\": \"树正沟景点-老虎海\",        \"imgUrl\": \"./static/templates/jiuzhaigou/img/laohuhai.png\",        \"description\": \"老虎海海拔2298米，位于树正瀑布之上,深邃恬静，沉默中蕴蓄着暴烈，安谧中隐藏着桀骜。瀑声沉雄浑厚,宛若虎啸。深秋季节,湖岸山上层林尽染，姹紫嫣红的林木倒映在清澈的湖水中，犹如老虎身上斑斓的虎纹。\"      },      \"geometry\": {        \"type\": \"Point\",        \"coordinates\": [103.89243500347605, 33.194579050822384]      }    }  ]}"
+  },
+  "LINE_GEOJSON": {
+    "fileName": "北京市轨道交通线路(2)(1).geojson",
+    "lineNumber": null,
+    "type": "GEOJSON",
+    "content": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"SmID\":1,\"标准名称\":\"地铁二号线\",\"起点x\":116.38050072430798,\"起点y\":39.94888011518407,\"终点x\":116.39553809862188,\"终点y\":39.948990864179734},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.38050072430798,39.94888011518407],[116.38714780612922,39.94892587302934],[116.38736209280451,39.94892734469038],[116.37993321101484,39.948877211200085],[116.37993841640692,39.94887730328765],[116.38050072430798,39.94888011518407]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":2,\"标准名称\":\"地铁五号线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.42889857098183,39.84623838293839],[116.42813538465113,39.846249956793876],[116.4273519281824,39.84627195194792],[116.40333475245161,40.08717722048529],[116.40309870619934,40.087151016112706],[116.40288077701345,40.08713594411416]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":3,\"标准名称\":\"地铁房山线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.10214436813241,39.73067515573697],[116.10229332066908,39.730666640852405],[116.10299227125702,39.730615136553965],[116.30163646403366,39.811733777106355],[116.30174189450294,39.81253350272267],[116.30196852786845,39.814349188802616]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":4,\"标准名称\":\"地铁亦庄线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.42889857098183,39.84623838293839],[116.42886468034814,39.84379045350515],[116.42901846061365,39.84022737604133],[116.6060431417636,39.824494210685735],[116.6059411829706,39.825003365165095],[116.60593693017799,39.8254652477982]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":5,\"标准名称\":\"地铁一号线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.51562842388027,39.908540389167435],[116.50958023578788,39.908553974508926],[116.50463177531411,39.9086074525501],[116.18548964634029,39.910784918362666],[116.18158924816733,39.91878079178861],[116.17783724602918,39.9264680163664]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":6,\"标准名称\":\"地铁大兴线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.37078331214015,39.83475184140306],[116.3706373925665,39.83335513924705],[116.37018345619286,39.831422638082685],[116.32155279279337,39.68681793356824],[116.32156621319365,39.686473600830695],[116.31980438540168,39.6703694682177]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":7,\"标准名称\":\"地铁四号线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.37078331214015,39.83475184140306],[116.37111852957544,39.84580925395243],[116.3713848858058,39.85323112471056],[116.26996917784145,40.011426928618164],[116.26991903468128,40.01249234955945],[116.2697967196748,40.01419973538594]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":8,\"标准名称\":\"地铁六号线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.27521242986089,39.932211787034184],[116.28089294956064,39.9324140763225],[116.28129873011748,39.932457772529254],[116.61318532200447,39.92390496361069],[116.62076110278754,39.92551538670825],[116.62413174886831,39.92611128335493]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":9,\"标准名称\":\"地铁九号线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.30196852786845,39.814349188802616],[116.30171831074003,39.816139444460646],[116.30078418619011,39.818617713331555],[116.3260196158723,39.93229882015674],[116.32546591659255,39.93942186687969],[116.32519110693603,39.94295903459291]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":10,\"标准名称\":\"地铁八号线\"},\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[116.39397688756824,39.94897078897089],[116.39642689182254,39.93725951205916],[116.39712206253765,39.93421600673382],[116.39731066570906,39.934023061544444],[116.39768786840531,39.93380594734929],[116.39809649508236,39.93373348700549],[116.40272168010267,39.933589800507185],[116.40300481348369,39.93351756716639]],[[116.39387047401765,39.94898074899454],[116.39427480411182,39.94924731543797],[116.39463059545848,39.949437576845185],[116.36397722585079,40.07497143186567],[116.36394626927161,40.07636054545032],[116.36344260930206,40.08120710907537]],[[116.31348801462167,40.10416559124959],[116.31549808485084,40.09863287416014],[116.31603554893245,40.09764768215104],[116.36270170985327,40.089157307892236],[116.36276461214266,40.08882052247706],[116.36345173236778,40.08121655083615]]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":11,\"标准名称\":\"地铁昌平线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.30636803547063,40.0528324395466],[116.30572529323685,40.053579313193154],[116.30553151001892,40.053946489937715],[116.28944460574749,40.201158541981236],[116.28853123340159,40.204855316134484],[116.28782637375339,40.20693349910421]]}},{\"type\":\"Feature\",\"properties\":{\"SmID\":12,\"标准名称\":\"地铁八通线\"},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[116.51562842388027,39.908540389167435],[116.52034302092234,39.90838484519801],[116.52054793569204,39.90838258056552],[116.68704578972772,39.87167917653924],[116.68748891688998,39.87156509744752],[116.68907341874268,39.871124769299406]]}}]}"
+  }
+}
+
+var uniqueLayer_point = {
+  "extent": {
+    "leftBottom": { "x": -20037508.342789248, "y": -20037508.34278914 },
+    "rightTop": { "x": 20037508.342789244, "y": 20037508.342789087 }
+  },
+  "maxScale": "1:144447.927",
+  "level": 5,
+  "center": { "x": 11615300.701720804, "y": 4436879.386230171 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "visible": true,
+    "name": "ChinaDark",
+    "url": "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark"
+  },
+  "layers": [
+    {
+      "layerType": "UNIQUE",
+      "visible": true,
+      "themeSetting": {
+        "themeField": "名次",
+        "customSettings": {
+          "1": "#d53e4f",
+          "2": "#d6404f",
+          "3": "#d8444f",
+          "4": "#db4a50",
+          "5": "#da4850",
+          "6": "#d94650",
+          "7": "#dd4f51",
+          "8": "#de5151",
+          "9": "#df5351",
+          "10": "#dc4c50",
+          "11": "#e05551",
+          "12": "#e25952",
+          "13": "#e15752",
+          "14": "#feeda1",
+          "15": "#e56053",
+          "16": "#e45e53",
+          "17": "#e35b52",
+          "18": "#e96654",
+          "19": "#fca769"
+        },
+        "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+      },
+      "name": "民航数据",
+      "featureType": "POINT",
+      "xyField": { "xField": "longitude", "yField": "latitude" },
+      "style": {
+        "strokeWidth": 1,
+        "offsetX": 0,
+        "fillColor": "#3288bd",
+        "offsetY": 0,
+        "fillOpacity": 0.9,
+        "radius": 8,
+        "strokeColor": "#ffffff",
+        "type": "BASIC_POINT",
+        "strokeOpacity": 1
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "latitude",
+        "longitude",
+        "altitude",
+        "geometry",
+        "机场",
+        "X坐标",
+        "Y坐标",
+        "名次",
+        "2017旅客吞吐量（人次）",
+        "2016旅客吞吐量（人次）",
+        "同比增速%",
+        "2017货邮吞吐量（吨）",
+        "2016货邮吞吐量（吨）",
+        "2017起降架次（架次）",
+        "2016起降架次（架次）"
+      ],
+      "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "676516522" }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909",
+  "title": "民航数据-单值",
+  "version": "2.2.1",
+  "rootUrl": "https://iportal.supermap.io/iportal/services/../"
+}
+
+
+var raster4490 = '{"extent":{"leftBottom":{"x":-180,"y":6.745832004414445},"rightTop":{"x":180,"y":81.85192871120175}},"maxScale":"1:70.45225847627215","level":5,"center":{"x":129,"y":44},"baseLayer":{"layerType":"TILE","name":"jubu4490","url":"http://fake:8090/iserver/services/map-test4490-2/rest/maps/jubu4490"},"layers":[],"description":"","projection":"GEOGCS[\\"China Geodetic Coordinate System 2000\\", \\r\\n  DATUM[\\"China 2000\\", \\r\\n    SPHEROID[\\"CGCS2000\\", 6378137.0, 298.257222101, AUTHORITY[\\"EPSG\\",\\"1024\\"]], \\r\\n    AUTHORITY[\\"EPSG\\",\\"1043\\"]], \\r\\n  PRIMEM[\\"Greenwich\\", 0.0, AUTHORITY[\\"EPSG\\",\\"8901\\"]], \\r\\n  UNIT[\\"degree\\", 0.017453292519943295], \\r\\n  AXIS[\\"lat\\", NORTH], \\r\\n  AXIS[\\"lon\\", EAST], \\r\\n  AUTHORITY[\\"EPSG\\",\\"4490\\"]]","minScale":"1:295498189.5360622","title":"4490","version":"2.3.0"}';
+
+var rangeLayer = {
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark",
+    "visible": true
+  },
+  "center": { "x": 11786915.067240212, "y": 3989489.3570380663 },
+  "description": "",
+  "extent": {
+    "leftBottom": { "x": -20037508.342789244, "y": -20037508.342789136 },
+    "rightTop": { "x": 20037508.342789244, "y": 20037508.34278908 }
+  },
+  "grid": {
+    "graticule": {
+      "extent": [-20037508.342789244, -20037508.342789136, 20037508.342789244, 20037508.34278908],
+      "interval": [5],
+      "latLabelStyle": {
+        "textBaseline": "bottom",
+        "fontFamily": "Calibri,sans-serif",
+        "outlineWidth": 3,
+        "outlineColor": "rgba(255,255,255,0.85)",
+        "fontSize": "12px"
+      },
+      "lineDash": [0.5, 4],
+      "lonLabelStyle": {
+        "textBaseline": "bottom",
+        "fontFamily": "Calibri,sans-serif",
+        "outlineWidth": 3,
+        "outlineColor": "rgba(255,255,255,0.85)",
+        "fontSize": "12px"
+      },
+      "strokeColor": "#1464A1",
+      "strokeWidth": 2
+    }
+  },
+  "layers": [
+    {
+      "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "1171594968" },
+      "enableFields": [
+        "区站号",
+        "站台",
+        "省份",
+        "X",
+        "Y",
+        "海拔",
+        "平均最低气温",
+        "最热七天气温",
+        "最高气温",
+        "最低气温",
+        "年均降雨"
+      ],
+      "featureType": "POINT",
+      "layerType": "RANGE",
+      "name": "671个气象站观测数据(4)",
+      "projection": "EPSG:4326",
+      "style": { "strokeWidth": 1, "fillColor": "#8b3058", "offsetX": 0, "offsetY": 0, "fillOpacity": 0.9 },
+      "themeSetting": {
+        "themeField": "区站号",
+        "customSettings": {},
+        "segmentMethod": "offset",
+        "segmentCount": 6,
+        "colors": []
+      },
+      "visible": true,
+      "xyField": { "xField": "X", "yField": "Y" }
+    }
+  ],
+  "level": 4,
+  "maxScale": "1:144447.92746804963",
+  "minScale": "1:591658710.9091312",
+  "projection": "EPSG:3857",
+  "title": "jingwei",
+  "version": "2.3.0"
+}
+
+var heatLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427891 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427891 }
+  },
+  "level": 5,
+  "center": { "x": 11810617.9363554, "y": 4275239.3340175 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+    {
+      "layerType": "HEAT",
+      "visible": true,
+      "name": "民航数",
+      "featureType": "POINT",
+      "visibleScale": {
+        "maxScale": "1:147914677.72728282",
+        "minScale": "1:295829355.45456564"
+      },
+      "autoUpdateTime": 1000,
+      "themeSetting": {
+        "customSettings": {},
+        "radius": 10,
+        "colors": ["#0000ff", "#00ffff", "#00ff00", "#ffff00", "#ff0000"],
+        "weight": 400
+      },
+      "dataSource": { "type": "PORTAL_DATA", "serverId": "1920557079" }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "title": "unique_民航数据",
+  "version": "1.0"
+}
+
+var vectorLayer_polygon = {
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "center": { "x": 12078479.784935694, "y": 4519284.128119455 },
+  "description": "",
+  "extent": {
+    "leftBottom": { "x": -20037508.342789244, "y": -20037508.342789136 },
+    "rightTop": { "x": 20037508.342789244, "y": 20037508.34278908 }
+  },
+  "layers": [
+    {
+      "dataSource": { "name": "ChinaEarthquakeIntensityZone", "type": "SAMPLE_DATA" },
+      "enableFields": ["烈度值"],
+      "featureType": "POLYGON",
+      "layerType": "VECTOR",
+      "name": "中国地震烈度区划面",
+      "projection": "EPSG:4326",
+      "style": {
+        "fillColor": "#826DBA",
+        "fillOpacity": 0.9,
+        "lineDash": "solid",
+        "strokeColor": "#ffffff",
+        "strokeOpacity": 1,
+        "strokeWidth": 1,
+        "type": "POLYGON"
+      },
+      "visible": true
+    }
+  ],
+  "level": 5.038917030908402,
+  "mapParams": { "title": "jingwei", "description": "" },
+  "maxScale": "1:144447.92746804963",
+  "minScale": "1:591658710.9091312",
+  "projection": "EPSG:3857",
+  "title": "jingwei",
+  "version": "2.3.0"
+}
+
+var markerLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427891 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427891 }
+  },
+  "level": 5,
+  "center": { "x": 11810617.9363554, "y": 4275239.3340175 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+    {
+      "layerType": "MARKER",
+      "visible": true,
+      "name": "民航数",
+      "serverId": 123456,
+      "layerStyle": {
+        "labelField": "minghang"
+      }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "title": "unique_民航数据",
+  "version": "1.0"
+};
+
+var mapJson =`{
+  "viewBounds": {
+      "top": 4254242.7004825,
+      "left": -1624073.5574085328,
+      "bottom": 2521375.7068915395,
+      "leftBottom": {
+          "x": -1624073.5574085328,
+          "y": 2521375.7068915395
+      },
+      "right": 108793.43618242699,
+      "rightTop": {
+          "x": 108793.43618242699,
+          "y": 4254242.7004825
+      }
+  },
+  "viewer": {
+      "leftTop": {
+          "x": 0,
+          "y": 0
+      },
+      "top": 0,
+      "left": 0,
+      "bottom": 256,
+      "rightBottom": {
+          "x": 256,
+          "y": 256
+      },
+      "width": 256,
+      "right": 256,
+      "height": 256
+  },
+  "distanceUnit": "METER",
+  "minVisibleTextSize": 0.1,
+  "coordUnit": "METER",
+  "scale": 3.908743924597E-8,
+  "description": "",
+  "paintBackground": true,
+  "maxVisibleTextSize": 1000,
+  "maxVisibleVertex": 36000000,
+  "clipRegionEnabled": false,
+  "antialias": true,
+  "textOrientationFixed": false,
+  "angle": 0,
+  "prjCoordSys": {
+      "distanceUnit": "METER",
+      "projectionParam": {
+          "centralParallel": 0,
+          "firstPointLongitude": 0,
+          "rectifiedAngle": 0,
+          "scaleFactor": 1,
+          "falseNorthing": 0,
+          "centralMeridian": 117,
+          "secondStandardParallel": 0,
+          "secondPointLongitude": 0,
+          "azimuth": 0,
+          "falseEasting": 500000,
+          "firstStandardParallel": 0
+      },
+      "epsgCode": 4548,
+      "coordUnit": "METER",
+      "name": "China_2000_3_DEGREE_GK_Zone_39N",
+      "projection": {
+          "name": "Gauss_Kruger",
+          "type": "PRJ_GAUSS_KRUGER"
+      },
+      "type": "PCS_CHINA_2000_3_DEGREE_GK_39N",
+      "coordSystem": {
+          "datum": {
+              "name": "D_China_2000",
+              "type": "DATUM_CHINA_2000",
+              "spheroid": {
+                  "flatten": 0.003352810681182319,
+                  "name": "CGCS2000",
+                  "axis": 6378137,
+                  "type": "SPHEROID_CHINA_2000"
+              }
+          },
+          "unit": "DEGREE",
+          "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+          "name": "GCS_China_2000",
+          "type": "GCS_CHINA_2000",
+          "primeMeridian": {
+              "longitudeValue": 0,
+              "name": "Greenwich",
+              "type": "PRIMEMERIDIAN_GREENWICH"
+          }
+      }
+  },
+  "minScale": 0,
+  "markerAngleFixed": false,
+  "overlapDisplayedOptions": {
+      "allowPointWithTextDisplay": true,
+      "horizontalOverlappedSpaceSize": 0,
+      "allowPointOverlap": true,
+      "allowThemeGraduatedSymbolOverlap": false,
+      "verticalOverlappedSpaceSize": 0,
+      "allowTextOverlap": false,
+      "allowThemeGraphOverlap": false,
+      "allowTextAndPointOverlap": true
+  },
+  "visibleScales": [],
+  "dpi": 96,
+  "visibleScalesEnabled": false,
+  "customEntireBoundsEnabled": false,
+  "clipRegion": {
+      "center": null,
+      "parts": null,
+      "style": null,
+      "prjCoordSys": null,
+      "id": 0,
+      "type": "REGION",
+      "partTopo": null,
+      "points": null
+  },
+  "maxScale": 1.0E12,
+  "customParams": "",
+  "center": {
+      "x": -757640.0606130529,
+      "y": 3387809.2036870196
+  },
+  "dynamicPrjCoordSyses": [{
+      "distanceUnit": null,
+      "projectionParam": null,
+      "epsgCode": 0,
+      "coordUnit": null,
+      "name": null,
+      "projection": null,
+      "type": "PCS_ALL",
+      "coordSystem": null
+  }],
+  "colorMode": "DEFAULT",
+  "textAngleFixed": false,
+  "overlapDisplayed": false,
+  "userToken": {"userID": ""},
+  "cacheEnabled": true,
+  "dynamicProjection": false,
+  "autoAvoidEffectEnabled": true,
+  "customEntireBounds": null,
+  "name": "ChinaqxAlberts_4548@fl",
+  "bounds": {
+      "top": 5956378.419384226,
+      "left": -3351272.4427074995,
+      "bottom": 819239.9879898131,
+      "leftBottom": {
+          "x": -3351272.4427074995,
+          "y": 819239.9879898131
+      },
+      "right": 1835992.3214813927,
+      "rightTop": {
+          "x": 1835992.3214813927,
+          "y": 5956378.419384226
+      }
+  },
+  "backgroundStyle": {
+      "fillGradientOffsetRatioX": 0,
+      "markerSize": 2.4,
+      "fillForeColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 255
+      },
+      "fillGradientOffsetRatioY": 0,
+      "markerWidth": 0,
+      "markerAngle": 0,
+      "fillSymbolID": 0,
+      "lineColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "alpha": 255
+      },
+      "markerSymbolID": 0,
+      "lineWidth": 0.1,
+      "markerHeight": 0,
+      "fillOpaqueRate": 100,
+      "fillBackOpaque": true,
+      "fillBackColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 255
+      },
+      "fillGradientMode": "NONE",
+      "lineSymbolID": 0,
+      "fillGradientAngle": 0
+  }
+}`;
+
+var mvtLayer = {
+  "extent": {
+      "leftBottom": {
+          "x": -20037508.3427892,
+          "y": -20037508.3427892
+      },
+      "rightTop": {
+          "x": 20037508.3427892,
+          "y": 20037508.3427892
+      }
+  },
+  "maxScale": "1:564.25",
+  "level": 4,
+  "center": {
+      "x": 11948342.231771592,
+      "y": 4427025.274608955
+  },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+      {
+          "layerType": "MAPBOXSTYLE",
+          "visible": true,
+          "name": "PopulationDistribution",
+          "dataSource": {
+              "type": "EXTERNAL",
+              "url": "http://fake/iserver/services/map-4548new/restjsr/v1/vectortile/maps/ChinaqxAlberts_4548%40fl-new/style.json"
+          }
+      },
+      {
+        "layerType": "UNIQUE",
+        "visible": true,
+        "themeSetting": {
+          "themeField": "名次",
+          "customSettings": {
+            "1": "#d53e4f",
+            "2": "#d6404f",
+            "3": "#d8444f",
+            "4": "#db4a50",
+            "5": "#da4850",
+            "6": "#d94650",
+            "7": "#dd4f51",
+            "8": "#de5151",
+            "9": "#df5351",
+            "10": "#dc4c50",
+            "11": "#e05551",
+            "12": "#e25952",
+            "13": "#e15752",
+            "14": "#feeda1",
+            "15": "#e56053",
+            "16": "#e45e53",
+            "17": "#e35b52",
+            "18": "#e96654",
+            "19": "#fca769"
+          },
+          "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+        },
+        "name": "民航数据",
+        "featureType": "POINT",
+        "xyField": { "xField": "longitude", "yField": "latitude" },
+        "style": {
+          "strokeWidth": 1,
+          "offsetX": 0,
+          "fillColor": "#3288bd",
+          "offsetY": 0,
+          "fillOpacity": 0.9,
+          "radius": 8,
+          "strokeColor": "#ffffff",
+          "type": "BASIC_POINT",
+          "strokeOpacity": 1
+        },
+        "projection": "EPSG:4326",
+        "enableFields": [
+          "latitude",
+          "longitude",
+          "altitude",
+          "geometry",
+          "机场",
+          "X坐标",
+          "Y坐标",
+          "名次",
+          "2017旅客吞吐量（人次）",
+          "2016旅客吞吐量（人次）",
+          "同比增速%",
+          "2017货邮吞吐量（吨）",
+          "2016货邮吞吐量（吨）",
+          "2017起降架次（架次）",
+          "2016起降架次（架次）"
+        ],
+        "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "676516522" }
+      }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:295829355.455",
+  "title": "LayerColor",
+  "version": "2.2.1",
+  "rootUrl": "https://www.supermapol.com/"
+};
+
+var tiandituLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 }
+  },
+  "maxScale": "1:18055.99093350616",
+  "level": 1,
+  "center": { "x": 8586143.281685632, "y": 356074.8698694445 },
+  "baseLayer": {
+    "layerType": "TIANDITU_TER_3857",
+    "labelLayerVisible": true,
+    "tk": "1d109683f4d84198e37a38c442d68311",
+    "name": "天地图地形"
+  },
+  "layers": [],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:295829355.4545649",
+  "title": "无标题tianditu",
+  "version": "2.3.0",
+  "rootUrl": "http://support.supermap.com.cn:8090/iportal/services/../",
+  "mapParams": { "title": "无标题tianditu", "description": "" }
+}
+
+var styleJson = `{
+  "metadata": {
+      "mapcenter": [
+          -757640.0606130529,
+          3387809.2036870198
+      ],
+      "mapscale": 3.908743924597E-8,
+      "epsgcode": 4548,
+      "topscale": 4.4733009479210137E-8,
+      "mapbounds": [
+          -3351272.4427074997,
+          819239.9879898131,
+          1835992.3214813928,
+          5956378.419384226
+      ]
+  },
+  "sources": {
+      "ChinaqxAlberts_4548@fl-new": {
+          "tiles": [
+              "http://fake/iserver/services/map-4548new/restjsr/v1/vectortile/maps/ChinaqxAlberts_4548%40fl-new/tiles/{z}/{x}/{y}.mvt"
+          ],
+          "bounds": [
+              -180,
+              -90,
+              180,
+              90
+          ],
+          "type": "vector"
+      }
+  },
+  "name": "ChinaqxAlberts_4548@fl-new",
+  "sprite": "http://fake/iserver/services/map-4548new/restjsr/v1/vectortile/maps/ChinaqxAlberts_4548%40fl-new/sprites/sprite",
+  "layers": [
+      {
+          "paint": {
+              "background-color": "rgba(255,255,255,1.00)"
+          },
+          "id": "background",
+          "type": "background"
+      },
+      {
+          "layout": {
+              "visibility": "visible"
+          },
+          "filter": [
+              "all",
+              [
+                  "==",
+                  "$type",
+                  "Polygon"
+              ]
+          ],
+          "metadata": {
+              "layer:caption": "ChinaqxAlberts_4548@fl-new",
+              "layer:name": "ChinaqxAlberts_4548@fl-new"
+          },
+          "maxzoom": 24,
+          "paint": {
+              "fill-color": "rgba(224,207,226,1.00)",
+              "fill-antialias": true
+          },
+          "id": "ChinaqxAlberts_4548@fl-new(0_24)",
+          "source": "ChinaqxAlberts_4548@fl-new",
+          "source-layer": "ChinaqxAlberts_4548@fl-new",
+          "type": "fill",
+          "minzoom": 0
+      },
+      {
+          "layout": {
+              "visibility": "visible"
+          },
+          "filter": [
+              "all",
+              [
+                  "==",
+                  "$type",
+                  "Polygon"
+              ]
+          ],
+          "metadata": {
+              "layer:caption": "ChinaqxAlberts_4548@fl-new",
+              "layer:name": "ChinaqxAlberts_4548@fl-new"
+          },
+          "maxzoom": 24,
+          "paint": {
+              "line-width": 0.38,
+              "line-color": "rgba(102,102,102,1.00)"
+          },
+          "id": "ChinaqxAlberts_4548@fl-new_outline(0_24)",
+          "source": "ChinaqxAlberts_4548@fl-new",
+          "source-layer": "ChinaqxAlberts_4548@fl-new",
+          "type": "line",
+          "minzoom": 0
+      }
+  ],
+  "zoom": 0,
+  "glyphs": "http://fake/iserver/services/map-4548new/restjsr/v1/vectortile/maps/ChinaqxAlberts_4548%40fl-new/fonts/{fontstack}/{range}",
+  "version": 8
+}`;
+
+var vectorLayer_line = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427891 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427891 }
+  },
+  "level": 5,
+  "center": { "x": 11810617.9363554, "y": 4275239.3340175 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+    {
+      "layerType": "VECTOR",
+      "name": "浙江省高等院校(3)",
+      "visible": true,
+      "featureType": "LINE",
+      "style": {
+        "radius": 5,
+        "fillColor": "#ee4d5a",
+        "fillOpacity": 0.9,
+        "strokeColor": "#8b572a",
+        "strokeWidth": 7,
+        "strokeOpacity": 1,
+        "lineDash": "solid",
+        "type": "POLYGON"
+      },
+      "dataSource": { "type": "PORTAL_DATA", "serverId": "1920557079" }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "title": "unique_民航数据",
+  "version": "1.0"
+}
+
+var vectorLayer_point = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427891 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427891 }
+  },
+  "level": 5,
+  "center": { "x": 11810617.9363554, "y": 4275239.3340175 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  },
+  "layers": [
+    {
+      "layerType": "VECTOR",
+      "name": "浙江省高等院校(3)",
+      "visible": true,
+      "featureType": "POINT",
+      "style": {
+        "radius": 6,
+        "fillColor": "#ff0000",
+        "fillOpacity": 0.9,
+        "strokeColor": "#ffffff",
+        "strokeWidth": 1,
+        "strokeOpacity": 1,
+        "lineDash": "solid",
+        "symbolType": "svg",
+        "type": "BASIC_POINT"
+      },
+      "dataSource": { "type": "PORTAL_DATA", "serverId": "1920557079" }
+    },
+    {
+      "layerType": "VECTOR",
+      "visible": true,
+      "name": "jiuzhaigou2",
+      "featureType": "POINT",
+      "filterCondition": "title = \"11111\"",
+      "style": {
+        "fillColor": "#EE4D5A",
+        "strokeWidth": 1,
+        "offsetX": 0.5,
+        "offsetY": 0.5,
+        "fillOpacity": 0.9,
+        "rotation": 0,
+        "radius": 8,
+        "strokeColor": "#ffffff",
+        "type": "SVG_POINT",
+        "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-1640090306663VECTOR.svg",
+        "strokeOpacity": 1
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "title",
+        "subtitle",
+        "imgUrl",
+        "description"
+      ],
+      "dataSource": {
+        "accessType": "DIRECT",
+        "type": "PORTAL_DATA",
+        "serverId": "13136933"
+      }
+    },
+    {
+      "layerType": "VECTOR",
+      "visible": true,
+      "name": "jiuzhaigou2",
+      "featureType": "POINT",
+      "style": {
+        "offsetX": 0.5,
+        "offsetY": 0.5,
+        "rotation": 0,
+        "imageInfo": {
+          "size": {
+            "w": 24,
+            "h": 24
+          },
+          "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-1640090359026VECTOR.png"
+        },
+        "radius": 8,
+        "type": "IMAGE_POINT"
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "title",
+        "subtitle",
+        "imgUrl",
+        "description"
+      ],
+      "dataSource": {
+        "accessType": "DIRECT",
+        "type": "PORTAL_DATA",
+        "serverId": "13136933"
+      }
+    },
+    {
+      "layerType": "VECTOR",
+      "visible": true,
+      "name": "jiuzhaigou2",
+      "featureType": "POINT",
+      "style": {
+        "strokeWidth": 1,
+        "fillOpacity": 0.9,
+        "rotation": 0,
+        "className": "supermapol-icons-Shape-24",
+        "type": "SYMBOL_POINT",
+        "fillColor": "#EE4D5A",
+        "offsetX": 0,
+        "offsetY": 0,
+        "name": "Shape9-5",
+        "unicode": "&#xe677",
+        "fontSize": "16px",
+        "strokeColor": "#ffffff",
+        "strokeOpacity": 1
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "title",
+        "subtitle",
+        "imgUrl",
+        "description"
+      ],
+      "dataSource": {
+        "accessType": "DIRECT",
+        "type": "PORTAL_DATA",
+        "serverId": "13136933"
+      }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "title": "unique_民航数据",
+  "version": "1.0"
+}
+
+var ranksymbolLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.342789248, "y": -20037508.34278914 },
+    "rightTop": { "x": 20037508.342789244, "y": 20037508.342789087 }
+  },
+  "maxScale": "1:144447.927",
+  "level": 5,
+  "center": { "x": 11615300.701720804, "y": 4436879.386230171 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "visible": true,
+    "name": "ChinaDark",
+    "url": "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark"
+  },
+  "layers": [
+    {
+      "layerType": "RANK_SYMBOL",
+      "visible": true,
+      "themeSetting": {
+        "maxRadius": 12,
+        "themeField": "名次",
+        "customSettings": {},
+        "minRadius": 6,
+        "segmentMethod": "offset",
+        "segmentCount": 6
+      },
+      "name": "民航数据",
+      "featureType": "POINT",
+      "labelStyle": {
+        "offsetX": 0,
+        "textBaseline": "bottom",
+        "fontFamily": "黑体",
+        "offsetY": -10,
+        "outlineWidth": 0,
+        "textAlign": "center",
+        "outlineColor": "#000000",
+        "fontSize": "14px",
+        "fill": "#333",
+        "backgroundFill": [255, 255, 255, 0.8],
+        "labelField": "机场"
+      },
+      "xyField": { "xField": "longitude", "yField": "latitude" },
+      "style": {
+        "strokeWidth": 1,
+        "fillColor": "#24B391",
+        "offsetX": 0,
+        "offsetY": 0,
+        "fillOpacity": 0.9,
+        "radius": 6,
+        "strokeColor": "#ffffff",
+        "type": "BASIC_POINT",
+        "strokeOpacity": 1,
+        "imageInfo": {
+          "url": ""
+        }
+      },
+      "projection": "EPSG:4326",
+      "enableFields": [
+        "latitude",
+        "longitude",
+        "altitude",
+        "geometry",
+        "机场",
+        "X坐标",
+        "Y坐标",
+        "名次",
+        "2017旅客吞吐量（人次）",
+        "2016旅客吞吐量（人次）",
+        "同比增速%",
+        "2017货邮吞吐量（吨）",
+        "2016货邮吞吐量（吨）",
+        "2017起降架次（架次）",
+        "2016起降架次（架次）"
+      ],
+      "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "676516522" }
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909",
+  "title": "民航数据-等级符号",
+  "version": "2.2.1",
+  "rootUrl": "https://iportal.supermap.io/iportal/services/../"
+}
+
+
+var dataflowLayerData = {
+  "dataflow": {
+    "featureMetaData": {
+      "epsg": 3857,
+      "featureType": "Point",
+      "fieldInfos": [
+        {
+          "name": "id",
+          "type": "TEXT"
+        },
+        {
+          "name": "direction",
+          "type": "INT32"
+        },
+        {
+          "name": "originLabel",
+          "type": "TEXT"
+        },
+        {
+          "name": "destinationLabel",
+          "type": "TEXT"
+        },
+        {
+          "name": "groundspeed",
+          "type": "INT32"
+        },
+        {
+          "name": "x",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "y",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "z",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "datetime",
+          "type": "TEXT"
+        }
+      ],
+      "idFieldName": "id"
+    },
+    "urls": [{ "transpot": "ws", "url": "ws://fakeiserver.supermap.io/iserver/services/dataflowTest/dataflow/" }],
+    "capabilities": "broadcast,subscribe"
+  },
+  "subscribe": {
+    "filterParam": {
+      "excludeField": [
+        "SMSDRIW",
+        "SMSDRIN",
+        "SMSDRIE",
+        "SMSDRIS",
+        "SMUSERID",
+        "SMAREA",
+        "SMPERIMETER",
+        "SMGEOMETRYSIZE",
+        "SMGEOPOSITION"
+      ],
+      "geometry": {
+        "bounds": {
+          "bottom": -6.0,
+          "center": { "x": 0.0, "y": 0.0 },
+          "height": 12.0,
+          "left": -6.0,
+          "leftBottom": {
+            "x": -6.0,
+            "y": -6.0
+          },
+          "right": 6.0,
+          "rightTop": {
+            "x": 6.0,
+            "y": 6.0
+          },
+          "top": 6.0,
+          "valid": true,
+          "width": 12.0
+        },
+        "center": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "id": 1,
+        "partTopo": [1],
+        "parts": [4],
+        "points": [
+          { "x": 6.0, "y": 6.0 },
+          { "x": 6.0, "y": -6.0 },
+          { "x": -6.0, "y": -6.0 },
+          { "x": -6.0, "y": 6.0 }
+        ],
+        "type": "REGION"
+      }
+    }
+  },
+  "broadcast": {
+    "geometry": { "coordinates": [117.0298673000001, 39.17631177408838], "type": "Point" },
+    "type": "Feature",
+    "properties": { "id": 1, "time": "2021-12-22T02:11:23.295Z" }
+  }
+}
+
+var dataflowLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 }
+  },
+  "maxScale": "1:144447.92746805",
+  "level": 8,
+  "center": { "x": 13081221.929131275, "y": 4831768.222446369 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "layers": [
+    {
+      "layerType": "DATAFLOW_HEAT",
+      "visible": true,
+      "credential": {
+        "token": "FjOwvGbO9L1MOpV22Bx12_UNy5uVuEXoxoRQe_UyKJtvKQ0fyCZoeGMlq5IVDbLDvhxzu3w8_DawMHFC9kOeGA.."
+      },
+      "identifyField": "id",
+      "themeSetting": {
+        "weight": "X",
+        "customSettings": {},
+        "radius": 10,
+        "colors": ["#0000ff", "#00ffff", "#00ff00", "#ffff00", "#ff0000"]
+      },
+      "name": "dataflowTest",
+      "projection": "EPSG:4326",
+      "url": "https://fakeiserver.supermap.io/iserver/services/dataflowTest/dataflow"
+    },
+    {
+      "labelStyle": {
+        "textBaseline": "bottom",
+        "fontFamily": "黑体",
+        "offsetY": -20,
+        "outlineWidth": 0,
+        "textAlign": "center",
+        "outlineColor": "#613434",
+        "fontSize": "14px",
+        "fill": "#d31a1a",
+        "backgroundFill": [255, 255, 255, 0.8],
+        "labelField": "id"
+      },
+      "layerType": "DATAFLOW_POINT_TRACK",
+      "pointStyle": {
+        "fillColor": "#ee4d5a",
+        "strokeWidth": 1,
+        "fillOpacity": 0.9,
+        "radius": 8,
+        "strokeColor": "#ffffff",
+        "type": "BASIC_POINT",
+        "strokeOpacity": 1
+      },
+      "visible": true,
+      "credential": {
+        "token": "FjOwvGbO9L1MOpV22Bx12_UNy5uVuEXoxoRQe_UyKJtvKQ0fyCZoeGMlq5IVDbLDvhxzu3w8_DawMHFC9kOeGA.."
+      },
+      "identifyField": "id",
+      "name": "dataflowTest",
+      "projection": "EPSG:4326",
+      "url": "https://fakeiserver.supermap.io/iserver/services/dataflowTest/dataflow"
+    },
+    {
+      "layerType": "DATAFLOW_POINT_TRACK",
+      "pointStyle": {
+        "fillColor": "#331416",
+        "strokeWidth": 1,
+        "fillOpacity": 0.9,
+        "name": "Shape2-3",
+        "unicode": "&#xe692",
+        "className": "supermapol-icons-Shape-51",
+        "fontSize": "16px",
+        "strokeColor": "#ffffff",
+        "type": "SYMBOL_POINT",
+        "strokeOpacity": 1
+      },
+      "visible": true,
+      "lineStyle": {
+        "strokeWidth": 1,
+        "lineDash": "solid",
+        "strokeColor": "#56b781",
+        "type": "LINE",
+        "strokeOpacity": 1
+      },
+      "credential": {
+        "token": "FjOwvGbO9L1MOpV22Bx12_UNy5uVuEXoxoRQe_UyKJtvKQ0fyCZoeGMlq5IVDbLDvhxzu3w8_DawMHFC9kOeGA.."
+      },
+      "identifyField": "id",
+      "filterCondition": "id > 1",
+      "name": "dataflowTest",
+      "projection": "EPSG:4326",
+      "url": "https://fakeiserver.supermap.io/iserver/services/dataflowTest/dataflow",
+      "maxPointCount": 5
+    },
+    {
+      "layerType": "DATAFLOW_POINT_TRACK",
+      "pointStyle": {
+        "fillColor": "#e73944",
+        "strokeWidth": 1,
+        "fillOpacity": 0.9,
+        "strokeColor": "#ffffff",
+        "type": "SVG_POINT",
+        "radius": 8,
+        "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-1640140175799DATAFLOW_POINT_TRACK.svg",
+        "strokeOpacity": 1
+      },
+      "visible": true,
+      "credential": {
+        "token": "FjOwvGbO9L1MOpV22Bx12_UNy5uVuEXoxoRQe_UyKJtvKQ0fyCZoeGMlq5IVDbLDvhxzu3w8_DawMHFC9kOeGA.."
+      },
+      "identifyField": "id",
+      "name": "dataflowTest",
+      "projection": "EPSG:4326",
+      "url": "https://fakeiserver.supermap.io/iserver/services/dataflowTest/dataflow"
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909131",
+  "title": "无标题",
+  "version": "2.3.0"
+}
+
+var baseLayers = {
+  "BAIDU": {
+    "extent": {
+      "leftBottom": {
+        "x": -20037508.3427892,
+        "y": -20037508.3427892
+      },
+      "rightTop": {
+        "x": 20037508.3427892,
+        "y": 20037508.3427892
+      }
+    },
+    "maxScale": "1:564.2497166720675",
+    "level": 3,
+    "center": {
+      "x": 11615300.701720804,
+      "y": 4436879.386230171
+    },
+    "baseLayer": {
+      "layerType": "BAIDU",
+      "name": "百度地图"
+    },
+    "layers": [],
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:295829355.4545649",
+    "title": "无标题",
+    "version": "2.3.0"
+  },
+  "BING": {
+    "extent": {
+      "leftBottom": {
+        "x": -20037508.3427892,
+        "y": -20037508.3427892
+      },
+      "rightTop": {
+        "x": 20037508.3427892,
+        "y": 20037508.3427892
+      }
+    },
+    "maxScale": "1:564.2497166720675",
+    "level": 3,
+    "center": {
+      "x": 11615300.701720804,
+      "y": 4436879.386230171
+    },
+    "baseLayer": {
+      "layerType": "BING",
+      "name": "必应地图"
+    },
+    "layers": [],
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:295829355.4545649",
+    "title": "无标题",
+    "version": "2.3.0"
+  },
+  "TILE": {
+    "extent": {
+      "leftBottom": {
+        "x": -20037508.342789244,
+        "y": -20037508.342789136
+      },
+      "rightTop": {
+        "x": 20037508.342789244,
+        "y": 20037508.34278908
+      }
+    },
+    "maxScale": "1:147914677.72728282",
+    "level": 1,
+    "center": {
+      "x": 0,
+      "y": 0
+    },
+    "baseLayer": {
+      "layerType": "TILE",
+      "name": "中国暗色地图",
+      "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+    },
+    "layers": [],
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:591658710.9091312",
+    "title": "无标题",
+    "version": "2.3.0"
+  },
+  "GOOGLE": {
+    "extent": {
+      "leftBottom": {
+        "x": -20037508.34,
+        "y": -20037508.34
+      },
+      "rightTop": {
+        "x": 20037508.34,
+        "y": 20037508.34
+      }
+    },
+    "level": 1,
+    "center": {
+      "x": 0,
+      "y": -7.081154551613622e-10
+    },
+    "baseLayer": {
+      "layerType": "GOOGLE_CN",
+      "visible": true,
+      "name": "谷歌地图"
+    },
+    "layers": [],
+    "description": "",
+    "projection": "EPSG:3857",
+    "title": "google_map",
+    "version": "1.0"
+  },
+  "WMTS": {
+    "extent": {
+      "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 },
+      "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 }
+    },
+    "maxScale": "1:18055.99093350616",
+    "level": 1,
+    "center": { "x": 5439870.428999409, "y": 19567.879241008308 },
+    "baseLayer": {
+      "layerType": "WMTS",
+      "tileMatrixSet": "GoogleMapsCompatible_世界地图_Gray",
+      "requestEncoding": "KVP",
+      "visible": true,
+      "name": "世界地图_Gray",
+      "dpi": 90.7142857142857,
+      "url": "http://fack/iserver/services/map-china400/wmts100",
+      "layer": "世界地图_Gray"
+    },
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:295829355.4545649",
+    "title": "无标题",
+    "version": "2.3.0",
+    "layers": [
+      {
+        "layerType": "TILE",
+        "visible": true,
+        "name": "中国暗色地图",
+        "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+      }
+    ]
+  }
+}
+
+var wmsLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 }
+  },
+  "maxScale": "1:144447.92746805",
+  "level": 1,
+  "center": { "x": 7219425.62918168, "y": -3039139.7858056696 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "layers": [
+    { "url":"https://fakeiportal.supermap.io/iportal","layerType": "WMS", "visible": true, "name": "世界地图_Day", "layers": ["0"], "layerID": "世界地图_Day" }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909131",
+  "title": "无标题",
+  "version": "2.3.0",
+  "mapParams": { "title": "无标题", "description": "" }
+}
+
+var wmtsLayer = {
+  "extent": {
+    "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 },
+    "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 }
+  },
+  "maxScale": "1:144447.92746805",
+  "level": 1,
+  "center": { "x": 7044436.526761852, "y": -142311.41472421167 },
+  "baseLayer": {
+    "layerType": "TILE",
+    "visible": true,
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "layers": [
+    {
+      "layerType": "WMTS",
+      "tileMatrixSet": "Custom_China",
+      "requestEncoding": "KVP",
+      "visible": true,
+      "name": "China",
+      "dpi": 90.7142857142857,
+      "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/wmts100",
+      "layer": "China",
+      "layerID": "China"
+    }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909131",
+  "title": "无标题",
+  "version": "2.3.0",
+  "mapParams": { "title": "无标题", "description": "" }
+};
+
+var restmapLayer = {
+  "extent": {
+    "leftBottom": {
+      "x": -20037508.342789244,
+      "y": -20037508.342789136
+    },
+    "rightTop": {
+      "x": 20037508.342789244,
+      "y": 20037508.34278908
+    }
+  },
+  "maxScale": "1:147914677.72728282",
+  "level": 1,
+  "center": {
+    "x": 0,
+    "y": 0
+  },
+  "baseLayer": {
+    "layerType": "TILE",
+    "name": "中国暗色地图",
+    "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "layers": [{
+    "layerType": "TILE",
+    "visible": true,
+    "visibleScale": {
+      "maxScale": "1:147914677.72728282",
+      "minScale": "1:295829355.45456564"
+    },
+    "autoUpdateTime": 1000,
+    "name": "China",
+    "url": "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China"
+  }],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.9091312",
+  "title": "无标题",
+  "version": "2.3.0",
+  "rootUrl": "http://localhost:8190/iportal/services/../"
+}
+
