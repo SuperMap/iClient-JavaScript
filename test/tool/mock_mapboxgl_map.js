@@ -144,7 +144,8 @@ const Map = function (options) {
     if (sourceInfo && sourceInfo.type === 'geojson') {
       return {
         ...sourceInfo,
-        setData: jasmine.createSpy('setData').and.callFake(() => {})
+        setData: jasmine.createSpy('setData').and.callFake(() => {}),
+        _data: this._sources[name].data,
       };
     }
     return sourceInfo;
