@@ -15,7 +15,7 @@ const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7})
 
 export class WebMap extends createWebMapExtending(maplibregl.Evented, { LngLat: maplibregl.LngLat, CRS: maplibregl.CRS }) {
   _createWebMapFactory(type) {
-    const commonFactoryOptions = { MapManager, mapRepo: maplibregl };
+    const commonFactoryOptions = { MapManager, mapRepo: maplibregl, mapRepoName: 'maplibre-gl' };
     switch (type) {
       case 'MapStyle':
         return createMapStyleExtending(createMapClassExtending(maplibregl.Evented), commonFactoryOptions);

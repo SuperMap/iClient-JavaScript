@@ -1,4 +1,4 @@
-import mapboxgl from 'mapbox-gl';
+import maplibregl from 'maplibre-gl';
 class VectorTileSource {
   constructor(id, options) {
     this.id = id;
@@ -6,7 +6,7 @@ class VectorTileSource {
   }
   async beforeLoad() {}
 }
-mapboxgl.VectorTileSource = VectorTileSource;
+maplibregl.VectorTileSource = VectorTileSource;
 
 const defaultOptions = {
   doubleClickZoom: true
@@ -19,7 +19,7 @@ function functor(x) {
 }
 
 const Map = function (options) {
-  const evented = new mapboxgl.Evented();
+  const evented = new maplibregl.Evented();
   this.on = evented.on;
   this.once = evented.once;
   this._update = ()=>{};
@@ -41,12 +41,12 @@ const Map = function (options) {
 
   try {
     this.center = this.options.center
-      ? new mapboxgl.LngLat(this.options.center.lng, this.options.center.lat)
-      : new mapboxgl.LngLat(0, 0);
+      ? new maplibregl.LngLat(this.options.center.lng, this.options.center.lat)
+      : new maplibregl.LngLat(0, 0);
   } catch (e) {
     this.center = this.options.center
-      ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1])
-      : new mapboxgl.LngLat(0, 0);
+      ? new maplibregl.LngLat(this.options.center[0], this.options.center[1])
+      : new maplibregl.LngLat(0, 0);
   }
   this.resize = jasmine.createSpy('resize').and.callFake(() => {});
   this.style = {
@@ -234,7 +234,7 @@ const Map = function (options) {
   this.getBounds = function () {
     return (
       this.bounds ||
-      mapboxgl.LngLatBounds.convert([
+      maplibregl.LngLatBounds.convert([
         [-180, -90],
         [180, 90]
       ])
@@ -251,9 +251,9 @@ const Map = function (options) {
   };
   this.setCenter = function (x) {
     if (x instanceof Array) {
-      this.center = new mapboxgl.LngLat(x[0], x[1]);
+      this.center = new maplibregl.LngLat(x[0], x[1]);
     } else if (x instanceof Object) {
-      this.center = new mapboxgl.LngLat(x.lng, x.lat);
+      this.center = new maplibregl.LngLat(x.lng, x.lat);
     }
   };
 
@@ -311,7 +311,7 @@ const Map = function (options) {
     };
   };
   this.unproject = function (point) {
-    return new mapboxgl.LngLat(-73.9876, 40.7661);
+    return new maplibregl.LngLat(-73.9876, 40.7661);
   };
 
   this.queryRenderedFeatures = function (pointOrBox, queryParams) {
@@ -398,5 +398,5 @@ class CRS {
 }
 
 export default Map;
-var mapboxglMock = { Map };
-export { mapboxglMock, CRS };
+var maplibreglMock = { Map };
+export { maplibreglMock, CRS };

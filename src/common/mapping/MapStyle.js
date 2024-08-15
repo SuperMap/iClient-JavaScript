@@ -73,6 +73,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         this.map.addLayer(layer);
       });
+      Object.assign(this.mapOptions.style, { layers, sources });
       this._layerIdRenameMapList = layerIdMapList;
       this._sendMapToUser();
     }
@@ -110,18 +111,22 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
     }
 
     _generateAppreciableLayers() {
-      const layers = this.mapOptions.style.layers.map((layer) => {
-        const matchLayer = this._layerIdRenameMapList.find((item) => item.originId === layer.id) || {
-          renderId: layer.id
-        };
-        const overlayLayers = {
-          id: matchLayer.renderId,
-          name: layer.id,
-          renderLayers: [matchLayer.renderId]
-        };
-        return overlayLayers;
-      });
-      return layers;
+      return this.mapOptions.style.layers.reduce((layers, layer) => {
+        const id = layer['source-layer'] || layer.source || layer.id;
+        const matchLayer = layers.find(item => item.id === id);
+        if (matchLayer) {
+          matchLayer.renderLayers.push(layer.id);
+        } else {
+          const matchRenameLayer = this._layerIdRenameMapList.find((item) => item.renderId === layer.id);
+          layers.push({
+            ...layer,
+            id,
+            name: matchRenameLayer && matchRenameLayer.originId,
+            renderLayers: [layer.id]
+          });
+        }
+        return layers;
+      }, []);
     }
 
     _sendMapToUser() {

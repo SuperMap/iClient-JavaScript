@@ -211,7 +211,7 @@ var geojsonData = '{"fileName":"北京市轨道交通线路(1).geojson","type":"
 var csvData_migration =`{"fileName":"北京市幼儿园_1.csv","dataMetaInfo":{"xField":"x1","yField":"y1"},"type":"CSV","lineNumber":1,"content":{"colTitles":["x1","y1","x2","y2","机场"],"rows":[["116.718806","40.086966","117.718806","42.086966","北京"]]}}`
 var markerData = '{"fileName":"未命名标注图层1(4)","type":"JSON","lineNumber":null,"content":"{\\"type\\":\\"FeatureCollection\\",\\"crs\\":{\\"type\\":\\"name\\",\\"properties\\":{\\"name\\":\\"urn:ogc:def:crs:OGC:1.3:CRS84\\"}},\\"features\\":[{\\"type\\":\\"Feature\\",\\"properties\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"dv_v5_markerStyle\\":{\\"strokeColor\\":\\"#3498db\\",\\"strokeOpacity\\":1,\\"strokeWidth\\":5,\\"lineCap\\":\\"round\\",\\"lineDash\\":\\"solid\\"},\\"dv_v5_markerInfo\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"geometry\\":{\\"type\\":\\"LineString\\",\\"coordinates\\":[[-87.89062500000004,25.16517336866393],[24.257812499999975,-15.961329081596674],[-88.24218750000003,-45.583289756006316],[-126.56250000000001,-56.170022982932046]]}},{\\"type\\":\\"Feature\\",\\"properties\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"dv_v5_markerStyle\\":{\\"fillColor\\":\\"#1abd9c\\",\\"fillOpacity\\":1,\\"strokeColor\\":\\"#3498db\\",\\"strokeOpacity\\":1,\\"strokeWidth\\":3,\\"lineCap\\":\\"round\\",\\"lineDash\\":\\"solid\\"},\\"dv_v5_markerInfo\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"geometry\\":{\\"type\\":\\"Polygon\\",\\"coordinates\\":[[[33.046874999999964,49.61070993807422],[150.46874999999997,-19.642587534013046],[106.17187499999997,62.75472592723179],[33.046874999999964,49.61070993807422]]]}},{\\"type\\":\\"Feature\\",\\"properties\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"dv_v5_markerStyle\\":{\\"radius\\":12,\\"fillColor\\":\\"#1abd9c\\",\\"fillOpacity\\":1,\\"strokeColor\\":\\"#3498db\\",\\"strokeOpacity\\":1,\\"strokeWidth\\":6},\\"dv_v5_markerInfo\\":{\\"dataViz_title\\":\\"\\",\\"dataViz_description\\":\\"\\",\\"dataViz_imgUrl\\":\\"\\",\\"dataViz_url\\":\\"\\"},\\"geometry\\":{\\"type\\":\\"Point\\",\\"coordinates\\":[-54.843750000000014,-70.37785394109224]}}]}"}';
 var supermapData = '{"features":[{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.39993002089763,"y":40.0590434404585},"parts":[1],"style":null,"prjCoordSys":null,"id":1,"type":"POINT","partTopo":null,"points":[{"x":117.39993002089763,"y":40.0590434404585}]},"fieldValues":["1","117.39993002089763","40.0590434404585","1","21","16","蓟县","120225","4",""],"ID":1},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.38092128657534,"y":39.921888366923284},"parts":[1],"style":null,"prjCoordSys":null,"id":2,"type":"POINT","partTopo":null,"points":[{"x":116.38092128657534,"y":39.921888366923284}]},"fieldValues":["2","116.38092128657534","39.921888366923284","1","61","16","北京","1101","1",""],"ID":2},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.22372456569556,"y":40.2183238223111},"parts":[1],"style":null,"prjCoordSys":null,"id":3,"type":"POINT","partTopo":null,"points":[{"x":116.22372456569556,"y":40.2183238223111}]},"fieldValues":["3","116.22372456569556","40.2183238223111","1","62","16","昌平","110221","4",""],"ID":3},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.64232836444396,"y":40.12897279031896},"parts":[1],"style":null,"prjCoordSys":null,"id":4,"type":"POINT","partTopo":null,"points":[{"x":116.64232836444396,"y":40.12897279031896}]},"fieldValues":["4","116.64232836444396","40.12897279031896","1","63","16","顺义","110222","4",""],"ID":4},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.65692332515847,"y":39.90206768607429},"parts":[1],"style":null,"prjCoordSys":null,"id":5,"type":"POINT","partTopo":null,"points":[{"x":116.65692332515847,"y":39.90206768607429}]},"fieldValues":["5","116.65692332515847","39.90206768607429","1","64","16","通县","110223","4",""],"ID":5},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.33232173403752,"y":39.720801947738885},"parts":[1],"style":null,"prjCoordSys":null,"id":6,"type":"POINT","partTopo":null,"points":[{"x":116.33232173403752,"y":39.720801947738885}]},"fieldValues":["6","116.33232173403752","39.720801947738885","1","65","16","大兴","110224","4",""],"ID":6},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.11282711804654,"y":40.13670824455619},"parts":[1],"style":null,"prjCoordSys":null,"id":7,"type":"POINT","partTopo":null,"points":[{"x":117.11282711804654,"y":40.13670824455619}]},"fieldValues":["7","117.11282711804654","40.13670824455619","1","66","16","平谷","110226","4",""],"ID":7},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.62692420650268,"y":40.312250343623795},"parts":[1],"style":null,"prjCoordSys":null,"id":8,"type":"POINT","partTopo":null,"points":[{"x":116.62692420650268,"y":40.312250343623795}]},"fieldValues":["8","116.62692420650268","40.312250343623795","1","67","16","怀柔","110227","4",""],"ID":8},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.841227177378,"y":40.37511983154621},"parts":[1],"style":null,"prjCoordSys":null,"id":9,"type":"POINT","partTopo":null,"points":[{"x":116.841227177378,"y":40.37511983154621}]},"fieldValues":["9","116.841227177378","40.37511983154621","1","68","16","密云","110228","4",""],"ID":9},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":115.96742217067202,"y":40.45804072693296},"parts":[1],"style":null,"prjCoordSys":null,"id":10,"type":"POINT","partTopo":null,"points":[{"x":115.96742217067202,"y":40.45804072693296}]},"fieldValues":["10","115.96742217067202","40.45804072693296","1","69","16","延庆","110229","4",""],"ID":10},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.20352571172596,"y":39.12941269568513},"parts":[1],"style":null,"prjCoordSys":null,"id":11,"type":"POINT","partTopo":null,"points":[{"x":117.20352571172596,"y":39.12941269568513}]},"fieldValues":["11","117.20352571172596","39.12941269568513","1","70","16","天津","120100","2",""],"ID":11},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.83173213573859,"y":39.329267894826415},"parts":[1],"style":null,"prjCoordSys":null,"id":12,"type":"POINT","partTopo":null,"points":[{"x":117.83173213573859,"y":39.329267894826415}]},"fieldValues":["12","117.83173213573859","39.329267894826415","1","71","16","宁河","120221","4",""],"ID":12},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.06152693833843,"y":39.375127641069795},"parts":[1],"style":null,"prjCoordSys":null,"id":13,"type":"POINT","partTopo":null,"points":[{"x":117.06152693833843,"y":39.375127641069795}]},"fieldValues":["13","117.06152693833843","39.375127641069795","1","72","16","武清","120222","4",""],"ID":13},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":116.91942882282981,"y":38.934607501790516},"parts":[1],"style":null,"prjCoordSys":null,"id":14,"type":"POINT","partTopo":null,"points":[{"x":116.91942882282981,"y":38.934607501790516}]},"fieldValues":["14","116.91942882282981","38.934607501790516","1","73","16","静海","120223","4",""],"ID":14},{"stringID":null,"fieldNames":["SMID","SMX","SMY","SMLIBTILEID","SMUSERID","SMGEOMETRYSIZE","NAME","CODE","ADCLASS","ADCLASS_1"],"geometry":{"center":{"x":117.30272380126821,"y":39.72561244598092},"parts":[1],"style":null,"prjCoordSys":null,"id":15,"type":"POINT","partTopo":null,"points":[{"x":117.30272380126821,"y":39.72561244598092}]},"fieldValues":["15","117.30272380126821","39.72561244598092","1","74","16","宝坻","120224","4",""],"ID":15}],"featureUriList":[],"totalCount":15,"featureCount":15}';
-var supermapRestData = '{"recordsets":[{"datasetName":"北京市动物诊疗机构@行业数据","features":[{"fieldNames":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"],"ID":1,"fieldValues":["1","1.2961495051608399E7","4851170.665039413","1","0","16","东城区","北京市东便门宠物医院","北京市东城区东花市北里中区8号楼1层","67191166"],"geometry":{"id":1,"center":{"y":4851170.665039413,"x":1.2961495051608399E7},"style":null,"parts":[1],"points":[{"y":4851170.665039413,"x":1.2961495051608399E7}],"type":"POINT"}}],"fieldCaptions":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"],"fieldTypes":["INT32","DOUBLE","DOUBLE","INT32","INT32","INT32","WTEXT","WTEXT","WTEXT","WTEXT"],"fields":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"]}],"totalCount":1,"currentCount":1,"customResponse":null}'
+var supermapRestData = '{"recordsets":[{"datasetName":"北京市动物诊疗机构@行业数据","features":[{"fieldNames":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"],"ID":1,"fieldValues":["1","1.2961495051608399E7","4851170.665039413","1","0","16","东城区","北京市东便门宠物医院","北京市东城区东花市北里中区8号楼1层","67191166"],"geometry":{"id":1,"center":{"y":4851170.665039413,"x":1.2961495051608399E7},"style":null,"parts":[1],"points":[{"y":4851170.665039413,"x":1.2961495051608399E7}],"type":"POINT"}}],"fieldCaptions":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"],"fieldTypes":["INT32","DOUBLE","DOUBLE","INT32","INT32","INT32","WTEXT","WTEXT","WTEXT","WTEXT"],"fields":["SmID","SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","区县","名称","地址","联系电话"]}],"totalCount":1,"currentCount":1,"customResponse":null}';
 
 var wmtsInfo = '{"extent":[-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],"url":"http://localhost:9876/iserver/services/map-world/wmts100","name": "wmts","tileMatrixSet":"GoogleMapsCompatible_世界地图_Gray","unit":"m","dpi":"90.7","scales": [559082264.0287178, 279541132.0143589, 139770566.00717944, 69885283.00358972, 34942641.50179486, 17471320.75089743, 8735660.375448715, 4367830.1877243575, 2183915.0938621787, 1091957.5469310894, 545978.7734655447, 272989.38673277234, 136494.69336638617, 68247.34668319309, 34123.67334159654, 17061.83667079827, 8530.918335399136, 4265.459167699568, 2132.729583849784]}';
 
@@ -1379,45 +1379,12 @@ var webmap_MAPBOXSTYLE_Tile = {
     }
   },
   layers: [
-      {
-          "maxzoom": 12,
-          "id": "CHINA_DARK",
-          "source": "CHINA_DARK",
-          "type": "raster",
-          "minzoom": 0
-      },
-      {
-          "layout": {
-              "visibility": "visible"
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "fill-extrusion-height": [
-                  "*",
-                  30000,
-                  1
-              ],
-              "fill-extrusion-opacity": 0.9,
-              "fill-extrusion-base": [
-                  "*",
-                  1000,
-                  1
-              ],
-              "fill-extrusion-vertical-gradient": true,
-              "fill-extrusion-translate-anchor": "map",
-              "fill-extrusion-color": "#826DBA",
-              "fill-extrusion-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "未命名数据(8)",
-          "source": "40654641",
-          "source-layer": "40654641$geometry",
-          "type": "fill-extrusion",
-          "minzoom": 0
-      }
+    {
+      layerType: 'TILE',
+      visible: true,
+      name: '京津地区地图',
+      url: 'http://fakeiportal.supermap.io/iserver/services/map-ugcv5-JingJinDiQuDiTu/rest/maps/%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9C%B0%E5%9B%BE'
+    }
   ],
   description: '',
   projection: 'EPSG:4326',
@@ -1762,6 +1729,312 @@ var uniqueLayer_point = {
   "version": "2.2.1",
   "rootUrl": "https://iportal.supermap.io/iportal/services/../"
 }
+
+var uniqueLayer_multi_points = {
+    "extent": {
+      "leftBottom": { "x": -20037508.342789248, "y": -20037508.34278914 },
+      "rightTop": { "x": 20037508.342789244, "y": 20037508.342789087 }
+    },
+    "maxScale": "1:144447.927",
+    "level": 5,
+    "center": { "x": 11615300.701720804, "y": 4436879.386230171 },
+    "baseLayer": {
+      "layerType": "TILE",
+      "visible": true,
+      "name": "ChinaDark",
+      "url": "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark"
+    },
+    "layers": [
+      {
+        "layerType": "UNIQUE",
+        "visible": true,
+        "themeSetting": {
+          "themeField": "名次",
+          "customSettings": {
+            "1": "#d53e4f",
+            "2": "#d6404f",
+            "3": "#d8444f",
+            "4": "#db4a50",
+            "5": "#da4850",
+            "6": "#d94650",
+            "7": "#dd4f51",
+            "8": "#de5151",
+            "9": "#df5351",
+            "10": "#dc4c50",
+            "11": "#e05551",
+            "12": "#e25952",
+            "13": "#e15752",
+            "14": "#feeda1",
+            "15": "#e56053",
+            "16": "#e45e53",
+            "17": "#e35b52",
+            "18": "#e96654",
+            "19": "#fca769"
+          },
+          "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+        },
+        "name": "民航数据",
+        "featureType": "POINT",
+        "xyField": { "xField": "longitude", "yField": "latitude" },
+        "style": {
+          "strokeWidth": 1,
+          "offsetX": 0,
+          "fillColor": "#3288bd",
+          "offsetY": 0,
+          "fillOpacity": 0.9,
+          "radius": 8,
+          "strokeColor": "#ffffff",
+          "type": "BASIC_POINT",
+          "strokeOpacity": 1
+        },
+        "projection": "EPSG:4326",
+        "enableFields": [
+          "latitude",
+          "longitude",
+          "altitude",
+          "geometry",
+          "机场",
+          "X坐标",
+          "Y坐标",
+          "名次",
+          "2017旅客吞吐量（人次）",
+          "2016旅客吞吐量（人次）",
+          "同比增速%",
+          "2017货邮吞吐量（吨）",
+          "2016货邮吞吐量（吨）",
+          "2017起降架次（架次）",
+          "2016起降架次（架次）"
+        ],
+        "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "676516522" }
+      },
+      {
+        "layerType": "UNIQUE",
+        "visible": true,
+        "themeSetting": {
+          "themeField": "title",
+          "customSettings": {
+            "11111": {
+              "fillColor": "#D53E4F",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "name": "Shape3-4",
+              "unicode": "&#xe698",
+              "className": "supermapol-icons-Shape-57",
+              "fontSize": "16px",
+              "type": "SYMBOL_POINT",
+              "strokeColor": "#ffffff",
+              "strokeOpacity": 1
+            },
+            "22222": {
+              "fillColor": "#3288BD",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "name": "Shape3-2",
+              "unicode": "&#xe696",
+              "className": "supermapol-icons-Shape-55",
+              "fontSize": "16px",
+              "type": "SYMBOL_POINT",
+              "strokeColor": "#ffffff",
+              "strokeOpacity": 1
+            }
+          },
+          "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+        },
+        "filterCondition": "title = '11111'",
+        "name": "jiuzhaigou2",
+        "featureType": "POINT",
+        "labelStyle": {
+          "offsetX": 0,
+          "textBaseline": "bottom",
+          "fontFamily": "微软雅黑",
+          "offsetY": -12,
+          "outlineWidth": 0,
+          "textAlign": "center",
+          "outlineColor": "#000000",
+          "fontSize": "19px",
+          "fill": "#333",
+          "backgroundFill": [255, 255, 255, 0.8],
+          "labelField": "未设置"
+        },
+        "style": {
+          "strokeWidth": 1,
+          "offsetX": 0,
+          "fillColor": "#3288BD",
+          "offsetY": 0,
+          "fillOpacity": 0.9,
+          "name": "Shape3-2",
+          "unicode": "&#xe696",
+          "className": "supermapol-icons-Shape-55",
+          "fontSize": "16px",
+          "strokeColor": "#ffffff",
+          "type": "SYMBOL_POINT",
+          "strokeOpacity": 1
+        },
+        "projection": "EPSG:4326",
+        "enableFields": ["title", "subtitle", "imgUrl", "description"],
+        "dataSource": {
+          "accessType": "DIRECT",
+          "type": "PORTAL_DATA",
+          "serverId": "13136933"
+        }
+      },
+      {
+        "layerType": "UNIQUE",
+        "visible": true,
+        "themeSetting": {
+          "themeField": "title",
+          "customSettings": {
+            "11111": {
+              "fillColor": "#D53E4F",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "name": "Shape3-4",
+              "unicode": "&#xe698",
+              "className": "supermapol-icons-Shape-57",
+              "fontSize": "16px",
+              "type": "SYMBOL_POINT",
+              "strokeColor": "#ffffff",
+              "strokeOpacity": 1
+            },
+            "22222": {
+              "fillColor": "#3288BD",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "name": "Shape3-2",
+              "unicode": "&#xe696",
+              "className": "supermapol-icons-Shape-55",
+              "fontSize": "16px",
+              "type": "SYMBOL_POINT",
+              "strokeColor": "#ffffff",
+              "strokeOpacity": 1
+            }
+          },
+          "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+        },
+        "filterCondition": "title = '11111'",
+        "name": "jiuzhaigou2",
+        "featureType": "POINT",
+        "labelStyle": {
+          "offsetX": 0,
+          "textBaseline": "bottom",
+          "fontFamily": "微软雅黑",
+          "offsetY": -12,
+          "outlineWidth": 0,
+          "textAlign": "center",
+          "outlineColor": "#000000",
+          "fontSize": "19px",
+          "fill": "#333",
+          "backgroundFill": [255, 255, 255, 0.8],
+          "labelField": "未设置"
+        },
+        "style": {
+          "strokeWidth": 1,
+          "offsetX": 0,
+          "fillColor": "#3288BD",
+          "offsetY": 0,
+          "fillOpacity": 0.9,
+          "name": "Shape3-2",
+          "unicode": "&#xe696",
+          "className": "supermapol-icons-Shape-55",
+          "fontSize": "16px",
+          "strokeColor": "#ffffff",
+          "type": "SYMBOL_POINT",
+          "strokeOpacity": 1
+        },
+        "projection": "EPSG:4326",
+        "enableFields": ["title", "subtitle", "imgUrl", "description"],
+        "dataSource": {
+          "accessType": "DIRECT",
+          "type": "PORTAL_DATA",
+          "serverId": "13136933"
+        }
+      },
+      {
+        "layerType": "UNIQUE",
+        "visible": true,
+        "themeSetting": {
+          "themeField": "title",
+          "customSettings": {
+            "11111": {
+              "offsetX": 0.5,
+              "offsetY": 0.5,
+              "imageInfo": {
+                "size": {
+                  "w": 24,
+                  "h": 24
+                },
+                "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-010d5.png"
+              },
+              "type": "IMAGE_POINT",
+              "radius": 8
+            },
+            "22222": {
+              "fillColor": "#3288BD",
+              "strokeWidth": 1,
+              "offsetX": 0.5,
+              "offsetY": 0.5,
+              "fillOpacity": 0.9,
+              "type": "SVG_POINT",
+              "radius": 8,
+              "strokeColor": "#ffffff",
+              "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-1640166546637UNIQUE.svg",
+              "strokeOpacity": 1
+            }
+          },
+          "colors": ["#D53E4F", "#FC8D59", "#FEE08B", "#FFFFBF", "#E6F598", "#99D594", "#3288BD"]
+        },
+        "name": "jiuzhaigou2",
+        "featureType": "POINT",
+        "labelStyle": {
+          "offsetX": 4,
+          "textBaseline": "bottom",
+          "fontFamily": "黑体",
+          "offsetY": -8,
+          "outlineWidth": 0,
+          "textAlign": "center",
+          "outlineColor": "#000000",
+          "fontSize": "14px",
+          "fill": "#333",
+          "backgroundFill": [255, 255, 255, 0.8],
+          "labelField": "title"
+        },
+        "style": {
+          "strokeWidth": 1,
+          "offsetX": 0.5,
+          "fillColor": "#3288BD",
+          "offsetY": 0.5,
+          "fillOpacity": 0.9,
+          "radius": 8,
+          "strokeColor": "#ffffff",
+          "type": "SVG_POINT",
+          "url": "http://fakeiportal.supermap.io/iportal/./resources/portal/dataviz/markericon/symbol-input-1640166546637UNIQUE.svg",
+          "strokeOpacity": 1
+        },
+        "projection": "EPSG:4326",
+        "enableFields": ["title", "subtitle", "imgUrl", "description"],
+        "dataSource": {
+          "accessType": "DIRECT",
+          "type": "PORTAL_DATA",
+          "serverId": "13136933"
+        }
+      }
+    ],
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:591658710.909",
+    "title": "民航数据-单值",
+    "version": "2.2.1",
+    "rootUrl": "https://iportal.supermap.io/iportal/services/../"
+  }
+  
 
 
 var raster4490 = '{"extent":{"leftBottom":{"x":-180,"y":6.745832004414445},"rightTop":{"x":180,"y":81.85192871120175}},"maxScale":"1:70.45225847627215","level":5,"center":{"x":129,"y":44},"baseLayer":{"layerType":"TILE","name":"jubu4490","url":"http://fake:8090/iserver/services/map-test4490-2/rest/maps/jubu4490"},"layers":[],"description":"","projection":"GEOGCS[\\"China Geodetic Coordinate System 2000\\", \\r\\n  DATUM[\\"China 2000\\", \\r\\n    SPHEROID[\\"CGCS2000\\", 6378137.0, 298.257222101, AUTHORITY[\\"EPSG\\",\\"1024\\"]], \\r\\n    AUTHORITY[\\"EPSG\\",\\"1043\\"]], \\r\\n  PRIMEM[\\"Greenwich\\", 0.0, AUTHORITY[\\"EPSG\\",\\"8901\\"]], \\r\\n  UNIT[\\"degree\\", 0.017453292519943295], \\r\\n  AXIS[\\"lat\\", NORTH], \\r\\n  AXIS[\\"lon\\", EAST], \\r\\n  AUTHORITY[\\"EPSG\\",\\"4490\\"]]","minScale":"1:295498189.5360622","title":"4490","version":"2.3.0"}';
@@ -2613,6 +2886,12 @@ var ranksymbolLayer = {
         "2016起降架次（架次）"
       ],
       "dataSource": { "accessType": "DIRECT", "type": "PORTAL_DATA", "serverId": "676516522" }
+    },
+    {
+      "layerType": "TILE",
+      "visible": true,
+      "name": "中国暗色地图",
+      "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
     }
   ],
   "description": "",

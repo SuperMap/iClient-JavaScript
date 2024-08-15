@@ -56,7 +56,6 @@
       mapOptions = { style: { version: 8, sources: {}, layers: [] } }
     ) {
       super();
-      this.mapId = id;
       if (typeof id === 'string' || typeof id === 'number') {
         this.mapId = id;
       } else if (id !== null && typeof id === 'object') {

@@ -425,9 +425,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
   
           if (type === 'tile') {
-            this._initBaseLayer(layer, () => {
-              this._addLayerSucceeded();
-            });
             if (layer.autoUpdateTime) {
               this._layerTimerList.push(
                 setInterval(() => {
@@ -435,6 +432,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
                 }, layer.autoUpdateTime)
               );
             }
+            this._initBaseLayer(layer, () => {
+              this._addLayerSucceeded();
+            });
           } else {
             this.getLayerFeatures(layer, _taskID, type);
             if (layer.autoUpdateTime) {

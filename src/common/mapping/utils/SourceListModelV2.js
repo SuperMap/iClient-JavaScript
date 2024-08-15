@@ -34,11 +34,15 @@ export class SourceListModel extends AppreciableLayerBase {
     this.layers.forEach((item) => {
       const matchLayers = nextLayers.filter((layer) => this._isBelongToMapJSON(item, layer));
       const matchLayer = matchLayers.find(renderLayer => renderLayer.id === item.id);
-      if (matchLayer) {
-        selfLayers.push({
-          ...matchLayer,
-          layerInfo: { ...item, dataSource: item.dataSource || (item.serverId && { serverId: item.serverId }) }
-        });
+      if (matchLayers.length > 0) {
+        if (matchLayer) {
+          selfLayers.push({
+            ...matchLayer,
+            layerInfo: { ...item, dataSource: item.dataSource || (item.serverId && { serverId: item.serverId }) }
+          });
+        } else {
+          selfLayers.push(...matchLayers);
+        }
         selfLayerIds.push(...item.renderLayers);
       }
     });

@@ -158,7 +158,7 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, l7LayerUtil }) {
+export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRepoName, l7LayerUtil }) {
   return class WebMap extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
     super();
@@ -322,7 +322,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, l7Lay
     if (typeof crs === 'object') {
       baseProjection = crs.name;
       if (!mapRepo.CRS) {
-        const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
+        const error = `The EPSG code ${baseProjection} needs to include ${mapRepoName}-enhance.js. Refer to the example: https://iclient.supermap.io/examples/${mapRepoName.replace('-', '')}/editor.html#mvtVectorTile_2362`;
         this.fire('getmapinfofailed', { error: error });
         console.error(error);
         return;

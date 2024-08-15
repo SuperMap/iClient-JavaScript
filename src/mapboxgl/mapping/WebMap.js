@@ -14,7 +14,7 @@ import MapManager from './webmap/MapManager';
 const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
 export class WebMap extends createWebMapExtending(mapboxgl.Evented, { mapRepo: mapboxgl }) {
   _createWebMapFactory(type) {
-    const commonFactoryOptions = { MapManager, mapRepo: mapboxgl };
+    const commonFactoryOptions = { MapManager, mapRepo: mapboxgl, mapRepoName: 'mapbox-gl' };
     switch (type) {
       case 'MapStyle':
         return createMapStyleExtending(createMapClassExtending(mapboxgl.Evented), commonFactoryOptions);

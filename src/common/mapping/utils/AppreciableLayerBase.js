@@ -5,7 +5,7 @@ export class AppreciableLayerBase {
     this.map = options.map;
     this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
-    this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', /tracklayer-\d+-line/];
+    this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', 'maplibre-gl-draw', /tracklayer-\d+-line/];
   }
 
   setSelfLayers(layers) {
@@ -39,6 +39,7 @@ export class AppreciableLayerBase {
       return layer.metadata.parentLayerId;
     }
     // 针对 MapboxStyle 或者其它额外的 layer
+    // type: background 和某些 overlaymanager layers 只有 id
     return layer.sourceLayer || layer.source || layer.id;
   }
 

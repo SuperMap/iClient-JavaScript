@@ -1,7 +1,7 @@
-import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';
-import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
-import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
+import maplibregl from 'maplibre-gl';
+import mbglmap, { CRS } from '../../tool/mock_maplibregl_map';
+import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
+import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import '../../resources/WebMapV5.js';
@@ -160,7 +160,7 @@ function DataFlowService(serviceUrl) {
   };
 }
 
-describe('mapboxgl_WebMapV2', () => {
+describe('maplibregl_WebMapV2', () => {
   var originalTimeout, testDiv;
   var server = 'http://fack:8190/iportal/';
   var id = 1788054202;
@@ -212,7 +212,7 @@ describe('mapboxgl_WebMapV2', () => {
   };
   beforeEach(() => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
-    mapboxgl.CRS = CRS;
+    maplibregl.CRS = CRS;
     commonMap = {
       style: {},
       resize: jasmine.createSpy('resize').and.callFake(() => {}),
@@ -339,7 +339,7 @@ describe('mapboxgl_WebMapV2', () => {
     commonMap.style.sourceCaches = sourceIdMapList;
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    mapboxgl.CRS = undefined;
+    maplibregl.CRS = undefined;
   });
 
   it('test baseLayer layers count maploaded', (done) => {
@@ -1185,7 +1185,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    const spyTest = spyOn(mapboxgl.supermap, 'DataFlowService').and.callFake(DataFlowService);
+    const spyTest = spyOn(maplibregl.supermap, 'DataFlowService').and.callFake(DataFlowService);
     datavizWebmap = new WebMap(dataflowLayer, { ...commonOption, map: commonMap }, undefined);
     const callback = function (data) {
       if (data.allLoaded) {
@@ -1587,7 +1587,7 @@ describe('mapboxgl_WebMapV2', () => {
   });
 
   it('crs not support', (done) => {
-    spyOn(mapboxgl.CRS, 'get').and.callFake(() => {});
+    spyOn(maplibregl.CRS, 'get').and.callFake(() => {});
     datavizWebmap = new WebMap(baseLayers['BAIDU']);
     const callback = ({ error }) => {
       expect(error.message).toBe('Unsupported coordinate system!');
@@ -2226,7 +2226,7 @@ describe('mapboxgl_WebMapV2', () => {
         },
         type: 'fill'
       });
-      data.map.addSource('mapbox-gl-draw-hot', {
+      data.map.addSource('maplibre-gl-draw-hot', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
@@ -2239,11 +2239,10 @@ describe('mapboxgl_WebMapV2', () => {
           'circle-color': '#f75564'
         },
         id: 'draw-vertex-active.hot',
-        source: 'mapbox-gl-draw-hot',
+        source: 'maplibre-gl-draw-hot',
         type: 'circle'
       });
-      const appreciableLayers2 = datavizWebmap.getAppreciableLayers();
-      expect(appreciableLayers2.length).toBe(uniqueLayer_polygon.layers.length + 1);
+      expect(datavizWebmap.getAppreciableLayers().length).toBe(uniqueLayer_polygon.layers.length + 1);
       done();
     };
     datavizWebmap.on('addlayerssucceeded', callback);
