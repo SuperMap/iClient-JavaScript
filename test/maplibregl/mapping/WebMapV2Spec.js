@@ -2274,4 +2274,395 @@ describe('maplibregl_WebMapV2', () => {
       done();
     });
   });
+  
+  it('initial_serverUrl', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
+      } else if (url.indexOf('content.json?') > -1) {
+          return Promise.resolve(new Response(layerData_CSV));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', () => {
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      done();
+    });
+  });
+
+  it('initial_markerLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(markerLayer)));
+      } else if (url.indexOf('123456/content.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(markerData2)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(123456, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.mapId).toEqual(123456);
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const markerLayer = layers[1];
+      expect(markerLayer.type).toBe('symbol');
+      expect(markerLayer.layout['icon-image']).toBe(
+        'http://fakeiportal/iportal/apps/dataviz/static/imgs/markers/ktv_red.png'
+      );
+      done();
+    });
+  });
+
+  it('initial_heatLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(heatLayer)));
+      } else if (url.indexOf('1920557079/content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const heatLayer = layers[1];
+      expect(heatLayer.type).toBe('heatmap');
+      expect(heatLayer.paint['heatmap-radius']).toBe(30);
+      done();
+    });
+  });
+
+  it('initial_vectorLayer_point', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(vectorLayer_point)));
+      } else if (url.indexOf('1920557079/content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('13136933/content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(5);
+      const vectorLayerPoint = layers[1];
+      expect(vectorLayerPoint.type).toBe('circle');
+      expect(vectorLayerPoint.paint['circle-radius']).toBe(6);
+      done();
+    });
+  });
+
+  it('initial_vectorLayer_line', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(vectorLayer_line)));
+      } else if (url.indexOf('content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.mapId).toBe(id);
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const vectorLayerLine = layers[1];
+      expect(vectorLayerLine.type).toBe('line');
+      expect(vectorLayerLine.paint['line-width']).toBe(7);
+
+      done();
+    });
+  });
+
+  it('initial_ranksymbolLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(ranksymbolLayer)));
+      } else if (url.indexOf('content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    spyOn(ArrayStatistic, 'getArraySegments').and.callFake(function (array, type, segNum) {
+      return [
+        0.406820286455,
+        2.6944246004791665,
+        4.982028914503333,
+        7.2696332285275,
+        9.557237542551666,
+        11.844841856575833,
+        14.1324461706
+      ];
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(4);
+      const vectorLayerPoint = layers[1];
+      expect(vectorLayerPoint.type).toBe('circle');
+      expect(vectorLayerPoint.paint['circle-radius'].length).toBeGreaterThan(0);
+      const labelLayer = layers[3];
+      expect(labelLayer.type).toBe('symbol');
+      expect(labelLayer.paint['text-color']).toBe('#333');
+      expect(labelLayer.layout['text-field']).toBe('{机场}');
+      done();
+    });
+  });
+
+  it('initial_uniqueLayer_polygon', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_polygon)));
+      } else if (url.indexOf('content.json?') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(4);
+      const vectorLayerPoint = layers[1];
+      const id = vectorLayerPoint.id;
+      expect(vectorLayerPoint.type).toBe('fill');
+      expect(vectorLayerPoint.paint['fill-color'].length).toBeGreaterThan(0);
+      const strokeLayer = layers[2];
+      expect(strokeLayer.id).toBe(`${id}-strokeLine`);
+      expect(strokeLayer.type).toBe('line');
+      expect(strokeLayer.paint['line-color']).toBe('#ffffff');
+      done();
+    });
+  });
+
+  it('initial_wmsLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(wmsLayer)));
+      } else if (url.indexOf('REQUEST=GetCapabilities&SERVICE=WMS') > -1) {
+          return Promise.resolve(new Response(wmsCapabilitiesText));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      done();
+    });
+  });
+
+  it('initial_TiandituLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(tiandituLayer)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const tiandituLayer = layers[0];
+      expect(tiandituLayer.id).toBe('天地图地形');
+      expect(tiandituLayer.type).toBe('raster');
+      const labelLayer = layers[1];
+      expect(labelLayer.id).toBe('天地图地形-tdt-label');
+      done();
+    });
+  });
+
+  it('initial_xyzLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(xyzLayer)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(1);
+      const xyzLayer = layers[0];
+      expect(xyzLayer.id).toBe('OpenStreetMap');
+      expect(xyzLayer.type).toBe('raster');
+      done();
+    });
+  });
+
+  it('initial_mapboxstyleLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(mapboxstyleLayer)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(datavizWebmap.options.serverUrl).toBe('http://fack:8190/iportal/');
+      done();
+    });
+  });
+
+  it('initial_migrationLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(migrationLayer));
+      } else if (url.indexOf('content.json?') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      done();
+    });
+  });
+
+  it('initial-rangeLayer-point', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(webmap_rangeLayer)));
+      } else if (url.indexOf('content.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const rangeLayerPoint = layers[1];
+      const id = rangeLayerPoint.id;
+      expect(id).toBe('北京市轨道交通站点(9)');
+      expect(rangeLayerPoint.type).toBe('circle');
+      expect(rangeLayerPoint.paint['circle-radius']).toBe(8);
+      expect(rangeLayerPoint.paint['circle-color'].length).toBeGreaterThan(0);
+      done();
+    });
+  });
+
+  it('ISVJ-7952 CSV nullXY', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
+      } else if (url.indexOf('content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(csv_nullxy_Data)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map.getSource('民航数据')).not.toBeNull();
+      expect(map.getSource('民航数据')._data.features.length).toBe(1);
+      done();
+    });
+  });
+
+  it('bing map', (done) => {
+    const metaInfo = {
+      resourceSets: [
+        {
+          resources: [
+            {
+              __type: 'ImageryMetadata:http://schemas.microsoft.com/search/local/ws/rest/v1',
+              imageHeight: 256,
+              imageUrl:
+                'https://{subdomain}.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
+              imageUrlSubdomains: ['t0', 't1', 't2', 't3'],
+              imageWidth: 256
+            }
+          ]
+        }
+      ],
+      statusCode: 200,
+      statusDescription: 'OK'
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(baseLayers['BING'])));
+      } else if (url.indexOf('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/RoadOnDemand?uriScheme=https&include=ImageryProviders&key=AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko&c=zh-cn') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(metaInfo)));
+      } else if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {
+      server: server,
+      bingMapsKey: 'AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko'
+    });
+
+    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map.getSource('必应地图').tiles).toEqual([
+        'https://t0.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
+        'https://t1.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
+        'https://t2.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
+        'https://t3.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z'
+      ]);
+      done();
+    });
+  });
 });
