@@ -19,20 +19,20 @@ describe('maplibregl_GraticuleLayer', () => {
             style: {
                 version: 8,
                 sources: {
-                    // 'raster-tiles': {
-                    //     type: 'raster',
-                    //     tiles: [url],
-                    //     tileSize: 256
-                    // }
+                    'raster-tiles': {
+                        type: 'raster',
+                        tiles: [url],
+                        tileSize: 256
+                    }
                 },
                 layers: [
-                    // {
-                    //     id: 'simple-tiles',
-                    //     type: 'raster',
-                    //     source: 'raster-tiles',
-                    //     minzoom: 0,
-                    //     maxzoom: 22
-                    // }
+                    {
+                        id: 'simple-tiles',
+                        type: 'raster',
+                        source: 'raster-tiles',
+                        minzoom: 0,
+                        maxzoom: 22
+                    }
                 ]
             },
             center: [112, 37.94],
@@ -125,14 +125,16 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(graticuleLayer.options.showLabel).toEqual(false);
     });
 
-    xit('setExtent', () => {
+    it('setExtent', () => {
       try{
+        expect(graticuleLayer.renderer.features.length).toEqual(56);
         graticuleLayer.setExtent([
             [0, 0],
             [50, 50]
         ]);
         expect(graticuleLayer.options.extent[0]).toEqual(0);
         expect(graticuleLayer.options.extent[3]).toEqual(50);
+        expect(graticuleLayer.renderer.features.length).toEqual(12);
       } catch (e) {
         expect(false).toBeTruthy();
         console.log(e);
@@ -154,7 +156,7 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(graticuleLayer.options.latLabelStyle.textSize).toEqual('12px');
     });
 
-    xit('setIntervals', () => {
+    it('setIntervals', () => {
       try{
         graticuleLayer.setIntervals(5);
         expect(graticuleLayer.renderer.options.interval).toEqual(5);

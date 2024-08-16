@@ -198,9 +198,7 @@ export class GraticuleLayer {
    */
   setExtent(extent) {
     this.options.extent = this.getDefaultExtent(extent, this.map);
-    // this.features = this._getGraticuleFeatures();
-    this.updateGraticuleLayer();
-    this.renderer._drawLabel();
+    this.renderer.setExtent(extent);
   }
 
   /**
@@ -328,7 +326,7 @@ export class GraticuleLayer {
     }
   }
 
-  updateGraticuleLayer(features = this.features) {
+  updateGraticuleLayer(features = this.renderer.features) {
     if (this.map.getSource(this.sourceId)) {
       const geoJSONData = {
         type: 'FeatureCollection',

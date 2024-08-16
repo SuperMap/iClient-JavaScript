@@ -99,12 +99,14 @@ describe('mapboxgl_GraticuleLayer', () => {
 
   it('setExtent', () => {
     try {
+      expect(graticuleLayer.renderer.features.length).toEqual(56);
       graticuleLayer.setExtent([
         [0, 0],
         [50, 50]
       ]);
       expect(graticuleLayer.options.extent[0]).toEqual(0);
       expect(graticuleLayer.options.extent[3]).toEqual(50);
+      expect(graticuleLayer.renderer.features.length).toEqual(12);
     } catch (e) {
       expect(false).toBeTruthy();
       console.log(e);
