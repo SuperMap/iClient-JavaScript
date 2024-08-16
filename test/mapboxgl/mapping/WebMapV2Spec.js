@@ -6,27 +6,6 @@ import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic'
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import '../../resources/WebMapV5.js';
 
-window.jsonsql = { query: () => [{}] };
-
-window.canvg = {
-  default: {
-    from: (ctx, url, callback) =>
-      Promise.resolve({ stop: jasmine.createSpy('stop'), start: jasmine.createSpy('start') })
-  }
-};
-
-window.geostats = class {
-  setSerie() {}
-};
-
-window.EchartsLayer = class {
-  constructor() {
-    this.chart = {
-      setOption() {}
-    };
-  }
-};
-
 function DataFlowService(serviceUrl) {
   const dataflowFeature = {
     geometry: {
@@ -327,6 +306,23 @@ describe('mapboxgl_WebMapV2', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    window.jsonsql = { query: () => [{}] };
+    window.canvg = {
+      default: {
+        from: (ctx, url, callback) =>
+          Promise.resolve({ stop: jasmine.createSpy('stop'), start: jasmine.createSpy('start') })
+      }
+    };
+    window.geostats = class {
+      setSerie() {}
+    };
+    window.EchartsLayer = class {
+      constructor() {
+        this.chart = {
+          setOption() {}
+        };
+      }
+    };
   });
   afterEach(() => {
     if (datavizWebmap) {
@@ -340,6 +336,10 @@ describe('mapboxgl_WebMapV2', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     mapboxgl.CRS = undefined;
+    window.jsonsql = undefined;
+    window.canvg = undefined;
+    window.geostats = undefined;
+    window.EchartsLayer = undefined;
   });
 
   it('test baseLayer layers count maploaded', (done) => {
