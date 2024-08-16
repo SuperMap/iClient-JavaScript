@@ -354,6 +354,10 @@
         });
     }
 
+    /**
+     * @private
+     * @constructor
+     */
     _createWebMapFactory() {
       throw new Error('_createWebMapFactory is not implemented');
     }
