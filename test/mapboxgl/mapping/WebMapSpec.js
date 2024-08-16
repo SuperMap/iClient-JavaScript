@@ -5,7 +5,6 @@ import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
 import '../../resources/WebMapV5.js';
-window.jsonsql = { query: () => {} };
 
 describe('mapboxgl_WebMap', () => {
   var originalTimeout, testDiv;
@@ -26,6 +25,7 @@ describe('mapboxgl_WebMap', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    window.jsonsql = { query: () => {} };
   });
   afterEach(() => {
     if (datavizWebmap && datavizWebmap.map) {
@@ -36,6 +36,7 @@ describe('mapboxgl_WebMap', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     mapboxgl.CRS = undefined;
+    window.jsonsql = undefined;
   });
   it('initialize_TIANDITU_VEC', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
