@@ -1,6 +1,5 @@
 import './mapboxgl/core/MapExtendSpec.js';
 import './mapboxgl/core/UtilSpec.js';
-import './mapboxgl/core/decryptSourceSpec.js';
 
 /*mapboxgl -- control*/
 import './mapboxgl/control/LogoSpec.js';
