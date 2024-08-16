@@ -44,6 +44,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     /**
+     * @private
      * @function WebMap.prototype.initializeMap
      * @description 登陆窗口后添加地图图层。
      * @param {Object} mapInfo - map 信息。
@@ -352,11 +353,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          /**
-           * @event WebMapViewModel#getmapinfofailed
-           * @description 获取地图信息失败。
-           * @property {Object} error - 失败原因。
-           */
           this.fire('getmapinfofailed', { error });
         });
     }
@@ -613,11 +609,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          /**
-           * @event WebMapViewModel#getmapinfofailed
-           * @description 获取地图信息失败。
-           * @property {Object} error - 失败原因。
-           */
           this.fire('getmapinfofailed', { error });
         });
     }
@@ -716,11 +707,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          /**
-           * @event WebMapViewModel#getmapinfofailed
-           * @description 获取地图信息失败。
-           * @property {Object} error - 失败原因。
-           */
           this.fire('getmapinfofailed', { error });
         });
     }

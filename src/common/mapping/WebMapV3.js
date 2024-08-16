@@ -173,6 +173,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
+   * @private
    * @function WebMap.prototype.initializeMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
@@ -368,11 +369,6 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
         this._addLayersToMap();
       })
       .catch((error) => {
-        /**
-         * @event WebMap#getmapfailed
-         * @description 获取地图信息失败。
-         * @property {Object} error - 失败原因。
-         */
         this.fire('getmapinfofailed', { error: error });
         console.error(error);
       });
@@ -805,6 +801,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
+   * @private
    * 1) 无数据驱动时；
    * 2) 只有一个颜色数据驱动，且性线数据驱动时
    * 以上两种情况图例中需要单独的显示符号项
@@ -820,6 +817,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
+   * @private
    * 获取icon-image 的sdf状态
    * 目前webSymbol为false， 基本符号为true， 雪碧图从json中获取sdf的状态
    * @param id
@@ -1335,6 +1333,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
+   * @private
    * 获取线宽
    * @param symbolStyle
    * @returns {number} 多线返回整体线宽，单线返回线宽
@@ -1347,6 +1346,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
+   * @private
    * 计算多线符号的整体线宽
    * @param styles
    * @returns {number} 整体线宽

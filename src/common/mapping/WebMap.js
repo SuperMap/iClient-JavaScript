@@ -349,6 +349,11 @@
           }
         )
         .catch((error) => {
+          /**
+           * @event WebMap#getmapinfofailed
+           * @description 获取地图信息失败。
+           * @property {Object} error - 失败原因。
+           */
           this.fire('getmapinfofailed', { error });
           console.log(error);
         });

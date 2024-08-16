@@ -791,7 +791,6 @@ export class WebMapService {
   _isMvt(serviceUrl, datasetName, baseProjection) {
     return this._getDatasetsInfo(serviceUrl, datasetName).then(info => {
       // 判断是否和底图坐标系一直
-      /* eslint-disable */
       if (info.epsgCode == baseProjection.split('EPSG:')[1]) {
         return FetchRequest.get(`${info.url}/tilefeature.mvt`)
           .then(function (response) {
@@ -1124,6 +1123,7 @@ export class WebMapService {
   }
 
   /**
+   * @private
    * @description 行政区划原始数据和当前数据是否匹配
    */
   _isMatchAdministrativeName(featureName, fieldName) {
