@@ -359,10 +359,6 @@
         });
     }
 
-    /**
-     * @private
-     * @constructor
-     */
     _createWebMapFactory() {
       throw new Error('_createWebMapFactory is not implemented');
     }
@@ -405,6 +401,10 @@
         addlayerchanged: this._addLayerChangedHandler
       };
       const mapOptions = cloneDeep(this.mapOptions);
+      /**
+       * @constructor
+       * @private
+       */
       const WebMapFactory = this._createWebMapFactory(type);
       this._handler = new WebMapFactory(this.mapId, commonOptions, mapOptions);
       // this._handler.setEventedParent(this);
