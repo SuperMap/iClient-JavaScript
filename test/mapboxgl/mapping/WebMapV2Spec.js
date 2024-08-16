@@ -661,7 +661,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    const style = vectorLayer_line.layers[0].style;
+    const style = JSON.parse(JSON.stringify(vectorLayer_line.layers[0].style));
     const roadId = {
       ...vectorLayer_line,
       layers: [
@@ -2286,7 +2286,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', () => {
@@ -2306,7 +2306,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(123456, {
+    datavizWebmap = new WebMap(123456, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2334,7 +2334,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2361,7 +2361,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2386,7 +2386,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2424,7 +2424,7 @@ describe('mapboxgl_WebMapV2', () => {
         14.1324461706
       ];
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2452,7 +2452,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2481,7 +2481,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2499,7 +2499,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2523,7 +2523,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2545,7 +2545,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2565,7 +2565,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2584,7 +2584,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2611,7 +2611,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server
     });
     datavizWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -2650,7 +2650,7 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    var datavizWebmap = new WebMap(id, {
+    datavizWebmap = new WebMap(id, {
       server: server,
       bingMapsKey: 'AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko'
     });
