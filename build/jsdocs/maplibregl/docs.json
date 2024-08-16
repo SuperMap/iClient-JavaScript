@@ -62,6 +62,9 @@
       "src/common/components/templates/Select",
       "src/common/security/KeyServiceParameter",
       "src/common/components/templates/TemplateBase",
+      "src/common/mapping/utils/L7LayerUtil",
+      "src/common/mapping/utils/Color",
+      "src/common/mapping/utils/util",
       "src/maplibregl/core/Util",
       "src/maplibregl/overlay/L7/l7-render"
     ]

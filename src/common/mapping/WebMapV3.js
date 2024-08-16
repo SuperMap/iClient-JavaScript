@@ -173,11 +173,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @private
    * @function WebMap.prototype.initializeMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
    * @param {Object} map - map 实例。
+   * @private
    */
   initializeMap(mapInfo, map) {
     this._mapInfo = mapInfo;
@@ -801,11 +801,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @private
    * 1) 无数据驱动时；
    * 2) 只有一个颜色数据驱动，且性线数据驱动时
    * 以上两种情况图例中需要单独的显示符号项
-   * @returns {boolean} 是否显示图例单项
+   * 是否显示图例单项
    */
   _isShowLegendSingleItem(dataKeys, isLinearColor) {
     return dataKeys.length === 0 || (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor);
@@ -817,12 +816,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @private
    * 获取icon-image 的sdf状态
    * 目前webSymbol为false， 基本符号为true， 雪碧图从json中获取sdf的状态
-   * @param id
-   * @param spriteJson
-   * @returns {boolean} sdf状态
    */
   _getSymbolSDFStatus(id, spriteJson) {
     if (this._isWebsymbolById(id)) {
@@ -1333,10 +1328,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @private
    * 获取线宽
-   * @param symbolStyle
-   * @returns {number} 多线返回整体线宽，单线返回线宽
+   * 多线返回整体线宽，单线返回线宽
    */
   _getLineWidth(symbolStyle) {
     if (symbolStyle instanceof Array) {
@@ -1346,10 +1339,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @private
    * 计算多线符号的整体线宽
-   * @param styles
-   * @returns {number} 整体线宽
+   * 整体线宽
    */
   _getWholeWidth(styles) {
     let topBoundary;

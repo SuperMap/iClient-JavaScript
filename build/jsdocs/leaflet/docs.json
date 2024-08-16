@@ -64,7 +64,10 @@
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
             "src/common/components/templates/TemplateBase",
-
+            "src/common/mapping/utils/L7LayerUtil",
+            "src/common/mapping/utils/Color",
+            "src/common/mapping/utils/util",
+            
             "src/leaflet/components/clientcomputation/ClientComputationViewModel",
             "src/leaflet/components/dataflow/DataFlowViewModel",
             "src/leaflet/overlay/dataflow/MapvRenderer",
