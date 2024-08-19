@@ -257,49 +257,26 @@ export var ImageMapLayer = Layer.extend({
         if (!this._map) {
             return;
         }
-
-        var image = new ImageOverlay(url, bounds, {
-            opacity: 0,
-            alt: this.options.alt,
-            zIndex: this.options.zIndex,
-            className: this.options.className,
-            errorOverlayUrl: this.options.error,
-            crossOrigin: this.options.crossOrigin,
-            pane: this.options.pane || this.getPane(),
-            interactive: this.options.interactive
-        }).addTo(this._map);
-
-        var onLoad = function(e) {
-            image.off('error', onError, this);
+        if(this._currentImage) {
+            this._currentImage.setUrl(url);
+        }else{
+            this._currentImage = new ImageOverlay(url, bounds, {
+                opacity: this.options.opacity,
+                alt: this.options.alt,
+                zIndex: this.options.zIndex,
+                className: this.options.className,
+                errorOverlayUrl: this.options.error,
+                crossOrigin: this.options.crossOrigin,
+                pane: this.options.pane || this.getPane(),
+                interactive: this.options.interactive
+            }).addTo(this._map);
+        }
+        var onLoad = function() {
             var map = this._map;
             if (!map) {
                 return;
             }
-
-            var newImage = e.target;
-            var oldImage = this._currentImage;
-
-            if (newImage._bounds && newImage._bounds.equals(bounds) && newImage._bounds.equals(map.getBounds())) {
-                this._currentImage = newImage;
-
-                if (this.options.position === 'front') {
-                    this.bringToFront();
-                }
-                if (this.options.position === 'back') {
-                    this.bringToBack();
-                }
-
-                if (this._currentImage._map) {
-                    this._currentImage.setOpacity(this.options.opacity);
-                }
-
-                oldImage && map.removeLayer(oldImage);
-
-                oldImage && oldImage._map && oldImage._map.removeLayer(oldImage);
-            } else {
-                map.removeLayer(newImage);
-            }
-
+            this._currentImage.setBounds(bounds);
             /**
              * @event ImageMapLayer#load
              * @description 请求图层加载完成后触发。
@@ -308,19 +285,17 @@ export var ImageMapLayer = Layer.extend({
             this.fire('load', { bounds: bounds });
         };
         var onError = function() {
-          this._map.removeLayer(image);
+            this._map && this._map.removeLayer(this._currentImage);
           /**
            * @event ImageMapLayer#error
            * @description 请求图层加载失败后触发。
            */
           this.fire('error');
-          image.off('load', onLoad, this);
         }
-
-        image.once('load', onLoad, this);
-
-        image.once('error', onError, this);
-
+        this._currentImage.off('load');
+        this._currentImage.once('load', onLoad, this);
+        this._currentImage.off('error');
+        this._currentImage.once('error', onError, this);
         /**
          * @event ImageMapLayer#loading
          * @description 请求图层加载中触发。
