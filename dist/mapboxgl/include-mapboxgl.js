@@ -59,8 +59,8 @@
       inputScript(libsurl + '/mapbox-gl-js/1.13.2/mapbox-gl.js');
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.css');
-      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.js');
+      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.css');
+      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
       inputScript(libsurl + '/mapboxgl-l7-render/0.0.1/mapboxgl-l7-render.js');

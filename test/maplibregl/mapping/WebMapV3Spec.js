@@ -1010,8 +1010,7 @@ describe('maplibregl-webmap3.0', () => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
-      const vectorSources = Object.values(nextMapInfo.sources).filter((item) => item.type === 'vector');
-      expect(map.style.addSprite).toHaveBeenCalledTimes(vectorSources.length);
+      expect(map.addStyle).toHaveBeenCalled();
       delete maplibregl.CRS;
       done();
     });
@@ -1055,6 +1054,87 @@ describe('maplibregl-webmap3.0', () => {
       delete maplibregl.Map.prototype.getCRS;
       mbglmap.prototype.getL7Scene = undefined;
       spyTest.calls.reset();
+      done();
+    });
+  });
+
+  it('handle sprite option is object like { sourceId: url }', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite/rectangle') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({rectangle: {
+          pixelRatio: 1,
+          width: 104,
+          x: 0,
+          y: 0,
+          height: 104
+        }})));
+      } else if (url.indexOf('/sprite/circle') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({circle: {
+          pixelRatio: 1,
+          width: 104,
+          x: 104,
+          y: 0,
+          height: 104
+        }})));
+      } else if (url.indexOf('/sprite/triangle') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({triangle: {
+          pixelRatio: 1,
+          width: 104,
+          x: 0,
+          y: 104,
+          height: 104
+        }})));
+      }
+      return Promise.resolve();
+    });
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
+    maplibregl.CRS = function (epsgCode, wkt, bounds, unit) {
+    };
+    maplibregl.CRS.set = function () {};
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapInfo.sprite = {
+      rectangle: 'http://localhost:9876/base/resources/data/sprite/rectangle',
+      circle: 'http://localhost:9876/base/resources/data/sprite/circle',
+      triangle: 'http://localhost:9876/base/resources/data/sprite/triangle'
+    };
+    mapInfo.crs = {
+      name: 'EPSG:4490',
+      extent: [-180, -270, 180, 90],
+      wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+    }
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map',
+      relatedInfo: {
+        description: '测试111'
+      }
+    });
+    const existedMap = new maplibregl.Map({
+      container: testDiv,
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            paint: {
+              'background-color': '#242424'
+            },
+            id: 'background1',
+            type: 'background'
+          }
+        ]
+      },
+      crs: 'EPSG:4490',
+      center: [116.640545, 40.531714],
+      zoom: 7
+    });
+    existedMap.on('load', function () {
+      mapstudioWebmap.initializeMap(mapInfo, existedMap);
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(mapstudioWebmap.mapParams.description).toBe('测试111');
+      expect(Object.keys(mapstudioWebmap._spriteDatas).length).toBe(3);
+      expect(map.addStyle).toHaveBeenCalled();
       done();
     });
   });

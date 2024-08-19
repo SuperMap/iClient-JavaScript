@@ -166,6 +166,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     this.options = options;
     this.mapOptions = mapOptions;
     this._mapResourceInfo = {};
+    this._relatedInfo = options.relatedInfo !== undefined ? options.relatedInfo : {};
     this._sprite = '';
     this._spriteDatas = {};
     this._appendLayers = false;
@@ -189,12 +190,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       this._appendLayers = true;
       this.map = map;
        // 处理图层管理添加 sprite
-       const { sources, sprite } = this._mapInfo;
-       if (sprite && sources) {
-         Object.keys(sources).forEach((sourceName) => {
-           if (sources[sourceName].type === 'vector') {
-             this.map.style.addSprite(sourceName, sprite);
-           }
+       const sprite = this._mapInfo.sprite;
+       if (sprite) {
+         this._sprite = sprite;
+         this.map.addStyle({
+          sprite
          });
        }
       this._initLayers();
@@ -344,22 +344,26 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
    * @function WebMap.prototype._initLayers
    * @description emit 图层加载成功事件。
    */
-  _initLayers() {
+  async _initLayers() {
     if (this.map.getCRS && this.map.getCRS().epsgCode !== this._baseProjection) {
       this.fire('projectionisnotmatch');
       return;
     }
+    await this._getSpriteDatas();
     if (Object.prototype.toString.call(this.mapId) === '[object Object]') {
       this.mapParams = {
         title: this._mapInfo.name,
-        description: ''
+        description: this._relatedInfo.description
       };
+      if (this._relatedInfo.projectInfo) {
+        this._mapResourceInfo = JSON.parse(this._relatedInfo.projectInfo);
+      }
       this._createMapRelatedInfo();
       this._addLayersToMap();
       return;
     }
-    Promise.all([this._getMapRelatedInfo(), this._getSpriteDatas()])
-      .then(([relatedInfo]) => {
+    this._getMapRelatedInfo()
+      .then((relatedInfo) => {
         this.mapParams = {
           title: this._mapInfo.name,
           description: relatedInfo.description
@@ -642,17 +646,30 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     if (!sprite) {
       return;
     }
+
+    const spriteUrls = [];
     if (typeof sprite === 'string') {
-      const url = sprite.replace(/.+(web\/maps\/.+)/, `${this.options.server}$1`);
-      return FetchRequest.get(url, null, { withCredentials: this.options.withCredentials })
-        .then((response) => {
-          return response.json();
-        })
-        .then((res) => {
-          this._spriteDatas = res;
-        });
+      spriteUrls.push(sprite);
+    } else if (typeof sprite === 'object') {
+      Object.keys(sprite).forEach((sourceId) => {
+        spriteUrls.push(sprite[sourceId]);
+      });
     }
-    this._spriteDatas = sprite;
+
+    return Promise.all(spriteUrls.map((url) => this._getSpriteData(url))).then((allResults) => {
+      allResults.forEach((result) => {
+        this._spriteDatas = {...this._spriteDatas, ...result};
+      });
+      return;
+    });
+  }
+
+  _getSpriteData(sprite) {
+    const url = sprite.replace(/.+(web\/maps\/.+)/, `${this.options.server}$1`);
+    return FetchRequest.get(url, null, { withCredentials: this.options.withCredentials })
+      .then((response) => {
+        return response.json();
+      });
   }
 
   _createLegendInfo() {
