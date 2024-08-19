@@ -7,11 +7,14 @@ const pkg = require('../package.json');
 
 function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = pkg.dependencies) {
   Object.keys(dependenciesToCompare).forEach(name => {
-    if (!rootDependencies[name] || rootDependencies[name] !== dependenciesToCompare[name]) {
+    if(!rootDependencies[name]){
+      console.log(chalk.red(`Dependency error [${pkgName}]: The dependency ${name} not in root package.json!\n`));
+    }
+    if (rootDependencies[name] !== dependenciesToCompare[name]) {
       if (rootDependencies[name].includes('file:src/')){
         return;
       }
-      console.log(chalk.red(`ERROR [${pkgName}]: The dependency ${name} version can not match in root package.json!\n`));
+      console.log(chalk.red(`Dependency error [${pkgName}]: The dependency ${name} version can not match in root package.json!\n`));
     }
   });
 }
@@ -24,7 +27,7 @@ function checkRootDependencies(dependenciesToCompare, rootDependencies = pkg.dep
       return;
     }
     if (!clientDepsList.some(deps => Object.keys(deps).some(item => item === name))) {
-      console.log(chalk.red(`ERROR: The dependency ${name} version can not match in (${clientNames.join('|')}) package.json!\n`));
+      console.log(chalk.red(`Dependency error: The dependency ${name} version can not match in (${clientNames.join('|')}) package.json!\n`));
     }
   });
 }
