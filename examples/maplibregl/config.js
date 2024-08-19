@@ -524,6 +524,69 @@ var exampleConfig = {
       }
     }
   },
+  iPortal: {
+    name: 'iPortal',
+    name_en: 'iPortal',
+    version: '11.3.0',
+    content: {
+        ip_map: {
+            name: '地图(WebMap2.0)',
+            name_en: 'iPortal Web map',
+            version: '11.3.0',
+            content: [
+                {
+                    name: '分段专题图',
+                    name_en: 'Range',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_range.png',
+                    fileName: 'iPortalWebmap_range'
+                },
+                {
+                    name: '单值专题图',
+                    name_en: 'Unique',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_unique.png',
+                    fileName: 'iPortalWebmap_unique'
+                },
+                {
+                    name: '标签专题图',
+                    name_en: 'Label',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_label.png',
+                    fileName: 'iPortalWebmap_label'
+                },
+                {
+                    name: '热力图',
+                    name_en: 'Heat map',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_heat.png',
+                    fileName: 'iPortalWebmap_heat'
+                },
+                {
+                    name: '点样式',
+                    name_en: 'Point style',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_unicode.png',
+                    fileName: 'iPortalWebmap_unicode'
+                }
+            ]
+        },
+        ip_map_3: {
+            name: '地图(WebMap3.0)',
+            name_en: 'iPortal Web map',
+            version: '11.3.0',
+            content: [
+                {
+                    name: '白膜',
+                    name_en: 'Fill Extrusion',
+                    version: '11.3.0',
+                    thumbnail: 'iPortalWebmap_mapstudio.png',
+                    fileName: 'iPortalWebmap_mapstudio'
+                }
+            ]
+        }
+    }
+  },
   clientSpatialAnalyst: {
     name: "客户端分析",
     name_en: "Client spatial analysis",
