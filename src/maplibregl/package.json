@@ -20,7 +20,6 @@
     "mapv": "2.0.62",
     "three": "0.150.1",
     "canvg": "3.0.10",
-    "proj4": "2.11.0",
     "@supermapgis/iclient-common": "11.3.0-dev",
     "rbush": "^2.0.2"
   }

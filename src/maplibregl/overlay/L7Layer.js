@@ -4,11 +4,9 @@ import * as L7 from './L7/l7-render';
 import { Scene, Maplibre } from './L7/l7-render';
 import { getL7Scene } from '@supermapgis/iclient-common/overlay/l7/util';
 import maplibregl from 'maplibre-gl';
-import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
-import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
-import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
+import { getL7Filter } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
+import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
 
-const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec });
 /**
  * @class L7Layer
  * @category Visualization L7
@@ -44,8 +42,8 @@ export class L7Layer extends L7LayerBase {
     this.addSceneLayer(map.$l7scene)
   }
 
-  _getL7Filter(filter, id) {
-    return l7LayerUtil.getL7Filter(filter, id);
+  _getL7Filter(filter) {
+    return getL7Filter(filter, featureFilter);
   }
 
   queryRenderedFeatures(geometry, options, cb) {

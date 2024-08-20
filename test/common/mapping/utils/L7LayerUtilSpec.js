@@ -1,4 +1,4 @@
-import { L7LayerUtil } from '../../../../src/common/mapping/utils/L7LayerUtil';
+import { L7LayerUtil, getL7Filter } from '../../../../src/common/mapping/utils/L7LayerUtil';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import * as mockL7 from '../../../tool/mock_l7';
 import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
@@ -599,7 +599,7 @@ describe('L7LayerUtil', () => {
 
   it('filter expression', () => {
     const expr = ['any', ['all', ['==', ['get', 'smpid'], 5], ['==', ['get', '新建字段'], '']]];
-    const result = l7LayerUtil.getL7Filter(expr);
+    const result = getL7Filter(expr, featureFilter);
     expect(result.field).toEqual(['smpid', '新建字段']);
     expect(result.values).not.toBeUndefined();
   });

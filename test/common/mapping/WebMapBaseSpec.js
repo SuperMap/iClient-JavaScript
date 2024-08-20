@@ -1,6 +1,6 @@
 import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import { epsgDefine } from '../../../src/common/mapping/utils/epsg-define';
+import * as epsgDefine from '../../../src/common/mapping/utils/epsg-define';
 import cloneDeep from 'lodash.clonedeep';
 
 describe('WebMapBaseSpec.js', () => {
@@ -599,6 +599,10 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getLayerFeatures success', (done) => {
+    const wktResponse = `PROJCS["China_2000_3_DEGREE_GK_Zone_39N",GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]],PROJECTION["Transverse_Mercator",AUTHORITY["EPSG","9807"]],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",117.0],PARAMETER["Latitude_Of_Origin",0.0],PARAMETER["Scale_Factor",1.0],UNIT["METER",1.0],AUTHORITY["EPSG","4548"]]`;
+    spyOn(FetchRequest, 'get').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify({ wkt: wktResponse })));
+    });
     const layer = {
       dataSource: { accessType: 'DIRECT', type: 'PORTAL_DATA', serverId: '366831804' },
       enableFields: ['SmID', '标准名称', '起点x', '起点y', '终点x', '终点y'],
@@ -616,16 +620,17 @@ describe('WebMapBaseSpec.js', () => {
     const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
     webMapBase._taskID = _taskID;
     const response1 = { type: 'feature', features: [] };
-    const response2 = 'custom_wkt_test';
+    const response2 = wktResponse;
     const spy1 = spyOn(webMapBase.webMapService, 'getLayerFeatures').and.callFake(() => {
       return {
         then: (resolveCb) => {
           resolveCb(response1).then(() => {
             expect(webMapBase._initOverlayLayer).toHaveBeenCalledWith(layer, response1.features);
-            expect(epsgDefine.registerProjection).toHaveBeenCalledWith(layer.projection, response2);
+            const params = spy2.calls.allArgs()[0];
+            expect(params[0]).toBe(layer.projection);
+            expect(params[1]).toEqual(response2);
             spy1.calls.reset();
             spy2.calls.reset();
-            spy3.calls.reset();
             done();
           });
           return {
@@ -634,8 +639,7 @@ describe('WebMapBaseSpec.js', () => {
         }
       };
     });
-    const spy2 = spyOn(webMapBase.webMapService, 'getEpsgCodeInfo').and.returnValue(Promise.resolve(response2));
-    const spy3 = spyOn(epsgDefine, 'registerProjection').and.callThrough();
+    const spy2 = spyOn(epsgDefine, 'registerProjection').and.callThrough();
     webMapBase._initOverlayLayer = jasmine.createSpy('callback');
     webMapBase.getLayerFeatures(layer, _taskID, type);
   });

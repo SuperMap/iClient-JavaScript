@@ -2,8 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */
 import cloneDeep from 'lodash.clonedeep';
-import proj4 from 'proj4';
-import { epsgDefine, toEpsgCode } from './utils/epsg-define';
+import { getProjection, registerProjection, toEpsgCode, transformCoodinates } from './utils/epsg-define';
 import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
@@ -110,7 +109,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const { projection } = mapInfo;
       let bounds, wkt;
       this.baseProjection = toEpsgCode(projection);
-      let defaultWktValue = epsgDefine.getProjection(this.baseProjection);
+      let defaultWktValue = getProjection(this.baseProjection, this.specifiedProj4);
   
       if (defaultWktValue) {
         wkt = defaultWktValue;
@@ -463,7 +462,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (features && features[0] && features[0].geometry && features[0].geometry.type === 'Polygon') {
         features = this._handleMultyPolygon(features);
       }
-  
       if (
         features &&
         projection &&
@@ -2607,8 +2605,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (sourceProjection === 'EPSG:4326') {
         return point;
       }
-      const coor = proj4(sourceProjection, 'EPSG:4326', point);
-      const proj = proj4.defs(sourceProjection);
+      const coor = transformCoodinates({ coordinates: point, sourceProjection, proj4: this.specifiedProj4 });
+      const proj = getProjection(sourceProjection, this.specifiedProj4);
       if (isReverse && proj.axis && proj.axis.indexOf('ne') === 0) {
         coor.reverse();
       }
@@ -2699,25 +2697,13 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _defineProj4(projection, defaultEpsgCode) {
-      let epsgCode = projection;
-      let epsgValue;
-      if (!projection.split(':')[1]) {
-        if (defaultEpsgCode && defaultEpsgCode.split(':')[1]) {
-          epsgCode = defaultEpsgCode;
-        } else {
-          epsgCode = toEpsgCode(projection);
-        }
-        epsgValue = projection;
+      let epsgCode = toEpsgCode(projection);
+      const reg = /^EPSG:/;
+      const defValue = epsgCode && projection.match(reg) ? getProjection(epsgCode, this.specifiedProj4) : projection;
+      if (!epsgCode && defaultEpsgCode && defaultEpsgCode.match(reg)) {
+        epsgCode = defaultEpsgCode;
       }
-      const defaultValue = epsgDefine.getProjection(epsgCode);
-      const defValue = epsgValue || defaultValue;
-  
-      if (!defValue) {
-        console.error(`${epsgCode} not define`);
-      } else {
-        !proj4.defs(epsgCode) && proj4.defs(epsgCode, defValue);
-        !defaultValue && epsgDefine.registerProjection(epsgCode, defValue);
-      }
+      registerProjection(epsgCode, defValue, this.specifiedProj4);
       return epsgCode;
     }
   

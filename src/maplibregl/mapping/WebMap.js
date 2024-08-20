@@ -11,11 +11,11 @@ import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 import { L7Layer, L7 } from '../overlay/L7Layer';
 import MapManager from './webmap/MapManager';
 
-const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7});
 
 export class WebMap extends createWebMapExtending(maplibregl.Evented, { LngLat: maplibregl.LngLat, CRS: maplibregl.CRS }) {
   _createWebMapFactory(type) {
     const commonFactoryOptions = { MapManager, mapRepo: maplibregl, mapRepoName: 'maplibre-gl' };
+    const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7, proj4: this.options.proj4 });
     switch (type) {
       case 'MapStyle':
         return createMapStyleExtending(createMapClassExtending(maplibregl.Evented), commonFactoryOptions);

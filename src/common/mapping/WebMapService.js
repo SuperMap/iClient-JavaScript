@@ -390,6 +390,10 @@ export class WebMapService {
         dataSource.url,
         [decodeURIComponent(dataSource.dataSourceName) || layer.name],
         result => {
+          if (!result.result.features) {
+            reject('features must be valid');
+            return;
+          }
           features = this.parseGeoJsonData2Feature({
             allDatas: {
               features: result.result.features.features
@@ -1239,23 +1243,6 @@ export class WebMapService {
     const serviceUrl = this.handleParentRes(url);
     getFeatureBySQLService = new GetFeaturesBySQLService(serviceUrl, options);
     getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-  }
-
-  async getEpsgCodeInfo(epsgCode, iPortalUrl) {
-    const url = iPortalUrl.slice(-1) === '/' ? iPortalUrl : `${iPortalUrl}/`;
-    let codeUrl = `${url}epsgcodes/${epsgCode}.json`;
-    const wkt = await FetchRequest.get(codeUrl, null)
-      .then(response => {
-        return response.json();
-      })
-      .then(epsgcodeInfo => {
-        return epsgcodeInfo.wkt;
-      })
-      .catch(err => {
-        console.error(err);
-        return undefined;
-      });
-    return wkt;
   }
 
   statisticsFeatures(features, fields, fieldCaptions, fieldTypes) {

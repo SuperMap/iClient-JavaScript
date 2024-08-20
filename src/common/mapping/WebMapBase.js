@@ -2,7 +2,7 @@ import Canvg from 'canvg';
 import { coordEach } from '@turf/meta';
 import difference from 'lodash.difference';
 import { WebMapService } from './WebMapService';
-import { epsgDefine } from './utils/epsg-define';
+import { getEpsgCodeInfo, getProjection, registerProjection } from './utils/epsg-define';
 import { ArrayStatistic } from '../util/ArrayStatistic';
 import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
@@ -30,6 +30,7 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
       this.excludePortalProxyUrl = options.excludePortalProxyUrl;
       this.isSuperMapOnline = options.isSuperMapOnline;
       this.ignoreBaseProjection = options.ignoreBaseProjection;
+      this.specifiedProj4 = options.proj4;
       this.echartslayer = [];
       this.canvgsV = [];
       this.webMapService = new WebMapService(id, options);
@@ -244,13 +245,13 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
                 return;
               }
               if (result && layer.projection) {
-                if (!epsgDefine.getProjection(layer.projection)) {
-                  const epsgWKT = await this.webMapService.getEpsgCodeInfo(
+                if (!getProjection(layer.projection, this.specifiedProj4)) {
+                  const epsgWKT = await getEpsgCodeInfo(
                     layer.projection.split(':')[1],
                     this.serverUrl
                   );
                   if (epsgWKT) {
-                      epsgDefine.registerProjection(layer.projection, epsgWKT);
+                      registerProjection(layer.projection, epsgWKT, this.specifiedProj4);
                   }
                 }
               }

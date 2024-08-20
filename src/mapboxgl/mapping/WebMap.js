@@ -11,10 +11,10 @@ import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 import { L7Layer, L7 } from '../overlay/L7Layer';
 import MapManager from './webmap/MapManager';
 
-const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
 export class WebMap extends createWebMapExtending(mapboxgl.Evented, { mapRepo: mapboxgl }) {
   _createWebMapFactory(type) {
     const commonFactoryOptions = { MapManager, mapRepo: mapboxgl, mapRepoName: 'mapbox-gl' };
+    const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7, proj4: this.options.proj4 });
     switch (type) {
       case 'MapStyle':
         return createMapStyleExtending(createMapClassExtending(mapboxgl.Evented), commonFactoryOptions);

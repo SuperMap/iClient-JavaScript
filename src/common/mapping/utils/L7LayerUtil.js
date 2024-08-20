@@ -1,10 +1,10 @@
 import { FetchRequest } from '../../util/FetchRequest';
-import proj4 from 'proj4';
 import center from '@turf/center';
 import * as G2 from '@antv/g2';
 import { isNumber } from './util';
 import Color from './Color';
 import debounce from 'lodash.debounce';
+import { getEpsgCodeInfo, getProjection, registerProjection, transformCoodinates } from './epsg-define';
 
 const SelectStyleTypes = {
   basic: 'base',
@@ -186,8 +186,41 @@ export function isL7Layer(layer) {
   );
 }
 
+export function getL7Filter(filter, featureFilter) {
+  if (!filter) {
+    return;
+  }
+  const [condition, ...expressions] = filter;
+  const newExpressions = expressions.filter((exp) => {
+    const [, f] = exp;
+    if (['$type', '$id'].includes(f)) {
+      return false;
+    }
+    return true;
+  });
+  const field = Array.from(new Set(getFilterFields(newExpressions)));
+  const fFilter = featureFilter([condition, ...newExpressions]);
+  const filterFunc = fFilter.filter.bind(fFilter);
+  return {
+    field,
+    values: (...args) => {
+      const properties = {};
+      field.forEach((f, idx) => {
+        properties[f] = args[idx];
+      });
+      const result = filterFunc(
+        {},
+        {
+          properties
+        }
+      );
+      return result;
+    }
+  };
+}
+
 export function L7LayerUtil(config) {
-  const { featureFilter, expression, spec, L7Layer, L7 } = config;
+  const { featureFilter, expression, spec, L7Layer, L7, proj4 } = config;
 
   /**
  * @param {string} url
@@ -487,11 +520,21 @@ export function L7LayerUtil(config) {
     }
     // proj4缺陷，EPSG:4214的坐标x为180，转换后变成-179.
     if (fromProjection === 'EPSG:4214' && toProjection === 'EPSG:4326' && coordinates[0] === 180) {
-      const newCoordinate = proj4(fromProjection, toProjection, coordinates);
+      const newCoordinate = transformCoodinates({
+        coordinates,
+        sourceProjection: fromProjection,
+        destProjection: toProjection,
+        proj4
+      });
       newCoordinate[0] = 180;
       return newCoordinate;
     }
-    return proj4(fromProjection, toProjection, coordinates);
+    return transformCoodinates({
+      coordinates,
+      sourceProjection: fromProjection,
+      destProjection: toProjection,
+      proj4
+    });
   }
 
   /**
@@ -581,6 +624,10 @@ export function L7LayerUtil(config) {
     const result = await resultRes.json();
     const projection = `EPSG:${result.epsgCode}`;
     if (projection !== 'EPSG:4326') {
+      if (!getProjection(projection, proj4)) {
+        const epsgWKT = await getEpsgCodeInfo(projection, options.server);
+        registerProjection(projection, epsgWKT, proj4);
+      }
       const newFeatures = transformGeometryCoordinates(allFeature.features, projection);
       newFeatures && (allFeature.features = newFeatures);
     }
@@ -679,23 +726,6 @@ export function L7LayerUtil(config) {
     return rules[type] && rules[type](source, sourceLayer, options);
   }
 
-  function getFilterFields(filter) {
-    const result = [];
-    for (const exp of filter) {
-      if (exp instanceof Array && exp[1] && typeof exp[1] === 'string') {
-        result.push(exp[1]);
-        continue;
-      }
-      if (exp instanceof Array) {
-        const subResult = getFilterFields(exp);
-        if (subResult && subResult.length > 0) {
-          result.push(...subResult);
-        }
-      }
-    }
-    return result;
-  }
-
   /**
    * 获取L7图层所需要的共有的图层信息
    * @param layer
@@ -716,7 +746,7 @@ export function L7LayerUtil(config) {
         maxZoom: maxzoom,
         visible: layout.visibility === 'none' ? false : true
       },
-      filter: getL7Filter(filter)
+      filter: getL7Filter(filter, featureFilter)
     };
   }
 
@@ -1997,41 +2027,7 @@ export function L7LayerUtil(config) {
     return layer;
   }
 
-  function getL7Filter(filter) {
-    if (!filter) {
-      return;
-    }
-    const [condition, ...expressions] = filter;
-    const newExpressions = expressions.filter((exp) => {
-      const [, f] = exp;
-      if (['$type', '$id'].includes(f)) {
-        return false;
-      }
-      return true;
-    });
-    const field = Array.from(new Set(getFilterFields(newExpressions)));
-    const fFilter = featureFilter([condition, ...newExpressions]);
-    const filterFunc = fFilter.filter.bind(fFilter);
-    return {
-      field,
-      values: (...args) => {
-        const properties = {};
-        field.forEach((f, idx) => {
-          properties[f] = args[idx];
-        });
-        const result = filterFunc(
-          {},
-          {
-            properties
-          }
-        );
-        return result;
-      }
-    };
-  }
-
   return {
-    getL7Filter,
     async addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, options }) {
       // 添加L7图层
       const { layers, sources, sprite } = webMapInfo;
@@ -2080,4 +2076,21 @@ export function L7LayerUtil(config) {
   }
 }
 
+
+function getFilterFields(filter) {
+  const result = [];
+  for (const exp of filter) {
+    if (exp instanceof Array && exp[1] && typeof exp[1] === 'string') {
+      result.push(exp[1]);
+      continue;
+    }
+    if (exp instanceof Array) {
+      const subResult = getFilterFields(exp);
+      if (subResult && subResult.length > 0) {
+        result.push(...subResult);
+      }
+    }
+  }
+  return result;
+}
 

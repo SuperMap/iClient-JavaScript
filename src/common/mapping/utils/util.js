@@ -63,11 +63,7 @@ export function isMatchAdministrativeName(featureName, fieldName) {
 }
 
 export function transformServerUrl(serverUrl) {
-  let urlArr = serverUrl.split('');
-  if (urlArr[urlArr.length - 1] !== '/') {
-    serverUrl += '/';
-  }
-  return serverUrl;
+  return !serverUrl || serverUrl.slice(-1) === '/' ? serverUrl : `${serverUrl}/`;
 }
 
  /**

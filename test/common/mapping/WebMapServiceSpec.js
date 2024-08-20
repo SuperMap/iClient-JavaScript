@@ -511,6 +511,25 @@ describe('WebMapServiceSpec.js', () => {
     });
   });
 
+  it('get layer empty features if layerInfo from rest_data', (done) => {
+    const type = 'rest_data';
+    const layer = {
+      dataSource: {
+        url: 'https://fakeiportal.supermap.io/iportal/processFailed'
+      },
+      enableFields: ['latitude']
+    };
+    spyOn(FetchRequest, 'post').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify({ data: '404' })));
+    });
+    const baseProjection = 'EPSG:4326';
+    const service = new WebMapService(mapId, options);
+    service.getLayerFeatures(type, layer, baseProjection).catch((error) => {
+      expect(error).toBe('features must be valid');
+      done();
+    });
+  });
+
   it('get Layer Features if LayerInfo from rest_map success', (done) => {
     const type = 'rest_map';
     const layer = {
@@ -654,43 +673,6 @@ describe('WebMapServiceSpec.js', () => {
     const service = new WebMapService(mapId, options);
     service.getLayerFeatures(type, layer, baseProjection).then((data) => {
       expect(data).toEqual(result);
-      done();
-    });
-  });
-
-  it('success to get epsgCode info', (done) => {
-    const epsgCode_wkt = {
-      distanceUnit: 'METER',
-      projectionParam: null,
-      epsgCode: 4326,
-      coordUnit: 'DEGREE',
-      name: 'GCS_WGS_1984',
-      projection: null,
-      type: 'PCS_EARTH_LONGITUDE_LATITUDE',
-      coordSystem: {
-        datum: {
-          name: 'D_WGS_1984',
-          type: 'DATUM_WGS_1984',
-          spheroid: { flatten: 0.0033528106647474805, name: 'WGS_1984', axis: 6378137, type: 'SPHEROID_WGS_1984' }
-        },
-        unit: 'DEGREE',
-        spatialRefType: 'SPATIALREF_EARTH_LONGITUDE_LATITUDE',
-        name: 'GCS_WGS_1984',
-        type: 'GCS_WGS_1984',
-        primeMeridian: { longitudeValue: 0, name: 'Greenwich', type: 'PRIMEMERIDIAN_GREENWICH' }
-      }
-    };
-    const epsgcodeInfo = {
-      wkt: epsgCode_wkt
-    };
-    spyOn(FetchRequest, 'get').and.callFake(() => {
-      return Promise.resolve(new Response(JSON.stringify(epsgcodeInfo)));
-    });
-    const epsgCode = 'EPSG:4326';
-    const iPortalUrl = 'https://fakeiportal.supermap.io/iportal';
-    const service = new WebMapService(mapId, options);
-    service.getEpsgCodeInfo(epsgCode, iPortalUrl).then((data) => {
-      expect(data).toEqual(epsgCode_wkt);
       done();
     });
   });

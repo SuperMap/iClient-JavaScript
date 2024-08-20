@@ -20,7 +20,6 @@
     "@turf/turf": "6.5.0",
     "mapv": "2.0.62",
     "ol": "7.5.2",
-    "proj4": "2.11.0",
     "canvg": "3.0.10",
     "lodash.remove": "^4.7.0",
     "lodash.difference": "^4.5.0",
