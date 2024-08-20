@@ -380,4 +380,34 @@ describe('GetFeaturesByGeometryService', () => {
     });
     getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, serviceCompleted);
   })
+  it('GetFeaturesByGeometryParameters:orderBy', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        expect(serviceSucceedEventArgsSystem.result).not.toBeNull();
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByGeometryService_' + exception.name + ':' + exception.message);
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        done();
+      }
+    };
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL);
+    var point = new Point(112, 36);
+    var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
+      datasetNames: ['World:Countries'],
+      geometry: point,
+      orderBy: "SMID"
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+      expect(paramsObj.queryParameter.orderBy).toBe("SMID");
+      return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+    });
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, serviceCompleted);
+  })
 });
