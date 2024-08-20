@@ -322,6 +322,7 @@
         this.webMapInfo = null;
       } else if (mapId !== null && typeof mapId === 'object') {
         this.webMapInfo = mapId;
+        this.mapId = '';
       }
       this.webMapService.setMapId(mapId);
       if (!mapId) {
@@ -406,8 +407,8 @@
        * @private
        */
       const WebMapFactory = this._createWebMapFactory(type);
-      this._handler = new WebMapFactory(this.mapId, commonOptions, mapOptions);
-      // this._handler.setEventedParent(this);
+      const mapId = this.mapId || this.webMapInfo;
+      this._handler = new WebMapFactory(mapId, commonOptions, mapOptions);
       for (const type in commonEvents) {
         this._handler.on(type, commonEvents[type]);
       }

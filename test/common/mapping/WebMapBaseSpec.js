@@ -355,7 +355,7 @@ describe('WebMapBaseSpec.js', () => {
     webMapBase.setMapId(mapId);
     jasmine.clock().tick(10);
     expect(spy.calls.count()).toBe(1);
-    expect(webMapBase.mapId).toBe(id);
+    expect(webMapBase.mapId).toBe('');
     expect(webMapBase.webMapInfo).toEqual(mapId);
     jasmine.clock().uninstall();
     done();
