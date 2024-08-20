@@ -1088,20 +1088,12 @@ describe('maplibregl-webmap3.0', () => {
       return Promise.resolve();
     });
     spyOn(maplibregl, 'Map').and.callFake(mbglmap);
-    maplibregl.CRS = function (epsgCode, wkt, bounds, unit) {
-    };
-    maplibregl.CRS.set = function () {};
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     mapInfo.sprite = {
       rectangle: 'http://localhost:9876/base/resources/data/sprite/rectangle',
       circle: 'http://localhost:9876/base/resources/data/sprite/circle',
       triangle: 'http://localhost:9876/base/resources/data/sprite/triangle'
     };
-    mapInfo.crs = {
-      name: 'EPSG:4490',
-      extent: [-180, -270, 180, 90],
-      wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
-    }
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
@@ -1124,7 +1116,7 @@ describe('maplibregl-webmap3.0', () => {
           }
         ]
       },
-      crs: 'EPSG:4490',
+      crs: 'EPSG:3857',
       center: [116.640545, 40.531714],
       zoom: 7
     });
