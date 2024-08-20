@@ -88,6 +88,7 @@ export function createWebMapBaseExtending(SuperClass = Events, fireField = 'trig
         this.webMapInfo = null;
       } else if (mapId !== null && typeof mapId === 'object') {
         this.webMapInfo = mapId;
+        this.mapId = '';
       }
       this.webMapService.setMapId(mapId);
       if (!mapId) {
