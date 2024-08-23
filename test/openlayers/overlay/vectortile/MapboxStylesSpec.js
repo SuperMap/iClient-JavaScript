@@ -56,7 +56,7 @@ describe("openlayers_MapboxStyles", () => {
             if (testUrl.indexOf("vectorstyles") > 0) {
                 expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
                 return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
-            } else if (testUrl.indexOf("sprite.json") > 0) {
+            } else if (testUrl.indexOf("sprite.json") > 0 || testUrl.indexOf("sprite@2x.json") > 0) {
                 return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
             }
             return null;
@@ -249,6 +249,31 @@ describe("openlayers_MapboxStyles", () => {
                 done();
             } catch (e) {
                 console.log("'init_StyleUrl'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
+    it("init_Style_headers", done => {
+        spyOn(XMLHttpRequest.prototype, 'send').and.callThrough();
+        spyOn(XMLHttpRequest.prototype, 'setRequestHeader').and.callThrough();
+        var style;
+        mapboxStyles = new MapboxStyles({
+            style: url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true",
+            map: map,
+            source: "California",
+            headers:{'appToken':'test'}
+        });
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('appToken','test');
+                expect(XMLHttpRequest.prototype.send).toHaveBeenCalledTimes(1);
+                done();
+            } catch (e) {
+                console.log("'init_Style_headers'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
