@@ -34,6 +34,7 @@ import decryptTileUtil from '@supermapgis/tile-decryptor';
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @param {Object} [options.headers] - 请求头。
  * @param {boolean|Function} [options.decrypt] - 瓦片解密。如果是 true 表示用内置的解密方法， 如 decrypt: true；如果是function 则是自定义解密如 decrypt: function ({ key, bytes })。
  * @param {Function} [options.decryptCompletedFunction] - 解密完成后触发。如 decryptCompletedFunction(completeData)。
  * @extends {ol.source.VectorTile}
@@ -77,6 +78,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         });
         var me = this;
         me.withCredentials = options.withCredentials;
+        me.headers = options.headers || {};
         me._tileType = options.tileType || 'ScaleXY';
         this.vectorTileStyles = new VectorTileStyles();
         this._initialized(options);
@@ -165,9 +167,9 @@ export class VectorTileSuperMapRest extends VectorTile {
             var regHeight = new RegExp('(^|\\?|&)' + 'height' + '=([^&]*)(\\s|&|$)');
             var width = Number(tileUrl.match(regWidth)[2]);
             var height = Number(tileUrl.match(regHeight)[2]);
-
+            var me = this;
             tile.setLoader(function (extent, resolution, projection) {
-                FetchRequest.get(tileUrl)
+                FetchRequest.get(tileUrl, null, {headers:me.headers})
                     .then(function (response) {
                         if (tile.getFormat() instanceof GeoJSON) {
                             return response.json();
@@ -251,45 +253,50 @@ export class VectorTileSuperMapRest extends VectorTile {
                     xhr.responseType = 'arraybuffer';
                 }
                 xhr.withCredentials = me.withCredentials;
+                for (const key in me.headers) {
+                  if (me.headers.hasOwnProperty(key)) {
+                    xhr.setRequestHeader(key, me.headers[key]);
+                  }
+                }
                 xhr.onload = function () {
-                    if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
-                        const type = format.getType();
-                        let source = void 0;
-                        if (type === 'json' || type === 'text') {
-                            source = xhr.responseText;
-                        } else if (type === 'xml') {
-                            source = xhr.responseXML;
-                            if (!source) {
-                                source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
-                            }
-                        } else if (type === 'arraybuffer') {
-                            source = xhr.response;
-                        }
-                        if (source) {
-                            source = me._decryptMvt(source);
-                            if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
-                              success.call(
-                                  this,
-                                  format.readFeatures(source, { featureProjection: projection }),
-                                  format.readProjection(source),
-                                  format.getLastExtent()
-                              );
-                            } else {
-                                success.call(
-                                    this,
-                                    format.readFeatures(source, {
-                                        extent: extent,
-                                        featureProjection: projection
-                                    }),
-                                    format.readProjection(source)
-                                );
-                            }
-                        } else {
-                            failure.call(this);
-                        }
-                    } else {
-                        failure.call(this);
+                  if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
+                    const type = format.getType();
+                    let source = void 0;
+                    if (type === 'json' || type === 'text') {
+                      source = xhr.responseText;
+                    } else if (type === 'xml') {
+                      source = xhr.responseXML;
+                      if (!source) {
+                        source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
+                      }
+                    } else if (type === 'arraybuffer') {
+                      source = xhr.response;
                     }
+                    if (source) {
+                      source = me._decryptMvt(source);
+                      if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
+                        success.call(
+                          this,
+                          format.readFeatures(source, { featureProjection: projection }),
+                          format.readProjection(source),
+                          format.getLastExtent()
+                        );
+                      } else {
+                        success.call(
+                          this,
+                          format.readFeatures(source, {
+                            extent: extent,
+                            featureProjection: projection
+                          }),
+                          format.readProjection(source)
+                        );
+                      }
+                    } else {
+                      failure.call(this);
+                    }
+                  } else {
+                    failure.call(this);
+                  }
                 }.bind(this);
                 xhr.onerror = function () {
                     failure.call(this);
@@ -304,7 +311,10 @@ export class VectorTileSuperMapRest extends VectorTile {
           let style = options.style;
           if (Object.prototype.toString.call(options.style) == '[object String]') {
             var url = SecurityManager.appendCredential(options.style);
-            const response = await FetchRequest.get(url, null, { withCredentials: options.withCredentials })
+            const response = await FetchRequest.get(url, null, {
+              withCredentials: options.withCredentials,
+              headers: options.headers
+            });
             style = await response.json();
           }
           this._fillByStyleJSON(style, options.source);

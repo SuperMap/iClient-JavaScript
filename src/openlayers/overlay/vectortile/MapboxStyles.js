@@ -34,6 +34,7 @@ import Text from 'ol/style/Text';
  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
  * @param {ol.StyleFunction} [options.selectedStyle] -选中样式 Function。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @param {Object} [options.headers] - 请求头。
  * @example
  *  var mbStyle = new MapboxStyles({
             url: url,
@@ -73,6 +74,7 @@ export class MapboxStyles extends Observable {
             );
         this.resolutions = options.resolutions;
         this.withCredentials = options.withCredentials;
+        this.headers = options.headers;
         this.selectedObjects = [];
         this.selectedStyle =
             options.selectedStyle ||
@@ -252,7 +254,7 @@ export class MapboxStyles extends Observable {
             }, 0);
         } else {
             var url = SecurityManager.appendCredential(style);
-            FetchRequest.get(url, null, { withCredentials: this.withCredentials })
+            FetchRequest.get(url, null, { withCredentials: this.withCredentials, headers: this.headers })
                 .then(response => response.json())
                 .then(mbStyle => {
                     this._mbStyle = mbStyle;
@@ -271,32 +273,48 @@ export class MapboxStyles extends Observable {
             this._mbStyle.sprite = this._mbStyle.sprite.replace('@2x', '');
             const spriteUrl = this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.json');
             FetchRequest.get(SecurityManager.appendCredential(spriteUrl), null, {
-                withCredentials: this.withCredentials
+              withCredentials: this.withCredentials,
+              headers: this.headers
             })
-                .then(response => response.json())
-                .then(spritesJson => {
-                    this._spriteData = spritesJson;
-                    this._spriteImageUrl = SecurityManager.appendCredential(
-                        this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.png')
-                    );
-                    this._spriteImage = null;
+              .then((response) => response.json())
+              .then((spritesJson) => {
+                this._spriteData = spritesJson;
+                this._spriteImageUrl = SecurityManager.appendCredential(
+                  this._toSpriteUrl(this._mbStyle.sprite, this.path, sizeFactor + '.png')
+                );
+                this._spriteImage = null;
+
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.addEventListener('loadend',(e) => {
+                  var data = e.target.response;
+                  if (data !== undefined) {
                     const img = new Image();
-                    img.crossOrigin = this.withCredentials ? 'use-credentials' : 'anonymous';
-                    img.onload = () => {
-                        this._spriteImage = img;
-                        this._initStyleFunction();
-                    };
-                    img.onerror = () => {
-                        this._spriteImage = null;
-                        this._initStyleFunction();
-                    };
-                    img.src = this._spriteImageUrl;
-                })
-                .catch( err => {
-                    console.log(err);
+                    img.src = URL.createObjectURL(data);
+                    this._spriteImage = img;
+                  } else {
                     this._spriteImage = null;
-                    this._initStyleFunction();
+                  }
+                  this._initStyleFunction();
                 });
+                xhr.addEventListener('error', () => {
+                  this._spriteImage = null;
+                  this._initStyleFunction();
+                });
+                xhr.open('GET', this._spriteImageUrl);
+                for (const key in this.headers) {
+                  if (this.headers.hasOwnProperty(key)) {
+                    xhr.setRequestHeader(key, this.headers[key]);
+                  }
+                }
+                xhr.withCredentials = this.withCredentials;
+                xhr.send();
+              })
+              .catch((err) => {
+                console.log(err);
+                this._spriteImage = null;
+                this._initStyleFunction();
+              });
         } else {
             this._initStyleFunction();
         }
