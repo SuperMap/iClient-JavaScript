@@ -1,5 +1,5 @@
-export * from './WebMapBase';
+export * from './WebMapV2Base';
 export * from './WebMapService';
 export * from './utils/epsg-define';
-export * from './WebMap';
+export * from './WebMapBase';
 export * from './utils/SourceListModelV2';

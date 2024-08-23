@@ -1,4 +1,4 @@
-import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
+import { createWebMapV2BaseExtending } from '../../../src/common/mapping/WebMapV2Base';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import * as epsgDefine from '../../../src/common/mapping/utils/epsg-define';
 import cloneDeep from 'lodash.clonedeep';
@@ -6,8 +6,8 @@ import cloneDeep from 'lodash.clonedeep';
 describe('WebMapBaseSpec.js', () => {
   const id = 123;
   const options = {
-    accessKey: undefined,
-    accessToken: undefined,
+    credentialKey: undefined,
+    credentialValue: undefined,
     excludePortalProxyUrl: undefined,
     iportalServiceProxyUrlPrefix: undefined,
     isSuperMapOnline: undefined,
@@ -291,17 +291,17 @@ describe('WebMapBaseSpec.js', () => {
     }
   };
 
-  const WebMapBase = createWebMapBaseExtending();
+  const WebMapV2Base = createWebMapV2BaseExtending();
 
   it('default SuperClass', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.triggerEvent).not.toBeUndefined();
     expect(webMapBase.fire).toBeUndefined();
     done();
   });
 
   it('invoke attract methods', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(() => webMapBase._initWebMap()).toThrow(new Error('_initWebMap is not implemented'));
     expect(() => webMapBase._getMapInfo()).toThrow(new Error('_getMapInfo is not implemented'));
     expect(() => webMapBase._createMap()).toThrow(new Error('_createMap is not implemented'));
@@ -314,7 +314,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('echartslayer', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const chart = {
       resize: () => {}
     };
@@ -326,7 +326,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('setMapId mapId is number', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._initWebMap = () => {};
     const spy = spyOn(webMapBase, '_initWebMap').and.callThrough();
     jasmine.clock().install();
@@ -346,7 +346,7 @@ describe('WebMapBaseSpec.js', () => {
     const mapId = {
       value: 123
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._initWebMap = () => {};
     const spy = spyOn(webMapBase, '_initWebMap').and.callThrough();
     jasmine.clock().install();
@@ -362,7 +362,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('setMapId mapId is empty', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._initWebMap = () => {};
     const spy = spyOn(webMapBase, '_initWebMap').and.callThrough();
     jasmine.clock().install();
@@ -378,7 +378,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('serverUrl default', (done) => {
-    const webMapBase = new WebMapBase(id, { ...options, serverUrl: '' }, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, { ...options, serverUrl: '' }, cloneDeep(mapOptions));
     expect(webMapBase.serverUrl).not.toBe(options.serverUrl);
     expect(webMapBase.serverUrl).toBe('https://www.supermapol.com');
     done();
@@ -386,7 +386,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setServerUrl', (done) => {
     const serverUrl = 'http://fake.iportal.com';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.serverUrl).toBe(options.serverUrl);
     webMapBase.setServerUrl(serverUrl);
     expect(webMapBase.serverUrl).toBe(serverUrl);
@@ -394,7 +394,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('withCredentials default', (done) => {
-    const webMapBase = new WebMapBase(id, { ...options, withCredentials: undefined }, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, { ...options, withCredentials: undefined }, cloneDeep(mapOptions));
     expect(webMapBase.withCredentials).not.toBeUndefined();
     expect(webMapBase.withCredentials).toBe(false);
     done();
@@ -402,7 +402,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setWithCredentials', (done) => {
     const withCredentials = true;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.withCredentials).toBe(false);
     webMapBase.setWithCredentials(withCredentials);
     expect(webMapBase.withCredentials).toBe(true);
@@ -411,7 +411,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setProxy', (done) => {
     const proxy = 'http://test';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.proxy).toBeUndefined();
     webMapBase.setProxy(proxy);
     expect(webMapBase.proxy).toBe(proxy);
@@ -420,7 +420,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setZoom', (done) => {
     const zoom = 3;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setZoom').and.callThrough();
     expect(webMapBase.mapOptions.zoom).toBeUndefined();
@@ -434,7 +434,7 @@ describe('WebMapBaseSpec.js', () => {
   //maxBounds真实值？？？
   it('setMaxBounds', (done) => {
     const maxBounds = 10;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setMaxBounds').and.callThrough();
     expect(webMapBase.mapOptions.maxBounds).toBeUndefined();
@@ -447,7 +447,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setMinZoom', (done) => {
     const minZoom = 1;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setMinZoom').and.callThrough();
     expect(webMapBase.mapOptions.minZoom).toBeUndefined();
@@ -459,7 +459,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('setMinZoom minZoom is undefined', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setMinZoom').and.callThrough();
     expect(webMapBase.mapOptions.minZoom).toBeUndefined();
@@ -472,7 +472,7 @@ describe('WebMapBaseSpec.js', () => {
 
   it('setMaxZoom', (done) => {
     const maxZoom = 19;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setMaxZoom').and.callThrough();
     expect(webMapBase.mapOptions.maxZoom).toBeUndefined();
@@ -484,7 +484,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('setMaxZoom maxZoom is undefined', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.map = map;
     const spy = spyOn(map, 'setMaxZoom').and.callThrough();
     expect(webMapBase.mapOptions.maxZoom).toBeUndefined();
@@ -496,7 +496,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('initWebMap for empty map', (done) => {
-    const webMapBase = new WebMapBase('', options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base('', options, cloneDeep(mapOptions));
     webMapBase.clean = () => {};
     webMapBase._createMap = () => {};
     const spy = spyOn(webMapBase, '_createMap').and.callThrough();
@@ -507,7 +507,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('initWebMap for mapJson', (done) => {
-    const webMapBase = new WebMapBase('', options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base('', options, cloneDeep(mapOptions));
     webMapBase.clean = () => {};
     webMapBase._getMapInfo = () => {};
     webMapBase.webMapInfo = datavizWebMap_MVT;
@@ -530,7 +530,7 @@ describe('WebMapBaseSpec.js', () => {
       }
       return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
     });
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.clean = () => {};
     webMapBase._getMapInfo = (mapInfo, _taskID) => {
       expect(mapInfo).toEqual(datavizWebMap_MVT);
@@ -551,10 +551,10 @@ describe('WebMapBaseSpec.js', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       return Promise.reject(errorMsg);
     });
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.clean = () => {};
     webMapBase.on({
-      getmapinfofailed: ({ error }) => {
+      mapcreatefailed: ({ error }) => {
         expect(error).toBe(errorMsg);
         expect(webMapBase.mapParams).toBeUndefined();
         done();
@@ -566,7 +566,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getBaseLayerType layerType', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getBaseLayerType({ layerType: 'TIANDITU_TER' })).toBe('TIANDITU');
     expect(webMapBase.getBaseLayerType({ layerType: 'TILE' })).toBe('TILE');
     expect(webMapBase.getBaseLayerType({ layerType: 'SUPERMAP_REST' })).toBe('TILE');
@@ -584,7 +584,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getMapurls is default', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getMapurls().CLOUD).toBe(
       'http://t2.dituhui.com/FileService/image?map=quanguo&type=web&x={x}&y={y}&z={z}'
     );
@@ -617,7 +617,7 @@ describe('WebMapBaseSpec.js', () => {
     };
     const _taskID = '123';
     const type = 'hosted';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._taskID = _taskID;
     const response1 = { type: 'feature', features: [] };
     const response2 = wktResponse;
@@ -661,11 +661,11 @@ describe('WebMapBaseSpec.js', () => {
     spyOn(FetchRequest, 'get').and.callFake(() => {
       return Promise.reject(errorMsg);
     });
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._addLayerSucceeded = jasmine.createSpy('callback');
     const spy = spyOn(webMapBase, '_getLayerFeaturesSucceeded').and.callThrough();
     webMapBase.on({
-      getlayerdatasourcefailed: ({ error }) => {
+      layercreatefailed: ({ error }) => {
         expect(error.message).toBe(errorMsg);
         expect(webMapBase._addLayerSucceeded).toHaveBeenCalledTimes(1);
         expect(spy.calls.count()).toBe(0);
@@ -692,7 +692,7 @@ describe('WebMapBaseSpec.js', () => {
       },
       type: 'Feature'
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     let res = webMapBase.setFeatureInfo(feature);
     expect(res).toEqual(feature.dv_v5_markerInfo);
     expect(res.title).toBe('老虎海1');
@@ -744,7 +744,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('setFeatureInfo feature not comes from dataViz', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const feature = {
       geometry: { type: 'Point', coordinates: [0, 1] },
       properties: {
@@ -761,7 +761,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getRankStyleGroup filter invalid fieldValue', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     window.geostats = mock_geostats;
     const parameters = cloneDeep(rankSymbolStyleParams.parameters);
     parameters.themeSetting.customSettings = {};
@@ -771,7 +771,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getRankStyleGroup success', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     window.geostats = mock_geostats;
     const res = webMapBase.getRankStyleGroup(
       rankSymbolStyleParams.themeField,
@@ -784,7 +784,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('createRankStyleSource', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     window.geostats = mock_geostats;
     const parameters = { ...rankSymbolStyleParams.parameters, filterCondition: '' };
     const res = webMapBase.createRankStyleSource(parameters, rankSymbolStyleParams.features);
@@ -815,27 +815,27 @@ describe('WebMapBaseSpec.js', () => {
       url: '',
       sourceType: ''
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getRestMapLayerInfo(restMapInfo, layer).layerType).toBe('TILE');
     done();
   });
 
   it('handleLayerFeatures', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const res = webMapBase.handleLayerFeatures(rankSymbolStyleParams.features, rankSymbolStyleParams.layerInfo);
     expect(res).toEqual(rankSymbolStyleParams.features);
     done();
   });
 
   it('getFilterFeatures no mock jsonsql', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const res = webMapBase.getFilterFeatures('col > 11111', rankSymbolStyleParams.features);
     expect(res.length).toBe(0);
     done();
   });
 
   it('getFilterFeatures mock jsonsql', (done) => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     window.jsonsql = {
       query: (sql, { attributes }) => {
         if (+attributes.col > 11111) {
@@ -931,7 +931,7 @@ describe('WebMapBaseSpec.js', () => {
       }
     ];
     const coordinateSystem = 'GLMap';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const res = webMapBase.getEchartsLayerOptions(layerInfo, features, coordinateSystem);
     expect(res.series[0].effect.constantSpeed).toBe(layerInfo.animationSetting.constantSpeed);
     done();
@@ -941,7 +941,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'solid';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([]);
   });
 
@@ -949,7 +949,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'dot';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([1, 8]);
   });
 
@@ -957,7 +957,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'dash';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([8, 8]);
   });
 
@@ -965,7 +965,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'dashrailway';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([16, 24]);
   });
 
@@ -973,7 +973,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'dashdot';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([8, 8, 2, 8]);
   });
 
@@ -981,7 +981,7 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'longdash';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([16, 8]);
   });
 
@@ -989,12 +989,12 @@ describe('WebMapBaseSpec.js', () => {
     const str = 'longdashdot';
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual([16, 8, 1, 8]);
   });
 
   it('getDashStyle no params', () => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle()).toEqual([]);
   });
 
@@ -1002,14 +1002,14 @@ describe('WebMapBaseSpec.js', () => {
     const str = ['longdashdot'];
     const strokeWidth = 2;
     const type = 'array';
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth, type)).toEqual(['longdashdot']);
   });
 
   it('getDashStyle params str is normal string', () => {
     const str = 'longdashdot longdash';
     const strokeWidth = 2;
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase.getDashStyle(str, strokeWidth)).toEqual(['longdashdot', 'longdash']);
   });
 
@@ -1034,7 +1034,7 @@ describe('WebMapBaseSpec.js', () => {
       appendChild: jasmine.createSpy('appendChild')
     };
     const callBack = jasmine.createSpy('callBack');
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.getCanvasFromSVG(svgUrl, divDom, callBack);
     expect(divDom.appendChild).toHaveBeenCalled();
     expect(callBack).toHaveBeenCalled();
@@ -1048,7 +1048,7 @@ describe('WebMapBaseSpec.js', () => {
       appendChild: jasmine.createSpy('appendChild')
     };
     const callBack = jasmine.createSpy('callBack');
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.getCanvasFromSVG('', divDom, callBack);
     expect(divDom.appendChild).toHaveBeenCalled();
     expect(callBack).toHaveBeenCalled();
@@ -1057,13 +1057,13 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getRangeStyleGroup', () => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const res = webMapBase.getRangeStyleGroup(rangeUniqueStyleParams.rangeLayer, rankSymbolStyleParams.features);
     expect(res.length).toBe(2);
   });
 
   it('getRangeStyleGroup no themeField', () => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const nextLayerInfo = cloneDeep(rangeUniqueStyleParams.rangeLayer);
     nextLayerInfo.themeSetting.themeField = '';
     const res = webMapBase.getRangeStyleGroup(nextLayerInfo, rankSymbolStyleParams.features);
@@ -1071,7 +1071,7 @@ describe('WebMapBaseSpec.js', () => {
   });
 
   it('getUniqueStyleGroup', () => {
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     const res = webMapBase.getUniqueStyleGroup(rangeUniqueStyleParams.uniqueLayer, rankSymbolStyleParams.features);
     expect(res.length).toBe(3);
     const themeField = rangeUniqueStyleParams.uniqueLayer.themeSetting.themeField;
@@ -1100,7 +1100,7 @@ describe('WebMapBaseSpec.js', () => {
         };
       }
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase.handleSvgColor(style, canvas);
     expect(fillSpy).toHaveBeenCalled();
     expect(strokeSpy).toHaveBeenCalled();
@@ -1190,7 +1190,7 @@ describe('WebMapBaseSpec.js', () => {
       ],
       animation: false
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase._createOptions(layerInfo, lineData, pointData, coordinateSystem)).toEqual(result);
   });
 
@@ -1275,7 +1275,7 @@ describe('WebMapBaseSpec.js', () => {
       ],
       animation: false
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     expect(webMapBase._createOptions(layerInfo, lineData, pointData, coordinateSystem)).toEqual(result);
   });
 
@@ -1398,7 +1398,7 @@ describe('WebMapBaseSpec.js', () => {
       },
       visible: 'visible'
     };
-    const webMapBase = new WebMapBase(id, options, cloneDeep(mapOptions));
+    const webMapBase = new WebMapV2Base(id, options, cloneDeep(mapOptions));
     webMapBase._initOverlayLayer = jasmine.createSpy('callback');
     const spy = webMapBase._initOverlayLayer;
     webMapBase._getLayerFeaturesSucceeded(result, layer);

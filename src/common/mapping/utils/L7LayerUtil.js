@@ -1467,7 +1467,7 @@ export function L7LayerUtil(config) {
         );
       } catch (error) {
         console.error(error);
-        options.emitterEvent('getlayersfailed', { error, map });
+        options.emitterEvent('layercreatefailed', { error, map, layer: currentLayer });
       }
     }
     return result;
@@ -2050,7 +2050,7 @@ export function L7LayerUtil(config) {
           });
         } catch (error) {
           console.error(error);
-          options.emitterEvent('getlayersfailed', { error, map });
+          options.emitterEvent('layercreatefailed', { error, map });
         }
       }
       for (const l of formateL7Layers) {

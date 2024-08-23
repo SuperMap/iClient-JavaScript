@@ -1,5 +1,5 @@
 import { WebMapService } from './WebMapService';
-import { SourceListModel } from './utils/SourceListModelV2';
+import { SourceListModelV2 } from './utils/SourceListModelV2';
 
 export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
   return class MapStyle extends SuperClass {
@@ -131,12 +131,12 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
 
     _sendMapToUser() {
       const layersFromStyle = this._generateAppreciableLayers();
-      this._sourceListModel = new SourceListModel({
+      this._sourceListModel = new SourceListModelV2({
         map: this.map,
         layers: layersFromStyle,
         appendLayers: this._appendLayers
       });
-      this.fire('addlayerssucceeded', {
+      this.fire('mapcreatesucceeded', {
         map: this.map,
         mapparams: { title: this.mapOptions.name, description: '' },
         layers: this.getSelfAppreciableLayers()

@@ -7,11 +7,11 @@ import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
 import { FetchRequest } from '../util/FetchRequest';
-import { SourceListModel } from './utils/SourceListModelV2';
+import { SourceListModelV2 } from './utils/SourceListModelV2';
 import { mergeFeatures } from './utils/util';
 
 export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
-  return class WebMap extends SuperClass {
+  return class WebMapV2 extends SuperClass {
     constructor(
       id,
       options = {
@@ -44,7 +44,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
     /**
      * @private
-     * @function WebMap.prototype.initializeMap
+     * @function WebMapV2.prototype.initializeMap
      * @description 登陆窗口后添加地图图层。
      * @param {Object} mapInfo - map 信息。
      */
@@ -85,7 +85,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     _loadLayers(mapInfo, _taskID) {
       if (this.map) {
         if (this.map.getCRS().epsgCode !== this.baseProjection && !this.ignoreBaseProjection) {
-          this.fire('projectionisnotmatch', {});
+          this.fire('projectionnotmatch', {});
           return;
         }
         this._handleLayerInfo(mapInfo, _taskID);
@@ -164,10 +164,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             });
           });
         } else {
-          // this._defineProj4(projection);
-          // this._loadLayers(mapInfo, _taskID);
-          this.fire('crsnotsupport');
-          throw Error('Unsupported coordinate system!');
+          const error = new Error('Unsupported coordinate system!');
+          console.log(error);
+          this.fire('mapcreatefailed', { error });
         }
       } else {
         this._defineProj4(projection);
@@ -313,9 +312,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         },
         fadeDuration: 0
       });
-      /**
-       * @description Map 初始化成功。
-       */
       this.fire('mapinitialized', { map: this.map });
     }
   
@@ -352,7 +348,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          this.fire('getmapinfofailed', { error });
+          this.fire('layercreatefailed', { error, layer: layerInfo, map: this.map });
         });
     }
   
@@ -388,7 +384,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           this._createXYZLayer(layerInfo, url, addedCallback);
           break;
         case 'BAIDU':
-          this.fire('notsupportbaidumap', {});
+          this.fire('baidumapnotsupport', {});
           addedCallback && addedCallback();
           break;
         case 'MAPBOXSTYLE':
@@ -405,7 +401,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           // TODO  ---  暂不支持 SAMPLE_DATA
           if (type === 'SAMPLE_DATA') {
             this._addLayerSucceeded();
-            this.fire('getlayerdatasourcefailed', {
+            this.fire('layercreatefailed', {
               error: 'SAMPLE DATA is not supported',
               layer,
               map: this.map
@@ -607,7 +603,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          this.fire('getmapinfofailed', { error });
+          this.fire('layercreatefailed', { error, layer: layerInfo, map: this.map });
         });
     }
   
@@ -705,7 +701,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           }
         )
         .catch((error) => {
-          this.fire('getmapinfofailed', { error });
+          this.fire('layercreatefailed', { error, layer: layerInfo, map: this.map });
         });
     }
   
@@ -2217,19 +2213,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
     _sendMapToUser(count, layersLen) {
       if (count === layersLen) {
-        /**
-         * @event WebMapViewModel#addlayerssucceeded
-         * @description 添加图层成功。
-         * @property {mapboxglTypes.Map} map - MapBoxGL Map 对象。
-         * @property {Object} mapparams - 地图信息。
-         * @property {string} mapParams.title - 地图标题。
-         * @property {string} mapParams.description - 地图描述。
-         */
         this.addLayersSucceededLen = this._cacheLayerId.size;
-        const appreciableLayers = this.getAppreciableLayers();
+        const appreciableLayers = this.getLayers();
         const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
         this._rectifyLayersOrder(layerOptions.layers);
-        this.fire('addlayerssucceeded', {
+        this.fire('mapcreatesucceeded', {
           ...layerOptions,
           map: this.map,
           mapparams: this._mapInfo.mapParams
@@ -2788,14 +2776,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         }
       });
       this._changeSourceListModel(layersFromMapInfo);
-      const appreciableLayers = this.getAppreciableLayers();
+      const appreciableLayers = this.getLayers();
       if (this.addLayersSucceededLen && this._cacheLayerId.size !== this.addLayersSucceededLen) {
         const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers)
         const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
         this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
         this.addLayersSucceededLen = this._cacheLayerId.size;
       }
-      this.fire('addlayerchanged', this._getSelfAppreciableLayers(appreciableLayers));
+      this.fire('layeraddchanged', this._getSelfAppreciableLayers(appreciableLayers));
     }
 
     _findTopLayerBeforeId(selfAppreciableLayers) {
@@ -2818,7 +2806,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
     _changeSourceListModel(layersFromMapInfo) {
       if (!this._sourceListModel) {
-        this._sourceListModel = new SourceListModel({
+        this._sourceListModel = new SourceListModelV2({
           map: this.map,
           layers: layersFromMapInfo,
           appendLayers: this._appendLayers
@@ -2922,7 +2910,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
     /**
      * @private
-     * @function WebMap.prototype._handleMultyPolygon
+     * @function WebMapV2.prototype._handleMultyPolygon
      * @description 处理复杂面情况
      */
     _handleMultyPolygon(features) {

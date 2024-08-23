@@ -277,6 +277,7 @@ export function createMapExtendExtending(product) {
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID -待插入的图层 ID。
      * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
+     * @private
      */
     _moveToHandler(layerID, beforeLayerID) {
       const layer = document.getElementById(layerID);

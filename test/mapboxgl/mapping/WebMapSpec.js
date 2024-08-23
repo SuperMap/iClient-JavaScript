@@ -52,7 +52,7 @@ describe('mapboxgl_WebMap', () => {
     var datavizWebmap = new WebMap(id, {
       server: server
     });
-    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(datavizWebmap.callBack).toBeUndefined();
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -84,7 +84,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       datavizWebmap.resize();
       expect(map.resize).toHaveBeenCalledTimes(1);
       done();
@@ -105,10 +105,10 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     datavizWebmap = new WebMap(id, options);
-    datavizWebmap.once('addlayerssucceeded', () => {
+    datavizWebmap.once('mapcreatesucceeded', () => {
       datavizWebmap.setMapId('testID');
       expect(datavizWebmap.mapId).toEqual('testID');
-      datavizWebmap.on('addlayerssucceeded', () => {
+      datavizWebmap.on('mapcreatesucceeded', () => {
         done();
       });
     });
@@ -128,7 +128,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       const webMapV2 = datavizWebmap._getWebMapInstance();
       webMapV2.getFilterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
       webMapV2.getFilterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
@@ -150,7 +150,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     datavizWebmap = new WebMap(id, options);
-    datavizWebmap.once('addlayerssucceeded', () => {
+    datavizWebmap.once('mapcreatesucceeded', () => {
       const nextUrl = 'http://www.test.com';
       datavizWebmap.setServerUrl('http://www.test.com');
       expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
@@ -179,7 +179,7 @@ describe('mapboxgl_WebMap', () => {
       maxZoom: 12,
       isWorldCopy: true
     };
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       datavizWebmap.setCenter(mapOptions.center);
       expect(datavizWebmap.mapOptions.center).toEqual(mapOptions.center);
       datavizWebmap.setZoom(mapOptions.zoom);
@@ -210,7 +210,7 @@ describe('mapboxgl_WebMap', () => {
     };
     datavizWebmap = new WebMap(id, options);
 
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -238,7 +238,7 @@ describe('mapboxgl_WebMap', () => {
     });
     var datavizWebmap = new WebMap(id, options);
 
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
       done();
     });
@@ -259,7 +259,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -272,7 +272,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  it('initialize_FAILD', (done) => {
+  it('initialize_FAILD mapcreatefailed', (done) => {
     let options = {
       server: server
     };
@@ -284,7 +284,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.reject('test error');
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('getmapinfofailed', ({ error }) => {
+    datavizWebmap.on('mapcreatefailed', ({ error }) => {
       expect(error).toBe(errorMsg);
       expect(datavizWebmap.mapParams).toBeUndefined();
       expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -293,7 +293,55 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  it('initialize_CLOUD', (done) => {
+  it('initialize_FAILD getmapfailed', (done) => {
+    let options = {
+      server: server
+    };
+    const errorMsg = 'test error';
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.reject('test error');
+    });
+    var datavizWebmap = new WebMap(id, options);
+    datavizWebmap.on('getmapfailed', ({ error }) => {
+      expect(error).toBe(errorMsg);
+      expect(datavizWebmap.mapParams).toBeUndefined();
+      expect(datavizWebmap.credentialKey).toBeUndefined();
+      expect(datavizWebmap.credentialValue).toBeUndefined();
+      done();
+    });
+  });
+
+  it('initialize_CLOUD mapcreatesucceeded', (done) => {
+    let options = {
+      server: server
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = datavizWebMap_CLOUD;
+        return Promise.resolve(new Response(mapJson));
+      }
+      return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, options);
+    datavizWebmap.on('mapcreatesucceeded', () => {
+      expect(datavizWebmap.credentialKey).toBeUndefined();
+      expect(datavizWebmap.credentialValue).toBeUndefined();
+
+      var map = datavizWebmap.map;
+      expect(map.getZoom()).toBe(1);
+      expect(datavizWebmap.mapParams.title).toBe('GAOD');
+      expect(datavizWebmap.mapParams.description).toBe('');
+      done();
+    });
+  });
+
+  it('initialize_CLOUD addlayerssucceeded', (done) => {
     let options = {
       server: server
     };
@@ -314,7 +362,6 @@ describe('mapboxgl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBe(1);
-      //expect(map.getCenter()).toEqual([0, -7.081154551613622e-10]);
       expect(datavizWebmap.mapParams.title).toBe('GAOD');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -336,7 +383,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -368,7 +415,7 @@ describe('mapboxgl_WebMap', () => {
     });
     var datavizWebmap = new WebMap(id, options);
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -399,7 +446,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -431,7 +478,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       spyOn(datavizWebmap.map, 'loadImage').and.callFake((url, cb) => {
         let img = new Image();
         img.onload = () => {
@@ -470,7 +517,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -504,7 +551,7 @@ describe('mapboxgl_WebMap', () => {
       return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', function () {
+    datavizWebmap.on('mapcreatesucceeded', function () {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -536,7 +583,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -567,7 +614,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -601,7 +648,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -630,7 +677,7 @@ describe('mapboxgl_WebMap', () => {
     });
 
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', function () {
+    datavizWebmap.on('mapcreatesucceeded', function () {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -662,7 +709,7 @@ describe('mapboxgl_WebMap', () => {
     });
     var datavizWebmap = new WebMap(id, options);
 
-    datavizWebmap.on('addlayerssucceeded', function () {
+    datavizWebmap.on('mapcreatesucceeded', function () {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -690,7 +737,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve(new Response(wmsCapabilitiesTextWith130));
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -721,7 +768,7 @@ describe('mapboxgl_WebMap', () => {
     var datavizWebmap = new WebMap(id, {
       server: server
     });
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       var params =
         '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
       var features = [];
@@ -798,7 +845,7 @@ describe('mapboxgl_WebMap', () => {
     });
 
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       // spyOn(datavizWebmap, '_getCanvasFromSVG').and.callFake((svg_url, svgDiv, cb) => {
       //     let canvas = document.createElement('canvas');
       //     canvas.width = '150px';
@@ -836,7 +883,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
       done();
@@ -857,7 +904,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       const webMapV2 = datavizWebmap._getWebMapInstance();
       webMapV2.getFilterFeatures('SmID>20', geojsonData);
       let feature =
@@ -882,7 +929,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve(new Response(wmtsCapabilitiesText));
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       expect(datavizWebmap.credentialKey).toBeUndefined();
       expect(datavizWebmap.credentialValue).toBeUndefined();
       done();
@@ -907,7 +954,7 @@ describe('mapboxgl_WebMap', () => {
     });
     var datavizWebmap = new WebMap(id, options);
 
-    datavizWebmap.on('addlayerssucceeded', function () {
+    datavizWebmap.on('mapcreatesucceeded', function () {
       setTimeout(() => {
         expect(datavizWebmap.map.getStyle().layers.length).toBe(2);
         done();
@@ -951,7 +998,7 @@ describe('mapboxgl_WebMap', () => {
     var datavizWebmap = new WebMap(id, {
       server: server
     });
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       var map = datavizWebmap.map;
       expect(map).not.toBe(null);
       setTimeout(() => {
@@ -978,7 +1025,7 @@ describe('mapboxgl_WebMap', () => {
       return Promise.resolve();
     });
     var datavizWebmap = new WebMap(id, options);
-    datavizWebmap.on('addlayerssucceeded', () => {
+    datavizWebmap.on('mapcreatesucceeded', () => {
       var map = datavizWebmap.map;
       setTimeout(() => {
         expect(map._layers['未命名标注图层1']).not.toBe(undefined);
@@ -1045,7 +1092,7 @@ describe('mapboxgl_WebMap', () => {
       datavizWebmap.setStyle({});
       expect(datavizWebmap.mapOptions.zoom).toBeNull();
       expect(datavizWebmap.mapOptions.center).toBeNull();
-      datavizWebmap.once('addlayerssucceeded', () => {
+      datavizWebmap.once('mapcreatesucceeded', () => {
         center = [116, 30];
         zoom = 16;
         datavizWebmap.setCenter(center);
@@ -1074,13 +1121,13 @@ describe('mapboxgl_WebMap', () => {
         });
         expect(datavizWebmap.mapOptions.zoom).toBe(zoom);
         expect(datavizWebmap.mapOptions.center).toEqual(center);
-        datavizWebmap.once('addlayerssucceeded', ({ layers }) => {
+        datavizWebmap.once('mapcreatesucceeded', ({ layers }) => {
           expect(layers.length).toBe(1);
           done();
         });
       });
     };
-    datavizWebmap.once('addlayerssucceeded', callback);
+    datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
   it('copy layer', (done) => {
@@ -1122,7 +1169,7 @@ describe('mapboxgl_WebMap', () => {
         zoom: 3
       }
     );
-    datavizWebmap.on('addlayerssucceeded', ({ map }) => {
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(map.getZoom()).toBe(3);
       expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116, 39));

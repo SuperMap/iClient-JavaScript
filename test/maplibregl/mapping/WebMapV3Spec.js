@@ -69,7 +69,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     expect(mapstudioWebmap.options.target).toBe('map');
     expect(mapstudioWebmap.mapId).toBe(id);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap.map).toEqual(map);
       expect(mapstudioWebmap.mapParams.title).toBe('空地图');
       expect(mapstudioWebmap.mapParams.description).toBe('');
@@ -104,7 +104,7 @@ describe('maplibregl-webmap3.0', () => {
     expect(mapstudioWebmap.credentialValue).toBeUndefined();
     expect(mapstudioWebmap.options.target).toBe('map');
     expect(mapstudioWebmap.mapId).toBe(id);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       expect(map.getZoom()).toBeCloseTo(3.412, 0.001);
@@ -140,16 +140,16 @@ describe('maplibregl-webmap3.0', () => {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(mapstudioWebMap_symbol);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(webMapV3.getLegendInfo().length).not.toBe(0);
+      expect(webMapV3.getLegends().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
-      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(webMapV3.getAppreciableLayers().length);
+      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(webMapV3.getLayers().length);
       done();
     });
   });
@@ -169,15 +169,15 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       map.addLayer({
         metadata: {},
         paint: {
@@ -187,7 +187,7 @@ describe('maplibregl-webmap3.0', () => {
         type: 'background'
       });
       expect(map.getStyle().layers.length).toBe(mapInfo.layers.length + 1);
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length + 1);
+      expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
       done();
     });
@@ -207,7 +207,7 @@ describe('maplibregl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('getmapinfofailed', ({ error }) => {
+    mapstudioWebmap.on('mapcreatefailed', ({ error }) => {
       const throwError = `The EPSG code ${nextMapInfo.crs.name} needs to include maplibre-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/maplibregl/editor.html#mvtVectorTile_2362`;
       expect(mapstudioWebmap.map).toBeUndefined();
       expect(error).toBe(throwError);
@@ -246,15 +246,15 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(nextMapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       delete maplibregl.CRS;
       done();
     });
@@ -313,13 +313,13 @@ describe('maplibregl-webmap3.0', () => {
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length + 1);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       delete maplibregl.CRS;
@@ -342,15 +342,15 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       map.overlayLayersManager = {
         GraticuleLayer: {
           id: 'GraticuleLayer',
@@ -386,7 +386,7 @@ describe('maplibregl-webmap3.0', () => {
         }
       };
       const validNum = 4;
-      const appreciableLayers2 = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers2 = mapstudioWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(appreciableLayers.length + validNum);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + validNum);
       expect(appreciableLayers2.find((item) => item.id === 'EchartLayer')).toBeTruthy();
@@ -414,14 +414,14 @@ describe('maplibregl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('getlayersfailed', ({ error }) => {
+    mapstudioWebmap.on('layercreatefailed', ({ error }) => {
       expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const style = map.getStyle();
       expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
       done();
     });
@@ -443,12 +443,12 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       map.addLayer({
@@ -475,7 +475,7 @@ describe('maplibregl-webmap3.0', () => {
         source: 'maplibre-gl-draw-hot',
         type: 'circle'
       });
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length);
       done();
     });
@@ -534,15 +534,15 @@ describe('maplibregl-webmap3.0', () => {
       },
       mapOptions
     );
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBeLessThan(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(8);
+      expect(mapstudioWebmap.getLegends().length).toBe(8);
       expect(mapOptions.transformRequest.calls.count()).toBeGreaterThan(0);
       delete maplibregl.Map.prototype.getCRS;
       delete maplibregl.CRS;
@@ -550,7 +550,7 @@ describe('maplibregl-webmap3.0', () => {
     });
   });
 
-  it('projectionisnotmatch', (done) => {
+  it('projectionnotmatch', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -566,7 +566,7 @@ describe('maplibregl-webmap3.0', () => {
       target: 'map'
     });
 
-    mapstudioWebmap.on('projectionisnotmatch', () => {
+    mapstudioWebmap.on('projectionnotmatch', () => {
       expect(mapstudioWebmap.map).not.toBeUndefined();
       const style = mapstudioWebmap.map.getStyle();
       expect(style.layers.length).toBe(0);
@@ -596,7 +596,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       expect(map.style.addGlyphs).toHaveBeenCalledTimes(1);
@@ -604,7 +604,7 @@ describe('maplibregl-webmap3.0', () => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(apstudioWebMap_layerData);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = webMapV3.getAppreciableLayers();
+      const appreciableLayers = webMapV3.getLayers();
       const layerList = webMapV3.getLayerCatalog();
       expect(layerList.length).toBe(5);
       expect(appreciableLayers.length).toBe(5);
@@ -718,9 +718,9 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
-      expect(webmapInstance.getLegendInfo().length).toBe(4);
+      expect(webmapInstance.getLegends().length).toBe(4);
       delete maplibregl.Map.prototype.getCRS;
       delete maplibregl.CRS;
       spyTest.calls.reset();
@@ -771,23 +771,23 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(webmapInstance.map).toEqual(map);
-      let appreciableLayers = webmapInstance.getAppreciableLayers();
+      let appreciableLayers = webmapInstance.getLayers();
       let overlayLayers = Object.keys(map.overlayLayersManager);
       const idToCopy = 'ms_站点3_1715739627423_909';
       webmapInstance.copyLayer(idToCopy, { id: `${idToCopy}-SM-` }).then(() => {
         const currentOverlayLayers = Object.keys(map.overlayLayersManager);
-        const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+        const currentAppreciableLayers = webmapInstance.getLayers();
         expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
         expect(currentAppreciableLayers.length).toBe(appreciableLayers.length);
         appreciableLayers = currentAppreciableLayers;
         overlayLayers = currentOverlayLayers;
         webmapInstance.copyLayer(idToCopy).then(() => {
           const currentOverlayLayers = Object.keys(map.overlayLayersManager);
-          const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+          const currentAppreciableLayers = webmapInstance.getLayers();
           expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
           expect(currentAppreciableLayers.length).toBe(appreciableLayers.length + 1);
           delete maplibregl.Map.prototype.getCRS;
@@ -818,7 +818,7 @@ describe('maplibregl-webmap3.0', () => {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
@@ -828,7 +828,7 @@ describe('maplibregl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       let layersOnMap = mapInfo.layers;
       let sourcesOnMap = mapInfo.sources;
-      let appreciableLayers = webMapV3.getAppreciableLayers();
+      let appreciableLayers = webMapV3.getLayers();
       expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(appreciableLayers.length);
       const idToCopy = 'CHINA_DARK';
       const nextSource = {
@@ -901,7 +901,7 @@ describe('maplibregl-webmap3.0', () => {
       },
       mapOptions
     );
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       const layerInfo = {
         id: '北京市轨道交通线路减',
@@ -947,8 +947,8 @@ describe('maplibregl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       done();
@@ -1006,7 +1006,7 @@ describe('maplibregl-webmap3.0', () => {
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
@@ -1047,10 +1047,10 @@ describe('maplibregl-webmap3.0', () => {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
-      expect(webMapV3.getLegendInfo().length).toBe(9);
+      expect(webMapV3.getLegends().length).toBe(9);
       delete maplibregl.Map.prototype.getCRS;
       mbglmap.prototype.getL7Scene = undefined;
       spyTest.calls.reset();
@@ -1123,7 +1123,7 @@ describe('maplibregl-webmap3.0', () => {
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(mapInfo, existedMap);
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap.mapParams.description).toBe('测试111');
       expect(Object.keys(mapstudioWebmap._spriteDatas).length).toBe(3);
       expect(map.addStyle).toHaveBeenCalled();

@@ -1,4 +1,4 @@
-import { SourceListModel } from '../../../../src/common/mapping/utils/SourceListModelV3';
+import { SourceListModelV3 } from '../../../../src/common/mapping/utils/SourceListModelV3';
 import { isL7Layer } from '../../../../src/common/mapping/utils/L7LayerUtil';
 import '../../../resources/WebMapV3.js';
 
@@ -186,7 +186,7 @@ describe('SourceListV3', () => {
 
   it('getLayers', (done) => {
     const mapInfo = JSON.parse(apstudioWebMap_layerData);
-    const sourceListModel = new SourceListModel({
+    const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
       mapResourceInfo: JSON.parse(msProjectINfo_layerData),
@@ -210,7 +210,7 @@ describe('SourceListV3', () => {
 
   it('getSourceList without group', (done) => {
     const mapInfo = JSON.parse(apstudioWebMap_layerData);
-    const sourceListModel = new SourceListModel({
+    const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
       mapResourceInfo: JSON.parse(msProjectINfo_layerData),
@@ -227,7 +227,7 @@ describe('SourceListV3', () => {
 
   it('getSourceList with group', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_group);
-    const sourceListModel = new SourceListModel({
+    const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
       mapResourceInfo: {},

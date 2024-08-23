@@ -1,4 +1,4 @@
-import { SourceListModel } from '../../../../src/common/mapping/utils/SourceListModelV2';
+import { SourceListModelV2 } from '../../../../src/common/mapping/utils/SourceListModelV2';
 
 describe('SourceListV2', () => {
   const layers = [
@@ -183,7 +183,7 @@ describe('SourceListV2', () => {
   };
 
   it('getLayers', (done) => {
-    const sourceListModel = new SourceListModel({ map });
+    const sourceListModel = new SourceListModelV2({ map });
     const appreciableLayers = sourceListModel.getLayers();
     const selfAppreciableLayers = sourceListModel.getSelfLayers();
     expect(appreciableLayers.length).toBe(4);
@@ -199,7 +199,7 @@ describe('SourceListV2', () => {
   });
 
   it('getSelfLayers', (done) => {
-    const sourceListModel = new SourceListModel({
+    const sourceListModel = new SourceListModelV2({
       map,
       layers: [
         {
@@ -223,7 +223,7 @@ describe('SourceListV2', () => {
   });
 
   it('getSourceList', (done) => {
-    const sourceListModel = new SourceListModel({ map });
+    const sourceListModel = new SourceListModelV2({ map });
     const layerList = sourceListModel.getSourceList();
     expect(layerList.length).toBe(4);
     done();
@@ -401,7 +401,7 @@ describe('SourceListV2', () => {
         return layersOnMap.find((layer) => layer.id === id);
       }
     };
-    const sourceListModel = new SourceListModel({ map, layers });
+    const sourceListModel = new SourceListModelV2({ map, layers });
     const appreciableLayers = sourceListModel.getLayers();
     const selfAppreciableLayers = sourceListModel.getSelfLayers();
     expect(appreciableLayers.length).toBe(3);

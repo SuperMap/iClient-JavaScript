@@ -231,4 +231,4 @@ import './common/mapping/utils/SourceListModelV2Spec.js';
 import './common/mapping/utils/SourceListModelV3Spec.js';
 import './common/mapping/utils/epsgDefineSpec.js';
 import './common/mapping/WebMapServiceSpec';
-import './common/mapping/WebMapBaseSpec';
+import './common/mapping/WebMapV2BaseSpec';

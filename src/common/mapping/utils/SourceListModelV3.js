@@ -2,7 +2,7 @@
 import { AppreciableLayerBase } from './AppreciableLayerBase';
 import { getLayerInfosFromCatalogs } from './util';
 
-export class SourceListModel extends AppreciableLayerBase {
+export class SourceListModelV3 extends AppreciableLayerBase {
   constructor(options = {}) {
     super(options);
     this._mapInfo = options.mapInfo;

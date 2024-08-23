@@ -35,8 +35,6 @@ export class WebMapService {
       this.mapInfo = mapId;
     }
     this.serverUrl = options.serverUrl || 'https://www.supermapol.com';
-    this.accessToken = options.accessToken;
-    this.accessKey = options.accessKey;
 		this.credentialKey = options.credentialKey;
 		this.credentialValue = options.credentialValue;
     this.tiandituKey = options.tiandituKey || '';
@@ -705,10 +703,8 @@ export class WebMapService {
     let features;
     // 原来二进制文件
     let url = `${this.serverUrl}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
-    const accessKey = this.credentialKey || this.accessKey;
-    const accessToken = this.credentialValue || this.accessToken;
-    if (accessToken) {
-      url = `${url}&${accessKey}=${accessToken}`;
+    if (this.credentialKey && this.credentialValue) {
+      url = `${url}&${this.credentialKey}=${this.credentialValue}`;
     }
     return new Promise((resolve, reject) => {
       url = this.handleParentRes(url);
@@ -952,9 +948,7 @@ export class WebMapService {
 
   _handleMapUrl() {
     let mapUrl = this.serverUrl + 'web/maps/' + this.mapId + '/map';
-    if (this.accessToken || this.accessKey) {
-      mapUrl += '?' + (this.accessToken && !this.accessKey) ? 'token=' + this.accessToken : 'key=' + this.accessKey;
-    } else if (this.credentialValue && this.credentialKey) {
+    if (this.credentialValue && this.credentialKey) {
 			mapUrl += '?' + this.credentialKey + '=' + this.credentialValue;
 		}
     let filter = 'getUrlResource.json?url=';

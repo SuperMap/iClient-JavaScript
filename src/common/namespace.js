@@ -465,9 +465,9 @@ import {
   ColourModeChart,
   DisplayModeChart,
   VideoFeature,
-  createWebMapBaseExtending,
+  createWebMapV2BaseExtending,
   WebMapService,
-  SourceListModel
+  SourceListModelV2
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -979,8 +979,8 @@ SuperMap.CellSizeType = CellSizeType
 SuperMap.ColourModeChart = ColourModeChart;
 SuperMap.DisplayModeChart = DisplayModeChart;
 SuperMap.VideoFeature = VideoFeature;
-SuperMap.createWebMapBaseExtending = createWebMapBaseExtending;
+SuperMap.createWebMapV2BaseExtending = createWebMapV2BaseExtending;
 SuperMap.WebMapService = WebMapService;
-SuperMap.SourceListModel = SourceListModel;
+SuperMap.SourceListModelV2 = SourceListModelV2;
 
 export * from './index.all';

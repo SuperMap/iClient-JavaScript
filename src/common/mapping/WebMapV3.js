@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
 import { getLayerInfosFromCatalogs, mergeFeatures, transformUrl } from './utils/util';
-import { SourceListModel } from './utils/SourceListModelV3';
+import { SourceListModelV3 } from './utils/SourceListModelV3';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -159,14 +159,14 @@ export const LEGEND_STYLE_TYPES = {
   STYLE: 'style'
 };
 export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRepoName, l7LayerUtil }) {
-  return class WebMap extends SuperClass {
+  return class WebMapV3 extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
     super();
     this.mapId = mapId;
     this.options = options;
     this.mapOptions = mapOptions;
     this._mapResourceInfo = {};
-    this._relatedInfo = options.relatedInfo !== undefined ? options.relatedInfo : {};
+    this._relatedInfo = options.relatedInfo || {};
     this._sprite = '';
     this._spriteDatas = {};
     this._appendLayers = false;
@@ -174,7 +174,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
   }
 
   /**
-   * @function WebMap.prototype.initializeMap
+   * @function WebMapV3.prototype.initializeMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
    * @param {Object} map - map 实例。
@@ -236,13 +236,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
         spriteDatas: this._spriteDatas,
         options: this.options
       });
-      return;
+    } else {
+      if (typeof copyLayer.source === 'object') {
+        this.map.addSource(copyLayer.id, copyLayer.source);
+        copyLayer.source = copyLayer.id;
+      }
+      this.map.addLayer(copyLayer);
     }
-    if (typeof copyLayer.source === 'object') {
-      this.map.addSource(copyLayer.id, copyLayer.source);
-      copyLayer.source = copyLayer.id;
-    }
-    this.map.addLayer(copyLayer);
+    return copyLayer;
   }
 
   updateOverlayLayer(layerInfo, features, mergeByField) {
@@ -259,7 +260,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._createMap
+   * @function WebMapV3.prototype._createMap
    * @description 创建地图。
    */
   _createMap() {
@@ -324,7 +325,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       baseProjection = crs.name;
       if (!mapRepo.CRS) {
         const error = `The EPSG code ${baseProjection} needs to include ${mapRepoName}-enhance.js. Refer to the example: https://iclient.supermap.io/examples/${mapRepoName.replace('-', '')}/editor.html#mvtVectorTile_2362`;
-        this.fire('getmapinfofailed', { error: error });
+        this.fire('mapcreatefailed', { error: error });
         console.error(error);
         return;
       }
@@ -341,12 +342,12 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._initLayers
+   * @function WebMapV3.prototype._initLayers
    * @description emit 图层加载成功事件。
    */
   async _initLayers() {
     if (this.map.getCRS && this.map.getCRS().epsgCode !== this._baseProjection) {
-      this.fire('projectionisnotmatch');
+      this.fire('projectionnotmatch');
       return;
     }
     await this._getSpriteDatas();
@@ -373,14 +374,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
         this._addLayersToMap();
       })
       .catch((error) => {
-        this.fire('getmapinfofailed', { error: error });
+        this.fire('mapcreatefailed', { error: error });
         console.error(error);
       });
   }
 
   /**
    * @private
-   * @function WebMap.prototype._createMapRelatedInfo
+   * @function WebMapV3.prototype._createMapRelatedInfo
    * @description 创建地图相关资源。
    */
   _createMapRelatedInfo() {
@@ -392,7 +393,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._getMapRelatedInfo
+   * @function WebMapV3.prototype._getMapRelatedInfo
    * @description 获取地图关联信息的 JSON 信息。
    */
   _getMapRelatedInfo() {
@@ -406,7 +407,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._addLayersToMap
+   * @function WebMapV3.prototype._addLayersToMap
    * @description emit 图层加载成功事件。
    */
   async _addLayersToMap() {
@@ -443,14 +444,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       this._createLegendInfo();
       this._sendMapToUser();
     } catch (error) {
-      this.fire('getlayersfailed', { error, map: this.map });
+      this.fire('mapcreatefailed', { error, map: this.map });
       console.error(error);
     }
   }
 
   /**
    * @private
-   * @function WebMap.prototype._setUniqueId
+   * @function WebMapV3.prototype._setUniqueId
    * @description 返回唯一 id 的 sources 和 layers。
    * @param {Object} mapInfo - map 信息。
    */
@@ -585,11 +586,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._sendMapToUser
+   * @function WebMapV3.prototype._sendMapToUser
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
-    this._sourceListModel = new SourceListModel({
+    this._sourceListModel = new SourceListModelV3({
       map: this.map,
       appendLayers: this._appendLayers,
       mapInfo: this._mapInfo,
@@ -597,7 +598,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       legendList: this._legendList,
       l7LayerUtil
     });
-    this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this.getSelfAppreciableLayers() });
+    this.fire('mapcreatesucceeded', { map: this.map, mapparams: this.mapParams, layers: this.getSelfAppreciableLayers() });
   }
 
   _renameLayerIdsContent(layerIds, layerIdRenameMapList) {
@@ -620,7 +621,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._getLabelFontFamily
+   * @function WebMapV3.prototype._getLabelFontFamily
    * @description 获取图层字体类型。
    */
   _getLabelFontFamily() {
@@ -638,7 +639,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   /**
    * @private
-   * @function WebMap.prototype._getSpriteDatas
+   * @function WebMapV3.prototype._getSpriteDatas
    * @description 获取雪碧图信息。
    */
   _getSpriteDatas() {
@@ -1379,7 +1380,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     const unSupportedMsg = 'layer are not supported yet';
     const { interaction } = mapInfo;
     if (interaction && interaction.drill) {
-      this.fire('getlayersfailed', { error: `drill ${unSupportedMsg}` });
+      this.fire('layercreatefailed', { error: `drill ${unSupportedMsg}`, map: this.map });
       interaction.drill.forEach((drillItem) => {
         filterLayerIds.push(...drillItem.layerIds);
       });

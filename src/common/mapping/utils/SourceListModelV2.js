@@ -1,6 +1,6 @@
 import { AppreciableLayerBase } from './AppreciableLayerBase';
 
-export class SourceListModel extends AppreciableLayerBase {
+export class SourceListModelV2 extends AppreciableLayerBase {
   constructor(options = {}) {
     super(options);
   }

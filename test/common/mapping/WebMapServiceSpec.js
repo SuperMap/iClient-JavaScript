@@ -4,8 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 describe('WebMapServiceSpec.js', () => {
   const mapId = 123;
   const options = {
-    accessKey: undefined,
-    accessToken: undefined,
+    credentialKey: undefined,
+    credentialValue: undefined,
     excludePortalProxyUrl: undefined,
     iportalServiceProxyUrlPrefix: undefined,
     isSuperMapOnline: undefined,

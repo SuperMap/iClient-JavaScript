@@ -13,7 +13,7 @@ export class AppreciableLayerBase {
   }
 
   getLayers() {
-    throw new Error('getAppreciableLayers is not implemented');
+    throw new Error('getLayers is not implemented');
   }
 
   getSourceList() {

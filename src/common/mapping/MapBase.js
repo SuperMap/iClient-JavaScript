@@ -18,11 +18,11 @@ export function createMapClassExtending(SuperClass = class {}) {
       return (this._sourceListModel && this._sourceListModel.getSourceList()) || [];
     }
 
-    getAppreciableLayers() {
+    getLayers() {
       return (this._sourceListModel && this._sourceListModel.getLayers()) || [];
     }
 
-    getLegendInfo() {
+    getLegends() {
       return this._legendList;
     }
 
