@@ -63,9 +63,7 @@
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
             "src/common/components/templates/TemplateBase",
-            "src/common/mapping/utils/L7LayerUtil",
-            "src/common/mapping/utils/Color",
-            "src/common/mapping/utils/util"
+            "src/common/mapping"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],

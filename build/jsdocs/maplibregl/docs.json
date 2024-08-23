@@ -65,6 +65,11 @@
       "src/common/mapping/utils/L7LayerUtil",
       "src/common/mapping/utils/Color",
       "src/common/mapping/utils/util",
+      "src/common/mapping/WebMapV2",
+      "src/common/mapping/WebMapV3",
+      "src/common/mapping/MapStyle",
+      "src/common/mapping/WebMapV2Base",
+      "src/common/mapping/WebMapService",
       "src/maplibregl/core/Util",
       "src/maplibregl/overlay/L7/l7-render"
     ]
