@@ -8,7 +8,7 @@ var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl_L7Layer', () => {
   var originalTimeout;
-  var testDiv, map, getL7Scene, setLayoutProperty,removeLayer;
+  var testDiv, map, getL7Scene, setLayoutProperty, removeLayer;
   var data = [
     {
       id: '5011000000404',
@@ -16,7 +16,8 @@ describe('maplibregl_L7Layer', () => {
       longitude: 121.4316962,
       latitude: 31.26082325,
       unit_price: 71469.4,
-      count: 2
+      count: 2,
+      v: 100
     }
   ];
   beforeAll((done) => {
@@ -24,14 +25,15 @@ describe('maplibregl_L7Layer', () => {
     setLayoutProperty = maplibregl.Map.prototype.setLayoutProperty;
     removeLayer = maplibregl.Map.prototype.removeLayer;
     mbglmap.prototype.getL7Scene = getL7Scene;
+    mbglmap.prototype.setLayoutProperty = setLayoutProperty;
 
     spyOn(maplibregl, 'Map').and.callFake(mbglmap);
 
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'GeometryLayer').and.callFake(mockL7.GeometryLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.HeatmapLayer);
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Maplibre').and.callFake(mockL7.Maplibre);
-
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -83,6 +85,7 @@ describe('maplibregl_L7Layer', () => {
     document.body.removeChild(testDiv);
     map = null;
   });
+
   it('getL7Scene', (done) => {
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
@@ -90,7 +93,8 @@ describe('maplibregl_L7Layer', () => {
       done();
     });
   });
-  it('getL7Scene', (done) => {
+
+  it('getL7Scene1', (done) => {
     var layer = new L7Layer({ type: 'PointLayer' });
     var l7Layer = layer.getL7Layer();
     l7Layer
@@ -111,6 +115,7 @@ describe('maplibregl_L7Layer', () => {
       map.$l7scene = null;
       done();
     });
+    expect(layer.isSourceLoaded()).toBeTruthy();
   });
 
   it('PointLayer', (done) => {
@@ -272,7 +277,6 @@ describe('maplibregl_L7Layer', () => {
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
     expect(layer.animateStatus).toBeFalsy();
 
-
     map.setLayoutProperty(layer.id, 'visibility', 'visible');
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
@@ -299,15 +303,17 @@ describe('maplibregl_L7Layer', () => {
     map.addLayer(layer);
     map.style.fire = () => {};
     map.style.setLayoutProperty = () => {};
+
     map.overlayLayersManager = { [layer.id]: layer };
     expect(l7Layer).not.toBeNull();
     map.setLayoutProperty = setLayoutProperty;
+
     spyOn(l7Layer, 'show');
     spyOn(l7Layer, 'hide');
     spyOn(map.style, 'setLayoutProperty');
     expect(layer.animateStatus).toBeTruthy();
 
-    map.setLayoutProperty(layer.id, 'visibility', 'hidden');
+    map.setLayoutProperty(layer.id, 'visibility', 'none');
     expect(l7Layer.hide).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
     expect(layer.animateStatus).toBeFalsy();
@@ -316,6 +322,109 @@ describe('maplibregl_L7Layer', () => {
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
 
+    done();
+  });
+  it('HeatmapLayer grid updateSource', (done) => {
+    var layer = new L7Layer({ type: 'HeatmapLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        },
+        transforms: [
+          {
+            type: 'grid',
+            size: 2000000,
+            field: 'v',
+            method: 'sum'
+          }
+        ]
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    spyOn(layer, 'reRender');
+    l7Layer.setData(data, {
+      parser: {
+        type: 'json',
+        x: 'j',
+        y: 'w'
+      },
+      transforms: [
+        {
+          type: 'grid',
+          size: 200000,
+          field: 'v',
+          method: 'sum'
+        }
+      ]
+    });
+    expect(l7Layer).not.toBeNull();
+    expect(layer.reRender).toHaveBeenCalled();
+    done();
+  });
+
+  it('mvt layer', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source('http://localhost:8190/zhejiang.mbtiles/{z}/{x}/{y}.pbf', {
+        parser: {
+          type: 'mvt',
+          tileSize: 256,
+          zoomOffset: 0,
+          maxZoom: 9,
+          extent: [-180, -85.051129, 179, 85.051129]
+        }
+      })
+      .shape('circle')
+      .color('#4cfd47');
+    map.addLayer(layer);
+    map.style.fire = () => {};
+    map.style.setLayoutProperty = () => {};
+
+    map.overlayLayersManager = { [layer.id]: layer };
+    expect(layer.sourceId).toBe(layer.id);
+    const layerSource = layer.getSource(layer.id);
+    expect(layerSource.type).toBe('vector');
+    let features;
+    const result = {
+      cb: function (data) {
+        features = data;
+      }
+    };
+    spyOn(result, 'cb').and.callThrough();
+    layer.queryRenderedFeatures([0, 0], {}, result.cb);
+    expect(result.cb.calls.count()).toBe(1);
+    expect(features).not.toBeUndefined();
+    expect(layer.querySourceFeatures().length).toBeGreaterThan(0);
+
+    layer = new L7Layer({ type: 'PointLayer', options: { layerID: 'empty-test' } });
+    l7Layer = layer.getL7Layer();
+    l7Layer
+      .source('http://localhost:8190/zhejiang.mbtiles/{z}/{x}/{y}.pbf', {
+        parser: {
+          type: 'mvt',
+          tileSize: 256,
+          zoomOffset: 0,
+          maxZoom: 9,
+          extent: [-180, -85.051129, 179, 85.051129]
+        }
+      })
+      .shape('circle')
+      .color('#4cfd47');
+    map.addLayer(layer);
+    expect(layer.isSourceLoaded()).toBeFalsy();
+
+    map.overlayLayersManager = { [layer.id]: layer };
+    l7Layer.rawConfig.name = 'empty-test';
+    expect(layer.querySourceFeatures().length).toBe(0);
     done();
   });
 
