@@ -3378,3 +3378,82 @@ var restmapLayer = {
   "rootUrl": "http://localhost:8190/iportal/services/../"
 }
 
+var qixiangLayer1 = {
+  "extent": {
+      "leftBottom": {
+          "x": -20037508.3427892,
+          "y": -20037508.3427892
+      },
+      "rightTop": {
+          "x": 20037508.3427892,
+          "y": 20037508.3427892
+      }
+  },
+  "maxScale": "1:1128.499",
+  "level": 4,
+  "center": {
+      "x": 10904880.84944567,
+      "y": 4221889.42915377
+  },
+  "baseLayer": {
+      "layerType": "TIANDITU_IMG_3857",
+      "visible": true,
+      "labelLayerVisible": true,
+      "tk": "8c88eba266a165eac9c085724708f2f9",
+      "name": "天地图影像"
+  },
+  "layers": [
+      {
+          "layerType": "TILE",
+          "visible": true,
+          "name": "T202007210600",
+          "url": "https://www.supermapol.com/proxy/iserver/services/map_qixiangyun_l93wywbb/rest/maps/T202007210600"
+      }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909",
+  "title": "气象云202007210600",
+  "version": "2.2.1",
+  "rootUrl": "https://www.supermapol.com/"
+}
+
+var qixiangLayer2 = {
+  "extent": {
+      "leftBottom": {
+          "x": -20037508.3427892,
+          "y": -20037508.3427892
+      },
+      "rightTop": {
+          "x": 20037508.3427892,
+          "y": 20037508.3427892
+      }
+  },
+  "maxScale": "1:1128.499",
+  "level": 4,
+  "center": {
+      "x": 10904880.84944567,
+      "y": 4221889.42915377
+  },
+  "baseLayer": {
+      "layerType": "TIANDITU_IMG_3857",
+      "visible": true,
+      "labelLayerVisible": true,
+      "tk": "8c88eba266a165eac9c085724708f2f9",
+      "name": "天地图影像"
+  },
+  "layers": [
+      {
+          "layerType": "TILE",
+          "visible": true,
+          "name": "T202007210700",
+          "url": "https://www.supermapol.com/proxy/iserver/services/map_qixiangyun_l93wywbb/rest/maps/T202007210700"
+      }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909",
+  "title": "气象云202007210700",
+  "version": "2.2.1",
+  "rootUrl": "https://www.supermapol.com/"
+}

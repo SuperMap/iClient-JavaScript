@@ -42,12 +42,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this._appendLayers = false;
     }
   
-    /**
-     * @private
-     * @function WebMapV2.prototype.initializeMap
-     * @description 登陆窗口后添加地图图层。
-     * @param {Object} mapInfo - map 信息。
-     */
     initializeMap(mapInfo, map) {
       if (map) {
         this._appendLayers = true;
@@ -2226,7 +2220,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
-      const renderLayers = appreciableLayers.reduce((layers, layer) => {
+      const renderLayers = appreciableLayers.filter(item => !item.reused).reduce((layers, layer) => {
         return layers.concat(layer.renderLayers);
       }, []);
       const labelLayerIds = [];
@@ -2726,7 +2720,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const { id } = layerInfo;
       if (this.map.getLayer(id)) {
         if (this.checkSameLayer && this._isSameRasterLayer(id, layerInfo)) {
-          this._setCacheLayer({ layerInfo, parentLayerId, id, ignore: true, beforeId });
+          this._setCacheLayer({ layerInfo, parentLayerId, id, reused: true, beforeId });
           return;
         }
         this._updateLayer(layerInfo);
@@ -2737,8 +2731,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this._setCacheLayer({ layerInfo, parentLayerId, id, beforeId });
     }
   
-    _setCacheLayer({ parentLayerId, layerInfo, ignore = false, beforeId, subRenderLayers }) {
-      const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, ignore }];
+    _setCacheLayer({ parentLayerId, layerInfo, reused = false, beforeId, subRenderLayers }) {
+      const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, reused }];
       if (!this._cacheLayerId.has(parentLayerId)) {
         this._cacheLayerId.set(parentLayerId, renderLayers);
       } else {
@@ -2763,7 +2757,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           layerInfo.visible === void 0 || layerInfo.visible === 'visible' || layerInfo.visible === true;
         const matchLayers = this._cacheLayerId.get(targetLayerId);
         if (matchLayers) {
-          const renderLayers = matchLayers.filter((item) => !item.ignore).map((item) => item.layerId);
+          const renderLayers = matchLayers.map((item) => item.layerId);
           if (!renderLayers.length) {
             return;
           }
@@ -2771,14 +2765,15 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             ...layerInfo,
             id: targetLayerId,
             visible: targetLayerVisible,
-            renderLayers
+            renderLayers,
+            reused: matchLayers.some(item => item.reused) || void 0
           });
         }
       });
       this._changeSourceListModel(layersFromMapInfo);
       const appreciableLayers = this.getLayers();
       if (this.addLayersSucceededLen && this._cacheLayerId.size !== this.addLayersSucceededLen) {
-        const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers)
+        const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers);
         const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
         this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
         this.addLayersSucceededLen = this._cacheLayerId.size;
@@ -2788,7 +2783,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
 
     _findTopLayerBeforeId(selfAppreciableLayers) {
       // fix 追加图层，异步的图层回来排序错乱
-      const selfLayerIds = selfAppreciableLayers.reduce((ids, item) => ids.concat(item.renderLayers), []);
+      const selfLayerIds = selfAppreciableLayers.filter(item => !item.reused).reduce((ids, item) => ids.concat(item.renderLayers), []);
       const firstSelfLayerIdOnMap = selfLayerIds.find((id) => this.map.style._layers[id]);
       if (!firstSelfLayerIdOnMap) {
         return;

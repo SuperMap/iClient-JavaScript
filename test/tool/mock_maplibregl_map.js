@@ -209,7 +209,13 @@ const Map = function (options) {
     return style;
   });
 
-  this.removeLayer = function (layerId) {};
+  this.removeLayer = function (layerId) {
+    delete this._layers[layerId];
+    const matchIndex = this._layersList.findIndex(item => item.id === layerId);
+    if (matchIndex > -1) {
+      this._layersList.splice(matchIndex, 1);
+    }
+  };
   this.moveLayer = function (layerId, beforeId) {
     const matchLayerIndex = this._layersList.findIndex(item => item.id === layerId);
     if (matchLayerIndex === -1) {

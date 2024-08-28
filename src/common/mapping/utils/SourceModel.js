@@ -8,6 +8,9 @@ class SourceModel {
     this.type = options.type;
     this.themeSetting = options.themeSetting;
     this.visible = options.visible;
+    if (options.reused) {
+      this.reused = options.reused;
+    }
   }
 
   addLayer(layer) {

@@ -152,7 +152,8 @@ export class AppreciableLayerBase {
       title = name,
       visible = layer.visibility ? layer.visibility === 'visible' : true,
       CLASS_NAME,
-      CLASS_INSTANCE
+      CLASS_INSTANCE,
+      reused
     } = layerInfo;
     const sourceOnMap = this.map.getSource(layer.source);
     const fields = {
@@ -178,6 +179,9 @@ export class AppreciableLayerBase {
     }
     if (CLASS_INSTANCE) {
       fields.CLASS_INSTANCE = CLASS_INSTANCE;
+    }
+    if (reused !== void 0) {
+      fields.reused = reused;
     }
     return fields;
   }

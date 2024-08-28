@@ -2682,4 +2682,56 @@ describe('maplibregl_WebMapV2', () => {
       done();
     });
   });
+
+  it('test checkSameLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1209527958/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(qixiangLayer1)));
+      }
+      if (url.indexOf('106007908/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(qixiangLayer2)));
+      }
+    });
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    const callback = function (data) {
+      const appreciableLayers = datavizWebmap.getLayers();
+      expect(appreciableLayers.length).toBe(0);
+      const webMap1 = new WebMap(1209527958, { ...commonOption, map: data.map, checkSameLayer: true });
+      webMap1.once('mapcreatesucceeded', ({ layers }) => {
+        expect(layers.length).toBe(2);
+        expect(layers[0].reused).toBeUndefined();
+        expect(layers[0].id).toBe('天地图影像');
+        expect(layers[1].reused).toBeUndefined();
+        const webMap2 = new WebMap(106007908, { ...commonOption, map: data.map, checkSameLayer: true });
+        webMap2.once('mapcreatesucceeded', ({ layers, map }) => {
+          expect(layers.length).toBe(2);
+          expect(layers[0].reused).toBeTruthy();
+          expect(layers[0].id).toBe('天地图影像');
+          expect(layers[1].reused).toBeUndefined();
+          let layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(4);
+          expect(layersOnMap[0].id).toBe('天地图影像');
+          expect(layersOnMap[1].id).toBe('天地图影像-tdt-label');
+          expect(layersOnMap[2].id).toBe('T202007210600');
+          expect(layersOnMap[3].id).toBe('T202007210700');
+          webMap2.cleanLayers();
+          layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(3);
+          expect(layersOnMap[0].id).toBe('天地图影像');
+          expect(layersOnMap[1].id).toBe('天地图影像-tdt-label');
+          expect(layersOnMap[2].id).toBe('T202007210600');
+          webMap1.cleanLayers();
+          done();
+        });
+      });
+    };
+    datavizWebmap.once('mapcreatesucceeded', callback);
+  });
 });

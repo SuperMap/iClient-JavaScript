@@ -449,7 +449,8 @@
         return;
       }
       const sourceList = [];
-      for (const item of this._cacheCleanLayers) {
+      const layersToClean = this._cacheCleanLayers.filter(item => !item.reused);
+      for (const item of layersToClean) {
         item.renderLayers.forEach((layerId) => {
           if (this.map.getLayer(layerId)) {
             this.map.removeLayer(layerId);
