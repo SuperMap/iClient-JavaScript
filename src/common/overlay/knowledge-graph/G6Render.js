@@ -132,9 +132,9 @@ export class G6Render {
 
   _getGraphConfig(config) {
     const animateConfig = {
-      speed: 120,
-      maxIteration: 120,
-      tick: throttle(this.refreshPositions.bind(this), 120)
+      speed: 150,
+      maxIteration: 30,
+      tick: throttle(this.refreshPositions.bind(this), 150)
     };
     const defaultLayout = {
       type: 'fruchterman',
