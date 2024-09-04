@@ -1,5 +1,7 @@
 import G6 from '@antv/g6';
 import insertCss from 'insert-css';
+import throttle from 'lodash.throttle';
+
 /**
  * @private
  * @class G6Render
@@ -112,11 +114,9 @@ export class G6Render {
 
   _getGraphConfig(config) {
     const animateConfig = {
-      speed: 120,
-      maxIteration: 83,
-      tick: () => {
-        this.refreshPositions()
-      }
+      speed: 150,
+      maxIteration: 30,
+      tick: throttle(this.refreshPositions.bind(this), 150)
     };
     const defaultLayout = {
       type: 'fruchterman',

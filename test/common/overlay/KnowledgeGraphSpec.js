@@ -381,8 +381,22 @@ describe('KnowledgeGraph', () => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100, animate: false });
     expect(graph).not.toBeNull();
     expect(graph.data).not.toBeNull();
+    expect(graph.config.layout.tick).toBeUndefined();
+    expect(graph.config.layout.maxIteration).toBeUndefined();
+    expect(graph.config.layout.speed).toBeUndefined();
     done();
   });
+
+  it('nodeLabelMaxWidth animate true', (done) => {
+    var graph = new KnowledgeGraph({ animate: true });
+    expect(graph).not.toBeNull();
+    expect(graph.data).not.toBeNull();
+    expect(graph.config.layout.tick).not.toBeUndefined();
+    expect(graph.config.layout.maxIteration).not.toBeUndefined();
+    expect(graph.config.layout.speed).not.toBeUndefined();
+    done();
+  });
+
   it('expand collpase hidden Nodes', (done) => {
     var graph = new KnowledgeGraph();
     graph.setData(data);
