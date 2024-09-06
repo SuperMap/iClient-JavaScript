@@ -3457,3 +3457,95 @@ var qixiangLayer2 = {
   "version": "2.2.1",
   "rootUrl": "https://www.supermapol.com/"
 }
+
+var mapOptionsList = [
+  {
+    style: {
+      version: 8,
+      name: 'ms-4269',
+      sources: {
+        'China4269@DataSource': {
+          type: 'raster',
+          tiles: [
+            'http://localhost:8090/iserver/services/map-China100-11/rest/maps/China4269%40DataSource/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D'
+          ],
+          tileSize: 256,
+          bounds: [73.50098576000005, 6.323053695001199, 135.08727119000014, 53.56026110501225]
+        },
+        ms_424149619: {
+          type: 'vector',
+          tiles: [
+            'http://localhost:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry'
+          ],
+          bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026]
+        }
+      },
+      layers: [
+        {
+          id: 'China4269@DataSource',
+          type: 'raster',
+          source: 'China4269@DataSource'
+        },
+        {
+          id: '未命名数据',
+          type: 'circle',
+          source: 'ms_424149619',
+          'source-layer': '424149619$geometry',
+          minzoom: 0,
+          maxzoom: 24,
+          paint: {
+            'circle-color': 'rgba(189,16,224,1)',
+            'circle-opacity': 0.9,
+            'circle-radius': 9
+          }
+        }
+      ]
+    },
+    crs: 'EPSG:3857'
+  },
+  {
+    style: {
+      version: 8,
+      name: 'ms-4269_副本',
+      sources: {
+        'China4269@DataSource_2023472856': {
+          type: 'raster',
+          tiles: [
+            'http://localhost:8090/iserver/services/map-China100-11/rest/maps/China4269%40DataSource/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D'
+          ],
+          tileSize: 256,
+          bounds: [73.50098576000005, 6.323053695001199, 135.08727119000014, 53.56026110501225]
+        },
+        ms_424149619_1725240548192_22: {
+          type: 'vector',
+          tiles: [
+            'base'
+          ],
+          bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026]
+        }
+      },
+      layers: [
+        {
+          id: 'China4269@DataSource',
+          type: 'raster',
+          source: 'China4269@DataSource_2023472856',
+        },
+        {
+          id: '未命名数据',
+          type: 'circle',
+          source: 'ms_424149619_1725240548192_22',
+          'source-layer': '424149619$geometry',
+          metadata: {},
+          minzoom: 0,
+          maxzoom: 24,
+          paint: {
+            'circle-color': 'pink',
+            'circle-opacity': 0.9,
+            'circle-radius': 9
+          }
+        }
+      ]
+    },
+    crs: 'EPSG:3857'
+  }
+];

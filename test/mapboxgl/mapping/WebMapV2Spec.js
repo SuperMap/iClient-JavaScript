@@ -2683,7 +2683,7 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
-  it('test checkSameLayer', (done) => {
+  it('test webmapv2 checkSameLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));

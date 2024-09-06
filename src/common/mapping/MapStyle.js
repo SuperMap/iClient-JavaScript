@@ -1,5 +1,6 @@
 import { WebMapService } from './WebMapService';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
+import { createAppreciableLayerId, isSameRasterLayer } from './utils/util';
 
 export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
   return class MapStyle extends SuperClass {
@@ -70,6 +71,10 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
     _addLayersToMap() {
       const { sources, layers, layerIdMapList } = this._setUniqueId(this.mapOptions.style);
       layers.forEach((layer) => {
+        const matchRenameLayer = layerIdMapList.find(sub => sub.renderId === layer.id);
+        if (matchRenameLayer && matchRenameLayer.reused) {
+          return;
+        }
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         this.map.addLayer(layer);
       });
@@ -81,6 +86,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
     _setUniqueId(style) {
       const layersToMap = JSON.parse(JSON.stringify(style.layers));
       const nextSources = {};
+      const sourcesIdChangedMap = {};
       const layerIdToChange = [];
       const timestamp = `_${+new Date()}`;
       for (const sourceId in style.sources) {
@@ -88,6 +94,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         if (this.map.getSource(sourceId)) {
           nextSourceId = sourceId + timestamp;
         }
+        sourcesIdChangedMap[nextSourceId] = sourceId;
         nextSources[nextSourceId] = style.sources[sourceId];
         for (const layer of layersToMap) {
           if (layer.source === sourceId) {
@@ -97,11 +104,22 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
       }
       for (const layer of layersToMap) {
         const originId = layer.id;
-        if (this.map.getLayer(layer.id)) {
-          const layerId = layer.id + timestamp;
-          layer.id = layerId;
+        let reused;
+        const existLayer = this.map.getLayer(layer.id);
+        if (existLayer) {
+          // 此时用 getSource(xx).tiles 为空
+          if (
+            this.options.checkSameLayer &&
+            isSameRasterLayer(nextSources[layer.source], this.map.getStyle().sources[existLayer.source])
+          ) {
+            reused = true;
+            layer.source = sourcesIdChangedMap[layer.source];
+          } else {
+            const layerId = layer.id + timestamp;
+            layer.id = layerId;
+          }
         }
-        layerIdToChange.push({ originId: originId, renderId: layer.id });
+        layerIdToChange.push({ originId: originId, renderId: layer.id, reused });
       }
       return {
         sources: nextSources,
@@ -112,7 +130,8 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
 
     _generateAppreciableLayers() {
       return this.mapOptions.style.layers.reduce((layers, layer) => {
-        const id = layer['source-layer'] || layer.source || layer.id;
+        const nameLayer = layer['source-layer'] ? layer : { ...layer, layerInfo: { id: layer.id } };
+        const id = createAppreciableLayerId(nameLayer);
         const matchLayer = layers.find(item => item.id === id);
         if (matchLayer) {
           matchLayer.renderLayers.push(layer.id);
@@ -122,7 +141,8 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
             ...layer,
             id,
             name: matchRenameLayer && matchRenameLayer.originId,
-            renderLayers: [layer.id]
+            renderLayers: [layer.id],
+            reused: matchRenameLayer && matchRenameLayer.reused
           });
         }
         return layers;

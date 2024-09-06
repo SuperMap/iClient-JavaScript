@@ -1164,4 +1164,50 @@ describe('maplibregl_WebMap', () => {
       done();
     });
   });
+
+  it('test mapstyle checkSameLayer', (done) => {
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    const callback = function (data) {
+      const appreciableLayers = datavizWebmap.getLayers();
+      expect(appreciableLayers.length).toBe(0);
+      const webMap1 = new WebMap('', { ...commonOption, map: data.map, checkSameLayer: true }, mapOptionsList[0]);
+      webMap1.once('mapcreatesucceeded', ({ layers }) => {
+        expect(layers.length).toBe(2);
+        expect(layers[0].reused).toBeUndefined();
+        expect(layers[0].id).toBe('China4269@DataSource');
+        expect(layers[1].reused).toBeUndefined();
+        expect(layers[1].id).toBe('424149619$geometry');
+        const webMap2 = new WebMap('', { ...commonOption, map: data.map, checkSameLayer: true }, mapOptionsList[1]);
+        webMap2.once('mapcreatesucceeded', ({ layers, map }) => {
+          expect(layers.length).toBe(2);
+          expect(layers[0].reused).toBeTruthy();
+          expect(layers[0].id).toBe('China4269@DataSource');
+          expect(layers[1].reused).toBeUndefined();
+          expect(layers[1].id).toContain('424149619$geometry');
+          let layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(3);
+          expect(layersOnMap[0].id).toBe('China4269@DataSource');
+          expect(layersOnMap[1].id).toBe('未命名数据');
+          expect(layersOnMap[2].id).toContain('未命名数据_');
+          webMap2.cleanLayers();
+          layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(2);
+          expect(layersOnMap[0].id).toBe('China4269@DataSource');
+          expect(layersOnMap[1].id).toBe('未命名数据');
+          webMap1.cleanLayers();
+          done();
+        });
+      });
+    };
+    datavizWebmap.once('mapcreatesucceeded', callback);
+  });
 });

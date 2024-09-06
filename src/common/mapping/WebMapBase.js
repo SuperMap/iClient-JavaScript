@@ -266,7 +266,7 @@
     }
 
     /**
-     * @function WebMapBase.prototype.setRasterTileSize
+     * @function WebMapBase.prototype.setStyle
      * @description 更新地图样式。
      * @param {Object} style - 地图 style 样式
      */

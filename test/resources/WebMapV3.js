@@ -127,6 +127,12 @@ var mapstudioWebMap_raster = JSON.stringify({
         id: 'PopulationDistribution',
         title: 'PopulationDistribution',
         type: 'basic'
+      },
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: 'CHINA_DARK',
+        type: 'basic'
       }
     ]
   }
@@ -184,6 +190,141 @@ var mapstudioAppInfo = JSON.stringify({
   isDefaultBottomMap: false,
   status: null
 });
+
+const mapstudioWebMap_raster_append = JSON.parse(mapstudioWebMap_raster);
+mapstudioWebMap_raster_append.layers.push({
+  "metadata": {},
+  "maxzoom": 24,
+  "paint": {
+    "circle-color": "rgba(189,16,224,1)",
+    "circle-opacity": 0.9,
+    "circle-translate-anchor": "map",
+    "circle-radius": 9,
+    "circle-translate": [
+      0,
+      0
+    ]
+  },
+  "id": "未命名数据",
+  "source": "ms_424149619_1725240548192_22",
+  "source-layer": "424149619$geometry",
+  "type": "circle",
+  "minzoom": 0
+});
+mapstudioWebMap_raster_append.sources['ms_424149619_1725240548192_22'] = {
+  "tiles": [
+    "http://172.16.14.44:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry"
+  ],
+  "bounds": [
+    97.89133489467912,
+    30.977794120474215,
+    103.94874956817955,
+    35.60055795025026
+  ],
+  "type": "vector"
+}
+mapstudioWebMap_raster_append.metadata.layerCatalog.unshift({
+  "visible": true,
+  "id": "未命名数据",
+  "title": "未命名数据-点",
+  "type": "basic"
+})
+
+var msProjectINfo_raster_append = JSON.parse(mapstudioAppInfo);
+
+const rasterAppendProjInfo = JSON.parse(msProjectINfo_raster_append.projectInfo);
+
+rasterAppendProjInfo.catalogs.push({
+  "visualization": {
+      "renderer": [
+          {
+              "symbolsContent": {
+                  "type": "simple",
+                  "value": {
+                      "symbolId": "circle",
+                      "style": {
+                          "layout": {
+                              "icon-image": "circle"
+                          }
+                      }
+                  }
+              },
+              "size": {
+                  "type": "simple",
+                  "value": 18
+              },
+              "color": {
+                  "type": "simple",
+                  "value": "rgba(189,16,224,1)"
+              },
+              "translateAnchor": {
+                  "type": "simple",
+                  "value": "map"
+              },
+              "opacity": {
+                  "type": "simple",
+                  "value": 0.9
+              },
+              "translate": {
+                  "type": "simple",
+                  "value": [
+                      0,
+                      0
+                  ]
+              },
+              "styleRenderMode": "mapboxgl"
+          }
+      ]
+  },
+  "visible": true,
+  "catalogType": "layer",
+  "msDatasetId": "ms_datasetId_1725240537606_18",
+  "bounds": [
+      97.89133489467912,
+      30.977794120474215,
+      103.94874956817955,
+      35.60055795025026
+  ],
+  "id": "未命名数据",
+  "popupInfo": {
+      "elements": [
+          {
+              "fieldName": "smpid",
+              "type": "FIELD"
+          },
+          {
+              "fieldName": "新建字段",
+              "type": "FIELD"
+          },
+          {
+              "fieldName": "geometry",
+              "type": "FIELD"
+          }
+      ],
+      "title": "未命名数据"
+  },
+  "title": "未命名数据-点",
+  "layerSourceType": "Data",
+  "zoomRange": [
+      0,
+      24
+  ]
+});
+
+rasterAppendProjInfo.datas.push({
+  "sourceType": "STRUCTURE_DATA",
+  "datasets": [
+      {
+          "datasetTitle": "未命名数据",
+          "msDatasetId": "ms_datasetId_1725240537606_18",
+          "datasetId": "424149619",
+          "geometryField": "geometry"
+      }
+  ],
+  "title": "未命名数据"
+});
+
+msProjectINfo_raster_append.projectInfo = JSON.stringify(rasterAppendProjInfo);
 
 var msSpriteInfo = JSON.stringify({
   rectangle: {
@@ -2864,3 +3005,4 @@ var mapstudioWebMap_group = JSON.stringify({
   pitch: 0,
   minzoom: 0
 });
+

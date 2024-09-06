@@ -164,3 +164,25 @@ export function getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
   }
   return results;
 }
+
+export function isSameRasterLayer(sourceInfo, compareSource) {
+  const { type, tiles } = sourceInfo;
+  if (type === 'raster') {
+    return type === compareSource.type && tiles && compareSource.tiles && (tiles[0].includes(compareSource.tiles[0]) || compareSource.tiles[0].includes(tiles[0]))
+  }
+  return false;
+}
+
+export function createAppreciableLayerId(layer) {
+  // 针对传入 layers
+  if (layer.layerInfo && layer.layerInfo.id) {
+    return layer.layerInfo.id;
+  }
+  // 往空地图上追加图层 且 只有一个webmap this.layers是空
+  if (layer.metadata && layer.metadata.parentLayerId) {
+    return layer.metadata.parentLayerId;
+  }
+  // 针对 MapboxStyle 或者其它额外的 layer
+  // type: background 和某些 overlaymanager layers 只有 id
+  return layer.sourceLayer || layer.source || layer.id;
+}

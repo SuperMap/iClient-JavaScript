@@ -8,7 +8,7 @@ import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
 import { FetchRequest } from '../util/FetchRequest';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
-import { mergeFeatures } from './utils/util';
+import { isSameRasterLayer, mergeFeatures } from './utils/util';
 
 export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   return class WebMapV2 extends SuperClass {
@@ -2766,7 +2766,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             id: targetLayerId,
             visible: targetLayerVisible,
             renderLayers,
-            reused: matchLayers.some(item => item.reused) || void 0
+            reused: matchLayers.some(item => item.reused)
           });
         }
       });
@@ -2819,16 +2819,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _isSameRasterLayer(id, layerInfo) {
-      const {
-        source: { type, tiles }
-      } = layerInfo;
-      if (type === 'raster') {
-        const source = this.map.getSource(id);
-        if (type === source.type && tiles && source.tiles && tiles[0] === source.tiles[0]) {
-          return true;
-        }
-      }
-      return false;
+      return isSameRasterLayer(layerInfo.source, this.map.getSource(id));
     }
   
     _centerValid(center) {

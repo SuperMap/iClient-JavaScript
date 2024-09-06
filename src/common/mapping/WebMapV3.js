@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { getLayerInfosFromCatalogs, mergeFeatures, transformUrl } from './utils/util';
+import { getLayerInfosFromCatalogs, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
 
 const LEGEND_RENDER_TYPE = {
@@ -421,6 +421,9 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       Object.assign(this._mapResourceInfo, { catalogs });
       const mapboxglLayers = layers.filter((layer) => !l7LayerUtil.isL7Layer(layer));
       mapboxglLayers.forEach((layer) => {
+        if (layer.metadata && layer.metadata.reused) {
+          return;
+        }
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         // L7才会用到此属性
         if (layer.type === 'symbol' && layer.layout['text-z-offset'] === 0) {
@@ -461,6 +464,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       return !unspportedLayers.includes(layer.id);
     });
     const nextSources = {};
+    const sourcesIdChangedMap = {};
     const layerIdToChange = [];
     const timestamp = `_${+new Date()}`;
     for (const sourceId in style.sources) {
@@ -468,6 +472,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       if (this.map.getSource(sourceId)) {
         nextSourceId = sourceId + timestamp;
       }
+      sourcesIdChangedMap[nextSourceId] = sourceId;
       nextSources[nextSourceId] = style.sources[sourceId];
       for (const layer of layersToMap) {
         if (layer.source === sourceId) {
@@ -477,9 +482,19 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     }
     for (const layer of layersToMap) {
       const originId = layer.id;
-      if (this._getLayerOnMap(layer.id)) {
-        const layerId = layer.id + timestamp;
-        layer.id = layerId;
+      const existLayer = this._getLayerOnMap(layer.id);
+      if (existLayer) {
+        if (
+          this.options.checkSameLayer &&
+          isSameRasterLayer(nextSources[layer.source], this.map.getSource(existLayer.source))
+        ) {
+          layer.metadata = layer.metadata || {};
+          layer.metadata.reused = true;
+          layer.source = sourcesIdChangedMap[layer.source];
+        } else {
+          const layerId = layer.id + timestamp;
+          layer.id = layerId;
+        }
       }
       layerIdToChange.push({ originId: originId, renderId: layer.id });
     }
@@ -573,6 +588,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       if (matchLayer) {
         const catalog = this._findLayerCatalog(catalogs, id);
         catalog.id = matchLayer.renderId;
+        catalog.reused = matchLayer.reused;
         if (catalog[layerIdsField]) {
           catalog[layerIdsField] = this._renameLayerIdsContent(catalog[layerIdsField], layerIdMapList);
         }
