@@ -860,7 +860,9 @@ describe('WebMapServiceSpec.js', () => {
   });
 
   it('get Layer Features from rest_data and dataSource is Chinese', done => {
-    spyOn(FetchRequest, 'post').and.callFake(() => {
+    let getFeatureBySQLParams;
+    spyOn(FetchRequest, 'post').and.callFake((url, options) => {
+      getFeatureBySQLParams = options;
       return Promise.resolve(new Response(JSON.stringify(REST_DATA_SQL_RESULT)));
     });
     const type = 'rest_data';
@@ -880,6 +882,8 @@ describe('WebMapServiceSpec.js', () => {
       expect(params[0]).toBe(layer.dataSource.url);
       expect(params[1]).toEqual(["中国矢量数据:飞机场"]);
       expect(params[4]).toEqual(baseProjection);
+      expect(typeof getFeatureBySQLParams).toBe('string');
+      expect(getFeatureBySQLParams).toContain(`'targetEpsgCode':4326`);
       done();
     });
   });
