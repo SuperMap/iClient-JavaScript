@@ -147,11 +147,11 @@
             inputCSS(disturl + '/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet.css');
+            inputCSS(libsurl + '/plotting/leaflet/11.2.1/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet-es6.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.2.1/iclient-plot-leaflet-es6.min.js');
             } else {
-                inputScript(libsurl + '/plotting/leaflet/11.2.0/iclient-plot-leaflet.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.2.1/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {

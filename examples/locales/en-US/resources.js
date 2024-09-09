@@ -2510,7 +2510,8 @@ window.examplesResources = {
         "text_subLayer":"subLayer",
         "text_setCurrentMapScaleToMintVisibleScale":"set current map scale to min visible scale",
         "text_setCurrentMapScaleToMaxVisibleScale":"set current map scale to max visible scale",
-        "text_clearVisibleScaleSet":"clear visible scale set"
+        "text_clearVisibleScaleSet":"clear visible scale set",
+		"text_symbolAnnotations":"symbolAnnotations"
     }
 };
 

@@ -2485,7 +2485,8 @@ window.examplesResources = {
         "text_subLayer":"子图层",
         "text_setCurrentMapScaleToMintVisibleScale":"设置当前地图比例尺为最小可见比例尺",
         "text_setCurrentMapScaleToMaxVisibleScale":"设置当前地图比例尺为最大可见比例尺",
-        "text_clearVisibleScaleSet":"清除可见比例尺设置"
+        "text_clearVisibleScaleSet":"清除可见比例尺设置",
+		"text_symbolAnnotations":"多注记"
         
 
     }
