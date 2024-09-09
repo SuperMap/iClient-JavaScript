@@ -67,7 +67,7 @@
    function getSMLInfosSucess(evt){
        L.supermap.plotting.initSMLInfosPanel("filetree", evt.smlInfoList, function(clickSmlFileName){
            var result = sitDataManager.downloadSmlFileURL(clickSmlFileName);
-           document.getElementById("downloadUrl").value = serverUrl + result;
+           document.getElementById("downloadUrl").value = result;
            document.getElementById("smlFileName").value =clickSmlFileName;
            sitDataManager.openSmlFileOnServer(clickSmlFileName);
        })
