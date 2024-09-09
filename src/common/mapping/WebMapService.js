@@ -1200,12 +1200,8 @@ export class WebMapService {
       maxFeatures: -1,
       returnContent: true
     });
-    if (baseProjection) {
-      if (baseProjection === 'EPSG:3857' || baseProjection === 'EPSG:-1000') {
-        getFeatureBySQLParams.targetEpsgCode = 4326;
-      } else {
-        getFeatureBySQLParams.targetEpsgCode = +baseProjection.split(':')[1];
-      }
+    if (baseProjection && baseProjection !== 'EPSG:4326') {
+      getFeatureBySQLParams.targetEpsgCode = 4326;
     }
     const proxy = this.handleProxy();
     let options = {

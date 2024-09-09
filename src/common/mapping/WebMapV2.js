@@ -405,8 +405,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
           if (layer.visibleScale) {
             const { minScale, maxScale } = layer.visibleScale;
-            layer.minzoom = Math.max(this._transformScaleToZoom(minScale), 0);
-            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale) + 0.0000001);
+            const crs = this.map.getCRS();
+            layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs), 0);
+            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs) + 0.0000001);
           }
   
           if (type === 'tile') {
@@ -455,7 +456,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (
         features &&
         projection &&
-        (projection !== this.baseProjection || projection === 'EPSG:3857' || projection === 'EPSG:-1000') &&
+        projection !== 'EPSG:4326' &&
         layerInfo.dataSource &&
         layerInfo.dataSource.type !== 'REST_DATA'
       ) {
@@ -884,7 +885,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         layerID: layerInfo.layerID
       });
   
-      if (layerInfo.projection === 'EPSG:3857') {
+      if (layerInfo.projection !== 'EPSG:4326') {
         features = this.transformFeatures(features);
       }
       if (layerInfo.filterCondition) {
@@ -2837,8 +2838,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _transformScaleToZoom(scale, crs) {
-      const extent = (crs || this.map.getCRS()).getExtent();
-      const unit = (crs || this.map.getCRS()).unit;
+      const extent = crs.getExtent();
+      const unit = crs.unit;
       const scaleBase = 1.0 / Util.getScaleFromResolutionDpi((extent[2] - extent[0]) / 512, 96, unit);
       const scaleDenominator = scale.split(':')[1];
       return Math.min(24, +Math.log2(scaleBase / +scaleDenominator).toFixed(2));
