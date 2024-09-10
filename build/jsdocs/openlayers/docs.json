@@ -35,6 +35,7 @@
             "src/common/iServer/ProcessingServiceBase",
             "src/common/iServer/PointWithMeasure",
             "src/common/iServer/ServerTheme",
+            "src/common/iServer/QueryService",
             "src/common/overlay/RankSymbol",
             "src/common/overlay/Graph",
             "src/common/overlay/ThemeVector",

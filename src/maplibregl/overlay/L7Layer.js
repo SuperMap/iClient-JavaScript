@@ -11,6 +11,7 @@ import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
  * @class L7Layer
  * @category Visualization L7
  * @version 11.2.0
+ * @extends {L7LayerBase}
  * @classdesc L7Layer对接了@antv/L7的图层类型，能够通过maplibre-gl操作@antv/L7的图层。
  * @param {Object} options -  图层配置项，包括以下参数：
  * @param {string} options.type - @antv/L7的图层类型，详情参见: {@link https://l7.antv.antgroup.com/api/point_layer/pointlayer}。
@@ -27,51 +28,6 @@ export class L7Layer extends L7LayerBase {
       this.l7layer = new L7[type]({ ...options, name: this.id });
       this.setDataFn = this.l7layer.setData.bind(this.l7layer);
     }
-    this.overlay = true;
-  }
-  /**
-   * @function L7Layer.prototype.getL7Layer
-   * @description 获取@antv/L7的layer实例。
-   * @returns {Object} @antv/L7的layer实例。
-   */
-  getL7Layer() {
-    return this.l7layer;
-  }
-
-  /**
-   * @function L7Layer.prototype.reRender
-   * @description  当修改@antv/L7的layer的配置时，重新渲染。
-   */
-  reRender() {
-    if (this.scene && this.scene.getLayer(this.l7layer.id)) {
-      this.scene.layerService.renderLayer(this.l7layer.id);
-    }
-    this.map && this.map.triggerRepaint();
-  }
-
-  moveLayer(id, beforeId) {
-    this.map.style.moveLayer(id, beforeId);
-  }
-
-  setVisibility(visibility) {
-    if (this.animateStatus) {
-      this.cancelAnimationFrame();
-    }
-    visibility ? this.l7layer.show() : this.l7layer.hide();
-    this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
-  }
-  addSceneLayer(scene) {
-    this.scene = scene;
-    this.scene.addLayer(this.l7layer);
-    this.updateSourceEffect();
-  }
-
-  updateSourceEffect() {
-    const source = this.l7layer.getSource();
-    source &&
-      source.on('update', () => {
-        this.reRender();
-      });
   }
 
   onAdd(map) {

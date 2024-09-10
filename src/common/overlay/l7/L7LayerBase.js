@@ -2,9 +2,9 @@ import { Util as CommonUtil } from '../../commontypes/Util';
 import { CustomOverlayLayer } from '../Base';
 
 /**
- * @class L7Layer
+ * @class L7LayerBase
  * @category Visualization L7
- * @version 11.2.0
+ * @version 11.2.1
  * @classdesc L7Layer对接了@antv/L7的图层类型，能够通过mapbox-gl操作@antv/L7的图层。
  * @param {Object} options -  图层配置项，包括以下参数：
  * @param {string} options.type - @antv/L7的图层类型，详情参见: {@link https://l7.antv.antgroup.com/api/point_layer/pointlayer}。
@@ -50,8 +50,9 @@ export class L7LayerBase extends CustomOverlayLayer {
     this.setSelectedDatasFn = this.setSelectedDatas.bind(this);
     this.reRenderFn = this.reRender.bind(this);
   }
+
   /**
-   * @function L7Layer.prototype.getL7Layer
+   * @function L7LayerBase.prototype.getL7Layer
    * @description 获取@antv/L7的layer实例。
    * @returns {Object} @antv/L7的layer实例。
    */
@@ -60,7 +61,7 @@ export class L7LayerBase extends CustomOverlayLayer {
   }
 
   /**
-   * @function L7Layer.prototype.reRender
+   * @function L7LayerBase.prototype.reRender
    * @description  当修改@antv/L7的layer的配置时，重新渲染。
    */
   reRender() {

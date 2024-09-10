@@ -7,7 +7,8 @@
   getMeterPerMapUnit as MeterPerMapUnit,
   getZoomByResolution,
   scalesToResolutions,
-  getDpi
+  getDpi,
+  scaleToResolution as transformScaleToResolution
 } from '@supermapgis/iclient-common/util/MapCalculateUtil';
 
  /**
@@ -136,36 +137,7 @@ export var resolutionToScale = function(resolution, dpi, mapUnit) {
     return scale;
 };
 
- /**
- * @function scaleToResolution
- * @category BaseTypes Util
- * @description 通过比例尺计算分辨率。
- * @param {number} scale - 比例尺。
- * @param {number} dpi - 屏幕分辨率。
- * @param {string} mapUnit - 地图单位。
- * @returns {number} 分辨率。
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   const result = {namespace}.Util.scaleToResolution(scale, dpi, mapUnit);
- *
- * </script>
- *
- * // ES6 Import
- * import { scaleToResolution } from '{npm}';
- *
- * const result = scaleToResolution(scale, dpi, mapUnit);
- * ```
- */
-export var scaleToResolution = function(scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-    resolution = 1 / resolution;
-    return resolution;
-};
+export var scaleToResolution = transformScaleToResolution;
 
  /**
  * @function normalizeScale

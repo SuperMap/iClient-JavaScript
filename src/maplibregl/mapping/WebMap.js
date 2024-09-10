@@ -16,6 +16,7 @@ import MapManager from './webmap/MapManager';
   * @version 11.2.1
   * @extends {WebMapBase}
   * @category  iPortal/Online Resources Map
+  * @classdesc 对接 iPortal/Online 地图类。
   * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
   *      <p style="color: #ce4844">Notice</p>
   *      <p style="font-size: 13px">该功能可能依赖以下插件，请确认引入该插件。</p>
