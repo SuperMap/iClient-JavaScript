@@ -54,7 +54,7 @@
     var disturl = config.disturl;
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
-    if (!inArray(excludes, 'maplibregl')) {
+    if (!inArray(includes, 'maplibre-gl-enhance') && !inArray(excludes, 'maplibregl')) {
       inputCSS(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.css');
       inputScript(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.js');
     }
