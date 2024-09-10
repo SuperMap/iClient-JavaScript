@@ -507,6 +507,7 @@ describe('mapboxgl_WebMapV2', () => {
       };
       datavizWebmap.map.fire('zoomend');
       expect(data).not.toBeUndefined();
+      expect(data.layers.slice(-1)[0].id).toContain('graticuleLayer_');
       done();
     };
     datavizWebmap = new WebMap(id, { ...commonOption });

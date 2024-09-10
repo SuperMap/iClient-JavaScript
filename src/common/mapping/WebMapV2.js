@@ -213,6 +213,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         }
         this.expectLayerLen += overLayers.length;
       }
+      if (mapInfo.grid && mapInfo.grid.graticule) {
+        this.expectLayerLen++;
+      }
     }
   
     _shouldLoadBaseLayer(mapInfo, layerFilter) {
@@ -506,6 +509,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         parentLayerId: graticuleLayer.id,
         subRenderLayers: [{ layerId: graticuleLayer.id }, { layerId: graticuleLayer.sourceId }]
       });
+      this._addLayerSucceeded();
     }
   
     _createGraticuleOptions(graticuleInfo) {

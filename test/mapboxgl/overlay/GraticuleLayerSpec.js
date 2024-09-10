@@ -82,6 +82,20 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(visible).toBe('visible');
   });
 
+  it('setLayoutProperty', () => {
+    let visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'none');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('none');
+    expect(graticuleLayer.visible).toBeFalsy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'visible');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
+  });
+
   it('setMinZoom', () => {
     graticuleLayer.setMinZoom(0);
     expect(graticuleLayer.options.minZoom).toEqual(0);
