@@ -173,6 +173,9 @@ export var MapExtend = (function () {
           if (overlayLayer.setLayoutProperty) {
             overlayLayer.setLayoutProperty(name, value);
             this.style.fire('data', { dataType: 'style' });
+          } else if (name === 'visibility' && overlayLayer.setVisibility) {
+            overlayLayer.setVisibility(value === 'visible');
+            this.style.fire('data', { dataType: 'style' });
           }
           return this;
         }

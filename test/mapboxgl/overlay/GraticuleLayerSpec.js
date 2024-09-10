@@ -45,7 +45,7 @@ describe('mapboxgl_GraticuleLayer', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     if (!map.getLayer('graticuleLayer_1')) {
       graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_1' });
-      graticuleLayer.onAdd(map);
+      map.addLayer(graticuleLayer);
     }
   });
 
@@ -92,6 +92,20 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(visible).toBe('visible');
   });
 
+  it('setLayoutProperty', () => {
+    let visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'none');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('none');
+    expect(graticuleLayer.visible).toBeFalsy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'visible');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
+  });
+
   it('setMinZoom', () => {
     graticuleLayer.setMinZoom(0);
     expect(graticuleLayer.options.minZoom).toEqual(0);
@@ -108,12 +122,12 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setExtent', () => {
-    graticuleLayer.setExtent([
-      [0, 0],
-      [50, 50]
-    ]);
-    expect(graticuleLayer.options.extent[0]).toEqual(0);
-    expect(graticuleLayer.options.extent[3]).toEqual(50);
+      graticuleLayer.setExtent([
+        [0, 0],
+        [50, 50]
+      ]);
+      expect(graticuleLayer.options.extent[0]).toEqual(0);
+      expect(graticuleLayer.options.extent[3]).toEqual(50);
   });
 
   it('setStrokeStyle', () => {
@@ -132,8 +146,8 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setIntervals', () => {
-    graticuleLayer.setIntervals(5);
-    expect(graticuleLayer.renderer.options.interval).toEqual(5);
+      graticuleLayer.setIntervals(5);
+      expect(graticuleLayer.renderer.options.interval).toEqual(5);
   });
 
   it('getDefaultExtent must return degree', () => {

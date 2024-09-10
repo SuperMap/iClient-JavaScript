@@ -70,7 +70,7 @@ export class InitMapServiceBase {
   }
 
   /**
-   * @function getMapInfo
+   * @function getWKT
    * @description 获取坐标投影的 WKT。
    * @returns {Promise}
    */
@@ -149,7 +149,7 @@ export function getTileset(tilesets = [], targets) {
 
 /**
  * @private
- * @function createMapOptions
+ * @function scalesToResolutions
  * @description mapboxgl maplibregl 获取地图resolutions。
  * @returns {Array} resolutions
  */

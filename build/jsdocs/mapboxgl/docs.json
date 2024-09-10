@@ -36,6 +36,7 @@
             "src/common/iServer/ProcessingServiceBase",
             "src/common/iServer/PointWithMeasure",
             "src/common/iServer/ServerTheme",
+            "src/common/iServer/QueryService",
             "src/common/overlay/RankSymbol",
             "src/common/overlay/ThemeVector",
             "src/common/overlay/Graph",
@@ -66,7 +67,8 @@
             "src/common/components/templates/TemplateBase",
             "src/mapboxgl/core/Util",
             "src/mapboxgl/overlay/L7/l7-render",
-            "src/mapboxgl/mapping/utils"
+            "src/mapboxgl/mapping/utils",
+            "src/mapboxgl/mapping/webmap/v3/WebMap"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],

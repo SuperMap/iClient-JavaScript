@@ -73,11 +73,6 @@ export class WebMap extends mapboxgl.Evented {
      this._canvgsV = [];
    }
 
-   /**
-    * @function WebMap.prototype.initializeMap
-    * @description 登陆窗口后添加地图图层。
-    * @param {Object} mapInfo - map 信息。
-    */
    initializeMap(mapInfo) {
 	const projectionMap = ['EPSG:4490', 'EPSG:4214', 'EPSG:4610', 'EPSG:3857', 'EPSG:4326'];
 	// 坐标系异常处理
