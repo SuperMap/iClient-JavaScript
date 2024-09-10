@@ -49,7 +49,7 @@
       var url = host + '/iserver/services/map-china400/rest/maps/China_4326';
       var chart,
         div,
-        popup = '';
+        popup = '', categoryDataMap, dataMap;
       var map = new maplibregl.Map({
         container: 'map',
         style: {
@@ -87,7 +87,7 @@
           const image =  await map.loadImage('../img/marker-icon.png');
           map.addImage('positionPoint', image.data);
 
-          var categoryDataMap = {
+          categoryDataMap = {
             北京市: [
               { value: 335, name: resources.text_class + 'A' },
               { value: 679, name: resources.text_class + 'B' },
@@ -104,7 +104,7 @@
               { value: 875, name: resources.text_class + 'C' }
             ]
           };
-          var dataMap = {
+          dataMap = {
             北京市: [
               { value: 335, name: resources.text_commodity + 'A' },
               { value: 310, name: resources.text_commodity + 'B' },
