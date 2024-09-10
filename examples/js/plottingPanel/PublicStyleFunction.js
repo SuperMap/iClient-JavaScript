@@ -1,24 +1,24 @@
 
-var group = [resources.option_symbol, resources.text_cancleLocked, resources.text_objectVisible, resources.text_commonUsePoint, resources.text_mainLine, resources.text_surroundLine, resources.text_fill, resources.text_textContent, resources.text_subSymbol];
+var group = [resources.option_symbol, resources.text_cancleLocked, resources.text_objectVisible, resources.text_commonUsePoint, resources.text_mainLine, resources.text_surroundLine, resources.text_fill, resources.text_textContent, resources.text_subSymbol, resources.text_symbolAnnotations];
 var displayName = [resources.text_locked, resources.text_visible, resources.text_libID, resources.text_symbolCode];
 var displayLineStyleName = [resources.text_line_width, resources.text_signLineColor, resources.text_symbolLineType, resources.text_signLineOpacity];
 var displaySurroundLineName = [resources.text_surroundLindType, resources.text_surroundLindWidth, resources.text_surroundLindColor, resources.text_surroundLindOpacity];
 var displayFillStyleName = [resources.text_fill, resources.text_fillColor, resources.text_fillOpacity, resources.text_gradiendFillMode, resources.text_fillBackColor, resources.text_fillBackOpacity, resources.text_gradientFillAngle, resources.text_gradientFillHorizenOffset, resources.text_gradientFillVerticalOffset];
 var displayNameDot = [resources.text_rotateAngle, resources.text_followMapSize, resources.text_mirrorImage, resources.text_symbolRanke, resources.text_locationOffset, resources.text_offsetLineType, resources.text_sizeLocked, resources.text_symbolWidth, resources.text_symbolHeight];
 var displayTextContentName = [resources.text_symbolTextContent, resources.text_textContentLocation, resources.text_textContentSize, resources.text_textContentColor, resources.text_textContentFont, resources.text_textContentDis,
-    resources.text_textContentSpace, resources.text_fontSizePercent, resources.text_fontBorder, resources.text_fontBorderColor, resources.text_fontBorderWidth,
-    resources.text_fontBack, resources.text_fontBackColor, resources.text_fontShadow, resources.text_fontShadowColor, resources.text_shadowOffsetX, resources.text_shadowOffsetY];
+resources.text_textContentSpace, resources.text_fontSizePercent, resources.text_fontBorder, resources.text_fontBorderColor, resources.text_fontBorderWidth,
+resources.text_fontBack, resources.text_fontBackColor, resources.text_fontShadow, resources.text_fontShadowColor, resources.text_shadowOffsetX, resources.text_shadowOffsetY];
 var groupNew = [resources.text_groupType, resources.text_arrowType, resources.text_alongLineType, resources.text_borderAttributr, resources.text_radius, resources.text_orbitSet, resources.text_nodeSet, resources.text_associatedLineType, resources.text_foldLineSet];
 var displayNameNew = [resources.text_arrowHead, resources.text_arrowBody, resources.text_arrowTail,
-    resources.text_start, resources.text_end,
-    resources.text_pathLine, resources.text_bezierCurves, resources.text_showArrow, resources.text_avoidance,
-    resources.text_textBoxBorder, resources.text_radiusBox, resources.text_objectTextBox,
-    resources.text_radiusType, resources.text_radiusAngle, resources.text_textContent1, resources.text_textContent2,
-    resources.text_satelliteOrbit,
-    resources.text_nodeType, resources.text_nodeRotateAngle,
-    resources.text_objectLines,
-    resources.text_showFoldLine,
-    resources.text_textAlignType];
+resources.text_start, resources.text_end,
+resources.text_pathLine, resources.text_bezierCurves, resources.text_showArrow, resources.text_avoidance,
+resources.text_textBoxBorder, resources.text_radiusBox, resources.text_objectTextBox,
+resources.text_radiusType, resources.text_radiusAngle, resources.text_textContent1, resources.text_textContent2,
+resources.text_satelliteOrbit,
+resources.text_nodeType, resources.text_nodeRotateAngle,
+resources.text_objectLines,
+resources.text_showFoldLine,
+resources.text_textAlignType];
 function collectionPropertyGridRows(featuresParameter) {
     var features = [];
     var styles = [];
@@ -76,8 +76,8 @@ function collectionPropertyGridRows(featuresParameter) {
             { "name": resources.text_symbolCode2, "value": selectfeature.code, "group": group[0] },
             { "name": resources.text_symbolName, "value": selectfeature.symbolName, "group": group[0] }
         ];
-        if(selectfeature.libID === 100&&(selectfeature.code === 23902||selectfeature.code === 21600)){
-            rows.push({"name":"内容","value":selectfeature.textContent,"group": group[0],"editor":"text"});
+        if (selectfeature.libID === 100 && (selectfeature.code === 23902 || selectfeature.code === 21600)) {
+            rows.push({ "name": "内容", "value": selectfeature.textContent, "group": group[0], "editor": "text" });
         }
     }
 
@@ -102,7 +102,7 @@ function collectionPropertyGridRows(featuresParameter) {
     if (selectfeatures.length === sameFeatures.length || selectfeatures.length === dotSelectFeatures.length || selectfeatures.length === algoSelectFeatures.length) {
         rows = rows.concat(symbolPropertyObject(selectfeature, styleObject));
     }
-    if(selectfeature.symbolType == 20||selectfeature.symbolType == 21){
+    if (selectfeature.symbolType == 20 || selectfeature.symbolType == 21) {
         rows = rows.concat(picturePropertyObject(selectfeature));
     }
     //addExtendProperty(rows,selectfeature);
@@ -188,22 +188,12 @@ function getLineStyleRows() {
     rows.push({ "value": "2", "text": resources.text_lineByPoint });//由点构成的直线(dot)
     rows.push({ "value": "3", "text": resources.text_lineByLineSegment });//由线划线段组成的直线(dashdot)(longdashdot)
     rows.push({ "value": "4", "text": resources.text_lineByPointSegment });//由重复的划线点图案构成的直线
-    rows.push({ "value": "888", "text": resources.text_NULL });
+    //rows.push({ "value": "888", "text": resources.text_NULL });
     rows.push({ "value": "5", "text": resources.text_twoSegDashline });
     rows.push({ "value": "6", "text": resources.text_threeSegDashline });
     rows.push({ "value": "7", "text": resources.text_fourSegDashline });
     rows.push({ "value": "8", "text": resources.text_fiveSegDashline });
-    // rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
-    return rows;
-}
-
-function getDotLineStyleRows() {
-    var rows = [];
-    rows.push({ "value": "0", "text": resources.text_solidLine });//实线(solid)
-    rows.push({ "value": "1", "text": resources.text_longDashLine });//长虚线(longdash) //虚线(dash)
-    rows.push({ "value": "2", "text": resources.text_lineByPoint });//由点构成的直线(dot)
-    rows.push({ "value": "3", "text": resources.text_lineByLineSegment });//由线划线段组成的直线(dashdot)(longdashdot)
-    rows.push({ "value": "4", "text": resources.text_lineByPointSegment });//由重复的划线点图案构成的直线
+    rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
     return rows;
 }
 /**
@@ -689,8 +679,8 @@ function subAlgoRankTypeString(subSymbolsLength, geometry) {
     }
 }
 
-function subSymbolsTypeString(subSymbolsLength, geometry,index) {
-    if(subSymbolsLength<index+1){
+function subSymbolsTypeString(subSymbolsLength, geometry, index) {
+    if (subSymbolsLength < index + 1) {
         return "";
     }
     if (subSymbolsLength === 0) {
@@ -885,8 +875,8 @@ function isCanAddText(selectfeature) {
 
 function symbolPropertyObject(selectfeature, styleObject) {
 
-    if (selectfeature.symbolType === SuperMap.Plot.SymbolType.CLUSTEROBJECT||
-        selectfeature.symbolType === SuperMap.Plot.SymbolType.PICTURE||
+    if (selectfeature.symbolType === SuperMap.Plot.SymbolType.CLUSTEROBJECT ||
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.PICTURE ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.MODELPLOT) {
         return [];
     }
@@ -930,12 +920,7 @@ function symbolPropertyObject(selectfeature, styleObject) {
     lineStyleObj.group = group[4];
     lineStyleObj.name = displayLineStyleName[2];
     if (styleObject.lineSymbolID !== undefined) {
-        if(selectfeature.symbolType === 1){
-            lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getDotLineStyleRows() } };
-        }else{
-            lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getLineStyleRows() } };
-        }
-        
+        lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getLineStyleRows() } };
         lineStyleObj.value = lineStyleToString(styleObject.lineSymbolID);
     } else {
         lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": get8CLineStyleRows() } };
@@ -1278,52 +1263,52 @@ function symbolPropertyObject(selectfeature, styleObject) {
     }
 
     //点标号自己独有属性
-    if (selectfeature.symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL||
-        selectfeature.symbolType === SuperMap.Plot.SymbolType.PICTURE||
+    if (selectfeature.symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL ||
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.PICTURE ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.MODELPLOT) {
-        if(selectfeature.symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL){
-        //常用：点：旋转角度
-        var dotSymbolRotateObj = new Object();
-        dotSymbolRotateObj.group = group[3];
-        dotSymbolRotateObj.name = displayNameDot[0];
-        dotSymbolRotateObj.editor = "text";
-        dotSymbolRotateObj.value = selectfeature.getRotate();
-        //常用：点：随图缩放
-        var dotScaleByMap = new Object();
-        dotScaleByMap.group = group[3];
-        dotScaleByMap.name = displayNameDot[1];
-        dotScaleByMap.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
-        dotScaleByMap.value = checkboxValueToString(selectfeature.getScaleByMap());
-        //常用：点：镜像
-        var dotSymbolNegativeImageObj = new Object();
-        dotSymbolNegativeImageObj.group = group[3];
-        dotSymbolNegativeImageObj.name = displayNameDot[2];
-        dotSymbolNegativeImageObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
-        dotSymbolNegativeImageObj.value = checkboxValueToString(selectfeature.getNegativeImage());
-        //常用：点：标号级别
-        var dotSymbolRankObj = new Object();
-        dotSymbolRankObj.group = group[3];
-        dotSymbolRankObj.name = displayNameDot[3];
-        dotSymbolRankObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSymbolRankRows(selectfeature) } };
-        dotSymbolRankObj.value = symbolRankToString(selectfeature.getSymbolRank());
-        //常用：点：位置点偏移
-        var dotPositionOffset = new Object();
-        dotPositionOffset.group = group[3];
-        dotPositionOffset.name = displayNameDot[4];
-        dotPositionOffset.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
-        dotPositionOffset.value = checkboxValueToString(selectfeature.getPositionOffset());
-        //常用：点：偏移线类型
-        var dotPositionOffsetType = new Object();
-        dotPositionOffsetType.group = group[3];
-        dotPositionOffsetType.name = displayNameDot[5];
-        dotPositionOffsetType.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getPositionOffsetTypeRows() } };
-        dotPositionOffsetType.value = positionOffsetTypeToString(selectfeature.getPositionOffsetType());
-        //常用：点:宽高限定
-        var dotSymbolWidthHeightLimit = new Object();
-        dotSymbolWidthHeightLimit.group = group[3];
-        dotSymbolWidthHeightLimit.name = displayNameDot[6];
-        dotSymbolWidthHeightLimit.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
-        dotSymbolWidthHeightLimit.value = checkboxValueToString(selectfeature.getWidthHeightLimit());
+        if (selectfeature.symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL) {
+            //常用：点：旋转角度
+            var dotSymbolRotateObj = new Object();
+            dotSymbolRotateObj.group = group[3];
+            dotSymbolRotateObj.name = displayNameDot[0];
+            dotSymbolRotateObj.editor = "text";
+            dotSymbolRotateObj.value = selectfeature.getRotate();
+            //常用：点：随图缩放
+            var dotScaleByMap = new Object();
+            dotScaleByMap.group = group[3];
+            dotScaleByMap.name = displayNameDot[1];
+            dotScaleByMap.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+            dotScaleByMap.value = checkboxValueToString(selectfeature.getScaleByMap());
+            //常用：点：镜像
+            var dotSymbolNegativeImageObj = new Object();
+            dotSymbolNegativeImageObj.group = group[3];
+            dotSymbolNegativeImageObj.name = displayNameDot[2];
+            dotSymbolNegativeImageObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+            dotSymbolNegativeImageObj.value = checkboxValueToString(selectfeature.getNegativeImage());
+            //常用：点：标号级别
+            var dotSymbolRankObj = new Object();
+            dotSymbolRankObj.group = group[3];
+            dotSymbolRankObj.name = displayNameDot[3];
+            dotSymbolRankObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSymbolRankRows(selectfeature) } };
+            dotSymbolRankObj.value = symbolRankToString(selectfeature.getSymbolRank());
+            //常用：点：位置点偏移
+            var dotPositionOffset = new Object();
+            dotPositionOffset.group = group[3];
+            dotPositionOffset.name = displayNameDot[4];
+            dotPositionOffset.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+            dotPositionOffset.value = checkboxValueToString(selectfeature.getPositionOffset());
+            //常用：点：偏移线类型
+            var dotPositionOffsetType = new Object();
+            dotPositionOffsetType.group = group[3];
+            dotPositionOffsetType.name = displayNameDot[5];
+            dotPositionOffsetType.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getPositionOffsetTypeRows() } };
+            dotPositionOffsetType.value = positionOffsetTypeToString(selectfeature.getPositionOffsetType());
+            //常用：点:宽高限定
+            var dotSymbolWidthHeightLimit = new Object();
+            dotSymbolWidthHeightLimit.group = group[3];
+            dotSymbolWidthHeightLimit.name = displayNameDot[6];
+            dotSymbolWidthHeightLimit.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+            dotSymbolWidthHeightLimit.value = checkboxValueToString(selectfeature.getWidthHeightLimit());
         }
         //常用：点：军标大小
         var dotSymbolWidthObj = new Object();
@@ -1364,31 +1349,32 @@ function symbolPropertyObject(selectfeature, styleObject) {
             (selectfeature.libID === 100 && selectfeature.code === 23400) ||
             (selectfeature.libID === 100 && selectfeature.code === 30800) ||
             (selectfeature.libID === 100 && selectfeature.code === 26400) ||
-            (selectfeature.libID === 100 && selectfeature.code === 30001)
+            (selectfeature.libID === 100 && selectfeature.code === 30001) || 
+            (selectfeature.libID === 123 && selectfeature.code === 90213) ||
+            (selectfeature.libID === 123 && selectfeature.code === 90217)
         ) {
             var count = selectfeature.getMaxSubSymbols();
             for (let i = 0; i < count; i++) {
                 var objectSubCode1 = new Object();
                 objectSubCode1.group = group[8];
                 objectSubCode1.name = displayName[3];
-                objectSubCode1.editor = "text";
-                //objectSubCode1.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
+                objectSubCode1.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
                 objectSubCode1.index = i;
-                objectSubCode1.value = subSymbolsTypeString(selectfeature.getSubSymbols().length, selectfeature,i);
+                objectSubCode1.value = subSymbolsTypeString(selectfeature.getSubSymbols().length, selectfeature, i);
                 algoSymbolRows.push(objectSubCode1);
                 var subSymbolLineWidth = new Object();
                 subSymbolLineWidth.group = group[8];
                 subSymbolLineWidth.name = resources.text_subSymbolLineWidth;
                 subSymbolLineWidth.editor = "text";
                 subSymbolLineWidth.index = i;
-                subSymbolLineWidth.value = (selectfeature.getSubSymbols()[i]&&selectfeature.getSubSymbols()[i].code!=0)?selectfeature.getSubSymbols()[i].width2D:""
+                subSymbolLineWidth.value = (selectfeature.getSubSymbols()[i] && selectfeature.getSubSymbols()[i].code != 0) ? selectfeature.getSubSymbols()[i].width2D : ""
                 algoSymbolRows.push(subSymbolLineWidth);
                 var subSymbolLineColor = new Object();
                 subSymbolLineColor.group = group[8];
                 subSymbolLineColor.name = resources.text_subSymbolLineColor;
                 subSymbolLineColor.editor = "colorpicker";
                 subSymbolLineColor.index = i;
-                subSymbolLineColor.value = (selectfeature.getSubSymbols()[i]&&selectfeature.getSubSymbols()[i].code!=0)?selectfeature.getSubSymbols()[i].lineColor:""
+                subSymbolLineColor.value = (selectfeature.getSubSymbols()[i] && selectfeature.getSubSymbols()[i].code != 0) ? selectfeature.getSubSymbols()[i].lineColor : ""
                 algoSymbolRows.push(subSymbolLineColor);
             }
         } else {
@@ -1396,8 +1382,7 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 var objectSubCode = new Object();
                 objectSubCode.group = group[8];
                 objectSubCode.name = displayName[3];
-                objectSubCode.editor = "text";
-                //objectSubCode.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
+                objectSubCode.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
                 objectSubCode.index = i;
                 objectSubCode.value = selectfeature.getSubSymbols()[i].code;
                 algoSymbolRows.push(objectSubCode);
@@ -1458,6 +1443,27 @@ function symbolPropertyObject(selectfeature, styleObject) {
         if (isCanAddText(selectfeature) === true) {
             algoSymbolRows = algoSymbolRows.concat(textRows);
         }
+
+        //多注记
+        var annotationCount = selectfeature.symbolAnnotations.length + 1;
+        for (let index = 0; index < annotationCount; index++) {
+            let annotation = selectfeature.symbolAnnotations[index];
+            let symbolAnnotationRows = [];
+            let offset = { x: 0, y: 0 };
+            if (annotation) {
+                offset.x = annotation.offsetX;
+                offset.y = annotation.offsetY;
+                symbolAnnotationRows = getSymbolAnnotationRow(annotation.textContent, annotation.textPosition, annotation.style, offset, group[9] + (index + 1));
+            } else {
+
+                symbolAnnotationRows = getSymbolAnnotationRow("", 0, styleObject, offset, group[9] + (index + 1));
+            }
+
+            rows = rows.concat(symbolAnnotationRows);
+        }
+
+
+
         rows = rows.concat(algoSymbolRows);
     }
 
@@ -1524,6 +1530,22 @@ function symbolPropertyObject(selectfeature, styleObject) {
         arrowTypeEndObj.value = arrowTypeToString(selectfeature.getEndArrowType());
         rows.push(arrowTypeStartObj);
         rows.push(arrowTypeEndObj);
+    }
+
+    if (selectfeature.libID == 123) {
+        if (selectfeature.code === 40301 ||
+            selectfeature.code === 4030101 ||
+            selectfeature.code === 4030102 ||
+            selectfeature.code === 4030103 ||
+            selectfeature.code === 4030104) {
+            var isCurveObj = new Object();
+            isCurveObj.group = groupNew[2];
+            isCurveObj.name = displayNameNew[6];
+            isCurveObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+            isCurveObj.value = checkboxValueToString(selectfeature.getIsCurveLine());
+
+            rows.push(isCurveObj);
+        }
     }
 
 
@@ -1701,7 +1723,7 @@ function symbolPropertyObject(selectfeature, styleObject) {
     }
     return rows;
 }
-function picturePropertyObject(selectfeature){
+function picturePropertyObject(selectfeature) {
     var rows = [];
     var dotSymbolWidthObj = new Object();
     dotSymbolWidthObj.group = resources.text_attribute;
@@ -1712,7 +1734,7 @@ function picturePropertyObject(selectfeature){
     dotSymbolHeightObj.group = resources.text_attribute;
     dotSymbolHeightObj.name = displayNameDot[8];
     dotSymbolHeightObj.editor = "text";
-    dotSymbolHeightObj.value =selectfeature.style.graphicHeight;
+    dotSymbolHeightObj.value = selectfeature.style.graphicHeight;
     var dotSymbolRows = [];
     dotSymbolRows.push(dotSymbolWidthObj);
     dotSymbolRows.push(dotSymbolHeightObj);
@@ -1852,4 +1874,149 @@ function fontAlignValueToString(value) {
             break;
     }
     return result;
+}
+
+
+function getSymbolAnnotationRow(textContent, textPosition, styleObject, offset, groupName) {
+    var rows = [];
+    //注记：注记内容
+    var textContentObj = new Object();
+    textContentObj.group = groupName;
+    textContentObj.name = displayTextContentName[0];
+    textContentObj.editor = "text";
+    textContentObj.value = textContent;
+    rows.push(textContentObj);
+
+    var markPosObjRows = [];
+    markPosObjRows.push({ "value": "0", "text": resources.text_leftTop });
+    markPosObjRows.push({ "value": "1", "text": resources.text_leftBottom });
+    markPosObjRows.push({ "value": "2", "text": resources.text_rightTop });
+    markPosObjRows.push({ "value": "3", "text": resources.text_rightBottom });
+    markPosObjRows.push({ "value": "4", "text": resources.text_top });
+    markPosObjRows.push({ "value": "5", "text": resources.text_bottom });
+    markPosObjRows.push({ "value": "6", "text": resources.text_left });
+    markPosObjRows.push({ "value": "7", "text": resources.text_right });
+    markPosObjRows.push({ "value": "8", "text": resources.text_middlePosition });
+    //注记：注记位置
+    var markPosObj = new Object();
+    markPosObj.group = groupName;
+    markPosObj.name = displayTextContentName[1];
+    markPosObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": markPosObjRows } };
+    markPosObj.value = annotationToString(textPosition);
+    rows.push(markPosObj);
+
+    //注记：注记字体大小
+    var fontSizeObj = new Object();
+    fontSizeObj.group = groupName;
+    fontSizeObj.name = displayTextContentName[2];
+    fontSizeObj.editor = "text";
+    fontSizeObj.value = styleObject.fontSize;
+    rows.push(fontSizeObj);
+
+    //注记：注记字体颜色
+    var fontColorObj = new Object();
+    fontColorObj.group = groupName;
+    fontColorObj.name = displayTextContentName[3];
+    fontColorObj.editor = "colorpicker";
+    fontColorObj.value = styleObject.fontColor;
+    rows.push(fontColorObj);
+
+
+    //注记：注记字体名称
+    var fontFamilyObj = new Object();
+    fontFamilyObj.group = groupName;
+    fontFamilyObj.name = displayTextContentName[4];
+    fontFamilyObj.editor = "text";
+    fontFamilyObj.value = styleObject.fontFamily;
+    rows.push(fontFamilyObj);
+
+    //注记：字体描边
+    var fontStrokeObj = new Object();
+    fontStrokeObj.group = groupName;
+    fontStrokeObj.name = displayTextContentName[8];
+    fontStrokeObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+    fontStrokeObj.value = checkboxValueToString(styleObject.fontStroke);
+    rows.push(fontStrokeObj);
+
+    //注记：描边色
+    var fontStrokeColorObj = new Object();
+    fontStrokeColorObj.group = groupName;
+    fontStrokeColorObj.name = displayTextContentName[9];
+    fontStrokeColorObj.editor = "colorpicker";
+    fontStrokeColorObj.value = styleObject.fontStrokeColor;
+    rows.push(fontStrokeColorObj);
+
+    //注记：描边宽度
+    var fontStrokeWidthObj = new Object();
+    fontStrokeWidthObj.group = groupName;
+    fontStrokeWidthObj.name = displayTextContentName[10];
+    fontStrokeWidthObj.editor = "text";
+    fontStrokeWidthObj.value = styleObject.fontStrokeWidth;
+    rows.push(fontStrokeWidthObj);
+
+    //注记：文字背景
+    var fontBackObj = new Object();
+    fontBackObj.group = groupName;
+    fontBackObj.name = displayTextContentName[11];
+    fontBackObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+    fontBackObj.value = checkboxValueToString(styleObject.fontBackground);
+    rows.push(fontBackObj);
+
+    //注记：背景色
+    var fontBackColorObj = new Object();
+    fontBackColorObj.group = groupName;
+    fontBackColorObj.name = displayTextContentName[12];
+    fontBackColorObj.editor = "colorpicker";
+    fontBackColorObj.value = styleObject.fontBackgroundColor;
+    rows.push(fontBackColorObj);
+
+    //注记：文字阴影
+    var fontShadowObj = new Object();
+    fontShadowObj.group = groupName;
+    fontShadowObj.name = displayTextContentName[13];
+    fontShadowObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+    fontShadowObj.value = checkboxValueToString(styleObject.fontShadow);
+    rows.push(fontShadowObj);
+
+    //注记：阴影色
+    var fontShadowColorObj = new Object();
+    fontShadowColorObj.group = groupName;
+    fontShadowColorObj.name = displayTextContentName[14];
+    fontShadowColorObj.editor = "colorpicker";
+    fontShadowColorObj.value = styleObject.fontShadowColor;
+    rows.push(fontShadowColorObj);
+
+    //注记：阴影偏移量X
+    var fontShadowOffsetXObj = new Object();
+    fontShadowOffsetXObj.group = groupName;
+    fontShadowOffsetXObj.name = displayTextContentName[15];
+    fontShadowOffsetXObj.editor = "text";
+    fontShadowOffsetXObj.value = styleObject.fontShadowOffsetX;
+    rows.push(fontShadowOffsetXObj);
+
+    //注记：阴影偏移量Y
+    var fontShadowOffsetYObj = new Object();
+    fontShadowOffsetYObj.group = groupName;
+    fontShadowOffsetYObj.name = displayTextContentName[16];
+    fontShadowOffsetYObj.editor = "text";
+    fontShadowOffsetYObj.value = styleObject.fontShadowOffsetY;
+    rows.push(fontShadowOffsetYObj);
+
+    //注记：偏移量X
+    var annotationOffsetX = new Object();
+    annotationOffsetX.group = groupName;
+    annotationOffsetX.name = resources.text_XOffset;
+    annotationOffsetX.editor = "text";
+    annotationOffsetX.value = offset.x;
+    rows.push(annotationOffsetX);
+
+    //注记：偏移量Y
+    var annotationOffsetY = new Object();
+    annotationOffsetY.group = groupName;
+    annotationOffsetY.name = resources.text_YOffset;
+    annotationOffsetY.editor = "text";
+    annotationOffsetY.value = offset.y;
+    rows.push(annotationOffsetY);
+
+    return rows;
 }

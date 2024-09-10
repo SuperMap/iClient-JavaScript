@@ -64,7 +64,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
           visible
         };
       } else {
-        formatItem = appreciableLayers.find((layer) => layer.id === id);
+        formatItem = Object.assign({}, appreciableLayers.find((layer) => layer.id === id));
       }
       return formatItem;
     });
@@ -78,7 +78,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     const l7MarkerLayers = this._l7LayerUtil.getL7MarkerLayers();
     const layerDatas = metadataCatalogs.map(layerCatalog => {
       const layer = this._mapInfo.layers.find(item => item.id === layerCatalog.id) || {};
-      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers: this._getRenderLayers(layerCatalog.parts, layerCatalog.id) };
+      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers: this._getRenderLayers(layerCatalog.parts, layerCatalog.id), reused: layer.metadata && layer.metadata.reused };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
       const { msDatasetId } = matchProjectCatalog;
       let dataSource = {};

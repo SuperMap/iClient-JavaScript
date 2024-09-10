@@ -1,4 +1,5 @@
 import SourceModel from './SourceModel';
+import { createAppreciableLayerId } from './util';
 
 export class AppreciableLayerBase {
   constructor(options = {}) {
@@ -29,24 +30,10 @@ export class AppreciableLayerBase {
     return this.filterExpectedLayers(selfLayers.concat(extraLayers));
   }
 
-  _createAppreciableLayerId(layer) {
-    // 针对传入 layers
-    if (layer.layerInfo && layer.layerInfo.id) {
-      return layer.layerInfo.id;
-    }
-    // 往空地图上追加图层 且 只有一个webmap this.layers是空
-    if (layer.metadata && layer.metadata.parentLayerId) {
-      return layer.metadata.parentLayerId;
-    }
-    // 针对 MapboxStyle 或者其它额外的 layer
-    // type: background 和某些 overlaymanager layers 只有 id
-    return layer.sourceLayer || layer.source || layer.id;
-  }
-
   _initAppreciableLayers(detailLayers) {
     // dv 没有关联一个可感知图层对应对个渲染图层的关系，默认相同source的layer就是渲染图层
     return detailLayers.reduce((layers, layer) => {
-      const layerId = this._createAppreciableLayerId(layer);
+      const layerId = createAppreciableLayerId(layer);
       let matchLayer = layers.find((item) => {
         return item.id === layerId;
       });
@@ -180,7 +167,7 @@ export class AppreciableLayerBase {
     if (CLASS_INSTANCE) {
       fields.CLASS_INSTANCE = CLASS_INSTANCE;
     }
-    if (reused !== void 0) {
+    if (reused) {
       fields.reused = reused;
     }
     return fields;

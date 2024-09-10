@@ -1130,4 +1130,70 @@ describe('maplibregl-webmap3.0', () => {
       done();
     });
   });
+
+  it('test webmapv3 checkSameLayer', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1209527958/map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_raster));
+      }
+      if (url.indexOf('1209527958.json') > -1) {
+        return Promise.resolve(new Response(mapstudioAppInfo));
+      }
+      if (url.indexOf('106007908/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapstudioWebMap_raster_append)));
+      }
+      if (url.indexOf('106007908.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(msProjectINfo_raster_append)));
+      }
+    });
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    mapstudioWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    const callback = function (data) {
+      const appreciableLayers = mapstudioWebmap.getLayers();
+      expect(appreciableLayers.length).toBe(0);
+      const webMap1 = new WebMap(1209527958, { ...commonOption, map: data.map, checkSameLayer: true });
+      webMap1.once('mapcreatesucceeded', ({ layers }) => {
+        expect(layers.length).toBe(2);
+        expect(layers[0].reused).toBeUndefined();
+        expect(layers[0].id).toBe('CHINA_DARK');
+        expect(layers[1].reused).toBeUndefined();
+        expect(layers[1].id).toBe('PopulationDistribution');
+        const webMap2 = new WebMap(106007908, { ...commonOption, map: data.map, checkSameLayer: true });
+        webMap2.once('mapcreatesucceeded', ({ layers, map }) => {
+          expect(layers.length).toBe(3);
+          expect(layers[0].reused).toBeTruthy();
+          expect(layers[0].id).toBe('CHINA_DARK');
+          expect(layers[1].reused).toBeTruthy();
+          expect(layers[1].id).toBe('PopulationDistribution');
+          expect(layers[2].reused).toBeUndefined();
+          expect(layers[2].id).toBe('未命名数据');
+          let layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(3);
+          expect(layersOnMap[0].id).toBe('CHINA_DARK');
+          expect(layersOnMap[1].id).toBe('PopulationDistribution');
+          expect(layersOnMap[2].id).toBe('未命名数据');
+          webMap2.cleanLayers();
+          layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(2);
+          expect(layersOnMap[0].id).toBe('CHINA_DARK');
+          expect(layersOnMap[1].id).toBe('PopulationDistribution');
+          webMap1.cleanLayers();
+          done();
+        });
+      });
+    };
+    mapstudioWebmap.once('mapcreatesucceeded', callback);
+  });
 });

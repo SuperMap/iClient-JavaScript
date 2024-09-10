@@ -8,7 +8,7 @@ import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
 import { FetchRequest } from '../util/FetchRequest';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
-import { mergeFeatures } from './utils/util';
+import { isSameRasterLayer, mergeFeatures } from './utils/util';
 
 export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   return class WebMapV2 extends SuperClass {
@@ -405,8 +405,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
           if (layer.visibleScale) {
             const { minScale, maxScale } = layer.visibleScale;
-            layer.minzoom = Math.max(this._transformScaleToZoom(minScale), 0);
-            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale) + 0.0000001);
+            const crs = this.map.getCRS();
+            layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs), 0);
+            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs) + 0.0000001);
           }
   
           if (type === 'tile') {
@@ -455,7 +456,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (
         features &&
         projection &&
-        (projection !== this.baseProjection || projection === 'EPSG:3857' || projection === 'EPSG:-1000') &&
+        projection !== 'EPSG:4326' &&
         layerInfo.dataSource &&
         layerInfo.dataSource.type !== 'REST_DATA'
       ) {
@@ -884,7 +885,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         layerID: layerInfo.layerID
       });
   
-      if (layerInfo.projection === 'EPSG:3857') {
+      if (layerInfo.projection !== 'EPSG:4326') {
         features = this.transformFeatures(features);
       }
       if (layerInfo.filterCondition) {
@@ -2766,7 +2767,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             id: targetLayerId,
             visible: targetLayerVisible,
             renderLayers,
-            reused: matchLayers.some(item => item.reused) || void 0
+            reused: matchLayers.some(item => item.reused)
           });
         }
       });
@@ -2819,16 +2820,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _isSameRasterLayer(id, layerInfo) {
-      const {
-        source: { type, tiles }
-      } = layerInfo;
-      if (type === 'raster') {
-        const source = this.map.getSource(id);
-        if (type === source.type && tiles && source.tiles && tiles[0] === source.tiles[0]) {
-          return true;
-        }
-      }
-      return false;
+      return isSameRasterLayer(layerInfo.source, this.map.getSource(id));
     }
   
     _centerValid(center) {
@@ -2846,8 +2838,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
   
     _transformScaleToZoom(scale, crs) {
-      const extent = (crs || this.map.getCRS()).getExtent();
-      const unit = (crs || this.map.getCRS()).unit;
+      const extent = crs.getExtent();
+      const unit = crs.unit;
       const scaleBase = 1.0 / Util.getScaleFromResolutionDpi((extent[2] - extent[0]) / 512, 96, unit);
       const scaleDenominator = scale.split(':')[1];
       return Math.min(24, +Math.log2(scaleBase / +scaleDenominator).toFixed(2));

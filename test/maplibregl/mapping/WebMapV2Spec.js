@@ -1847,9 +1847,7 @@ describe('maplibregl_WebMapV2', () => {
       center: [107.7815, 39.9788],
       zoom: 5,
       renderWorldCopies: false,
-      crs: {
-        epsgCode: 'EPSG:3857'
-      },
+      crs: 'EPSG:3857',
       minzoom: 0,
       maxzoom: 22
     };
@@ -1887,9 +1885,7 @@ describe('maplibregl_WebMapV2', () => {
       center: [107.7815, 39.9788],
       zoom: 5,
       renderWorldCopies: false,
-      crs: {
-        epsgCode: 'EPSG:3857'
-      },
+      crs: 'EPSG:3857',
       minzoom: 0,
       maxzoom: 22
     };
@@ -1928,9 +1924,7 @@ describe('maplibregl_WebMapV2', () => {
       center: [107.7815, 39.9788],
       zoom: 5,
       renderWorldCopies: false,
-      crs: {
-        epsgCode: 'EPSG:3857'
-      },
+      crs: 'EPSG:3857',
       minzoom: 0,
       maxzoom: 22
     };
@@ -2683,7 +2677,7 @@ describe('maplibregl_WebMapV2', () => {
     });
   });
 
-  it('test checkSameLayer', (done) => {
+  it('test webmapv2 checkSameLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -2733,5 +2727,56 @@ describe('maplibregl_WebMapV2', () => {
       });
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('overlay projection is no EPSG:4326', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(projection4548)));
+      }
+      if (url.indexOf('map4548%40fl-new/prjCoordSys.wkt') > -1) {
+        return Promise.resolve(new Response(projection_4548_wkt));
+      }
+      if (url.indexOf('/map4548%40fl-new.json') > -1) {
+        return Promise.resolve(
+          new Response(JSON.stringify({
+            bounds: {
+              top: 5178663.047080055,
+              left: 328182.9260637246,
+              bottom: 2289622.79728123,
+              leftBottom: {
+                x: 328182.9260637246,
+                y: 2289622.79728123
+              },
+              right: 629000.9570381088,
+              rightTop: {
+                x: 629000.9570381088,
+                y: 5178663.047080055
+              }
+            }
+          }))
+        );
+      }
+      if (url.indexOf('/content.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(projection_4548_content)));
+      }
+    });
+    spyOn(FetchRequest, 'post').and.callFake(url => {
+      if (url.indexOf('/featureResults') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(projection_4548_featureResults)));
+      }
+    });
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+
+    datavizWebmap.on('mapcreatesucceeded', ({ layers, map }) => {
+      expect(layers.length).toBe(3);
+      expect(datavizWebmap._handler._unprojectProjection).toBe('EPSG:4548');
+      done();
+    });
   });
 });

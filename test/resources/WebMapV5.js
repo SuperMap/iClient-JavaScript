@@ -3457,3 +3457,305 @@ var qixiangLayer2 = {
   "version": "2.2.1",
   "rootUrl": "https://www.supermapol.com/"
 }
+
+var mapOptionsList = [
+  {
+    style: {
+      version: 8,
+      name: 'ms-4269',
+      sources: {
+        'China4269@DataSource': {
+          type: 'raster',
+          tiles: [
+            'http://localhost:8090/iserver/services/map-China100-11/rest/maps/China4269%40DataSource/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D'
+          ],
+          tileSize: 256,
+          bounds: [73.50098576000005, 6.323053695001199, 135.08727119000014, 53.56026110501225]
+        },
+        ms_424149619: {
+          type: 'vector',
+          tiles: [
+            'http://localhost:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry'
+          ],
+          bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026]
+        }
+      },
+      layers: [
+        {
+          id: 'China4269@DataSource',
+          type: 'raster',
+          source: 'China4269@DataSource'
+        },
+        {
+          id: '未命名数据',
+          type: 'circle',
+          source: 'ms_424149619',
+          'source-layer': '424149619$geometry',
+          minzoom: 0,
+          maxzoom: 24,
+          paint: {
+            'circle-color': 'rgba(189,16,224,1)',
+            'circle-opacity': 0.9,
+            'circle-radius': 9
+          }
+        }
+      ]
+    },
+    crs: 'EPSG:3857'
+  },
+  {
+    style: {
+      version: 8,
+      name: 'ms-4269_副本',
+      sources: {
+        'China4269@DataSource_2023472856': {
+          type: 'raster',
+          tiles: [
+            'http://localhost:8090/iserver/services/map-China100-11/rest/maps/China4269%40DataSource/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D'
+          ],
+          tileSize: 256,
+          bounds: [73.50098576000005, 6.323053695001199, 135.08727119000014, 53.56026110501225]
+        },
+        ms_424149619_1725240548192_22: {
+          type: 'vector',
+          tiles: [
+            'base'
+          ],
+          bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026]
+        }
+      },
+      layers: [
+        {
+          id: 'China4269@DataSource',
+          type: 'raster',
+          source: 'China4269@DataSource_2023472856',
+        },
+        {
+          id: '未命名数据',
+          type: 'circle',
+          source: 'ms_424149619_1725240548192_22',
+          'source-layer': '424149619$geometry',
+          metadata: {},
+          minzoom: 0,
+          maxzoom: 24,
+          paint: {
+            'circle-color': 'pink',
+            'circle-opacity': 0.9,
+            'circle-radius': 9
+          }
+        }
+      ]
+    },
+    crs: 'EPSG:3857'
+  }
+];
+
+var projection4548 = {
+  "extent": {
+      "leftBottom": {
+          "x": 328182.9260637246,
+          "y": 2289622.79728123
+      },
+      "rightTop": {
+          "x": 629000.9570381088,
+          "y": 5178663.047080055
+      }
+  },
+  "maxScale": "1:5.084652101310968",
+  "level": 1,
+  "center": {
+      "x": 515140.80679237645,
+      "y": 3716651.0012647817
+  },
+  "baseLayer": {
+      "layerType": "TILE",
+      "visible": true,
+      "name": "map4548@fl-new",
+      "url": "http://localhost:8090/iserver/services/map-China100-10/rest/maps/map4548%40fl-new"
+  },
+  "layers": [
+      {
+          "layerType": "VECTOR",
+          "visible": true,
+          "name": "fl-new:NewPoint4548",
+          "featureType": "POINT",
+          "style": {
+              "fillColor": "#EE4D5A",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "radius": 8,
+              "strokeColor": "#ffffff",
+              "type": "BASIC_POINT",
+              "strokeOpacity": 1
+          },
+          "projection": "EPSG:4548",
+          "enableFields": [
+              "SMID",
+              "SMUSERID",
+              "NUM",
+              "NAME"
+          ],
+          "dataSource": {
+              "type": "REST_DATA",
+              "url": "http://localhost:8090/iserver/services/data-China100-3/rest/data",
+              "dataSourceName": "fl-new:NewPoint4548"
+          }
+      },
+      {
+          "layerType": "VECTOR",
+          "visible": true,
+          "name": "NewPoint4548",
+          "featureType": "POINT",
+          "style": {
+              "fillColor": "#9dee4d",
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "radius": 8,
+              "strokeColor": "#ffffff",
+              "type": "BASIC_POINT",
+              "strokeOpacity": 1
+          },
+          "projection": "EPSG:4548",
+          "enableFields": [
+              "SmUserID",
+              "num",
+              "name"
+          ],
+          "dataSource": {
+              "accessType": "DIRECT",
+              "type": "PORTAL_DATA",
+              "serverId": "147247535"
+          }
+      }
+  ],
+  "description": "",
+  "projection": "PROJCS[\"CGCS2000 / 3-degree Gauss-Kruger CM 117E\", \r\n  GEOGCS[\"China Geodetic Coordinate System 2000\", \r\n    DATUM[\"China 2000\", \r\n      SPHEROID[\"CGCS2000\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"1024\"]], \r\n      AUTHORITY[\"EPSG\",\"1043\"]], \r\n    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \r\n    UNIT[\"degree\", 0.017453292519943295], \r\n    AXIS[\"lat\", NORTH], \r\n    AXIS[\"lon\", EAST], \r\n    AUTHORITY[\"EPSG\",\"4490\"]], \r\n  PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \r\n  PARAMETER[\"central_meridian\", 117.0], \r\n  PARAMETER[\"latitude_of_origin\", 0.0], \r\n  PARAMETER[\"scale_factor\", 1.0], \r\n  PARAMETER[\"false_easting\", 500000.0], \r\n  PARAMETER[\"false_northing\", 0.0], \r\n  UNIT[\"m\", 1.0], \r\n  AXIS[\"Northing\", NORTH], \r\n  AXIS[\"Easting\", EAST], \r\n  AUTHORITY[\"EPSG\",\"4548\"]]",
+  "minScale": "1:21326576.647136997",
+  "title": "dv_4548",
+  "version": "2.3.0",
+  "rootUrl": "http://172.16.14.44:8190/iportal/"
+}
+
+var projection_4548_wkt = `PROJCS["China_2000_3_DEGREE_GK_Zone_39N",GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]],PROJECTION["Transverse_Mercator",AUTHORITY["EPSG","9807"]],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",117.0],PARAMETER["Latitude_Of_Origin",0.0],PARAMETER["Scale_Factor",1.0],UNIT["METER",1.0],AUTHORITY["EPSG","4548"]]`;
+
+var projection_4548_featureResults = {
+  "features": [
+      {
+          "stringID": null,
+          "fieldNames": [
+              "SMID",
+              "SMUSERID",
+              "NUM",
+              "NAME"
+          ],
+          "geometry": {
+              "center": {
+                  "x": 117.0884970320016,
+                  "y": 42.481833048694895
+              },
+              "parts": [
+                  1
+              ],
+              "style": null,
+              "prjCoordSys": null,
+              "id": 1,
+              "type": "POINT",
+              "partTopo": null,
+              "points": [
+                  {
+                      "x": 117.0884970320016,
+                      "y": 42.481833048694895
+                  }
+              ]
+          },
+          "fieldValues": [
+              "1",
+              "0",
+              "1",
+              "1"
+          ],
+          "ID": 1
+      },
+      {
+          "stringID": null,
+          "fieldNames": [
+              "SMID",
+              "SMUSERID",
+              "NUM",
+              "NAME"
+          ],
+          "geometry": {
+              "center": {
+                  "x": 117.18004792200132,
+                  "y": 40.083054780482655
+              },
+              "parts": [
+                  1
+              ],
+              "style": null,
+              "prjCoordSys": null,
+              "id": 2,
+              "type": "POINT",
+              "partTopo": null,
+              "points": [
+                  {
+                      "x": 117.18004792200132,
+                      "y": 40.083054780482655
+                  }
+              ]
+          },
+          "fieldValues": [
+              "2",
+              "0",
+              "2",
+              "2"
+          ],
+          "ID": 2
+      }
+  ],
+  "featureUriList": [],
+  "datasetInfos": [
+      {
+          "fieldInfos": [
+              {
+                  "name": "SmID",
+                  "caption": "SmID",
+                  "type": "INT32"
+              },
+              {
+                  "name": "SmUserID",
+                  "caption": "SmUserID",
+                  "type": "INT32"
+              },
+              {
+                  "name": "num",
+                  "caption": "num",
+                  "type": "INT32"
+              },
+              {
+                  "name": "name",
+                  "caption": "name",
+                  "type": "CHAR"
+              }
+          ],
+          "featureRange": {
+              "start": 0,
+              "end": 1
+          },
+          "datasetName": "fl-new:NewPoint4548"
+      }
+  ],
+  "totalCount": 2,
+  "featureCount": 2
+}
+
+var projection_4548_content = {
+  content:
+    '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"SmUserID":0,"num":1,"name":"1"},"geometry":{"type":"Point","coordinates":[507276.4742796922,4705161.709043069]}},{"type":"Feature","properties":{"SmUserID":0,"num":2,"name":"2"},"geometry":{"type":"Point","coordinates":[515356.3470900338,4438766.589724715]}}]}',
+  fileName: 'NewPoint4548(2).json',
+  type: 'JSON'
+};

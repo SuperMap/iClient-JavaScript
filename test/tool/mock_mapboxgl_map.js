@@ -375,12 +375,18 @@ const Map = function (options) {
     };
   };
   this.getCRS = () => {
-    return {
-      epsgCode: this.options.crs,
-      getExtent: () => jasmine.createSpy('getExtent')
-    };
+    if (!this._crs) {
+      if (this.options.crs && typeof this.options.crs !== 'string') {
+        this._crs = CRS.get(this.options.crs);
+      } else {
+        this._crs = CRS.get(this.options.crs || 'EPSG:3857');
+      }
+    }
+    return this._crs;
   };
-  this.setCRS = () => {};
+  this.setCRS = (crs) => {
+    this._crs = crs;
+  };
   this.flyTo = (options) => {};
   this.setRenderWorldCopies = (epsgCode) => {};
   this.triggerRepaint = () => {};
@@ -390,18 +396,68 @@ const Map = function (options) {
 };
 
 class CRS {
-  static get() {
-    return {
-      getExtent: function () {
-          return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
-      },
-      unit: 'm',
-      getOrigin: () => jest.fn()
-    };
+  constructor(epsgCode, WKT, extent, unit) {
+    this.epsgCode = epsgCode;
+    this.extent = extent;
+    this.unit = unit;
+    if (Array.isArray(WKT)) {
+        this.extent = WKT;
+        WKT = null;
+    }
+    if(this.extent[0] === -180 && this.extent[2] === 180 && this.extent[3] === 90) {
+        this.extent[1] = Math.max(this.extent[1], -90);
+    }
+    this.WKT = WKT || CRS.defaultWKTs[epsgCode];
+    CRS.set(this);
   }
 
-  static set() {}
+  getExtent() {
+      if (!this._rectifyExtent) {
+          const width = this.extent[2] - this.extent[0];
+          const height = this.extent[3] - this.extent[1];
+          if (width === height) {
+              this._rectifyExtent = [this.extent[0], this.extent[1], this.extent[2], this.extent[3]];
+          } else {
+              const a = Math.max(width, height);
+              this._rectifyExtent = [this.extent[0], this.extent[3] - a, this.extent[0] + a, this.extent[3]]
+          }
+      }
+      return this._rectifyExtent;
+  }
+
+  getEpsgCode() {
+      return this.epsgCode;
+  }
+
+  getOrigin() {
+      return [this.extent[0], this.extent[3]];
+  }
+
+  static get(codeSpec) {
+    for (const key in CRS) {
+        if (CRS.hasOwnProperty(key)) {
+            if (CRS[key].getEpsgCode && CRS[key].getEpsgCode() === codeSpec) {
+                return CRS[key];
+            }
+        }
+    }
+    return null;
+  }
+
+  
+  static set(crs) {
+    const key = crs.getEpsgCode().replace(":", "").toUpperCase();
+    CRS[key] = crs;
+  }
 }
+CRS.defaultWKTs = {
+  'EPSG:4490': 'GEOGCS["China Geodetic Coordinate System 2000",DATUM["China_2000",SPHEROID["CGCS2000",6378137,298.257222101,AUTHORITY["EPSG","1024"]],AUTHORITY["EPSG","1043"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4490"]]',
+  'EPSG:4214': 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4214"]]',
+  'EPSG:4610': 'GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]]'
+};
+CRS.EPSG3857 = new CRS('EPSG:3857', [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+CRS.EPSG4326 = new CRS('EPSG:4326', [-180, -90, 180, 90]);
+
 
 export default Map;
 var mapboxglMock = { Map };
