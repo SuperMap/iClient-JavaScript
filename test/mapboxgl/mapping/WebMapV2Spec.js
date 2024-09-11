@@ -1360,8 +1360,10 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
     const callback = function (data) {
-      expect(datavizWebmap.getLayers().length).toBe(uniqueLayer_polygon.layers.length + 1);
-      const layerInfo = { ...uniqueLayer_polygon.layers[0], id: uniqueLayer_polygon.layers[0].name };
+      const layers = datavizWebmap.getLayers();
+      expect(layers.length).toBe(uniqueLayer_polygon.layers.length + 1);
+      expect(layers.length).toBe(data.layers.length);
+      expect(datavizWebmap.getLegends().length).toBe(2);
       const features = [
         {
           type: 'Feature',
@@ -1386,9 +1388,10 @@ describe('mapboxgl_WebMapV2', () => {
           }
         }
       ];
-      const spy = spyOn(datavizWebmap._handler, '_initOverlayLayer');
-      datavizWebmap.updateOverlayLayer(layerInfo, features);
+      const spy = spyOn(datavizWebmap._handler, '_initOverlayLayer').and.callThrough();
+      datavizWebmap.updateOverlayLayer({ id: datavizWebmap._handler._mapInfo.layers[0].layerID }, features);
       expect(spy).toHaveBeenCalled();
+      expect(datavizWebmap.getLegends().length).toBe(2);
       done();
     };
     datavizWebmap.on('mapcreatesucceeded', callback);

@@ -38,6 +38,7 @@ describe('maplibregl-webmap3.0', () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     maplibregl.Map.prototype.overlayLayersManager = {};
+    mbglmap.prototype.getL7Scene = maplibregl.Map.prototype.getL7Scene;
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
@@ -47,6 +48,7 @@ describe('maplibregl-webmap3.0', () => {
     }
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    mbglmap.prototype.getL7Scene = undefined;
   });
 
   it('initialize_background', (done) => {
@@ -1195,5 +1197,66 @@ describe('maplibregl-webmap3.0', () => {
       });
     };
     mapstudioWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('test webmap with l7layers append l7layers', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Maplibre').and.callFake(mockL7.Maplibre);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({ ...mapInfo, crs: 'EPSG:3857' })));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(
+      id,
+      {
+        server: server
+      }
+    );
+    mapstudioWebmap.once('mapcreatesucceeded', ({ map: firstMap, layers: firstLayersList }) => {
+      expect(firstMap).not.toBeUndefined();
+      const style = firstMap.getStyle();
+      expect(style.layers.length).toEqual(mapInfo.layers.length);
+      const webMap1 = new WebMap(id, { server, map: firstMap });
+      webMap1.once('mapcreatesucceeded', ({ map, layers }) => {
+        expect(map).toEqual(firstMap);
+        expect(layers.length).toBe(firstLayersList.length);
+        expect(map.$l7scene).not.toBeUndefined();
+        const mapSpy = spyOn(map, 'remove');
+        const sceneSpy = spyOn(map.$l7scene, 'removeAllLayer');
+        webMap1.cleanLayers();
+        expect(mapSpy).not.toHaveBeenCalled();
+        expect(sceneSpy).not.toHaveBeenCalled();
+        done();
+      });
+    });
   });
 });

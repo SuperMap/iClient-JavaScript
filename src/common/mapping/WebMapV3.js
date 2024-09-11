@@ -205,11 +205,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   clean(removeMap = true) {
     if (this.map) {
-      const scene = this.map.$l7scene;
-      if (scene) {
-        scene.removeAllLayer();
+      if (removeMap) {
+        const scene = this.map.$l7scene;
+        scene && scene.removeAllLayer();
+        this.map.remove();
       }
-      removeMap && this.map.remove();
       this.map = null;
       this._legendList = [];
       this._mapResourceInfo = {};
