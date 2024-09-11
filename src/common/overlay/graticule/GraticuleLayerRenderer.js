@@ -708,7 +708,8 @@ export class GraticuleLayerRenderer {
             'line-color': strokeStyle.lineColor || 'rgba(0,0,0,0.2)',
             'line-width': strokeStyle.lineWidth || 1,
             'line-offset': strokeStyle.lineDashOffset || 0,
-            'line-translate-anchor': 'viewport'
+            'line-translate-anchor': 'viewport',
+            'line-opacity': strokeStyle.lineOpacity || 1
         };
 
         if (strokeStyle.lineWidth) {
