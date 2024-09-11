@@ -392,6 +392,16 @@
     }
 
     /**
+     * @version 11.3.0
+     * @function WebMapBase.prototype.getWebMapType
+     * @description 获取地图类型。
+     * @returns {String} 地图类型。
+     */
+    getWebMapType() {
+      return this.type;
+    }
+
+    /**
      * @version 11.2.1
      * @function WebMapBase.prototype.updateOverlayLayer
      * @description 更新 geojson 图层要素信息。
@@ -626,6 +636,7 @@
           layers: typeof layerFilter === 'function' ? mapInfo.layers.filter(layerFilter) : mapInfo.layers
         };
       }
+      this.type = type;
       this._handler.initializeMap(_mapInfo, this.map);
     }
 
