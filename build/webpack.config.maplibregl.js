@@ -10,7 +10,11 @@ module.exports = {
   target: configBase.target,
   mode: configBase.mode,
   //页面入口文件配置
-  entry: [...configBase.entry, `${__dirname}/../src/maplibregl/namespace.js`],
+  entry: [
+    ...configBase.entry,
+    `${__dirname}/../src/maplibregl/namespace.js`,
+    `${__dirname}/../src/maplibregl/css/index.js`
+  ],
   //入口文件输出配置
   output: configBase.output(libName, productName),
   //是否启用压缩

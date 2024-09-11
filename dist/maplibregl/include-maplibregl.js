@@ -194,6 +194,9 @@
         inputScript(disturl + '/maplibregl/iclient-maplibregl.min.js');
       }
     }
+    if (!inArray(excludes, 'iclient-maplibregl-css')) {
+      inputCSS(disturl + '/maplibregl/iclient-maplibregl.min.css');
+    }
   }
 
   load({
