@@ -2783,4 +2783,32 @@ describe('maplibregl_WebMapV2', () => {
       done();
     });
   });
+
+  it('MAPBOXSTYLE visible false', (done) => {
+    const mvtLayerClone = JSON.parse(JSON.stringify(mvtLayer));
+    mvtLayerClone.layers[0].visible = false;
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1788054202/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mvtLayerClone)));
+      }
+      if (url.indexOf('web/datas/676516522/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
+    });
+    datavizWebmap = new WebMap(id, { ...commonOption });
+    const callback = function () {
+      const appreciableLayers = datavizWebmap.getLayers();
+      expect(appreciableLayers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
+      expect(appreciableLayers[1].visible).toBe(false);
+      expect(appreciableLayers[2].id).toBe('民航数据');
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
 });

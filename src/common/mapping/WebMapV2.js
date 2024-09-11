@@ -314,6 +314,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   
     _createMVTBaseLayer(layerInfo, addedCallback) {
       let url = layerInfo.dataSource.url;
+      const visible = layerInfo.visible;
       if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
         url += '/style.json';
       }
@@ -326,6 +327,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
               addedCallback && addedCallback();
               return;
             }
+            style.layers.forEach(layer => {
+              layer.layout && (layer.layout.visibility = visible ? 'visible' : 'none');
+            })
             this.map.addStyle(style);
             const layerIds = [];
             style.layers.forEach((item) => {

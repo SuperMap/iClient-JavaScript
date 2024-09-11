@@ -21,8 +21,12 @@ class SourceModel {
         this.renderSource = {};
         this.dataSource = {};
         this.themeSetting = {};
-        this.visible = true;
         this.title = this.id;
+      }
+      if (layer.visible || this.visible) {
+        this.visible = true;
+      } else {
+        this.visible = false;
       }
       this.children.push(layer);
       return;
