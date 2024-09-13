@@ -320,7 +320,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
 
     _createMVTBaseLayer(layerInfo, addedCallback) {
       let url = layerInfo.dataSource.url;
-      const visible = layerInfo.visible;
       if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
         url += '/style.json';
       }
@@ -334,7 +333,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
               return;
             }
             style.layers.forEach(layer => {
-              layer.layout && (layer.layout.visibility = visible ? 'visible' : 'none');
+              layer.layout && (layer.layout.visibility = this._getVisibility(layerInfo.visible));
             })
             this.map.addStyle(style);
             const layerIds = [];
@@ -2410,7 +2409,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           minzoom: minzoom || 0,
           maxzoom: maxzoom || 22,
           layout: {
-            visibility: visibility ? 'visible' : 'none'
+            visibility: this._getVisibility(visibility)
           }
         },
         parentLayerId
@@ -2980,6 +2979,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
 
     _isDataflowLayer(layerType) {
       return layerType === 'DATAFLOW_POINT_TRACK' || layerType === 'DATAFLOW_HEAT';
+    }
+
+    _getVisibility(visible) {
+      const visibility = (visible === true || visible === 'visible') ? 'visible' : 'none';
+      return visibility;
     }
   };
 }
