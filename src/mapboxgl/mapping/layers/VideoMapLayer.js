@@ -32,7 +32,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     if (!this.address) {
       return;
     }
-    this.renderer = new VideoLayerRenderer({ url: this.address, id: this.id });
+    this.renderer = new VideoLayerRenderer({ url: this.address, id: this.id, loop: this.loop, autoplay: this.autoplay });
     this.video = this.renderer.createVideo();
     this.videoDomId = this.renderer.getVideoDomId();
     this.video.one('firstplay', () => {
@@ -49,7 +49,9 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     });
     this.video.one('canplay', () => {
       setTimeout(() => {
-        this.map.getSource(this.id).play();
+        if (this.autoplay) {
+          this.map.getSource(this.id).play();
+        }
       }, 1500);
     });
   }

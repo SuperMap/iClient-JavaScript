@@ -72,7 +72,7 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">计算经纬度面积</h5>
+        <h5 class="panel-title text-center">计算面积</h5>
       </div>
       <div class="panel-body content">
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />
@@ -157,7 +157,7 @@
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         var area;
         area = geometryAnalysis.computeGeodesicArea(polygon);
-        var innerHTML = '面积为: ' + area;
+        var innerHTML = '面积为: ' + area + '平方米';
         content.innerHTML = innerHTML;
         overlay.setPosition([121, 31]);
       }

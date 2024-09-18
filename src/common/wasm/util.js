@@ -340,3 +340,54 @@ export function geojson2UGGeometry(geojson) {
       throw new Error('Unsupported GeoJSON type: ' + geojson.type + '. Are you sure this is valid GeoJSON?')
   }
 }
+
+export function isObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+export function isValidLatlng(coord) {
+  return Array.isArray(coord) && coord.length === 2 && coord[0] >= -180 && coord[0] <= 180 && coord[1] >= -90 && coord[1] <= 90;
+}
+
+export function featureCoordValid(feature) {
+  if (feature && feature.geometry && feature.geometry.type) {
+    const type = feature.geometry.type;
+    if (type === 'Point') {
+      return isValidLatlng(feature.geometry.coordinates);
+    } else if (type === 'LineString') {
+      return isValidLatlng(feature.geometry.coordinates[0]);
+    } else if (type === 'Polygon' || type === 'MultiLineString') {
+      return isValidLatlng(feature.geometry.coordinates[0][0]);
+    }
+  }
+}
+
+export function formatCoord(pointList) {
+  let xList = [];
+  let yList = [];
+  if (isObject(pointList) && pointList.type === 'FeatureCollection') {
+    pointList.features.forEach((feature) => {
+      const coord = feature.geometry.coordinates;
+      xList.push(coord[0]);
+      yList.push(coord[1])
+    });
+  } else if (Array.isArray(pointList)) {
+    pointList.forEach((item) => {
+      if (item.type === 'Feature') {
+        const coord = item.geometry.coordinates;
+        xList.push(coord[0]);
+        yList.push(coord[1])
+      } else if (Array.isArray(item)) {
+        xList.push(item[0]);
+        yList.push(item[1])
+      } else if (isObject(item)) {
+        xList.push(item.x);
+        yList.push(item.y)
+      }
+    });
+  }
+  return {
+    xList,
+    yList
+  }
+}

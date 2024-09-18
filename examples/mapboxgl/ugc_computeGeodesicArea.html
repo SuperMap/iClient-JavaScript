@@ -35,7 +35,7 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">计算经纬度面积</h5>
+        <h5 class="panel-title text-center">计算面积</h5>
       </div>
       <div class="panel-body content">
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />
@@ -112,7 +112,7 @@
         area = geometryAnalysis.computeGeodesicArea(polygon);
         popup = new mapboxgl.Popup()
           .setLngLat([121, 31])
-          .setHTML('面积为: ' + area)
+          .setHTML('面积为: ' + area + '平方米')
           .addTo(map);
       }
 

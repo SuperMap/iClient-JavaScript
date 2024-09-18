@@ -125,17 +125,10 @@
         var geometryAnalysis = new L.supermap.GeometryAnalysis();
         const pointsCoors = pointLists.map((point) => point.geometry.coordinates);
         if (operationFun === 'computeConvexHull') {
-          calRes = geometryAnalysis[operationFun](pointsCoors, pointsCoors.length);
+          calRes = geometryAnalysis[operationFun](pointsCoors);
         } else {
-          const xArrs = [];
-          const yArrs = [];
-          pointsCoors.forEach((p) => {
-            xArrs.push(p[0]);
-            yArrs.push(p[1]);
-          });
-          calRes = geometryAnalysis[operationFun](xArrs, yArrs, pointsCoors.length);
+          calRes = geometryAnalysis[operationFun](pointLists);
         }
-        console.log(calRes);
         layer = L.geoJSON(calRes);
         layer.addTo(map);
       }

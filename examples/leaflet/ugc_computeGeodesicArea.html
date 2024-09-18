@@ -29,13 +29,17 @@
         z-index: 10000;
         border-radius: 4px;
       }
+      .leaflet-popup-content {
+        width: 280px;
+        font-size: 16px !important;
+      }
     </style>
   </head>
 
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">计算经纬度面积</h5>
+        <h5 class="panel-title text-center">计算面积</h5>
       </div>
       <div class="panel-body content">
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />
@@ -98,7 +102,7 @@
         var geometryAnalysis = new L.supermap.GeometryAnalysis();
         var area;
         area = geometryAnalysis.computeGeodesicArea(polygon);
-        marker.bindPopup('面积为: ' + area).openPopup();
+        marker.bindPopup('面积为: ' + area + ' 平方米').openPopup();
       }
 
       function clearPopup() {
