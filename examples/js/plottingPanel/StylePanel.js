@@ -344,7 +344,7 @@ function updateSelectFeature(updated, selectfeatures) {
                         if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
                             selectfeatures[i].route.applyTextStyle({ lineSymbolID: updated.value });
                         } else {
-                            if (selectFeatures[i].symbolType != 1) {
+                            if (selectFeatures[i].symbolType != 1 && selectfeatures[i].setDashLine != undefined) {
                                 selectfeatures[i].setDashLine([]);
                                 selectfeatures[i].setStyle({ lineSymbolID: 0 });
                             }

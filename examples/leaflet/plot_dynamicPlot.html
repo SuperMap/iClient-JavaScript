@@ -7,6 +7,7 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_dynamicPlot"></title>
@@ -31,12 +32,12 @@
         }
 
         #plottingMenu {
-          position: absolute;
-          top: 20%;
-          z-index: 888;
-          left: 260px;
-          color: #000000;
-          background-color: #fff;
+            position: absolute;
+            top: 20%;
+            z-index: 888;
+            left: 260px;
+            color: #000000;
+            background-color: #fff;
         }
 
         /* #drawMenu {
@@ -148,434 +149,451 @@
         } */
 
         #plottingPanel {
-          float: left;
-          background: #ffffff;
-          width: 250px;
-          height: 100%;
-          border: 1px solid #3473b7;
+            float: left;
+            background: #ffffff;
+            width: 250px;
+            height: 100%;
+            border: 1px solid #3473b7;
         }
     </style>
 </head>
+
 <body>
-<div id="map"></div>
-<div id="plottingPanel">
-    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
-        <div class="easyui-tabs" style="width: 100%;height: 100%">
-            <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
-            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+    <div id="map"></div>
+    <div id="plottingPanel">
+        <div class="easyui-panel"
+            style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+            <div class="easyui-tabs" style="width: 100%;height: 100%">
+                <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+                <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+            </div>
         </div>
     </div>
-</div>
-<div id="plottingMenu" class="plotting-menu">
-    <li><span class="icon iconfont icon-circle-wrong" data-i18n="[title]resources.btn_cancelMarker"
-     onclick="cancelDraw()"></span></li>
-    <li>
-      <i class="icon iconfont icon-draw"></i>
-      <ul style="width: 160px;">
-          <li><span class="icon iconfont icon-draw" data-i18n="[title]resources.text_addLayer"
-           onclick="addPlottingLayer()"></span></li>
-          <li><span class="icon iconfont icon-lock" data-i18n="[title]resources.title_layerLocked"
-           onclick="setPlottingLayerIsLocked()"></span></li>
-           <li><span class="icon iconfont icon-plot-layer-edit" data-i18n="[title]resources.title_layerEdit"
-            onclick="setPlottingLayerIsEdit()"></span></li>
-          <li><span class="icon iconfont icon-plot-layer-selection" data-i18n="[title]resources.title_layerSelected"
-           onclick="setPlottingLayerIsSelected()"></span></li>
-           <li><span class="icon iconfont icon-style" data-i18n="[title]resources.title_clearAllSymbol"
-            onclick="clearLayer()"></span></li>
-      </ul>
-    </li>
-    <li>
-      <i class="icon iconfont icon-bound-rectangle-edit"></i>
-      <ul style="width: 128px;">
-          <li><span class="icon iconfont icon-bound-rectangle-edit" data-i18n="[title]resources.btn_editRectangle"
-           onclick="editCircusRetangle()"></span></li>
-          <li><span class="icon iconfont icon-node-edit" data-i18n="[title]resources.btn_editNode"
-           onclick="editContorPoints()"></span></li>
-           <li><span class="icon iconfont icon-add-node" data-i18n="[title]resources.btn_addNode"
-            onclick="addControlPoints()"></span></li>
-            <li><span class="icon iconfont icon-delete-node" data-i18n="[title]resources.btn_deleteNode"
-             onclick="removeControlPoints()"></span></li>
-      </ul>
-    </li>
-    <li>
-      <i class="icon iconfont icon-copy2"></i>
-      <ul style="width: 192px;">
-          <li><span class="icon iconfont icon-copy2" data-i18n="[title]resources.title_copySymbol"
-           onclick="copySymbol()"></span></li>
-          <li><span class="icon iconfont icon-shear" data-i18n="[title]resources.title_cutSymbol"
-           onclick="cutSymbol()"></span></li>
-           <li><span class="icon iconfont icon-paste" data-i18n="[title]resources.title_pasteSymbol"
-            onclick="pasteSymbol()"></span></li>
-            <li><span class="icon iconfont icon-delete" data-i18n="[title]resources.btn_deleteMarker"
-             onclick="deleteSymbol()"></span></li>
-             <li><span class="icon iconfont icon-undo" data-i18n="[title]resources.title_canclePreDo"
-              onclick="undo()"></span></li>
-              <li><span class="icon iconfont icon-redo" data-i18n="[title]resources.title_recoverPreDo"
-               onclick="redo()"></span></li>
-      </ul>
-    </li>
-    <li>
-      <i class="icon iconfont icon-cloud-upload"></i>
-      <ul style="width: 64px;">
-          <li><span class="icon iconfont icon-cloud-upload" data-i18n="[title]resources.btn_saveSimulationMap"
-           onclick="saveSimulationMap()"></span></li>
-          <li><span class="icon iconfont icon-cloud-download" data-i18n="[title]resources.btn_loadSimulationMap"
-           onclick="loadSimulationMap()"></span></li>
-      </ul>
-    </li>
-    <li>
-      <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
-    </li>
-     <li>
-       <i class="icon iconfont icon-combination"></i>
-       <ul style="width: 96px;">
-           <li><span class="icon iconfont icon-combination" data-i18n="[title]resources.title_mutilSelect_createSymbolGroup"
-            onclick="createGroupObjects()"></span></li>
-           <li><span class="icon iconfont icon-multiflag" data-i18n="[title]resources.title_mutilSelect_createFlags"
-            onclick="createDrawFlags()"></span></li>
-            <li><span class="icon iconfont icon-decompose" data-i18n="[title]resources.title_un_symblGroup_flags"
-             onclick="unGroupObject()"></span></li>
-       </ul>
-     </li>
-     <li>
-       <i class="icon iconfont icon-draw-avoid"></i>
-       <ul style="width: 96px;">
-           <li><span class="icon iconfont icon-draw-avoid" data-i18n="[title]resources.btn_avoidEdit"
-            onclick="drawAvoidRegion()"></span></li>
-           <li><span class="icon iconfont icon-exit-avoid" data-i18n="[title]resources.btn_cancelAvoidEdit"
-            onclick="doneAvoidEdit()"></span></li>
-            <li><span class="icon iconfont icon-delete-avoid" data-i18n="[title]resources.btn_deleteAvoid"
-             onclick="deleteAvoidEdit()"></span></li>
-       </ul>
-     </li>
-     <li>
-       <i class="icon iconfont icon-align-left"></i>
-       <ul style="width: 354px;">
-           <li><span class="icon iconfont icon-align-left" data-i18n="[title]resources.btn_leftAlignment"
-            onclick="setSymbolAlighLeft()"></span></li>
-           <li><span class="icon iconfont icon-align-right" data-i18n="[title]resources.btn_rightAlignment"
-            onclick="setSymbolAlighRight()"></span></li>
-            <li><span class="icon iconfont icon-align-up" data-i18n="[title]resources.btn_topAlignment"
-             onclick="setSymbolAlighUp()"></span></li>
-            <li><span class="icon iconfont icon-align-bottom" data-i18n="[title]resources.btn_bottomAlignment"
-             onclick="setSymbolAlighDown()"></span> </li>
-           <li><span class="icon iconfont icon-vertical-center" data-i18n="[title]resources.btn_verticalCenter"
-            onclick="setSymbolAlighVerticalcenter()"></span></li>
-           <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-horizontal-btn_horizontalCenter"
-            onclick="setSymbolAlighHorizontalcenter()"></span></li>
-            <li><span class="icon iconfont icon-equal-width" data-i18n="[title]resources.btn_symbolEqualWidth"
-             onclick="setSymbolEqualWidth()"></span></li>
-            <li><span class="icon iconfont icon-equal-high" data-i18n="[title]resources.btn_symbolEqualHeight"
-             onclick="setSymbolEqualHeight()"></span></li>
-             <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-equal-width-high" data-i18n="[title]resources.title_symbolEqualSize"
-              onclick="setSymbolEqualWidthHeight()"></span></li>
-              <li><span class="icon iconfont icon-transverse-uniform-distribution" data-i18n="[title]resources.btn_symbolLevelDistribution"
-               onclick="setSymbolLevelDistribution()"></span></li>
-              <li><span class="icon iconfont icon-portrait-uniform-distribution" data-i18n="[title]resources.btn_symbolVerticalDistribution"
-               onclick="setSymbolVerticalDistribution()"></span></li>
-       </ul>
-     </li>
-</div>
-<div id="contentMe" style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
-    <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;" data-i18n="resources.title_pasteHere"></a>
-</div>
-<script type="text/javascript" include="plottingPanel" src="../js/include-web.js"></script>
-<script type="text/javascript"  include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript" include="PlotPanel,StylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
-    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    <div id="plottingMenu" class="plotting-menu">
+        <li><span class="icon iconfont icon-circle-wrong" data-i18n="[title]resources.btn_cancelMarker"
+                onclick="cancelDraw()"></span></li>
+        <li>
+            <i class="icon iconfont icon-draw"></i>
+            <ul style="width: 160px;">
+                <li><span class="icon iconfont icon-draw" data-i18n="[title]resources.text_addLayer"
+                        onclick="addPlottingLayer()"></span></li>
+                <li><span class="icon iconfont icon-lock" data-i18n="[title]resources.title_layerLocked"
+                        onclick="setPlottingLayerIsLocked()"></span></li>
+                <li><span class="icon iconfont icon-plot-layer-edit" data-i18n="[title]resources.title_layerEdit"
+                        onclick="setPlottingLayerIsEdit()"></span></li>
+                <li><span class="icon iconfont icon-plot-layer-selection"
+                        data-i18n="[title]resources.title_layerSelected" onclick="setPlottingLayerIsSelected()"></span>
+                </li>
+                <li><span class="icon iconfont icon-style" data-i18n="[title]resources.title_clearAllSymbol"
+                        onclick="clearLayer()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-bound-rectangle-edit"></i>
+            <ul style="width: 128px;">
+                <li><span class="icon iconfont icon-bound-rectangle-edit" data-i18n="[title]resources.btn_editRectangle"
+                        onclick="editCircusRetangle()"></span></li>
+                <li><span class="icon iconfont icon-node-edit" data-i18n="[title]resources.btn_editNode"
+                        onclick="editContorPoints()"></span></li>
+                <li><span class="icon iconfont icon-add-node" data-i18n="[title]resources.btn_addNode"
+                        onclick="addControlPoints()"></span></li>
+                <li><span class="icon iconfont icon-delete-node" data-i18n="[title]resources.btn_deleteNode"
+                        onclick="removeControlPoints()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-copy2"></i>
+            <ul style="width: 192px;">
+                <li><span class="icon iconfont icon-copy2" data-i18n="[title]resources.title_copySymbol"
+                        onclick="copySymbol()"></span></li>
+                <li><span class="icon iconfont icon-shear" data-i18n="[title]resources.title_cutSymbol"
+                        onclick="cutSymbol()"></span></li>
+                <li><span class="icon iconfont icon-paste" data-i18n="[title]resources.title_pasteSymbol"
+                        onclick="pasteSymbol()"></span></li>
+                <li><span class="icon iconfont icon-delete" data-i18n="[title]resources.btn_deleteMarker"
+                        onclick="deleteSymbol()"></span></li>
+                <li><span class="icon iconfont icon-undo" data-i18n="[title]resources.title_canclePreDo"
+                        onclick="undo()"></span></li>
+                <li><span class="icon iconfont icon-redo" data-i18n="[title]resources.title_recoverPreDo"
+                        onclick="redo()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-cloud-upload"></i>
+            <ul style="width: 64px;">
+                <li><span class="icon iconfont icon-cloud-upload" data-i18n="[title]resources.btn_saveSimulationMap"
+                        onclick="saveSimulationMap()"></span></li>
+                <li><span class="icon iconfont icon-cloud-download" data-i18n="[title]resources.btn_loadSimulationMap"
+                        onclick="loadSimulationMap()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect"
+                onclick="multiSelectModel()"></span>
+        </li>
+        <li>
+            <i class="icon iconfont icon-combination"></i>
+            <ul style="width: 96px;">
+                <li><span class="icon iconfont icon-combination"
+                        data-i18n="[title]resources.title_mutilSelect_createSymbolGroup"
+                        onclick="createGroupObjects()"></span></li>
+                <li><span class="icon iconfont icon-multiflag"
+                        data-i18n="[title]resources.title_mutilSelect_createFlags" onclick="createDrawFlags()"></span>
+                </li>
+                <li><span class="icon iconfont icon-decompose" data-i18n="[title]resources.title_un_symblGroup_flags"
+                        onclick="unGroupObject()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-draw-avoid"></i>
+            <ul style="width: 96px;">
+                <li><span class="icon iconfont icon-draw-avoid" data-i18n="[title]resources.btn_avoidEdit"
+                        onclick="drawAvoidRegion()"></span></li>
+                <li><span class="icon iconfont icon-exit-avoid" data-i18n="[title]resources.btn_cancelAvoidEdit"
+                        onclick="doneAvoidEdit()"></span></li>
+                <li><span class="icon iconfont icon-delete-avoid" data-i18n="[title]resources.btn_deleteAvoid"
+                        onclick="deleteAvoidEdit()"></span></li>
+            </ul>
+        </li>
+        <li>
+            <i class="icon iconfont icon-align-left"></i>
+            <ul style="width: 354px;">
+                <li><span class="icon iconfont icon-align-left" data-i18n="[title]resources.btn_leftAlignment"
+                        onclick="setSymbolAlighLeft()"></span></li>
+                <li><span class="icon iconfont icon-align-right" data-i18n="[title]resources.btn_rightAlignment"
+                        onclick="setSymbolAlighRight()"></span></li>
+                <li><span class="icon iconfont icon-align-up" data-i18n="[title]resources.btn_topAlignment"
+                        onclick="setSymbolAlighUp()"></span></li>
+                <li><span class="icon iconfont icon-align-bottom" data-i18n="[title]resources.btn_bottomAlignment"
+                        onclick="setSymbolAlighDown()"></span> </li>
+                <li><span class="icon iconfont icon-vertical-center" data-i18n="[title]resources.btn_verticalCenter"
+                        onclick="setSymbolAlighVerticalcenter()"></span></li>
+                <li style="border-right: 1px solid #ccc"><span
+                        class="icon iconfont icon-horizontal-btn_horizontalCenter"
+                        onclick="setSymbolAlighHorizontalcenter()"></span></li>
+                <li><span class="icon iconfont icon-equal-width" data-i18n="[title]resources.btn_symbolEqualWidth"
+                        onclick="setSymbolEqualWidth()"></span></li>
+                <li><span class="icon iconfont icon-equal-high" data-i18n="[title]resources.btn_symbolEqualHeight"
+                        onclick="setSymbolEqualHeight()"></span></li>
+                <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-equal-width-high"
+                        data-i18n="[title]resources.title_symbolEqualSize" onclick="setSymbolEqualWidthHeight()"></span>
+                </li>
+                <li><span class="icon iconfont icon-transverse-uniform-distribution"
+                        data-i18n="[title]resources.btn_symbolLevelDistribution"
+                        onclick="setSymbolLevelDistribution()"></span></li>
+                <li><span class="icon iconfont icon-portrait-uniform-distribution"
+                        data-i18n="[title]resources.btn_symbolVerticalDistribution"
+                        onclick="setSymbolVerticalDistribution()"></span></li>
+            </ul>
+        </li>
+    </div>
+    <div id="contentMe"
+        style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
+        <a href="javascript:void(0)" id="paste"
+            style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;"
+            data-i18n="resources.title_pasteHere"></a>
+    </div>
+    <script type="text/javascript" include="plottingPanel" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="PlotPanel,StylePanel"
+        src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
 
-    var map;
-    map = L.map('map', {
-        preferCanvas: true,
-        crs: L.CRS.EPSG4326,
-        center: [35, 104],
-        maxZoom: 18,
-        zoom: 3
-    });
-    L.supermap.tiledMapLayer(url).addTo(map);
-    var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
-    plottingLayer.addTo(map);
-    var drawControl = L.supermap.plotting.drawControl(plottingLayer);
-    drawControl.addTo(map);
-    var editControl = L.supermap.plotting.editControl();
-    editControl.addTo(map);
-    L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
-    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
-
-    var plotting = L.supermap.plotting.getControl(map, serverUrl);
-
-    map.on('contextmenu', function (event) {
-        drawControl.handler.disable();
-
-        if(editControl.canPaste()){
-            var contentMe = document.getElementById("contentMe");
-            contentMe.style.top = event.originalEvent.clientY + "px";
-            contentMe.style.left = event.originalEvent.clientX + "px";
-            contentMe.style.display = "block";
-            document.getElementById("paste").onclick = function(){
-                editControl.paste(event.latlng);
-            };
-        }
-    }).on('mousemove', function (event) {
-        contentMe.style.display = "none";
-    });
-
-    //取消标绘
-    function cancelDraw() {
-        drawControl.handler.disable();
-    }
-
-    //清空绘制
-    function clearLayer() {
-        cancelDraw();
-
-        for(var i = 0; i < map.getPlottingLayers().length; i++){
-            map.getPlottingLayers()[i].removeAllFeatures();
-        }
-    }
-
-    //删除选中标号
-    function deleteSymbol() {
-        editControl.deleteSelectedFeatures();
-    }
-
-    //复制
-    function copySymbol() {
-        editControl.copy();
-    }
-
-    //剪切
-    function cutSymbol() {
-        editControl.cut();
-    }
-
-    //粘贴
-    function pasteSymbol() {
-        editControl.paste();
-    }
-
-    //添加图层
-    function addPlottingLayer() {
-        cancelDraw();
-
-        var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
-        var plottingLayerNew = L.supermap.plotting.plottingLayer(plottingLayerName, serverUrl);
-        drawControl.setDrawingLayer(plottingLayerNew);
-        plottingLayerNew.addTo(map);
-
-        alert("标绘图层"+plottingLayerNew.name+"增加成功!");
-    }
-
-    //保存态势图
-    function saveSimulationMap() {
-        cancelDraw();
-        plotting.getSitDataManager().saveAsSmlFile("situationMap");
-    }
-
-    function loadSimulationMap() {
-        plotting.getSitDataManager().openSmlFileOnServer("situationMap", function(evt){
-            drawControl.setDrawingLayer(evt.sitDataLayers[0]);
-            plottingLayer = evt.sitDataLayers[0];
+        var map;
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: [35, 104],
+            maxZoom: 18,
+            zoom: 3
         });
-    }
+        L.supermap.tiledMapLayer(url).addTo(map);
+        var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
+        plottingLayer.addTo(map);
+        var drawControl = L.supermap.plotting.drawControl(plottingLayer);
+        drawControl.addTo(map);
+        var editControl = L.supermap.plotting.editControl();
+        editControl.addTo(map);
+        L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
+        L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
 
-    function editCircusRetangle() {
-        editControl.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
-    }
+        var plotting = L.supermap.plotting.getControl(map, serverUrl);
 
-    function editContorPoints() {
-        editControl.setEditMode(SuperMap.Plot.EditMode.EDITCONTROLPOINT);
-    }
+        map.on('contextmenu', function (event) {
+            drawControl.handler.disable();
 
-    function addControlPoints() {
-        editControl.setEditMode(SuperMap.Plot.EditMode.ADDCONTROLPOINT);
-    }
-    function removeControlPoints(){
-        editControl.setEditMode(SuperMap.Plot.EditMode.REMOVECONTROLPOINT);
-    }
-    //切换多选模式
-    function multiSelectModel() {
-        editControl.multiSelect();
-    }
-
-    //多选对齐--左对齐
-    function setSymbolAlighLeft() {
-        editControl.align(SuperMap.Plot.AlignType.LEFT);
-    }
-
-    //多选对齐--右对齐
-    function setSymbolAlighRight() {
-        editControl.align(SuperMap.Plot.AlignType.RIGHT);
-    }
-
-    //多选对齐--上对齐
-    function setSymbolAlighUp() {
-        editControl.align(SuperMap.Plot.AlignType.UP);
-    }
-
-    //多选对齐--下对齐
-    function setSymbolAlighDown() {
-        editControl.align(SuperMap.Plot.AlignType.DOWN);
-    }
-
-    //多选对齐--竖直居中对齐
-    function setSymbolAlighVerticalcenter() {
-        editControl.align(SuperMap.Plot.AlignType.VERTICALCENTER);
-    }
-
-    //多选对齐--水平居中对齐
-    function setSymbolAlighHorizontalcenter() {
-        editControl.align(SuperMap.Plot.AlignType.HORIZONTALCENTER);
-    }
-
-    //切换图层是否锁定
-    function setPlottingLayerIsLocked() {
-        if (plottingLayer.getLocked() === true) {
-            plottingLayer.setLocked(false);
-        } else {
-            plottingLayer.setLocked(true);
-        }
-    }
-
-    //切换图层是否可编辑模式
-    function setPlottingLayerIsEdit() {
-        if (plottingLayer.getEditable() === true) {
-            plottingLayer.setEditable(false);
-        } else {
-            plottingLayer.setEditable(true);
-        }
-    }
-
-    //切换图层是否可选择模式
-    function setPlottingLayerIsSelected() {
-        if (plottingLayer.getSelected() === true) {
-            plottingLayer.setSelected(false);
-        } else {
-            plottingLayer.setSelected(true);
-        }
-    }
-
-    function drawAvoidRegion(){
-        if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
-            return;
-        }else{
-            editControl.avoidEdit(true);
-        }
-    }
-    function doneAvoidEdit(){
-        editControl.avoidEdit(false);
-    }
-    function deleteAvoidEdit(){
-        if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
-            return ;
-        }else if(editControl._avoidEditing === true){
-            editControl.avoidEdit(false);
-            editControl.getSelectedFeatures()[0].removeAvoidRegions();
-        }
-    }
-
-    //创建组合对象
-    function createGroupObjects() {
-        var features = editControl.getSelectedFeatures();
-        if (features.length >= 2) {
-            var groupObject = plottingLayer.createGroupObject(features);
-            if(!!groupObject){
-                editControl.selectFeatures(groupObject);
+            if (editControl.canPaste()) {
+                var contentMe = document.getElementById("contentMe");
+                contentMe.style.top = event.originalEvent.clientY + "px";
+                contentMe.style.left = event.originalEvent.clientX + "px";
+                contentMe.style.display = "block";
+                document.getElementById("paste").onclick = function () {
+                    editControl.paste(event.latlng);
+                };
             }
-            var feature = plottingLayer.features[plottingLayer.features.length-1];
-            var transaction = new SuperMap.Plot.Transaction();
-            transaction.transType = SuperMap.Plot.TransactionType.EDIT;
-            var transInfo = new SuperMap.Plot.TransactionInfo();
-            transInfo.layerId = plottingLayer._leaflet_id;
-            transInfo.uuid = feature.uuid;
-            transInfo.functionName = "createGroupObject";
-            transInfo.undoParams = [feature];
-            transInfo.redoParams = [features];
-            transaction.transInfos.push(transInfo);
-            L.supermap.plotting.getControl().getTransManager().add(transaction);
+        }).on('mousemove', function (event) {
+            contentMe.style.display = "none";
+        });
+
+        //取消标绘
+        function cancelDraw() {
+            drawControl.handler.disable();
         }
 
-    }
+        //清空绘制
+        function clearLayer() {
+            cancelDraw();
 
-    //创建多旗
-    function createDrawFlags() {
-        var features = editControl.getSelectedFeatures();
-        if (features.length >= 2) {
-            var flagObject = plottingLayer.createFlags(features);
-            if(!!flagObject){
-                editControl.selectFeatures(flagObject);
+            for (var i = 0; i < map.getPlottingLayers().length; i++) {
+                map.getPlottingLayers()[i].removeAllFeatures();
             }
-            var transaction = new SuperMap.Plot.Transaction();
-            transaction.transType = SuperMap.Plot.TransactionType.EDIT;
-            var transInfo = new SuperMap.Plot.TransactionInfo();
-            transInfo.layerId = flagObject.layer._leaflet_id;
-            transInfo.uuid = flagObject.uuid;
-            transInfo.functionName = "createFlags";
-            transInfo.undoParams = [flagObject];
-            transInfo.redoParams = [features];
-            transaction.transInfos.push(transInfo);
-            L.supermap.plotting.getControl().getTransManager().add(transaction);
         }
-    }
 
-    //解绑组合对象
-    function unGroupObject() {
-        var features = editControl.getSelectedFeatures();
-        for (var i = features.length - 1; i >= 0; i--) {
-            if (features[i] instanceof L.supermap.plotting.GroupObject) {
-                var subLayers = plottingLayer.unGroupObject(features[i]);
-                editControl.selectFeatures(subLayers);
-            }
-
-        }
-    }
-
-    function undo(){
-        editControl.avoidEdit(false);
-        plotting.getTransManager().undo();
-        editControl.fire(SuperMap.Plot.Event.featuresmodified);//刷新属性面板
-    }
-
-    function redo(){
-        editControl.avoidEdit(false);
-        plotting.getTransManager().redo();
-        editControl.fire(SuperMap.Plot.Event.featuresmodified);//刷新属性面板
-    }
-
-    //等大
-    //等宽
-    function setSymbolEqualWidth(){
-        editControl.equalLarge(SuperMap.Plot.EqualLargeType.WIDTH);
-    }
-    //等高
-    function setSymbolEqualHeight(){
-        editControl.equalLarge(SuperMap.Plot.EqualLargeType.HEIGHT);
-    }
-    //等宽高
-    function setSymbolEqualWidthHeight(){
-        editControl.equalLarge(SuperMap.Plot.EqualLargeType.SAME);
-    }
-
-    //均匀分布
-    //横向均匀分布
-    function setSymbolLevelDistribution(){
-        editControl.uniformDistribution(SuperMap.Plot.UniformDistributionType.LEVEL);
-    }
-
-    //纵向均匀分布
-    function setSymbolVerticalDistribution(){
-        editControl.uniformDistribution(SuperMap.Plot.UniformDistributionType.VERTICAL);
-    }
-
-    document.onkeydown = function (event) {
-        var event = event || window.event;
-        if(event && event.keyCode === 46){//Delete键
+        //删除选中标号
+        function deleteSymbol() {
             editControl.deleteSelectedFeatures();
         }
-    }
+
+        //复制
+        function copySymbol() {
+            editControl.copy();
+        }
+
+        //剪切
+        function cutSymbol() {
+            editControl.cut();
+        }
+
+        //粘贴
+        function pasteSymbol() {
+            editControl.paste();
+        }
+
+        //添加图层
+        function addPlottingLayer() {
+            cancelDraw();
+
+            var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
+            var plottingLayerNew = L.supermap.plotting.plottingLayer(plottingLayerName, serverUrl);
+            drawControl.setDrawingLayer(plottingLayerNew);
+            plottingLayerNew.addTo(map);
+
+            alert("标绘图层" + plottingLayerNew.name + "增加成功!");
+        }
+
+        //保存态势图
+        function saveSimulationMap() {
+            cancelDraw();
+            plotting.getSitDataManager().saveAsSmlFile("situationMap");
+        }
+
+        function loadSimulationMap() {
+            plotting.getSitDataManager().openSmlFileOnServer("situationMap", function (evt) {
+                drawControl.setDrawingLayer(evt.sitDataLayers[0]);
+                plottingLayer = evt.sitDataLayers[0];
+            });
+        }
+
+        function editCircusRetangle() {
+            editControl.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
+        }
+
+        function editContorPoints() {
+            editControl.setEditMode(SuperMap.Plot.EditMode.EDITCONTROLPOINT);
+        }
+
+        function addControlPoints() {
+            editControl.setEditMode(SuperMap.Plot.EditMode.ADDCONTROLPOINT);
+        }
+        function removeControlPoints() {
+            editControl.setEditMode(SuperMap.Plot.EditMode.REMOVECONTROLPOINT);
+        }
+        //切换多选模式
+        function multiSelectModel() {
+            editControl.multiSelect();
+        }
+
+        //多选对齐--左对齐
+        function setSymbolAlighLeft() {
+            editControl.align(SuperMap.Plot.AlignType.LEFT);
+        }
+
+        //多选对齐--右对齐
+        function setSymbolAlighRight() {
+            editControl.align(SuperMap.Plot.AlignType.RIGHT);
+        }
+
+        //多选对齐--上对齐
+        function setSymbolAlighUp() {
+            editControl.align(SuperMap.Plot.AlignType.UP);
+        }
+
+        //多选对齐--下对齐
+        function setSymbolAlighDown() {
+            editControl.align(SuperMap.Plot.AlignType.DOWN);
+        }
+
+        //多选对齐--竖直居中对齐
+        function setSymbolAlighVerticalcenter() {
+            editControl.align(SuperMap.Plot.AlignType.VERTICALCENTER);
+        }
+
+        //多选对齐--水平居中对齐
+        function setSymbolAlighHorizontalcenter() {
+            editControl.align(SuperMap.Plot.AlignType.HORIZONTALCENTER);
+        }
+
+        //切换图层是否锁定
+        function setPlottingLayerIsLocked() {
+            if (plottingLayer.getLocked() === true) {
+                plottingLayer.setLocked(false);
+            } else {
+                plottingLayer.setLocked(true);
+            }
+        }
+
+        //切换图层是否可编辑模式
+        function setPlottingLayerIsEdit() {
+            if (plottingLayer.getEditable() === true) {
+                plottingLayer.setEditable(false);
+            } else {
+                plottingLayer.setEditable(true);
+            }
+        }
+
+        //切换图层是否可选择模式
+        function setPlottingLayerIsSelected() {
+            if (plottingLayer.getSelected() === true) {
+                plottingLayer.setSelected(false);
+            } else {
+                plottingLayer.setSelected(true);
+            }
+        }
+
+        function drawAvoidRegion() {
+            if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
+                return;
+            } else {
+                editControl.avoidEdit(true);
+            }
+        }
+        function doneAvoidEdit() {
+            editControl.avoidEdit(false);
+        }
+        function deleteAvoidEdit() {
+            if (editControl._avoidEditing === false && editControl.getSelectedFeatures().length === 0) {
+                return;
+            } else if (editControl._avoidEditing === true) {
+                editControl.avoidEdit(false);
+                editControl.getSelectedFeatures()[0].removeAvoidRegions();
+            }
+        }
+
+        //创建组合对象
+        function createGroupObjects() {
+            var features = editControl.getSelectedFeatures();
+            if (features.length >= 2) {
+                var groupObject = plottingLayer.createGroupObject(features);
+                if (!!groupObject) {
+                    editControl.selectFeatures(groupObject);
+                }
+                var feature = plottingLayer.features[plottingLayer.features.length - 1];
+                var transaction = new SuperMap.Plot.Transaction();
+                transaction.transType = SuperMap.Plot.TransactionType.EDIT;
+                var transInfo = new SuperMap.Plot.TransactionInfo();
+                transInfo.layerId = plottingLayer._leaflet_id;
+                transInfo.uuid = feature.uuid;
+                transInfo.functionName = "createGroupObject";
+                transInfo.undoParams = [feature];
+                transInfo.redoParams = [features];
+                transaction.transInfos.push(transInfo);
+                L.supermap.plotting.getControl().getTransManager().add(transaction);
+            }
+
+        }
+
+        //创建多旗
+        function createDrawFlags() {
+            var features = editControl.getSelectedFeatures();
+            if (features.length >= 2) {
+                var flagObject = plottingLayer.createFlags(features);
+                if (flagObject == null) {
+                    return;
+                }
+                if (!!flagObject) {
+                    editControl.selectFeatures(flagObject);
+                }
+                var transaction = new SuperMap.Plot.Transaction();
+                transaction.transType = SuperMap.Plot.TransactionType.EDIT;
+                var transInfo = new SuperMap.Plot.TransactionInfo();
+                transInfo.layerId = flagObject.layer._leaflet_id;
+                transInfo.uuid = flagObject.uuid;
+                transInfo.functionName = "createFlags";
+                transInfo.undoParams = [flagObject];
+                transInfo.redoParams = [features];
+                transaction.transInfos.push(transInfo);
+                L.supermap.plotting.getControl().getTransManager().add(transaction);
+            }
+        }
+
+        //解绑组合对象
+        function unGroupObject() {
+            var features = editControl.getSelectedFeatures();
+            for (var i = features.length - 1; i >= 0; i--) {
+                if (features[i] instanceof L.supermap.plotting.GroupObject) {
+                    var subLayers = plottingLayer.unGroupObject(features[i]);
+                    editControl.selectFeatures(subLayers);
+                }
+
+            }
+        }
+
+        function undo() {
+            editControl.avoidEdit(false);
+            plotting.getTransManager().undo();
+            editControl.fire(SuperMap.Plot.Event.featuresmodified, {features: editControl.selectedFeatures});//刷新属性面板
+        }
+
+        function redo() {
+            editControl.avoidEdit(false);
+            plotting.getTransManager().redo();
+            editControl.fire(SuperMap.Plot.Event.featuresmodified, {features: editControl.selectedFeatures});//刷新属性面板
+        }
+
+        //等大
+        //等宽
+        function setSymbolEqualWidth() {
+            editControl.equalLarge(SuperMap.Plot.EqualLargeType.WIDTH);
+        }
+        //等高
+        function setSymbolEqualHeight() {
+            editControl.equalLarge(SuperMap.Plot.EqualLargeType.HEIGHT);
+        }
+        //等宽高
+        function setSymbolEqualWidthHeight() {
+            editControl.equalLarge(SuperMap.Plot.EqualLargeType.SAME);
+        }
+
+        //均匀分布
+        //横向均匀分布
+        function setSymbolLevelDistribution() {
+            editControl.uniformDistribution(SuperMap.Plot.UniformDistributionType.LEVEL);
+        }
+
+        //纵向均匀分布
+        function setSymbolVerticalDistribution() {
+            editControl.uniformDistribution(SuperMap.Plot.UniformDistributionType.VERTICAL);
+        }
+
+        document.onkeydown = function (event) {
+            var event = event || window.event;
+            if (event && event.keyCode === 46) {//Delete键
+                editControl.deleteSelectedFeatures();
+            }
+        }
 
     // document.oncontextmenu = function (event) {
     //     var event = event || window.event;
@@ -584,6 +602,7 @@
     //     }
     // }
 
-</script>
+    </script>
 </body>
+
 </html>
