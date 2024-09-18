@@ -14,6 +14,8 @@ import 'videojs-flvjs-es6';
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 图层 ID。
  * @param {string} [options.url] - 视频地址。
+ * @param {boolean} [options.autoplay =true] - 自动播放。
+ * @param {boolean} [options.loop =true] - 循环播放。
  * @usage
  */
 
@@ -22,6 +24,8 @@ export class VideoLayerRenderer {
     this.options = options;
     this.url = options.url;
     this.layerId = options.id;
+    this.autoplay = options.autoplay !== undefined ? options.autoplay : true;
+    this.loop = options.loop !== undefined ? options.loop : true;
   }
 
   _createVideoElement() {
@@ -49,10 +53,10 @@ export class VideoLayerRenderer {
       return;
     }
     let options = {
-      autoplay: true,
-      muted: true
+      autoplay: this.autoplay,
+      muted: true,
+      loop: this.loop
     };
-    options.loop = this.loop !== false;
     if (this.url.includes('mp4')) {
       options['sources'] = [
         {
@@ -62,7 +66,9 @@ export class VideoLayerRenderer {
       ];
     } else if (this.url.includes('flv')) {
       options = {
+        loop: this.loop,
         autoplay: this.autoplay,
+        muted: true,
         techOrder: ['html5', 'flvjs'],
         flvjs: {
           mediaDataSource: {

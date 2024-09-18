@@ -156,8 +156,8 @@
       function search() {
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         var distance;
-        distance = geometryAnalysis.distanceToLineSegment(123, 25, 120, 30, 125, 30);
-        var innerHTML = '距离为: ' + distance;
+        distance = geometryAnalysis.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'KILOMETER');
+        var innerHTML = '距离为: ' + distance + '千米';
         content.innerHTML = innerHTML;
         overlay.setPosition([123, 25]);
       }

@@ -134,10 +134,10 @@
         clearPopup();
         var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
         var distance;
-        distance = geometryAnalysis.distanceToLineSegment(123, 25, 120, 30, 125, 30);
+        distance = geometryAnalysis.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'KILOMETER');
         popup = new maplibregl.Popup()
           .setLngLat([123, 25])
-          .setHTML('距离为: ' + distance + '°')
+          .setHTML('距离为: ' + distance + '千米')
           .addTo(map);
       }
 

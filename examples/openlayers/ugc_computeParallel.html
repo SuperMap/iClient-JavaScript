@@ -40,8 +40,8 @@
       <div class="panel-body content">
         <div class="panel">
           <div class="input-group">
-            <span class="input-group-addon">线距(度)</span>
-            <input class="form-control" id="distance" type="number" value="5" />
+            <span class="input-group-addon">线距(千米)</span>
+            <input class="form-control" id="distance" type="number" value="500" />
           </div>
         </div>
         <input type="button" class="btn btn-default" value="分析" onclick="createParallel()" />&nbsp;
@@ -84,7 +84,7 @@
         clearLayer();
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         const distance = parseFloat(document.getElementById('distance').value);
-        const res = geometryAnalysis.computeParallel(line, distance);
+        const res = geometryAnalysis.computeParallel(line, distance, 'DEGREE', 'KILOMETER');
         parallelLine = addLayer(res);
       }
 

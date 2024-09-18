@@ -142,8 +142,8 @@
       function search() {
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         var distance;
-        distance = geometryAnalysis.computeGeodesicDistance([120, 125], [30, 30], 6378137, 0.0033528106647475);
-        var innerHTML = '距离为: ' + distance;
+        distance = geometryAnalysis.computeGeodesicDistance([[120, 30], [125, 30]], 6378137, 0.0033528106647475, 'KILOMETER');
+        var innerHTML = '长度为: ' + distance + '千米';
         content.innerHTML = innerHTML;
         overlay.setPosition([123, 30]);
       }
