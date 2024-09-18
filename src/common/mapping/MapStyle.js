@@ -62,9 +62,12 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
 
     clean(removeMap = true) {
       if (this.map) {
+        if (this._sourceListModel) {
+          this._sourceListModel.destroy();
+          this._sourceListModel = null;
+        }
         removeMap && this.map.remove();
         this.map = null;
-        this._sourceListModel = null;
       }
     }
 
@@ -155,6 +158,11 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         map: this.map,
         layers: layersFromStyle,
         appendLayers: this._appendLayers
+      });
+      this._sourceListModel.on({
+        layerupdatechanged: (params) => {
+          this.fire('layerupdatechanged', params);
+        }
       });
       this.fire('mapcreatesucceeded', {
         map: this.map,

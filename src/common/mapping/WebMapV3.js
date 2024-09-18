@@ -205,6 +205,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   clean(removeMap = true) {
     if (this.map) {
+      if (this._sourceListModel) {
+        this._sourceListModel.destroy();
+        this._sourceListModel = null;
+      }
       if (removeMap) {
         const scene = this.map.$l7scene;
         scene && scene.removeAllLayer();
@@ -613,6 +617,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       mapResourceInfo: this._mapResourceInfo,
       legendList: this._legendList,
       l7LayerUtil
+    });
+    this._sourceListModel.on({
+      layerupdatechanged: (params) => {
+        this.fire('layerupdatechanged', params);
+      }
     });
     this.fire('mapcreatesucceeded', { map: this.map, mapparams: this.mapParams, layers: this.getSelfAppreciableLayers() });
   }

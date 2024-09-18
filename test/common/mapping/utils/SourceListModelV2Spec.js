@@ -1,9 +1,10 @@
 import { SourceListModelV2 } from '../../../../src/common/mapping/utils/SourceListModelV2';
 
 describe('SourceListV2', () => {
-  let layers, map;
+  let layers, map, mockEvents;
 
   beforeEach(() => {
+    mockEvents = {};
     layers = [
       {
         id: 'background',
@@ -182,7 +183,24 @@ describe('SourceListV2', () => {
           visible: true,
           sourceId: 'graticuleLayer_1723443238046_line'
         }
-      }
+      },
+      on(type, callback) {
+        mockEvents[type] = callback;
+      },
+      off(type) {
+        delete mockEvents[type];
+      },
+      setLayoutProperty: jasmine.createSpy('setLayoutProperty').and.callFake((layerId, visibility) => {
+        const layer = layers.find((layer) => layer.id === layerId);
+        if (layer) {
+          layer.layout = layer.layout || {};
+          layer.layout.visibility = visibility;
+          return;
+        }
+        if (this.overlayLayersManager[layerId]) {
+          this.overlayLayersManager.visible = visibility === 'visible';
+        }
+      })
     };
   });
 
@@ -226,9 +244,9 @@ describe('SourceListV2', () => {
     done();
   });
 
-  it('getSourceList', (done) => {
+  it('getLayerCatalog', (done) => {
     const sourceListModel = new SourceListModelV2({ map });
-    const layerList = sourceListModel.getSourceList();
+    const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(4);
     done();
   });
@@ -403,7 +421,9 @@ describe('SourceListV2', () => {
       },
       getLayer(id) {
         return layersOnMap.find((layer) => layer.id === id);
-      }
+      },
+      on: jasmine.createSpy('on').and.callFake(() => {}),
+      off: jasmine.createSpy('off').and.callFake(() => {})
     };
     const sourceListModel = new SourceListModelV2({ map, layers });
     const appreciableLayers = sourceListModel.getLayers();
@@ -417,7 +437,7 @@ describe('SourceListV2', () => {
       'China_Boundary_C@China#1_unique_<NULL>(6_7)'
     ]);
     expect(selfAppreciableLayers.length).toBe(3);
-    const layerList = sourceListModel.getSourceList();
+    const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(2);
     expect(layerList[0].children.length).toBe(2);
     expect(layerList[0].children[1].renderLayers).toEqual(appreciableLayers[2].renderLayers);
@@ -485,5 +505,49 @@ describe('SourceListV2', () => {
     expect(appreciableLayers[0].reused).toBeTruthy();
     expect(appreciableLayers[1].reused).toBeUndefined();
     done();
+  });
+
+  it('destroy', (done) => {
+    const sourceListModel = new SourceListModelV2({ map });
+    expect(mockEvents.styledata).not.toBeUndefined();
+    sourceListModel.destroy();
+    expect(mockEvents.styledata).toBeUndefined();
+    done();
+  });
+
+  it('toggleLayerVisible', (done) => {
+    const sourceListModel = new SourceListModelV2({ map });
+    const layerList = sourceListModel.getLayerCatalog();
+    expect(layerList.length).toBe(4);
+    expect(layerList[1].visible).toBeTruthy();
+    sourceListModel.on({
+      layerupdatechanged: () => {
+        const layerList = sourceListModel.getLayerCatalog();
+        expect(layerList[1].visible).toBeFalsy();
+        expect(map.setLayoutProperty).toHaveBeenCalledTimes(layerList[1].renderLayers.length);
+        done();
+      }
+    });
+    sourceListModel.toggleLayerVisible(layerList[1].id, false);
+    expect(mockEvents.styledata).not.toBeUndefined();
+    mockEvents.styledata();
+  });
+
+  it('setLayersVisible', (done) => {
+    const sourceListModel = new SourceListModelV2({ map });
+    const layerList = sourceListModel.getLayerCatalog();
+    expect(layerList.length).toBe(4);
+    expect(layerList[1].visible).toBeTruthy();
+    sourceListModel.on({
+      layerupdatechanged: () => {
+        const layerList = sourceListModel.getLayerCatalog();
+        expect(layerList[1].visible).toBeFalsy();
+        expect(map.setLayoutProperty).toHaveBeenCalledTimes(layerList[1].renderLayers.length);
+        done();
+      }
+    });
+    sourceListModel.setLayersVisible([layerList[1]], 'none');
+    expect(mockEvents.styledata).not.toBeUndefined();
+    mockEvents.styledata();
   });
 });

@@ -2035,6 +2035,7 @@ describe('maplibregl_WebMapV2', () => {
         }
       };
       expect(data.map).toEqual(datavizWebmap._handler.map);
+      data.map.fire('styledata');
       const appreciableLayers2 = datavizWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(uniqueLayer_polygon.layers.length + 1 + 2);
       data.map.addLayer({
@@ -2719,12 +2720,17 @@ describe('maplibregl_WebMapV2', () => {
           expect(layersOnMap[1].id).toBe('天地图影像-tdt-label');
           expect(layersOnMap[2].id).toBe('T202007210600');
           expect(layersOnMap[3].id).toBe('T202007210700');
+          const listenEvents = {};
+          spyOn(map, 'off').and.callFake((type, cb) => {
+            listenEvents[type] = cb;
+          });
           webMap2.cleanLayers();
           layersOnMap = map.getStyle().layers;
           expect(layersOnMap.length).toBe(3);
           expect(layersOnMap[0].id).toBe('天地图影像');
           expect(layersOnMap[1].id).toBe('天地图影像-tdt-label');
           expect(layersOnMap[2].id).toBe('T202007210600');
+          expect(listenEvents.styledata).not.toBeUndefined();
           webMap1.cleanLayers();
           done();
         });
@@ -2808,6 +2814,129 @@ describe('maplibregl_WebMapV2', () => {
       expect(appreciableLayers[1].visible).toBe(false);
       expect(appreciableLayers[2].id).toBe('民航数据');
       done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
+  it('toggle layers visible', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1788054202/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mvtLayer)));
+      }
+      if (url.indexOf('web/datas/676516522/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
+        const nextStyleJSON = JSON.parse(styleJson);
+        nextStyleJSON.layers.push({
+          layout: {
+            visibility: 'visible'
+          },
+          filter: ['all', ['==', '$type', 'Point']],
+          maxzoom: 24,
+          paint: {
+            'circle-radius': 2,
+            'circle-color': 'rgba(102,102,102,1.00)'
+          },
+          id: 'ChinaqxAlberts_4548@fl-new_point',
+          source: 'ChinaqxAlberts_4548@fl-new',
+          'source-layer': 'ChinaqxAlberts_4548@point',
+          type: 'circle',
+          minzoom: 0
+        });
+        return Promise.resolve(new Response(JSON.stringify(nextStyleJSON)));
+      }
+    });
+    datavizWebmap = new WebMap(id, { ...commonOption });
+    const callback = function () {
+      let layers = datavizWebmap.getLayers();
+      let layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers.length).toBe(4);
+      expect(layerCatalog.length).toBe(3);
+      expect(layers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
+      expect(layers[2].id).toBe('ChinaqxAlberts_4548@point');
+      expect(layerCatalog[1].id).toBe('ChinaqxAlberts_4548@fl-new');
+      expect(layerCatalog[1].children[0].id).toBe('ChinaqxAlberts_4548@fl-new');
+      expect(layerCatalog[1].children[1].id).toBe('ChinaqxAlberts_4548@point');
+      expect(layers[1].visible).toBeTruthy();
+      expect(layers[2].visible).toBeTruthy();
+      expect(layerCatalog[1].children[0].visible).toBeTruthy();
+      expect(layerCatalog[1].children[1].visible).toBeTruthy();
+      datavizWebmap.toggleLayerVisible('ChinaqxAlberts_4548@point', false);
+      layers = datavizWebmap.getLayers();
+      layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers[1].visible).toBeTruthy();
+      expect(layers[2].visible).toBeFalsy();
+      expect(layerCatalog[1].visible).toBeTruthy();
+      expect(layerCatalog[1].children[1].visible).toBeFalsy();
+      expect(layers[3].id).toBe('民航数据');
+      expect(layerCatalog[0].id).toBe('民航数据');
+      expect(layers[3].visible).toBeTruthy();
+      expect(layerCatalog[0].visible).toBeTruthy();
+      datavizWebmap.toggleLayerVisible('民航数据', false);
+      layers = datavizWebmap.getLayers();
+      layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers[3].visible).toBeFalsy();
+      expect(layerCatalog[0].visible).toBeFalsy();
+      datavizWebmap.setLayersVisible([layers[1], layers[2], layers[3]], 'none');
+      layers = datavizWebmap.getLayers();
+      layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers[1].visible).toBeFalsy();
+      expect(layers[2].visible).toBeFalsy();
+      expect(layers[3].visible).toBeFalsy();
+      expect(layerCatalog[0].visible).toBeFalsy();
+      expect(layerCatalog[1].visible).toBeFalsy();
+      expect(layerCatalog[1].children[0].visible).toBeFalsy();
+      expect(layerCatalog[1].children[1].visible).toBeFalsy();
+      datavizWebmap.setLayersVisible([layers[1], layers[2], layers[3]], 'visible');
+      layers = datavizWebmap.getLayers();
+      layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers[1].visible).toBeTruthy();
+      expect(layers[2].visible).toBeTruthy();
+      expect(layers[3].visible).toBeTruthy();
+      expect(layerCatalog[0].visible).toBeTruthy();
+      expect(layerCatalog[1].visible).toBeTruthy();
+      expect(layerCatalog[1].children[0].visible).toBeTruthy();
+      expect(layerCatalog[1].children[1].visible).toBeTruthy();
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
+  it('WebMapV2 layerupdatechanged', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1788054202/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mvtLayer)));
+      }
+      if (url.indexOf('web/datas/676516522/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
+    });
+    datavizWebmap = new WebMap(id, { ...commonOption });
+    const callback = function () {
+      let layers = datavizWebmap.getLayers();
+      let layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layers[2].id).toBe('民航数据');
+      expect(layerCatalog[0].id).toBe('民航数据');
+      expect(layers[2].visible).toBeTruthy();
+      expect(layerCatalog[0].visible).toBeTruthy();
+      datavizWebmap.once('layerupdatechanged', () => {
+        layers = datavizWebmap.getLayers();
+        layerCatalog = datavizWebmap.getLayerCatalog();
+        expect(layers[2].visible).toBeFalsy();
+        expect(layerCatalog[0].visible).toBeFalsy();
+        done();
+      });
+      datavizWebmap.toggleLayerVisible('民航数据', false);
     };
     datavizWebmap.on('mapcreatesucceeded', callback);
   });

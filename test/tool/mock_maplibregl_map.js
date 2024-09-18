@@ -104,7 +104,18 @@ const Map = function (options) {
     this[setters[i]] = genericSetter;
   }
 
-  this.setLayoutProperty = function (layerid) {};
+  this.setLayoutProperty = function (layerId, attr, value) {
+    if (this._layers[layerId]) {
+      this._layers[layerId].layout = this._layers[layerId].layout || {};
+      this._layers[layerId].layout[attr] = value;
+    }
+    const matchLayer = this._layersList.find(item => item.id === layerId);
+    if (matchLayer) {
+      matchLayer.layout = matchLayer.layout || {};
+      matchLayer.layout[attr] = value;
+      this.fire('styledata');
+    }
+  };
   this.setLayoutPropertyBySymbolBak = function (layerid) {};
 
   this.addControl = function (control) {
@@ -190,6 +201,7 @@ const Map = function (options) {
     if (layer.render) {
       layer.render();
     }
+    this.fire('styledata');
     return this;
   };
 
@@ -377,7 +389,7 @@ const Map = function (options) {
   this.getCRS = () => {
     if (!this._crs) {
       if (this.options.crs && typeof this.options.crs !== 'string') {
-        this._crs = CRS.get(this.options.crs);
+        this._crs = this.options.crs;
       } else {
         this._crs = CRS.get(this.options.crs || 'EPSG:3857');
       }

@@ -1,33 +1,105 @@
+import { Events } from '../../commontypes';
 import SourceModel from './SourceModel';
-import { createAppreciableLayerId } from './util';
+import { createAppreciableLayerId, getLayerInfosFromCatalogs } from './util';
 
-export class AppreciableLayerBase {
+export class AppreciableLayerBase extends Events {
   constructor(options = {}) {
+    super();
     this.map = options.map;
     this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
     this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', 'maplibre-gl-draw', /tracklayer-\d+-line/];
+    this.layersVisibleMap = new Map();
+    this.layerCatalogs = [];
+    this.appreciableLayers = [];
+    this.eventTypes = ['layerupdatechanged'];
+    this._styleDataUpdatedHandler = this._styleDataUpdatedHandler.bind(this);
   }
 
   setSelfLayers(layers) {
     this.layers = layers;
+    if (this.appreciableLayers.length > 0) {
+      this._styleDataUpdatedHandler();
+    }
+  }
+
+  createAppreciableLayers() {
+    throw new Error('createAppreciableLayers is not implemented');
+  }
+
+  createLayerCatalogs() {
+    throw new Error('createLayerCatalogs is not implemented');
+  }
+
+  getSelfLayerIds() {
+    throw new Error('getSelfLayerIds is not implemented');
+  }
+
+  getLayerCatalog() {
+    return this.layerCatalogs;
   }
 
   getLayers() {
-    throw new Error('getLayers is not implemented');
+    return this.appreciableLayers;
   }
 
-  getSourceList() {
-    throw new Error('getSourceList is not implemented');
+  getSelfLayers(appreciableLayers = this.getLayers()) {
+    const selfLayerIds = this.getSelfLayerIds();
+    return appreciableLayers.filter((item) =>
+      item.renderLayers.some((id) => selfLayerIds.some((renderId) => renderId === id))
+    );
   }
 
-  getSelfLayers() {
-    throw new Error('getSelfLayers is not implemented');
+  toggleLayerVisible(layerId, visible) {
+    const item = this._findLayerCatalog(this.layerCatalogs, layerId);
+    if (!item) {
+      return;
+    }
+    const visibility = visible ? 'visible' : 'none';
+    if (item.type === 'group') {
+      const visbleId = this._getLayerVisibleId(item);
+      this.layersVisibleMap.set(visbleId, visible);
+      const targetLayers = getLayerInfosFromCatalogs(item.children);
+      this.setLayersVisible(targetLayers, visibility);
+    } else {
+      this.setLayersVisible([item], visibility);
+    }
+  }
+
+  setLayersVisible(layers, visibility) {
+    layers.forEach(layer => {
+      const visbleId = this._getLayerVisibleId(layer);
+      this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      if (
+        (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide)
+      ) {
+        visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
+        this._styleDataUpdatedHandler();
+        return;
+      }
+      layer.renderLayers.forEach((layerId) => {
+        if (layer.CLASS_NAME !== 'L7Layer' || this.map.getLayer(layerId)) {
+          this.map.setLayoutProperty(layerId, 'visibility', visibility);
+        }
+      });
+    });
   }
 
   concatExpectLayers(selfLayers, selfLayerIds, layersOnMap) {
     const extraLayers = layersOnMap.filter((layer) => !selfLayerIds.some((id) => id === layer.id));
-    return this.filterExpectedLayers(selfLayers.concat(extraLayers));
+    return this._filterExpectedLayers(selfLayers.concat(extraLayers));
+  }
+
+  destroy() {
+    this.map.off('styledata', this._styleDataUpdatedHandler);
+  }
+
+  initDatas() {
+    if (!this.map) {
+      return;
+    }
+    this._initializeData();
+    this._registerMapEvent();
   }
 
   _initAppreciableLayers(detailLayers) {
@@ -67,7 +139,7 @@ export class AppreciableLayerBase {
     return datas;
   }
 
-  filterExpectedLayers(layers) {
+  _filterExpectedLayers(layers) {
     return layers.filter((layer) => this._excludeLayer(layer));
   }
 
@@ -147,7 +219,7 @@ export class AppreciableLayerBase {
       id: layerId,
       title,
       type: layer.type,
-      visible,
+      visible: this._getLayerVisible({ id: layerId, type: layer.type, visible }),
       renderSource: sourceOnMap
         ? {
             id: layer.source,
@@ -171,5 +243,57 @@ export class AppreciableLayerBase {
       fields.reused = reused;
     }
     return fields;
+  }
+  
+  _findLayerCatalog(layerCatalogs, id) {
+    let matchData;
+    for (const data of layerCatalogs) {
+      if (data.id === id) {
+        matchData = data;
+        break;
+      }
+      if (data.type === 'group') {
+        matchData = this._findLayerCatalog(data.children, id);
+      }
+    }
+    return matchData;
+  }
+  
+  _getLayerVisibleId(layer) {
+    return `${layer.type}-${layer.id}`;
+  }
+
+  _getLayerVisible(layer) {
+    const id = this._getLayerVisibleId(layer);
+    return this.layersVisibleMap.has(id) ? this.layersVisibleMap.get(id) : layer.visible;
+  }
+  
+  _updateLayerCatalogsVisible(catalogs) {
+    for (const data of catalogs) {
+      data.visible = this._getLayerVisible(data);
+      if (data.type === 'group') {
+        this._updateLayerCatalogsVisible(data.children);
+      }
+    }
+  }
+
+  _initializeData() {
+    this.appreciableLayers = this.createAppreciableLayers();
+    this.layerCatalogs = this.createLayerCatalogs();
+    this._updateLayerCatalogsVisible(this.layerCatalogs);
+  }
+
+  _registerMapEvent() {
+    this.map.on('styledata', this._styleDataUpdatedHandler);
+  }
+
+  _styleDataUpdatedHandler() {
+    this._initializeData();
+    if (!this._appendLayers) {
+      this.triggerEvent('layerupdatechanged', {
+        layers: this.appreciableLayers,
+        layerCatalog: this.layerCatalogs
+      });
+    }
   }
 }

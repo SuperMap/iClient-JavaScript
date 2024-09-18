@@ -52,11 +52,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
 
     clean(removeMap = true) {
       if (this.map) {
+        if (this._sourceListModel) {
+          this._sourceListModel.destroy();
+          this._sourceListModel = null;
+        }
         this.stopCanvg();
         removeMap && this.map.remove();
         this.map = null;
         this._legendList = [];
-        this._sourceListModel = null;
         this.center = null;
         this.zoom = null;
         if (this._dataflowService) {
@@ -2229,6 +2232,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     _sendMapToUser(count, layersLen) {
       if (count === layersLen) {
         this.addLayersSucceededLen = this._cacheLayerId.size;
+        this._changeSourceListModel();
         const appreciableLayers = this.getLayers();
         const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
         this._rectifyLayersOrder(layerOptions.layers);
@@ -2772,6 +2776,39 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         const matchInsertIndex = matchIndex < 0 ? renderLayerList.length : matchIndex;
         renderLayerList.splice(matchInsertIndex, 0, ...renderLayers);
       }
+      if (this.addLayersSucceededLen && this._cacheLayerId.size <= this.expectLayerLen) {
+        this._changeSourceListModel();
+        const appreciableLayers = this.getLayers();
+        const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers);
+        const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
+        this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
+        this.fire('layeraddchanged', this._getSelfAppreciableLayers(appreciableLayers));
+      }
+    }
+
+    _findTopLayerBeforeId(selfAppreciableLayers) {
+      // fix 追加图层，异步的图层回来排序错乱
+      const selfLayerIds = selfAppreciableLayers
+        .filter((item) => !item.reused)
+        .reduce((ids, item) => ids.concat(item.renderLayers), []);
+      const firstSelfLayerIdOnMap = selfLayerIds.find((id) => this.map.style._layers[id]);
+      if (!firstSelfLayerIdOnMap) {
+        return;
+      }
+      const layersOnMap = this.map.getStyle().layers;
+      const firstSelfLayerIndex = layersOnMap.findIndex((item) => item.id === firstSelfLayerIdOnMap);
+      const extraLayerIdsOnMap = layersOnMap
+        .filter((item) => !selfLayerIds.some((id) => id === item.id))
+        .map((item) => item.id);
+      for (const layerId of extraLayerIdsOnMap) {
+        const matchIndex = layersOnMap.findIndex((item) => item.id === layerId);
+        if (matchIndex > firstSelfLayerIndex) {
+          return layerId;
+        }
+      }
+    }
+
+    _changeSourceListModel() {
       const layersFromMapInfo = [];
       const layerList = [this._mapInfo.baseLayer].concat(this._mapInfo.layers);
       if (this._graticuleLayer) {
@@ -2798,55 +2835,26 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           });
         }
       });
-      this._changeSourceListModel(layersFromMapInfo);
-      const appreciableLayers = this.getLayers();
-      if (this.addLayersSucceededLen && this._cacheLayerId.size !== this.addLayersSucceededLen) {
-        const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers);
-        const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
-        this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
-        this.addLayersSucceededLen = this._cacheLayerId.size;
-      }
-      this.fire('layeraddchanged', this._getSelfAppreciableLayers(appreciableLayers));
-    }
-
-    _findTopLayerBeforeId(selfAppreciableLayers) {
-      // fix 追加图层，异步的图层回来排序错乱
-      const selfLayerIds = selfAppreciableLayers
-        .filter((item) => !item.reused)
-        .reduce((ids, item) => ids.concat(item.renderLayers), []);
-      const firstSelfLayerIdOnMap = selfLayerIds.find((id) => this.map.style._layers[id]);
-      if (!firstSelfLayerIdOnMap) {
-        return;
-      }
-      const layersOnMap = this.map.getStyle().layers;
-      const firstSelfLayerIndex = layersOnMap.findIndex((item) => item.id === firstSelfLayerIdOnMap);
-      const extraLayerIdsOnMap = layersOnMap
-        .filter((item) => !selfLayerIds.some((id) => id === item.id))
-        .map((item) => item.id);
-      for (const layerId of extraLayerIdsOnMap) {
-        const matchIndex = layersOnMap.findIndex((item) => item.id === layerId);
-        if (matchIndex > firstSelfLayerIndex) {
-          return layerId;
-        }
-      }
-    }
-
-    _changeSourceListModel(layersFromMapInfo) {
       if (!this._sourceListModel) {
         this._sourceListModel = new SourceListModelV2({
           map: this.map,
           layers: layersFromMapInfo,
           appendLayers: this._appendLayers
         });
-      } else {
-        this._sourceListModel.setSelfLayers(layersFromMapInfo);
+        this._sourceListModel.on({
+          layerupdatechanged: (params) => {
+            this.fire('layerupdatechanged', params);
+          }
+        });
+        return;
       }
+      this._sourceListModel.setSelfLayers(layersFromMapInfo);
     }
 
     _getSelfAppreciableLayers(appreciableLayers) {
       return {
         layers: this.getSelfAppreciableLayers(appreciableLayers),
-        allLoaded: this._cacheLayerId.size === this.addLayersSucceededLen
+        allLoaded: this._cacheLayerId.size === this.expectLayerLen
       };
     }
 

@@ -213,7 +213,7 @@ mapstudioWebMap_raster_append.layers.push({
 });
 mapstudioWebMap_raster_append.sources['ms_424149619_1725240548192_22'] = {
   "tiles": [
-    "http://172.16.14.44:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry"
+    "http://localhost:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry"
   ],
   "bounds": [
     97.89133489467912,
@@ -2248,7 +2248,7 @@ var apstudioWebMap_layerData = JSON.stringify({
   center: [116.39560889343761, 39.939177386003514],
   zoom: 9.789811175067591,
   glyphs: {
-    "ms_M_3857_1719917169016_4": "http://172.16.14.44:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
+    "ms_M_3857_1719917169016_4": "http://localhost:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
   },
   version: '3.2.1',
   rootUrl: 'http://localhost:8190/iportal/',
@@ -3006,3 +3006,235 @@ var mapstudioWebMap_group = JSON.stringify({
   minzoom: 0
 });
 
+var mapstudioWebMap_chart = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        id: '中国金牌个人获奖者(1)',
+        title: '中国金牌个人获奖者(1)',
+        type: 'basic'
+      },
+      {
+        visible: true,
+        id: '北京市轨道交通站点(13)(2)(2)',
+        title: '北京市轨道交通站点(13)(2)(2)',
+        type: 'basic'
+      },
+      {
+        visible: true,
+        id: '上海市可校外学习中心',
+        title: '上海市可校外学习中心',
+        type: 'basic'
+      },
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: '中国暗色地图',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    ms_aggregation_540737853_1722501097217_19: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/540737853/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+      ],
+      promoteId: 'smpid',
+      bounds: [115.7011413574, 39.67036946821771, 116.68625288435837, 40.20693349910422],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: ['base/resources/img/baiduTileTest.png'],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    },
+    ms_888034348_1725355972367_27: {
+      data: {
+        dataId: '888034348',
+        type: 'supermap-structured-data'
+      },
+      type: 'geojson'
+    },
+    ms_166109479_1722479600981_16: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/166109479/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%EF%BB%BF%E5%BA%8F%E5%8F%B7%22%2C%22%E8%AF%95%E7%82%B9%E9%AB%98%E6%A0%A1%22%2C%22%E4%BE%9D%E6%89%98%E5%8D%95%E4%BD%8D%22%2C%22%E5%AD%A6%E4%B9%A0%E4%B8%AD%E5%BF%83%EF%BC%88%E7%82%B9%EF%BC%89%E5%90%8D%E7%A7%B0%22%2C%22%E5%9C%B0%E5%9D%80%22%2C%22%E7%BB%8F%E5%BA%A6%22%2C%22%E7%BA%AC%E5%BA%A6%22%5D&geometryFieldName=msgeometry'
+      ],
+      promoteId: 'smpid',
+      bounds: [121.12147, 30.71292682, 121.83081, 31.68730001],
+      type: 'vector'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [114.17168115786558, 40.011878247221134],
+  zoom: 3.344304922515933,
+  glyphs: {},
+  version: '3.2.2',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '热力图_ms_副本_副本',
+  viewExtent: [-16.213704077664914, 4.747006432155186, 244.5570663933873, 85.05112877980656],
+  layers: [
+    {
+      maxzoom: 12,
+      id: 'CHINA_DARK',
+      source: 'CHINA_DARK',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'radar-animate-speed': 3
+      },
+      metadata: {
+        MapStudio: {
+          title: '上海市可校外学习中心'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'radar-radius': 30,
+        'radar-color': 'rgba(248,231,28,1)',
+        'radar-opacity': 0.9
+      },
+      source: 'ms_166109479_1722479600981_16',
+      'source-layer': '166109479$msgeometry',
+      id: '上海市可校外学习中心',
+      type: 'radar',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'point-extrusion-shape': 'cylinder'
+      },
+      metadata: {
+        MapStudio: {
+          title: '北京市轨道交通站点(13)(2)(2)'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'point-extrusion-width': 12,
+        'point-extrusion-height': 200,
+        'point-extrusion-target-color': 'rgba(126,211,33,1)',
+        'point-extrusion-source-color': 'rgba(74,144,226,1)',
+        'point-extrusion-opacity': 1,
+        'point-extrusion-length': 12,
+        'point-extrusion-color': '#EE4D5A'
+      },
+      source: 'ms_aggregation_540737853_1722501097217_19',
+      'source-layer': '540737853$geometry',
+      id: '北京市轨道交通站点(13)(2)(2)',
+      type: 'point-extrusion',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'chart-type': 'bar',
+        'chart-attribute-color': [['金牌', '#008080']]
+      },
+      metadata: {
+        MapStudio: {
+          title: '中国金牌个人获奖者(1)'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'chart-width': 100,
+        'chart-yAxis-grid': false,
+        'chart-xAxis-label': true,
+        'chart-background-color': '',
+        'chart-height': 50,
+        'chart-xAxis-line': true,
+        'chart-yAxis-label': true,
+        'chart-xAxis-grid': false,
+        'chart-yAxis-line': true
+      },
+      source: 'ms_888034348_1725355972367_27',
+      id: '中国金牌个人获奖者(1)',
+      type: 'chart',
+      minzoom: 0
+    }
+  ],
+  pitch: 60,
+  minzoom: 0
+});
+
+var msProjectINfo_chart = JSON.stringify({
+  "extent": {
+      "top": 85.05112877980656,
+      "left": -16.213704077664914,
+      "bottom": 4.747006432155186,
+      "leftBottom": {
+          "x": -16.213704077664914,
+          "y": 4.747006432155186
+      },
+      "right": 244.5570663933873,
+      "rightTop": {
+          "x": 244.5570663933873,
+          "y": 85.05112877980656
+      }
+  },
+  "controls": null,
+  "extentString": "{\"top\":85.05112877980656,\"left\":-16.213704077664914,\"bottom\":4.747006432155186,\"leftBottom\":{\"x\":-16.213704077664914,\"y\":4.747006432155186},\"right\":244.5570663933873,\"rightTop\":{\"x\":244.5570663933873,\"y\":85.05112877980656}}",
+  "description": "",
+  "verifyReason": null,
+  "units": null,
+  "title": "热力图_ms_副本_副本",
+  "resolution": 0,
+  "checkStatus": "SUCCESSFUL",
+  "projectInfo": "{\"catalogs\":[{\"visualization\":{\"renderer\":[{\"yAxis\":{\"type\":\"simple\",\"value\":{\"grid\":false,\"line\":true,\"label\":true}},\"xAxis\":{\"type\":\"simple\",\"value\":{\"grid\":false,\"line\":true,\"label\":true}},\"background\":{\"type\":\"simple\",\"value\":\"\"},\"colorGroup\":{\"type\":\"simple\",\"value\":[\"#008080\",\"#70a494\",\"#b4c8a8\",\"#f6edbd\",\"#edbb8a\",\"#de8a5a\",\"#ca562c\"]},\"width\":{\"type\":\"simple\",\"value\":100},\"fields\":{\"type\":\"simple\",\"value\":{\"金牌\":\"#008080\"}},\"type\":\"barChartPoint\",\"height\":{\"type\":\"simple\",\"value\":50},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1725355972321_25\",\"bounds\":[102.94558694500006,13.242680169595069,122.3133808125001,45.369677724101784],\"labelsContent\":[],\"id\":\"中国金牌个人获奖者(1)\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"省份\",\"type\":\"FIELD\"},{\"fieldName\":\"金牌\",\"type\":\"FIELD\"},{\"fieldName\":\"详情\",\"type\":\"FIELD\"},{\"fieldName\":\"geometry\",\"type\":\"FIELD\"}],\"title\":\"中国金牌个人获奖者(1)\"},\"title\":\"中国金牌个人获奖者(1)\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]},{\"visualization\":{\"renderer\":[{\"heightMultiple\":{\"type\":\"simple\",\"value\":10},\"targetColor\":{\"type\":\"simple\",\"value\":\"rgba(126,211,33,1)\"},\"shape\":{\"type\":\"simple\",\"value\":\"cylinder\"},\"color\":{\"type\":\"simple\",\"value\":\"#EE4D5A\"},\"size\":{\"type\":\"simple\",\"value\":12},\"opacity\":{\"type\":\"simple\",\"value\":1},\"type\":\"column\",\"height\":{\"type\":\"simple\",\"value\":20},\"sourceColor\":{\"type\":\"simple\",\"value\":\"rgba(74,144,226,1)\"},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1722479400680_17\",\"bounds\":[115.7011413574,39.67036946821771,116.68625288435837,40.20693349910422],\"labelsContent\":[],\"id\":\"北京市轨道交通站点(13)(2)(2)\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"1111标准名称\",\"type\":\"FIELD\"},{\"fieldName\":\"SmID\",\"type\":\"FIELD\"},{\"fieldName\":\"SmGeometrySize\",\"type\":\"FIELD\"},{\"fieldName\":\"1111SmUserID\",\"type\":\"FIELD\"},{\"fieldName\":\"SmY\",\"type\":\"FIELD\"},{\"fieldName\":\"SmGeoPosition\",\"type\":\"FIELD\"},{\"fieldName\":\"SmX\",\"type\":\"FIELD\"},{\"fieldName\":\"SmLibTileID\",\"type\":\"FIELD\"},{\"fieldName\":\"geometry\",\"type\":\"FIELD\"}],\"title\":\"北京市轨道交通站点(13)(2)(2)\"},\"title\":\"北京市轨道交通站点(13)(2)(2)\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]},{\"visualization\":{\"renderer\":[{\"size\":{\"type\":\"simple\",\"value\":60},\"color\":{\"type\":\"simple\",\"value\":\"rgba(248,231,28,1)\"},\"opacity\":{\"type\":\"simple\",\"value\":0.9},\"type\":\"radarPoint\",\"speed\":{\"type\":\"simple\",\"value\":3},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1722479600922_14\",\"bounds\":[121.12147,30.71292682,121.83081,31.68730001],\"labelsContent\":[],\"id\":\"上海市可校外学习中心\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"﻿序号\",\"type\":\"FIELD\"},{\"fieldName\":\"试点高校\",\"type\":\"FIELD\"},{\"fieldName\":\"依托单位\",\"type\":\"FIELD\"},{\"fieldName\":\"学习中心（点）名称\",\"type\":\"FIELD\"},{\"fieldName\":\"地址\",\"type\":\"FIELD\"},{\"fieldName\":\"经度\",\"type\":\"FIELD\"},{\"fieldName\":\"纬度\",\"type\":\"FIELD\"},{\"fieldName\":\"msgeometry\",\"type\":\"FIELD\"}],\"title\":\"上海市可校外学习中心\"},\"title\":\"上海市可校外学习中心\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]}],\"datas\":[{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"北京市轨道交通站点(13)(2)(2)\",\"msDatasetId\":\"ms_datasetId_1722479400680_17\",\"datasetId\":\"540737853\",\"geometryField\":\"geometry\"}],\"title\":\"北京市轨道交通站点(13)(2)(2)\"},{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"上海市可校外学习中心\",\"msDatasetId\":\"ms_datasetId_1722479600922_14\",\"datasetId\":\"166109479\",\"geometryField\":\"msgeometry\"}],\"title\":\"上海市可校外学习中心\"},{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"中国金牌个人获奖者(1)\",\"msDatasetId\":\"ms_datasetId_1725355972321_25\",\"datasetId\":\"888034348\",\"geometryField\":\"geometry\"}],\"title\":\"中国金牌个人获奖者(1)\"}],\"baseLayer\":{\"internetMapName\":\"CHINA_DARK\",\"type\":\"INTERNET_MAP\"},\"version\":\"3.0.4\"}",
+  "visitCount": 0,
+  "centerString": "{\"x\":114.17168115786558,\"y\":40.011878247221134}",
+  "epsgCode": 3857,
+  "nickname": "admin_123",
+  "layers": null,
+  "id": 411950022,
+  "searchSetting": null,
+  "thumbnail": "http://localhost:8190/iportal/web/static/portal/img/map/defaultThumbnail.png",
+  "level": 3,
+  "center": {
+      "x": 114.17168115786558,
+      "y": 40.011878247221134
+  },
+  "authorizeSetting": [
+      {
+          "permissionType": "DELETE",
+          "aliasName": "admin_123",
+          "entityRoles": [
+              "ADMIN",
+              "SYSTEM"
+          ],
+          "entityType": "USER",
+          "entityName": "admin_123",
+          "entityId": null
+      },
+      {
+          "permissionType": "READ",
+          "aliasName": "GUEST",
+          "entityRoles": [],
+          "entityType": "USER",
+          "entityName": "GUEST",
+          "entityId": null
+      }
+  ],
+  "updateTime": 1726304785664,
+  "userName": "admin_123",
+  "tags": [
+      "2.0测试"
+  ],
+  "checkUser": null,
+  "checkUserNick": null,
+  "checkTime": null,
+  "sourceType": "MAPSTUDIO",
+  "createTime": 1726304784922,
+  "controlsString": "",
+  "isDefaultBottomMap": false,
+  "status": null,
+  "favoriteCount": 0
+})
