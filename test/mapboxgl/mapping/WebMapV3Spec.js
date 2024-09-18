@@ -9,7 +9,7 @@ import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
 import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 import { L7, L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 import * as mockL7 from '../../tool/mock_l7';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';
 import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
 
@@ -188,6 +188,7 @@ describe('mapboxgl-webmap3.0', () => {
         id: 'ms-background12',
         type: 'background'
       });
+      map.fire('styledata');
       expect(map.getStyle().layers.length).toBe(mapInfo.layers.length + 1);
       expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
@@ -234,13 +235,7 @@ describe('mapboxgl-webmap3.0', () => {
         wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
       }
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
       target: 'map',
@@ -279,13 +274,7 @@ describe('mapboxgl-webmap3.0', () => {
         wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
       }
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
       target: 'map'
@@ -387,6 +376,7 @@ describe('mapboxgl-webmap3.0', () => {
           type: 'custom'
         }
       };
+      map.fire('styledata');
       const validNum = 4;
       const appreciableLayers2 = mapstudioWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(appreciableLayers.length + validNum);
@@ -521,8 +511,7 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     const mapOptions = {
       transformRequest: function (url) {
         return { url };
@@ -715,8 +704,7 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
@@ -768,8 +756,7 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
@@ -781,6 +768,7 @@ describe('mapboxgl-webmap3.0', () => {
       let overlayLayers = Object.keys(map.overlayLayersManager);
       const idToCopy = 'ms_站点3_1715739627423_909';
       webmapInstance.copyLayer(idToCopy, { id: `${idToCopy}-SM-` }).then(() => {
+        map.fire('styledata');
         const currentOverlayLayers = Object.keys(map.overlayLayersManager);
         const currentAppreciableLayers = webmapInstance.getLayers();
         expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
@@ -788,6 +776,7 @@ describe('mapboxgl-webmap3.0', () => {
         appreciableLayers = currentAppreciableLayers;
         overlayLayers = currentOverlayLayers;
         webmapInstance.copyLayer(idToCopy).then(() => {
+          map.fire('styledata');
           const currentOverlayLayers = Object.keys(map.overlayLayersManager);
           const currentAppreciableLayers = webmapInstance.getLayers();
           expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
@@ -888,8 +877,7 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     const mapOptions = {
       transformRequest: function (url) {
         return { url };
@@ -967,21 +955,17 @@ describe('mapboxgl-webmap3.0', () => {
     });
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const crsInfo = {
+      name: 'EPSG:4490',
+      extent: [-180, -270, 180, 90],
+      wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+    };
+    const crs = new CRS(crsInfo.name, crsInfo.wkt, crsInfo.extent, 'degree');
     const nextMapInfo = {
       ...mapInfo,
-      crs: {
-        name: 'EPSG:4490',
-        extent: [-180, -270, 180, 90],
-        wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
-      }
+      crs: crsInfo
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
+    mapboxgl.CRS = CRS;
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
       target: 'map'
@@ -1001,7 +985,7 @@ describe('mapboxgl-webmap3.0', () => {
           }
         ]
       },
-      crs: 'EPSG:4490',
+      crs,
       center: [116.640545, 40.531714],
       zoom: 7
     });
@@ -1186,11 +1170,16 @@ describe('mapboxgl-webmap3.0', () => {
           expect(layersOnMap[0].id).toBe('CHINA_DARK');
           expect(layersOnMap[1].id).toBe('PopulationDistribution');
           expect(layersOnMap[2].id).toBe('未命名数据');
+          const listenEvents = {};
+          spyOn(map, 'off').and.callFake((type, cb) => {
+            listenEvents[type] = cb;
+          });
           webMap2.cleanLayers();
           layersOnMap = map.getStyle().layers;
           expect(layersOnMap.length).toBe(2);
           expect(layersOnMap[0].id).toBe('CHINA_DARK');
           expect(layersOnMap[1].id).toBe('PopulationDistribution');
+          expect(listenEvents.styledata).not.toBeUndefined();
           webMap1.cleanLayers();
           done();
         });
@@ -1257,6 +1246,65 @@ describe('mapboxgl-webmap3.0', () => {
         expect(sceneSpy).not.toHaveBeenCalled();
         done();
       });
+    });
+  });
+
+  it('toggle WebMapV3 layers visible', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({ ...mapInfo, crs: 'EPSG:3857' })));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(
+      id,
+      {
+        server: server
+      }
+    );
+    mapstudioWebmap.once('mapcreatesucceeded', () => {
+      let layers = mapstudioWebmap.getLayers();
+      expect(layers.length).toBeGreaterThan(0);
+      expect(layers[0].title).toBe('3D格网热力');
+      expect(layers[0].visible).toBeTruthy();
+      mapstudioWebmap.toggleLayerVisible(layers[0].id, false);
+      layers = mapstudioWebmap.getLayers();
+      expect(layers[0].visible).toBeFalsy();
+      mapstudioWebmap.once('layerupdatechanged', () => {
+        layers = mapstudioWebmap.getLayers();
+        expect(layers[0].visible).toBeTruthy();
+        done();
+      });
+      mapstudioWebmap.setLayersVisible([layers[0]], 'visible');
     });
   });
 });

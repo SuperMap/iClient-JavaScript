@@ -15,7 +15,7 @@ export function createMapClassExtending(SuperClass = class {}) {
     }
 
     getLayerCatalog() {
-      return (this._sourceListModel && this._sourceListModel.getSourceList()) || [];
+      return (this._sourceListModel && this._sourceListModel.getLayerCatalog()) || [];
     }
 
     getLayers() {
@@ -28,6 +28,14 @@ export function createMapClassExtending(SuperClass = class {}) {
 
     getSelfAppreciableLayers(appreciableLayers) {
       return (this._sourceListModel && this._sourceListModel.getSelfLayers(appreciableLayers)) || [];
+    }
+
+    setLayersVisible(layers, visibility) {
+      this._sourceListModel && this._sourceListModel.setLayersVisible(layers, visibility);
+    }
+
+    toggleLayerVisible(layerId, visible) {
+      this._sourceListModel && this._sourceListModel.toggleLayerVisible(layerId, visible);
     }
 
     echartsLayerResize() {}

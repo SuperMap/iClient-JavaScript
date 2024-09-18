@@ -3,23 +3,21 @@ import { AppreciableLayerBase } from './AppreciableLayerBase';
 export class SourceListModelV2 extends AppreciableLayerBase {
   constructor(options = {}) {
     super(options);
+    this.initDatas();
   }
 
-  getLayers() {
+  createAppreciableLayers() {
     const detailLayers = this._initLayers();
     return this._initAppreciableLayers(detailLayers);
   }
 
-  getSelfLayers(appreciableLayers = this.getLayers()) {
-    const selfLayerIds = this._getSelfLayerIds();
-    return appreciableLayers.filter((item) =>
-      item.renderLayers.some((id) => selfLayerIds.some((renderId) => renderId === id))
-    );
-  }
-
-  getSourceList() {
+  createLayerCatalogs() {
     const appreciableLayers = this.getLayers();
     return this._initSourceList(appreciableLayers);
+  }
+
+  getSelfLayerIds() {
+    return this.layers.reduce((ids, item) => ids.concat(item.renderLayers), []);
   }
 
   _initLayers() {
@@ -53,9 +51,5 @@ export class SourceListModelV2 extends AppreciableLayerBase {
     return (
       layerFromMapJSON.renderLayers && layerFromMapJSON.renderLayers.some((subLayerId) => subLayerId === layerOnMap.id)
     );
-  }
-
-  _getSelfLayerIds() {
-    return this.layers.reduce((ids, item) => ids.concat(item.renderLayers), []);
   }
 }

@@ -12,26 +12,25 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     this._legendList = options.legendList;
     const layers = this._generateLayers();
     this.setSelfLayers(layers);
+    this.initDatas();
   }
 
-  getLayers() {
+  createAppreciableLayers() {
     const detailLayers = this._initLayers();
     return this._initAppreciableLayers(detailLayers);
   }
 
-  getSelfLayers() {
-    const appreciableLayers = this.getLayers();
-    const selfLayerIds = this._getSelfLayerIds();
-    return appreciableLayers.filter((item) => selfLayerIds.some((id) => id === item.id));
-  }
-
-  getSourceList() {
+  createLayerCatalogs() {
     const appreciableLayers = this.getLayers();
     const sourceList = this._createSourceCatalogs(this._layerCatalog, appreciableLayers);
-    const selfLayerIds = this._getSelfLayerIds();
-    const extraLayers = appreciableLayers.filter((item) => !selfLayerIds.some((id) => id === item.id));
+    const selfLayers = this.getSelfLayers();
+    const extraLayers = appreciableLayers.filter((item) => !selfLayers.some((sub) => sub.id === item.id));
     const extraSourceList = this._initSourceList(extraLayers);
     return extraSourceList.concat(sourceList);
+  }
+
+  getSelfLayerIds() {
+    return this.layers.reduce((ids, item) => ids.concat(item.layerInfo.renderLayers), []);
   }
 
   _initLayers() {
@@ -143,9 +142,5 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     } else {
       return [layerId];
     }
-  }
-
-  _getSelfLayerIds() {
-    return this.layers.map(item => item.id);
   }
 }

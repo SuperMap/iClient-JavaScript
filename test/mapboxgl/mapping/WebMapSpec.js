@@ -1217,15 +1217,49 @@ describe('mapboxgl_WebMap', () => {
           expect(layersOnMap[0].id).toBe('China4269@DataSource');
           expect(layersOnMap[1].id).toBe('未命名数据');
           expect(layersOnMap[2].id).toContain('未命名数据_');
+          const listenEvents = {};
+          spyOn(map, 'off').and.callFake((type, cb) => {
+            listenEvents[type] = cb;
+          });
           webMap2.cleanLayers();
           layersOnMap = map.getStyle().layers;
           expect(layersOnMap.length).toBe(2);
           expect(layersOnMap[0].id).toBe('China4269@DataSource');
           expect(layersOnMap[1].id).toBe('未命名数据');
+          expect(listenEvents.styledata).not.toBeUndefined();
           webMap1.cleanLayers();
           done();
         });
       });
+    };
+    datavizWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('toggle mapstyle layers visible', (done) => {
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      mapOptionsList[0]
+    );
+    const callback = function () {
+      let layers = datavizWebmap.getLayers();
+      expect(layers.length).toBe(2);
+      expect(layers[0].id).toBe('China4269@DataSource');
+      expect(layers[0].visible).toBeTruthy();
+      datavizWebmap.toggleLayerVisible(layers[0].id, false);
+      layers = datavizWebmap.getLayers();
+      expect(layers[0].visible).toBeFalsy();
+      datavizWebmap.once('layerupdatechanged', () => {
+        layers = datavizWebmap.getLayers();
+        expect(layers[0].visible).toBeTruthy();
+        done();
+      });
+      datavizWebmap.setLayersVisible([layers[0]], 'visible');
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
   });

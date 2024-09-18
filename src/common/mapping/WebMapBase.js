@@ -155,6 +155,7 @@
          */
         'projectionnotmatch',
         'layeraddchanged',
+        'layerupdatechanged',
         /**
          * @event WebMapBase#mapbeforeremove
          * @description 地图销毁前。
@@ -389,6 +390,21 @@
      */
     getLayerCatalog() {
       return (this._handler && this._handler.getLayerCatalog()) || [];
+    }
+
+    setLayersVisible(layers, visibility) {
+      this._handler && this._handler.setLayersVisible(layers, visibility);
+    }
+
+    /**
+     * @version 11.2.1
+     * @function WebMapBase.prototype.toggleLayerVisible
+     * @param {string} layerId - 图层 id。
+     * @param {boolean} visible - 图层是否可见。true 表示显示，false 表示隐藏。
+     * @description 设置图层显隐。
+     */
+    toggleLayerVisible(layerId, visible) {
+      this._handler && this._handler.toggleLayerVisible(layerId, visible);
     }
 
     /**
