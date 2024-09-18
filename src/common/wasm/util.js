@@ -1,3 +1,5 @@
+import { isObject } from '../util/BaseUtil';
+
 export function geojsonCoordsToPoint2Ds(coords) {
   if (!coords) {
     throw new Error('No GeoJSON coords provided');
@@ -338,5 +340,35 @@ export function geojson2UGGeometry(geojson) {
     //   }
     default:
       throw new Error('Unsupported GeoJSON type: ' + geojson.type + '. Are you sure this is valid GeoJSON?')
+  }
+}
+
+export function formatCoord(pointList) {
+  let xList = [];
+  let yList = [];
+  if (isObject(pointList) && pointList.type === 'FeatureCollection') {
+    pointList.features.forEach((feature) => {
+      const coord = feature.geometry.coordinates;
+      xList.push(coord[0]);
+      yList.push(coord[1])
+    });
+  } else if (Array.isArray(pointList)) {
+    pointList.forEach((item) => {
+      if (item.type === 'Feature') {
+        const coord = item.geometry.coordinates;
+        xList.push(coord[0]);
+        yList.push(coord[1])
+      } else if (Array.isArray(item)) {
+        xList.push(item[0]);
+        yList.push(item[1])
+      } else if (isObject(item)) {
+        xList.push(item.x);
+        yList.push(item.y)
+      }
+    });
+  }
+  return {
+    xList,
+    yList
   }
 }

@@ -40,8 +40,8 @@
       <div class="panel-body content">
         <div class="panel">
           <div class="input-group">
-            <span class="input-group-addon">线距(度)</span>
-            <input class="form-control" id="distance" type="number" value="5" />
+            <span class="input-group-addon">线距(千米)</span>
+            <input class="form-control" id="distance" type="number" value="500" />
           </div>
         </div>
         <input type="button" class="btn btn-default" value="分析" onclick="search()" />&nbsp;
@@ -105,8 +105,7 @@
         clearLayer();
         const distance = parseFloat(document.getElementById('distance').value);
         var geometryAnalysis = new mapboxgl.supermap.GeometryAnalysis();
-        const res = geometryAnalysis.computeParallel(line, distance);
-        console.log(res)
+        const res = geometryAnalysis.computeParallel(line, distance, 'DEGREE', 'KILOMETER');
         addLayer('line1', 'line', [res], {
           'line-color': 'green',
           'line-width': 5

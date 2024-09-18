@@ -29,6 +29,10 @@
         z-index: 10000;
         border-radius: 4px;
       }
+      .leaflet-popup-content {
+        width: 280px;
+        font-size: 16px !important;
+      }
     </style>
   </head>
 
@@ -87,10 +91,19 @@
         clearPopup();
         var geometryAnalysis = new L.supermap.GeometryAnalysis();
         var distance;
-        distance = geometryAnalysis.computeGeodesicDistance([120, 125], [30, 30], 6378137, 0.0033528106647475);
-        popup.setLatLng([30, 123])
-              .setContent('距离为: ' + distance)
-              .openOn(map);
+        distance = geometryAnalysis.computeGeodesicDistance(
+          [
+            [120, 30],
+            [125, 30]
+          ],
+          6378137,
+          0.0033528106647475,
+          'KILOMETER'
+        );
+        popup
+          .setLatLng([30, 123])
+          .setContent('长度为: ' + distance + '千米')
+          .openOn(map);
       }
 
       function clearPopup() {

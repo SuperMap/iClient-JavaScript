@@ -105,6 +105,7 @@ var typeLinks = {
     "GeoJSONObject": geojsonapi,
     "GeoJSONGeometry": geometryapi +'#section-3.1',
     "GeoJSONFeature": geometryapi + '#section-3.2',
+    "FeatureCollection": geometryapi + '#section-3.3',
     // WebMap 结构
     "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm',
     "FlatGeobuf": 'https://github.com/flatgeobuf/flatgeobuf',

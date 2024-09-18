@@ -101,14 +101,15 @@
         var geometryAnalysis = new mapboxgl.supermap.GeometryAnalysis();
         var distance;
         distance = geometryAnalysis.computeGeodesicDistance(
-          [120, 125],
-          [30, 30],
+          [[120, 30],
+          [125, 30]],
           6378137,
-          0.0033528106647475
+          0.0033528106647475,
+          'KILOMETER'
         );
         popup = new mapboxgl.Popup()
           .setLngLat([123, 30])
-          .setHTML('距离为: ' + distance)
+          .setHTML('长度为: ' + distance + '千米')
           .addTo(map);
       }
 
