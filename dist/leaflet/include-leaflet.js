@@ -144,7 +144,7 @@
             }
         }
         if (inArray(includes, 'iclient-leaflet-css')) {
-            inputCSS(disturl + '/leaflet/11.2.1/iclient-leaflet.min.css');
+            inputCSS(disturl + '/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
             inputCSS(libsurl + '/plotting/leaflet/11.2.1/iclient-plot-leaflet.css');
