@@ -245,18 +245,19 @@ export class AppreciableLayerBase extends Events {
     return fields;
   }
   
-  _findLayerCatalog(layerCatalogs, id) {
-    let matchData;
-    for (const data of layerCatalogs) {
-      if (data.id === id) {
-        matchData = data;
-        break;
+  _findLayerCatalog(layerCatalogs, targetId) {
+    for (const layer of layerCatalogs) {
+      if (layer.id === targetId) {
+        return layer;
       }
-      if (data.type === 'group') {
-        matchData = this._findLayerCatalog(data.children, id);
+      if (layer.children && layer.children.length > 0) {
+        const found = this._findLayerCatalog(layer.children, targetId);
+        if (found) {
+          return found;
+        }
       }
     }
-    return matchData;
+    return null;
   }
   
   _getLayerVisibleId(layer) {
