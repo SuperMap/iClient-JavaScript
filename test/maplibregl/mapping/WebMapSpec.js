@@ -1267,4 +1267,44 @@ describe('maplibregl_WebMap', () => {
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
+
+  it('getWebMapType', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = datavizWebMap_Marker;
+        return Promise.resolve(new Response(mapJson));
+      }
+      if (url.indexOf('content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(svgmarker)));
+      }
+      return Promise.resolve();
+    });
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    var datavizWebmap1 = new WebMap(
+      '',
+      { ...commonOption },
+      mapOptionsList[0]
+    );
+
+    const callback = function () {
+      var datavizWebmap2 = new WebMap(id, {
+        server: server
+      });
+      datavizWebmap2.once('mapcreatesucceeded', function () {
+        const type1 = datavizWebmap1.getWebMapType();
+        const type2 = datavizWebmap2.getWebMapType();
+        expect(type1).toBe('MapStyle');
+        expect(type2).toBe('WebMap2');
+        done();
+      });
+    };
+    datavizWebmap1.once('mapcreatesucceeded', callback);
+  });
 });
