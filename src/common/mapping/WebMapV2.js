@@ -2235,7 +2235,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         this._changeSourceListModel();
         const appreciableLayers = this.getLayers();
         const layerOptions = this._getSelfAppreciableLayers(appreciableLayers);
-        this._rectifyLayersOrder(layerOptions.layers);
+        this.rectifyLayersOrder(layerOptions.layers);
         this.fire('mapcreatesucceeded', {
           ...layerOptions,
           map: this.map,
@@ -2244,22 +2244,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       }
     }
 
-    _rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
-      const renderLayers = appreciableLayers
-        .filter((item) => !item.reused)
-        .reduce((layers, layer) => {
-          return layers.concat(layer.renderLayers);
-        }, []);
+    rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
+      const exsitLayers = super.rectifyLayersOrder(appreciableLayers, topLayerBeforeId);
       const labelLayerIds = [];
-      const exsitLayers = renderLayers.filter((layerId) => !!this.map.getLayer(layerId));
       for (let index = exsitLayers.length - 1; index > -1; index--) {
         const targetlayerId = exsitLayers[index];
-        const afterLayers = exsitLayers.slice(index + 1);
-        let beforLayerId = afterLayers.find((id) => this.map.style._layers[id]);
-        if (!afterLayers.length) {
-          beforLayerId = topLayerBeforeId;
-        }
-        this.map.moveLayer(targetlayerId, beforLayerId);
         const labelLayerId = this._getSymbolLabelLayerName(targetlayerId);
         if (this.map.getLayer(labelLayerId)) {
           labelLayerIds.push(labelLayerId);
@@ -2781,7 +2770,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         const appreciableLayers = this.getLayers();
         const selfAppreciableLayers = this.getSelfAppreciableLayers(appreciableLayers);
         const topLayerBeforeId = this._findTopLayerBeforeId(selfAppreciableLayers);
-        this._rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
+        this.rectifyLayersOrder(selfAppreciableLayers, topLayerBeforeId);
         this.fire('layeraddchanged', this._getSelfAppreciableLayers(appreciableLayers));
       }
     }
