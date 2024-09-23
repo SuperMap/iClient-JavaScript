@@ -85,10 +85,10 @@ export class GeometryAnalysis extends Events {
   /**
    * @function GeometryAnalysis.prototype.isIdentical
    * @version 11.2.0
-   * @description 几何对象相等分析, 传入要素坐标系需一致。
+   * @description 几何对象相等分析，传入要素坐标系需一致。
    * @param {GeoJSONFeature} feature - 要素。
    * @param {GeoJSONFeature} compareFeature - 对比要素。
-   * @param {number} [tolerance=1e-6] - 节点容限值。
+   * @param {number} [tolerance=1e-6] - 要素节点容限值。
    * @returns {boolean} 要素是否完全相等。
    */
   isIdentical(feature, compareFeature, tolerance = 1e-6) {
@@ -103,7 +103,7 @@ export class GeometryAnalysis extends Events {
   * @description 几何对象是否相交分析，传入要素坐标系需一致。
   * @param {GeoJSONFeature} feature - 要素。
   * @param {GeoJSONFeature} compareFeature - 对比要素。
-  * @param {number} [tolerance=1e-6] - 节点容限值。
+  * @param {number} [tolerance=1e-6] - 要素节点容限值。
   * @returns {boolean} 要素是否相交。
   */
   hasIntersection(feature, compareFeature, tolerance = 1e-6) {
@@ -118,7 +118,7 @@ export class GeometryAnalysis extends Events {
      * @description 几何对象边界是否接触分析，传入要素坐标系需一致。
      * @param {GeoJSONFeature} feature - 要素。
      * @param {GeoJSONFeature} compareFeature - 对比要素。
-     * @param {number} [tolerance=1e-6] - 节点容限值。
+     * @param {number} [tolerance=1e-6] - 要素节点容限值。
      * @returns {boolean} 几何对象边界是否接触。
      */
   hasTouch(feature, compareFeature, tolerance = 1e-6) {
@@ -223,8 +223,8 @@ export class GeometryAnalysis extends Events {
      * @param {number} startY - 线起点 Y 坐标。
      * @param {number} endX - 线终点 X 坐标。
      * @param {number} endY - 线终点 Y 坐标。
-     * @param {string} [featureUnit='DEGREE'] - 线坐标的单位，默认值为 DEGREE, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT", "DEGREE"。
-     * @param {string} [unit='DEGREE'] - 结果距离单位，默认值为 DEGREE, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT", "DEGREE"。
+     * @param {string} [featureUnit='DEGREE'] - 线坐标的单位，默认值为 DEGREE, 支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"，"DEGREE"。
+     * @param {string} [unit='DEGREE'] - 结果距离单位，默认值为 DEGREE，支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"，"DEGREE"。
      * @returns {number} 点到线段的距离。如果点到线段的垂足不在线段上，则返回点到线段较近的端点的距离。
      */
   distanceToLineSegment(x, y, startX, startY, endX, endY, featureUnit = Unit.DEGREE, unit = Unit.DEGREE) {
@@ -268,7 +268,7 @@ export class GeometryAnalysis extends Events {
      * @function GeometryAnalysis.prototype.computeConcaveHullPoints
      * @version 11.2.0
      * @description 点数组凹闭包计算。
-     * @param {Array|FeatureCollection} points - 点坐标数组，支持的形式为 [[x, y]], [{x, y}], 点要素数组, 也支持 FeatureCollection。
+     * @param {Array|FeatureCollection} points - 点坐标数组，支持的形式为 [[x, y]]，[{x, y}]，点要素数组，也支持 FeatureCollection。
      * @param {number} angle - 凹包内最小角度。
      * @returns {GeoJSONFeature} 结果要素。
      */
@@ -315,7 +315,7 @@ export class GeometryAnalysis extends Events {
      * @param {number} top - 矩形上坐标。
      * @param {number} right - 矩形右坐标。
      * @param {number} bottom - 矩形下坐标。
-     * @param {number} [tolerance=1e-6] - 节点容限值。
+     * @param {number} [tolerance=1e-6] - 要素节点容限值。
      * @returns {boolean} 要素是否与矩形相交。
      */
   isIntersectRegionWithRect(feature, left, top, right, bottom, tolerance = 1e-6) {
@@ -378,8 +378,8 @@ export class GeometryAnalysis extends Events {
    * @function GeometryAnalysis.prototype.computeGeodesicArea
    * @version 11.2.0
    * @description 计算坐标为经纬度的面要素面积。
-   * @param {GeoJSONFeature} feature - 面要素, 坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
-   * @param {string} [unit='SquareMeter'] - 结果面积单位, 默认值为 SquareMeter，支持的值有:"SquareKiloMeter","SquareFoot","SquareYard","SquareMile","SquareMeter"。
+   * @param {GeoJSONFeature} feature - 面要素，坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
+   * @param {string} [unit='SquareMeter'] - 结果面积单位，默认值为 SquareMeter，支持的值有:"SquareKiloMeter"，"SquareFoot"，"SquareYard"，"SquareMile"，"SquareMeter"。
    * @returns {number} 面积大小，单位与设置单位一致。
    */
 
@@ -403,7 +403,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 线要素光滑分析。
    * @param {GeoJSONFeature} feature - 线要素。
-   * @param {number} [smoothness=2] - 有效范围为大于等于2，设置为小于2的值会抛出异常。光滑系数越大，线对象节点数越多，也就越光滑。 建议取值范围为[2,10]。
+   * @param {number} [smoothness=2] - 有效范围为大于等于2，设置为小于2的值会抛出异常，光滑系数越大，线对象节点数越多，也就越光滑。 建议取值范围为[2,10]。
    * @returns {GeoJSONFeature} 光滑处理后的线要素。
    */
   smooth(feature, smoothness = 2) {
@@ -422,22 +422,22 @@ export class GeometryAnalysis extends Events {
   /**
    * @function GeometryAnalysis.prototype.computeGeodesicDistance
    * @version 11.2.0
-   * @description 计算测地线长度, 坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
+   * @description 计算测地线长度，坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
    * @param {Array} xArray - x 坐标数组。
    * @param {Array} yArray - y 坐标数组。
    * @param {number} majorAxis - 测地线所在椭球体的长轴，单位为米。
    * @param {number} flatten - 测地线所在椭球体的扁率。
-   * @param {string} [unit='METER'] - 结果长度单位, 默认值为 METER, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT"。
+   * @param {string} [unit='METER'] - 结果长度单位，默认值为 METER，支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"。
    * @returns {number} 测地线的长度。
    */
   /**
    * @function GeometryAnalysis.prototype.computeGeodesicDistance
    * @version 11.2.0
-   * @description 计算测地线长度, 坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
-   * @param {Array|FeatureCollection} points - 点坐标数组, 支持的形式为 [[x, y]], [{x, y}], 点要素数组, 也支持 FeatureCollection。
+   * @description 计算测地线长度，坐标参考系统为 WGS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。
+   * @param {Array|FeatureCollection} points - 点坐标数组，支持的形式为 [[x, y]]，[{x, y}]，点要素数组，也支持 FeatureCollection。
    * @param {number} majorAxis - 测地线所在椭球体的长轴，单位为米。
    * @param {number} flatten - 测地线所在椭球体的扁率。
-   * @param {string} [unit='METER'] - 结果长度单位, 默认值为 METER, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT"。
+   * @param {string} [unit='METER'] - 结果长度单位，默认值为 METER，支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"。
    * @returns {number} 测地线的长度。
    */
   computeGeodesicDistance(xArray, yArray, majorAxis, flatten, unit = Unit.METER) {
@@ -466,8 +466,8 @@ export class GeometryAnalysis extends Events {
    * @description 根据距离获取线要素的平行线，线可为折线。
    * @param {GeoJSONFeature} feature - 线要素。
    * @param {number} distance - 平行线距离。
-   * @param {string} [featureUnit='DEGREE'] - 线要素距离单位, 默认值为 DEGREE, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT", "DEGREE"。
-   * @param {string} [unit='DEGREE'] - 平行线距离单位, 默认值为 DEGREE, 支持的值有: "METER", "KILOMETER", "INCH", "FOOT", "DEGREE"。
+   * @param {string} [featureUnit='DEGREE'] - 线要素距离单位，默认值为 DEGREE，支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"，"DEGREE"。
+   * @param {string} [unit='DEGREE'] - 平行线距离单位，默认值为 DEGREE，支持的值有: "METER"，"KILOMETER"，"INCH"，"FOOT"，"DEGREE"。
    * @returns {GeoJSONFeature} 结果为与线要素相隔传入距离长度的平行线要素。
    */
   computeParallel(feature, distance, featureUnit = Unit.DEGREE, unit = Unit.DEGREE) {
@@ -496,7 +496,7 @@ export class GeometryAnalysis extends Events {
    * @function GeometryAnalysis.prototype.computeConvexHullPoints
    * @version 11.2.0
    * @description 点数组的凸闭包计算，即最小外接多边形。
-   * @param {Array|FeatureCollection} points - 点坐标数组, 支持的形式为 [[x, y]], [{x, y}], 点要素数组, 也支持 FeatureCollection。
+   * @param {Array|FeatureCollection} points - 点坐标数组，支持的形式为 [[x, y]]，[{x, y}]，点要素数组，也支持 FeatureCollection。
    * @returns {GeoJSONFeature} 最小外接多边形要素。
    */
   computeConvexHullPoints(xArray, yArray) {
