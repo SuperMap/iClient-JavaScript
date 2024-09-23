@@ -1263,4 +1263,27 @@ describe('mapboxgl_WebMap', () => {
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
+
+  it('rectifyLayersOrder', (done) => {
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      mapOptionsList[0]
+    );
+    const callback = function ({map}) {
+      let layers = datavizWebmap.getLayers();
+      expect(layers.length).toBe(2);
+      let newLayers = [layers[1], layers[0]];
+      datavizWebmap.rectifyLayersOrder(newLayers);
+      const layersOnMap = map.getStyle().layers;
+      expect(layersOnMap[0].id).toBe('未命名数据')
+      done();
+    };
+    datavizWebmap.once('mapcreatesucceeded', callback);
+  });
 });

@@ -416,6 +416,15 @@
     getWebMapType() {
       return this.type;
     }
+    
+    /**
+     * @version 11.3.0
+     * @function WebMapBase.prototype.rectifyLayersOrder
+     * @description 根据已知顺序的可感知图层，对地图上图顺序进行排序。
+     */
+    rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
+      this._handler && this._handler.rectifyLayersOrder(appreciableLayers, topLayerBeforeId);
+    }
 
     /**
      * @version 11.2.1
