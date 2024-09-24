@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { Util } from '../../../core/Util';
 import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../../utils/L7LayerUtil';
+import proj4 from 'proj4';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -383,6 +384,9 @@ export class WebMap extends mapboxgl.Evented {
   _setCRS({ name, wkt, extent }) {
     const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
     mapboxgl.CRS.set(crs);
+    if (!proj4.defs(name)) {
+      proj4.defs(name, wkt);
+    }
   }
 
   /**

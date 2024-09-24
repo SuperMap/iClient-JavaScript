@@ -2107,7 +2107,7 @@ var apstudioWebMap_layerData = JSON.stringify({
   center: [116.39560889343761, 39.939177386003514],
   zoom: 9.789811175067591,
   glyphs: {
-    "ms_M_3857_1719917169016_4": "http://172.16.14.44:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
+    "ms_M_3857_1719917169016_4": "http://localhost:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
   },
   version: '3.2.1',
   rootUrl: 'http://localhost:8190/iportal/',
@@ -2863,4 +2863,261 @@ var mapstudioWebMap_group = JSON.stringify({
   ],
   pitch: 0,
   minzoom: 0
+});
+
+var mapstudio_multiProjection = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        id: 'NewPoint4548',
+        title: 'NewPoint4548',
+        type: 'basic'
+      },
+      {
+        visible: true,
+        id: 'ms-background',
+        title: '纯色底图',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    ms_aggregation_962426788_1724056440862_23: {
+      cluster: true,
+      clusterType: 'grid',
+      clusterMethod: 'avg',
+      data: {
+        dataId: '962426788',
+        type: 'supermap-structured-data'
+      },
+      type: 'geojson',
+      clusterField: 'smpid',
+      clusterRadius: 900000
+    }
+  },
+  crs: {
+    extent: [345754.3017317925, 2500241.087997996, 3374092.172217019, 5528578.958483222],
+    wkt: 'PROJCS["CGCS2000 / 3-degree Gauss-Kruger CM 117E",GEOGCS["China Geodetic Coordinate System 2000",DATUM["China_2000",SPHEROID["CGCS2000",6378137,298.257222101,AUTHORITY["EPSG","1024"]],AUTHORITY["EPSG","1043"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4490"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",117],PARAMETER["scale_factor",1],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","4548"]]',
+    name: 'EPSG:4548'
+  },
+  center: [133.2673120035025, 32.94911515042364],
+  zoom: 0.5203223527391135,
+  glyphs: {},
+  version: '3.2.2',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '2343-ms',
+  viewExtent: [114.85431014925224, 20.37423487607389, 152.81962894145246, 49.86984527494917],
+  layers: [
+    {
+      paint: {
+        'background-color': 'rgba(14,14,14,1)'
+      },
+      id: 'ms-background',
+      type: 'background'
+    },
+    {
+      layout: {
+        'heatmap-coverage': 1,
+        visibility: 'visible',
+        'heatmap-rotate': 0,
+        'heatmap-shape': 'square'
+      },
+      metadata: {
+        MapStudio: {
+          title: 'NewPoint4548'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'heatmap-color': '#EE4D5A',
+        'heatmap-opacity': 0.9
+      },
+      source: 'ms_aggregation_962426788_1724056440862_23',
+      id: 'NewPoint4548',
+      type: 'heatmap',
+      minzoom: 0
+    }
+  ],
+  pitch: 37.00000000000002,
+  minzoom: 0
+});
+
+var msProjectINfo_multiProjection = JSON.stringify({
+  extent: null,
+  controls: null,
+  extentString: '',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: '2343-ms',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo:
+    '{"catalogs":[{"visualization":{"renderer":{"coverage":{"type":"simple","value":1},"color":{"type":"simple","value":"#EE4D5A"},"angle":{"type":"simple","value":0},"opacity":{"type":"simple","value":0.9},"type":"heatGrid","styleRenderMode":"antvL7"}},"visible":true,"catalogType":"layer","labelsContent":[],"source":{"option":{"clusterOption":{"aggType":"AVG","aggField":"smpid","groupBy":{"aggCellSize":900000,"aggCellUnit":"PX"}},"cluster":true}},"title":"NewPoint4548","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1724056435204_20","bounds":[116.80751966064098,24.657602137018205,117.60524238203818,42.48026915788759],"id":"NewPoint4548","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"num","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"name","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"NewPoint4548"}}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"NewPoint4548","msDatasetId":"ms_datasetId_1724056435204_20","datasetId":"962426788","geometryField":"geometry"}],"title":"NewPoint4548"}],"baseLayer":{"color":"rgba(14,14,14,1)","projection":"EPSG:4548","type":"BACKGROUND"},"version":"3.0.4"}',
+  visitCount: 73,
+  centerString: '{"x":133.2673120035025,"y":32.94911515042364}',
+  epsgCode: 4548,
+  nickname: 'admin_123',
+  layers: [],
+  id: 473422324,
+  thumbnail: 'http://localhost:8190/iportal/resources/thumbnail/map/map473422324.png',
+  level: 0,
+  center: {
+    x: 133.2673120035025,
+    y: 32.94911515042364
+  }
+});
+
+var l7StructureData962426788Items = JSON.stringify({
+  timeStamp: '2024-09-24T05:42:46Z',
+  features: [
+    {
+      geometry: {
+        coordinates: [507276.4742796922, 4705161.709043069],
+        type: 'Point'
+      },
+      id: '1',
+      type: 'Feature',
+      properties: {
+        smpid: 1,
+        num: 1,
+        name: 1,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [515356.3470900338, 4438766.589724715],
+        type: 'Point'
+      },
+      id: '2',
+      type: 'Feature',
+      properties: {
+        smpid: 2,
+        num: 2,
+        name: 2,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [549766.0475474435, 4032304.717571498],
+        type: 'Point'
+      },
+      id: '3',
+      type: 'Feature',
+      properties: {
+        smpid: 3,
+        num: 3,
+        name: 3,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [497691.9905545708, 3794406.293987407],
+        type: 'Point'
+      },
+      id: '4',
+      type: 'Feature',
+      properties: {
+        smpid: 4,
+        num: 4,
+        name: 4,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [480515.5660373094, 3439828.3757625716],
+        type: 'Point'
+      },
+      id: '5',
+      type: 'Feature',
+      properties: {
+        smpid: 5,
+        num: 5,
+        name: 5,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [504696.1104849293, 2999163.261754166],
+        type: 'Point'
+      },
+      id: '6',
+      type: 'Feature',
+      properties: {
+        smpid: 6,
+        num: 6,
+        name: 6,
+        SmUserID: 0
+      }
+    },
+    {
+      geometry: {
+        coordinates: [480819.0020892108, 2728140.293486495],
+        type: 'Point'
+      },
+      id: '7',
+      type: 'Feature',
+      properties: {
+        smpid: 7,
+        num: 7,
+        name: 7,
+        SmUserID: 0
+      }
+    }
+  ],
+  numberReturned: 7,
+  links: [
+    {
+      rel: 'self',
+      href: 'http://172.16.14.44:8190/iportal/web/datas/962426788/structureddata/ogc-features/collections/all/items.json',
+      type: 'application/geo+json',
+      title: 'this document'
+    }
+  ],
+  numberMatched: 7,
+  type: 'FeatureCollection'
+});
+
+var l7StructureData962426788 = JSON.stringify({
+  extent: {
+    top: 4705161.709043069,
+    left: 480515.5660373094,
+    bottom: 2728140.293486495,
+    leftBottom: {
+      x: 480515.5660373094,
+      y: 2728140.293486495
+    },
+    right: 549766.0475474435,
+    rightTop: {
+      x: 549766.0475474435,
+      y: 4705161.709043069
+    }
+  },
+  firstRowIsHead: false,
+  fileEncoding: null,
+  fieldNames: ['smpid', 'num', 'SmUserID', 'name', 'geometry'],
+  type: 'json',
+  separator: null,
+  tableName: 'smp962426788_newpoint4548',
+  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:962426788',
+  epsgCode: 4548,
+  fieldTypes: ['INT', 'LONG', 'LONG', 'LONG', 'POINT'],
+  name: 'NewPoint4548',
+  tableFieldNames: ['smpid', 'num', 'smuserid', 'name', 'geometry'],
+  links: [
+    {
+      rel: null,
+      href: 'http://172.16.14.44:8190/iportal/analytics',
+      type: 'ANALYTICS_SERVICE',
+      title: null
+    }
+  ],
+  id: '962426788'
 });

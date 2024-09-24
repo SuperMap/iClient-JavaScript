@@ -6,6 +6,7 @@ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';
 import * as mockL7 from '../../tool/mock_l7';
 import mbglmap from '../../tool/mock_mapboxgl_map';
+import proj4 from 'proj4';
 
 describe('mapboxgl-webmap3.0', () => {
   var originalTimeout, testDiv;
@@ -978,6 +979,49 @@ describe('mapboxgl-webmap3.0', () => {
       expect(map).not.toBeUndefined();
       expect(webMapV3.getLegendInfo().length).toBe(9);
       delete mapboxgl.Map.prototype.getCRS;
+      done();
+    });
+  });
+
+  it('when projection is unconventional projection', (done) => {
+    const mapInfo = JSON.parse(mapstudio_multiProjection);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudio_multiProjection));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_multiProjection));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/962426788/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData962426788Items));
+      }
+      if (url.indexOf('/web/datas/962426788/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData962426788));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {};
+    mapboxgl.CRS.set = function () {};
+    expect(proj4.defs(mapInfo.crs.name)).toBeUndefined();
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+      expect(map).not.toBeUndefined();
+      expect(webmapInstance.map).toEqual(map);
+      expect(proj4.defs(mapInfo.crs.name)).not.toBeUndefined();
+      delete mapboxgl.Map.prototype.getCRS;
+      delete mapboxgl.CRS;
       done();
     });
   });
