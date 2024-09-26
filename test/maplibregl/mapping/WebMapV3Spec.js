@@ -188,7 +188,6 @@ describe('maplibregl-webmap3.0', () => {
         id: 'ms-background12',
         type: 'background'
       });
-      map.fire('styledata');
       expect(map.getStyle().layers.length).toBe(mapInfo.layers.length + 1);
       expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
@@ -376,7 +375,6 @@ describe('maplibregl-webmap3.0', () => {
           type: 'custom'
         }
       };
-      map.fire('styledata');
       const validNum = 4;
       const appreciableLayers2 = mapstudioWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(appreciableLayers.length + validNum);
@@ -768,7 +766,6 @@ describe('maplibregl-webmap3.0', () => {
       let overlayLayers = Object.keys(map.overlayLayersManager);
       const idToCopy = 'ms_站点3_1715739627423_909';
       webmapInstance.copyLayer(idToCopy, { id: `${idToCopy}-SM-` }).then(() => {
-        map.fire('styledata');
         const currentOverlayLayers = Object.keys(map.overlayLayersManager);
         const currentAppreciableLayers = webmapInstance.getLayers();
         expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
@@ -776,7 +773,6 @@ describe('maplibregl-webmap3.0', () => {
         appreciableLayers = currentAppreciableLayers;
         overlayLayers = currentOverlayLayers;
         webmapInstance.copyLayer(idToCopy).then(() => {
-          map.fire('styledata');
           const currentOverlayLayers = Object.keys(map.overlayLayersManager);
           const currentAppreciableLayers = webmapInstance.getLayers();
           expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
@@ -1296,7 +1292,7 @@ describe('maplibregl-webmap3.0', () => {
       expect(layers.length).toBeGreaterThan(0);
       expect(layers[0].title).toBe('3D格网热力');
       expect(layers[0].visible).toBeTruthy();
-      mapstudioWebmap.toggleLayerVisible(layers[0].id, false);
+      mapstudioWebmap.toggleLayerVisible(layers[0], false);
       layers = mapstudioWebmap.getLayers();
       expect(layers[0].visible).toBeFalsy();
       mapstudioWebmap.once('layerupdatechanged', () => {

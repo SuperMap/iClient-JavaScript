@@ -1251,7 +1251,7 @@ describe('mapboxgl_WebMap', () => {
       expect(layers.length).toBe(2);
       expect(layers[0].id).toBe('China4269@DataSource');
       expect(layers[0].visible).toBeTruthy();
-      datavizWebmap.toggleLayerVisible(layers[0].id, false);
+      datavizWebmap.toggleLayerVisible(layers[0], false);
       layers = datavizWebmap.getLayers();
       expect(layers[0].visible).toBeFalsy();
       datavizWebmap.once('layerupdatechanged', () => {

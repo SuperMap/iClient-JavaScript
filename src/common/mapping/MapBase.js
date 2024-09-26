@@ -26,16 +26,16 @@ export function createMapClassExtending(SuperClass = class {}) {
       return this._legendList;
     }
 
-    getSelfAppreciableLayers(appreciableLayers) {
-      return (this._sourceListModel && this._sourceListModel.getSelfLayers(appreciableLayers)) || [];
+    getSelfAppreciableLayers() {
+      return (this._sourceListModel && this._sourceListModel.getSelfLayers(...arguments)) || [];
     }
 
-    setLayersVisible(layers, visibility) {
-      this._sourceListModel && this._sourceListModel.setLayersVisible(layers, visibility);
+    setLayersVisible() {
+      this._sourceListModel && this._sourceListModel.setLayersVisible(...arguments);
     }
 
-    toggleLayerVisible(layerId, visible) {
-      this._sourceListModel && this._sourceListModel.toggleLayerVisible(layerId, visible);
+    toggleLayerVisible() {
+      this._sourceListModel && this._sourceListModel.toggleLayerVisible(...arguments);
     }
 
     rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {

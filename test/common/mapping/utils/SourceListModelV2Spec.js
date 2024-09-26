@@ -200,7 +200,14 @@ describe('SourceListV2', () => {
         if (this.overlayLayersManager[layerId]) {
           this.overlayLayersManager.visible = visibility === 'visible';
         }
-      })
+      }),
+      style: {
+        fire(type, options) {
+          if (type === 'data' && options.dataType === 'style' && mockEvents.styledata) {
+            mockEvents.styledata();
+          }
+        }
+      }
     };
   });
 
@@ -440,7 +447,7 @@ describe('SourceListV2', () => {
     const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(2);
     expect(layerList[0].children.length).toBe(2);
-    expect(layerList[0].children[1].renderLayers).toEqual(appreciableLayers[2].renderLayers);
+    expect(layerList[0].children[0].renderLayers).toEqual(appreciableLayers[2].renderLayers);
     expect(layerList[0].type).toBe('group');
     done();
   });
@@ -528,7 +535,7 @@ describe('SourceListV2', () => {
         done();
       }
     });
-    sourceListModel.toggleLayerVisible(layerList[1].id, false);
+    sourceListModel.toggleLayerVisible(layerList[1], false);
     expect(mockEvents.styledata).not.toBeUndefined();
     mockEvents.styledata();
   });

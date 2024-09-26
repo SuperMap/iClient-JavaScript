@@ -1,7 +1,7 @@
 class SourceModel {
-  constructor(options) {
+  constructor(options, id) {
     this.dataSource = options.dataSource;
-    this.id = options.renderSource.id || options.id;
+    this.id = id;
     this.title = options.title;
     this.renderSource = options.renderSource;
     this.renderLayers = [];

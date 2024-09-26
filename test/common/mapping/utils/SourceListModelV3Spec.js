@@ -202,7 +202,14 @@ describe('SourceListV3', () => {
         if (this.overlayLayersManager[layerId]) {
           this.overlayLayersManager.visible = visibility === 'visible';
         }
-      })
+      }),
+      style: {
+        fire(type, options) {
+          if (type === 'data' && options.dataType === 'style' && mockEvents.styledata) {
+            mockEvents.styledata();
+          }
+        }
+      }
     };
   });
 
@@ -311,7 +318,7 @@ describe('SourceListV3', () => {
         done();
       }
     });
-    sourceListModel.toggleLayerVisible(layerList[3].id, false);
+    sourceListModel.toggleLayerVisible(layerList[3], false);
   });
 
   it('toggleLayerVisible true', (done) => {
@@ -335,11 +342,11 @@ describe('SourceListV3', () => {
     let layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
     expect(layerList[3].visible).toBeTruthy();
-    sourceListModel.toggleLayerVisible(layerList[3].id, false);
+    sourceListModel.toggleLayerVisible(layerList[3], false);
     layerList = sourceListModel.getLayerCatalog();
     expect(layerList[3].visible).toBeFalsy();
     expect(markerList[layerList[3].id].hide).toHaveBeenCalledTimes(1);
-    sourceListModel.toggleLayerVisible(layerList[3].id, true);
+    sourceListModel.toggleLayerVisible(layerList[3], true);
     layerList = sourceListModel.getLayerCatalog();
     expect(layerList[3].visible).toBeTruthy();
     expect(markerList[layerList[3].id].show).toHaveBeenCalledTimes(1);

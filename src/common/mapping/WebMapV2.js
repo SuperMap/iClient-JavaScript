@@ -337,7 +337,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             }
             style.layers.forEach(layer => {
               layer.layout && (layer.layout.visibility = this._getVisibility(layerInfo.visible));
-            })
+            });
             this.map.addStyle(style);
             const layerIds = [];
             style.layers.forEach((item) => {
@@ -2394,11 +2394,16 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (bounds) {
         source.bounds = bounds;
       }
+      let sourceId = source;
+      if (this.map.getSource(layerID) && (!this.map.getLayer(layerID) || !this.checkSameLayer || !this._isSameRasterLayer(layerID, source))) {
+        sourceId = `${layerID}_${+new Date()}`;
+        this.map.addSource(sourceId, source);
+      }
       this._addLayer(
         {
           id: layerID,
           type: 'raster',
-          source: source,
+          source: sourceId,
           minzoom: minzoom || 0,
           maxzoom: maxzoom || 22,
           layout: {
@@ -2740,7 +2745,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     _addLayer(layerInfo, parentLayerId = layerInfo.id, beforeId) {
       const { id } = layerInfo;
       if (this.map.getLayer(id)) {
-        if (this.checkSameLayer && this._isSameRasterLayer(id, layerInfo)) {
+        if (this.checkSameLayer && this._isSameRasterLayer(id, layerInfo.source)) {
           this._setCacheLayer({ layerInfo, parentLayerId, id, reused: true, beforeId });
           return;
         }
@@ -2847,8 +2852,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       };
     }
 
-    _isSameRasterLayer(id, layerInfo) {
-      return isSameRasterLayer(layerInfo.source, this.map.getSource(id));
+    _isSameRasterLayer(sourceId, sourceInfo) {
+      return isSameRasterLayer(sourceInfo, this.map.getSource(sourceId));
     }
 
     _centerValid(center) {

@@ -10,17 +10,12 @@ export class AppreciableLayerBase extends Events {
     this.appendLayers = options.appendLayers || false;
     this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', 'maplibre-gl-draw', /tracklayer-\d+-line/];
     this.layersVisibleMap = new Map();
-    this.layerCatalogs = [];
-    this.appreciableLayers = [];
     this.eventTypes = ['layerupdatechanged'];
     this._styleDataUpdatedHandler = this._styleDataUpdatedHandler.bind(this);
   }
 
   setSelfLayers(layers) {
     this.layers = layers;
-    if (this.appreciableLayers.length > 0) {
-      this._styleDataUpdatedHandler();
-    }
   }
 
   createAppreciableLayers() {
@@ -36,11 +31,13 @@ export class AppreciableLayerBase extends Events {
   }
 
   getLayerCatalog() {
-    return this.layerCatalogs;
+    const layerCatalog = this.createLayerCatalogs();
+    this._updateLayerCatalogsVisible(layerCatalog);
+    return layerCatalog;
   }
 
   getLayers() {
-    return this.appreciableLayers;
+    return this.createAppreciableLayers();
   }
 
   getSelfLayers(appreciableLayers = this.getLayers()) {
@@ -50,19 +47,15 @@ export class AppreciableLayerBase extends Events {
     );
   }
 
-  toggleLayerVisible(layerId, visible) {
-    const item = this._findLayerCatalog(this.layerCatalogs, layerId);
-    if (!item) {
-      return;
-    }
+  toggleLayerVisible(layer, visible) {
     const visibility = visible ? 'visible' : 'none';
-    if (item.type === 'group') {
-      const visbleId = this._getLayerVisibleId(item);
+    if (layer.type === 'group') {
+      const visbleId = this._getLayerVisibleId(layer);
       this.layersVisibleMap.set(visbleId, visible);
-      const targetLayers = getLayerInfosFromCatalogs(item.children);
+      const targetLayers = getLayerInfosFromCatalogs(layer.children);
       this.setLayersVisible(targetLayers, visibility);
     } else {
-      this.setLayersVisible([item], visibility);
+      this.setLayersVisible([layer], visibility);
     }
   }
 
@@ -74,7 +67,7 @@ export class AppreciableLayerBase extends Events {
         (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide)
       ) {
         visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
-        this._styleDataUpdatedHandler();
+        this.map.style.fire('data', { dataType: 'style' });
         return;
       }
       layer.renderLayers.forEach((layerId) => {
@@ -98,7 +91,7 @@ export class AppreciableLayerBase extends Events {
     if (!this.map) {
       return;
     }
-    this._initializeData();
+    this._styleDataUpdatedHandler();
     this._registerMapEvent();
   }
 
@@ -122,20 +115,19 @@ export class AppreciableLayerBase extends Events {
   }
 
   _initSourceList(detailLayers) {
-    const datas = detailLayers.reduce((sourceList, layer) => {
+    const datas = detailLayers.slice().reverse().reduce((sourceList, layer) => {
+      const id = layer.renderSource.sourceLayer ? `${layer.renderSource.id}-${+new Date()}` : layer.id;
       let matchItem = sourceList.find((item) => {
-        const sourceId = layer.renderSource.id || layer.id;
-        return item.id === sourceId;
+        return item.id === id;
       });
       if (!matchItem) {
-        const sourceListItem = new SourceModel(layer);
+        const sourceListItem = new SourceModel(layer, id);
         sourceList.push(sourceListItem);
         matchItem = sourceListItem;
       }
       matchItem.addLayer(layer);
       return sourceList;
     }, []);
-    datas.reverse();
     return datas;
   }
 
@@ -278,23 +270,14 @@ export class AppreciableLayerBase extends Events {
     }
   }
 
-  _initializeData() {
-    this.appreciableLayers = this.createAppreciableLayers();
-    this.layerCatalogs = this.createLayerCatalogs();
-    this._updateLayerCatalogsVisible(this.layerCatalogs);
-  }
-
   _registerMapEvent() {
     this.map.on('styledata', this._styleDataUpdatedHandler);
   }
 
   _styleDataUpdatedHandler() {
-    this._initializeData();
-    if (!this._appendLayers) {
-      this.triggerEvent('layerupdatechanged', {
-        layers: this.appreciableLayers,
-        layerCatalog: this.layerCatalogs
-      });
+    this.triggerEvent('layerupdatechanged', {
+      layers: this.getLayers(),
+      layerCatalog: this.getLayerCatalog()
+    });
     }
   }
-}

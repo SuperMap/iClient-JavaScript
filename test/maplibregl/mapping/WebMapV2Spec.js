@@ -1446,10 +1446,13 @@ describe('maplibregl_WebMapV2', () => {
   it('add baselayer which is baidu', (done) => {
     const callback = function (data) {
       expect(data).not.toBeUndefined();
-      done();
     };
     datavizWebmap = new WebMap(baseLayers['BAIDU']);
     datavizWebmap.on('baidumapnotsupport', callback);
+    datavizWebmap.on('mapcreatesucceeded', ({ layers }) => {
+      expect(layers.length).toBe(0);
+      done();
+    });
   });
 
   it('isvj-5215', (done) => {
@@ -2035,7 +2038,6 @@ describe('maplibregl_WebMapV2', () => {
         }
       };
       expect(data.map).toEqual(datavizWebmap._handler.map);
-      data.map.fire('styledata');
       const appreciableLayers2 = datavizWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(uniqueLayer_polygon.layers.length + 1 + 2);
       data.map.addLayer({
@@ -2858,25 +2860,25 @@ describe('maplibregl_WebMapV2', () => {
       expect(layerCatalog.length).toBe(3);
       expect(layers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
       expect(layers[2].id).toBe('ChinaqxAlberts_4548@point');
-      expect(layerCatalog[1].id).toBe('ChinaqxAlberts_4548@fl-new');
-      expect(layerCatalog[1].children[0].id).toBe('ChinaqxAlberts_4548@fl-new');
-      expect(layerCatalog[1].children[1].id).toBe('ChinaqxAlberts_4548@point');
+      expect(layerCatalog[1].id).toContain('ChinaqxAlberts_4548@fl-new');
+      expect(layerCatalog[1].children[0].id).toBe('ChinaqxAlberts_4548@point');
+      expect(layerCatalog[1].children[1].id).toBe('ChinaqxAlberts_4548@fl-new');
       expect(layers[1].visible).toBeTruthy();
       expect(layers[2].visible).toBeTruthy();
       expect(layerCatalog[1].children[0].visible).toBeTruthy();
       expect(layerCatalog[1].children[1].visible).toBeTruthy();
-      datavizWebmap.toggleLayerVisible('ChinaqxAlberts_4548@point', false);
+      datavizWebmap.toggleLayerVisible(layerCatalog[1].children[0], false);
       layers = datavizWebmap.getLayers();
       layerCatalog = datavizWebmap.getLayerCatalog();
       expect(layers[1].visible).toBeTruthy();
       expect(layers[2].visible).toBeFalsy();
       expect(layerCatalog[1].visible).toBeTruthy();
-      expect(layerCatalog[1].children[1].visible).toBeFalsy();
+      expect(layerCatalog[1].children[0].visible).toBeFalsy();
       expect(layers[3].id).toBe('民航数据');
       expect(layerCatalog[0].id).toBe('民航数据');
       expect(layers[3].visible).toBeTruthy();
       expect(layerCatalog[0].visible).toBeTruthy();
-      datavizWebmap.toggleLayerVisible('民航数据', false);
+      datavizWebmap.toggleLayerVisible(layerCatalog[0], false);
       layers = datavizWebmap.getLayers();
       layerCatalog = datavizWebmap.getLayerCatalog();
       expect(layers[3].visible).toBeFalsy();
@@ -2936,8 +2938,56 @@ describe('maplibregl_WebMapV2', () => {
         expect(layerCatalog[0].visible).toBeFalsy();
         done();
       });
-      datavizWebmap.toggleLayerVisible('民航数据', false);
+      datavizWebmap.toggleLayerVisible(layerCatalog[0], false);
     };
     datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
+  it('change sourceName when baselayer source is exist', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1209527958/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mvtLayer)));
+      }
+      if (url.indexOf('web/datas/676516522/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
+      if (url.indexOf('106007908/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(tileLayerMap)));
+      }
+    });
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    const callback = function (data) {
+      const appreciableLayers = datavizWebmap.getLayers();
+      expect(appreciableLayers.length).toBe(0);
+      const webMap1 = new WebMap(1209527958, { ...commonOption, map: data.map });
+      webMap1.once('mapcreatesucceeded', ({ layers }) => {
+        const sourceLayers = JSON.parse(styleJson)
+          .layers.filter((item) => item.type !== 'background')
+          .map((item) => item['source-layer']);
+        const uniqueSourceLayers = Array.from(new Set(sourceLayers));
+        expect(layers.length).toBe(2 + uniqueSourceLayers.length);
+        expect(uniqueSourceLayers.length).toBe(1);
+        const webMap2 = new WebMap(106007908, { ...commonOption, map: data.map });
+        webMap2.once('mapcreatesucceeded', ({ layers }) => {
+          expect(layers.length).toBe(1);
+          expect(layers[0].id).toBe('ChinaqxAlberts_4548@fl-new');
+          expect(layers[0].renderSource.id).toContain('ChinaqxAlberts_4548@fl-new_');
+          webMap2.cleanLayers();
+          webMap1.cleanLayers();
+          done();
+        });
+      });
+    };
+    datavizWebmap.once('mapcreatesucceeded', callback);
   });
 });

@@ -392,23 +392,23 @@
       return (this._handler && this._handler.getLayerCatalog()) || [];
     }
 
-    setLayersVisible(layers, visibility) {
-      this._handler && this._handler.setLayersVisible(layers, visibility);
+    setLayersVisible() {
+      this._handler && this._handler.setLayersVisible(...arguments);
     }
 
     /**
      * @version 11.2.1
      * @function WebMapBase.prototype.toggleLayerVisible
-     * @param {string} layerId - 图层 id。
+     * @param {string} layer - 图层信息。
      * @param {boolean} visible - 图层是否可见。true 表示显示，false 表示隐藏。
      * @description 设置图层显隐。
      */
-    toggleLayerVisible(layerId, visible) {
-      this._handler && this._handler.toggleLayerVisible(layerId, visible);
+    toggleLayerVisible() {
+      this._handler && this._handler.toggleLayerVisible(...arguments);
     }
 
     /**
-     * @version 11.3.0
+     * @version 11.2.1
      * @function WebMapBase.prototype.getWebMapType
      * @description 获取地图类型。
      * @returns {String} 地图类型。
@@ -418,12 +418,14 @@
     }
     
     /**
-     * @version 11.3.0
+     * @version 11.2.1
      * @function WebMapBase.prototype.rectifyLayersOrder
+     * @param {Array} layers - 图层列表。
+     * @param {string} topLayerBeforeId - 图层列表中置顶图层指定的 beforeId。
      * @description 根据已知顺序的可感知图层，对地图上图顺序进行排序。
      */
-    rectifyLayersOrder(appreciableLayers, topLayerBeforeId) {
-      this._handler && this._handler.rectifyLayersOrder(appreciableLayers, topLayerBeforeId);
+    rectifyLayersOrder() {
+      this._handler && this._handler.rectifyLayersOrder(...arguments);
     }
 
     /**
@@ -436,8 +438,8 @@
      * @param {Array} features - 要素信息。
      * @param {string} mergeByField - 属性关联字段。
      */
-    updateOverlayLayer(layerInfo, features, mergeByField) {
-      this._handler && this._handler.updateOverlayLayer(layerInfo, features, mergeByField);
+    updateOverlayLayer() {
+      this._handler && this._handler.updateOverlayLayer(...arguments);
     }
 
     /**
@@ -448,8 +450,8 @@
      * @param {Object} [layerInfo] - 复制图层信息。如 id、source、layout
      * @returns {Array} 复制成功的信图层信息。
      */
-    copyLayer(id, layerInfo) {
-      return this._handler && this._handler.copyLayer(id, layerInfo);
+    copyLayer() {
+      return this._handler && this._handler.copyLayer(...arguments);
     }
 
     /**

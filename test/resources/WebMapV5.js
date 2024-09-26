@@ -3759,3 +3759,33 @@ var projection_4548_content = {
   fileName: 'NewPoint4548(2).json',
   type: 'JSON'
 };
+
+var tileLayerMap = {
+  extent: {
+    leftBottom: {
+      x: -20037508.342789248,
+      y: -20037508.34278914
+    },
+    rightTop: {
+      x: 20037508.342789244,
+      y: 20037508.342789087
+    }
+  },
+  maxScale: '1:144447.927468',
+  level: 0,
+  center: {
+    x: -7.450580596923828e-9,
+    y: -2.60770320892334e-8
+  },
+  baseLayer: {
+    layerType: 'TILE',
+    visible: true,
+    name: 'ChinaqxAlberts_4548@fl-new',
+    url: 'base/resources/img/baiduTileTest.png'
+  },
+  layers: [],
+  projection: 'EPSG:3857',
+  minScale: '1:591658710.909131',
+  title: 'China',
+  version: '2.2.1'
+};
