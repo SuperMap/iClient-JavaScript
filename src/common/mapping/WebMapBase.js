@@ -1,56 +1,56 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import { WebMapService } from './WebMapService';
- import { transformServerUrl } from './utils/util';
- import cloneDeep from 'lodash.clonedeep';
- 
- const WORLD_WIDTH = 360;
- 
- /**
-  * @class WebMapBase
-  * @version 9.1.2
-  * @category  iPortal/Online Resources Map
-  * @classdesc 对接 iPortal/Online 地图类。
-  * @modulecategory Mapping
-  * @param {number} id - iPortal|Online 地图 ID。
-  * @param {Object} options - 基础参数。
-  * @param {string} [options.target='map'] - 地图容器 ID。
-  * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
-  * @param {string} [options.credentialKey] - 凭证密钥。
-  * @param {string} [options.credentialValue] - 凭证值。
-  * @param {string} [options.tiandituKey] - 用于访问天地图的服务。当设置 `id` 时有效。
-  * @param {string} [options.googleMapsAPIKey] - 用于访问谷歌地图。当设置 `id` 时有效。
-  * @param {string} [options.googleMapsLanguage] - 用于定义在谷歌地图图块上显示标签的语言。当设置 `id` 且底图为谷歌地图时有效。
-  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。当设置 `id` 时有效。
-  * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。当设置 `id` 时有效。
-  * @param {boolean} [options.ignoreBaseProjection = false] - 是否忽略底图坐标系和叠加图层坐标系不一致。
-  * @param {boolean} [options.isSuperMapOnline] - 是否是 SuperMap Online 地图。
-  * @param {string} [options.iportalServiceProxyUrlPrefix] - iportal的代理服务地址前缀。
-  * @param {string|boolean} [options.proxy] - HTTP 请求代理地址 。布尔值表示使用 iPortal 默认代理地址。
-  * @param {Object} mapOptions - 地图参数。
-  * @param {Array} [mapOptions.center] - 中心点。
-  * @param {number} [mapOptions.zoom] - 缩放级别。
-  * @param {number} [mapOptions.bearing] - 旋转角度。
-  * @param {number} [mapOptions.pitch] - 倾角。
-  * @param {string|Object} [mapOptions.crs] - 投影。
-  * @param {boolean} [mapOptions.renderWorldCopies] - 连续渲染。
-  * @param {number} [mapOptions.rasterTileSize] - 栅格瓦片大小。
-  * @param {Object} [mapOptions.style] - style 样式。
-  * @fires WebMapBase#mapinitialized
-  * @fires WebMapBase#mapcreatesucceeded
-  * @fires WebMapBase#mapcreatefailed
-  * @fires WebMapBase#addlayerssucceeded
-  * @fires WebMapBase#layercreatefailed
-  * @fires WebMapBase#baidumapnotsupport
-  * @fires WebMapBase#dataflowfeatureupdated
-  * @fires WebMapBase#projectionnotmatch
-  * @fires WebMapBase#mapbeforeremove
-  * @fires WebMapBase#getmapfailed
-  * @fires WebMapBase#getlayersfailed
-  * @usage
-  */
- export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
+import { WebMapService } from './WebMapService';
+import { transformServerUrl } from './utils/util';
+import cloneDeep from 'lodash.clonedeep';
+
+const WORLD_WIDTH = 360;
+
+/**
+ * @class WebMapBase
+ * @version 9.1.2
+ * @category  iPortal/Online Resources Map
+ * @classdesc 对接 iPortal/Online 地图类。
+ * @modulecategory Mapping
+ * @param {number} id - iPortal|Online 地图 ID。
+ * @param {Object} options - 基础参数。
+ * @param {string} [options.target='map'] - 地图容器 ID。
+ * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
+ * @param {string} [options.credentialKey] - 凭证密钥。
+ * @param {string} [options.credentialValue] - 凭证值。
+ * @param {string} [options.tiandituKey] - 用于访问天地图的服务。当设置 `id` 时有效。
+ * @param {string} [options.googleMapsAPIKey] - 用于访问谷歌地图。当设置 `id` 时有效。
+ * @param {string} [options.googleMapsLanguage] - 用于定义在谷歌地图图块上显示标签的语言。当设置 `id` 且底图为谷歌地图时有效。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。当设置 `id` 时有效。
+ * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。当设置 `id` 时有效。
+ * @param {boolean} [options.ignoreBaseProjection = false] - 是否忽略底图坐标系和叠加图层坐标系不一致。
+ * @param {boolean} [options.isSuperMapOnline] - 是否是 SuperMap Online 地图。
+ * @param {string} [options.iportalServiceProxyUrlPrefix] - iportal的代理服务地址前缀。
+ * @param {string|boolean} [options.proxy] - HTTP 请求代理地址 。布尔值表示使用 iPortal 默认代理地址。
+ * @param {Object} mapOptions - 地图参数。
+ * @param {Array} [mapOptions.center] - 中心点。
+ * @param {number} [mapOptions.zoom] - 缩放级别。
+ * @param {number} [mapOptions.bearing] - 旋转角度。
+ * @param {number} [mapOptions.pitch] - 倾角。
+ * @param {string|Object} [mapOptions.crs] - 投影。
+ * @param {boolean} [mapOptions.renderWorldCopies] - 连续渲染。
+ * @param {number} [mapOptions.rasterTileSize] - 栅格瓦片大小。
+ * @param {Object} [mapOptions.style] - style 样式。
+ * @fires WebMapBase#mapinitialized
+ * @fires WebMapBase#mapcreatesucceeded
+ * @fires WebMapBase#mapcreatefailed
+ * @fires WebMapBase#addlayerssucceeded
+ * @fires WebMapBase#layercreatefailed
+ * @fires WebMapBase#baidumapnotsupport
+ * @fires WebMapBase#dataflowfeatureupdated
+ * @fires WebMapBase#projectionnotmatch
+ * @fires WebMapBase#mapbeforeremove
+ * @fires WebMapBase#getmapfailed
+ * @fires WebMapBase#getlayersfailed
+ * @usage
+ */
+export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
   return class WebMapBase extends SuperClass {
     constructor(
       id,
@@ -196,6 +196,9 @@
       if (this.map) {
         this.mapOptions.crs = crs;
         if (this.mapOptions.crs) {
+          if (this.map.getCRS(typeof crs === 'string' ? crs : crs.epsgCode)) {
+            return;
+          }
           if (crs.epsgCode) {
             this.mapOptions.crs = new mapRepo.CRS(
               this.mapOptions.crs.epsgCode,
@@ -343,7 +346,7 @@
       this.setServerUrl(webMapOptions.server);
       this._createWebMap();
     }
-    
+
     /**
      * @deprecated
      * @function WebMapBase.prototype.setMapOptions
@@ -416,7 +419,7 @@
     getWebMapType() {
       return this.type;
     }
-    
+
     /**
      * @version 11.2.1
      * @function WebMapBase.prototype.rectifyLayersOrder
@@ -486,7 +489,7 @@
         return;
       }
       const sourceList = [];
-      const layersToClean = this._cacheCleanLayers.filter(item => !item.reused);
+      const layersToClean = this._cacheCleanLayers.filter((item) => !item.reused);
       for (const item of layersToClean) {
         item.renderLayers.forEach((layerId) => {
           if (this.map.getLayer(layerId)) {

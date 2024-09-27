@@ -342,6 +342,38 @@ describe('mapboxgl_WebMapV2', () => {
     window.EchartsLayer = undefined;
   });
 
+  xit('_setCRS', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(webmap_MAPBOXSTYLE_Tile)));
+      }
+      if (url.indexOf('maps/China_4326/style.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
+      return Promise.resolve();
+    });
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+
+    spyOn(mapboxgl.CRS.prototype, 'get').and.callFake((crs) => {
+      if (crs === 'EPSG:4326') {
+        return crs;
+      }
+      return null;
+    });
+    datavizWebmap.on('mapcreatesucceeded', () => {
+      spyOn(mapboxgl.CRS.prototype, 'set');
+      datavizWebmap._handler._setCRS('EPSG:4326', 'test', { left: -180, right: 180 });
+      expect(mapboxgl.CRS.prototype.set).not.toHaveBeenCalled();
+      datavizWebmap._handler._setCRS('EPSG:2362', 'test', { left: -180, right: 180 });
+      expect(mapboxgl.CRS.prototype.set).toHaveBeenCalled();
+      done();
+    });
+  });
   it('test baseLayer layers count maploaded', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -2296,11 +2328,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_serverUrl', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
+        return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
       } else if (url.indexOf('content.json?') > -1) {
-          return Promise.resolve(new Response(layerData_CSV));
+        return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2316,11 +2348,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_markerLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(markerLayer)));
+        return Promise.resolve(new Response(JSON.stringify(markerLayer)));
       } else if (url.indexOf('123456/content.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(markerData2)));
+        return Promise.resolve(new Response(JSON.stringify(markerData2)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2344,11 +2376,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_heatLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(heatLayer)));
+        return Promise.resolve(new Response(JSON.stringify(heatLayer)));
       } else if (url.indexOf('1920557079/content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2369,13 +2401,13 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_vectorLayer_point', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(vectorLayer_point)));
+        return Promise.resolve(new Response(JSON.stringify(vectorLayer_point)));
       } else if (url.indexOf('1920557079/content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('13136933/content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2396,11 +2428,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_vectorLayer_line', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(vectorLayer_line)));
+        return Promise.resolve(new Response(JSON.stringify(vectorLayer_line)));
       } else if (url.indexOf('content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2423,22 +2455,17 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_ranksymbolLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(ranksymbolLayer)));
+        return Promise.resolve(new Response(JSON.stringify(ranksymbolLayer)));
       } else if (url.indexOf('content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
     spyOn(ArrayStatistic, 'getArraySegments').and.callFake(function (array, type, segNum) {
       return [
-        0.406820286455,
-        2.6944246004791665,
-        4.982028914503333,
-        7.2696332285275,
-        9.557237542551666,
-        11.844841856575833,
+        0.406820286455, 2.6944246004791665, 4.982028914503333, 7.2696332285275, 9.557237542551666, 11.844841856575833,
         14.1324461706
       ];
     });
@@ -2462,11 +2489,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_uniqueLayer_polygon', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_polygon)));
+        return Promise.resolve(new Response(JSON.stringify(uniqueLayer_polygon)));
       } else if (url.indexOf('content.json?') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(chart_content)));
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2491,11 +2518,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_wmsLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(wmsLayer)));
+        return Promise.resolve(new Response(JSON.stringify(wmsLayer)));
       } else if (url.indexOf('REQUEST=GetCapabilities&SERVICE=WMS') > -1) {
-          return Promise.resolve(new Response(wmsCapabilitiesText));
+        return Promise.resolve(new Response(wmsCapabilitiesText));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2511,9 +2538,9 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_TiandituLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(tiandituLayer)));
+        return Promise.resolve(new Response(JSON.stringify(tiandituLayer)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2535,9 +2562,9 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_xyzLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(xyzLayer)));
+        return Promise.resolve(new Response(JSON.stringify(xyzLayer)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2557,9 +2584,9 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_mapboxstyleLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(mapboxstyleLayer)));
+        return Promise.resolve(new Response(JSON.stringify(mapboxstyleLayer)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2575,11 +2602,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial_migrationLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(migrationLayer));
+        return Promise.resolve(new Response(migrationLayer));
       } else if (url.indexOf('content.json?') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2594,11 +2621,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('initial-rangeLayer-point', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(webmap_rangeLayer)));
+        return Promise.resolve(new Response(JSON.stringify(webmap_rangeLayer)));
       } else if (url.indexOf('content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2621,11 +2648,11 @@ describe('mapboxgl_WebMapV2', () => {
   it('ISVJ-7952 CSV nullXY', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
+        return Promise.resolve(new Response(JSON.stringify(uniqueLayer_point)));
       } else if (url.indexOf('content.json?') > -1) {
         return Promise.resolve(new Response(JSON.stringify(csv_nullxy_Data)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2660,11 +2687,15 @@ describe('mapboxgl_WebMapV2', () => {
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(baseLayers['BING'])));
-      } else if (url.indexOf('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/RoadOnDemand?uriScheme=https&include=ImageryProviders&key=AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko&c=zh-cn') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(baseLayers['BING'])));
+      } else if (
+        url.indexOf(
+          'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/RoadOnDemand?uriScheme=https&include=ImageryProviders&key=AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko&c=zh-cn'
+        ) > -1
+      ) {
         return Promise.resolve(new Response(JSON.stringify(metaInfo)));
       } else if (url.indexOf('portal.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       return Promise.resolve();
     });
@@ -2747,36 +2778,38 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       if (url.indexOf('map.json') > -1) {
-          return Promise.resolve(new Response(JSON.stringify(projection4548)));
+        return Promise.resolve(new Response(JSON.stringify(projection4548)));
       }
       if (url.indexOf('map4548%40fl-new/prjCoordSys.wkt') > -1) {
         return Promise.resolve(new Response(projection_4548_wkt));
       }
       if (url.indexOf('/map4548%40fl-new.json') > -1) {
         return Promise.resolve(
-          new Response(JSON.stringify({
-            bounds: {
-              top: 5178663.047080055,
-              left: 328182.9260637246,
-              bottom: 2289622.79728123,
-              leftBottom: {
-                x: 328182.9260637246,
-                y: 2289622.79728123
-              },
-              right: 629000.9570381088,
-              rightTop: {
-                x: 629000.9570381088,
-                y: 5178663.047080055
+          new Response(
+            JSON.stringify({
+              bounds: {
+                top: 5178663.047080055,
+                left: 328182.9260637246,
+                bottom: 2289622.79728123,
+                leftBottom: {
+                  x: 328182.9260637246,
+                  y: 2289622.79728123
+                },
+                right: 629000.9570381088,
+                rightTop: {
+                  x: 629000.9570381088,
+                  y: 5178663.047080055
+                }
               }
-            }
-          }))
+            })
+          )
         );
       }
       if (url.indexOf('/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(projection_4548_content)));
       }
     });
-    spyOn(FetchRequest, 'post').and.callFake(url => {
+    spyOn(FetchRequest, 'post').and.callFake((url) => {
       if (url.indexOf('/featureResults') > -1) {
         return Promise.resolve(new Response(JSON.stringify(projection_4548_featureResults)));
       }

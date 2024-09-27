@@ -97,6 +97,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
 
     _setCRS(baseProjection, wkt, bounds) {
+      if (mapRepo.CRS.get(baseProjection)) {
+        return;
+      }
       const crs = new mapRepo.CRS(baseProjection, wkt, bounds, bounds[2] > 180 ? 'meter' : 'degree');
       mapRepo.CRS.set(crs);
     }
@@ -2484,7 +2487,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         default:
           break;
       }
-      const matchIndex = this._legendList.findIndex(item => item.layerId === layerInfo.layerID);
+      const matchIndex = this._legendList.findIndex((item) => item.layerId === layerInfo.layerID);
       if (matchIndex > -1) {
         this._legendList.splice(matchIndex, 1, legendItem);
         return;
@@ -2984,7 +2987,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
 
     _getVisibility(visible) {
-      const visibility = (visible === true || visible === 'visible') ? 'visible' : 'none';
+      const visibility = visible === true || visible === 'visible' ? 'visible' : 'none';
       return visibility;
     }
   };

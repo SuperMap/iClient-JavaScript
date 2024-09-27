@@ -122,6 +122,41 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
+  xit('_setCRS', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = mapstudioWebMap_raster;
+        return Promise.resolve(new Response(mapJson));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        var appInfo = mapstudioAppInfo;
+        return Promise.resolve(new Response(appInfo));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server,
+      iportalServiceProxyUrl: 'initialize_raster'
+    });
+    spyOn(mapboxgl.CRS, 'get').and.callFake((crs) => {
+      if (crs === 'EPSG:4326' || crs === 'EPSG:3957') {
+        return crs;
+      }
+      return null;
+    });
+    spyOn(mapboxgl.CRS, 'set');
+    datavizWebmap.on('mapcreatesucceeded', () => {
+      datavizWebmap._handler._setCRS('EPSG:4326', 'test', { left: -180, right: 180 });
+      expect(mapboxgl.CRS.set).not.toHaveBeenCalled();
+      datavizWebmap._handler._setCRS('EPSG:2362', 'test', { left: -180, right: 180 });
+      expect(mapboxgl.CRS.set).toHaveBeenCalled();
+      done();
+    });
+  });
+
   it('vector_symbol', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -471,7 +506,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  it('load l7Layers', (done) => { 
+  it('load l7Layers', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
@@ -1043,29 +1078,47 @@ describe('mapboxgl-webmap3.0', () => {
   it('handle sprite option is object like { sourceId: url }', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite/rectangle') > -1) {
-        return Promise.resolve(new Response(JSON.stringify({rectangle: {
-          pixelRatio: 1,
-          width: 104,
-          x: 0,
-          y: 0,
-          height: 104
-        }})));
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              rectangle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 0,
+                y: 0,
+                height: 104
+              }
+            })
+          )
+        );
       } else if (url.indexOf('/sprite/circle') > -1) {
-        return Promise.resolve(new Response(JSON.stringify({circle: {
-          pixelRatio: 1,
-          width: 104,
-          x: 104,
-          y: 0,
-          height: 104
-        }})));
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              circle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 104,
+                y: 0,
+                height: 104
+              }
+            })
+          )
+        );
       } else if (url.indexOf('/sprite/triangle') > -1) {
-        return Promise.resolve(new Response(JSON.stringify({triangle: {
-          pixelRatio: 1,
-          width: 104,
-          x: 0,
-          y: 104,
-          height: 104
-        }})));
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              triangle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 0,
+                y: 104,
+                height: 104
+              }
+            })
+          )
+        );
       }
       return Promise.resolve();
     });
@@ -1220,12 +1273,9 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapstudioWebmap = new WebMap(
-      id,
-      {
-        server: server
-      }
-    );
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
     mapstudioWebmap.once('mapcreatesucceeded', ({ map: firstMap, layers: firstLayersList }) => {
       expect(firstMap).not.toBeUndefined();
       const style = firstMap.getStyle();
@@ -1281,12 +1331,9 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapstudioWebmap = new WebMap(
-      id,
-      {
-        server: server
-      }
-    );
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
     mapstudioWebmap.once('mapcreatesucceeded', () => {
       let layers = mapstudioWebmap.getLayers();
       expect(layers.length).toBeGreaterThan(0);

@@ -1034,7 +1034,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  it('switch map and reset center zoom', (done) => {
+  it('switch map and reset center zoom CRS', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1092,7 +1092,7 @@ describe('mapboxgl_WebMap', () => {
       datavizWebmap.setStyle({});
       expect(datavizWebmap.mapOptions.zoom).toBeNull();
       expect(datavizWebmap.mapOptions.center).toBeNull();
-      datavizWebmap.once('mapcreatesucceeded', () => {
+      datavizWebmap.once('mapcreatesucceeded', ({ map }) => {
         center = [116, 30];
         zoom = 16;
         datavizWebmap.setCenter(center);
@@ -1121,6 +1121,19 @@ describe('mapboxgl_WebMap', () => {
         });
         expect(datavizWebmap.mapOptions.zoom).toBe(zoom);
         expect(datavizWebmap.mapOptions.center).toEqual(center);
+        datavizWebmap.map = map;
+        spyOn( map, 'setCRS');
+        spyOn(map, 'getCRS').and.callFake((crs) => {
+          if (crs === 'EPSG:4326') {
+            return crs;
+          }
+          return null;
+        });
+        datavizWebmap.setCRS('EPSG:4326');
+        expect(map.setCRS).not.toHaveBeenCalled();
+        datavizWebmap.setCRS('EPSG:3857');
+        expect(map.setCRS).toHaveBeenCalled();
+        datavizWebmap.map = null;
         datavizWebmap.once('mapcreatesucceeded', ({ layers }) => {
           expect(layers.length).toBe(1);
           done();
@@ -1241,11 +1254,7 @@ describe('mapboxgl_WebMap', () => {
       target: 'map',
       withCredentials: false
     };
-    datavizWebmap = new WebMap(
-      '',
-      { ...commonOption },
-      mapOptionsList[0]
-    );
+    datavizWebmap = new WebMap('', { ...commonOption }, mapOptionsList[0]);
     const callback = function () {
       let layers = datavizWebmap.getLayers();
       expect(layers.length).toBe(2);
@@ -1270,18 +1279,14 @@ describe('mapboxgl_WebMap', () => {
       target: 'map',
       withCredentials: false
     };
-    datavizWebmap = new WebMap(
-      '',
-      { ...commonOption },
-      mapOptionsList[0]
-    );
-    const callback = function ({map}) {
+    datavizWebmap = new WebMap('', { ...commonOption }, mapOptionsList[0]);
+    const callback = function ({ map }) {
       let layers = datavizWebmap.getLayers();
       expect(layers.length).toBe(2);
       let newLayers = [layers[1], layers[0]];
       datavizWebmap.rectifyLayersOrder(newLayers);
       const layersOnMap = map.getStyle().layers;
-      expect(layersOnMap[0].id).toBe('未命名数据')
+      expect(layersOnMap[0].id).toBe('未命名数据');
       done();
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
@@ -1306,11 +1311,7 @@ describe('mapboxgl_WebMap', () => {
       target: 'map',
       withCredentials: false
     };
-    var datavizWebmap1 = new WebMap(
-      '',
-      { ...commonOption },
-      mapOptionsList[0]
-    );
+    var datavizWebmap1 = new WebMap('', { ...commonOption }, mapOptionsList[0]);
 
     const callback = function () {
       var datavizWebmap2 = new WebMap(id, {
