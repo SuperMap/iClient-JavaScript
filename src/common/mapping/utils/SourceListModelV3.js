@@ -10,18 +10,15 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     this._mapResourceInfo = options.mapResourceInfo;
     this._l7LayerUtil = options.l7LayerUtil;
     this._legendList = options.legendList;
+    // chart 统计图表 point-extrusion 柱状图
+    this._immutableTopOrderLayers = ['chart', 'point-extrusion'];
     const layers = this._generateLayers();
-    this.setSelfLayers(layers);
+    this.setLayers(layers);
     this.initDatas();
   }
 
-  createAppreciableLayers() {
-    const detailLayers = this._initLayers();
-    return this._initAppreciableLayers(detailLayers);
-  }
-
   createLayerCatalogs() {
-    const appreciableLayers = this.getLayers();
+    const appreciableLayers = this.getLayers(false);
     const sourceList = this._createSourceCatalogs(this._layerCatalog, appreciableLayers);
     const selfLayers = this.getSelfLayers();
     const extraLayers = appreciableLayers.filter((item) => !selfLayers.some((sub) => sub.id === item.id));
@@ -33,7 +30,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     return this.layers.reduce((ids, item) => ids.concat(item.layerInfo.renderLayers), []);
   }
 
-  _initLayers() {
+  initLayers() {
     const layersOnMap = this._getAllLayersOnMap();
     let nextLayers = layersOnMap;
     if (this.appendLayers) {
@@ -63,7 +60,9 @@ export class SourceListModelV3 extends AppreciableLayerBase {
           visible
         };
       } else {
-        formatItem = Object.assign({}, appreciableLayers.find((layer) => layer.id === id));
+        const matchLayer = appreciableLayers.find((layer) => layer.id === id);
+        this.removeLayerExtralFields([matchLayer]);
+        formatItem = Object.assign({}, matchLayer);
       }
       return formatItem;
     });
@@ -125,6 +124,9 @@ export class SourceListModelV3 extends AppreciableLayerBase {
       const validThemeFields = Array.from(new Set(matchThemeFields));
       if (validThemeFields.length > 0) {
         layerInfo.themeSetting = { themeField: validThemeFields };
+      }
+      if (this._immutableTopOrderLayers.some(type => type === layer.type)) {
+        layerInfo.metadata = Object.assign({}, layer.metadata, { SM_Layer_Order: 'top' });
       }
       return Object.assign({}, layer, { layerInfo });
     });

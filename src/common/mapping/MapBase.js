@@ -62,5 +62,25 @@ export function createMapClassExtending(SuperClass = class {}) {
     updateOverlayLayer() {}
 
     copyLayer() {}
+
+    cleanLayers(layers) {
+      const sourceList = [];
+      for (const item of layers) {
+        item.renderLayers.forEach((layerId) => {
+          if (this.map.getLayer(layerId)) {
+            this.map.removeLayer(layerId);
+            if (!item.l7Layer && this.map.getSource(layerId)) {
+              sourceList.push(layerId);
+            }
+          }
+        });
+        if (this.map.getSource(item.renderSource.id) && !item.l7Layer) {
+          sourceList.push(item.renderSource.id);
+        }
+      }
+      Array.from(new Set(sourceList)).forEach((sourceId) => {
+        this.map.removeSource(sourceId);
+      });
+    }
   };
 }

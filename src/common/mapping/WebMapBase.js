@@ -488,21 +488,8 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       if (!this.map) {
         return;
       }
-      const sourceList = [];
-      const layersToClean = this._cacheCleanLayers.filter((item) => !item.reused);
-      for (const item of layersToClean) {
-        item.renderLayers.forEach((layerId) => {
-          if (this.map.getLayer(layerId)) {
-            this.map.removeLayer(layerId);
-          }
-        });
-        if (this.map.getSource(item.renderSource.id) && !item.l7Layer) {
-          sourceList.push(item.renderSource.id);
-        }
-      }
-      Array.from(new Set(sourceList)).forEach((sourceId) => {
-        this.map.removeSource(sourceId);
-      });
+      const layersToClean = this._cacheCleanLayers.filter(item => !item.reused);
+      this._handler && this._handler.cleanLayers(layersToClean);
       this._cacheCleanLayers = [];
       this.clean(false);
     }

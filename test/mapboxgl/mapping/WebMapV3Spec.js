@@ -1250,7 +1250,7 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      if (url.indexOf('map.json') > -1) {
+      if (url.indexOf(`${id}/map.json`) > -1) {
         return Promise.resolve(new Response(JSON.stringify({ ...mapInfo, crs: 'EPSG:3857' })));
       }
       if (url.indexOf('617580084.json') > -1) {
@@ -1271,6 +1271,18 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
         return Promise.resolve(new Response(l7StructureData1767084124));
       }
+      if (url.indexOf('411950022/map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_chart));
+      }
+      if (url.indexOf('411950022.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_chart));
+      }
+      if (url.indexOf('/web/datas/888034348/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/888034348/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
       return Promise.resolve();
     });
     mapstudioWebmap = new WebMap(id, {
@@ -1290,7 +1302,15 @@ describe('mapboxgl-webmap3.0', () => {
         webMap1.cleanLayers();
         expect(mapSpy).not.toHaveBeenCalled();
         expect(sceneSpy).not.toHaveBeenCalled();
-        done();
+        const webMap2 = new WebMap(411950022, { server, map: firstMap});
+        webMap2.once('mapcreatesucceeded', ({ layers }) => {
+          expect(layers.length).toBe(4);
+          expect(layers[3].type).toBe('chart');
+          const removeMarkerSpy = spyOn(map.$l7scene, 'removeMarkerLayer').and.callThrough();
+          webMap2.cleanLayers();
+          expect(removeMarkerSpy).toHaveBeenCalledTimes(1);
+          done();
+        });
       });
     });
   });

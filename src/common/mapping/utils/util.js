@@ -179,8 +179,8 @@ export function createAppreciableLayerId(layer) {
     return layer.layerInfo.id;
   }
   // 往空地图上追加图层 且 只有一个webmap this.layers是空
-  if (layer.metadata && layer.metadata.parentLayerId) {
-    return layer.metadata.parentLayerId;
+  if (layer.metadata && layer.metadata.SM_Layer_Id) {
+    return layer.metadata.SM_Layer_Id;
   }
   // 针对 MapboxStyle 或者其它额外的 layer
   // type: background 和某些 overlaymanager layers 只有 id

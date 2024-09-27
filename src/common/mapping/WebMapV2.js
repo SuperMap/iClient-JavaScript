@@ -50,6 +50,13 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this._getMapInfo(mapInfo, this._taskID);
     }
 
+    cleanLayers(layers) {
+      super.cleanLayers(layers);
+      this.echartslayer.forEach(echartLayer => {
+        echartLayer.remove();
+      });
+    }
+
     clean(removeMap = true) {
       if (this.map) {
         if (this._sourceListModel) {
@@ -320,7 +327,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         },
         fadeDuration: 0
       });
-      window.map = this.map;
       this.fire('mapinitialized', { map: this.map });
     }
 
@@ -522,7 +528,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this.map.addLayer(graticuleLayer);
       this._setCacheLayer({
         parentLayerId: graticuleLayer.id,
-        subRenderLayers: [{ layerId: graticuleLayer.id }, { layerId: graticuleLayer.sourceId }]
+        subRenderLayers: [{ layerId: graticuleLayer.id }, { layerId: graticuleLayer.sourceId }],
+        metadata: { SM_Layer_Order: 'Top' }
       });
       this._addLayerSucceeded();
     }
@@ -1072,7 +1079,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
               echartslayer.chart._dom.style.display = 'none';
             }
           }
-        }
+        },
+        metadata: { SM_Layer_Order: 'top' }
       });
       this._addLayerSucceeded({ layerInfo, features });
     }
@@ -2755,23 +2763,25 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         this._updateLayer(layerInfo);
         return;
       }
-      const nextLayerInfo = Object.assign(layerInfo, { metadata: { parentLayerId } });
+      const nextLayerInfo = Object.assign({}, layerInfo);
+      nextLayerInfo.metadata = Object.assign({}, nextLayerInfo.metadata, { SM_Layer_Id: parentLayerId })
       this.map.addLayer(nextLayerInfo);
       this._setCacheLayer({ layerInfo, parentLayerId, id, beforeId });
     }
 
-    _setCacheLayer({ parentLayerId, layerInfo, reused = false, beforeId, subRenderLayers }) {
+    _setCacheLayer({ parentLayerId, layerInfo, reused = false, beforeId, subRenderLayers, metadata }) {
       const renderLayers = subRenderLayers || [{ layerId: layerInfo.id, reused }];
       if (!this._cacheLayerId.has(parentLayerId)) {
-        this._cacheLayerId.set(parentLayerId, renderLayers);
+        const metadataInfo = Object.assign({}, metadata || layerInfo && layerInfo.metadata, { SM_Layer_Id: parentLayerId });
+        this._cacheLayerId.set(parentLayerId, { renderLayers, metadata: metadataInfo });
       } else {
-        const renderLayerList = this._cacheLayerId.get(parentLayerId);
+        const layerCacheData = this._cacheLayerId.get(parentLayerId);
         let matchIndex = -1;
         if (beforeId) {
-          matchIndex = renderLayerList.findIndex((item) => item.layerId === beforeId);
+          matchIndex = layerCacheData.renderLayers.findIndex((item) => item.layerId === beforeId);
         }
-        const matchInsertIndex = matchIndex < 0 ? renderLayerList.length : matchIndex;
-        renderLayerList.splice(matchInsertIndex, 0, ...renderLayers);
+        const matchInsertIndex = matchIndex < 0 ? layerCacheData.renderLayers.length : matchIndex;
+        layerCacheData.renderLayers.splice(matchInsertIndex, 0, ...renderLayers);
       }
       if (this.addLayersSucceededLen && this._cacheLayerId.size <= this.expectLayerLen) {
         this._changeSourceListModel();
@@ -2817,18 +2827,19 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         const targetLayerId = layerInfo.layerID || layerInfo.name;
         const targetLayerVisible =
           layerInfo.visible === void 0 || layerInfo.visible === 'visible' || layerInfo.visible === true;
-        const matchLayers = this._cacheLayerId.get(targetLayerId);
-        if (matchLayers) {
-          const renderLayers = matchLayers.map((item) => item.layerId);
+        const matchCacheData = this._cacheLayerId.get(targetLayerId);
+        if (matchCacheData) {
+          const renderLayers = matchCacheData.renderLayers.map((item) => item.layerId);
           if (!renderLayers.length) {
             return;
           }
           layersFromMapInfo.push({
             ...layerInfo,
+            ...matchCacheData,
             id: targetLayerId,
             visible: targetLayerVisible,
             renderLayers,
-            reused: matchLayers.some((item) => item.reused)
+            reused: matchCacheData.renderLayers.some((item) => item.reused)
           });
         }
       });
@@ -2845,7 +2856,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         });
         return;
       }
-      this._sourceListModel.setSelfLayers(layersFromMapInfo);
+      this._sourceListModel.setLayers(layersFromMapInfo);
     }
 
     _getSelfAppreciableLayers(appreciableLayers) {

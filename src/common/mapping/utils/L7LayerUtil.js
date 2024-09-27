@@ -2072,7 +2072,8 @@ export function L7LayerUtil(config) {
     isL7Layer,
     getL7MarkerLayers() {
       return ChartController.markerLayers;
-    }
+    },
+    removeL7MarkerLayer
   }
 }
 

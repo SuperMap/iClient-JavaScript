@@ -1,16 +1,13 @@
 class SourceModel {
-  constructor(options, id) {
+  constructor(options) {
     this.dataSource = options.dataSource;
-    this.id = id;
+    this.id = options.id;
     this.title = options.title;
     this.renderSource = options.renderSource;
     this.renderLayers = [];
     this.type = options.type;
     this.themeSetting = options.themeSetting;
     this.visible = options.visible;
-    if (options.reused) {
-      this.reused = options.reused;
-    }
   }
 
   addLayer(layer) {
@@ -21,7 +18,6 @@ class SourceModel {
         this.renderSource = {};
         this.dataSource = {};
         this.themeSetting = {};
-        this.title = this.id;
       }
       if (layer.visible || this.visible) {
         this.visible = true;
@@ -32,6 +28,12 @@ class SourceModel {
       return;
     }
     this.renderLayers.push(...layer.renderLayers);
+    if (layer.reused) {
+      this.reused = layer.reused;
+    }
+    if (layer.layerOrder) {
+      this.layerOrder = layer.layerOrder;
+    }
   }
 }
 

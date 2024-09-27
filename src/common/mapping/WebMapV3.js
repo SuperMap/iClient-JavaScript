@@ -173,13 +173,6 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     this._baseProjection = '';
   }
 
-  /**
-   * @function WebMapV3.prototype.initializeMap
-   * @description 登陆窗口后添加地图图层。
-   * @param {Object} mapInfo - map 信息。
-   * @param {Object} map - map 实例。
-   * @private
-   */
   initializeMap(mapInfo, map) {
     this._mapInfo = mapInfo;
     const proj = this._setBaseProjection();
@@ -201,6 +194,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       return;
     }
     this._createMap();
+  }
+
+  cleanLayers(layers) {
+    super.cleanLayers(layers);
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
+    for (const layerId in l7MarkerLayers) {
+      l7LayerUtil.removeL7MarkerLayer(layerId, this.map.$l7scene);
+    }
   }
 
   clean(removeMap = true) {

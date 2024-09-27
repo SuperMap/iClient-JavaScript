@@ -309,16 +309,18 @@ describe('SourceListV3', () => {
     });
     const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
-    expect(layerList[3].visible).toBeTruthy();
+    expect(layerList[0].id).toBe('中国金牌个人获奖者(1)');
+    expect(layerList[0].type).toBe('chart');
+    expect(layerList[0].visible).toBeTruthy();
     sourceListModel.on({
       layerupdatechanged: () => {
         let layerList = sourceListModel.getLayerCatalog();
-        expect(layerList[3].visible).toBeFalsy();
-        expect(markerList[layerList[3].id].hide).toHaveBeenCalledTimes(1);
+        expect(layerList[0].visible).toBeFalsy();
+        expect(markerList[layerList[0].id].hide).toHaveBeenCalledTimes(1);
         done();
       }
     });
-    sourceListModel.toggleLayerVisible(layerList[3], false);
+    sourceListModel.toggleLayerVisible(layerList[0], false);
   });
 
   it('toggleLayerVisible true', (done) => {
@@ -341,16 +343,47 @@ describe('SourceListV3', () => {
     });
     let layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
-    expect(layerList[3].visible).toBeTruthy();
-    sourceListModel.toggleLayerVisible(layerList[3], false);
+    expect(layerList[0].visible).toBeTruthy();
+    sourceListModel.toggleLayerVisible(layerList[0], false);
     layerList = sourceListModel.getLayerCatalog();
-    expect(layerList[3].visible).toBeFalsy();
-    expect(markerList[layerList[3].id].hide).toHaveBeenCalledTimes(1);
-    sourceListModel.toggleLayerVisible(layerList[3], true);
+    expect(layerList[0].id).toBe('中国金牌个人获奖者(1)');
+    expect(layerList[0].type).toBe('chart');
+    expect(layerList[0].visible).toBeFalsy();
+    expect(markerList[layerList[0].id].hide).toHaveBeenCalledTimes(1);
+    sourceListModel.toggleLayerVisible(layerList[0], true);
     layerList = sourceListModel.getLayerCatalog();
-    expect(layerList[3].visible).toBeTruthy();
-    expect(markerList[layerList[3].id].show).toHaveBeenCalledTimes(1);
+    expect(layerList[0].visible).toBeTruthy();
+    expect(markerList[layerList[0].id].show).toHaveBeenCalledTimes(1);
     done();
+  });
+
+  it('toggleLayerVisible empty group', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_chart);
+    const markerList = {
+      ['中国金牌个人获奖者(1)']: {
+        show: jasmine.createSpy('show').and.callFake(() => {}),
+        hide: jasmine.createSpy('hide').and.callFake(() => {}),
+      }
+    }
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: JSON.parse(msProjectINfo_chart),
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => markerList
+      }
+    });
+    const layerList = sourceListModel.getLayerCatalog();
+    sourceListModel.on({
+      layerupdatechanged: () => {
+        const currentLayerList = sourceListModel.getLayerCatalog();
+        expect(currentLayerList).toEqual(layerList);
+        done();
+      }
+    });
+    sourceListModel.toggleLayerVisible({ type: 'group', title: 'emtpy-group', id: 'group1', children: [] }, false);
   });
 
   it('setLayersVisible', (done) => {

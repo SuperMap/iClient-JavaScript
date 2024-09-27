@@ -6,13 +6,8 @@ export class SourceListModelV2 extends AppreciableLayerBase {
     this.initDatas();
   }
 
-  createAppreciableLayers() {
-    const detailLayers = this._initLayers();
-    return this._initAppreciableLayers(detailLayers);
-  }
-
   createLayerCatalogs() {
-    const appreciableLayers = this.getLayers();
+    const appreciableLayers = this.getLayers(false);
     return this._initSourceList(appreciableLayers);
   }
 
@@ -20,7 +15,7 @@ export class SourceListModelV2 extends AppreciableLayerBase {
     return this.layers.reduce((ids, item) => ids.concat(item.renderLayers), []);
   }
 
-  _initLayers() {
+  initLayers() {
     const layersOnMap = this._getAllLayersOnMap();
     let nextLayers = layersOnMap;
     if (this.appendLayers) {
@@ -39,7 +34,12 @@ export class SourceListModelV2 extends AppreciableLayerBase {
             layerInfo: { ...item, dataSource: item.dataSource || (item.serverId && { serverId: item.serverId }) }
           });
         } else {
-          selfLayers.push(...matchLayers);
+          const mvtLayerList = matchLayers.map(layer => {
+            const nextLayer = Object.assign({}, layer);
+            nextLayer.metadata = Object.assign({}, nextLayer.metadata, { SM_Layer_Title: item.name });
+            return nextLayer;
+          })
+          selfLayers.push(...mvtLayerList);
         }
         selfLayerIds.push(...item.renderLayers);
       }

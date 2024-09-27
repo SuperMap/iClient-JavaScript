@@ -322,6 +322,10 @@ describe('mapboxgl_WebMapV2', () => {
           setOption() {}
         };
       }
+
+      resize() {}
+
+      remove() {}
     };
   });
   afterEach(() => {
@@ -1175,7 +1179,9 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap = new WebMap(JSON.parse(migrationLayer), { ...commonOption });
     const callback = function (data) {
+      expect(data.layers.length).toBe(2);
       expect(datavizWebmap.getLayers().length).toEqual(data.layers.length);
+      expect(data.layers[1].type).toBe('MIGRATION');
       done();
     };
     datavizWebmap.on('mapcreatesucceeded', callback);
@@ -2200,6 +2206,11 @@ describe('mapboxgl_WebMapV2', () => {
       const appreciableLayers = datavizWebmap.getLayers();
       expect(appreciableLayers[1].id).toBe('ChinaqxAlberts_4548@fl-new');
       expect(appreciableLayers[2].id).toBe('民航数据');
+      const layerCatalog = datavizWebmap.getLayerCatalog();
+      expect(layerCatalog.length).toBe(3);
+      expect(layerCatalog[1].title).toBe('PopulationDistribution');
+      expect(layerCatalog[1].id).toContain('ChinaqxAlberts_4548@fl-new_');
+      expect(layerCatalog[1].type).toBe('group');
       done();
     };
     datavizWebmap.on('mapcreatesucceeded', callback);
@@ -3022,5 +3033,57 @@ describe('mapboxgl_WebMapV2', () => {
       });
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('test webmap append layers', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1209527958/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(markerLayer)));
+      }
+      if (url.indexOf('106007908/map.json') > -1) {
+        return Promise.resolve(new Response(migrationLayer));
+      }
+      if (url.indexOf('web/datas/123456/content.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['MARKER_GEOJSON'])));
+      }
+      if (url.indexOf('web/datas/1184572358/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+    });
+    datavizWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    datavizWebmap.once('mapcreatesucceeded', ({ map: firstMap, layers: firstLayersList }) => {
+      expect(firstMap).not.toBeUndefined();
+      const style = firstMap.getStyle();
+      expect(style.layers.length).toEqual(firstLayersList.length);
+      const webMap1 = new WebMap(1209527958, { server, map: firstMap });
+      webMap1.once('mapcreatesucceeded', ({ map, layers }) => {
+        expect(map).toEqual(firstMap);
+        let style = map.getStyle();
+        expect(style.layers.length).toBeGreaterThan(layers.length);
+        const sourceIds = Object.keys(style.sources);
+        const layerIds = style.layers.map(item => item.id);
+        webMap1.cleanLayers();
+        style = map.getStyle();
+        expect(style.layers.some(layer => layerIds.some(id => id === layer.id))).toBeFalsy();
+        expect(Object.keys(style.sources).some(sourceId => sourceIds.some(id => id === sourceId))).toBeFalsy();
+        const webMap2 = new WebMap(106007908, { server, map: firstMap });
+        webMap2.once('mapcreatesucceeded', ({ layers }) => {
+          expect(layers.length).toBe(2);
+          expect(layers[1].type).toBe('MIGRATION');
+          expect(webMap2._handler).not.toBeUndefined();
+          const removeEchartLayerSpy = spyOn(webMap2._handler.echartslayer[0], 'remove');
+          webMap2.cleanLayers();
+          expect(removeEchartLayerSpy).toHaveBeenCalled();
+          done();
+        });
+      });
+    });
   });
 });

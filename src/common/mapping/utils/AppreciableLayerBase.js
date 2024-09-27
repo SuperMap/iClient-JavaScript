@@ -8,18 +8,22 @@ export class AppreciableLayerBase extends Events {
     this.map = options.map;
     this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
-    this.unexpectedSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', 'maplibre-gl-draw', /tracklayer-\d+-line/];
+    this.unexpectedSourceNames = [
+      'tdt-search-',
+      'tdt-route-',
+      'smmeasure',
+      'mapbox-gl-draw',
+      'maplibre-gl-draw',
+      /tracklayer-\d+-line/
+    ];
+    this.uniqueId = +new Date();
     this.layersVisibleMap = new Map();
     this.eventTypes = ['layerupdatechanged'];
     this._styleDataUpdatedHandler = this._styleDataUpdatedHandler.bind(this);
   }
 
-  setSelfLayers(layers) {
+  setLayers(layers) {
     this.layers = layers;
-  }
-
-  createAppreciableLayers() {
-    throw new Error('createAppreciableLayers is not implemented');
   }
 
   createLayerCatalogs() {
@@ -30,14 +34,25 @@ export class AppreciableLayerBase extends Events {
     throw new Error('getSelfLayerIds is not implemented');
   }
 
+  initLayers() {
+    throw new Error('initLayers is not implemented');
+  }
+
+  createAppreciableLayers() {
+    const detailLayers = this.initLayers();
+    return this._initAppreciableLayers(detailLayers);
+  }
+
   getLayerCatalog() {
     const layerCatalog = this.createLayerCatalogs();
     this._updateLayerCatalogsVisible(layerCatalog);
-    return layerCatalog;
+    return this._updateImmutableOrderLayers(layerCatalog);
   }
 
-  getLayers() {
-    return this.createAppreciableLayers();
+  getLayers(removeExtral = true) {
+    const layers = this.createAppreciableLayers();
+    removeExtral && this.removeLayerExtralFields(layers);
+    return this._updateImmutableOrderLayers(layers, true);
   }
 
   getSelfLayers(appreciableLayers = this.getLayers()) {
@@ -53,19 +68,21 @@ export class AppreciableLayerBase extends Events {
       const visbleId = this._getLayerVisibleId(layer);
       this.layersVisibleMap.set(visbleId, visible);
       const targetLayers = getLayerInfosFromCatalogs(layer.children);
-      this.setLayersVisible(targetLayers, visibility);
+      if (!targetLayers.length) {
+        this.map.style.fire('data', { dataType: 'style' });
+      } else {
+        this.setLayersVisible(targetLayers, visibility);
+      }
     } else {
       this.setLayersVisible([layer], visibility);
     }
   }
 
   setLayersVisible(layers, visibility) {
-    layers.forEach(layer => {
+    layers.forEach((layer) => {
       const visbleId = this._getLayerVisibleId(layer);
       this.layersVisibleMap.set(visbleId, visibility === 'visible');
-      if (
-        (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide)
-      ) {
+      if (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide) {
         visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
         this.map.style.fire('data', { dataType: 'style' });
         return;
@@ -95,6 +112,12 @@ export class AppreciableLayerBase extends Events {
     this._registerMapEvent();
   }
 
+  removeLayerExtralFields(layers) {
+    layers.forEach((layer) => {
+      delete layer.metadata;
+    });
+  }
+
   _initAppreciableLayers(detailLayers) {
     // dv 没有关联一个可感知图层对应对个渲染图层的关系，默认相同source的layer就是渲染图层
     return detailLayers.reduce((layers, layer) => {
@@ -115,19 +138,23 @@ export class AppreciableLayerBase extends Events {
   }
 
   _initSourceList(detailLayers) {
-    const datas = detailLayers.slice().reverse().reduce((sourceList, layer) => {
-      const id = layer.renderSource.sourceLayer ? `${layer.renderSource.id}-${+new Date()}` : layer.id;
-      let matchItem = sourceList.find((item) => {
-        return item.id === id;
-      });
-      if (!matchItem) {
-        const sourceListItem = new SourceModel(layer, id);
-        sourceList.push(sourceListItem);
-        matchItem = sourceListItem;
-      }
-      matchItem.addLayer(layer);
-      return sourceList;
-    }, []);
+    const datas = detailLayers
+      .slice()
+      .reverse()
+      .reduce((sourceList, layer) => {
+        const id = layer.renderSource.sourceLayer ? `${layer.renderSource.id}_${this.uniqueId}` : layer.id;
+        const title = layer.metadata.SM_Layer_Title || (layer.renderSource.sourceLayer ? layer.renderSource.id : layer.title);
+        let matchItem = sourceList.find((item) => {
+          return item.id === id;
+        });
+        if (!matchItem) {
+          const sourceListItem = new SourceModel({ ...layer, id, title });
+          sourceList.push(sourceListItem);
+          matchItem = sourceListItem;
+        }
+        matchItem.addLayer(layer);
+        return sourceList;
+      }, []);
     return datas;
   }
 
@@ -187,7 +214,15 @@ export class AppreciableLayerBase extends Events {
         if (typeof source === 'object') {
           source = overlayLayer.id;
         }
-        layersOnMap.push(this._pickLayerFields({ id: overlayLayer.id, type: overlayLayer.type, visibility, source }));
+        layersOnMap.push(
+          this._pickLayerFields({
+            id: overlayLayer.id,
+            type: overlayLayer.type,
+            visibility,
+            source,
+            metadata: overlayLayer.metadata
+          })
+        );
       }
     }
     return layersOnMap;
@@ -204,7 +239,8 @@ export class AppreciableLayerBase extends Events {
       visible = layer.visibility ? layer.visibility === 'visible' : true,
       CLASS_NAME,
       CLASS_INSTANCE,
-      reused
+      reused,
+      metadata = layer.metadata || {}
     } = layerInfo;
     const sourceOnMap = this.map.getSource(layer.source);
     const fields = {
@@ -220,7 +256,10 @@ export class AppreciableLayerBase extends Events {
         : {},
       renderLayers: [],
       dataSource,
-      themeSetting
+      themeSetting,
+      metadata,
+      // top bottom auto
+      layerOrder: metadata.SM_Layer_Order || 'auto'
     };
     if (layer.sourceLayer) {
       fields.renderSource.sourceLayer = layer.sourceLayer;
@@ -236,7 +275,7 @@ export class AppreciableLayerBase extends Events {
     }
     return fields;
   }
-  
+
   _findLayerCatalog(layerCatalogs, targetId) {
     for (const layer of layerCatalogs) {
       if (layer.id === targetId) {
@@ -251,7 +290,7 @@ export class AppreciableLayerBase extends Events {
     }
     return null;
   }
-  
+
   _getLayerVisibleId(layer) {
     return `${layer.type}-${layer.id}`;
   }
@@ -260,7 +299,7 @@ export class AppreciableLayerBase extends Events {
     const id = this._getLayerVisibleId(layer);
     return this.layersVisibleMap.has(id) ? this.layersVisibleMap.get(id) : layer.visible;
   }
-  
+
   _updateLayerCatalogsVisible(catalogs) {
     for (const data of catalogs) {
       data.visible = this._getLayerVisible(data);
@@ -275,9 +314,24 @@ export class AppreciableLayerBase extends Events {
   }
 
   _styleDataUpdatedHandler() {
+    const layers = this.getLayers();
     this.triggerEvent('layerupdatechanged', {
-      layers: this.getLayers(),
+      layers,
+      relevantLayers: this.getSelfLayers(layers),
       layerCatalog: this.getLayerCatalog()
     });
-    }
   }
+
+  _updateImmutableOrderLayers(layers, revert) {
+    let topLayers = layers.filter(item => item.layerOrder && item.layerOrder.toLowerCase() === 'top');
+    const migrationLayers = topLayers.filter(item => item.type === 'MIGRATION');
+    const leftTopLayers = topLayers.filter(item => item.type !== 'MIGRATION');
+    topLayers = migrationLayers.concat(leftTopLayers);
+    const bottomLayers = layers.filter(item => item.layerOrder && item.layerOrder.toLowerCase() === 'bottom');
+    const autoLayers = layers.filter(item => !item.layerOrder || item.layerOrder.toLowerCase() === 'auto');
+    if (revert) {
+      return bottomLayers.concat(autoLayers, topLayers);
+    }
+    return topLayers.concat(autoLayers, bottomLayers);
+  }
+}
