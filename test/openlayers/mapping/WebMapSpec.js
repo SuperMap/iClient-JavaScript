@@ -1602,4 +1602,34 @@ describe('openlayers_WebMap', () => {
         console.log(error);
       }
     });
+    it('administrativeInfoMap', (done) => {
+        window.MunicipalData = {
+            features: [{
+              geometry: {
+                coordinates: [[[[113.5872766800001, 22.16493972869857], [113.5980630750001, 22.13509586869991]]], [[[113.5511133950001, 22.21679186869615], [113.5623058550001, 22.1994578386969]]]],
+                type: 'MultiPolygon'
+              },
+              properties: { Name: '哈尔滨市', UserID: 0 },
+              type: 'Feature'
+            }]
+          }
+        spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+            if (url.indexOf('map.json') > -1) {
+              var mapJson = administrativeInfoMap;
+              return Promise.resolve(new Response(JSON.stringify(mapJson)));
+            } else if (url.indexOf('650203') > -1) {
+              return Promise.resolve(new Response(JSON.stringify(csv_city_nogeo)));
+            }
+            return Promise.resolve();
+          });
+          var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server});
+          function successCallback(map, mapInfo, layers, baseLayer){
+            expect(map.getLayers().getArray()[1].getSource().getFeatures()[0].get('attributes')['Name']).toBe('哈尔滨');
+            expect(map.getLayers().getArray()[1].getSource().getFeatures()[0].getGeometry()).not.toBeNull();
+            done();
+          }
+          function errorCallback(error) {
+            console.log(error);
+          }
+      });
 });

@@ -16,6 +16,7 @@ import { StyleUtils } from '../core/StyleUtils';
 import { TileSuperMapRest, Tianditu, BaiduMap } from '../mapping';
 import { VectorTileSuperMapRest, Graphic as GraphicSource, MapboxStyles, OverlayGraphic } from '../overlay';
 import { DataFlowService } from '../services';
+import cloneDeep from 'lodash.clonedeep';
 
 import SampleDataInfo from './webmap/config/SampleDataInfo.json'; // eslint-disable-line import/extensions
 
@@ -2580,7 +2581,7 @@ export class WebMap extends Observable {
       }
       //todo 需提示忽略无效数据
       if (feature) {
-        let newFeature = window.cloneDeep(feature);
+        let newFeature = (window.cloneDeep || cloneDeep)(feature);
         newFeature.properties = {};
         row.forEach((item, idx) => {
           //空格问题，看见DV多处处理空格问题，TODO统一整理
@@ -2616,6 +2617,7 @@ export class WebMap extends Observable {
       if (allFeatures[i].geometry.type === 'Point') {
         // 标注图层 还没有属性值时候不加
         if (allFeatures[i].properties) {
+          
           allFeatures[i].properties.lon = coordinate[0];
           allFeatures[i].properties.lat = coordinate[1];
         }

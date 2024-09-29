@@ -577,7 +577,7 @@ var exampleConfig = {
             version: '11.3.0',
             content: [
                 {
-                    name: '白膜',
+                    name: '白模',
                     name_en: 'Fill Extrusion',
                     version: '11.3.0',
                     thumbnail: 'iPortalWebmap_mapstudio.png',

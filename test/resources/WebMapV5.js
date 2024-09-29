@@ -3789,3 +3789,109 @@ var tileLayerMap = {
   title: 'China',
   version: '2.2.1'
 };
+
+
+var administrativeInfoMap = {
+  "extent": {
+      "leftBottom": {
+          "x": -20037508.3427892,
+          "y": -20037508.3427892
+      },
+      "rightTop": {
+          "x": 20037508.3427892,
+          "y": 20037508.3427892
+      }
+  },
+  "maxScale": "1:144447.92746805",
+  "level": 4,
+  "center": {
+      "x": 11610094.073901333,
+      "y": 4566696.549133924
+  },
+  "baseLayer": {
+      "layerType": "TILE",
+      "name": "中国暗色地图",
+      "url": "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"
+  },
+  "layers": [
+      {
+          "layerType": "VECTOR",
+          "visible": true,
+          "name": "地区市政府",
+          "featureType": "POLYGON",
+          "style": {
+              "fillColor": "#826DBA",
+              "strokeWidth": 1,
+              "fillOpacity": 0.9,
+              "lineDash": "solid",
+              "strokeColor": "#ffffff",
+              "type": "POLYGON",
+              "strokeOpacity": 1
+          },
+          "projection": "EPSG:4326",
+          "enableFields": [
+              "UserID",
+              "BH",
+              "Telephone",
+              "Address",
+              "Code",
+              "Ntype",
+              "Ctype",
+              "Name_PY",
+              "Name",
+              "X",
+              "Y"
+          ],
+          "dataSource": {
+              "accessType": "DIRECT",
+              "administrativeInfo": {
+                  "divisionType": "City",
+                  "divisionField": "Name"
+              },
+              "type": "PORTAL_DATA",
+              "serverId": "650203"
+          }
+      }
+  ],
+  "description": "",
+  "projection": "EPSG:3857",
+  "minScale": "1:591658710.909131",
+  "title": "行政区划上图",
+  "version": "2.3.0",
+  "rootUrl": "http://172.16.14.44:8190/iportal/"
+}
+var csv_city_nogeo = {
+  "fileName": "地区市政府.csv",
+  "type": "CSV",
+  "lineNumber": 372,
+  "content": {
+    "colTitles": [
+      "UserID",
+      "BH",
+      "Telephone",
+      "Address",
+      "Code",
+      "Ntype",
+      "Ctype",
+      "Name_PY",
+      "Name",
+      "X",
+      "Y"
+    ],
+    "rows": [
+      [
+        "0",
+        "230100",
+        "",
+        "",
+        "230100",
+        "190104",
+        "地级行政区划名称",
+        "HaErBinShi",
+        "哈尔滨",
+        "126.534989",
+        "45.803791"
+      ]
+    ]
+  }
+}
