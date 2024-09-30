@@ -1,3 +1,47 @@
+# 11.2.1 #
+
+## Fixed
+
+### for Leaflet
+
+   - 修复 [L.supermap.ImageMapLayer](https://iclient.supermap.io/docs/leaflet/ImageMapLayer.html) 与 [L.supermap.TiledMapLayer](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 叠加时， 缩放、平移出现叠加顺序错误的问题
+
+   - 修复对数据集进行几何查询时排序无效的问题
+  
+   - 修复 [L.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/leaflet/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/leaflet/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+### for OpenLayers
+
+   - 修复显示矢量瓦片时，自定义请求头对 sprite.png 不生效的问题
+
+   - 修复对数据集进行几何查询时排序无效的问题
+
+   - 修复 [ol.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/openlayers/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/openlayers/GeometryAnalysis.html#computeGeodesicArea)  经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+   
+### for MapboxGL
+
+   - 修复对数据集进行几何查询时排序无效的问题
+  
+   - 修复 [mapboxgl.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/mapboxgl/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/mapboxgl/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+### for MaplibreGL
+
+   - 修复对数据集进行几何查询时排序无效的问题
+
+   - 修复使用 maplibregl-enhance 时，地图初始级别小于3级时 flyTo 定位错误的问题
+
+   - 修复 [maplibregl.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/maplibregl/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/maplibregl/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+
 # 11.2.0 #
 
 ## 重要
