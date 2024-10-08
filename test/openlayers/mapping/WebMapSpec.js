@@ -15,7 +15,8 @@ import {
 import {
     StyleUtils
 } from "../../../src/openlayers/core/StyleUtils";
-
+import { DataFlowService } from '../../../src/openlayers/services';
+import { Server } from 'mock-socket';
 import { Object as obj } from 'ol';
 import Overlay from 'ol/Overlay';
 import * as olControl from 'ol/control';
@@ -1631,5 +1632,105 @@ describe('openlayers_WebMap', () => {
           function errorCallback(error) {
             console.log(error);
           }
+    });
+    it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
+        let options = {
+          server: server
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('web/config/portal.json') > -1) {
+            return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+          }
+          if (url.indexOf('map.json') > -1) {
+            var mapJson = datavizWebMap_RestMap1;
+            return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'post').and.callFake((url) => {
+          if (url.indexOf('queryResults') > -1) {
+            return Promise.resolve(new Response(supermapRestData));
+          }
+          return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
+        function successCallback(map, mapInfo, layers, baseLayer){
+          expect(map.getLayers().getArray()[1].getSource().graphics[0].getGeometry().getCoordinates()[0]).toBeCloseTo(12961495.051608399,0.00001)
+          done();
+        }
+        function errorCallback(error) {
+          console.log(error);
+        }
       });
+      it('graticuleLayer', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('web/datas/1171594968/content.json') > -1) {
+            return Promise.resolve(new Response(layerData_CSV));
+          }
+          if (url.indexOf('map.json') > -1) {
+            return Promise.resolve(new Response(JSON.stringify(rangeLayer)));
+          }
+          return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
+        function successCallback(map, mapInfo, layers, baseLayer){
+          expect(map.getLayers().getArray()[1].get('layerID')).toBe('graticule_layer')
+          done();
+        }
+        function errorCallback(error) {
+          console.log(error);
+        }
+      });
+      it('add dataflow and update', (done) => {
+        var urlDataFlow = 'ws://localhost:8004/dataflow';
+        var urlDataFlow1 = 'ws://localhost:8004/dataflow/broadcast';
+        var urlDataFlow2 = 'ws://localhost:8004/dataflow/subscribe';
+        var mockServer = new Server(urlDataFlow);
+        var mockServer1 = new Server(urlDataFlow1);
+        var mockServer2 = new Server(urlDataFlow2);
+        mockServer.on('connection', (socket) => {
+          socket.on('close', () => {});
+        });
+        let socket2;
+        mockServer1.on('connection', (socket) => {
+          socket.on('message', (e) => {
+            socket2 && socket2.send(e);
+          });
+          socket.on('close', () => {});
+        });
+        mockServer2.on('connection', (socket) => {
+          socket2 = socket;
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('web/datas/676516522/content.json') > -1) {
+            return Promise.resolve(new Response(layerData_CSV));
+          } else if (url.indexOf('dataflow.json') > -1) {
+            dataflowLayerData.dataflow.urls[0].url = urlDataFlow;
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.dataflow)));
+          } else if (url.indexOf('broadcast') > -1) {
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.broadcast)));
+          } else if (url.indexOf('subscribe') > -1) {
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
+          } else if (url.indexOf('map.json') > -1) {
+            dataflowLayer.layers[0].url = urlDataFlow;
+            dataflowLayer.layers[1].url = urlDataFlow;
+            dataflowLayer.layers[2].url = urlDataFlow;
+            dataflowLayer.layers[3].url = urlDataFlow;
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayer)));
+          }
+          return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { successCallback, errorCallback, server: defaultServer });
+        function successCallback(map, mapInfo, layers, baseLayer) {
+          expect(map.getLayers().getArray().length).toBe(7);
+          mockServer.stop();
+          mockServer1.stop();
+          mockServer2.stop();
+          done();
+        }
+        function errorCallback(error) {
+          console.log(error);
+        }
+      });
+    
 });
