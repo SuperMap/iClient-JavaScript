@@ -1705,18 +1705,20 @@ describe('openlayers_WebMap', () => {
           if (url.indexOf('web/datas/676516522/content.json') > -1) {
             return Promise.resolve(new Response(layerData_CSV));
           } else if (url.indexOf('dataflow.json') > -1) {
-            dataflowLayerData.dataflow.urls[0].url = urlDataFlow;
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.dataflow)));
+            const dataflowLayerDataCopy = CommonUtil.cloneObject(dataflowLayerData);
+            dataflowLayerDataCopy.dataflow.urls[0].url = urlDataFlow;
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayerDataCopy.dataflow)));
           } else if (url.indexOf('broadcast') > -1) {
             return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.broadcast)));
           } else if (url.indexOf('subscribe') > -1) {
             return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
           } else if (url.indexOf('map.json') > -1) {
-            dataflowLayer.layers[0].url = urlDataFlow;
-            dataflowLayer.layers[1].url = urlDataFlow;
-            dataflowLayer.layers[2].url = urlDataFlow;
-            dataflowLayer.layers[3].url = urlDataFlow;
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayer)));
+            const dataflowLayerCopy = CommonUtil.cloneObject(dataflowLayer);
+            dataflowLayerCopy.layers[0].url = urlDataFlow;
+            dataflowLayerCopy.layers[1].url = urlDataFlow;
+            dataflowLayerCopy.layers[2].url = urlDataFlow;
+            dataflowLayerCopy.layers[3].url = urlDataFlow;
+            return Promise.resolve(new Response(JSON.stringify(dataflowLayerCopy)));
           }
           return Promise.resolve();
         });
