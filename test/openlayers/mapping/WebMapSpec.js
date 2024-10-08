@@ -1705,7 +1705,7 @@ describe('openlayers_WebMap', () => {
           if (url.indexOf('web/datas/676516522/content.json') > -1) {
             return Promise.resolve(new Response(layerData_CSV));
           } else if (url.indexOf('dataflow.json') > -1) {
-            const dataflowLayerDataCopy = CommonUtil.cloneObject(dataflowLayerData);
+            const dataflowLayerDataCopy = JSON.parse(JSON.stringify(dataflowLayerData));
             dataflowLayerDataCopy.dataflow.urls[0].url = urlDataFlow;
             return Promise.resolve(new Response(JSON.stringify(dataflowLayerDataCopy.dataflow)));
           } else if (url.indexOf('broadcast') > -1) {
@@ -1713,7 +1713,7 @@ describe('openlayers_WebMap', () => {
           } else if (url.indexOf('subscribe') > -1) {
             return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
           } else if (url.indexOf('map.json') > -1) {
-            const dataflowLayerCopy = CommonUtil.cloneObject(dataflowLayer);
+            const dataflowLayerCopy = JSON.parse(JSON.stringify(dataflowLayer));
             dataflowLayerCopy.layers[0].url = urlDataFlow;
             dataflowLayerCopy.layers[1].url = urlDataFlow;
             dataflowLayerCopy.layers[2].url = urlDataFlow;
