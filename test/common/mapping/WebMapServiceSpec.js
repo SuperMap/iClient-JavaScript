@@ -691,7 +691,7 @@ describe('WebMapServiceSpec.js', () => {
     };
     const service = new WebMapService(mapId, options);
     service.getWmsInfo(layerInfo).then(data => {
-      expect(data).toEqual({ version: '1.1.1' });
+      expect(data).toEqual({ version: '1.1.1', bounds: [ -180, -90.00000000003598, 180.00000000007202, 90.00000000000001 ] });
       done();
     });
   });
