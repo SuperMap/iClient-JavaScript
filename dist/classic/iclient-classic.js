@@ -3839,10 +3839,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -3899,7 +3899,7 @@ var Pixel = /*#__PURE__*/function () {
    *
    * @returns {string} 例如: "x=200.4,y=242.2"
    */
-  _createClass(Pixel, [{
+  return _createClass(Pixel, [{
     key: "toString",
     value: function toString() {
       return 'x=' + this.x + ',y=' + this.y;
@@ -4016,7 +4016,6 @@ var Pixel = /*#__PURE__*/function () {
       this.mode = null;
     }
   }]);
-  return Pixel;
 }();
 /**
  * @enum Mode
@@ -4037,11 +4036,11 @@ Pixel.Mode = {
 };
 ;// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
 function BaseTypes_typeof(o) { "@babel/helpers - typeof"; return BaseTypes_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, BaseTypes_typeof(o); }
-function BaseTypes_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, BaseTypes_toPropertyKey(descriptor.key), descriptor); } }
-function BaseTypes_createClass(Constructor, protoProps, staticProps) { if (protoProps) BaseTypes_defineProperties(Constructor.prototype, protoProps); if (staticProps) BaseTypes_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function BaseTypes_toPropertyKey(t) { var i = BaseTypes_toPrimitive(t, "string"); return "symbol" == BaseTypes_typeof(i) ? i : String(i); }
+function BaseTypes_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, BaseTypes_toPropertyKey(o.key), o); } }
+function BaseTypes_createClass(e, r, t) { return r && BaseTypes_defineProperties(e.prototype, r), t && BaseTypes_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function BaseTypes_toPropertyKey(t) { var i = BaseTypes_toPrimitive(t, "string"); return "symbol" == BaseTypes_typeof(i) ? i : i + ""; }
 function BaseTypes_toPrimitive(t, r) { if ("object" != BaseTypes_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != BaseTypes_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function BaseTypes_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function BaseTypes_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -4470,10 +4469,10 @@ var ArrayExt = {
 };
 ;// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
 function Geometry_typeof(o) { "@babel/helpers - typeof"; return Geometry_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Geometry_typeof(o); }
-function Geometry_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Geometry_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, Geometry_toPropertyKey(descriptor.key), descriptor); } }
-function Geometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) Geometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) Geometry_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function Geometry_toPropertyKey(t) { var i = Geometry_toPrimitive(t, "string"); return "symbol" == Geometry_typeof(i) ? i : String(i); }
+function Geometry_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function Geometry_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Geometry_toPropertyKey(o.key), o); } }
+function Geometry_createClass(e, r, t) { return r && Geometry_defineProperties(e.prototype, r), t && Geometry_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function Geometry_toPropertyKey(t) { var i = Geometry_toPrimitive(t, "string"); return "symbol" == Geometry_typeof(i) ? i : i + ""; }
 function Geometry_toPrimitive(t, r) { if ("object" != Geometry_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Geometry_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -4528,7 +4527,7 @@ var Geometry = /*#__PURE__*/function () {
    * @function Geometry.prototype.destroy
    * @description 解构 Geometry 类，释放资源。
    */
-  Geometry_createClass(Geometry, [{
+  return Geometry_createClass(Geometry, [{
     key: "destroy",
     value: function destroy() {
       this.id = null;
@@ -4656,7 +4655,6 @@ var Geometry = /*#__PURE__*/function () {
     // return string;
     // }
   }]);
-  return Geometry;
 }();
 // EXTERNAL MODULE: ./node_modules/urijs/src/URI.js
 var URI = __webpack_require__(9216);
@@ -6143,10 +6141,10 @@ var Event = {
 Event.observe(window, 'resize', Event.unloadCache, false);
 ;// CONCATENATED MODULE: ./src/common/commontypes/Events.js
 function Events_typeof(o) { "@babel/helpers - typeof"; return Events_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Events_typeof(o); }
-function Events_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Events_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, Events_toPropertyKey(descriptor.key), descriptor); } }
-function Events_createClass(Constructor, protoProps, staticProps) { if (protoProps) Events_defineProperties(Constructor.prototype, protoProps); if (staticProps) Events_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function Events_toPropertyKey(t) { var i = Events_toPrimitive(t, "string"); return "symbol" == Events_typeof(i) ? i : String(i); }
+function Events_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function Events_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Events_toPropertyKey(o.key), o); } }
+function Events_createClass(e, r, t) { return r && Events_defineProperties(e.prototype, r), t && Events_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function Events_toPropertyKey(t) { var i = Events_toPrimitive(t, "string"); return "symbol" == Events_typeof(i) ? i : i + ""; }
 function Events_toPrimitive(t, r) { if ("object" != Events_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Events_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -6263,7 +6261,7 @@ var Events = /*#__PURE__*/function () {
    * @function Events.prototype.destroy
    * @description 移除当前要素 element 上的所有事件监听和处理。
    */
-  Events_createClass(Events, [{
+  return Events_createClass(Events, [{
     key: "destroy",
     value: function destroy() {
       for (var e in this.extensions) {
@@ -6616,21 +6614,20 @@ var Events = /*#__PURE__*/function () {
       return new Pixel(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
     }
   }]);
-  return Events;
 }();
 Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function ElasticSearch_typeof(o) { "@babel/helpers - typeof"; return ElasticSearch_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, ElasticSearch_typeof(o); }
-function ElasticSearch_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function ElasticSearch_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, ElasticSearch_toPropertyKey(descriptor.key), descriptor); } }
-function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (protoProps) ElasticSearch_defineProperties(Constructor.prototype, protoProps); if (staticProps) ElasticSearch_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function ElasticSearch_toPropertyKey(t) { var i = ElasticSearch_toPrimitive(t, "string"); return "symbol" == ElasticSearch_typeof(i) ? i : String(i); }
+function ElasticSearch_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function ElasticSearch_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, ElasticSearch_toPropertyKey(o.key), o); } }
+function ElasticSearch_createClass(e, r, t) { return r && ElasticSearch_defineProperties(e.prototype, r), t && ElasticSearch_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function ElasticSearch_toPropertyKey(t) { var i = ElasticSearch_toPrimitive(t, "string"); return "symbol" == ElasticSearch_typeof(i) ? i : i + ""; }
 function ElasticSearch_toPrimitive(t, r) { if ("object" != ElasticSearch_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != ElasticSearch_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -6742,7 +6739,7 @@ var ElasticSearch = /*#__PURE__*/function () {
    * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
    * @param {Geometry} geoFence - 地理围栏。
    */
-  ElasticSearch_createClass(ElasticSearch, [{
+  return ElasticSearch_createClass(ElasticSearch, [{
     key: "setGeoFence",
     value: function setGeoFence(geoFence) {
       this.geoFence = geoFence;
@@ -7380,7 +7377,6 @@ var ElasticSearch = /*#__PURE__*/function () {
       return meterPerMapUnit;
     }
   }]);
-  return ElasticSearch;
 }();
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
 var polyfill = __webpack_require__(3819);
@@ -7949,10 +7945,10 @@ var FetchRequest = {
 };
 ;// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
 function Credential_typeof(o) { "@babel/helpers - typeof"; return Credential_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Credential_typeof(o); }
-function Credential_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Credential_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, Credential_toPropertyKey(descriptor.key), descriptor); } }
-function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function Credential_toPropertyKey(t) { var i = Credential_toPrimitive(t, "string"); return "symbol" == Credential_typeof(i) ? i : String(i); }
+function Credential_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function Credential_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Credential_toPropertyKey(o.key), o); } }
+function Credential_createClass(e, r, t) { return r && Credential_defineProperties(e.prototype, r), t && Credential_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function Credential_toPropertyKey(t) { var i = Credential_toPrimitive(t, "string"); return "symbol" == Credential_typeof(i) ? i : i + ""; }
 function Credential_toPrimitive(t, r) { if ("object" != Credential_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Credential_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -7999,7 +7995,7 @@ var Credential = /*#__PURE__*/function () {
    * var str = credential.getUrlParameters();
    * @returns {string} 安全信息组成的 url 片段。
    */
-  Credential_createClass(Credential, [{
+  return Credential_createClass(Credential, [{
     key: "getUrlParameters",
     value: function getUrlParameters() {
       //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
@@ -8036,7 +8032,6 @@ var Credential = /*#__PURE__*/function () {
       this.name = null;
     }
   }]);
-  return Credential;
 }();
 
 /**
@@ -8055,10 +8050,10 @@ var Credential = /*#__PURE__*/function () {
 Credential.CREDENTIAL = null;
 ;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 function SecurityManager_typeof(o) { "@babel/helpers - typeof"; return SecurityManager_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SecurityManager_typeof(o); }
-function SecurityManager_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SecurityManager_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SecurityManager_toPropertyKey(descriptor.key), descriptor); } }
-function SecurityManager_createClass(Constructor, protoProps, staticProps) { if (protoProps) SecurityManager_defineProperties(Constructor.prototype, protoProps); if (staticProps) SecurityManager_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SecurityManager_toPropertyKey(t) { var i = SecurityManager_toPrimitive(t, "string"); return "symbol" == SecurityManager_typeof(i) ? i : String(i); }
+function SecurityManager_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SecurityManager_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SecurityManager_toPropertyKey(o.key), o); } }
+function SecurityManager_createClass(e, r, t) { return r && SecurityManager_defineProperties(e.prototype, r), t && SecurityManager_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SecurityManager_toPropertyKey(t) { var i = SecurityManager_toPrimitive(t, "string"); return "symbol" == SecurityManager_typeof(i) ? i : i + ""; }
 function SecurityManager_toPrimitive(t, r) { if ("object" != SecurityManager_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SecurityManager_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -8082,7 +8077,7 @@ var SecurityManager = /*#__PURE__*/function () {
   function SecurityManager() {
     SecurityManager_classCallCheck(this, SecurityManager);
   }
-  SecurityManager_createClass(SecurityManager, null, [{
+  return SecurityManager_createClass(SecurityManager, null, [{
     key: "generateToken",
     value:
     /**
@@ -8463,7 +8458,6 @@ var SecurityManager = /*#__PURE__*/function () {
       return result[0];
     }
   }]);
-  return SecurityManager;
 }();
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
@@ -10937,10 +10931,10 @@ var DisplayModeChart = {
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
 function DatasourceConnectionInfo_typeof(o) { "@babel/helpers - typeof"; return DatasourceConnectionInfo_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, DatasourceConnectionInfo_typeof(o); }
-function DatasourceConnectionInfo_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function DatasourceConnectionInfo_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, DatasourceConnectionInfo_toPropertyKey(descriptor.key), descriptor); } }
-function DatasourceConnectionInfo_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceConnectionInfo_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceConnectionInfo_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function DatasourceConnectionInfo_toPropertyKey(t) { var i = DatasourceConnectionInfo_toPrimitive(t, "string"); return "symbol" == DatasourceConnectionInfo_typeof(i) ? i : String(i); }
+function DatasourceConnectionInfo_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function DatasourceConnectionInfo_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DatasourceConnectionInfo_toPropertyKey(o.key), o); } }
+function DatasourceConnectionInfo_createClass(e, r, t) { return r && DatasourceConnectionInfo_defineProperties(e.prototype, r), t && DatasourceConnectionInfo_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function DatasourceConnectionInfo_toPropertyKey(t) { var i = DatasourceConnectionInfo_toPrimitive(t, "string"); return "symbol" == DatasourceConnectionInfo_typeof(i) ? i : i + ""; }
 function DatasourceConnectionInfo_toPrimitive(t, r) { if ("object" != DatasourceConnectionInfo_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DatasourceConnectionInfo_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11061,7 +11055,7 @@ var DatasourceConnectionInfo = /*#__PURE__*/function () {
    * @function DatasourceConnectionInfo.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  DatasourceConnectionInfo_createClass(DatasourceConnectionInfo, [{
+  return DatasourceConnectionInfo_createClass(DatasourceConnectionInfo, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -11078,14 +11072,13 @@ var DatasourceConnectionInfo = /*#__PURE__*/function () {
       me.user = null;
     }
   }]);
-  return DatasourceConnectionInfo;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
 function OutputSetting_typeof(o) { "@babel/helpers - typeof"; return OutputSetting_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OutputSetting_typeof(o); }
-function OutputSetting_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function OutputSetting_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, OutputSetting_toPropertyKey(descriptor.key), descriptor); } }
-function OutputSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) OutputSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) OutputSetting_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function OutputSetting_toPropertyKey(t) { var i = OutputSetting_toPrimitive(t, "string"); return "symbol" == OutputSetting_typeof(i) ? i : String(i); }
+function OutputSetting_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function OutputSetting_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OutputSetting_toPropertyKey(o.key), o); } }
+function OutputSetting_createClass(e, r, t) { return r && OutputSetting_defineProperties(e.prototype, r), t && OutputSetting_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function OutputSetting_toPropertyKey(t) { var i = OutputSetting_toPrimitive(t, "string"); return "symbol" == OutputSetting_typeof(i) ? i : i + ""; }
 function OutputSetting_toPrimitive(t, r) { if ("object" != OutputSetting_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OutputSetting_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11140,7 +11133,7 @@ var OutputSetting = /*#__PURE__*/function () {
    * @function OutputSetting.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  OutputSetting_createClass(OutputSetting, [{
+  return OutputSetting_createClass(OutputSetting, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -11153,14 +11146,13 @@ var OutputSetting = /*#__PURE__*/function () {
       }
     }
   }]);
-  return OutputSetting;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
 function MappingParameters_typeof(o) { "@babel/helpers - typeof"; return MappingParameters_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, MappingParameters_typeof(o); }
-function MappingParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function MappingParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, MappingParameters_toPropertyKey(descriptor.key), descriptor); } }
-function MappingParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MappingParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MappingParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function MappingParameters_toPropertyKey(t) { var i = MappingParameters_toPrimitive(t, "string"); return "symbol" == MappingParameters_typeof(i) ? i : String(i); }
+function MappingParameters_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function MappingParameters_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, MappingParameters_toPropertyKey(o.key), o); } }
+function MappingParameters_createClass(e, r, t) { return r && MappingParameters_defineProperties(e.prototype, r), t && MappingParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function MappingParameters_toPropertyKey(t) { var i = MappingParameters_toPrimitive(t, "string"); return "symbol" == MappingParameters_typeof(i) ? i : i + ""; }
 function MappingParameters_toPrimitive(t, r) { if ("object" != MappingParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != MappingParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11221,7 +11213,7 @@ var MappingParameters = /*#__PURE__*/function () {
    * @function MappingParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  MappingParameters_createClass(MappingParameters, [{
+  return MappingParameters_createClass(MappingParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -11240,14 +11232,13 @@ var MappingParameters = /*#__PURE__*/function () {
       me.colorGradientType = null;
     }
   }]);
-  return MappingParameters;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
 function KernelDensityJobParameter_typeof(o) { "@babel/helpers - typeof"; return KernelDensityJobParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, KernelDensityJobParameter_typeof(o); }
-function KernelDensityJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function KernelDensityJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, KernelDensityJobParameter_toPropertyKey(descriptor.key), descriptor); } }
-function KernelDensityJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function KernelDensityJobParameter_toPropertyKey(t) { var i = KernelDensityJobParameter_toPrimitive(t, "string"); return "symbol" == KernelDensityJobParameter_typeof(i) ? i : String(i); }
+function KernelDensityJobParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function KernelDensityJobParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, KernelDensityJobParameter_toPropertyKey(o.key), o); } }
+function KernelDensityJobParameter_createClass(e, r, t) { return r && KernelDensityJobParameter_defineProperties(e.prototype, r), t && KernelDensityJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function KernelDensityJobParameter_toPropertyKey(t) { var i = KernelDensityJobParameter_toPrimitive(t, "string"); return "symbol" == KernelDensityJobParameter_typeof(i) ? i : i + ""; }
 function KernelDensityJobParameter_toPrimitive(t, r) { if ("object" != KernelDensityJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != KernelDensityJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11363,7 +11354,7 @@ var KernelDensityJobParameter = /*#__PURE__*/function () {
    * @function KernelDensityJobParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  KernelDensityJobParameter_createClass(KernelDensityJobParameter, [{
+  return KernelDensityJobParameter_createClass(KernelDensityJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -11420,14 +11411,13 @@ var KernelDensityJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return KernelDensityJobParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
 function SingleObjectQueryJobsParameter_typeof(o) { "@babel/helpers - typeof"; return SingleObjectQueryJobsParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SingleObjectQueryJobsParameter_typeof(o); }
-function SingleObjectQueryJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SingleObjectQueryJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SingleObjectQueryJobsParameter_toPropertyKey(descriptor.key), descriptor); } }
-function SingleObjectQueryJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SingleObjectQueryJobsParameter_toPropertyKey(t) { var i = SingleObjectQueryJobsParameter_toPrimitive(t, "string"); return "symbol" == SingleObjectQueryJobsParameter_typeof(i) ? i : String(i); }
+function SingleObjectQueryJobsParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SingleObjectQueryJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SingleObjectQueryJobsParameter_toPropertyKey(o.key), o); } }
+function SingleObjectQueryJobsParameter_createClass(e, r, t) { return r && SingleObjectQueryJobsParameter_defineProperties(e.prototype, r), t && SingleObjectQueryJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SingleObjectQueryJobsParameter_toPropertyKey(t) { var i = SingleObjectQueryJobsParameter_toPrimitive(t, "string"); return "symbol" == SingleObjectQueryJobsParameter_typeof(i) ? i : i + ""; }
 function SingleObjectQueryJobsParameter_toPrimitive(t, r) { if ("object" != SingleObjectQueryJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SingleObjectQueryJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11500,7 +11490,7 @@ var SingleObjectQueryJobsParameter = /*#__PURE__*/function () {
    * @function SingleObjectQueryJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SingleObjectQueryJobsParameter_createClass(SingleObjectQueryJobsParameter, [{
+  return SingleObjectQueryJobsParameter_createClass(SingleObjectQueryJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -11546,14 +11536,13 @@ var SingleObjectQueryJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SingleObjectQueryJobsParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
 function SummaryAttributesJobsParameter_typeof(o) { "@babel/helpers - typeof"; return SummaryAttributesJobsParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryAttributesJobsParameter_typeof(o); }
-function SummaryAttributesJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryAttributesJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryAttributesJobsParameter_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryAttributesJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryAttributesJobsParameter_toPropertyKey(t) { var i = SummaryAttributesJobsParameter_toPrimitive(t, "string"); return "symbol" == SummaryAttributesJobsParameter_typeof(i) ? i : String(i); }
+function SummaryAttributesJobsParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryAttributesJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryAttributesJobsParameter_toPropertyKey(o.key), o); } }
+function SummaryAttributesJobsParameter_createClass(e, r, t) { return r && SummaryAttributesJobsParameter_defineProperties(e.prototype, r), t && SummaryAttributesJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryAttributesJobsParameter_toPropertyKey(t) { var i = SummaryAttributesJobsParameter_toPrimitive(t, "string"); return "symbol" == SummaryAttributesJobsParameter_typeof(i) ? i : i + ""; }
 function SummaryAttributesJobsParameter_toPrimitive(t, r) { if ("object" != SummaryAttributesJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryAttributesJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11624,7 +11613,7 @@ var SummaryAttributesJobsParameter = /*#__PURE__*/function () {
    * @function SummaryAttributesJobsParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  SummaryAttributesJobsParameter_createClass(SummaryAttributesJobsParameter, [{
+  return SummaryAttributesJobsParameter_createClass(SummaryAttributesJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -11670,14 +11659,13 @@ var SummaryAttributesJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryAttributesJobsParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
 function SummaryMeshJobParameter_typeof(o) { "@babel/helpers - typeof"; return SummaryMeshJobParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryMeshJobParameter_typeof(o); }
-function SummaryMeshJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryMeshJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryMeshJobParameter_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryMeshJobParameter_toPropertyKey(t) { var i = SummaryMeshJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryMeshJobParameter_typeof(i) ? i : String(i); }
+function SummaryMeshJobParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryMeshJobParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryMeshJobParameter_toPropertyKey(o.key), o); } }
+function SummaryMeshJobParameter_createClass(e, r, t) { return r && SummaryMeshJobParameter_defineProperties(e.prototype, r), t && SummaryMeshJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryMeshJobParameter_toPropertyKey(t) { var i = SummaryMeshJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryMeshJobParameter_typeof(i) ? i : i + ""; }
 function SummaryMeshJobParameter_toPrimitive(t, r) { if ("object" != SummaryMeshJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryMeshJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -11779,7 +11767,7 @@ var SummaryMeshJobParameter = /*#__PURE__*/function () {
    * @function SummaryMeshJobParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  SummaryMeshJobParameter_createClass(SummaryMeshJobParameter, [{
+  return SummaryMeshJobParameter_createClass(SummaryMeshJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -11848,14 +11836,13 @@ var SummaryMeshJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryMeshJobParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
 function SummaryRegionJobParameter_typeof(o) { "@babel/helpers - typeof"; return SummaryRegionJobParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryRegionJobParameter_typeof(o); }
-function SummaryRegionJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryRegionJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryRegionJobParameter_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryRegionJobParameter_toPropertyKey(t) { var i = SummaryRegionJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryRegionJobParameter_typeof(i) ? i : String(i); }
+function SummaryRegionJobParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryRegionJobParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryRegionJobParameter_toPropertyKey(o.key), o); } }
+function SummaryRegionJobParameter_createClass(e, r, t) { return r && SummaryRegionJobParameter_defineProperties(e.prototype, r), t && SummaryRegionJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryRegionJobParameter_toPropertyKey(t) { var i = SummaryRegionJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryRegionJobParameter_typeof(i) ? i : i + ""; }
 function SummaryRegionJobParameter_toPrimitive(t, r) { if ("object" != SummaryRegionJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryRegionJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12000,7 +11987,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
    * @function SummaryRegionJobParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SummaryRegionJobParameter_createClass(SummaryRegionJobParameter, [{
+  return SummaryRegionJobParameter_createClass(SummaryRegionJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -12070,14 +12057,13 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryRegionJobParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
 function OverlayGeoJobParameter_typeof(o) { "@babel/helpers - typeof"; return OverlayGeoJobParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OverlayGeoJobParameter_typeof(o); }
-function OverlayGeoJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function OverlayGeoJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, OverlayGeoJobParameter_toPropertyKey(descriptor.key), descriptor); } }
-function OverlayGeoJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function OverlayGeoJobParameter_toPropertyKey(t) { var i = OverlayGeoJobParameter_toPrimitive(t, "string"); return "symbol" == OverlayGeoJobParameter_typeof(i) ? i : String(i); }
+function OverlayGeoJobParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function OverlayGeoJobParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OverlayGeoJobParameter_toPropertyKey(o.key), o); } }
+function OverlayGeoJobParameter_createClass(e, r, t) { return r && OverlayGeoJobParameter_defineProperties(e.prototype, r), t && OverlayGeoJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function OverlayGeoJobParameter_toPropertyKey(t) { var i = OverlayGeoJobParameter_toPrimitive(t, "string"); return "symbol" == OverlayGeoJobParameter_typeof(i) ? i : i + ""; }
 function OverlayGeoJobParameter_toPrimitive(t, r) { if ("object" != OverlayGeoJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OverlayGeoJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12156,7 +12142,7 @@ var OverlayGeoJobParameter = /*#__PURE__*/function () {
    * @function OverlayGeoJobParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  OverlayGeoJobParameter_createClass(OverlayGeoJobParameter, [{
+  return OverlayGeoJobParameter_createClass(OverlayGeoJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -12203,14 +12189,13 @@ var OverlayGeoJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return OverlayGeoJobParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
 function BuffersAnalystJobsParameter_typeof(o) { "@babel/helpers - typeof"; return BuffersAnalystJobsParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, BuffersAnalystJobsParameter_typeof(o); }
-function BuffersAnalystJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function BuffersAnalystJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, BuffersAnalystJobsParameter_toPropertyKey(descriptor.key), descriptor); } }
-function BuffersAnalystJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function BuffersAnalystJobsParameter_toPropertyKey(t) { var i = BuffersAnalystJobsParameter_toPrimitive(t, "string"); return "symbol" == BuffersAnalystJobsParameter_typeof(i) ? i : String(i); }
+function BuffersAnalystJobsParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function BuffersAnalystJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, BuffersAnalystJobsParameter_toPropertyKey(o.key), o); } }
+function BuffersAnalystJobsParameter_createClass(e, r, t) { return r && BuffersAnalystJobsParameter_defineProperties(e.prototype, r), t && BuffersAnalystJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function BuffersAnalystJobsParameter_toPropertyKey(t) { var i = BuffersAnalystJobsParameter_toPrimitive(t, "string"); return "symbol" == BuffersAnalystJobsParameter_typeof(i) ? i : i + ""; }
 function BuffersAnalystJobsParameter_toPrimitive(t, r) { if ("object" != BuffersAnalystJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != BuffersAnalystJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12297,7 +12282,7 @@ var BuffersAnalystJobsParameter = /*#__PURE__*/function () {
    * @function BuffersAnalystJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  BuffersAnalystJobsParameter_createClass(BuffersAnalystJobsParameter, [{
+  return BuffersAnalystJobsParameter_createClass(BuffersAnalystJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -12349,14 +12334,13 @@ var BuffersAnalystJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return BuffersAnalystJobsParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
 function TopologyValidatorJobsParameter_typeof(o) { "@babel/helpers - typeof"; return TopologyValidatorJobsParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, TopologyValidatorJobsParameter_typeof(o); }
-function TopologyValidatorJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function TopologyValidatorJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, TopologyValidatorJobsParameter_toPropertyKey(descriptor.key), descriptor); } }
-function TopologyValidatorJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function TopologyValidatorJobsParameter_toPropertyKey(t) { var i = TopologyValidatorJobsParameter_toPrimitive(t, "string"); return "symbol" == TopologyValidatorJobsParameter_typeof(i) ? i : String(i); }
+function TopologyValidatorJobsParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function TopologyValidatorJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, TopologyValidatorJobsParameter_toPropertyKey(o.key), o); } }
+function TopologyValidatorJobsParameter_createClass(e, r, t) { return r && TopologyValidatorJobsParameter_defineProperties(e.prototype, r), t && TopologyValidatorJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function TopologyValidatorJobsParameter_toPropertyKey(t) { var i = TopologyValidatorJobsParameter_toPrimitive(t, "string"); return "symbol" == TopologyValidatorJobsParameter_typeof(i) ? i : i + ""; }
 function TopologyValidatorJobsParameter_toPrimitive(t, r) { if ("object" != TopologyValidatorJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != TopologyValidatorJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12429,7 +12413,7 @@ var TopologyValidatorJobsParameter = /*#__PURE__*/function () {
    * @function TopologyValidatorJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  TopologyValidatorJobsParameter_createClass(TopologyValidatorJobsParameter, [{
+  return TopologyValidatorJobsParameter_createClass(TopologyValidatorJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -12475,14 +12459,13 @@ var TopologyValidatorJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return TopologyValidatorJobsParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
 function GeoCodingParameter_typeof(o) { "@babel/helpers - typeof"; return GeoCodingParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, GeoCodingParameter_typeof(o); }
-function GeoCodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function GeoCodingParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, GeoCodingParameter_toPropertyKey(descriptor.key), descriptor); } }
-function GeoCodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoCodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoCodingParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function GeoCodingParameter_toPropertyKey(t) { var i = GeoCodingParameter_toPrimitive(t, "string"); return "symbol" == GeoCodingParameter_typeof(i) ? i : String(i); }
+function GeoCodingParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function GeoCodingParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, GeoCodingParameter_toPropertyKey(o.key), o); } }
+function GeoCodingParameter_createClass(e, r, t) { return r && GeoCodingParameter_defineProperties(e.prototype, r), t && GeoCodingParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function GeoCodingParameter_toPropertyKey(t) { var i = GeoCodingParameter_toPrimitive(t, "string"); return "symbol" == GeoCodingParameter_typeof(i) ? i : i + ""; }
 function GeoCodingParameter_toPrimitive(t, r) { if ("object" != GeoCodingParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != GeoCodingParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12552,7 +12535,7 @@ var GeoCodingParameter = /*#__PURE__*/function () {
    * @function GeoCodingParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  GeoCodingParameter_createClass(GeoCodingParameter, [{
+  return GeoCodingParameter_createClass(GeoCodingParameter, [{
     key: "destroy",
     value: function destroy() {
       this.address = null;
@@ -12563,14 +12546,13 @@ var GeoCodingParameter = /*#__PURE__*/function () {
       this.maxReturn = null;
     }
   }]);
-  return GeoCodingParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
 function GeoDecodingParameter_typeof(o) { "@babel/helpers - typeof"; return GeoDecodingParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, GeoDecodingParameter_typeof(o); }
-function GeoDecodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function GeoDecodingParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, GeoDecodingParameter_toPropertyKey(descriptor.key), descriptor); } }
-function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoDecodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoDecodingParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function GeoDecodingParameter_toPropertyKey(t) { var i = GeoDecodingParameter_toPrimitive(t, "string"); return "symbol" == GeoDecodingParameter_typeof(i) ? i : String(i); }
+function GeoDecodingParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function GeoDecodingParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, GeoDecodingParameter_toPropertyKey(o.key), o); } }
+function GeoDecodingParameter_createClass(e, r, t) { return r && GeoDecodingParameter_defineProperties(e.prototype, r), t && GeoDecodingParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function GeoDecodingParameter_toPropertyKey(t) { var i = GeoDecodingParameter_toPrimitive(t, "string"); return "symbol" == GeoDecodingParameter_typeof(i) ? i : i + ""; }
 function GeoDecodingParameter_toPrimitive(t, r) { if ("object" != GeoDecodingParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != GeoDecodingParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12653,7 +12635,7 @@ var GeoDecodingParameter = /*#__PURE__*/function () {
    * @function GeoDecodingParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  GeoDecodingParameter_createClass(GeoDecodingParameter, [{
+  return GeoDecodingParameter_createClass(GeoDecodingParameter, [{
     key: "destroy",
     value: function destroy() {
       this.x = null;
@@ -12666,14 +12648,13 @@ var GeoDecodingParameter = /*#__PURE__*/function () {
       this.geoDecodingRadius = null;
     }
   }]);
-  return GeoDecodingParameter;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
 function VectorClipJobsParameter_typeof(o) { "@babel/helpers - typeof"; return VectorClipJobsParameter_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, VectorClipJobsParameter_typeof(o); }
-function VectorClipJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function VectorClipJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, VectorClipJobsParameter_toPropertyKey(descriptor.key), descriptor); } }
-function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function VectorClipJobsParameter_toPropertyKey(t) { var i = VectorClipJobsParameter_toPrimitive(t, "string"); return "symbol" == VectorClipJobsParameter_typeof(i) ? i : String(i); }
+function VectorClipJobsParameter_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function VectorClipJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, VectorClipJobsParameter_toPropertyKey(o.key), o); } }
+function VectorClipJobsParameter_createClass(e, r, t) { return r && VectorClipJobsParameter_defineProperties(e.prototype, r), t && VectorClipJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function VectorClipJobsParameter_toPropertyKey(t) { var i = VectorClipJobsParameter_toPrimitive(t, "string"); return "symbol" == VectorClipJobsParameter_typeof(i) ? i : i + ""; }
 function VectorClipJobsParameter_toPrimitive(t, r) { if ("object" != VectorClipJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != VectorClipJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -12746,7 +12727,7 @@ var VectorClipJobsParameter = /*#__PURE__*/function () {
    * @function VectorClipJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  VectorClipJobsParameter_createClass(VectorClipJobsParameter, [{
+  return VectorClipJobsParameter_createClass(VectorClipJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -12792,7 +12773,6 @@ var VectorClipJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return VectorClipJobsParameter;
 }();
 ;// CONCATENATED MODULE: ./src/classic/SuperMap.js
 var SuperMap = window.SuperMap = window.SuperMap || {};
@@ -12836,13 +12816,46 @@ var getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
     // 每度表示多少米。
     meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
   } else if (mapUnit === Unit.KILOMETER) {
-    meterPerMapUnit = 1.0e-3;
+    meterPerMapUnit = 1000;
   } else if (mapUnit === Unit.INCH) {
-    meterPerMapUnit = 1 / 2.5399999918e-2;
+    meterPerMapUnit = 2.5399999918e-2;
   } else if (mapUnit === Unit.FOOT) {
     meterPerMapUnit = 0.3048;
   }
   return meterPerMapUnit;
+};
+
+/**
+ * @function getSquareMeterPerMapUnit
+ * @description 单位换算，把平方米|平方千米|平方英寸|平方英尺换算成平方米。
+ * @category BaseTypes Util
+ * @param {string} mapUnit 需要换算的地图面积单位。
+ * @returns {number} 返回地图的面积单位。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getSquareMeterPerMapUnit(mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getMeterPerMapUnit } from '{npm}';
+ *
+ * const result = getMeterPerMapUnit(mapUnit);
+ * ```
+ */
+
+var AREA_MAP = {
+  SquareFoot: 10.763910417,
+  SquareKiloMeter: 0.000001,
+  SquareMeter: 1,
+  SquareMile: 3.86e-7,
+  SquareYard: 1.195990046
+};
+var getSquareMeterPerMapUnit = function getSquareMeterPerMapUnit(mapUnit) {
+  return AREA_MAP[mapUnit];
 };
 
 /**
@@ -13094,20 +13107,21 @@ function getIntersection(extent1, extent2) {
 }
 ;// CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
 function MapVRenderer_typeof(o) { "@babel/helpers - typeof"; return MapVRenderer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, MapVRenderer_typeof(o); }
-function MapVRenderer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function MapVRenderer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, MapVRenderer_toPropertyKey(descriptor.key), descriptor); } }
-function MapVRenderer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVRenderer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVRenderer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function MapVRenderer_toPropertyKey(t) { var i = MapVRenderer_toPrimitive(t, "string"); return "symbol" == MapVRenderer_typeof(i) ? i : String(i); }
+function MapVRenderer_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function MapVRenderer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, MapVRenderer_toPropertyKey(o.key), o); } }
+function MapVRenderer_createClass(e, r, t) { return r && MapVRenderer_defineProperties(e.prototype, r), t && MapVRenderer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function MapVRenderer_toPropertyKey(t) { var i = MapVRenderer_toPrimitive(t, "string"); return "symbol" == MapVRenderer_typeof(i) ? i : i + ""; }
 function MapVRenderer_toPrimitive(t, r) { if ("object" != MapVRenderer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != MapVRenderer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(self, call) { if (call && (MapVRenderer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == MapVRenderer_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _superPropGet(t, e, o, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
+function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -13127,21 +13141,20 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Objec
  */
 var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer ? external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer.__proto__ : Function;
 var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
-  _inherits(MapVRenderer, _MapVBaseLayer);
   function MapVRenderer(map, layer, dataSet, options) {
     var _this;
     MapVRenderer_classCallCheck(this, MapVRenderer);
     _this = _callSuper(this, MapVRenderer, [map, dataSet, options]);
     if (!MapVBaseLayer) {
-      return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
+      return _possibleConstructorReturn(_this, _this);
     }
-    var self = _assertThisInitialized(_this);
+    var self = _this;
     options = options || {};
     self.init(options);
     self.argCheck(options);
     _this.canvasLayer = layer;
-    _this.clickEvent = _this.clickEvent.bind(_assertThisInitialized(_this));
-    _this.mousemoveEvent = _this.mousemoveEvent.bind(_assertThisInitialized(_this));
+    _this.clickEvent = _this.clickEvent.bind(_this);
+    _this.mousemoveEvent = _this.mousemoveEvent.bind(_this);
     _this.bindEvent();
     return _this;
   }
@@ -13151,15 +13164,16 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
    * @description 点击事件。
    * @param {Object} e -  触发对象。
    */
-  MapVRenderer_createClass(MapVRenderer, [{
+  _inherits(MapVRenderer, _MapVBaseLayer);
+  return MapVRenderer_createClass(MapVRenderer, [{
     key: "clickEvent",
     value: function clickEvent(e) {
       var pixel = e.xy;
       var devicePixelRatio = this.devicePixelRatio || 1;
-      _get(_getPrototypeOf(MapVRenderer.prototype), "clickEvent", this).call(this, {
+      _superPropGet(MapVRenderer, "clickEvent", this, 3)([{
         x: pixel.x / devicePixelRatio,
         y: pixel.y / devicePixelRatio
-      }, e);
+      }, e]);
     }
 
     /**
@@ -13171,7 +13185,7 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
     key: "mousemoveEvent",
     value: function mousemoveEvent(e) {
       var pixel = e.xy;
-      _get(_getPrototypeOf(MapVRenderer.prototype), "mousemoveEvent", this).call(this, pixel, e);
+      _superPropGet(MapVRenderer, "mousemoveEvent", this, 3)([pixel, e]);
     }
 
     /**
@@ -13492,24 +13506,24 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
       this.canvasLayer.redraw();
     }
   }]);
-  return MapVRenderer;
 }(MapVBaseLayer);
 ;// CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
 function MapVLayer_typeof(o) { "@babel/helpers - typeof"; return MapVLayer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, MapVLayer_typeof(o); }
-function MapVLayer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function MapVLayer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, MapVLayer_toPropertyKey(descriptor.key), descriptor); } }
-function MapVLayer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVLayer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVLayer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function MapVLayer_toPropertyKey(t) { var i = MapVLayer_toPrimitive(t, "string"); return "symbol" == MapVLayer_typeof(i) ? i : String(i); }
+function MapVLayer_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function MapVLayer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, MapVLayer_toPropertyKey(o.key), o); } }
+function MapVLayer_createClass(e, r, t) { return r && MapVLayer_defineProperties(e.prototype, r), t && MapVLayer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function MapVLayer_toPropertyKey(t) { var i = MapVLayer_toPrimitive(t, "string"); return "symbol" == MapVLayer_typeof(i) ? i : i + ""; }
 function MapVLayer_toPrimitive(t, r) { if ("object" != MapVLayer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != MapVLayer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function MapVLayer_callSuper(t, o, e) { return o = MapVLayer_getPrototypeOf(o), MapVLayer_possibleConstructorReturn(t, MapVLayer_isNativeReflectConstruct() ? Reflect.construct(o, e || [], MapVLayer_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function MapVLayer_possibleConstructorReturn(self, call) { if (call && (MapVLayer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MapVLayer_assertThisInitialized(self); }
+function MapVLayer_possibleConstructorReturn(t, e) { if (e && ("object" == MapVLayer_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return MapVLayer_assertThisInitialized(t); }
+function MapVLayer_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function MapVLayer_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (MapVLayer_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function MapVLayer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function MapVLayer_get() { if (typeof Reflect !== "undefined" && Reflect.get) { MapVLayer_get = Reflect.get.bind(); } else { MapVLayer_get = function _get(target, property, receiver) { var base = MapVLayer_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return MapVLayer_get.apply(this, arguments); }
-function MapVLayer_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = MapVLayer_getPrototypeOf(object); if (object === null) break; } return object; }
-function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MapVLayer_getPrototypeOf(o); }
-function MapVLayer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MapVLayer_setPrototypeOf(subClass, superClass); }
-function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVLayer_setPrototypeOf(o, p); }
+function MapVLayer_superPropGet(t, e, o, r) { var p = MapVLayer_get(MapVLayer_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function MapVLayer_get() { return MapVLayer_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = MapVLayer_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, MapVLayer_get.apply(null, arguments); }
+function MapVLayer_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = MapVLayer_getPrototypeOf(t));); return t; }
+function MapVLayer_getPrototypeOf(t) { return MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, MapVLayer_getPrototypeOf(t); }
+function MapVLayer_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && MapVLayer_setPrototypeOf(t, e); }
+function MapVLayer_setPrototypeOf(t, e) { return MapVLayer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, MapVLayer_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -13531,7 +13545,6 @@ function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setP
  * @param {Object} options.options - MapV 绘图风格配置信息。
  */
 var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
-  MapVLayer_inherits(MapVLayer, _SuperMap$Layer);
   function MapVLayer(name, options) {
     var _this;
     MapVLayer_classCallCheck(this, MapVLayer);
@@ -13568,7 +13581,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
      */
     _this.canvasContext = null;
     if (options) {
-      SuperMap.Util.extend(MapVLayer_assertThisInitialized(_this), options);
+      SuperMap.Util.extend(_this, options);
     }
 
     //MapV图要求使用canvas绘制，判断是否支持
@@ -13599,7 +13612,8 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
    * @description 销毁此图层，销毁后此图层的所有属性为 null。
    * @override
    */
-  MapVLayer_createClass(MapVLayer, [{
+  MapVLayer_inherits(MapVLayer, _SuperMap$Layer);
+  return MapVLayer_createClass(MapVLayer, [{
     key: "destroy",
     value: function destroy() {
       if (this.renderer && this.renderer.animator) {
@@ -13614,7 +13628,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
       this.canvasContext = null;
       this.maxWidth = null;
       this.maxHeight = null;
-      MapVLayer_get(MapVLayer_getPrototypeOf(MapVLayer.prototype), "destroy", this).call(this);
+      MapVLayer_superPropGet(MapVLayer, "destroy", this, 3)([]);
     }
 
     /**
@@ -13692,7 +13706,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
   }, {
     key: "setMap",
     value: function setMap(map) {
-      MapVLayer_get(MapVLayer_getPrototypeOf(MapVLayer.prototype), "setMap", this).call(this, map);
+      MapVLayer_superPropGet(MapVLayer, "setMap", this, 3)([map]);
       this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
       this.renderer.devicePixelRatio = this.devicePixelRatio;
       if (!this.supported) {
@@ -13713,7 +13727,7 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
   }, {
     key: "moveTo",
     value: function moveTo(bounds, zoomChanged, dragging) {
-      MapVLayer_get(MapVLayer_getPrototypeOf(MapVLayer.prototype), "moveTo", this).call(this, bounds, zoomChanged, dragging);
+      MapVLayer_superPropGet(MapVLayer, "moveTo", this, 3)([bounds, zoomChanged, dragging]);
       if (!this.supported) {
         return;
       }
@@ -13766,7 +13780,6 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
       return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
   }]);
-  return MapVLayer;
 }(SuperMap.Layer);
 SuperMap.Layer.MapVLayer = MapVLayer;
 ;// CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
@@ -13782,10 +13795,10 @@ SuperMap.Layer.MapVLayer = MapVLayer;
 
 ;// CONCATENATED MODULE: ./src/common/format/Format.js
 function Format_typeof(o) { "@babel/helpers - typeof"; return Format_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Format_typeof(o); }
-function Format_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Format_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, Format_toPropertyKey(descriptor.key), descriptor); } }
-function Format_createClass(Constructor, protoProps, staticProps) { if (protoProps) Format_defineProperties(Constructor.prototype, protoProps); if (staticProps) Format_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function Format_toPropertyKey(t) { var i = Format_toPrimitive(t, "string"); return "symbol" == Format_typeof(i) ? i : String(i); }
+function Format_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function Format_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Format_toPropertyKey(o.key), o); } }
+function Format_createClass(e, r, t) { return r && Format_defineProperties(e.prototype, r), t && Format_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function Format_toPropertyKey(t) { var i = Format_toPrimitive(t, "string"); return "symbol" == Format_typeof(i) ? i : i + ""; }
 function Format_toPrimitive(t, r) { if ("object" != Format_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Format_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -13825,7 +13838,7 @@ var Format = /*#__PURE__*/function () {
    * @function Format.prototype.destroy
    * @description 销毁该格式类，释放相关资源。
    */
-  Format_createClass(Format, [{
+  return Format_createClass(Format, [{
     key: "destroy",
     value: function destroy() {
       //用来销毁该格式类，释放相关资源
@@ -13854,22 +13867,21 @@ var Format = /*#__PURE__*/function () {
       //用来写字符串
     }
   }]);
-  return Format;
 }();
 ;// CONCATENATED MODULE: ./src/common/format/JSON.js
 function JSON_typeof(o) { "@babel/helpers - typeof"; return JSON_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, JSON_typeof(o); }
-function JSON_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function JSON_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, JSON_toPropertyKey(descriptor.key), descriptor); } }
-function JSON_createClass(Constructor, protoProps, staticProps) { if (protoProps) JSON_defineProperties(Constructor.prototype, protoProps); if (staticProps) JSON_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function JSON_toPropertyKey(t) { var i = JSON_toPrimitive(t, "string"); return "symbol" == JSON_typeof(i) ? i : String(i); }
+function JSON_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function JSON_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, JSON_toPropertyKey(o.key), o); } }
+function JSON_createClass(e, r, t) { return r && JSON_defineProperties(e.prototype, r), t && JSON_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function JSON_toPropertyKey(t) { var i = JSON_toPrimitive(t, "string"); return "symbol" == JSON_typeof(i) ? i : i + ""; }
 function JSON_toPrimitive(t, r) { if ("object" != JSON_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != JSON_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function JSON_callSuper(t, o, e) { return o = JSON_getPrototypeOf(o), JSON_possibleConstructorReturn(t, JSON_isNativeReflectConstruct() ? Reflect.construct(o, e || [], JSON_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function JSON_possibleConstructorReturn(self, call) { if (call && (JSON_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return JSON_assertThisInitialized(self); }
-function JSON_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function JSON_possibleConstructorReturn(t, e) { if (e && ("object" == JSON_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return JSON_assertThisInitialized(t); }
+function JSON_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function JSON_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (JSON_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function JSON_getPrototypeOf(o) { JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return JSON_getPrototypeOf(o); }
-function JSON_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) JSON_setPrototypeOf(subClass, superClass); }
-function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSON_setPrototypeOf(o, p); }
+function JSON_getPrototypeOf(t) { return JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, JSON_getPrototypeOf(t); }
+function JSON_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && JSON_setPrototypeOf(t, e); }
+function JSON_setPrototypeOf(t, e) { return JSON_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, JSON_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -13892,7 +13904,6 @@ function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf
  * @usage
  */
 var JSONFormat = /*#__PURE__*/function (_Format) {
-  JSON_inherits(JSONFormat, _Format);
   function JSONFormat(options) {
     var _this;
     JSON_classCallCheck(this, JSONFormat);
@@ -14078,7 +14089,8 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
    * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
    * @returns {(Object|string|Array|number|boolean)} 对象，数组，字符串或数字。
    */
-  JSON_createClass(JSONFormat, [{
+  JSON_inherits(JSONFormat, _Format);
+  return JSON_createClass(JSONFormat, [{
     key: "read",
     value: function read(json, filter) {
       var object;
@@ -14164,17 +14176,16 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
       return this.pretty ? this.space : '';
     }
   }]);
-  return JSONFormat;
 }(Format);
 ;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = CommonServiceBase_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(e, r, t) { return (r = CommonServiceBase_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function CommonServiceBase_typeof(o) { "@babel/helpers - typeof"; return CommonServiceBase_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, CommonServiceBase_typeof(o); }
-function CommonServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function CommonServiceBase_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, CommonServiceBase_toPropertyKey(descriptor.key), descriptor); } }
-function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) CommonServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) CommonServiceBase_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function CommonServiceBase_toPropertyKey(t) { var i = CommonServiceBase_toPrimitive(t, "string"); return "symbol" == CommonServiceBase_typeof(i) ? i : String(i); }
+function CommonServiceBase_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function CommonServiceBase_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, CommonServiceBase_toPropertyKey(o.key), o); } }
+function CommonServiceBase_createClass(e, r, t) { return r && CommonServiceBase_defineProperties(e.prototype, r), t && CommonServiceBase_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function CommonServiceBase_toPropertyKey(t) { var i = CommonServiceBase_toPrimitive(t, "string"); return "symbol" == CommonServiceBase_typeof(i) ? i : i + ""; }
 function CommonServiceBase_toPrimitive(t, r) { if ("object" != CommonServiceBase_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != CommonServiceBase_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -14250,7 +14261,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
    * @function CommonServiceBase.prototype.destroy
    * @description 释放资源，将引用的资源属性置空。
    */
-  CommonServiceBase_createClass(CommonServiceBase, [{
+  return CommonServiceBase_createClass(CommonServiceBase, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -14564,7 +14575,6 @@ var CommonServiceBase = /*#__PURE__*/function () {
       });
     }
   }]);
-  return CommonServiceBase;
 }();
 
 /**
@@ -14584,20 +14594,21 @@ var CommonServiceBase = /*#__PURE__*/function () {
  */
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
 function AddressMatchService_typeof(o) { "@babel/helpers - typeof"; return AddressMatchService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, AddressMatchService_typeof(o); }
-function AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function AddressMatchService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, AddressMatchService_toPropertyKey(descriptor.key), descriptor); } }
-function AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) AddressMatchService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function AddressMatchService_toPropertyKey(t) { var i = AddressMatchService_toPrimitive(t, "string"); return "symbol" == AddressMatchService_typeof(i) ? i : String(i); }
+function AddressMatchService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function AddressMatchService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, AddressMatchService_toPropertyKey(o.key), o); } }
+function AddressMatchService_createClass(e, r, t) { return r && AddressMatchService_defineProperties(e.prototype, r), t && AddressMatchService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function AddressMatchService_toPropertyKey(t) { var i = AddressMatchService_toPrimitive(t, "string"); return "symbol" == AddressMatchService_typeof(i) ? i : i + ""; }
 function AddressMatchService_toPrimitive(t, r) { if ("object" != AddressMatchService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != AddressMatchService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function AddressMatchService_callSuper(t, o, e) { return o = AddressMatchService_getPrototypeOf(o), AddressMatchService_possibleConstructorReturn(t, AddressMatchService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], AddressMatchService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function AddressMatchService_possibleConstructorReturn(self, call) { if (call && (AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return AddressMatchService_assertThisInitialized(self); }
-function AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function AddressMatchService_possibleConstructorReturn(t, e) { if (e && ("object" == AddressMatchService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return AddressMatchService_assertThisInitialized(t); }
+function AddressMatchService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function AddressMatchService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (AddressMatchService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function AddressMatchService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { AddressMatchService_get = Reflect.get.bind(); } else { AddressMatchService_get = function _get(target, property, receiver) { var base = AddressMatchService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return AddressMatchService_get.apply(this, arguments); }
-function AddressMatchService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = AddressMatchService_getPrototypeOf(object); if (object === null) break; } return object; }
-function AddressMatchService_getPrototypeOf(o) { AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return AddressMatchService_getPrototypeOf(o); }
-function AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) AddressMatchService_setPrototypeOf(subClass, superClass); }
-function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AddressMatchService_setPrototypeOf(o, p); }
+function AddressMatchService_superPropGet(t, e, o, r) { var p = AddressMatchService_get(AddressMatchService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function AddressMatchService_get() { return AddressMatchService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = AddressMatchService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, AddressMatchService_get.apply(null, arguments); }
+function AddressMatchService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = AddressMatchService_getPrototypeOf(t));); return t; }
+function AddressMatchService_getPrototypeOf(t) { return AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, AddressMatchService_getPrototypeOf(t); }
+function AddressMatchService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && AddressMatchService_setPrototypeOf(t, e); }
+function AddressMatchService_setPrototypeOf(t, e) { return AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, AddressMatchService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14617,7 +14628,6 @@ function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setProto
  * @usage
  */
 var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
-  AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
   function AddressMatchService(url, options) {
     var _this;
     AddressMatchService_classCallCheck(this, AddressMatchService);
@@ -14631,10 +14641,11 @@ var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServ
    * @function AddressMatchService.prototype.destroy
    * @override
    */
-  AddressMatchService_createClass(AddressMatchService, [{
+  AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+  return AddressMatchService_createClass(AddressMatchService, [{
     key: "destroy",
     value: function destroy() {
-      AddressMatchService_get(AddressMatchService_getPrototypeOf(AddressMatchService.prototype), "destroy", this).call(this);
+      AddressMatchService_superPropGet(AddressMatchService, "destroy", this, 3)([]);
     }
 
     /**
@@ -14708,22 +14719,21 @@ var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServ
       };
     }
   }]);
-  return AddressMatchService;
 }(CommonServiceBase);
 ;// CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
 function services_AddressMatchService_typeof(o) { "@babel/helpers - typeof"; return services_AddressMatchService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, services_AddressMatchService_typeof(o); }
-function services_AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function services_AddressMatchService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, services_AddressMatchService_toPropertyKey(descriptor.key), descriptor); } }
-function services_AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_AddressMatchService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_AddressMatchService_toPropertyKey(t) { var i = services_AddressMatchService_toPrimitive(t, "string"); return "symbol" == services_AddressMatchService_typeof(i) ? i : String(i); }
+function services_AddressMatchService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function services_AddressMatchService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, services_AddressMatchService_toPropertyKey(o.key), o); } }
+function services_AddressMatchService_createClass(e, r, t) { return r && services_AddressMatchService_defineProperties(e.prototype, r), t && services_AddressMatchService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function services_AddressMatchService_toPropertyKey(t) { var i = services_AddressMatchService_toPrimitive(t, "string"); return "symbol" == services_AddressMatchService_typeof(i) ? i : i + ""; }
 function services_AddressMatchService_toPrimitive(t, r) { if ("object" != services_AddressMatchService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != services_AddressMatchService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function services_AddressMatchService_callSuper(t, o, e) { return o = services_AddressMatchService_getPrototypeOf(o), services_AddressMatchService_possibleConstructorReturn(t, services_AddressMatchService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], services_AddressMatchService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function services_AddressMatchService_possibleConstructorReturn(self, call) { if (call && (services_AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_AddressMatchService_assertThisInitialized(self); }
-function services_AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function services_AddressMatchService_possibleConstructorReturn(t, e) { if (e && ("object" == services_AddressMatchService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return services_AddressMatchService_assertThisInitialized(t); }
+function services_AddressMatchService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function services_AddressMatchService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (services_AddressMatchService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_AddressMatchService_getPrototypeOf(o); }
-function services_AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_AddressMatchService_setPrototypeOf(subClass, superClass); }
-function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_AddressMatchService_setPrototypeOf(o, p); }
+function services_AddressMatchService_getPrototypeOf(t) { return services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_AddressMatchService_getPrototypeOf(t); }
+function services_AddressMatchService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_AddressMatchService_setPrototypeOf(t, e); }
+function services_AddressMatchService_setPrototypeOf(t, e) { return services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_AddressMatchService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14743,7 +14753,6 @@ function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMat
  * @param {Object} [options.headers] - 请求头。
  */
 var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
   function AddressMatchService(url, options) {
     var _this;
     services_AddressMatchService_classCallCheck(this, AddressMatchService);
@@ -14759,7 +14768,8 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_AddressMatchService_createClass(AddressMatchService, [{
+  services_AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+  return services_AddressMatchService_createClass(AddressMatchService, [{
     key: "code",
     value: function code(params, callback) {
       var me = this;
@@ -14792,25 +14802,25 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
       return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
   }]);
-  return AddressMatchService;
 }(CommonServiceBase);
 SuperMap.REST.AddressMatchService = AddressMatchService;
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
 function DatasetService_typeof(o) { "@babel/helpers - typeof"; return DatasetService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, DatasetService_typeof(o); }
-function DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, DatasetService_toPropertyKey(descriptor.key), descriptor); } }
-function DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasetService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function DatasetService_toPropertyKey(t) { var i = DatasetService_toPrimitive(t, "string"); return "symbol" == DatasetService_typeof(i) ? i : String(i); }
+function DatasetService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function DatasetService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DatasetService_toPropertyKey(o.key), o); } }
+function DatasetService_createClass(e, r, t) { return r && DatasetService_defineProperties(e.prototype, r), t && DatasetService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function DatasetService_toPropertyKey(t) { var i = DatasetService_toPrimitive(t, "string"); return "symbol" == DatasetService_typeof(i) ? i : i + ""; }
 function DatasetService_toPrimitive(t, r) { if ("object" != DatasetService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DatasetService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function DatasetService_callSuper(t, o, e) { return o = DatasetService_getPrototypeOf(o), DatasetService_possibleConstructorReturn(t, DatasetService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], DatasetService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function DatasetService_possibleConstructorReturn(self, call) { if (call && (DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return DatasetService_assertThisInitialized(self); }
+function DatasetService_possibleConstructorReturn(t, e) { if (e && ("object" == DatasetService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return DatasetService_assertThisInitialized(t); }
+function DatasetService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function DatasetService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (DatasetService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function DatasetService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasetService_get = Reflect.get.bind(); } else { DatasetService_get = function _get(target, property, receiver) { var base = DatasetService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasetService_get.apply(this, arguments); }
-function DatasetService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasetService_getPrototypeOf(object); if (object === null) break; } return object; }
-function DatasetService_getPrototypeOf(o) { DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasetService_getPrototypeOf(o); }
-function DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasetService_setPrototypeOf(subClass, superClass); }
-function DatasetService_setPrototypeOf(o, p) { DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetService_setPrototypeOf(o, p); }
+function DatasetService_superPropGet(t, e, o, r) { var p = DatasetService_get(DatasetService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function DatasetService_get() { return DatasetService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = DatasetService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, DatasetService_get.apply(null, arguments); }
+function DatasetService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = DatasetService_getPrototypeOf(t));); return t; }
+function DatasetService_getPrototypeOf(t) { return DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, DatasetService_getPrototypeOf(t); }
+function DatasetService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && DatasetService_setPrototypeOf(t, e); }
+function DatasetService_setPrototypeOf(t, e) { return DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, DatasetService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -14831,7 +14841,6 @@ function DatasetService_setPrototypeOf(o, p) { DatasetService_setPrototypeOf = O
  * @usage
  */
 var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
-  DatasetService_inherits(DatasetService, _CommonServiceBase);
   function DatasetService(url, options) {
     var _this;
     DatasetService_classCallCheck(this, DatasetService);
@@ -14851,7 +14860,7 @@ var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
      */
     _this.dataset = null;
     if (options) {
-      Util_Util.extend(DatasetService_assertThisInitialized(_this), options);
+      Util_Util.extend(_this, options);
     }
     _this.CLASS_NAME = "SuperMap.DatasetService";
     return _this;
@@ -14861,10 +14870,11 @@ var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
    * @function DatasetService.prototype.destroy
    * @override
    */
-  DatasetService_createClass(DatasetService, [{
+  DatasetService_inherits(DatasetService, _CommonServiceBase);
+  return DatasetService_createClass(DatasetService, [{
     key: "destroy",
     value: function destroy() {
-      DatasetService_get(DatasetService_getPrototypeOf(DatasetService.prototype), "destroy", this).call(this);
+      DatasetService_superPropGet(DatasetService, "destroy", this, 3)([]);
       var me = this;
       me.datasource = null;
       me.dataset = null;
@@ -14939,14 +14949,13 @@ var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       return me.request(requestConfig);
     }
   }]);
-  return DatasetService;
 }(CommonServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
 function CreateDatasetParameters_typeof(o) { "@babel/helpers - typeof"; return CreateDatasetParameters_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, CreateDatasetParameters_typeof(o); }
-function CreateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function CreateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, CreateDatasetParameters_toPropertyKey(descriptor.key), descriptor); } }
-function CreateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) CreateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) CreateDatasetParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function CreateDatasetParameters_toPropertyKey(t) { var i = CreateDatasetParameters_toPrimitive(t, "string"); return "symbol" == CreateDatasetParameters_typeof(i) ? i : String(i); }
+function CreateDatasetParameters_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function CreateDatasetParameters_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, CreateDatasetParameters_toPropertyKey(o.key), o); } }
+function CreateDatasetParameters_createClass(e, r, t) { return r && CreateDatasetParameters_defineProperties(e.prototype, r), t && CreateDatasetParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function CreateDatasetParameters_toPropertyKey(t) { var i = CreateDatasetParameters_toPrimitive(t, "string"); return "symbol" == CreateDatasetParameters_typeof(i) ? i : i + ""; }
 function CreateDatasetParameters_toPrimitive(t, r) { if ("object" != CreateDatasetParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != CreateDatasetParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -14998,7 +15007,7 @@ var CreateDatasetParameters = /*#__PURE__*/function () {
    * @function CreateDatasetParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  CreateDatasetParameters_createClass(CreateDatasetParameters, [{
+  return CreateDatasetParameters_createClass(CreateDatasetParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -15007,14 +15016,13 @@ var CreateDatasetParameters = /*#__PURE__*/function () {
       me.datasetType = null;
     }
   }]);
-  return CreateDatasetParameters;
 }();
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
 function UpdateDatasetParameters_typeof(o) { "@babel/helpers - typeof"; return UpdateDatasetParameters_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, UpdateDatasetParameters_typeof(o); }
-function UpdateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function UpdateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, UpdateDatasetParameters_toPropertyKey(descriptor.key), descriptor); } }
-function UpdateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) UpdateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) UpdateDatasetParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function UpdateDatasetParameters_toPropertyKey(t) { var i = UpdateDatasetParameters_toPrimitive(t, "string"); return "symbol" == UpdateDatasetParameters_typeof(i) ? i : String(i); }
+function UpdateDatasetParameters_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function UpdateDatasetParameters_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, UpdateDatasetParameters_toPropertyKey(o.key), o); } }
+function UpdateDatasetParameters_createClass(e, r, t) { return r && UpdateDatasetParameters_defineProperties(e.prototype, r), t && UpdateDatasetParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function UpdateDatasetParameters_toPropertyKey(t) { var i = UpdateDatasetParameters_toPrimitive(t, "string"); return "symbol" == UpdateDatasetParameters_typeof(i) ? i : i + ""; }
 function UpdateDatasetParameters_toPrimitive(t, r) { if ("object" != UpdateDatasetParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != UpdateDatasetParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -15102,7 +15110,7 @@ var UpdateDatasetParameters = /*#__PURE__*/function () {
    * @function UpdateDatasetParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  UpdateDatasetParameters_createClass(UpdateDatasetParameters, [{
+  return UpdateDatasetParameters_createClass(UpdateDatasetParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -15115,22 +15123,21 @@ var UpdateDatasetParameters = /*#__PURE__*/function () {
       me.noValue = null;
     }
   }]);
-  return UpdateDatasetParameters;
 }();
 ;// CONCATENATED MODULE: ./src/classic/services/DatasetService.js
 function services_DatasetService_typeof(o) { "@babel/helpers - typeof"; return services_DatasetService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, services_DatasetService_typeof(o); }
-function services_DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function services_DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, services_DatasetService_toPropertyKey(descriptor.key), descriptor); } }
-function services_DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasetService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_DatasetService_toPropertyKey(t) { var i = services_DatasetService_toPrimitive(t, "string"); return "symbol" == services_DatasetService_typeof(i) ? i : String(i); }
+function services_DatasetService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function services_DatasetService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, services_DatasetService_toPropertyKey(o.key), o); } }
+function services_DatasetService_createClass(e, r, t) { return r && services_DatasetService_defineProperties(e.prototype, r), t && services_DatasetService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function services_DatasetService_toPropertyKey(t) { var i = services_DatasetService_toPrimitive(t, "string"); return "symbol" == services_DatasetService_typeof(i) ? i : i + ""; }
 function services_DatasetService_toPrimitive(t, r) { if ("object" != services_DatasetService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != services_DatasetService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function services_DatasetService_callSuper(t, o, e) { return o = services_DatasetService_getPrototypeOf(o), services_DatasetService_possibleConstructorReturn(t, services_DatasetService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], services_DatasetService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function services_DatasetService_possibleConstructorReturn(self, call) { if (call && (services_DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_DatasetService_assertThisInitialized(self); }
+function services_DatasetService_possibleConstructorReturn(t, e) { if (e && ("object" == services_DatasetService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return services_DatasetService_assertThisInitialized(t); }
+function services_DatasetService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function services_DatasetService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (services_DatasetService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function services_DatasetService_getPrototypeOf(o) { services_DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasetService_getPrototypeOf(o); }
-function services_DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function services_DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasetService_setPrototypeOf(subClass, superClass); }
-function services_DatasetService_setPrototypeOf(o, p) { services_DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasetService_setPrototypeOf(o, p); }
+function services_DatasetService_getPrototypeOf(t) { return services_DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_DatasetService_getPrototypeOf(t); }
+function services_DatasetService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_DatasetService_setPrototypeOf(t, e); }
+function services_DatasetService_setPrototypeOf(t, e) { return services_DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_DatasetService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15151,12 +15158,11 @@ function services_DatasetService_setPrototypeOf(o, p) { services_DatasetService_
  * @param {Object} [options.headers] - 请求头。
  */
 var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_DatasetService_inherits(DatasetService, _CommonServiceBase);
   function DatasetService(url, options) {
     var _this;
     services_DatasetService_classCallCheck(this, DatasetService);
     _this = services_DatasetService_callSuper(this, DatasetService, [url, options]);
-    var me = services_DatasetService_assertThisInitialized(_this);
+    var me = _this;
     _this._datasetService = new DatasetService_DatasetService(me.url, {
       proxy: me.proxy,
       withCredentials: me.withCredentials,
@@ -15178,7 +15184,8 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_DatasetService_createClass(DatasetService, [{
+  services_DatasetService_inherits(DatasetService, _CommonServiceBase);
+  return services_DatasetService_createClass(DatasetService, [{
     key: "getDatasets",
     value: function getDatasets(datasourceName, callback) {
       if (!datasourceName) {
@@ -15263,25 +15270,25 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
   }]);
-  return DatasetService;
 }(CommonServiceBase);
 SuperMap.REST.DatasetService = DatasetService;
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
 function DatasourceService_typeof(o) { "@babel/helpers - typeof"; return DatasourceService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, DatasourceService_typeof(o); }
-function DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, DatasourceService_toPropertyKey(descriptor.key), descriptor); } }
-function DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function DatasourceService_toPropertyKey(t) { var i = DatasourceService_toPrimitive(t, "string"); return "symbol" == DatasourceService_typeof(i) ? i : String(i); }
+function DatasourceService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function DatasourceService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DatasourceService_toPropertyKey(o.key), o); } }
+function DatasourceService_createClass(e, r, t) { return r && DatasourceService_defineProperties(e.prototype, r), t && DatasourceService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function DatasourceService_toPropertyKey(t) { var i = DatasourceService_toPrimitive(t, "string"); return "symbol" == DatasourceService_typeof(i) ? i : i + ""; }
 function DatasourceService_toPrimitive(t, r) { if ("object" != DatasourceService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DatasourceService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function DatasourceService_callSuper(t, o, e) { return o = DatasourceService_getPrototypeOf(o), DatasourceService_possibleConstructorReturn(t, DatasourceService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], DatasourceService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function DatasourceService_possibleConstructorReturn(self, call) { if (call && (DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return DatasourceService_assertThisInitialized(self); }
+function DatasourceService_possibleConstructorReturn(t, e) { if (e && ("object" == DatasourceService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return DatasourceService_assertThisInitialized(t); }
+function DatasourceService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function DatasourceService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (DatasourceService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function DatasourceService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasourceService_get = Reflect.get.bind(); } else { DatasourceService_get = function _get(target, property, receiver) { var base = DatasourceService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasourceService_get.apply(this, arguments); }
-function DatasourceService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasourceService_getPrototypeOf(object); if (object === null) break; } return object; }
-function DatasourceService_getPrototypeOf(o) { DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasourceService_getPrototypeOf(o); }
-function DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasourceService_setPrototypeOf(subClass, superClass); }
-function DatasourceService_setPrototypeOf(o, p) { DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasourceService_setPrototypeOf(o, p); }
+function DatasourceService_superPropGet(t, e, o, r) { var p = DatasourceService_get(DatasourceService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function DatasourceService_get() { return DatasourceService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = DatasourceService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, DatasourceService_get.apply(null, arguments); }
+function DatasourceService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = DatasourceService_getPrototypeOf(t));); return t; }
+function DatasourceService_getPrototypeOf(t) { return DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, DatasourceService_getPrototypeOf(t); }
+function DatasourceService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && DatasourceService_setPrototypeOf(t, e); }
+function DatasourceService_setPrototypeOf(t, e) { return DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, DatasourceService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15305,13 +15312,12 @@ function DatasourceService_setPrototypeOf(o, p) { DatasourceService_setPrototype
  */
 
 var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
-  DatasourceService_inherits(DatasourceService, _CommonServiceBase);
   function DatasourceService(url, options) {
     var _this;
     DatasourceService_classCallCheck(this, DatasourceService);
     _this = DatasourceService_callSuper(this, DatasourceService, [url, options]);
     if (options) {
-      Util_Util.extend(DatasourceService_assertThisInitialized(_this), options);
+      Util_Util.extend(_this, options);
     }
     _this.CLASS_NAME = "SuperMap.DatasourceService";
     return _this;
@@ -15321,10 +15327,11 @@ var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceB
    * @function DatasourceService.prototype.destroy
    * @override
    */
-  DatasourceService_createClass(DatasourceService, [{
+  DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+  return DatasourceService_createClass(DatasourceService, [{
     key: "destroy",
     value: function destroy() {
-      DatasourceService_get(DatasourceService_getPrototypeOf(DatasourceService.prototype), "destroy", this).call(this);
+      DatasourceService_superPropGet(DatasourceService, "destroy", this, 3)([]);
     }
 
     /**
@@ -15384,14 +15391,13 @@ var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceB
       return me.request(requestConfig);
     }
   }]);
-  return DatasourceService;
 }(CommonServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
 function SetDatasourceParameters_typeof(o) { "@babel/helpers - typeof"; return SetDatasourceParameters_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SetDatasourceParameters_typeof(o); }
-function SetDatasourceParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SetDatasourceParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SetDatasourceParameters_toPropertyKey(descriptor.key), descriptor); } }
-function SetDatasourceParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetDatasourceParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetDatasourceParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SetDatasourceParameters_toPropertyKey(t) { var i = SetDatasourceParameters_toPrimitive(t, "string"); return "symbol" == SetDatasourceParameters_typeof(i) ? i : String(i); }
+function SetDatasourceParameters_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SetDatasourceParameters_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SetDatasourceParameters_toPropertyKey(o.key), o); } }
+function SetDatasourceParameters_createClass(e, r, t) { return r && SetDatasourceParameters_defineProperties(e.prototype, r), t && SetDatasourceParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SetDatasourceParameters_toPropertyKey(t) { var i = SetDatasourceParameters_toPrimitive(t, "string"); return "symbol" == SetDatasourceParameters_typeof(i) ? i : i + ""; }
 function SetDatasourceParameters_toPrimitive(t, r) { if ("object" != SetDatasourceParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SetDatasourceParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -15450,7 +15456,7 @@ var SetDatasourceParameters = /*#__PURE__*/function () {
    * @function SetDatasourceParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SetDatasourceParameters_createClass(SetDatasourceParameters, [{
+  return SetDatasourceParameters_createClass(SetDatasourceParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -15460,22 +15466,21 @@ var SetDatasourceParameters = /*#__PURE__*/function () {
       me.distanceUnit = null;
     }
   }]);
-  return SetDatasourceParameters;
 }();
 ;// CONCATENATED MODULE: ./src/classic/services/DatasourceService.js
 function services_DatasourceService_typeof(o) { "@babel/helpers - typeof"; return services_DatasourceService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, services_DatasourceService_typeof(o); }
-function services_DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function services_DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, services_DatasourceService_toPropertyKey(descriptor.key), descriptor); } }
-function services_DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasourceService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_DatasourceService_toPropertyKey(t) { var i = services_DatasourceService_toPrimitive(t, "string"); return "symbol" == services_DatasourceService_typeof(i) ? i : String(i); }
+function services_DatasourceService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function services_DatasourceService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, services_DatasourceService_toPropertyKey(o.key), o); } }
+function services_DatasourceService_createClass(e, r, t) { return r && services_DatasourceService_defineProperties(e.prototype, r), t && services_DatasourceService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function services_DatasourceService_toPropertyKey(t) { var i = services_DatasourceService_toPrimitive(t, "string"); return "symbol" == services_DatasourceService_typeof(i) ? i : i + ""; }
 function services_DatasourceService_toPrimitive(t, r) { if ("object" != services_DatasourceService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != services_DatasourceService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function services_DatasourceService_callSuper(t, o, e) { return o = services_DatasourceService_getPrototypeOf(o), services_DatasourceService_possibleConstructorReturn(t, services_DatasourceService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], services_DatasourceService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function services_DatasourceService_possibleConstructorReturn(self, call) { if (call && (services_DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_DatasourceService_assertThisInitialized(self); }
+function services_DatasourceService_possibleConstructorReturn(t, e) { if (e && ("object" == services_DatasourceService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return services_DatasourceService_assertThisInitialized(t); }
+function services_DatasourceService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function services_DatasourceService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (services_DatasourceService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function services_DatasourceService_getPrototypeOf(o) { services_DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasourceService_getPrototypeOf(o); }
-function services_DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function services_DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasourceService_setPrototypeOf(subClass, superClass); }
-function services_DatasourceService_setPrototypeOf(o, p) { services_DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasourceService_setPrototypeOf(o, p); }
+function services_DatasourceService_getPrototypeOf(t) { return services_DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_DatasourceService_getPrototypeOf(t); }
+function services_DatasourceService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_DatasourceService_setPrototypeOf(t, e); }
+function services_DatasourceService_setPrototypeOf(t, e) { return services_DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_DatasourceService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15496,12 +15501,11 @@ function services_DatasourceService_setPrototypeOf(o, p) { services_DatasourceSe
  * @param {Object} [options.headers] - 请求头。
  */
 var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_DatasourceService_inherits(DatasourceService, _CommonServiceBase);
   function DatasourceService(url, options) {
     var _this;
     services_DatasourceService_classCallCheck(this, DatasourceService);
     _this = services_DatasourceService_callSuper(this, DatasourceService, [url, options]);
-    var me = services_DatasourceService_assertThisInitialized(_this);
+    var me = _this;
     _this._datasourceService = new DatasourceService_DatasourceService(me.url, {
       proxy: me.proxy,
       withCredentials: me.withCredentials,
@@ -15522,7 +15526,8 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_DatasourceService_createClass(DatasourceService, [{
+  services_DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+  return services_DatasourceService_createClass(DatasourceService, [{
     key: "getDatasources",
     value: function getDatasources(callback) {
       return this._datasourceService.getDatasourcesService(callback);
@@ -15574,25 +15579,25 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
       return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
   }]);
-  return DatasourceService;
 }(CommonServiceBase);
 SuperMap.REST.DatasourceService = DatasourceService;
 ;// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
 function ProcessingServiceBase_typeof(o) { "@babel/helpers - typeof"; return ProcessingServiceBase_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, ProcessingServiceBase_typeof(o); }
-function ProcessingServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function ProcessingServiceBase_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, ProcessingServiceBase_toPropertyKey(descriptor.key), descriptor); } }
-function ProcessingServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingServiceBase_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function ProcessingServiceBase_toPropertyKey(t) { var i = ProcessingServiceBase_toPrimitive(t, "string"); return "symbol" == ProcessingServiceBase_typeof(i) ? i : String(i); }
+function ProcessingServiceBase_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function ProcessingServiceBase_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, ProcessingServiceBase_toPropertyKey(o.key), o); } }
+function ProcessingServiceBase_createClass(e, r, t) { return r && ProcessingServiceBase_defineProperties(e.prototype, r), t && ProcessingServiceBase_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function ProcessingServiceBase_toPropertyKey(t) { var i = ProcessingServiceBase_toPrimitive(t, "string"); return "symbol" == ProcessingServiceBase_typeof(i) ? i : i + ""; }
 function ProcessingServiceBase_toPrimitive(t, r) { if ("object" != ProcessingServiceBase_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != ProcessingServiceBase_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function ProcessingServiceBase_callSuper(t, o, e) { return o = ProcessingServiceBase_getPrototypeOf(o), ProcessingServiceBase_possibleConstructorReturn(t, ProcessingServiceBase_isNativeReflectConstruct() ? Reflect.construct(o, e || [], ProcessingServiceBase_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function ProcessingServiceBase_possibleConstructorReturn(self, call) { if (call && (ProcessingServiceBase_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return ProcessingServiceBase_assertThisInitialized(self); }
-function ProcessingServiceBase_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function ProcessingServiceBase_possibleConstructorReturn(t, e) { if (e && ("object" == ProcessingServiceBase_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return ProcessingServiceBase_assertThisInitialized(t); }
+function ProcessingServiceBase_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function ProcessingServiceBase_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (ProcessingServiceBase_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function ProcessingServiceBase_get() { if (typeof Reflect !== "undefined" && Reflect.get) { ProcessingServiceBase_get = Reflect.get.bind(); } else { ProcessingServiceBase_get = function _get(target, property, receiver) { var base = ProcessingServiceBase_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return ProcessingServiceBase_get.apply(this, arguments); }
-function ProcessingServiceBase_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = ProcessingServiceBase_getPrototypeOf(object); if (object === null) break; } return object; }
-function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingServiceBase_getPrototypeOf(o); }
-function ProcessingServiceBase_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) ProcessingServiceBase_setPrototypeOf(subClass, superClass); }
-function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingServiceBase_setPrototypeOf(o, p); }
+function ProcessingServiceBase_superPropGet(t, e, o, r) { var p = ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function ProcessingServiceBase_get() { return ProcessingServiceBase_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = ProcessingServiceBase_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, ProcessingServiceBase_get.apply(null, arguments); }
+function ProcessingServiceBase_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = ProcessingServiceBase_getPrototypeOf(t));); return t; }
+function ProcessingServiceBase_getPrototypeOf(t) { return ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, ProcessingServiceBase_getPrototypeOf(t); }
+function ProcessingServiceBase_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && ProcessingServiceBase_setPrototypeOf(t, e); }
+function ProcessingServiceBase_setPrototypeOf(t, e) { return ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, ProcessingServiceBase_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15619,7 +15624,6 @@ function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setP
  * @usage
  */
 var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
-  ProcessingServiceBase_inherits(ProcessingServiceBase, _CommonServiceBase);
   function ProcessingServiceBase(url, options) {
     var _this;
     ProcessingServiceBase_classCallCheck(this, ProcessingServiceBase);
@@ -15633,10 +15637,11 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
    * @function ProcessingServiceBase.prototype.destroy
    * @override
    */
-  ProcessingServiceBase_createClass(ProcessingServiceBase, [{
+  ProcessingServiceBase_inherits(ProcessingServiceBase, _CommonServiceBase);
+  return ProcessingServiceBase_createClass(ProcessingServiceBase, [{
     key: "destroy",
     value: function destroy() {
-      ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "destroy", this).call(this);
+      ProcessingServiceBase_superPropGet(ProcessingServiceBase, "destroy", this, 3)([]);
     }
 
     /**
@@ -15785,24 +15790,24 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
       }
     }
   }]);
-  return ProcessingServiceBase;
 }(CommonServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
 function KernelDensityJobsService_typeof(o) { "@babel/helpers - typeof"; return KernelDensityJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, KernelDensityJobsService_typeof(o); }
-function KernelDensityJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function KernelDensityJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, KernelDensityJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function KernelDensityJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function KernelDensityJobsService_toPropertyKey(t) { var i = KernelDensityJobsService_toPrimitive(t, "string"); return "symbol" == KernelDensityJobsService_typeof(i) ? i : String(i); }
+function KernelDensityJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function KernelDensityJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, KernelDensityJobsService_toPropertyKey(o.key), o); } }
+function KernelDensityJobsService_createClass(e, r, t) { return r && KernelDensityJobsService_defineProperties(e.prototype, r), t && KernelDensityJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function KernelDensityJobsService_toPropertyKey(t) { var i = KernelDensityJobsService_toPrimitive(t, "string"); return "symbol" == KernelDensityJobsService_typeof(i) ? i : i + ""; }
 function KernelDensityJobsService_toPrimitive(t, r) { if ("object" != KernelDensityJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != KernelDensityJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function KernelDensityJobsService_callSuper(t, o, e) { return o = KernelDensityJobsService_getPrototypeOf(o), KernelDensityJobsService_possibleConstructorReturn(t, KernelDensityJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], KernelDensityJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function KernelDensityJobsService_possibleConstructorReturn(self, call) { if (call && (KernelDensityJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return KernelDensityJobsService_assertThisInitialized(self); }
-function KernelDensityJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function KernelDensityJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == KernelDensityJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return KernelDensityJobsService_assertThisInitialized(t); }
+function KernelDensityJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function KernelDensityJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (KernelDensityJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function KernelDensityJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { KernelDensityJobsService_get = Reflect.get.bind(); } else { KernelDensityJobsService_get = function _get(target, property, receiver) { var base = KernelDensityJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return KernelDensityJobsService_get.apply(this, arguments); }
-function KernelDensityJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = KernelDensityJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function KernelDensityJobsService_getPrototypeOf(o) { KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return KernelDensityJobsService_getPrototypeOf(o); }
-function KernelDensityJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) KernelDensityJobsService_setPrototypeOf(subClass, superClass); }
-function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return KernelDensityJobsService_setPrototypeOf(o, p); }
+function KernelDensityJobsService_superPropGet(t, e, o, r) { var p = KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function KernelDensityJobsService_get() { return KernelDensityJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = KernelDensityJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, KernelDensityJobsService_get.apply(null, arguments); }
+function KernelDensityJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = KernelDensityJobsService_getPrototypeOf(t));); return t; }
+function KernelDensityJobsService_getPrototypeOf(t) { return KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, KernelDensityJobsService_getPrototypeOf(t); }
+function KernelDensityJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && KernelDensityJobsService_setPrototypeOf(t, e); }
+function KernelDensityJobsService_setPrototypeOf(t, e) { return KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, KernelDensityJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15827,7 +15832,6 @@ function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsServic
  * @usage
  */
 var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  KernelDensityJobsService_inherits(KernelDensityJobsService, _ProcessingServiceBas);
   function KernelDensityJobsService(url, options) {
     var _this;
     KernelDensityJobsService_classCallCheck(this, KernelDensityJobsService);
@@ -15841,10 +15845,11 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
    * @function KernelDensityJobsService.prototype.destroy
    * @override
    */
-  KernelDensityJobsService_createClass(KernelDensityJobsService, [{
+  KernelDensityJobsService_inherits(KernelDensityJobsService, _ProcessingServiceBas);
+  return KernelDensityJobsService_createClass(KernelDensityJobsService, [{
     key: "destroy",
     value: function destroy() {
-      KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "destroy", this).call(this);
+      KernelDensityJobsService_superPropGet(KernelDensityJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -15856,7 +15861,7 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getKernelDensityJobs",
     value: function getKernelDensityJobs(callback) {
-      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return KernelDensityJobsService_superPropGet(KernelDensityJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -15869,7 +15874,7 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getKernelDensityJob",
     value: function getKernelDensityJob(id, callback) {
-      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return KernelDensityJobsService_superPropGet(KernelDensityJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -15884,27 +15889,27 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addKernelDensityJob",
     value: function addKernelDensityJob(params, seconds, callback, processRunningCallback) {
-      return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback);
+      return KernelDensityJobsService_superPropGet(KernelDensityJobsService, "addJob", this, 3)([this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return KernelDensityJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
 function SingleObjectQueryJobsService_typeof(o) { "@babel/helpers - typeof"; return SingleObjectQueryJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SingleObjectQueryJobsService_typeof(o); }
-function SingleObjectQueryJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SingleObjectQueryJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SingleObjectQueryJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function SingleObjectQueryJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SingleObjectQueryJobsService_toPropertyKey(t) { var i = SingleObjectQueryJobsService_toPrimitive(t, "string"); return "symbol" == SingleObjectQueryJobsService_typeof(i) ? i : String(i); }
+function SingleObjectQueryJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SingleObjectQueryJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SingleObjectQueryJobsService_toPropertyKey(o.key), o); } }
+function SingleObjectQueryJobsService_createClass(e, r, t) { return r && SingleObjectQueryJobsService_defineProperties(e.prototype, r), t && SingleObjectQueryJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SingleObjectQueryJobsService_toPropertyKey(t) { var i = SingleObjectQueryJobsService_toPrimitive(t, "string"); return "symbol" == SingleObjectQueryJobsService_typeof(i) ? i : i + ""; }
 function SingleObjectQueryJobsService_toPrimitive(t, r) { if ("object" != SingleObjectQueryJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SingleObjectQueryJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function SingleObjectQueryJobsService_callSuper(t, o, e) { return o = SingleObjectQueryJobsService_getPrototypeOf(o), SingleObjectQueryJobsService_possibleConstructorReturn(t, SingleObjectQueryJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], SingleObjectQueryJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function SingleObjectQueryJobsService_possibleConstructorReturn(self, call) { if (call && (SingleObjectQueryJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SingleObjectQueryJobsService_assertThisInitialized(self); }
-function SingleObjectQueryJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function SingleObjectQueryJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == SingleObjectQueryJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return SingleObjectQueryJobsService_assertThisInitialized(t); }
+function SingleObjectQueryJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function SingleObjectQueryJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (SingleObjectQueryJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function SingleObjectQueryJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SingleObjectQueryJobsService_get = Reflect.get.bind(); } else { SingleObjectQueryJobsService_get = function _get(target, property, receiver) { var base = SingleObjectQueryJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SingleObjectQueryJobsService_get.apply(this, arguments); }
-function SingleObjectQueryJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SingleObjectQueryJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SingleObjectQueryJobsService_getPrototypeOf(o) { SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SingleObjectQueryJobsService_getPrototypeOf(o); }
-function SingleObjectQueryJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SingleObjectQueryJobsService_setPrototypeOf(subClass, superClass); }
-function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SingleObjectQueryJobsService_setPrototypeOf(o, p); }
+function SingleObjectQueryJobsService_superPropGet(t, e, o, r) { var p = SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function SingleObjectQueryJobsService_get() { return SingleObjectQueryJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = SingleObjectQueryJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, SingleObjectQueryJobsService_get.apply(null, arguments); }
+function SingleObjectQueryJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = SingleObjectQueryJobsService_getPrototypeOf(t));); return t; }
+function SingleObjectQueryJobsService_getPrototypeOf(t) { return SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SingleObjectQueryJobsService_getPrototypeOf(t); }
+function SingleObjectQueryJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SingleObjectQueryJobsService_setPrototypeOf(t, e); }
+function SingleObjectQueryJobsService_setPrototypeOf(t, e) { return SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SingleObjectQueryJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -15926,7 +15931,6 @@ function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJo
  * @usage
  */
 var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SingleObjectQueryJobsService_inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
   function SingleObjectQueryJobsService(url, options) {
     var _this;
     SingleObjectQueryJobsService_classCallCheck(this, SingleObjectQueryJobsService);
@@ -15939,10 +15943,11 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   /**
    *@override
    */
-  SingleObjectQueryJobsService_createClass(SingleObjectQueryJobsService, [{
+  SingleObjectQueryJobsService_inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
+  return SingleObjectQueryJobsService_createClass(SingleObjectQueryJobsService, [{
     key: "destroy",
     value: function destroy() {
-      SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "destroy", this).call(this);
+      SingleObjectQueryJobsService_superPropGet(SingleObjectQueryJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -15954,7 +15959,7 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getQueryJobs",
     value: function getQueryJobs(callback) {
-      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return SingleObjectQueryJobsService_superPropGet(SingleObjectQueryJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -15967,7 +15972,7 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getQueryJob",
     value: function getQueryJob(id, callback) {
-      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return SingleObjectQueryJobsService_superPropGet(SingleObjectQueryJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -15981,27 +15986,27 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "addQueryJob",
     value: function addQueryJob(params, seconds, callback, processRunningCallback) {
-      return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
+      return SingleObjectQueryJobsService_superPropGet(SingleObjectQueryJobsService, "addJob", this, 3)([this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return SingleObjectQueryJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
 function SummaryMeshJobsService_typeof(o) { "@babel/helpers - typeof"; return SummaryMeshJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryMeshJobsService_typeof(o); }
-function SummaryMeshJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryMeshJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryMeshJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryMeshJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryMeshJobsService_toPropertyKey(t) { var i = SummaryMeshJobsService_toPrimitive(t, "string"); return "symbol" == SummaryMeshJobsService_typeof(i) ? i : String(i); }
+function SummaryMeshJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryMeshJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryMeshJobsService_toPropertyKey(o.key), o); } }
+function SummaryMeshJobsService_createClass(e, r, t) { return r && SummaryMeshJobsService_defineProperties(e.prototype, r), t && SummaryMeshJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryMeshJobsService_toPropertyKey(t) { var i = SummaryMeshJobsService_toPrimitive(t, "string"); return "symbol" == SummaryMeshJobsService_typeof(i) ? i : i + ""; }
 function SummaryMeshJobsService_toPrimitive(t, r) { if ("object" != SummaryMeshJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryMeshJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function SummaryMeshJobsService_callSuper(t, o, e) { return o = SummaryMeshJobsService_getPrototypeOf(o), SummaryMeshJobsService_possibleConstructorReturn(t, SummaryMeshJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], SummaryMeshJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function SummaryMeshJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryMeshJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryMeshJobsService_assertThisInitialized(self); }
-function SummaryMeshJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function SummaryMeshJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == SummaryMeshJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return SummaryMeshJobsService_assertThisInitialized(t); }
+function SummaryMeshJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function SummaryMeshJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (SummaryMeshJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function SummaryMeshJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryMeshJobsService_get = Reflect.get.bind(); } else { SummaryMeshJobsService_get = function _get(target, property, receiver) { var base = SummaryMeshJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryMeshJobsService_get.apply(this, arguments); }
-function SummaryMeshJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryMeshJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryMeshJobsService_getPrototypeOf(o); }
-function SummaryMeshJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryMeshJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryMeshJobsService_setPrototypeOf(o, p); }
+function SummaryMeshJobsService_superPropGet(t, e, o, r) { var p = SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function SummaryMeshJobsService_get() { return SummaryMeshJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = SummaryMeshJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, SummaryMeshJobsService_get.apply(null, arguments); }
+function SummaryMeshJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = SummaryMeshJobsService_getPrototypeOf(t));); return t; }
+function SummaryMeshJobsService_getPrototypeOf(t) { return SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryMeshJobsService_getPrototypeOf(t); }
+function SummaryMeshJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryMeshJobsService_setPrototypeOf(t, e); }
+function SummaryMeshJobsService_setPrototypeOf(t, e) { return SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryMeshJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16027,7 +16032,6 @@ function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_se
  * @usage
  */
 var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryMeshJobsService_inherits(SummaryMeshJobsService, _ProcessingServiceBas);
   function SummaryMeshJobsService(url, options) {
     var _this;
     SummaryMeshJobsService_classCallCheck(this, SummaryMeshJobsService);
@@ -16040,10 +16044,11 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   /**
    * @override
    */
-  SummaryMeshJobsService_createClass(SummaryMeshJobsService, [{
+  SummaryMeshJobsService_inherits(SummaryMeshJobsService, _ProcessingServiceBas);
+  return SummaryMeshJobsService_createClass(SummaryMeshJobsService, [{
     key: "destroy",
     value: function destroy() {
-      SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "destroy", this).call(this);
+      SummaryMeshJobsService_superPropGet(SummaryMeshJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16055,7 +16060,7 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryMeshJobs",
     value: function getSummaryMeshJobs(callback) {
-      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return SummaryMeshJobsService_superPropGet(SummaryMeshJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16068,7 +16073,7 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryMeshJob",
     value: function getSummaryMeshJob(id, callback) {
-      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return SummaryMeshJobsService_superPropGet(SummaryMeshJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16082,27 +16087,27 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addSummaryMeshJob",
     value: function addSummaryMeshJob(params, seconds, callback, processRunningCallback) {
-      return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback);
+      return SummaryMeshJobsService_superPropGet(SummaryMeshJobsService, "addJob", this, 3)([this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return SummaryMeshJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
 function VectorClipJobsService_typeof(o) { "@babel/helpers - typeof"; return VectorClipJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, VectorClipJobsService_typeof(o); }
-function VectorClipJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function VectorClipJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, VectorClipJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function VectorClipJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function VectorClipJobsService_toPropertyKey(t) { var i = VectorClipJobsService_toPrimitive(t, "string"); return "symbol" == VectorClipJobsService_typeof(i) ? i : String(i); }
+function VectorClipJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function VectorClipJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, VectorClipJobsService_toPropertyKey(o.key), o); } }
+function VectorClipJobsService_createClass(e, r, t) { return r && VectorClipJobsService_defineProperties(e.prototype, r), t && VectorClipJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function VectorClipJobsService_toPropertyKey(t) { var i = VectorClipJobsService_toPrimitive(t, "string"); return "symbol" == VectorClipJobsService_typeof(i) ? i : i + ""; }
 function VectorClipJobsService_toPrimitive(t, r) { if ("object" != VectorClipJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != VectorClipJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function VectorClipJobsService_callSuper(t, o, e) { return o = VectorClipJobsService_getPrototypeOf(o), VectorClipJobsService_possibleConstructorReturn(t, VectorClipJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], VectorClipJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function VectorClipJobsService_possibleConstructorReturn(self, call) { if (call && (VectorClipJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return VectorClipJobsService_assertThisInitialized(self); }
-function VectorClipJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function VectorClipJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == VectorClipJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return VectorClipJobsService_assertThisInitialized(t); }
+function VectorClipJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function VectorClipJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (VectorClipJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function VectorClipJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { VectorClipJobsService_get = Reflect.get.bind(); } else { VectorClipJobsService_get = function _get(target, property, receiver) { var base = VectorClipJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return VectorClipJobsService_get.apply(this, arguments); }
-function VectorClipJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = VectorClipJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function VectorClipJobsService_getPrototypeOf(o) { VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VectorClipJobsService_getPrototypeOf(o); }
-function VectorClipJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) VectorClipJobsService_setPrototypeOf(subClass, superClass); }
-function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VectorClipJobsService_setPrototypeOf(o, p); }
+function VectorClipJobsService_superPropGet(t, e, o, r) { var p = VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function VectorClipJobsService_get() { return VectorClipJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = VectorClipJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, VectorClipJobsService_get.apply(null, arguments); }
+function VectorClipJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = VectorClipJobsService_getPrototypeOf(t));); return t; }
+function VectorClipJobsService_getPrototypeOf(t) { return VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, VectorClipJobsService_getPrototypeOf(t); }
+function VectorClipJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && VectorClipJobsService_setPrototypeOf(t, e); }
+function VectorClipJobsService_setPrototypeOf(t, e) { return VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, VectorClipJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16125,7 +16130,6 @@ function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setP
  * @usage
  */
 var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  VectorClipJobsService_inherits(VectorClipJobsService, _ProcessingServiceBas);
   function VectorClipJobsService(url, options) {
     var _this;
     VectorClipJobsService_classCallCheck(this, VectorClipJobsService);
@@ -16138,10 +16142,11 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   /**
    *@override
    */
-  VectorClipJobsService_createClass(VectorClipJobsService, [{
+  VectorClipJobsService_inherits(VectorClipJobsService, _ProcessingServiceBas);
+  return VectorClipJobsService_createClass(VectorClipJobsService, [{
     key: "destroy",
     value: function destroy() {
-      VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "destroy", this).call(this);
+      VectorClipJobsService_superPropGet(VectorClipJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16153,7 +16158,7 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getVectorClipJobs",
     value: function getVectorClipJobs(callback) {
-      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return VectorClipJobsService_superPropGet(VectorClipJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16166,7 +16171,7 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getVectorClipJob",
     value: function getVectorClipJob(id, callback) {
-      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return VectorClipJobsService_superPropGet(VectorClipJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16181,27 +16186,27 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addVectorClipJob",
     value: function addVectorClipJob(params, seconds, callback, processRunningCallback) {
-      return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback);
+      return VectorClipJobsService_superPropGet(VectorClipJobsService, "addJob", this, 3)([this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return VectorClipJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
 function OverlayGeoJobsService_typeof(o) { "@babel/helpers - typeof"; return OverlayGeoJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OverlayGeoJobsService_typeof(o); }
-function OverlayGeoJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function OverlayGeoJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, OverlayGeoJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function OverlayGeoJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function OverlayGeoJobsService_toPropertyKey(t) { var i = OverlayGeoJobsService_toPrimitive(t, "string"); return "symbol" == OverlayGeoJobsService_typeof(i) ? i : String(i); }
+function OverlayGeoJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function OverlayGeoJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OverlayGeoJobsService_toPropertyKey(o.key), o); } }
+function OverlayGeoJobsService_createClass(e, r, t) { return r && OverlayGeoJobsService_defineProperties(e.prototype, r), t && OverlayGeoJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function OverlayGeoJobsService_toPropertyKey(t) { var i = OverlayGeoJobsService_toPrimitive(t, "string"); return "symbol" == OverlayGeoJobsService_typeof(i) ? i : i + ""; }
 function OverlayGeoJobsService_toPrimitive(t, r) { if ("object" != OverlayGeoJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OverlayGeoJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function OverlayGeoJobsService_callSuper(t, o, e) { return o = OverlayGeoJobsService_getPrototypeOf(o), OverlayGeoJobsService_possibleConstructorReturn(t, OverlayGeoJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], OverlayGeoJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function OverlayGeoJobsService_possibleConstructorReturn(self, call) { if (call && (OverlayGeoJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return OverlayGeoJobsService_assertThisInitialized(self); }
-function OverlayGeoJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function OverlayGeoJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == OverlayGeoJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return OverlayGeoJobsService_assertThisInitialized(t); }
+function OverlayGeoJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function OverlayGeoJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (OverlayGeoJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function OverlayGeoJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { OverlayGeoJobsService_get = Reflect.get.bind(); } else { OverlayGeoJobsService_get = function _get(target, property, receiver) { var base = OverlayGeoJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return OverlayGeoJobsService_get.apply(this, arguments); }
-function OverlayGeoJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = OverlayGeoJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return OverlayGeoJobsService_getPrototypeOf(o); }
-function OverlayGeoJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) OverlayGeoJobsService_setPrototypeOf(subClass, superClass); }
-function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayGeoJobsService_setPrototypeOf(o, p); }
+function OverlayGeoJobsService_superPropGet(t, e, o, r) { var p = OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function OverlayGeoJobsService_get() { return OverlayGeoJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = OverlayGeoJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, OverlayGeoJobsService_get.apply(null, arguments); }
+function OverlayGeoJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = OverlayGeoJobsService_getPrototypeOf(t));); return t; }
+function OverlayGeoJobsService_getPrototypeOf(t) { return OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, OverlayGeoJobsService_getPrototypeOf(t); }
+function OverlayGeoJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && OverlayGeoJobsService_setPrototypeOf(t, e); }
+function OverlayGeoJobsService_setPrototypeOf(t, e) { return OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, OverlayGeoJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16226,7 +16231,6 @@ function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setP
  * @usage
  */
 var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  OverlayGeoJobsService_inherits(OverlayGeoJobsService, _ProcessingServiceBas);
   function OverlayGeoJobsService(url, options) {
     var _this;
     OverlayGeoJobsService_classCallCheck(this, OverlayGeoJobsService);
@@ -16239,10 +16243,11 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   /**
    * @override
    */
-  OverlayGeoJobsService_createClass(OverlayGeoJobsService, [{
+  OverlayGeoJobsService_inherits(OverlayGeoJobsService, _ProcessingServiceBas);
+  return OverlayGeoJobsService_createClass(OverlayGeoJobsService, [{
     key: "destroy",
     value: function destroy() {
-      OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "destroy", this).call(this);
+      OverlayGeoJobsService_superPropGet(OverlayGeoJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16254,7 +16259,7 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getOverlayGeoJobs",
     value: function getOverlayGeoJobs(callback) {
-      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return OverlayGeoJobsService_superPropGet(OverlayGeoJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16267,7 +16272,7 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getOverlayGeoJob",
     value: function getOverlayGeoJob(id, callback) {
-      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return OverlayGeoJobsService_superPropGet(OverlayGeoJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16281,27 +16286,27 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addOverlayGeoJob",
     value: function addOverlayGeoJob(params, seconds, callback, processRunningCallback) {
-      return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback);
+      return OverlayGeoJobsService_superPropGet(OverlayGeoJobsService, "addJob", this, 3)([this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return OverlayGeoJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
 function SummaryRegionJobsService_typeof(o) { "@babel/helpers - typeof"; return SummaryRegionJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryRegionJobsService_typeof(o); }
-function SummaryRegionJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryRegionJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryRegionJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryRegionJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryRegionJobsService_toPropertyKey(t) { var i = SummaryRegionJobsService_toPrimitive(t, "string"); return "symbol" == SummaryRegionJobsService_typeof(i) ? i : String(i); }
+function SummaryRegionJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryRegionJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryRegionJobsService_toPropertyKey(o.key), o); } }
+function SummaryRegionJobsService_createClass(e, r, t) { return r && SummaryRegionJobsService_defineProperties(e.prototype, r), t && SummaryRegionJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryRegionJobsService_toPropertyKey(t) { var i = SummaryRegionJobsService_toPrimitive(t, "string"); return "symbol" == SummaryRegionJobsService_typeof(i) ? i : i + ""; }
 function SummaryRegionJobsService_toPrimitive(t, r) { if ("object" != SummaryRegionJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryRegionJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function SummaryRegionJobsService_callSuper(t, o, e) { return o = SummaryRegionJobsService_getPrototypeOf(o), SummaryRegionJobsService_possibleConstructorReturn(t, SummaryRegionJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], SummaryRegionJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryRegionJobsService_assertThisInitialized(self); }
-function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function SummaryRegionJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == SummaryRegionJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return SummaryRegionJobsService_assertThisInitialized(t); }
+function SummaryRegionJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function SummaryRegionJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (SummaryRegionJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function SummaryRegionJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get.bind(); } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryRegionJobsService_get.apply(this, arguments); }
-function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
-function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
+function SummaryRegionJobsService_superPropGet(t, e, o, r) { var p = SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function SummaryRegionJobsService_get() { return SummaryRegionJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = SummaryRegionJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, SummaryRegionJobsService_get.apply(null, arguments); }
+function SummaryRegionJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = SummaryRegionJobsService_getPrototypeOf(t));); return t; }
+function SummaryRegionJobsService_getPrototypeOf(t) { return SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryRegionJobsService_getPrototypeOf(t); }
+function SummaryRegionJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryRegionJobsService_setPrototypeOf(t, e); }
+function SummaryRegionJobsService_setPrototypeOf(t, e) { return SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryRegionJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16326,7 +16331,6 @@ function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsServic
  * @usage
  */
 var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
   function SummaryRegionJobsService(url, options) {
     var _this;
     SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
@@ -16339,10 +16343,11 @@ var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   /**
    *@override
    */
-  SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
+  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
+  return SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
     key: "destroy",
     value: function destroy() {
-      SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "destroy", this).call(this);
+      SummaryRegionJobsService_superPropGet(SummaryRegionJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16354,7 +16359,7 @@ var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryRegionJobs",
     value: function getSummaryRegionJobs(callback) {
-      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return SummaryRegionJobsService_superPropGet(SummaryRegionJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16367,7 +16372,7 @@ var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getSummaryRegionJob",
     value: function getSummaryRegionJob(id, callback) {
-      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return SummaryRegionJobsService_superPropGet(SummaryRegionJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16381,27 +16386,27 @@ var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addSummaryRegionJob",
     value: function addSummaryRegionJob(params, seconds, callback, processRunningCallback) {
-      return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
+      return SummaryRegionJobsService_superPropGet(SummaryRegionJobsService, "addJob", this, 3)([this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return SummaryRegionJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
 function BuffersAnalystJobsService_typeof(o) { "@babel/helpers - typeof"; return BuffersAnalystJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, BuffersAnalystJobsService_typeof(o); }
-function BuffersAnalystJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function BuffersAnalystJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, BuffersAnalystJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function BuffersAnalystJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function BuffersAnalystJobsService_toPropertyKey(t) { var i = BuffersAnalystJobsService_toPrimitive(t, "string"); return "symbol" == BuffersAnalystJobsService_typeof(i) ? i : String(i); }
+function BuffersAnalystJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function BuffersAnalystJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, BuffersAnalystJobsService_toPropertyKey(o.key), o); } }
+function BuffersAnalystJobsService_createClass(e, r, t) { return r && BuffersAnalystJobsService_defineProperties(e.prototype, r), t && BuffersAnalystJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function BuffersAnalystJobsService_toPropertyKey(t) { var i = BuffersAnalystJobsService_toPrimitive(t, "string"); return "symbol" == BuffersAnalystJobsService_typeof(i) ? i : i + ""; }
 function BuffersAnalystJobsService_toPrimitive(t, r) { if ("object" != BuffersAnalystJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != BuffersAnalystJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function BuffersAnalystJobsService_callSuper(t, o, e) { return o = BuffersAnalystJobsService_getPrototypeOf(o), BuffersAnalystJobsService_possibleConstructorReturn(t, BuffersAnalystJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], BuffersAnalystJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function BuffersAnalystJobsService_possibleConstructorReturn(self, call) { if (call && (BuffersAnalystJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return BuffersAnalystJobsService_assertThisInitialized(self); }
-function BuffersAnalystJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function BuffersAnalystJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == BuffersAnalystJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return BuffersAnalystJobsService_assertThisInitialized(t); }
+function BuffersAnalystJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function BuffersAnalystJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (BuffersAnalystJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function BuffersAnalystJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { BuffersAnalystJobsService_get = Reflect.get.bind(); } else { BuffersAnalystJobsService_get = function _get(target, property, receiver) { var base = BuffersAnalystJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return BuffersAnalystJobsService_get.apply(this, arguments); }
-function BuffersAnalystJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = BuffersAnalystJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return BuffersAnalystJobsService_getPrototypeOf(o); }
-function BuffersAnalystJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) BuffersAnalystJobsService_setPrototypeOf(subClass, superClass); }
-function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BuffersAnalystJobsService_setPrototypeOf(o, p); }
+function BuffersAnalystJobsService_superPropGet(t, e, o, r) { var p = BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function BuffersAnalystJobsService_get() { return BuffersAnalystJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = BuffersAnalystJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, BuffersAnalystJobsService_get.apply(null, arguments); }
+function BuffersAnalystJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = BuffersAnalystJobsService_getPrototypeOf(t));); return t; }
+function BuffersAnalystJobsService_getPrototypeOf(t) { return BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, BuffersAnalystJobsService_getPrototypeOf(t); }
+function BuffersAnalystJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && BuffersAnalystJobsService_setPrototypeOf(t, e); }
+function BuffersAnalystJobsService_setPrototypeOf(t, e) { return BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, BuffersAnalystJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16423,7 +16428,6 @@ function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsServ
  * @usage
  */
 var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  BuffersAnalystJobsService_inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
   function BuffersAnalystJobsService(url, options) {
     var _this;
     BuffersAnalystJobsService_classCallCheck(this, BuffersAnalystJobsService);
@@ -16436,10 +16440,11 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   /**
    *@override
    */
-  BuffersAnalystJobsService_createClass(BuffersAnalystJobsService, [{
+  BuffersAnalystJobsService_inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
+  return BuffersAnalystJobsService_createClass(BuffersAnalystJobsService, [{
     key: "destroy",
     value: function destroy() {
-      BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "destroy", this).call(this);
+      BuffersAnalystJobsService_superPropGet(BuffersAnalystJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16451,7 +16456,7 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getBuffersJobs",
     value: function getBuffersJobs(callback) {
-      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return BuffersAnalystJobsService_superPropGet(BuffersAnalystJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16464,7 +16469,7 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "getBuffersJob",
     value: function getBuffersJob(id, callback) {
-      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return BuffersAnalystJobsService_superPropGet(BuffersAnalystJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16479,27 +16484,27 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
   }, {
     key: "addBuffersJob",
     value: function addBuffersJob(params, seconds, callback, processRunningCallback) {
-      return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback);
+      return BuffersAnalystJobsService_superPropGet(BuffersAnalystJobsService, "addJob", this, 3)([this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return BuffersAnalystJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
 function TopologyValidatorJobsService_typeof(o) { "@babel/helpers - typeof"; return TopologyValidatorJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, TopologyValidatorJobsService_typeof(o); }
-function TopologyValidatorJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function TopologyValidatorJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, TopologyValidatorJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function TopologyValidatorJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function TopologyValidatorJobsService_toPropertyKey(t) { var i = TopologyValidatorJobsService_toPrimitive(t, "string"); return "symbol" == TopologyValidatorJobsService_typeof(i) ? i : String(i); }
+function TopologyValidatorJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function TopologyValidatorJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, TopologyValidatorJobsService_toPropertyKey(o.key), o); } }
+function TopologyValidatorJobsService_createClass(e, r, t) { return r && TopologyValidatorJobsService_defineProperties(e.prototype, r), t && TopologyValidatorJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function TopologyValidatorJobsService_toPropertyKey(t) { var i = TopologyValidatorJobsService_toPrimitive(t, "string"); return "symbol" == TopologyValidatorJobsService_typeof(i) ? i : i + ""; }
 function TopologyValidatorJobsService_toPrimitive(t, r) { if ("object" != TopologyValidatorJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != TopologyValidatorJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function TopologyValidatorJobsService_callSuper(t, o, e) { return o = TopologyValidatorJobsService_getPrototypeOf(o), TopologyValidatorJobsService_possibleConstructorReturn(t, TopologyValidatorJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], TopologyValidatorJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function TopologyValidatorJobsService_possibleConstructorReturn(self, call) { if (call && (TopologyValidatorJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return TopologyValidatorJobsService_assertThisInitialized(self); }
-function TopologyValidatorJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function TopologyValidatorJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == TopologyValidatorJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return TopologyValidatorJobsService_assertThisInitialized(t); }
+function TopologyValidatorJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function TopologyValidatorJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (TopologyValidatorJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function TopologyValidatorJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { TopologyValidatorJobsService_get = Reflect.get.bind(); } else { TopologyValidatorJobsService_get = function _get(target, property, receiver) { var base = TopologyValidatorJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return TopologyValidatorJobsService_get.apply(this, arguments); }
-function TopologyValidatorJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = TopologyValidatorJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function TopologyValidatorJobsService_getPrototypeOf(o) { TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TopologyValidatorJobsService_getPrototypeOf(o); }
-function TopologyValidatorJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) TopologyValidatorJobsService_setPrototypeOf(subClass, superClass); }
-function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TopologyValidatorJobsService_setPrototypeOf(o, p); }
+function TopologyValidatorJobsService_superPropGet(t, e, o, r) { var p = TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function TopologyValidatorJobsService_get() { return TopologyValidatorJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = TopologyValidatorJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, TopologyValidatorJobsService_get.apply(null, arguments); }
+function TopologyValidatorJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = TopologyValidatorJobsService_getPrototypeOf(t));); return t; }
+function TopologyValidatorJobsService_getPrototypeOf(t) { return TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, TopologyValidatorJobsService_getPrototypeOf(t); }
+function TopologyValidatorJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && TopologyValidatorJobsService_setPrototypeOf(t, e); }
+function TopologyValidatorJobsService_setPrototypeOf(t, e) { return TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, TopologyValidatorJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16522,7 +16527,6 @@ function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJo
  * @usage
  */
 var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  TopologyValidatorJobsService_inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
   function TopologyValidatorJobsService(url, options) {
     var _this;
     TopologyValidatorJobsService_classCallCheck(this, TopologyValidatorJobsService);
@@ -16535,10 +16539,11 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   /**
    *@override
    */
-  TopologyValidatorJobsService_createClass(TopologyValidatorJobsService, [{
+  TopologyValidatorJobsService_inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
+  return TopologyValidatorJobsService_createClass(TopologyValidatorJobsService, [{
     key: "destroy",
     value: function destroy() {
-      TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "destroy", this).call(this);
+      TopologyValidatorJobsService_superPropGet(TopologyValidatorJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16550,7 +16555,7 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getTopologyValidatorJobs",
     value: function getTopologyValidatorJobs(callback) {
-      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return TopologyValidatorJobsService_superPropGet(TopologyValidatorJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16563,7 +16568,7 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getTopologyValidatorJob",
     value: function getTopologyValidatorJob(id, callback) {
-      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return TopologyValidatorJobsService_superPropGet(TopologyValidatorJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16577,27 +16582,27 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "addTopologyValidatorJob",
     value: function addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {
-      return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
+      return TopologyValidatorJobsService_superPropGet(TopologyValidatorJobsService, "addJob", this, 3)([this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return TopologyValidatorJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
 function SummaryAttributesJobsService_typeof(o) { "@babel/helpers - typeof"; return SummaryAttributesJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, SummaryAttributesJobsService_typeof(o); }
-function SummaryAttributesJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function SummaryAttributesJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, SummaryAttributesJobsService_toPropertyKey(descriptor.key), descriptor); } }
-function SummaryAttributesJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryAttributesJobsService_toPropertyKey(t) { var i = SummaryAttributesJobsService_toPrimitive(t, "string"); return "symbol" == SummaryAttributesJobsService_typeof(i) ? i : String(i); }
+function SummaryAttributesJobsService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function SummaryAttributesJobsService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, SummaryAttributesJobsService_toPropertyKey(o.key), o); } }
+function SummaryAttributesJobsService_createClass(e, r, t) { return r && SummaryAttributesJobsService_defineProperties(e.prototype, r), t && SummaryAttributesJobsService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function SummaryAttributesJobsService_toPropertyKey(t) { var i = SummaryAttributesJobsService_toPrimitive(t, "string"); return "symbol" == SummaryAttributesJobsService_typeof(i) ? i : i + ""; }
 function SummaryAttributesJobsService_toPrimitive(t, r) { if ("object" != SummaryAttributesJobsService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryAttributesJobsService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function SummaryAttributesJobsService_callSuper(t, o, e) { return o = SummaryAttributesJobsService_getPrototypeOf(o), SummaryAttributesJobsService_possibleConstructorReturn(t, SummaryAttributesJobsService_isNativeReflectConstruct() ? Reflect.construct(o, e || [], SummaryAttributesJobsService_getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function SummaryAttributesJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryAttributesJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryAttributesJobsService_assertThisInitialized(self); }
-function SummaryAttributesJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function SummaryAttributesJobsService_possibleConstructorReturn(t, e) { if (e && ("object" == SummaryAttributesJobsService_typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return SummaryAttributesJobsService_assertThisInitialized(t); }
+function SummaryAttributesJobsService_assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function SummaryAttributesJobsService_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (SummaryAttributesJobsService_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function SummaryAttributesJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryAttributesJobsService_get = Reflect.get.bind(); } else { SummaryAttributesJobsService_get = function _get(target, property, receiver) { var base = SummaryAttributesJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryAttributesJobsService_get.apply(this, arguments); }
-function SummaryAttributesJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryAttributesJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryAttributesJobsService_getPrototypeOf(o) { SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryAttributesJobsService_getPrototypeOf(o); }
-function SummaryAttributesJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryAttributesJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryAttributesJobsService_setPrototypeOf(o, p); }
+function SummaryAttributesJobsService_superPropGet(t, e, o, r) { var p = SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(1 & r ? t.prototype : t), e, o); return 2 & r && "function" == typeof p ? function (t) { return p.apply(o, t); } : p; }
+function SummaryAttributesJobsService_get() { return SummaryAttributesJobsService_get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = SummaryAttributesJobsService_superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, SummaryAttributesJobsService_get.apply(null, arguments); }
+function SummaryAttributesJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = SummaryAttributesJobsService_getPrototypeOf(t));); return t; }
+function SummaryAttributesJobsService_getPrototypeOf(t) { return SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryAttributesJobsService_getPrototypeOf(t); }
+function SummaryAttributesJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryAttributesJobsService_setPrototypeOf(t, e); }
+function SummaryAttributesJobsService_setPrototypeOf(t, e) { return SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryAttributesJobsService_setPrototypeOf(t, e); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -16619,7 +16624,6 @@ function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJo
  * @usage
  */
 var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryAttributesJobsService_inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
   function SummaryAttributesJobsService(url, options) {
     var _this;
     SummaryAttributesJobsService_classCallCheck(this, SummaryAttributesJobsService);
@@ -16632,10 +16636,11 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   /**
    *@override
    */
-  SummaryAttributesJobsService_createClass(SummaryAttributesJobsService, [{
+  SummaryAttributesJobsService_inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
+  return SummaryAttributesJobsService_createClass(SummaryAttributesJobsService, [{
     key: "destroy",
     value: function destroy() {
-      SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "destroy", this).call(this);
+      SummaryAttributesJobsService_superPropGet(SummaryAttributesJobsService, "destroy", this, 3)([]);
     }
 
     /**
@@ -16647,7 +16652,7 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getSummaryAttributesJobs",
     value: function getSummaryAttributesJobs(callback) {
-      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, this.url, callback);
+      return SummaryAttributesJobsService_superPropGet(SummaryAttributesJobsService, "getJobs", this, 3)([this.url, callback]);
     }
 
     /**
@@ -16660,7 +16665,7 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "getSummaryAttributesJob",
     value: function getSummaryAttributesJob(id, callback) {
-      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "getJobs", this).call(this, Util_Util.urlPathAppend(this.url, id), callback);
+      return SummaryAttributesJobsService_superPropGet(SummaryAttributesJobsService, "getJobs", this, 3)([Util_Util.urlPathAppend(this.url, id), callback]);
     }
 
     /**
@@ -16674,17 +16679,16 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
   }, {
     key: "addSummaryAttributesJob",
     value: function addSummaryAttributesJob(params, seconds, callback, processRunningCallback) {
-      return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
+      return SummaryAttributesJobsService_superPropGet(SummaryAttributesJobsService, "addJob", this, 3)([this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback]);
     }
   }]);
-  return SummaryAttributesJobsService;
 }(ProcessingServiceBase);
 ;// CONCATENATED MODULE: ./src/common/iServer/ProcessingService.js
 function ProcessingService_typeof(o) { "@babel/helpers - typeof"; return ProcessingService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, ProcessingService_typeof(o); }
-function ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, ProcessingService_toPropertyKey(descriptor.key), descriptor); } }
-function ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function ProcessingService_toPropertyKey(t) { var i = ProcessingService_toPrimitive(t, "string"); return "symbol" == ProcessingService_typeof(i) ? i : String(i); }
+function ProcessingService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function ProcessingService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, ProcessingService_toPropertyKey(o.key), o); } }
+function ProcessingService_createClass(e, r, t) { return r && ProcessingService_defineProperties(e.prototype, r), t && ProcessingService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function ProcessingService_toPropertyKey(t) { var i = ProcessingService_toPrimitive(t, "string"); return "symbol" == ProcessingService_typeof(i) ? i : i + ""; }
 function ProcessingService_toPrimitive(t, r) { if ("object" != ProcessingService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != ProcessingService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -16743,7 +16747,7 @@ var ProcessingService_ProcessingService = /*#__PURE__*/function () {
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
    * @returns {Promise} Promise 对象。
    */
-  ProcessingService_createClass(ProcessingService, [{
+  return ProcessingService_createClass(ProcessingService, [{
     key: "getKernelDensityJobs",
     value: function getKernelDensityJobs(callback, resultFormat) {
       var me = this,
@@ -17515,14 +17519,13 @@ var ProcessingService_ProcessingService = /*#__PURE__*/function () {
       return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
   }]);
-  return ProcessingService;
 }();
 ;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
 function services_ProcessingService_typeof(o) { "@babel/helpers - typeof"; return services_ProcessingService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, services_ProcessingService_typeof(o); }
-function services_ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function services_ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, services_ProcessingService_toPropertyKey(descriptor.key), descriptor); } }
-function services_ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_ProcessingService_toPropertyKey(t) { var i = services_ProcessingService_toPrimitive(t, "string"); return "symbol" == services_ProcessingService_typeof(i) ? i : String(i); }
+function services_ProcessingService_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function services_ProcessingService_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, services_ProcessingService_toPropertyKey(o.key), o); } }
+function services_ProcessingService_createClass(e, r, t) { return r && services_ProcessingService_defineProperties(e.prototype, r), t && services_ProcessingService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function services_ProcessingService_toPropertyKey(t) { var i = services_ProcessingService_toPrimitive(t, "string"); return "symbol" == services_ProcessingService_typeof(i) ? i : i + ""; }
 function services_ProcessingService_toPrimitive(t, r) { if ("object" != services_ProcessingService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != services_ProcessingService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -17561,7 +17564,7 @@ var ProcessingService = /*#__PURE__*/function () {
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
    * @returns {Promise} Promise 对象。
    */
-  services_ProcessingService_createClass(ProcessingService, [{
+  return services_ProcessingService_createClass(ProcessingService, [{
     key: "getKernelDensityJobs",
     value: function getKernelDensityJobs(callback, resultFormat) {
       return this._processingService.getKernelDensityJobs(callback, resultFormat);
@@ -18114,7 +18117,6 @@ var ProcessingService = /*#__PURE__*/function () {
       return geometryParam;
     }
   }]);
-  return ProcessingService;
 }();
 SuperMap.REST.ProcessingService = ProcessingService;
 ;// CONCATENATED MODULE: ./src/classic/services/index.js
@@ -18154,8 +18156,8 @@ SuperMap.REST.ProcessingService = ProcessingService;
 function namespace_typeof(o) { "@babel/helpers - typeof"; return namespace_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, namespace_typeof(o); }
 function namespace_ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function namespace_objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? namespace_ownKeys(Object(t), !0).forEach(function (r) { namespace_defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : namespace_ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function namespace_defineProperty(obj, key, value) { key = namespace_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function namespace_toPropertyKey(t) { var i = namespace_toPrimitive(t, "string"); return "symbol" == namespace_typeof(i) ? i : String(i); }
+function namespace_defineProperty(e, r, t) { return (r = namespace_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function namespace_toPropertyKey(t) { var i = namespace_toPrimitive(t, "string"); return "symbol" == namespace_typeof(i) ? i : i + ""; }
 function namespace_toPrimitive(t, r) { if ("object" != namespace_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != namespace_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 SuperMap.ElasticSearch = ElasticSearch;
@@ -18416,19 +18418,19 @@ module.exports = function (O, key, value, options) {
 "use strict";
 
 
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 var defineProperty = Object.defineProperty;
 module.exports = function (key, value) {
   try {
-    defineProperty(global, key, {
+    defineProperty(globalThis, key, {
       value: value,
       configurable: true,
       writable: true
     });
   } catch (error) {
-    global[key] = value;
+    globalThis[key] = value;
   }
   return value;
 };
@@ -18461,9 +18463,9 @@ module.exports = !fails(function () {
 "use strict";
 
 
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var isObject = __webpack_require__(5343);
-var document = global.document;
+var document = globalThis.document;
 // typeof document.createElement is 'object' in old IE
 var EXISTS = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -18472,26 +18474,40 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ 7485:
+/***/ 3690:
 /***/ (function(module) {
 
 "use strict";
 
 
-module.exports = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
+// IE8- don't enum bug keys
+module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
 
 /***/ }),
 
-/***/ 2389:
+/***/ 2940:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var global = __webpack_require__(2928);
-var userAgent = __webpack_require__(7485);
-var process = global.process;
-var Deno = global.Deno;
+var globalThis = __webpack_require__(8029);
+var navigator = globalThis.navigator;
+var userAgent = navigator && navigator.userAgent;
+module.exports = userAgent ? String(userAgent) : '';
+
+/***/ }),
+
+/***/ 2944:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var userAgent = __webpack_require__(2940);
+var process = globalThis.process;
+var Deno = globalThis.Deno;
 var versions = process && process.versions || Deno && Deno.version;
 var v8 = versions && versions.v8;
 var match, version;
@@ -18515,17 +18531,6 @@ module.exports = version;
 
 /***/ }),
 
-/***/ 3690:
-/***/ (function(module) {
-
-"use strict";
-
-
-// IE8- don't enum bug keys
-module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
-
-/***/ }),
-
 /***/ 3485:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -18533,7 +18538,7 @@ module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsE
 
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var getOwnPropertyDescriptor = (__webpack_require__(3880).f);
 var createNonEnumerableProperty = __webpack_require__(7592);
 var defineBuiltIn = __webpack_require__(4197);
@@ -18562,11 +18567,11 @@ module.exports = function (options, source) {
   var STATIC = options.stat;
   var FORCED, target, key, targetProperty, sourceProperty, descriptor;
   if (GLOBAL) {
-    target = global;
+    target = globalThis;
   } else if (STATIC) {
-    target = global[TARGET] || defineGlobalProperty(TARGET, {});
+    target = globalThis[TARGET] || defineGlobalProperty(TARGET, {});
   } else {
-    target = global[TARGET] && global[TARGET].prototype;
+    target = globalThis[TARGET] && globalThis[TARGET].prototype;
   }
   if (target) for (key in source) {
     sourceProperty = source[key];
@@ -18683,13 +18688,13 @@ module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
 "use strict";
 
 
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var isCallable = __webpack_require__(5164);
 var aFunction = function aFunction(argument) {
   return isCallable(argument) ? argument : undefined;
 };
 module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(global[namespace]) : global[namespace] && global[namespace][method];
+  return arguments.length < 2 ? aFunction(globalThis[namespace]) : globalThis[namespace] && globalThis[namespace][method];
 };
 
 /***/ }),
@@ -18712,7 +18717,7 @@ module.exports = function (V, P) {
 
 /***/ }),
 
-/***/ 2928:
+/***/ 8029:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
@@ -18838,7 +18843,7 @@ module.exports = store.inspectSource;
 
 
 var NATIVE_WEAK_MAP = __webpack_require__(6185);
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var isObject = __webpack_require__(5343);
 var createNonEnumerableProperty = __webpack_require__(7592);
 var hasOwn = __webpack_require__(2770);
@@ -18846,8 +18851,8 @@ var shared = __webpack_require__(3094);
 var sharedKey = __webpack_require__(56);
 var hiddenKeys = __webpack_require__(7076);
 var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
-var TypeError = global.TypeError;
-var WeakMap = global.WeakMap;
+var TypeError = globalThis.TypeError;
+var WeakMap = globalThis.WeakMap;
 var set, get, has;
 var enforce = function enforce(it) {
   return has(it) ? get(it) : set(it, {});
@@ -19429,8 +19434,8 @@ module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
 "use strict";
 
 
-var global = __webpack_require__(2928);
-module.exports = global;
+var globalThis = __webpack_require__(8029);
+module.exports = globalThis;
 
 /***/ }),
 
@@ -19474,15 +19479,15 @@ module.exports = function (key) {
 
 
 var IS_PURE = __webpack_require__(2358);
-var globalThis = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var defineGlobalProperty = __webpack_require__(9998);
 var SHARED = '__core-js_shared__';
 var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
 (store.versions || (store.versions = [])).push({
-  version: '3.36.0',
+  version: '3.38.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2024 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.36.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.38.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -19508,10 +19513,10 @@ module.exports = function (key, value) {
 
 
 /* eslint-disable es/no-symbol -- required for testing */
-var V8_VERSION = __webpack_require__(2389);
+var V8_VERSION = __webpack_require__(2944);
 var fails = __webpack_require__(3634);
-var global = __webpack_require__(2928);
-var $String = global.String;
+var globalThis = __webpack_require__(8029);
+var $String = globalThis.String;
 
 // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
 module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
@@ -19739,9 +19744,9 @@ module.exports = DESCRIPTORS && fails(function () {
 "use strict";
 
 
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var isCallable = __webpack_require__(5164);
-var WeakMap = global.WeakMap;
+var WeakMap = globalThis.WeakMap;
 module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
 
 /***/ }),
@@ -19782,13 +19787,13 @@ exports.f = wellKnownSymbol;
 "use strict";
 
 
-var global = __webpack_require__(2928);
+var globalThis = __webpack_require__(8029);
 var shared = __webpack_require__(1930);
 var hasOwn = __webpack_require__(2770);
 var uid = __webpack_require__(6177);
 var NATIVE_SYMBOL = __webpack_require__(6576);
 var USE_SYMBOL_AS_UID = __webpack_require__(2865);
-var _Symbol = global.Symbol;
+var _Symbol = globalThis.Symbol;
 var WellKnownSymbolsStore = shared('wks');
 var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
 module.exports = function (name) {

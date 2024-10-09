@@ -1,9 +1,9 @@
 /*!
  * 
- *       @supermap/react-iclient.(https://iclient.supermap.io)
- *       Copyright© 2000 - 2023 SuperMap Software Co.Ltd
+ *       @supermapgis/react-iclient.(https://iclient.supermap.io)
+ *       Copyright© 2000 - 2024 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v11.1.1
+ *       version: v11.2.1
  *
  */
 @font-face {font-family: "sm-components-icons-";
@@ -377,18 +377,15 @@
 }
 
 .sm-component-animate-marker__delay-03 {
-  -webkit-animation-delay: 2s !important;
-          animation-delay: 2s !important;
+  animation-delay: 2s !important;
 }
 
 .sm-component-animate-marker__delay-02 {
-  -webkit-animation-delay: 1.6s !important;
-          animation-delay: 1.6s !important;
+  animation-delay: 1.6s !important;
 }
 
 .sm-component-animate-marker__delay-01 {
-  -webkit-animation-delay: 1.2s !important;
-          animation-delay: 1.2s !important;
+  animation-delay: 1.2s !important;
 }
 
 .sm-component-animate-marker__pulse {
@@ -397,10 +394,8 @@
   border-radius: 48px;
   opacity: 0.12;
   filter: alpha(opacity=0);
-  -webkit-animation: warn 2s ease-out both;
-          animation: warn 2s ease-out both;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  animation: warn 2s ease-out both;
+  animation-iteration-count: infinite;
   background: 0 0;
   border-color: #009fd9;
   top: -44px;
@@ -461,8 +456,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
   margin: auto;
   width: var(--dots-width);
   height: var(--dots-height);
@@ -484,56 +478,46 @@
 }
 
 .sm-component-animate-marker__dots-01 {
-  -webkit-animation: dots 4s linear infinite;
-          animation: dots 4s linear infinite;
+  animation: dots 4s linear infinite;
 }
 
 .sm-component-animate-marker__dots-01:before {
-  -webkit-transform: rotate(8deg);
-          transform: rotate(8deg);
+  transform: rotate(8deg);
 }
 
 .sm-component-animate-marker__dots-01:after {
-  -webkit-transform: rotate(65deg);
-          transform: rotate(65deg);
+  transform: rotate(65deg);
 }
 
 .sm-component-animate-marker__dots-02 {
-  -webkit-animation: dots2 4s linear infinite;
-          animation: dots2 4s linear infinite;
+  animation: dots2 4s linear infinite;
 }
 
 .sm-component-animate-marker__dots-02:before {
-  -webkit-transform: rotate(73deg);
-          transform: rotate(73deg);
+  transform: rotate(73deg);
 }
 
 .sm-component-animate-marker__dots-02:after {
-  -webkit-transform: rotate(122deg);
-          transform: rotate(122deg);
+  transform: rotate(122deg);
 }
 
 .sm-component-animate-marker__dots-03 {
-  -webkit-animation: dots 4s linear infinite;
-          animation: dots 4s linear infinite;
+  animation: dots 4s linear infinite;
 }
 
 .sm-component-animate-marker__dots-03:before {
-  -webkit-transform: rotate(39deg);
-          transform: rotate(39deg);
+  transform: rotate(39deg);
 }
 
 .sm-component-animate-marker__dots-03:after {
-  -webkit-transform: rotate(242deg);
-          transform: rotate(242deg);
+  transform: rotate(242deg);
 }
 
 .sm-component-animate-marker__halo {
   position: absolute;
   left: var(--halo-left);
   top: var(--halo-left);
-  -webkit-transform: translate3d(-50%, -50%, 0);
-          transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   border-radius: 100%;
   width: var(--halo-width);
   height: var(--halo-width);
@@ -577,8 +561,7 @@
 }
 
 .sm-component-animate-marker__ring-05 {
-  -webkit-animation: halo2 5s infinite alternate;
-          animation: halo2 5s infinite alternate;
+  animation: halo2 5s infinite alternate;
 }
 
 .sm-component-animate-marker__ring-05:before {
@@ -594,8 +577,7 @@
 }
 
 .sm-component-animate-marker__ring-07 {
-  -webkit-animation: halo2 5s infinite alternate;
-          animation: halo2 5s infinite alternate;
+  animation: halo2 5s infinite alternate;
 }
 
 .sm-component-animate-marker__ring-07:before {
@@ -635,13 +617,11 @@
   z-index: -1;
   margin: -5%;
   box-shadow: inset 0 0 0 2px;
-  -webkit-animation: var(--animation-name) 8s linear infinite;
-          animation: var(--animation-name) 8s linear infinite;
+  animation: var(--animation-name) 8s linear infinite;
 }
 
 .sm-component-animate-marker__boder::before {
-  -webkit-animation-delay: -4s;
-          animation-delay: -4s;
+  animation-delay: -4s;
 }
 
 .sm-component-animate-marker__text {
@@ -670,8 +650,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  -webkit-animation: pulse 3s infinite;
-          animation: pulse 3s infinite;
+  animation: pulse 3s infinite;
 }
 
 .sm-component-animate-marker__circle {
@@ -680,149 +659,56 @@
   border-radius: 50%;
 }
 
-@-webkit-keyframes warn {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-
 @keyframes warn {
   0% {
-    -webkit-transform: scale(0);
     transform: scale(0);
     opacity: 1;
   }
   100% {
-    -webkit-transform: scale(1);
     transform: scale(1);
     opacity: 0;
-  }
-}
-
-@-webkit-keyframes dots {
-  0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7);
-  }
-  50% {
-    -webkit-transform: rotate(180deg) scale(1, 1);
-            transform: rotate(180deg) scale(1, 1);
-  }
-  100% {
-    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
-            transform: rotate(360deg) scale(0.7, 0.7);
   }
 }
 
 @keyframes dots {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7);
+    transform: rotate(0deg) scale(0.7, 0.7);
   }
   50% {
-    -webkit-transform: rotate(180deg) scale(1, 1);
-            transform: rotate(180deg) scale(1, 1);
+    transform: rotate(180deg) scale(1, 1);
   }
   100% {
-    -webkit-transform: rotate(360deg) scale(0.7, 0.7);
-            transform: rotate(360deg) scale(0.7, 0.7);
-  }
-}
-
-@-webkit-keyframes dots2 {
-  0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7);
-  }
-  50% {
-    -webkit-transform: rotate(-180deg) scale(1, 1);
-            transform: rotate(-180deg) scale(1, 1);
-  }
-  100% {
-    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
-            transform: rotate(-360deg) scale(0.7, 0.7);
+    transform: rotate(360deg) scale(0.7, 0.7);
   }
 }
 
 @keyframes dots2 {
   0% {
-    -webkit-transform: rotate(0deg) scale(0.7, 0.7);
-            transform: rotate(0deg) scale(0.7, 0.7);
+    transform: rotate(0deg) scale(0.7, 0.7);
   }
   50% {
-    -webkit-transform: rotate(-180deg) scale(1, 1);
-            transform: rotate(-180deg) scale(1, 1);
+    transform: rotate(-180deg) scale(1, 1);
   }
   100% {
-    -webkit-transform: rotate(-360deg) scale(0.7, 0.7);
-            transform: rotate(-360deg) scale(0.7, 0.7);
-  }
-}
-
-@-webkit-keyframes halo {
-  0% {
-    -webkit-transform: rotate(360deg) scaleX(1);
-            transform: rotate(360deg) scaleX(1);
-  }
-  100% {
-    -webkit-transform: rotate(0deg) scaleX(1.1);
-            transform: rotate(0deg) scaleX(1.1);
+    transform: rotate(-360deg) scale(0.7, 0.7);
   }
 }
 
 @keyframes halo {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(1);
-            transform: rotate(360deg) scaleX(1);
+    transform: rotate(360deg) scaleX(1);
   }
   100% {
-    -webkit-transform: rotate(0deg) scaleX(1.1);
-            transform: rotate(0deg) scaleX(1.1);
-  }
-}
-
-@-webkit-keyframes halo2 {
-  0% {
-    -webkit-transform: rotate(360deg) scaleX(0.9);
-            transform: rotate(360deg) scaleX(0.9);
-  }
-  100% {
-    -webkit-transform: rotate(90deg) scaleX(1.1);
-            transform: rotate(90deg) scaleX(1.1);
+    transform: rotate(0deg) scaleX(1.1);
   }
 }
 
 @keyframes halo2 {
   0% {
-    -webkit-transform: rotate(360deg) scaleX(0.9);
-            transform: rotate(360deg) scaleX(0.9);
+    transform: rotate(360deg) scaleX(0.9);
   }
   100% {
-    -webkit-transform: rotate(90deg) scaleX(1.1);
-            transform: rotate(90deg) scaleX(1.1);
-  }
-}
-
-@-webkit-keyframes clipMe1 {
-  0%,
-  100% {
-    clip: rect(0px, var(--clip-width-1), 2px, 0px);
-  }
-  25% {
-    clip: rect(0px, 2px, var(--clip-height-1), 0px);
-  }
-  50% {
-    clip: rect(var(--clip-height-2), var(--clip-width-1), var(--clip-width-1), 0px);
-  }
-  75% {
-    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2));
+    transform: rotate(90deg) scaleX(1.1);
   }
 }
 
@@ -842,22 +728,6 @@
   }
 }
 
-@-webkit-keyframes clipMe2 {
-  0%,
-  100% {
-    clip: rect(0px, var(--clip-width-1), 2px, 0px);
-  }
-  25% {
-    clip: rect(0px, 2px, var(--clip-height-1), 0px);
-  }
-  50% {
-    clip: rect(var(--boder-height), var(--clip-width-1), var(--clip-height-1), 0px);
-  }
-  75% {
-    clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2));
-  }
-}
-
 @keyframes clipMe2 {
   0%,
   100% {
@@ -871,18 +741,6 @@
   }
   75% {
     clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2));
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    box-shadow: 0 0 8px 6px transparent;
-  }
-  50% {
-    box-shadow: 0 0 8px 6px var(--box-shadow-color);
-  }
-  100% {
-    box-shadow: 0 0 8px 6px transparent;
   }
 }
 

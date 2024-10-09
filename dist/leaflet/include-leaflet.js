@@ -177,7 +177,7 @@
     }
 
     load({
-        libsurl: 'https://iclient.supermap.io/web/libs',
+        libsurl: '../../libs',
         disturl: '../../dist'
     });
     window.isLocal = false;

@@ -13257,14 +13257,50 @@ var getMeterPerMapUnit = function(mapUnit) {
         // 每度表示多少米。
         meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
     } else if (mapUnit === Unit.KILOMETER) {
-        meterPerMapUnit = 1.0e-3;
+        meterPerMapUnit = 1000;
     } else if (mapUnit === Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918e-2;
+        meterPerMapUnit = 2.5399999918e-2;
     } else if (mapUnit === Unit.FOOT) {
         meterPerMapUnit = 0.3048;
     }
     return meterPerMapUnit;
 };
+
+/**
+ * @function getSquareMeterPerMapUnit
+ * @description 单位换算，把平方米|平方千米|平方英寸|平方英尺换算成平方米。
+ * @category BaseTypes Util
+ * @param {string} mapUnit 需要换算的地图面积单位。
+ * @returns {number} 返回地图的面积单位。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getSquareMeterPerMapUnit(mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getMeterPerMapUnit } from '{npm}';
+ *
+ * const result = getMeterPerMapUnit(mapUnit);
+ * ```
+ */
+
+const AREA_MAP = {
+  SquareFoot: 10.763910417,
+  SquareKiloMeter: 0.000001,
+  SquareMeter: 1,
+  SquareMile: 3.86e-7,
+  SquareYard: 1.195990046
+}
+
+var getSquareMeterPerMapUnit = function(mapUnit) {
+  return AREA_MAP[mapUnit];
+};
+
+
 
 /**
  * @function getWrapNum
