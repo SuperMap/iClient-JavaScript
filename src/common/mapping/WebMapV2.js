@@ -10,6 +10,13 @@ import { FetchRequest } from '../util/FetchRequest';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
 import { isSameRasterLayer, mergeFeatures } from './utils/util';
 
+const INTERNET_MAP_BOUNDS = {
+  TIANDITU: [-180, -90, 180, 90],
+  OSM: [-180, -90, 180, 90],
+  GOOGLE_CN: [-180, -90, 180, 90],
+  BING: [-180, -90, 180, 90]
+} 
+
 export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
   return class WebMapV2 extends SuperClass {
     constructor(
@@ -592,13 +599,15 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const isLabel = Boolean(labelLayerVisible);
       const labelUrl = tiandituUrls.labelUrl;
       const tiandituUrl = tiandituUrls.tiandituUrl;
-      this._addBaselayer({ url: tiandituUrl, layerID: name, visibility: visible });
+      const bounds = INTERNET_MAP_BOUNDS['TIANDITU'];
+      this._addBaselayer({ url: tiandituUrl, layerID: name, visibility: visible, bounds });
       isLabel &&
         this._addBaselayer({
           url: labelUrl,
           layerID: this._getTdtLabelLayerName(name),
           parentLayerId: name,
-          visibility: visible
+          visibility: visible,
+          bounds
         });
       addedCallback && addedCallback();
     }
@@ -651,7 +660,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         return imageUrl;
       });
 
-      this._addBaselayer({ url: urls, layerID: layerName, visibility: layerInfo.visible });
+      this._addBaselayer({ url: urls, layerID: layerName, visibility: layerInfo.visible, bounds: INTERNET_MAP_BOUNDS['BING'] });
       addedCallback && addedCallback();
     }
 
@@ -690,7 +699,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         urlArr = [url];
       }
       const layerId = layerInfo.layerID || layerInfo.name;
-      this._addBaselayer({ url: urlArr, layerID: layerId, visibility: layerInfo.visible });
+      this._addBaselayer({ url: urlArr, layerID: layerId, visibility: layerInfo.visible, bounds: INTERNET_MAP_BOUNDS[layerInfo.layerType] || [-180, -90, 180, 90] });
       addedCallback && addedCallback();
     }
 
@@ -698,15 +707,45 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       const url = layerInfo.url;
       const layerId = layerInfo.layerID || layerInfo.name;
       const { minzoom, maxzoom } = layerInfo;
-      this._addBaselayer({
-        url: [url],
-        layerID: layerId,
-        visibility: layerInfo.visible,
-        minzoom,
-        maxzoom,
-        isIserver: true
+      this.getBounds(`${url}.json`, {
+        withoutFormatSuffix: true,
+        withCredentials: this.webMapService.handleWithCredentials('', url, false)
+      }).then((res) => {
+        let bounds = null;
+        if (res && res.bounds) {
+          bounds = [
+            res.bounds.left,
+            res.bounds.bottom,
+            res.bounds.right,
+            res.bounds.top
+          ];
+          const epsgCode = res.prjCoordSys.epsgCode;
+          if (epsgCode !== 4326) {
+            const [left, bottom] = this._unproject(
+              [res.bounds.left, res.bounds.bottom]
+            );
+            const [right, top] = this._unproject(
+              [res.bounds.right, res.bounds.top]
+            );
+            bounds = [
+              left,
+              bottom,
+              right,
+              top
+            ];
+          }
+        }
+        this._addBaselayer({
+          url: [url],
+          layerID: layerId,
+          visibility: layerInfo.visible,
+          minzoom,
+          maxzoom,
+          isIserver: true,
+          bounds
+        });
+        addedCallback && addedCallback();
       });
-      addedCallback && addedCallback();
     }
 
     _createWMSLayer(layerInfo, addedCallback) {
@@ -717,7 +756,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             const layerId = layerInfo.layerID || layerInfo.name;
             if (result) {
               const wmsUrl = this._getWMSUrl(layerInfo, result.version);
-              this._addBaselayer({ url: [wmsUrl], layerID: layerId, visibility: layerInfo.visible });
+              this._addBaselayer({ url: [wmsUrl], layerID: layerId, visibility: layerInfo.visible, bounds: result.bounds });
               addedCallback && addedCallback();
             }
           },
@@ -1244,9 +1283,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             this.map.getSource(layerInfo.layerID) && !addSource
               ? layerInfo.layerID
               : {
-                  type: 'geojson',
-                  data: { type: 'FeatureCollection', features: features }
-                },
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: features }
+              },
           paint: {
             'text-color': labelStyle.fill,
             'text-halo-color': textHaloColor,

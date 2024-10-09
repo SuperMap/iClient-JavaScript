@@ -183,7 +183,16 @@ export class WebMapService {
           const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' });
           const capabilities = parser.parse(capabilitiesText);
           const wmsCapabilities = capabilities.WMT_MS_Capabilities || capabilities.WMS_Capabilities;
-          resolve({ version: wmsCapabilities['@_version'] });
+          const latlonBounds = wmsCapabilities['Capability']['Layer']['LatLonBoundingBox'];
+          let bounds = null;
+          if (latlonBounds) {
+            bounds = [+latlonBounds['@_minx'], +latlonBounds['@_miny'], +latlonBounds['@_maxx'], +latlonBounds['@_maxy']];
+          }
+          const EX_GeographicBoundingBox = wmsCapabilities['Capability']['Layer']['EX_GeographicBoundingBox'];
+          if (EX_GeographicBoundingBox) {
+            bounds = [+EX_GeographicBoundingBox['westBoundLongitude'], +EX_GeographicBoundingBox['southBoundLatitude'], +EX_GeographicBoundingBox['eastBoundLongitude'], +EX_GeographicBoundingBox['northBoundLatitude']];
+          }
+          resolve({ version: wmsCapabilities['@_version'], bounds });
         });
     });
   }

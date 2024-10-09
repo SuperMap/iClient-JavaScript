@@ -389,6 +389,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('maps/China_4326/style.json') > -1) {
         return Promise.resolve(new Response(styleJson));
       }
+      if (url.indexOf('%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9C%B0%E5%9B%BE.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
+      }
       return Promise.resolve();
     });
     datavizWebmap = new WebMap(id, {
@@ -415,6 +418,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('datas/144371940/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      } else if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(id, {
@@ -448,6 +453,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(raster4490));
       }
+      if (url.indexOf('jubu4490.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
+      }
       return Promise.resolve();
     });
     datavizWebmap = new WebMap(
@@ -479,6 +487,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('datas/13136933/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('ChinaDark.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     const id = {
@@ -528,6 +538,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('web/datas/1171594968/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
+      if (url.indexOf('China_Dark.json') > -1) {
+        return Promise.resolve(new Response({}));
+      }
       return Promise.resolve();
     });
     const id = rangeLayer;
@@ -560,6 +573,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('datas/144371940/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      } else if (url.indexOf('China.json')) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
@@ -577,6 +592,10 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       } else if (url.indexOf('web/maps/test/map.json') > -1) {
         return Promise.resolve(new Response(raster4490));
+      } else if (url.indexOf('jubu4490.json') > -1) {
+        return Promise.resolve(new Response({}));
+      } else if (url.indexOf('jubu4490.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
       return Promise.resolve();
     });
@@ -662,6 +681,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/13136933/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('ChinaDark.json')) {
+        return Promise.resolve(new Response({}));
       }
     });
     const id = { ...uniqueLayer_point, projection: epsgeCode };
@@ -679,6 +700,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/13136933/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('China.json')) {
+        return Promise.resolve(new Response({}));
       }
       return Promise.resolve();
     });
@@ -695,6 +718,8 @@ describe('mapboxgl_WebMapV2', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
+      } else if (url.indexOf('China.json')) {
+        return Promise.resolve(new Response({}));
       }
       return Promise.resolve();
     });
@@ -725,6 +750,8 @@ describe('mapboxgl_WebMapV2', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
+      } else if (url.indexOf('China.json')) {
+        return Promise.resolve(new Response({}));
       }
       return Promise.resolve();
     });
@@ -1174,6 +1201,9 @@ describe('mapboxgl_WebMapV2', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1184572358/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('China_Dark.json') > -1) {
+        return Promise.resolve(new Response({}));
       }
       return Promise.resolve();
     });
@@ -1720,6 +1750,7 @@ describe('mapboxgl_WebMapV2', () => {
     const callback = function (data) {
       expect(data).not.toBeUndefined();
       expect(data.map.getSource('世界地图_Day').tiles[0].indexOf('{bbox-wms-1.3.0}')).toBeGreaterThan(-1);
+      expect(data.map.getSource('世界地图_Day').bounds).toEqual([-180, -90, 180, 90]);
       done();
     };
     datavizWebmap = new WebMap({
@@ -2046,6 +2077,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/144371940/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      } else if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -2107,6 +2140,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/144371940/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      } else if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     const map = {
@@ -2200,6 +2235,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
         return Promise.resolve(new Response(styleJson));
       }
+      if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
     const callback = function () {
@@ -2229,6 +2267,9 @@ describe('mapboxgl_WebMapV2', () => {
       }
       if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
         return Promise.resolve(new Response(styleJson));
+      }
+      if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response({}));
       }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -2268,6 +2309,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/144371940/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      } else if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -2618,6 +2661,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('China_Dark.json') > -1) {
+        return Promise.resolve(new Response({}));
       }
       return Promise.resolve();
     });
@@ -2637,6 +2682,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(chart_content)));
       } else if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('ChinaDark.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
       return Promise.resolve();
     });
@@ -2664,6 +2711,8 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(csv_nullxy_Data)));
       } else if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('ChinaDark.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
       return Promise.resolve();
     });
@@ -2722,6 +2771,7 @@ describe('mapboxgl_WebMapV2', () => {
         'https://t2.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
         'https://t3.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z'
       ]);
+      expect(map.getSource('必应地图').bounds).toEqual([-180, -90, 180, 90]);
       done();
     });
   });
@@ -2736,6 +2786,9 @@ describe('mapboxgl_WebMapV2', () => {
       }
       if (url.indexOf('106007908/map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(qixiangLayer2)));
+      }
+      if (url.indexOf('T202007210600.json') > -1 || url.indexOf('T202007210700.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(
@@ -2798,6 +2851,9 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(
           new Response(
             JSON.stringify({
+              prjCoordSys: {
+                epsgCode: '3857'
+              },
               bounds: {
                 top: 5178663.047080055,
                 left: 328182.9260637246,
@@ -2852,6 +2908,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
         return Promise.resolve(new Response(styleJson));
       }
+      if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response({}));
+      }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
     const callback = function () {
@@ -2894,6 +2953,9 @@ describe('mapboxgl_WebMapV2', () => {
           minzoom: 0
         });
         return Promise.resolve(new Response(JSON.stringify(nextStyleJSON)));
+      }  
+      if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -2966,6 +3028,9 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('ChinaqxAlberts_4548%40fl-new/style.json') > -1) {
         return Promise.resolve(new Response(styleJson));
       }
+      if (url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
+      }
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
     const callback = function () {
@@ -3003,6 +3068,9 @@ describe('mapboxgl_WebMapV2', () => {
       }
       if (url.indexOf('106007908/map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(tileLayerMap)));
+      }
+      if (url.indexOf('base/resources/img/baiduTileTest.png') > -1 || url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({})));
       }
     });
     datavizWebmap = new WebMap(
@@ -3051,6 +3119,9 @@ describe('mapboxgl_WebMapV2', () => {
       }
       if (url.indexOf('web/datas/1184572358/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
+      }
+      if (url.indexOf('China_Dark.json') > -1 || url.indexOf('China.json') > -1) {
+        return Promise.resolve(new Response({}));
       }
     });
     datavizWebmap = new WebMap(
