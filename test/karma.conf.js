@@ -70,7 +70,7 @@ module.exports = function (config) {
       { pattern: '../src/classic/libs/Lang/*.js', included: true },
       { pattern: '../src/classic/theme/default/*.css', included: true },
       { pattern: './resources/data/**.fgb', included: false },
-      { pattern: './resources/data/**.m3u8', included: false },
+      { pattern: './resources/data/**.mp4', included: false },
       { pattern: './resources/img/**.svg', included: false },
       { pattern: './resources/img/baiduTileTest.png', included: false },
       /**测试文件**/

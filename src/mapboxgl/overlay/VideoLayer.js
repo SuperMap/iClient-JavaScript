@@ -88,17 +88,10 @@
      this.video.one('firstplay', () => {
        this.video.play();
      });
-     this.video.one('ready', () => {
-       setTimeout(() => {
-         this.videoWidth = this.video.videoWidth();
-         this.videoHeight = this.video.videoHeight();
-         this._addVideoLayer(this.map);
-       }, 1000);
-     });
      this.video.one('canplay', () => {
-       setTimeout(() => {
-         map.getSource(this.layerId).play();
-       }, 1500);
+        this.videoWidth = this.video.videoWidth();
+        this.videoHeight = this.video.videoHeight();
+        this._addVideoLayer(this.map);
      });
    }
  
@@ -264,6 +257,7 @@
            source: this.layerId
          }
        );
+       map.getSource(this.layerId).play();
      });
    }
 

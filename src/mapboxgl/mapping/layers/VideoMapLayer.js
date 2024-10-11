@@ -40,19 +40,10 @@ export default class VideoMapLayer extends mapboxgl.Evented {
         this.play();
       }
     });
-    this.video.one('ready', () => {
-      setTimeout(() => {
-        this.videoWidth = this.video.videoWidth();
-        this.videoHeight = this.video.videoHeight();
-        this._addVideoLayer(this.map);
-      }, 1000);
-    });
     this.video.one('canplay', () => {
-      setTimeout(() => {
-        if (this.autoplay) {
-          this.map.getSource(this.id).play();
-        }
-      }, 1500);
+      this.videoWidth = this.video.videoWidth();
+      this.videoHeight = this.video.videoHeight();
+      this._addVideoLayer(this.map);
     });
   }
 
@@ -99,6 +90,9 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   }
 
   _afterAddVideoLayer() {
+    if (this.autoplay) {
+      this.map.getSource(this.id).play();
+    }
     this.fire('loaded', {
       originCoordsRightBottom: this.originCoordsRightBottom,
       originCoordsLeftTop: this.originCoordsLeftTop,
