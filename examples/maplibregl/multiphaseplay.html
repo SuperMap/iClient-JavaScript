@@ -1,0 +1,223 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts) 
+* maplibre-gl-enhance (https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_multiphaseplay"></title>
+  <script type="text/javascript" src="../js/include-web.js"></script>
+  <style>
+    #timeline {
+      position: absolute;
+      bottom: 50px;
+      width: 100%;
+      height: 100px;
+      z-index: 9999;
+    }
+    #title {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    .subTitle {
+      font-size: 16px;
+      font-weight: normal
+    }
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+  <div id="map" style="width: 100%;height:100%"></div>
+  <div id="title">
+    <div data-i18n="resources.text_multiphaseplay"></div>
+    <div data-i18n="resources.text_2009To2016NDVI" class="subTitle"></div>
+  </div>
+  <div id="timeline"></div>
+  <script type="text/javascript" include="echarts,maplibre-gl-enhance"
+    src="../../dist/maplibregl/include-maplibregl.js">
+  </script>
+  <script>
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
+    url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var config = {
+      imageService: host + "/iserver/services/imageservice-image/restjsr",
+      imageWMSService: host + "/iserver/services/imageservice-image/wms130/nvdi",
+      collection: "nvdi",
+      tileSize: "1028,1028",
+    };
+    var map, allFeatures = [], myChart,
+      proj, wmsUrlCache = [];
+
+    initMap();
+
+    function initMap() {
+      map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          "version": 8,
+          "sources": {
+            "raster-tiles": {
+              "type": "raster",
+              "tileSize": 256,
+              "tiles": [url],
+              "rasterSource": 'iserver'
+            },
+          },
+          "layers": [{
+            "id": "simple-tiles",
+            "type": "raster",
+            "source": "raster-tiles",
+            "minzoom": 0,
+            "maxzoom": 18
+          }],
+        },
+        center: [100, 35],
+        crs: 'EPSG:4326',
+        maxZoom: 18,
+        zoom: 3
+      });
+      map.addControl(new maplibregl.supermap.LogoControl({
+        link: "https://iclient.supermap.io"
+      }), 'bottom-right');
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    }
+
+    getAllFeatures();
+
+    function getAllFeatures() {
+      var url = config.imageService + "/search.json?collections=" + config.collection;
+      $.get(config.imageService + "/collections/" + config.collection + "/tileInfo.json").then(res => {
+        proj = res.crs;
+      });
+      $.get(url).then(res => {
+        res.features.forEach(feature => {
+          allFeatures.push({
+            collection: feature.collection,
+            name: feature.assets.data.title,
+            time: feature.properties.createtime,
+            bbox: feature.bbox,
+            id: feature.id
+          });
+        });
+        allFeatures.forEach(feature => {
+          var imageExtent = feature.bbox;
+          var wmsurl = formatWMSURL(feature.time, imageExtent);
+          wmsUrlCache.push(wmsurl);
+        });
+        start();
+      });
+    }
+
+    function start() {
+      addStaticImageLayer();
+      map.on('load', addTimeLine)
+    }
+
+    function addStaticImageLayer() {
+      var feature = allFeatures[0];
+      var imageExtent = feature.bbox;
+      var url = formatWMSURL(feature.time, imageExtent);
+      map.addLayer({
+        id: 'static-image-layer',
+        type: 'raster',
+        source: buildStaticSource(url, imageExtent),
+        paint: {
+          'raster-opacity': 0.7,
+          'raster-fade-duration': 0
+        }
+      });
+    }
+
+    function addTimeLine() {
+      var allTime = allFeatures.map(feature => feature.time.split('/')[0]);
+      myChart = echarts.init(document.getElementById('timeline'));
+      var option = {
+        timeline: {
+          axisType: 'category',
+          show: true,
+          autoPlay: true,
+          playInterval: 1000,
+          data: allTime,
+          label: {
+            normal: {
+              textStyle: {
+                color: '#111'
+              }
+            },
+            emphasis: {
+              textStyle: {
+                color: '#000'
+              }
+            }
+          },
+          controlStyle: {
+            normal: {
+              color: '#666',
+              borderColor: '#666'
+            }
+          }
+        }
+      }
+      myChart.setOption(option);
+      myChart.on('timelinechanged', function (params) {
+        var url = wmsUrlCache[params.currentIndex];
+        map.getSource('static-image-layer').updateImage({
+          url: url
+        });
+        changeTimelinePlay(false);
+        map.once('idle', changeTimelinePlay);
+      });
+    }
+
+    function changeTimelinePlay(state = true) {
+      myChart.dispatchAction({
+        type: 'timelinePlayChange',
+        playState: state
+      })
+    }
+
+    function formatWMSURL(time, extent) {
+      var commentSetting = config.imageWMSService +
+        '?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=0.0.3';
+      var SQLFilter = "SQLFILTER=createtime='" + time.replaceAll("/", "-") + "'";
+      var crs = "CRS=" + proj;
+      var width = "WIDTH=" + config.tileSize.split(",")[0];
+      var height = "HEIGHT=" + config.tileSize.split(",")[1];
+      var bbox = [extent[1], extent[0], extent[3], extent[2]];
+      var bboxStr = "BBOX=" + bbox.join(",");
+      return commentSetting + "&" + SQLFilter + "&" + crs + "&" + width + "&" + height + "&" + bboxStr;
+    }
+
+    function buildStaticSource(url, imageExtent) {
+      var coordinates = [
+        [imageExtent[0], imageExtent[3]],
+        [imageExtent[2], imageExtent[3]],
+        [imageExtent[2], imageExtent[1]],
+        [imageExtent[0], imageExtent[1]]
+      ]
+      var source = {
+        type: 'image',
+        url: url,
+        coordinates: coordinates
+      }
+      return source;
+    }
+
+  </script>
+
+</body>
+
+</html>

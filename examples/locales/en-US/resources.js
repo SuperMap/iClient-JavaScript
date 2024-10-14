@@ -812,6 +812,7 @@ window.examplesResources = {
         "title_ugcResample": "Resample Analysis",
         "title_ugcPointPosition": "Point And Line Analysis",
         "title_ugcSpatial": "Spacial Analysis",
+        "title_multiphaseplay": "Multiphase Play",
 
         "text_graphmap_shortest_analysis": "Shortest Path Analysis",
         "text_startNode": "start node",
@@ -1692,6 +1693,8 @@ window.examplesResources = {
         "text_lastPage": "Last",
         "text_queryDistance": "Query Distance(Degree)",
         "text_queryDistanceLimit": "The query distance must be greater than zero",
+        "text_multiphaseplay": "Multiphase Play(2009-2016 years of NDVI)",
+        "text_2009To2016NDVI": "2009-2016 years of NDVI",
 
         "btn_previous":"Previous",
         "btn_next":"Next",
