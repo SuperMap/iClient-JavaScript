@@ -193,6 +193,10 @@ export class L7LayerBase extends CustomOverlayLayer {
       type: parser.type,
       map: this.map
     };
+    if (parser.extent) {
+      sourceInfo.bounds = parser.extent;
+    }
+    let formatData = [];
     switch (parser.type) {
       case 'mvt':
         sourceInfo.type = 'vector';
@@ -201,6 +205,26 @@ export class L7LayerBase extends CustomOverlayLayer {
         sourceInfo._data = layerSource.originData;
         sourceInfo.getData = () => layerSource.originData;
         sourceInfo.setData = this.setDataFn;
+        break;
+      case 'json':
+        formatData = (layerSource.originData || []).map((feature) => {
+          return {
+            type: 'Feature',
+            geometry: {
+              coordinates: [feature[parser.x], feature[parser.y]],
+              type: 'Point'
+            },
+            properties: {
+             ...feature
+            }
+          }
+        });
+        sourceInfo.getData = () => {
+          return {
+            type: 'FeatureCollection',
+            features: formatData
+          }
+        };
         break;
     }
     return sourceInfo;

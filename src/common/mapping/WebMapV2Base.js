@@ -495,6 +495,10 @@ export function createWebMapV2BaseExtending(SuperClass = Events, fireField = 'tr
       const options = this._createOptions(layerInfo, lineData, pointData, coordinateSystem);
       return options;
     }
+
+    getEchartsLayerById(layerId) {
+      return this.echartsLayer.find(layer => layer.layerId === layerId);
+    }
   
     getDashStyle(str, strokeWidth = 1, type = 'array') {
       if (!str) {

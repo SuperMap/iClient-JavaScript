@@ -61,6 +61,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       super.cleanLayers(layers);
       this.echartslayer.forEach(echartLayer => {
         echartLayer.remove();
+        echartLayer.features = null;
+        echartLayer.id = '';
       });
     }
 
@@ -1106,6 +1108,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       options.GLMap = { roam: true };
       const echartslayer = new window.EchartsLayer(this.map);
       echartslayer.chart.setOption(options);
+      echartslayer.id = layerID;
+      echartslayer.features = features;
       this.echartslayer.push(echartslayer);
       this._addLayer({
         id: layerID,
