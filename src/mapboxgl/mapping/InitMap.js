@@ -55,7 +55,7 @@ export function initMap(url, options = {}) {
         }
         const mapOptions = await createMapOptions(url, res.result, { ...options, initMapService });
         const map = new mapboxgl.Map(mapOptions);
-        if (mapOptions.style && mapOptions.style.layers && mapOptions.style.layers.length > 0) {
+        if (!map.loaded()) {
           map.on('load', () => {
             resolve({ map });
           });

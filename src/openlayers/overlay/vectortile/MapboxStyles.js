@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
@@ -18,7 +18,7 @@ import Text from 'ol/style/Text';
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2-1/dist/olms.js"></script>`
+ *      <a src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-5/olms.js">https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-5/olms.js</a>
  * </div>
  * @modulecategory Overlay
  * @category  Visualization VectorTile

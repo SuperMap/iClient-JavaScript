@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
@@ -35,12 +35,12 @@ var exampleConfig = {
                     name_en: "planar coordinate system",
                     thumbnail: "ol_tiledMapLayerNoProj.png",
                     fileName: "01_tiledMapLayerNoProj"
-                }, {
-                    name: "地图-栅格分析",
-                    name_en: "map rasterFunction",
-                    version: "10.0.0",
-                    thumbnail: "ol_tiledMapLayerRasterfunction.png",
-                    fileName: "01_tiledmaplayer_rasterfunction"
+                // }, {
+                //     name: "地图-栅格分析",
+                //     name_en: "map rasterFunction",
+                //     version: "10.0.0",
+                //     thumbnail: "ol_tiledMapLayerRasterfunction.png",
+                //     fileName: "01_tiledmaplayer_rasterfunction"
                 }, {
                     name: "地图信息",
                     name_en: "map query service",

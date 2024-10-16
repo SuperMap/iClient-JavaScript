@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -6,6 +6,7 @@ import '../core/Base';
 import {
     ServiceBase
 } from './ServiceBase';
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
 import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
 /**
@@ -69,7 +70,7 @@ export var MapService = ServiceBase.extend({
      */
     getWKT(callback) {
       var me = this;
-      var getMapStatusService = new CommonMapService(`${me.url}/prjCoordSys.wkt`, {
+      var getMapStatusService = new CommonMapService(Util.urlPathAppend(me.url,'prjCoordSys.wkt'), {
           proxy: me.options.proxy,
           withCredentials: me.options.withCredentials,
           withoutFormatSuffix: true,

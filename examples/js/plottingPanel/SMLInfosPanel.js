@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initSMLInfosPanel = function(div, smlInfos, clickTreeNode){
     var smlInfosPanel = document.getElementById(div);
 

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * maplibregl 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -22,12 +22,12 @@ var exampleConfig = {
             thumbnail: 'mb_TileLayer.png',
             fileName: '01_tiledMapLayer'
           },
-          {
-            name: '地图-栅格分析',
-            name_en: 'map rasterFunction',
-            thumbnail: 'tiledMapLayerRasterfunction.png',
-            fileName: '01_tiledMapLayer_rasterfunction'
-          },
+          // {
+          //   name: '地图-栅格分析',
+          //   name_en: 'map rasterFunction',
+          //   thumbnail: 'tiledMapLayerRasterfunction.png',
+          //   fileName: '01_tiledMapLayer_rasterfunction'
+          // },
           {
             name: '地图信息',
             name_en: 'map query service',

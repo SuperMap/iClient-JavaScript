@@ -209,11 +209,21 @@ describe('Util', () => {
     it('isInTheSameDomain', () => {
         var Url = "https://iclient.supermap.io/examples/leaflet/editor.html#addressMatchService";
         var correct = Util.isInTheSameDomain(Url);
-        expect(correct).toBeFalsy(false);
-
+        expect(correct).toBeFalsy();
         var errorUrl = "httttttp:wwwwwww.bbbb";
         var error = Util.isInTheSameDomain(errorUrl);
-        expect(error).toBeTruthy(true);
+        expect(error).toBeTruthy();
+
+    });
+    it('isSameDomain', () => {
+        expect(Util.isSameDomain('https://test.com/b',"httttttp:wwwwwww.bbbb")).toBeFalsy();
+        expect(Util.isSameDomain('https://test.com/b','https://test.com')).toBeTruthy();
+        expect(Util.isSameDomain('https://test.com:443/b','https://test.com')).toBeTruthy();
+        expect(Util.isSameDomain('http://test.com/b','https://test.com')).toBeFalsy();
+        expect(Util.isSameDomain('http://test.com/b','http://test.com')).toBeTruthy();
+        expect(Util.isSameDomain('http://test.com:80/b','http://test.com')).toBeTruthy();
+        expect(Util.isSameDomain('https://test.com/b?epsg:4326','https://test.com')).toBeTruthy();
+
     });
 
     it("calculateDpi", () => {
