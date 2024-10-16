@@ -43,7 +43,6 @@ describe('maplibregl_GraticuleLayer', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        debugger
         if (!map.getLayer('graticuleLayer_1')) {
             graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
             graticuleLayer.onAdd(map);
