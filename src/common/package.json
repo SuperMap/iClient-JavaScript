@@ -16,7 +16,6 @@
   "dependencies": {
     "@antv/g6": "^4.8.14",
     "@supermapgis/tile-decryptor": "^1.0.0",
-    "@turf/meta": "^6.5.0",
     "echarts": "5.5.0",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
