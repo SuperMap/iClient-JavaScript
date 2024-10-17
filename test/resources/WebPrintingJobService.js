@@ -198,5 +198,41 @@ var getLayoutsResultJson = [
             hasLittleMap: true
         },
         templateName: 'A3_landscape'
+    },
+    {
+      layoutOptions: {
+        hasNorthArrow: false,
+        hasCopyright: false,
+        hasSummaryText: true,
+        hasSubtitle: false,
+        hasAuthor: true,
+        hasScaleBar: false,
+        hasTitle: true,
+        hasLegend: false,
+        hasTime: true,
+        hasLittleMap: false
+      },
+      templateName: 'MapGrid',
+      maxDPI: 400,
+      webMapFrameSize: [1008, 565],
+      suggestionDpis: [72, 120, 200, 254, 300]
+    },
+    {
+      layoutOptions: {
+        hasNorthArrow: true,
+        hasCopyright: true,
+        hasSummaryText: false,
+        hasSubtitle: true,
+        hasAuthor: true,
+        hasScaleBar: true,
+        hasTitle: true,
+        hasLegend: true,
+        hasTime: false,
+        hasLittleMap: true
+      },
+      templateName: 'UGCTemplate',
+      maxDPI: 400,
+      webMapFrameSize: [1600, 900],
+      suggestionDpis: [72, 120, 200, 254, 300]
     }
 ];
