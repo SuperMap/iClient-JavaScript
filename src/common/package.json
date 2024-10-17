@@ -16,6 +16,7 @@
   "dependencies": {
     "@antv/g2": "^4.2.11",
     "@antv/g6": "^4.8.14",
+    "@supermapgis/tile-decryptor": "^1.0.0",
     "@turf/meta": "^6.5.0",
     "echarts": "5.5.0",
     "fast-xml-parser": "^4.2.7",

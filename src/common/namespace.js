@@ -326,6 +326,7 @@ import {
   FilterField,
   OnlineServiceBase,
   KeyServiceParameter,
+  decrypt,
   SecurityManager,
   ServerInfo,
   TokenServiceParameter,
@@ -890,6 +891,7 @@ SuperMap.KeyServiceParameter = KeyServiceParameter;
 SuperMap.SecurityManager = SecurityManager;
 SuperMap.ServerInfo = ServerInfo;
 SuperMap.TokenServiceParameter = TokenServiceParameter;
+SuperMap.decrypt= decrypt;
 // style
 SuperMap.ThemeStyle = ThemeStyle;
 SuperMap.CartoCSS = CartoCSS;
