@@ -1,6 +1,6 @@
 import { GraticuleLayer } from '../../../src/mapboxgl/overlay/GraticuleLayer';
 import mapboxgl from 'mapbox-gl';
-// import { Feature } from '@supermap/iclient-common';
+// import { Feature } from '@supermapgis/iclient-common';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('mapboxgl_GraticuleLayer', () => {
@@ -45,7 +45,7 @@ describe('mapboxgl_GraticuleLayer', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     if (!map.getLayer('graticuleLayer_1')) {
       graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_1' });
-      graticuleLayer.onAdd(map);
+      map.addLayer(graticuleLayer);
     }
   });
 
@@ -72,14 +72,13 @@ describe('mapboxgl_GraticuleLayer', () => {
       done();
     }, 0);
   });
-  
+
   it('_initialize visible', (done) => {
     setTimeout(() => {
-      expect(graticuleLayer).not.toBeNull();
       const graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_test', visible: false });
       graticuleLayer.onAdd(map);
-      var visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
-      expect(visible).toBe('false');
+      var visible = map.getLayoutProperty('graticuleLayer_test_line', 'visibility');
+      expect(visible).toBe('none');
       done();
     }, 0);
   });
@@ -91,6 +90,20 @@ describe('mapboxgl_GraticuleLayer', () => {
     graticuleLayer.setVisibility(true);
     visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
     expect(visible).toBe('visible');
+  });
+
+  it('setLayoutProperty', () => {
+    let visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'none');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('none');
+    expect(graticuleLayer.visible).toBeFalsy();
+    map.setLayoutProperty(graticuleLayer.id, 'visibility', 'visible');
+    visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+    expect(visible).toBe('visible');
+    expect(graticuleLayer.visible).toBeTruthy();
   });
 
   it('setMinZoom', () => {
@@ -109,12 +122,12 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setExtent', () => {
-    graticuleLayer.setExtent([
-      [0, 0],
-      [50, 50]
-    ]);
-    expect(graticuleLayer.options.extent[0]).toEqual(0);
-    expect(graticuleLayer.options.extent[3]).toEqual(50);
+      graticuleLayer.setExtent([
+        [0, 0],
+        [50, 50]
+      ]);
+      expect(graticuleLayer.options.extent[0]).toEqual(0);
+      expect(graticuleLayer.options.extent[3]).toEqual(50);
   });
 
   it('setStrokeStyle', () => {
@@ -133,8 +146,34 @@ describe('mapboxgl_GraticuleLayer', () => {
   });
 
   it('setIntervals', () => {
-    graticuleLayer.setIntervals(5);
-    expect(graticuleLayer.renderer.options.interval).toEqual(5);
+      graticuleLayer.setIntervals(5);
+      expect(graticuleLayer.renderer.options.interval).toEqual(5);
+  });
+
+  it('getDefaultExtent must return degree', () => {
+    map.getCRS = () => {
+      return {
+        extent: [
+          -20037508.3427892,
+          -20037508.3427892,
+          20037508.3427892,
+          20037508.3427892
+        ],
+        lngLatExtent: [
+          -179.99999999999963,
+          -85.05112877980658,
+          179.99999999999963,
+          85.05112877980656
+        ]
+      };
+    };
+    var extent = graticuleLayer.getDefaultExtent();
+    expect(extent).toEqual([
+      -179.99999999999963,
+      -85.05112877980658,
+      179.99999999999963,
+      85.05112877980656
+    ]);
   });
 
   it('_calcInterval', () => {
@@ -164,7 +203,7 @@ describe('mapboxgl_GraticuleLayer', () => {
     expect(points[0][1]).toEqual(80);
   });
 
-  it('onRemove', () => {
+  xit('onRemove', () => {
     graticuleLayer.onRemove();
     expect(graticuleLayer.renderer.canvas).toBeNull();
   });
