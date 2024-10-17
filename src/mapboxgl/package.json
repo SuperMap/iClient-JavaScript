@@ -21,7 +21,7 @@
     "@supermap/iclient-common": "11.1.2",
     "canvg": "3.0.10",
     "fast-xml-parser": "^4.2.7",
-    "flatgeobuf": "3.23.1",
+    "flatgeobuf": "3.31.1",
     "rbush": "^2.0.2",
     "proj4": "2.9.0"
   }

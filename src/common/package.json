@@ -23,7 +23,7 @@
     "lodash.uniqby": "^4.7.0",
     "lodash.clonedeep": "^4.5.0",
     "mapv": "2.0.62",
-    "flatgeobuf": "3.23.1",
+    "flatgeobuf": "3.31.1",
     "rbush": "^2.0.2",
     "urijs": "^1.19.11",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
