@@ -59,8 +59,8 @@
       inputScript(libsurl + '/mapbox-gl-js/1.13.2/mapbox-gl.js');
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.css');
-      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.js');
+      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.css');
+      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.js');
     }
     if (inArray(includes, 'g6')) {
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');

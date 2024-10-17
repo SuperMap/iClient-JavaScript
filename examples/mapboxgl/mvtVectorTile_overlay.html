@@ -3,7 +3,7 @@
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入 
-* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js)
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -43,7 +43,7 @@
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
         map.on('load', function () {
-            //请使用mapboxgl增强版 https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
+            //请使用mapboxgl增强版 https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.js
             map.addStyle(host +
                 '/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true'
             )
