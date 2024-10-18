@@ -66,7 +66,6 @@
 
       $.getJSON('../data/data671MeteorologicalStations.geojson', function(res) {
         var data = res;
-
         ReactDOM.render(
           <SmWebMap mapOptions={mapOptions}>
             <SmGeojsonLayer data={data} layerStyle={layerStyle} />
