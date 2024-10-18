@@ -487,6 +487,13 @@ var exampleConfig = {
             version: "11.2.0",
             thumbnail: "imageService.png",
             fileName: "imageService"
+          },
+          {
+            name: "多时相播放",
+            name_en: "Multiphase play",
+            version: '11.3.0',
+            thumbnail: "multiphaseplay.png",
+            fileName: "multiphaseplay"
           }
         ]
       },

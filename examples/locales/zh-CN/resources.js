@@ -777,6 +777,7 @@ window.examplesResources = {
         "title_l7_3d_terrain": "自定义3D地形（LOD）",
         "title_l7_snow_particle": "雪花粒子",
         "title_l7_rain_particle": "雨滴粒子",
+        "title_multiphaseplay": "多时相播放",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -1648,6 +1649,8 @@ window.examplesResources = {
         "text_lastPage": "尾页",
         "text_queryDistance": "查询距离(度)",
         "text_queryDistanceLimit": "查询距离必须大于零",
+        "text_multiphaseplay": "多时相播放",
+        "text_2009To2016NDVI": "2009-2016年5月植被指数",
 
 
 
