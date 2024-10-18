@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../services/MapService';
 import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 import proj4 from 'proj4';
 /**
  * @function initMap
@@ -169,7 +170,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
   let extent = bounds;
   let tileUrl =
     sourceType === 'vector-tile'
-      ? url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+      ? Util.urlAppend(Util.urlPathAppend(url, 'tileFeature/vectorstyles.json'), 'type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY')
       : url;
   let nonEnhanceExtraInfo = {};
   let enhanceExtraInfo = {};
@@ -221,7 +222,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
       const tileSize = 256;
       nonEnhanceExtraInfo.tileSize = tileSize;
       const transparent = mapOptions.transparent !== false;
-      tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
+      tileUrl = Util.urlAppend(Util.urlPathAppend(tileUrl, 'zxyTileImage.png'), `z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`);
     }
   }
   if (zoom === undefined) {

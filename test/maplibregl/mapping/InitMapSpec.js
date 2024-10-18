@@ -1,10 +1,14 @@
+import maplibregl from 'maplibre-gl';
+import mbglmap from '../../tool/mock_maplibregl_map';
 import { initMap } from '../../../src/maplibregl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 describe('maplibregl_InitMap', () => {
   let originalTimeout, testDiv;
+  const tokenQuery = 'token=opbFn8Nl5zUs2xhuCQ..';
 
   beforeEach(() => {
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -217,5 +221,77 @@ describe('maplibregl_InitMap', () => {
       delete maplibregl.proj4;
       done();
     });
+  });
+
+  it('initMap raster when carring on token', async () => {
+    const url = `${GlobeParameter.ChinaURL}?${tokenQuery}`;
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 3857
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+      center: {
+        x: -7.450580596923828e-9,
+        y: -2.60770320892334e-8
+      }
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      expect(url).toContain(tokenQuery);
+      return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+    });
+    const resData = await initMap(url);
+    const map = resData.map;
+    expect(map).not.toBeUndefined();
+    expect(map.getCenter().toArray()).not.toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
+  });
+
+  it('initMap vector-tile when carring on token', async () => {
+    const url = `http:/fake:8090/iserver/services/map-mvt-landuse/rest/maps/landuse?${tokenQuery}`;
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 3857
+      },
+      center: {
+        x: 12124158.777882982,
+        y: 2732247.310535573
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      expect(url).toContain(tokenQuery);
+      return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+    });
+    const resData = await initMap(url, { type: 'vector-tile' });
+    const map = resData.map;
+    expect(map).not.toBeUndefined();
+    expect(map.getCenter()).not.toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
   });
 });
