@@ -1,6 +1,7 @@
 import { Unit } from '../REST';
 
 /**
+ * @private
  * @function getMeterPerMapUnit
  * @description 单位换算，把米|度|千米|英寸|英尺换成米。
  * @category BaseTypes Util
@@ -43,6 +44,7 @@ export var getMeterPerMapUnit = function(mapUnit) {
 };
 
 /**
+ * @private
  * @function getWrapNum
  * @description 获取该坐标系的经纬度范围的经度或纬度。
  * @category BaseTypes Util
@@ -84,6 +86,7 @@ export function getWrapNum(x, includeMax = true, includeMin = true, range = [-18
 }
 
 /**
+ * @private
  * @function conversionDegree
  * @description 转换经纬度。
  * @category BaseTypes Util
@@ -114,29 +117,30 @@ export function conversionDegree(degrees) {
 }
 
 /**
-  * @function scalesToResolutions
-  * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
-  * @version 11.0.1
-  * @param {Array} scales - 比例尺数组。
-  * @param {Object} bounds - 地图范围。
-  * @param {number} dpi - 屏幕分辨率。
-  * @param {string} mapUnit - 地图单位。
-  * @param {number} [level=22] - 地图最大级别。
-  * @returns {number} 分辨率。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { scalesToResolutions } from '{npm}';
-  *
-  * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
-  * ```
+ *  @private
+ * @function scalesToResolutions
+ * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
+ * @version 11.0.1
+ * @param {Array} scales - 比例尺数组。
+ * @param {Object} bounds - 地图范围。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @param {number} [level=22] - 地图最大级别。
+ * @returns {number} 分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { scalesToResolutions } from '{npm}';
+ *
+ * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
+ * ```
  */
  export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
   var resolutions = [];
@@ -155,26 +159,27 @@ export function conversionDegree(degrees) {
   });
 }
 /**
-  * @function getZoomByResolution
-  * @description 通过分辨率获取地图级别。
-  * @version 11.0.1
-  * @param {number} resolution - 分辨率。
-  * @param {Array} resolutions - 分辨率数组。
-  * @returns {number} 地图级别。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { getZoomByResolution } from '{npm}';
-  *
-  * const result = getZoomByResolution(resolution, resolutions);
-  * ```
+ * @private
+ * @function getZoomByResolution
+ * @description 通过分辨率获取地图级别。
+ * @version 11.0.1
+ * @param {number} resolution - 分辨率。
+ * @param {Array} resolutions - 分辨率数组。
+ * @returns {number} 地图级别。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getZoomByResolution } from '{npm}';
+ *
+ * const result = getZoomByResolution(resolution, resolutions);
+ * ```
  */
 export function getZoomByResolution(resolution, resolutions) {
   let zoom = 0;
@@ -192,27 +197,28 @@ export function getZoomByResolution(resolution, resolutions) {
 }
 
 /**
-  * @function scaleToResolution
-  * @description 通过比例尺计算分辨率。
-  * @version 11.0.1
-  * @param {number} scale - 比例尺。
-  * @param {number} dpi - 屏幕分辨率。
-  * @param {string} mapUnit - 地图单位。
-  * @returns {number} 分辨率。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { scaleToResolution } from '{npm}';
-  *
-  * const result = scaleToResolution(scale, dpi, mapUnit);
-  * ```
+ * @private
+ * @function scaleToResolution
+ * @description 通过比例尺计算分辨率。
+ * @version 11.0.1
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @returns {number} 分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { scaleToResolution } from '{npm}';
+ *
+ * const result = scaleToResolution(scale, dpi, mapUnit);
+ * ```
  */
 export function scaleToResolution(scale, dpi, mapUnit) {
   const inchPerMeter = 1 / 0.0254;
@@ -222,28 +228,25 @@ export function scaleToResolution(scale, dpi, mapUnit) {
 }
 
 /**
+ * @private
  * 范围是否相交
  * @param {Array} extent1 范围1
  * @param {Array} extent2 范围2
  * @return {boolean} 范围是否相交。
  */
- export function intersects(extent1, extent2) {
-  return (
-    extent1[0] <= extent2[2] &&
-    extent1[2] >= extent2[0] &&
-    extent1[1] <= extent2[3] &&
-    extent1[3] >= extent2[1]
-  );
+export function intersects(extent1, extent2) {
+  return extent1[0] <= extent2[2] && extent1[2] >= extent2[0] && extent1[1] <= extent2[3] && extent1[3] >= extent2[1];
 }
 
 /**
+ * @private
  * 获取两个范围的交集
  * @param {Array} extent1 Extent 1
  * @param {Array} extent2 Extent 2
  * @return {Array} 相交范围数组.
  * @api
  */
- export function getIntersection(extent1, extent2) {
+export function getIntersection(extent1, extent2) {
   const intersection = [];
   if (intersects(extent1, extent2)) {
     if (extent1[0] > extent2[0]) {
