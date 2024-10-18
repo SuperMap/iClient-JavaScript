@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl';
 import { MapService } from '../services/MapService';
 import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 import proj4 from 'proj4';
 /**
  * @function initMap
@@ -81,14 +82,14 @@ async function createMapOptions(url, resetServiceInfo, options) {
   const mapCenter = center ? proj4('EPSG:3857', 'EPSG:4326', [center.x, center.y]) : [0, 0];
   let tileUrl =
     sourceType === 'vector-tile'
-      ? url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+      ? Util.urlAppend(Util.urlPathAppend(url, 'tileFeature/vectorstyles.json'), 'type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY')
       : url;
   let rasterExtraInfo = {};
   if (sourceType === 'raster') {
     const tileSize = 256;
     rasterExtraInfo.tileSize = tileSize;
     const transparent = mapOptions.transparent !== false;
-    tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
+    tileUrl = Util.urlAppend(Util.urlPathAppend(tileUrl, 'zxyTileImage.png'), `z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`);
   }
   const zoom = getZoom({ scale, dpi, coordUnit }, bounds);
   return {
