@@ -343,6 +343,9 @@ export class WebMap extends mapboxgl.Evented {
 			case 'SUPERMAP_REST':
 				this._createDynamicTiledLayer(layerInfo);
 				break;
+      case 'ZXY_TILE':
+        this._createZXYLayer(layerInfo);
+        break;
 			case 'CLOUD':
 			case 'CLOUD_BLACK':
 			case 'OSM':
@@ -566,6 +569,13 @@ export class WebMap extends mapboxgl.Evented {
 		this._addBaselayer(urlArr, 'XYZ-layers-' + layerInfo.name);
 	}
 
+  _createZXYLayer(layerInfo) {
+    const { url, subdomains, layerID, name, visible } = layerInfo;
+    const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
+    const layerId = layerID || name;
+    this._addBaselayer(urls, layerId, undefined, undefined, false, visible);
+    }
+
 	/**
 	 * @private
 	 * @function WebMap.prototype._createDynamicTiledLayer
@@ -758,6 +768,7 @@ export class WebMap extends mapboxgl.Evented {
 							this.fire('getlayersfailed', { error: error, map: this.map });
 						});
 			} else if (
+        layer.layerType === 'ZXY_TILE' ||
 				layer.layerType === 'SUPERMAP_REST' ||
 				layer.layerType === 'TILE' ||
 				layer.layerType === 'WMS' ||
@@ -1955,7 +1966,7 @@ export class WebMap extends mapboxgl.Evented {
 		}
 	}
 
-	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22, isIserver) {
+	_addBaselayer(url, layerID, minzoom = 0, maxzoom = 22, isIserver, visible = true) {
 		this.map.addLayer({
 			id: layerID,
 			type: 'raster',
@@ -1966,6 +1977,7 @@ export class WebMap extends mapboxgl.Evented {
                 rasterSource: isIserver ? 'iserver' : '',
                 prjCoordSys: isIserver ? { epsgCode: this.baseProjection.split(':')[1] } : ''
 			},
+      layout: { visibility: visible ? 'visible': 'none' },
 			minzoom: minzoom,
 			maxzoom: maxzoom
 		});

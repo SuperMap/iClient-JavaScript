@@ -389,6 +389,27 @@ describe('openlayers_WebMap', () => {
         }
     });
 
+    it('initialize_ZXYtILE', (done) => {
+      let options = {
+          server: server,
+          successCallback,
+          errorCallback: function () { }
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebmap_ZXYTILE;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+      function successCallback() {
+          expect(datavizWebmap.mapParams.title).toBe('xyz');
+          // expect(datavizWebmap.layerAdded).toBe(2);
+          done();
+      }
+    });
+
     it('initialize_CLOUD', (done) => {
         let options = {
             server: server,
