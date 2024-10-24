@@ -139,7 +139,7 @@ describe('mapboxgl_WebMap', () => {
         }
       );
       datavizWebmap.on('addlayerssucceeded', ({ layers }) => {
-        expect(layers.length).toBe(2);
+        expect(layers[0].layerType).toBe('ZXY_TILE');
         done();
       });
     });
