@@ -134,7 +134,7 @@ describe('mapboxgl_WebMap', () => {
         'test',
         {
           target: 'map',
-          serverUrl: 'http://fake/fakeiportal',
+          server: 'http://fake/fakeiportal',
           withCredentials: false
         }
       );
