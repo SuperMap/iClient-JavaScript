@@ -120,6 +120,30 @@ describe('mapboxgl_WebMap', () => {
             done();
         });
     });
+
+    it('add zxytile layer', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('portal.json') > -1) {
+          return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+        } else if (url.indexOf('/map.json') > -1) {
+          return Promise.resolve(new Response(datavizWebmap_ZXYTILE));
+        }
+        return Promise.resolve();
+      });
+      datavizWebmap = new WebMap(
+        'test',
+        {
+          target: 'map',
+          serverUrl: 'http://fake/fakeiportal',
+          withCredentials: false
+        }
+      );
+      datavizWebmap.on('addlayerssucceeded', ({ layers }) => {
+        expect(layers.length).toBe(2);
+        done();
+      });
+    });
+
     it('setWebMapOptions', (done) => {
         let options = {
             server: server
