@@ -403,6 +403,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         case 'TILE':
           this._createDynamicTiledLayer(layerInfo, addedCallback);
           break;
+        case 'ZXY_TILE':
+          this._createZXYLayer(layerInfo, addedCallback);
+          break;
         case 'CLOUD':
         case 'XYZ':
           url = mapUrls[layerInfo.layerType]
@@ -442,6 +445,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs), 0);
             layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs) + 0.0000001);
           }
+          console.log('_initOverlayLayers')
 
           if (type === 'tile') {
             if (layer.autoUpdateTime) {
@@ -702,6 +706,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       }
       const layerId = layerInfo.layerID || layerInfo.name;
       this._addBaselayer({ url: urlArr, layerID: layerId, visibility: layerInfo.visible, bounds: INTERNET_MAP_BOUNDS[layerInfo.layerType] || [-180, -90, 180, 90] });
+      addedCallback && addedCallback();
+    }
+
+    _createZXYLayer(layerInfo, addedCallback) {
+      const { url, subdomains, layerID, name, visible } = layerInfo;
+      const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
+      const layerId = layerID || name;
+      this._addBaselayer({ url: urls, layerID: layerId, visibility: visible });
       addedCallback && addedCallback();
     }
 

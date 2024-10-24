@@ -179,6 +179,23 @@ describe('WebMapServiceSpec.js', () => {
     });
   });
 
+  xit('getsourcetype zxytile', done => {
+    const options = {
+      ...options,
+      serverUrl: 'https://fakeiportal.supermap.io/iportal/' // 没有通过处理在末尾加 '/',在此处理
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(mapJson);
+      }
+      return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+    });
+    const service = new WebMapService(mapId, options);
+    const res = service.getDatasourceType({layerType: 'ZXY_TILE'});
+    expect(res).toBe('tile');
+    done()
+  });
+
   it('get the wrong iPortal service proxy', (done) => {
     const options = {
       ...options,

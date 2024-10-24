@@ -657,6 +657,7 @@ export class WebMapService {
     let type;
     let isHosted = (dataSource && dataSource.serverId) || layerType === 'MARKER' || layerType === 'HOSTED_TILE';
     let isTile =
+      layerType === 'ZXY_TILE' ||
       layerType === 'SUPERMAP_REST' ||
       layerType === 'TILE' ||
       layerType === 'WMS' ||
