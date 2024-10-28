@@ -497,7 +497,7 @@ export function createWebMapV2BaseExtending(SuperClass = Events, fireField = 'tr
     }
 
     getEchartsLayerById(layerId) {
-      return this.echartsLayer.find(layer => layer.layerId === layerId);
+      return this.echartslayer.find(layer => layer.id === layerId);
     }
   
     getDashStyle(str, strokeWidth = 1, type = 'array') {
