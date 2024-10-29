@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
+import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermapgis/iclient-common/iServer/TrafficTransferAnalystService';
 import Point from 'ol/geom/Point';
 
 /**

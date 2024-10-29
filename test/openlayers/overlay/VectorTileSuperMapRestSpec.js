@@ -1,7 +1,7 @@
 import { VectorTileSuperMapRest } from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
 import {
     FetchRequest
-} from '@supermap/iclient-common/util/FetchRequest';
+} from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../../../src/openlayers/services/MapService';
 import Map from 'ol/Map';
 import View from 'ol/View';

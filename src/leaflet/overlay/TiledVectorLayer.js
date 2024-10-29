@@ -5,11 +5,11 @@
  import '../core/Base';
  import { VectorGrid } from './vectortile/VectorGrid';
  import { CartoCSSToLeaflet } from './carto/CartoCSSToLeaflet';
- import { Credential } from '@supermap/iclient-common/commontypes/Credential';
- import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
- import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
- import { Unit } from '@supermap/iclient-common/REST';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { Credential } from '@supermapgis/iclient-common/commontypes/Credential';
+ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+ import { Unit } from '@supermapgis/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
  import * as Util from '../core/Util';
  import Attributions from '../core/Attributions';

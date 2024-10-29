@@ -5,8 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { WebPrintingService } from '@supermapgis/iclient-common/iServer/WebPrintingService';
 /**
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob

@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
 import {baiduMapLayer, DataSet} from 'mapv';
-import { getMeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
+import { getMeterPerMapUnit } from '@supermapgis/iclient-common/util/MapCalculateUtil';
 
 /**
  * @class MapVRenderer

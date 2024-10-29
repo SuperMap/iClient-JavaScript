@@ -1,5 +1,5 @@
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
 import olMap from 'ol/Map';
 import View from 'ol/View';
 import Tile from 'ol/layer/Tile';

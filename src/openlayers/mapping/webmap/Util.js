@@ -1,7 +1,7 @@
-import { QueryOption } from '@supermap/iclient-common/REST';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
-import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
+import { QueryOption } from '@supermapgis/iclient-common/REST';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { QueryBySQLParameters } from '@supermapgis/iclient-common/iServer/QueryBySQLParameters';
+import { FilterParameter } from '@supermapgis/iclient-common/iServer/FilterParameter';
 import { QueryService } from '../../services/QueryService';
 import { FeatureService } from '../../services/FeatureService';
 

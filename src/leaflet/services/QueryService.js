@@ -4,10 +4,10 @@
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
+import { QueryService as CommonQueryService } from '@supermapgis/iclient-common/iServer/QueryService';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 
 /**
  * @class  QueryService

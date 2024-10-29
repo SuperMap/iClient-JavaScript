@@ -4,7 +4,7 @@
 import maplibregl from 'maplibre-gl';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
+import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermapgis/iclient-common/iServer/TrafficTransferAnalystService';
 /**
  * @class TrafficTransferAnalystService
  * @extends ServiceBase

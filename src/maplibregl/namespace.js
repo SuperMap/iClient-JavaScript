@@ -51,7 +51,7 @@ import {
   CommonUtil,
   SuperMap,
   Transform
-} from '@supermap/iclient-common/namespace';
+} from '@supermapgis/iclient-common/namespace';
 
 export * from './index';
 

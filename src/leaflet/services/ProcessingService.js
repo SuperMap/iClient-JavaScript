@@ -5,7 +5,7 @@ import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import { ProcessingService as CommonProcessingService } from '@supermap/iclient-common/iServer/ProcessingService';
+import { ProcessingService as CommonProcessingService } from '@supermapgis/iclient-common/iServer/ProcessingService';
 
 /**
  * @class ProcessingService

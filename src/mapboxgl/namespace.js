@@ -62,7 +62,7 @@ import {
   SuperMap,
   Transform,
   ChartView
-} from '@supermap/iclient-common/namespace';
+} from '@supermapgis/iclient-common/namespace';
 
 import { WebMap, initMap } from './mapping';
 import mapboxgl from 'mapbox-gl';

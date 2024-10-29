@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
+import { DataFlowService as DataFlow } from '@supermapgis/iclient-common/iServer/DataFlowService';
 /**
  * @class DataFlowService
  * @category  iServer DataFlow

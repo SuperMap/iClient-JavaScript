@@ -1,5 +1,5 @@
 
-import { ImageGFOrtho } from '@supermap/iclient-common/iServer';
+import { ImageGFOrtho } from '@supermapgis/iclient-common/iServer';
 
 var option = {
   "girdFuncName": "GFOrtho1"

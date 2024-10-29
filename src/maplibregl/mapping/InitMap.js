@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl';
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermap/iclient-common/iServer/InitMapServiceBase';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 import proj4 from 'proj4';
 /**
  * @function initMap

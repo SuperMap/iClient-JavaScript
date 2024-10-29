@@ -5,11 +5,11 @@
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
  import * as Util from '../core/Util';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- import { DataFormat } from '@supermap/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+ import { DataFormat } from '@supermapgis/iclient-common/REST';
  import { CommontypesConversion } from '../core/CommontypesConversion';
- import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
- import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
+ import { EditFeaturesService } from '@supermapgis/iclient-common/iServer/EditFeaturesService';
+ import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-common/iServer/FeatureService';
 
 /**
  * @class FeatureService

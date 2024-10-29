@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
+import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermapgis/iclient-common/iServer/TrafficTransferAnalystService';
 /**
  * @class TrafficTransferAnalystService
  * @deprecatedclassinstance L.supermap.trafficTransferAnalystService

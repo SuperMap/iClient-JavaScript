@@ -1,6 +1,6 @@
-# @supermap/iclient-ol
+# @supermapgis/iclient-ol
 
-@supermap/iclient-ol 是一套基于 OpenLayers 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermapgis/iclient-ol 是一套基于 OpenLayers 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
@@ -9,9 +9,9 @@
 ## 安装
 
 ```
- npm install @supermap/iclient-ol
+ npm install @supermapgis/iclient-ol
 ```
-如果您使用的是 OpenLayers 4，请参考此[文档](https://www.npmjs.com/package/@supermap/iclient-openlayers/v/10.0.0)安装 SuperMap iClient for OpenLayers。
+如果您使用的是 OpenLayers 4，请参考此[文档](https://www.npmjs.com/package/@supermapgis/iclient-openlayers/v/10.0.0)安装 SuperMap iClient for OpenLayers。
 
 ## 开发
 
@@ -29,7 +29,7 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import * as control from 'ol/control';    
-import { Logo, TileSuperMapRest } from '@supermap/iclient-ol';
+import { Logo, TileSuperMapRest } from '@supermapgis/iclient-ol';
 
 var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
 var map = new Map({

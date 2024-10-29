@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ProcessingService as CommonProcessingService } from '@supermap/iclient-common/iServer/ProcessingService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { ProcessingService as CommonProcessingService } from '@supermapgis/iclient-common/iServer/ProcessingService';
 /**
  * @class SuperMap.REST.ProcessingService
  * @category  iServer ProcessingService

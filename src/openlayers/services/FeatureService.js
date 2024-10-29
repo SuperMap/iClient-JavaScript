@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
-import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { EditFeaturesService } from '@supermapgis/iclient-common/iServer/EditFeaturesService';
+import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-common/iServer/FeatureService';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
 import GeoJSON from 'ol/format/GeoJSON';

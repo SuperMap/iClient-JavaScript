@@ -68,7 +68,7 @@
       "outputSourceFiles": false
     },
     "namespace": "SuperMap",
-    "npm": "@supermap/iclient-classic",
+    "npm": "@supermapgis/iclient-classic",
     "cdn": "https://iclient.supermap.io/dist/classic/iclient-classic.js"
   }
 }

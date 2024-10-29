@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import mapboxgl from 'mapbox-gl';
-import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglLayerBase';
+import { DeckglLayerBase } from '@supermapgis/iclient-common/overlay/deckgl/DeckglLayerBase';
 
 /**
  * @class DeckglLayer

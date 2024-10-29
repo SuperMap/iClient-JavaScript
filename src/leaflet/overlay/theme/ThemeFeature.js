@@ -3,10 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../../core/Base';
- import { GeoJSON } from '@supermap/iclient-common/format/GeoJSON';
- import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
- import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
- import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+ import { GeoJSON } from '@supermapgis/iclient-common/format/GeoJSON';
+ import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+ import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
 /**
  * @class ThemeFeature
  * @deprecatedclassinstance L.supermap.themeFeature

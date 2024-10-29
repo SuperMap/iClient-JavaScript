@@ -5,7 +5,7 @@ import L from 'leaflet';
 import '../core/Base';
 import {
     LogoBase64
-} from '@supermap/iclient-common/control/img/Logo';
+} from '@supermapgis/iclient-common/control/img/Logo';
 
 /**
  * @class Logo

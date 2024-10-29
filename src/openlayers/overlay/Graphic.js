@@ -4,7 +4,7 @@
 import { Util } from '../core/Util';
 import { HitCloverShape } from './graphic/HitCloverShape';
 import { CloverShape } from './graphic/CloverShape';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
 import { GraphicWebGLRenderer } from './graphic/WebGLRenderer';
 import { GraphicCanvasRenderer } from './graphic/CanvasRenderer';
 import { Graphic as OverlayGraphic } from './graphic/Graphic';

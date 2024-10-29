@@ -5,11 +5,11 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
-import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { EditFeaturesService } from '@supermapgis/iclient-common/iServer/EditFeaturesService';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { Geometry } from '@supermapgis/iclient-common/commontypes/Geometry';
+import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-common/iServer/FeatureService';
 /**
  * @class FeatureService
  * @category  iServer Data Feature

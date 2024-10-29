@@ -2,14 +2,14 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../../core/Util';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { LevelRenderer } from '@supermap/iclient-common/overlay/levelRenderer/LevelRenderer';
-import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
-import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
-import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { LevelRenderer } from '@supermapgis/iclient-common/overlay/levelRenderer/LevelRenderer';
+import { ServerFeature } from '@supermapgis/iclient-common/iServer/ServerFeature';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
+import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { Vector as FeatureVector } from '@supermapgis/iclient-common/commontypes/Vector';
+import { LonLat } from '@supermapgis/iclient-common/commontypes/LonLat';
 import {ThemeFeature} from './ThemeFeature';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 import Feature from 'ol/Feature';

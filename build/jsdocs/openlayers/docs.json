@@ -78,7 +78,7 @@
             "outputSourceFiles": false
         },
         "namespace": "ol.supermap",
-        "npm":"@supermap/iclient-ol",
+        "npm":"@supermapgis/iclient-ol",
         "cdn":"https://iclient.supermap.io/dist/openlayers/iclient-ol.js"
     }
 }

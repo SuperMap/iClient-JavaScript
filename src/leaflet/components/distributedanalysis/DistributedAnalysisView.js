@@ -4,13 +4,13 @@
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { DistributedAnalysisViewModel } from './DistributedAnalysisViewModel';
- import { KernelDensityJobParameter } from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
- import { MappingParameters } from '@supermap/iclient-common/iServer/MappingParameters';
- import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
- import { Select } from '@supermap/iclient-common/components/templates/Select';
- import { DropDownBox } from '@supermap/iclient-common/components/templates/DropDownBox';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { KernelDensityJobParameter } from '@supermapgis/iclient-common/iServer/KernelDensityJobParameter';
+ import { MappingParameters } from '@supermapgis/iclient-common/iServer/MappingParameters';
+ import { CommonContainer } from '@supermapgis/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermapgis/iclient-common/components/templates/Select';
+ import { DropDownBox } from '@supermapgis/iclient-common/components/templates/DropDownBox';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 /**
  * @class DistributedAnalysisView
  * @aliasclass Components.DistributedAnalysisView

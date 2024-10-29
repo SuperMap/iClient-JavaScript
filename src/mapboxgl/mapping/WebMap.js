@@ -2,18 +2,18 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { ArrayStatistic } from '@supermap/iclient-common/util/ArrayStatistic';
-import { ColorsPickerUtil } from '@supermap/iclient-common/util/ColorsPickerUtil';
-import { QueryOption } from '@supermap/iclient-common/REST';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFeaturesBySQLService';
-import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
-import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
-import { Lang } from '@supermap/iclient-common/lang/Lang';
-import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { StringExt } from '@supermapgis/iclient-common/commontypes/BaseTypes';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
+import { ColorsPickerUtil } from '@supermapgis/iclient-common/util/ColorsPickerUtil';
+import { QueryOption } from '@supermapgis/iclient-common/REST';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { GetFeaturesBySQLService } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLService';
+import { QueryBySQLParameters } from '@supermapgis/iclient-common/iServer/QueryBySQLParameters';
+import { FilterParameter } from '@supermapgis/iclient-common/iServer/FilterParameter';
+import { Lang } from '@supermapgis/iclient-common/lang/Lang';
+import { parseCondition, parseConditionFeature } from '@supermapgis/iclient-common/util/FilterCondition';
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
 import Canvg from 'canvg';

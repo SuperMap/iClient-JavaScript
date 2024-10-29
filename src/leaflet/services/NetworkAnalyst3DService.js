@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { ServiceBase } from './ServiceBase';
  import '../core/Base';
- import { NetworkAnalyst3DService as CommonNetworkAnalyst3DService } from '@supermap/iclient-common/iServer/NetworkAnalyst3DService';
+ import { NetworkAnalyst3DService as CommonNetworkAnalyst3DService } from '@supermapgis/iclient-common/iServer/NetworkAnalyst3DService';
 /**
  * @class NetworkAnalyst3DService
  * @deprecatedclassinstance L.supermap.networkAnalyst3DService

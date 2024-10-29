@@ -1,7 +1,7 @@
 import {SpatialAnalystService} from '../../../src/maplibregl/services/SpatialAnalystService';
 import {DatasetMinDistanceAnalystParameters} from '../../../src/common/iServer/DatasetMinDistanceAnalystParameters';
 import {GeometryMinDistanceAnalystParameters} from '../../../src/common/iServer/GeometryMinDistanceAnalystParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {

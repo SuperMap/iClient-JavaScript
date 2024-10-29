@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
-import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
+import {LogoBase64} from '@supermapgis/iclient-common/control/img/Logo';
 
 /**
  * @class Logo

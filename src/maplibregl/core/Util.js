@@ -2,11 +2,11 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import "../core/Base";
-import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
-import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
-import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
-import { LinearRing } from "@supermap/iclient-common/commontypes/geometry/LinearRing";
-import { GeoJSON as GeoJSONFormat } from "@supermap/iclient-common/format/GeoJSON";
+import { Bounds } from "@supermapgis/iclient-common/commontypes/Bounds";
+import { Point as GeometryPoint } from "@supermapgis/iclient-common/commontypes/geometry/Point";
+import { Polygon } from "@supermapgis/iclient-common/commontypes/geometry/Polygon";
+import { LinearRing } from "@supermapgis/iclient-common/commontypes/geometry/LinearRing";
+import { GeoJSON as GeoJSONFormat } from "@supermapgis/iclient-common/format/GeoJSON";
 
 const isArray = function (obj){
   return Object.prototype.toString.call(obj) == "[object Array]";

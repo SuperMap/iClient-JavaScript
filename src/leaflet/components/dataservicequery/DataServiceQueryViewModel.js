@@ -5,11 +5,11 @@
 import L from "leaflet";
 import '../../core/Base';
 import { featureService as FeatureService} from '../../services/FeatureService';
-import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
-import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
-import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
+import { GetFeaturesByIDsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByIDsParameters';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { GetFeaturesByBoundsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBoundsParameters';
+import { GetFeaturesByBufferParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBufferParameters';
+import { GetFeaturesByGeometryParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByGeometryParameters';
 
 /**
  * @class DataServiceQueryViewModel

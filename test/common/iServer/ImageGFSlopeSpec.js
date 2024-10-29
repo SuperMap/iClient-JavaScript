@@ -1,4 +1,4 @@
-import { ImageGFSlope } from '@supermap/iclient-common/iServer';
+import { ImageGFSlope } from '@supermapgis/iclient-common/iServer';
 
 var option = {
     girdFuncName: 'GFSlope1',

@@ -9,7 +9,7 @@
  * thanks maptalks
  */
 import maplibregl from "maplibre-gl";
-import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/ThreeLayerRenderer";
+import { ThreeLayerRenderer } from "@supermapgis/iclient-common/overlay/threejs/ThreeLayerRenderer";
 
 /**
  * @class ThreeLayer

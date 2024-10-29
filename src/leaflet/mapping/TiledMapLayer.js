@@ -3,10 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L, { Util as LUtil } from 'leaflet';
  import '../core/Base';
- import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
- import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
- import { Unit } from '@supermap/iclient-common/REST';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+ import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
+ import { Unit } from '@supermapgis/iclient-common/REST';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
  import * as Util from '../core/Util';
  import Attributions from '../core/Attributions';

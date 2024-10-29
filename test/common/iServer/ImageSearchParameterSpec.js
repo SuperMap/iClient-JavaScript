@@ -1,4 +1,4 @@
-import { FieldsFilter, ImageSearchParameter } from '@supermap/iclient-common/iServer';
+import { FieldsFilter, ImageSearchParameter } from '@supermapgis/iclient-common/iServer';
 
 var option = {
     bbox: [-110, 39.5, -105, 40.5],

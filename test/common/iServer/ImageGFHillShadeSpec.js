@@ -1,5 +1,5 @@
 
-import { ImageGFHillShade } from '@supermap/iclient-common/iServer';
+import { ImageGFHillShade } from '@supermapgis/iclient-common/iServer';
 
 var option = {
   "girdFuncName": "GFHillShade1",

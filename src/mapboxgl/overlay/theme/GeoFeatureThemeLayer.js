@@ -3,9 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
-import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
-import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
+import { ShapeFactory } from '@supermapgis/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector } from '@supermapgis/iclient-common/overlay/ThemeVector';
 import {Theme} from './ThemeLayer';
 
 /**

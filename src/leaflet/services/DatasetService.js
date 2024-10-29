@@ -3,9 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
- import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
- import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
- import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
+ import { DatasetService as CommonDatasetService } from '@supermapgis/iclient-common/iServer/DatasetService';
+ import { CreateDatasetParameters } from '@supermapgis/iclient-common/iServer/CreateDatasetParameters';
+ import { UpdateDatasetParameters } from '@supermapgis/iclient-common/iServer/UpdateDatasetParameters';
 
 /**
  * @class  DatasetService

@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import { FieldService as CommonFieldService } from '@supermap/iclient-common/iServer/FieldService';
+import { FieldService as CommonFieldService } from '@supermapgis/iclient-common/iServer/FieldService';
 
 /**
  * @class FieldService

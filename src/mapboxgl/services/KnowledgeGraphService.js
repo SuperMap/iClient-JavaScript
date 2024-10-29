@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermap/iclient-common/iServer/KnowledgeGraphService';
+import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermapgis/iclient-common/iServer/KnowledgeGraphService';
 /**
  * @class KnowledgeGraphService
  * @category  iServer KnowledgeGraph

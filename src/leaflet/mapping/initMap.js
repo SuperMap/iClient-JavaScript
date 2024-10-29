@@ -7,7 +7,7 @@
  import { NonEarthCRS } from '../core/NonEarthCRS';
  import { TiledMapLayer } from './TiledMapLayer';
  import { MapService } from '../services/MapService';
- import { InitMapServiceBase, isPlaneProjection, getEpsgCode } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+ import { InitMapServiceBase, isPlaneProjection, getEpsgCode } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
  import proj4 from 'proj4';
 
  /**

@@ -76,7 +76,7 @@
       "outputSourceFiles": false
     },
     "namespace": "maplibregl.supermap",
-    "npm": "@supermap/iclient-maplibregl",
+    "npm": "@supermapgis/iclient-maplibregl",
     "cdn": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js"
   }
 }

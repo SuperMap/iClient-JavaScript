@@ -5,10 +5,10 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { QueryService as CommonQueryService } from '@supermapgis/iclient-common/iServer/QueryService';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { Geometry } from '@supermapgis/iclient-common/commontypes/Geometry';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 /**
  * @class QueryService
  * @category  iServer Map QueryResults

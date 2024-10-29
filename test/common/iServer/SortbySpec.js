@@ -1,4 +1,4 @@
-import { Sortby } from '@supermap/iclient-common/iServer';
+import { Sortby } from '@supermapgis/iclient-common/iServer';
 
 var option = {
     field: '属性名称',

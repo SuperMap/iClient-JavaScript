@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ProcessingService as CommonProcessingService } from '@supermap/iclient-common/iServer/ProcessingService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { ProcessingService as CommonProcessingService } from '@supermapgis/iclient-common/iServer/ProcessingService';
 /**
  * @class ProcessingService
  * @category  iServer ProcessingService

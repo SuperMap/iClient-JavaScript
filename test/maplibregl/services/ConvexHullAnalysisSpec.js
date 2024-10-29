@@ -1,6 +1,6 @@
 import {SpatialAnalystService} from '../../../src/maplibregl/services/SpatialAnalystService';
 import {ConvexHullAnalystParameters} from '../../../src/common/iServer/ConvexHullAnalystParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 
 var url = GlobeParameter.spatialAnalystURL;

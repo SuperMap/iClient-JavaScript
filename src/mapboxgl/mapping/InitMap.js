@@ -1,8 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import { MapService } from '../services/MapService';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { InitMapServiceBase, isPlaneProjection, getZoom  } from '@supermap/iclient-common/iServer/InitMapServiceBase';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { InitMapServiceBase, isPlaneProjection, getZoom  } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 import proj4 from 'proj4';
 
 /**

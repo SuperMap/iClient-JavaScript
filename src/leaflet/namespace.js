@@ -4,7 +4,7 @@
 import {
   CommonUtil,
   SuperMap
-} from '@supermap/iclient-common/namespace';
+} from '@supermapgis/iclient-common/namespace';
 
 import { Logo, logo, ChangeTileVersion, changeTileVersion } from './control';
 

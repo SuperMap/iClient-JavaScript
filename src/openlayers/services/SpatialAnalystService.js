@@ -2,9 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/iclient-common/iServer/SpatialAnalystService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermapgis/iclient-common/iServer/SpatialAnalystService';
 import {ServiceBase} from './ServiceBase';
 import LineString from 'ol/geom/LineString';
 import GeoJSON from 'ol/format/GeoJSON';

@@ -3220,11 +3220,11 @@
 
 - 发布npm项目
 
-  - iclient-common: [https://www.npmjs.com/package/@supermap/iclient-common](https://www.npmjs.com/package/@supermap/iclient-common)
-  - iclient-leaflet: [https://www.npmjs.com/package/@supermap/iclient-leaflet](https://www.npmjs.com/package/@supermap/iclient-leaflet)
-  - iclient-openlayers: [https://www.npmjs.com/package/@supermap/iclient-openlayers](https://www.npmjs.com/package/@supermap/iclient-openlayers)
-  - iclient-mapboxgl: [https://www.npmjs.com/package/@supermap/iclient-mapboxgl](https://www.npmjs.com/package/@supermap/iclient-mapboxgl)
-  - iclient-classic: [https://www.npmjs.com/package/@supermap/iclient-classic](https://www.npmjs.com/package/@supermap/iclient-classic)
+  - iclient-common: [https://www.npmjs.com/package/@supermapgis/iclient-common](https://www.npmjs.com/package/@supermapgis/iclient-common)
+  - iclient-leaflet: [https://www.npmjs.com/package/@supermapgis/iclient-leaflet](https://www.npmjs.com/package/@supermapgis/iclient-leaflet)
+  - iclient-openlayers: [https://www.npmjs.com/package/@supermapgis/iclient-openlayers](https://www.npmjs.com/package/@supermapgis/iclient-openlayers)
+  - iclient-mapboxgl: [https://www.npmjs.com/package/@supermapgis/iclient-mapboxgl](https://www.npmjs.com/package/@supermapgis/iclient-mapboxgl)
+  - iclient-classic: [https://www.npmjs.com/package/@supermapgis/iclient-classic](https://www.npmjs.com/package/@supermapgis/iclient-classic)
 
 # 9.0.0 (2017-09-13)
 

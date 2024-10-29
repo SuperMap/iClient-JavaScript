@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import {DatasourceService as CommonDatasourceService} from '@supermap/iclient-common/iServer/DatasourceService';
-import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
+import {DatasourceService as CommonDatasourceService} from '@supermapgis/iclient-common/iServer/DatasourceService';
+import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
 
 /**
  * @class DatasourceService

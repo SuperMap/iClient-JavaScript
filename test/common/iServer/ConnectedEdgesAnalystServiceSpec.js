@@ -1,6 +1,6 @@
-import {ConnectedEdgesAnalystService} from '@supermap/iclient-common/iServer/ConnectedEdgesAnalystService';
-import {ConnectedEdgesAnalystParameters} from '@supermap/iclient-common/iServer/ConnectedEdgesAnalystParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import {ConnectedEdgesAnalystService} from '@supermapgis/iclient-common/iServer/ConnectedEdgesAnalystService';
+import {ConnectedEdgesAnalystParameters} from '@supermapgis/iclient-common/iServer/ConnectedEdgesAnalystParameters';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;

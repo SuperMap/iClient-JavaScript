@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
- import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
- import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
+ import { DatasourceService as CommonDatasourceService } from '@supermapgis/iclient-common/iServer/DatasourceService';
+ import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
 /**
  * @class  DatasourceService
  * @deprecatedclassinstance L.supermap.datasourceService
