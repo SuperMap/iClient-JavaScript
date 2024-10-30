@@ -273,7 +273,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         map.fire('pm:create', {'shape': 'Marker', 'layer': layer.getLayers()[0]});
         let boundsLayer = {"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[97.4157714844,42.7368164063],[100.5908203125,42.7917480469],[98.0529785156,41.484375],[97.4157714844,42.7368164063]]]}};
         boundsLayer = L.geoJSON(boundsLayer);
-        map.fire('pm:create', {'shape': 'Rectangle', 'layer': boundsLayer.getLayers()[0]});
+        map.fire('pm:create', {'shape': 'Polygon', 'layer': boundsLayer.getLayers()[0]});
 
         var analysitBtn = document.getElementsByClassName('component-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
