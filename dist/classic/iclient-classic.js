@@ -1,1706 +1,7 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 3393:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(5114);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 6396:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(6417);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 4130:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(8786);
-var path = __webpack_require__(5761);
-module.exports = path.Object.assign;
-
-/***/ }),
-
-/***/ 7969:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(3001);
-var WrappedWellKnownSymbolModule = __webpack_require__(5787);
-module.exports = WrappedWellKnownSymbolModule.f('asyncIterator');
-
-/***/ }),
-
-/***/ 4363:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isCallable = __webpack_require__(1977);
-var tryToString = __webpack_require__(5959);
-var $TypeError = TypeError;
-
-// `Assert: IsCallable(argument) is true`
-module.exports = function (argument) {
-  if (isCallable(argument)) return argument;
-  throw $TypeError(tryToString(argument) + ' is not a function');
-};
-
-/***/ }),
-
-/***/ 6424:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isObject = __webpack_require__(7212);
-var $String = String;
-var $TypeError = TypeError;
-
-// `Assert: Type(argument) is Object`
-module.exports = function (argument) {
-  if (isObject(argument)) return argument;
-  throw $TypeError($String(argument) + ' is not an object');
-};
-
-/***/ }),
-
-/***/ 4525:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toIndexedObject = __webpack_require__(630);
-var toAbsoluteIndex = __webpack_require__(5217);
-var lengthOfArrayLike = __webpack_require__(8601);
-
-// `Array.prototype.{ indexOf, includes }` methods implementation
-var createMethod = function createMethod(IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIndexedObject($this);
-    var length = lengthOfArrayLike(O);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare -- NaN check
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare -- NaN check
-      if (value != value) return true;
-      // Array#indexOf ignores holes, Array#includes - not
-    } else for (; length > index; index++) {
-      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
-    }
-    return !IS_INCLUDES && -1;
-  };
-};
-module.exports = {
-  // `Array.prototype.includes` method
-  // https://tc39.es/ecma262/#sec-array.prototype.includes
-  includes: createMethod(true),
-  // `Array.prototype.indexOf` method
-  // https://tc39.es/ecma262/#sec-array.prototype.indexof
-  indexOf: createMethod(false)
-};
-
-/***/ }),
-
-/***/ 2393:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var toString = uncurryThis({}.toString);
-var stringSlice = uncurryThis(''.slice);
-module.exports = function (it) {
-  return stringSlice(toString(it), 8, -1);
-};
-
-/***/ }),
-
-/***/ 6616:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var hasOwn = __webpack_require__(2011);
-var ownKeys = __webpack_require__(3575);
-var getOwnPropertyDescriptorModule = __webpack_require__(4912);
-var definePropertyModule = __webpack_require__(421);
-module.exports = function (target, source, exceptions) {
-  var keys = ownKeys(source);
-  var defineProperty = definePropertyModule.f;
-  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    if (!hasOwn(target, key) && !(exceptions && hasOwn(exceptions, key))) {
-      defineProperty(target, key, getOwnPropertyDescriptor(source, key));
-    }
-  }
-};
-
-/***/ }),
-
-/***/ 1873:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var definePropertyModule = __webpack_require__(421);
-var createPropertyDescriptor = __webpack_require__(1283);
-module.exports = DESCRIPTORS ? function (object, key, value) {
-  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-/***/ }),
-
-/***/ 1283:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-/***/ }),
-
-/***/ 8424:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isCallable = __webpack_require__(1977);
-var definePropertyModule = __webpack_require__(421);
-var makeBuiltIn = __webpack_require__(4382);
-var defineGlobalProperty = __webpack_require__(6722);
-module.exports = function (O, key, value, options) {
-  if (!options) options = {};
-  var simple = options.enumerable;
-  var name = options.name !== undefined ? options.name : key;
-  if (isCallable(value)) makeBuiltIn(value, name, options);
-  if (options.global) {
-    if (simple) O[key] = value;else defineGlobalProperty(key, value);
-  } else {
-    try {
-      if (!options.unsafe) delete O[key];else if (O[key]) simple = true;
-    } catch (error) {/* empty */}
-    if (simple) O[key] = value;else definePropertyModule.f(O, key, {
-      value: value,
-      enumerable: false,
-      configurable: !options.nonConfigurable,
-      writable: !options.nonWritable
-    });
-  }
-  return O;
-};
-
-/***/ }),
-
-/***/ 6722:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var defineProperty = Object.defineProperty;
-module.exports = function (key, value) {
-  try {
-    defineProperty(global, key, {
-      value: value,
-      configurable: true,
-      writable: true
-    });
-  } catch (error) {
-    global[key] = value;
-  }
-  return value;
-};
-
-/***/ }),
-
-/***/ 1337:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(4418);
-
-// Detect IE8's incomplete defineProperty implementation
-module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  return Object.defineProperty({}, 1, {
-    get: function get() {
-      return 7;
-    }
-  })[1] != 7;
-});
-
-/***/ }),
-
-/***/ 6330:
-/***/ (function(module) {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var documentAll = (typeof document === "undefined" ? "undefined" : _typeof(document)) == 'object' && document.all;
-
-// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
-// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
-var IS_HTMLDDA = typeof documentAll == 'undefined' && documentAll !== undefined;
-module.exports = {
-  all: documentAll,
-  IS_HTMLDDA: IS_HTMLDDA
-};
-
-/***/ }),
-
-/***/ 2649:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var isObject = __webpack_require__(7212);
-var document = global.document;
-// typeof document.createElement is 'object' in old IE
-var EXISTS = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return EXISTS ? document.createElement(it) : {};
-};
-
-/***/ }),
-
-/***/ 2894:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
-
-/***/ }),
-
-/***/ 617:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var userAgent = __webpack_require__(2894);
-var process = global.process;
-var Deno = global.Deno;
-var versions = process && process.versions || Deno && Deno.version;
-var v8 = versions && versions.v8;
-var match, version;
-if (v8) {
-  match = v8.split('.');
-  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
-  // but their correct versions are not interesting for us
-  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
-}
-
-// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
-// so check `userAgent` even if `.v8` exists, but 0
-if (!version && userAgent) {
-  match = userAgent.match(/Edge\/(\d+)/);
-  if (!match || match[1] >= 74) {
-    match = userAgent.match(/Chrome\/(\d+)/);
-    if (match) version = +match[1];
-  }
-}
-module.exports = version;
-
-/***/ }),
-
-/***/ 154:
-/***/ (function(module) {
-
-"use strict";
-
-
-// IE8- don't enum bug keys
-module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
-
-/***/ }),
-
-/***/ 4427:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var global = __webpack_require__(2021);
-var getOwnPropertyDescriptor = (__webpack_require__(4912).f);
-var createNonEnumerableProperty = __webpack_require__(1873);
-var defineBuiltIn = __webpack_require__(8424);
-var defineGlobalProperty = __webpack_require__(6722);
-var copyConstructorProperties = __webpack_require__(6616);
-var isForced = __webpack_require__(1943);
-
-/*
-  options.target         - name of the target object
-  options.global         - target is the global object
-  options.stat           - export as static methods of target
-  options.proto          - export as prototype methods of target
-  options.real           - real prototype method for the `pure` version
-  options.forced         - export even if the native feature is available
-  options.bind           - bind methods to the target, required for the `pure` version
-  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
-  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
-  options.sham           - add a flag to not completely full polyfills
-  options.enumerable     - export as enumerable property
-  options.dontCallGetSet - prevent calling a getter on target
-  options.name           - the .name of the function if it does not match the key
-*/
-module.exports = function (options, source) {
-  var TARGET = options.target;
-  var GLOBAL = options.global;
-  var STATIC = options.stat;
-  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
-  if (GLOBAL) {
-    target = global;
-  } else if (STATIC) {
-    target = global[TARGET] || defineGlobalProperty(TARGET, {});
-  } else {
-    target = (global[TARGET] || {}).prototype;
-  }
-  if (target) for (key in source) {
-    sourceProperty = source[key];
-    if (options.dontCallGetSet) {
-      descriptor = getOwnPropertyDescriptor(target, key);
-      targetProperty = descriptor && descriptor.value;
-    } else targetProperty = target[key];
-    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
-    // contained in target
-    if (!FORCED && targetProperty !== undefined) {
-      if (_typeof(sourceProperty) == _typeof(targetProperty)) continue;
-      copyConstructorProperties(sourceProperty, targetProperty);
-    }
-    // add a flag to not completely full polyfills
-    if (options.sham || targetProperty && targetProperty.sham) {
-      createNonEnumerableProperty(sourceProperty, 'sham', true);
-    }
-    defineBuiltIn(target, key, sourceProperty, options);
-  }
-};
-
-/***/ }),
-
-/***/ 4418:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (error) {
-    return true;
-  }
-};
-
-/***/ }),
-
-/***/ 6973:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(4418);
-module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-function-prototype-bind -- safe
-  var test = function () {/* empty */}.bind();
-  // eslint-disable-next-line no-prototype-builtins -- safe
-  return typeof test != 'function' || test.hasOwnProperty('prototype');
-});
-
-/***/ }),
-
-/***/ 5563:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var NATIVE_BIND = __webpack_require__(6973);
-var call = Function.prototype.call;
-module.exports = NATIVE_BIND ? call.bind(call) : function () {
-  return call.apply(call, arguments);
-};
-
-/***/ }),
-
-/***/ 7967:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var hasOwn = __webpack_require__(2011);
-var FunctionPrototype = Function.prototype;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
-var EXISTS = hasOwn(FunctionPrototype, 'name');
-// additional protection from minified / mangled / dropped function names
-var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
-var CONFIGURABLE = EXISTS && (!DESCRIPTORS || DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable);
-module.exports = {
-  EXISTS: EXISTS,
-  PROPER: PROPER,
-  CONFIGURABLE: CONFIGURABLE
-};
-
-/***/ }),
-
-/***/ 4686:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var NATIVE_BIND = __webpack_require__(6973);
-var FunctionPrototype = Function.prototype;
-var call = FunctionPrototype.call;
-var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
-module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
-  return function () {
-    return call.apply(fn, arguments);
-  };
-};
-
-/***/ }),
-
-/***/ 5718:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var isCallable = __webpack_require__(1977);
-var aFunction = function aFunction(argument) {
-  return isCallable(argument) ? argument : undefined;
-};
-module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(global[namespace]) : global[namespace] && global[namespace][method];
-};
-
-/***/ }),
-
-/***/ 1260:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var aCallable = __webpack_require__(4363);
-var isNullOrUndefined = __webpack_require__(5323);
-
-// `GetMethod` abstract operation
-// https://tc39.es/ecma262/#sec-getmethod
-module.exports = function (V, P) {
-  var func = V[P];
-  return isNullOrUndefined(func) ? undefined : aCallable(func);
-};
-
-/***/ }),
-
-/***/ 2021:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var check = function check(it) {
-  return it && it.Math == Math && it;
-};
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-module.exports =
-// eslint-disable-next-line es/no-global-this -- safe
-check((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) == 'object' && globalThis) || check((typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && window) ||
-// eslint-disable-next-line no-restricted-globals -- safe
-check((typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self) || check((typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g) ||
-// eslint-disable-next-line no-new-func -- fallback
-function () {
-  return this;
-}() || this || Function('return this')();
-
-/***/ }),
-
-/***/ 2011:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var toObject = __webpack_require__(4548);
-var hasOwnProperty = uncurryThis({}.hasOwnProperty);
-
-// `HasOwnProperty` abstract operation
-// https://tc39.es/ecma262/#sec-hasownproperty
-// eslint-disable-next-line es/no-object-hasown -- safe
-module.exports = Object.hasOwn || function hasOwn(it, key) {
-  return hasOwnProperty(toObject(it), key);
-};
-
-/***/ }),
-
-/***/ 8653:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = {};
-
-/***/ }),
-
-/***/ 4497:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var fails = __webpack_require__(4418);
-var createElement = __webpack_require__(2649);
-
-// Thanks to IE8 for its funny defineProperty
-module.exports = !DESCRIPTORS && !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  return Object.defineProperty(createElement('div'), 'a', {
-    get: function get() {
-      return 7;
-    }
-  }).a != 7;
-});
-
-/***/ }),
-
-/***/ 3436:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var fails = __webpack_require__(4418);
-var classof = __webpack_require__(2393);
-var $Object = Object;
-var split = uncurryThis(''.split);
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-module.exports = fails(function () {
-  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
-  // eslint-disable-next-line no-prototype-builtins -- safe
-  return !$Object('z').propertyIsEnumerable(0);
-}) ? function (it) {
-  return classof(it) == 'String' ? split(it, '') : $Object(it);
-} : $Object;
-
-/***/ }),
-
-/***/ 5430:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var isCallable = __webpack_require__(1977);
-var store = __webpack_require__(8817);
-var functionToString = uncurryThis(Function.toString);
-
-// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
-if (!isCallable(store.inspectSource)) {
-  store.inspectSource = function (it) {
-    return functionToString(it);
-  };
-}
-module.exports = store.inspectSource;
-
-/***/ }),
-
-/***/ 5774:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var NATIVE_WEAK_MAP = __webpack_require__(1859);
-var global = __webpack_require__(2021);
-var isObject = __webpack_require__(7212);
-var createNonEnumerableProperty = __webpack_require__(1873);
-var hasOwn = __webpack_require__(2011);
-var shared = __webpack_require__(8817);
-var sharedKey = __webpack_require__(8093);
-var hiddenKeys = __webpack_require__(8653);
-var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
-var TypeError = global.TypeError;
-var WeakMap = global.WeakMap;
-var set, get, has;
-var enforce = function enforce(it) {
-  return has(it) ? get(it) : set(it, {});
-};
-var getterFor = function getterFor(TYPE) {
-  return function (it) {
-    var state;
-    if (!isObject(it) || (state = get(it)).type !== TYPE) {
-      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
-    }
-    return state;
-  };
-};
-if (NATIVE_WEAK_MAP || shared.state) {
-  var store = shared.state || (shared.state = new WeakMap());
-  /* eslint-disable no-self-assign -- prototype methods protection */
-  store.get = store.get;
-  store.has = store.has;
-  store.set = store.set;
-  /* eslint-enable no-self-assign -- prototype methods protection */
-  set = function set(it, metadata) {
-    if (store.has(it)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
-    metadata.facade = it;
-    store.set(it, metadata);
-    return metadata;
-  };
-  get = function get(it) {
-    return store.get(it) || {};
-  };
-  has = function has(it) {
-    return store.has(it);
-  };
-} else {
-  var STATE = sharedKey('state');
-  hiddenKeys[STATE] = true;
-  set = function set(it, metadata) {
-    if (hasOwn(it, STATE)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
-    metadata.facade = it;
-    createNonEnumerableProperty(it, STATE, metadata);
-    return metadata;
-  };
-  get = function get(it) {
-    return hasOwn(it, STATE) ? it[STATE] : {};
-  };
-  has = function has(it) {
-    return hasOwn(it, STATE);
-  };
-}
-module.exports = {
-  set: set,
-  get: get,
-  has: has,
-  enforce: enforce,
-  getterFor: getterFor
-};
-
-/***/ }),
-
-/***/ 1977:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var $documentAll = __webpack_require__(6330);
-var documentAll = $documentAll.all;
-
-// `IsCallable` abstract operation
-// https://tc39.es/ecma262/#sec-iscallable
-module.exports = $documentAll.IS_HTMLDDA ? function (argument) {
-  return typeof argument == 'function' || argument === documentAll;
-} : function (argument) {
-  return typeof argument == 'function';
-};
-
-/***/ }),
-
-/***/ 1943:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(4418);
-var isCallable = __webpack_require__(1977);
-var replacement = /#|\.prototype\./;
-var isForced = function isForced(feature, detection) {
-  var value = data[normalize(feature)];
-  return value == POLYFILL ? true : value == NATIVE ? false : isCallable(detection) ? fails(detection) : !!detection;
-};
-var normalize = isForced.normalize = function (string) {
-  return String(string).replace(replacement, '.').toLowerCase();
-};
-var data = isForced.data = {};
-var NATIVE = isForced.NATIVE = 'N';
-var POLYFILL = isForced.POLYFILL = 'P';
-module.exports = isForced;
-
-/***/ }),
-
-/***/ 5323:
-/***/ (function(module) {
-
-"use strict";
-
-
-// we can't use just `it == null` since of `document.all` special case
-// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
-module.exports = function (it) {
-  return it === null || it === undefined;
-};
-
-/***/ }),
-
-/***/ 7212:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var isCallable = __webpack_require__(1977);
-var $documentAll = __webpack_require__(6330);
-var documentAll = $documentAll.all;
-module.exports = $documentAll.IS_HTMLDDA ? function (it) {
-  return _typeof(it) == 'object' ? it !== null : isCallable(it) || it === documentAll;
-} : function (it) {
-  return _typeof(it) == 'object' ? it !== null : isCallable(it);
-};
-
-/***/ }),
-
-/***/ 9596:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = false;
-
-/***/ }),
-
-/***/ 6874:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var getBuiltIn = __webpack_require__(5718);
-var isCallable = __webpack_require__(1977);
-var isPrototypeOf = __webpack_require__(6701);
-var USE_SYMBOL_AS_UID = __webpack_require__(1635);
-var $Object = Object;
-module.exports = USE_SYMBOL_AS_UID ? function (it) {
-  return _typeof(it) == 'symbol';
-} : function (it) {
-  var $Symbol = getBuiltIn('Symbol');
-  return isCallable($Symbol) && isPrototypeOf($Symbol.prototype, $Object(it));
-};
-
-/***/ }),
-
-/***/ 8601:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toLength = __webpack_require__(3346);
-
-// `LengthOfArrayLike` abstract operation
-// https://tc39.es/ecma262/#sec-lengthofarraylike
-module.exports = function (obj) {
-  return toLength(obj.length);
-};
-
-/***/ }),
-
-/***/ 4382:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var fails = __webpack_require__(4418);
-var isCallable = __webpack_require__(1977);
-var hasOwn = __webpack_require__(2011);
-var DESCRIPTORS = __webpack_require__(1337);
-var CONFIGURABLE_FUNCTION_NAME = (__webpack_require__(7967).CONFIGURABLE);
-var inspectSource = __webpack_require__(5430);
-var InternalStateModule = __webpack_require__(5774);
-var enforceInternalState = InternalStateModule.enforce;
-var getInternalState = InternalStateModule.get;
-var $String = String;
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var defineProperty = Object.defineProperty;
-var stringSlice = uncurryThis(''.slice);
-var replace = uncurryThis(''.replace);
-var join = uncurryThis([].join);
-var CONFIGURABLE_LENGTH = DESCRIPTORS && !fails(function () {
-  return defineProperty(function () {/* empty */}, 'length', {
-    value: 8
-  }).length !== 8;
-});
-var TEMPLATE = String(String).split('String');
-var makeBuiltIn = module.exports = function (value, name, options) {
-  if (stringSlice($String(name), 0, 7) === 'Symbol(') {
-    name = '[' + replace($String(name), /^Symbol\(([^)]*)\)/, '$1') + ']';
-  }
-  if (options && options.getter) name = 'get ' + name;
-  if (options && options.setter) name = 'set ' + name;
-  if (!hasOwn(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
-    if (DESCRIPTORS) defineProperty(value, 'name', {
-      value: name,
-      configurable: true
-    });else value.name = name;
-  }
-  if (CONFIGURABLE_LENGTH && options && hasOwn(options, 'arity') && value.length !== options.arity) {
-    defineProperty(value, 'length', {
-      value: options.arity
-    });
-  }
-  try {
-    if (options && hasOwn(options, 'constructor') && options.constructor) {
-      if (DESCRIPTORS) defineProperty(value, 'prototype', {
-        writable: false
-      });
-      // in V8 ~ Chrome 53, prototypes of some methods, like `Array.prototype.values`, are non-writable
-    } else if (value.prototype) value.prototype = undefined;
-  } catch (error) {/* empty */}
-  var state = enforceInternalState(value);
-  if (!hasOwn(state, 'source')) {
-    state.source = join(TEMPLATE, typeof name == 'string' ? name : '');
-  }
-  return value;
-};
-
-// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-// eslint-disable-next-line no-extend-native -- required
-Function.prototype.toString = makeBuiltIn(function toString() {
-  return isCallable(this) && getInternalState(this).source || inspectSource(this);
-}, 'toString');
-
-/***/ }),
-
-/***/ 6729:
-/***/ (function(module) {
-
-"use strict";
-
-
-var ceil = Math.ceil;
-var floor = Math.floor;
-
-// `Math.trunc` method
-// https://tc39.es/ecma262/#sec-math.trunc
-// eslint-disable-next-line es/no-math-trunc -- safe
-module.exports = Math.trunc || function trunc(x) {
-  var n = +x;
-  return (n > 0 ? floor : ceil)(n);
-};
-
-/***/ }),
-
-/***/ 6898:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var uncurryThis = __webpack_require__(4686);
-var call = __webpack_require__(5563);
-var fails = __webpack_require__(4418);
-var objectKeys = __webpack_require__(6555);
-var getOwnPropertySymbolsModule = __webpack_require__(9833);
-var propertyIsEnumerableModule = __webpack_require__(5073);
-var toObject = __webpack_require__(4548);
-var IndexedObject = __webpack_require__(3436);
-
-// eslint-disable-next-line es/no-object-assign -- safe
-var $assign = Object.assign;
-// eslint-disable-next-line es/no-object-defineproperty -- required for testing
-var defineProperty = Object.defineProperty;
-var concat = uncurryThis([].concat);
-
-// `Object.assign` method
-// https://tc39.es/ecma262/#sec-object.assign
-module.exports = !$assign || fails(function () {
-  // should have correct order of operations (Edge bug)
-  if (DESCRIPTORS && $assign({
-    b: 1
-  }, $assign(defineProperty({}, 'a', {
-    enumerable: true,
-    get: function get() {
-      defineProperty(this, 'b', {
-        value: 3,
-        enumerable: false
-      });
-    }
-  }), {
-    b: 2
-  })).b !== 1) return true;
-  // should work with symbols and should have deterministic property order (V8 bug)
-  var A = {};
-  var B = {};
-  // eslint-disable-next-line es/no-symbol -- safe
-  var symbol = Symbol();
-  var alphabet = 'abcdefghijklmnopqrst';
-  A[symbol] = 7;
-  alphabet.split('').forEach(function (chr) {
-    B[chr] = chr;
-  });
-  return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
-}) ? function assign(target, source) {
-  // eslint-disable-line no-unused-vars -- required for `.length`
-  var T = toObject(target);
-  var argumentsLength = arguments.length;
-  var index = 1;
-  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
-  var propertyIsEnumerable = propertyIsEnumerableModule.f;
-  while (argumentsLength > index) {
-    var S = IndexedObject(arguments[index++]);
-    var keys = getOwnPropertySymbols ? concat(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
-    var length = keys.length;
-    var j = 0;
-    var key;
-    while (length > j) {
-      key = keys[j++];
-      if (!DESCRIPTORS || call(propertyIsEnumerable, S, key)) T[key] = S[key];
-    }
-  }
-  return T;
-} : $assign;
-
-/***/ }),
-
-/***/ 421:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var IE8_DOM_DEFINE = __webpack_require__(4497);
-var V8_PROTOTYPE_DEFINE_BUG = __webpack_require__(3504);
-var anObject = __webpack_require__(6424);
-var toPropertyKey = __webpack_require__(8069);
-var $TypeError = TypeError;
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var $defineProperty = Object.defineProperty;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var ENUMERABLE = 'enumerable';
-var CONFIGURABLE = 'configurable';
-var WRITABLE = 'writable';
-
-// `Object.defineProperty` method
-// https://tc39.es/ecma262/#sec-object.defineproperty
-exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPropertyKey(P);
-  anObject(Attributes);
-  if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
-    var current = $getOwnPropertyDescriptor(O, P);
-    if (current && current[WRITABLE]) {
-      O[P] = Attributes.value;
-      Attributes = {
-        configurable: CONFIGURABLE in Attributes ? Attributes[CONFIGURABLE] : current[CONFIGURABLE],
-        enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
-        writable: false
-      };
-    }
-  }
-  return $defineProperty(O, P, Attributes);
-} : $defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPropertyKey(P);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return $defineProperty(O, P, Attributes);
-  } catch (error) {/* empty */}
-  if ('get' in Attributes || 'set' in Attributes) throw $TypeError('Accessors not supported');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-/***/ }),
-
-/***/ 4912:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var call = __webpack_require__(5563);
-var propertyIsEnumerableModule = __webpack_require__(5073);
-var createPropertyDescriptor = __webpack_require__(1283);
-var toIndexedObject = __webpack_require__(630);
-var toPropertyKey = __webpack_require__(8069);
-var hasOwn = __webpack_require__(2011);
-var IE8_DOM_DEFINE = __webpack_require__(4497);
-
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-
-// `Object.getOwnPropertyDescriptor` method
-// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
-exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
-  O = toIndexedObject(O);
-  P = toPropertyKey(P);
-  if (IE8_DOM_DEFINE) try {
-    return $getOwnPropertyDescriptor(O, P);
-  } catch (error) {/* empty */}
-  if (hasOwn(O, P)) return createPropertyDescriptor(!call(propertyIsEnumerableModule.f, O, P), O[P]);
-};
-
-/***/ }),
-
-/***/ 4190:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var internalObjectKeys = __webpack_require__(1717);
-var enumBugKeys = __webpack_require__(154);
-var hiddenKeys = enumBugKeys.concat('length', 'prototype');
-
-// `Object.getOwnPropertyNames` method
-// https://tc39.es/ecma262/#sec-object.getownpropertynames
-// eslint-disable-next-line es/no-object-getownpropertynames -- safe
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-  return internalObjectKeys(O, hiddenKeys);
-};
-
-/***/ }),
-
-/***/ 9833:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
-exports.f = Object.getOwnPropertySymbols;
-
-/***/ }),
-
-/***/ 6701:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-module.exports = uncurryThis({}.isPrototypeOf);
-
-/***/ }),
-
-/***/ 1717:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var hasOwn = __webpack_require__(2011);
-var toIndexedObject = __webpack_require__(630);
-var indexOf = (__webpack_require__(4525).indexOf);
-var hiddenKeys = __webpack_require__(8653);
-var push = uncurryThis([].push);
-module.exports = function (object, names) {
-  var O = toIndexedObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (hasOwn(O, key = names[i++])) {
-    ~indexOf(result, key) || push(result, key);
-  }
-  return result;
-};
-
-/***/ }),
-
-/***/ 6555:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var internalObjectKeys = __webpack_require__(1717);
-var enumBugKeys = __webpack_require__(154);
-
-// `Object.keys` method
-// https://tc39.es/ecma262/#sec-object.keys
-// eslint-disable-next-line es/no-object-keys -- safe
-module.exports = Object.keys || function keys(O) {
-  return internalObjectKeys(O, enumBugKeys);
-};
-
-/***/ }),
-
-/***/ 5073:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-
-var $propertyIsEnumerable = {}.propertyIsEnumerable;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-
-// Nashorn ~ JDK8 bug
-var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({
-  1: 2
-}, 1);
-
-// `Object.prototype.propertyIsEnumerable` method implementation
-// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
-exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
-  var descriptor = getOwnPropertyDescriptor(this, V);
-  return !!descriptor && descriptor.enumerable;
-} : $propertyIsEnumerable;
-
-/***/ }),
-
-/***/ 4565:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var call = __webpack_require__(5563);
-var isCallable = __webpack_require__(1977);
-var isObject = __webpack_require__(7212);
-var $TypeError = TypeError;
-
-// `OrdinaryToPrimitive` abstract operation
-// https://tc39.es/ecma262/#sec-ordinarytoprimitive
-module.exports = function (input, pref) {
-  var fn, val;
-  if (pref === 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
-  if (isCallable(fn = input.valueOf) && !isObject(val = call(fn, input))) return val;
-  if (pref !== 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
-  throw $TypeError("Can't convert object to primitive value");
-};
-
-/***/ }),
-
-/***/ 3575:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var getBuiltIn = __webpack_require__(5718);
-var uncurryThis = __webpack_require__(4686);
-var getOwnPropertyNamesModule = __webpack_require__(4190);
-var getOwnPropertySymbolsModule = __webpack_require__(9833);
-var anObject = __webpack_require__(6424);
-var concat = uncurryThis([].concat);
-
-// all object keys, includes non-enumerable and symbols
-module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
-  var keys = getOwnPropertyNamesModule.f(anObject(it));
-  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
-  return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
-};
-
-/***/ }),
-
-/***/ 5761:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-module.exports = global;
-
-/***/ }),
-
-/***/ 8089:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isNullOrUndefined = __webpack_require__(5323);
-var $TypeError = TypeError;
-
-// `RequireObjectCoercible` abstract operation
-// https://tc39.es/ecma262/#sec-requireobjectcoercible
-module.exports = function (it) {
-  if (isNullOrUndefined(it)) throw $TypeError("Can't call method on " + it);
-  return it;
-};
-
-/***/ }),
-
-/***/ 8093:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var shared = __webpack_require__(678);
-var uid = __webpack_require__(4552);
-var keys = shared('keys');
-module.exports = function (key) {
-  return keys[key] || (keys[key] = uid(key));
-};
-
-/***/ }),
-
-/***/ 8817:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var defineGlobalProperty = __webpack_require__(6722);
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || defineGlobalProperty(SHARED, {});
-module.exports = store;
-
-/***/ }),
-
-/***/ 678:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var IS_PURE = __webpack_require__(9596);
-var store = __webpack_require__(8817);
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: '3.32.0',
-  mode: IS_PURE ? 'pure' : 'global',
-  copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.32.0/LICENSE',
-  source: 'https://github.com/zloirock/core-js'
-});
-
-/***/ }),
-
-/***/ 6009:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-/* eslint-disable es/no-symbol -- required for testing */
-var V8_VERSION = __webpack_require__(617);
-var fails = __webpack_require__(4418);
-var global = __webpack_require__(2021);
-var $String = global.String;
-
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
-module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
-  var symbol = Symbol();
-  // Chrome 38 Symbol has incorrect toString conversion
-  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
-  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
-  // of course, fail.
-  return !$String(symbol) || !(Object(symbol) instanceof Symbol) ||
-  // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
-  !Symbol.sham && V8_VERSION && V8_VERSION < 41;
-});
-
-/***/ }),
-
-/***/ 5217:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toIntegerOrInfinity = __webpack_require__(2898);
-var max = Math.max;
-var min = Math.min;
-
-// Helper for a popular repeating case of the spec:
-// Let integer be ? ToInteger(index).
-// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
-module.exports = function (index, length) {
-  var integer = toIntegerOrInfinity(index);
-  return integer < 0 ? max(integer + length, 0) : min(integer, length);
-};
-
-/***/ }),
-
-/***/ 630:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-// toObject with fallback for non-array-like ES3 strings
-var IndexedObject = __webpack_require__(3436);
-var requireObjectCoercible = __webpack_require__(8089);
-module.exports = function (it) {
-  return IndexedObject(requireObjectCoercible(it));
-};
-
-/***/ }),
-
-/***/ 2898:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var trunc = __webpack_require__(6729);
-
-// `ToIntegerOrInfinity` abstract operation
-// https://tc39.es/ecma262/#sec-tointegerorinfinity
-module.exports = function (argument) {
-  var number = +argument;
-  // eslint-disable-next-line no-self-compare -- NaN check
-  return number !== number || number === 0 ? 0 : trunc(number);
-};
-
-/***/ }),
-
-/***/ 3346:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toIntegerOrInfinity = __webpack_require__(2898);
-var min = Math.min;
-
-// `ToLength` abstract operation
-// https://tc39.es/ecma262/#sec-tolength
-module.exports = function (argument) {
-  return argument > 0 ? min(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
-};
-
-/***/ }),
-
-/***/ 4548:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var requireObjectCoercible = __webpack_require__(8089);
-var $Object = Object;
-
-// `ToObject` abstract operation
-// https://tc39.es/ecma262/#sec-toobject
-module.exports = function (argument) {
-  return $Object(requireObjectCoercible(argument));
-};
-
-/***/ }),
-
-/***/ 3841:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var call = __webpack_require__(5563);
-var isObject = __webpack_require__(7212);
-var isSymbol = __webpack_require__(6874);
-var getMethod = __webpack_require__(1260);
-var ordinaryToPrimitive = __webpack_require__(4565);
-var wellKnownSymbol = __webpack_require__(3048);
-var $TypeError = TypeError;
-var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
-
-// `ToPrimitive` abstract operation
-// https://tc39.es/ecma262/#sec-toprimitive
-module.exports = function (input, pref) {
-  if (!isObject(input) || isSymbol(input)) return input;
-  var exoticToPrim = getMethod(input, TO_PRIMITIVE);
-  var result;
-  if (exoticToPrim) {
-    if (pref === undefined) pref = 'default';
-    result = call(exoticToPrim, input, pref);
-    if (!isObject(result) || isSymbol(result)) return result;
-    throw $TypeError("Can't convert object to primitive value");
-  }
-  if (pref === undefined) pref = 'number';
-  return ordinaryToPrimitive(input, pref);
-};
-
-/***/ }),
-
-/***/ 8069:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toPrimitive = __webpack_require__(3841);
-var isSymbol = __webpack_require__(6874);
-
-// `ToPropertyKey` abstract operation
-// https://tc39.es/ecma262/#sec-topropertykey
-module.exports = function (argument) {
-  var key = toPrimitive(argument, 'string');
-  return isSymbol(key) ? key : key + '';
-};
-
-/***/ }),
-
-/***/ 5959:
-/***/ (function(module) {
-
-"use strict";
-
-
-var $String = String;
-module.exports = function (argument) {
-  try {
-    return $String(argument);
-  } catch (error) {
-    return 'Object';
-  }
-};
-
-/***/ }),
-
-/***/ 4552:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(4686);
-var id = 0;
-var postfix = Math.random();
-var toString = uncurryThis(1.0.toString);
-module.exports = function (key) {
-  return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
-};
-
-/***/ }),
-
-/***/ 1635:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-/* eslint-disable es/no-symbol -- required for testing */
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var NATIVE_SYMBOL = __webpack_require__(6009);
-module.exports = NATIVE_SYMBOL && !Symbol.sham && _typeof(Symbol.iterator) == 'symbol';
-
-/***/ }),
-
-/***/ 3504:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(1337);
-var fails = __webpack_require__(4418);
-
-// V8 ~ Chrome 36-
-// https://bugs.chromium.org/p/v8/issues/detail?id=3334
-module.exports = DESCRIPTORS && fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  return Object.defineProperty(function () {/* empty */}, 'prototype', {
-    value: 42,
-    writable: false
-  }).prototype != 42;
-});
-
-/***/ }),
-
-/***/ 1859:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var isCallable = __webpack_require__(1977);
-var WeakMap = global.WeakMap;
-module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
-
-/***/ }),
-
-/***/ 5273:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var path = __webpack_require__(5761);
-var hasOwn = __webpack_require__(2011);
-var wrappedWellKnownSymbolModule = __webpack_require__(5787);
-var defineProperty = (__webpack_require__(421).f);
-module.exports = function (NAME) {
-  var _Symbol = path.Symbol || (path.Symbol = {});
-  if (!hasOwn(_Symbol, NAME)) defineProperty(_Symbol, NAME, {
-    value: wrappedWellKnownSymbolModule.f(NAME)
-  });
-};
-
-/***/ }),
-
-/***/ 5787:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var wellKnownSymbol = __webpack_require__(3048);
-exports.f = wellKnownSymbol;
-
-/***/ }),
-
-/***/ 3048:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var global = __webpack_require__(2021);
-var shared = __webpack_require__(678);
-var hasOwn = __webpack_require__(2011);
-var uid = __webpack_require__(4552);
-var NATIVE_SYMBOL = __webpack_require__(6009);
-var USE_SYMBOL_AS_UID = __webpack_require__(1635);
-var _Symbol = global.Symbol;
-var WellKnownSymbolsStore = shared('wks');
-var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
-module.exports = function (name) {
-  if (!hasOwn(WellKnownSymbolsStore, name)) {
-    WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(_Symbol, name) ? _Symbol[name] : createWellKnownSymbol('Symbol.' + name);
-  }
-  return WellKnownSymbolsStore[name];
-};
-
-/***/ }),
-
-/***/ 8786:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var $ = __webpack_require__(4427);
-var assign = __webpack_require__(6898);
-
-// `Object.assign` method
-// https://tc39.es/ecma262/#sec-object.assign
-// eslint-disable-next-line es/no-object-assign -- required for testing
-$({
-  target: 'Object',
-  stat: true,
-  arity: 2,
-  forced: Object.assign !== assign
-}, {
-  assign: assign
-});
-
-/***/ }),
-
-/***/ 3001:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var defineWellKnownSymbol = __webpack_require__(5273);
-
-// `Symbol.asyncIterator` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.asynciterator
-defineWellKnownSymbol('asyncIterator');
-
-/***/ }),
-
-/***/ 5114:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(4130);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 6417:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(7969);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 5122:
+/***/ 4537:
 /***/ (function(module) {
 
 (function (self) {
@@ -2086,7 +387,7 @@ module.exports = parent;
 
 /***/ }),
 
-/***/ 683:
+/***/ 9005:
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -2196,7 +497,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 2347:
+/***/ 3819:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -2517,18 +818,3026 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 
 /***/ }),
 
-/***/ 4794:
+/***/ 6369:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+/*!
+ * URI.js - Mutating URLs
+ * IPv6 Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+})(this, function (root) {
+  'use strict';
+
+  /*
+  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
+  var _out = IPv6.best(_in);
+  var _expected = "fe80::204:61ff:fe9d:f156";
+   console.log(_in, _out, _expected, _out === _expected);
+  */
+
+  // save current IPv6 variable, if any
+  var _IPv6 = root && root.IPv6;
+  function bestPresentation(address) {
+    // based on:
+    // Javascript to test an IPv6 address for proper format, and to
+    // present the "best text representation" according to IETF Draft RFC at
+    // http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04
+    // 8 Feb 2010 Rich Brown, Dartware, LLC
+    // Please feel free to use this code as long as you provide a link to
+    // http://www.intermapper.com
+    // http://intermapper.com/support/tools/IPV6-Validator.aspx
+    // http://download.dartware.com/thirdparty/ipv6validator.js
+
+    var _address = address.toLowerCase();
+    var segments = _address.split(':');
+    var length = segments.length;
+    var total = 8;
+
+    // trim colons (:: or ::a:b:c… or …a:b:c::)
+    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
+      // must have been ::
+      // remove first two items
+      segments.shift();
+      segments.shift();
+    } else if (segments[0] === '' && segments[1] === '') {
+      // must have been ::xxxx
+      // remove the first item
+      segments.shift();
+    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
+      // must have been xxxx::
+      segments.pop();
+    }
+    length = segments.length;
+
+    // adjust total segments for IPv4 trailer
+    if (segments[length - 1].indexOf('.') !== -1) {
+      // found a "." which means IPv4
+      total = 7;
+    }
+
+    // fill empty segments them with "0000"
+    var pos;
+    for (pos = 0; pos < length; pos++) {
+      if (segments[pos] === '') {
+        break;
+      }
+    }
+    if (pos < total) {
+      segments.splice(pos, 1, '0000');
+      while (segments.length < total) {
+        segments.splice(pos, 0, '0000');
+      }
+    }
+
+    // strip leading zeros
+    var _segments;
+    for (var i = 0; i < total; i++) {
+      _segments = segments[i].split('');
+      for (var j = 0; j < 3; j++) {
+        if (_segments[0] === '0' && _segments.length > 1) {
+          _segments.splice(0, 1);
+        } else {
+          break;
+        }
+      }
+      segments[i] = _segments.join('');
+    }
+
+    // find longest sequence of zeroes and coalesce them into one segment
+    var best = -1;
+    var _best = 0;
+    var _current = 0;
+    var current = -1;
+    var inzeroes = false;
+    // i; already declared
+
+    for (i = 0; i < total; i++) {
+      if (inzeroes) {
+        if (segments[i] === '0') {
+          _current += 1;
+        } else {
+          inzeroes = false;
+          if (_current > _best) {
+            best = current;
+            _best = _current;
+          }
+        }
+      } else {
+        if (segments[i] === '0') {
+          inzeroes = true;
+          current = i;
+          _current = 1;
+        }
+      }
+    }
+    if (_current > _best) {
+      best = current;
+      _best = _current;
+    }
+    if (_best > 1) {
+      segments.splice(best, _best, '');
+    }
+    length = segments.length;
+
+    // assemble remaining segments
+    var result = '';
+    if (segments[0] === '') {
+      result = ':';
+    }
+    for (i = 0; i < length; i++) {
+      result += segments[i];
+      if (i === length - 1) {
+        break;
+      }
+      result += ':';
+    }
+    if (segments[length - 1] === '') {
+      result += ':';
+    }
+    return result;
+  }
+  function noConflict() {
+    /*jshint validthis: true */
+    if (root.IPv6 === this) {
+      root.IPv6 = _IPv6;
+    }
+    return this;
+  }
+  return {
+    best: bestPresentation,
+    noConflict: noConflict
+  };
+});
+
+/***/ }),
+
+/***/ 7011:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+/*!
+ * URI.js - Mutating URLs
+ * Second Level Domain (SLD) Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+})(this, function (root) {
+  'use strict';
+
+  // save current SecondLevelDomains variable, if any
+  var _SecondLevelDomains = root && root.SecondLevelDomains;
+  var SLD = {
+    // list of known Second Level Domains
+    // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
+    // ----
+    // publicsuffix.org is more current and actually used by a couple of browsers internally.
+    // downside is it also contains domains like "dyndns.org" - which is fine for the security
+    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
+    // ----
+    list: {
+      'ac': ' com gov mil net org ',
+      'ae': ' ac co gov mil name net org pro sch ',
+      'af': ' com edu gov net org ',
+      'al': ' com edu gov mil net org ',
+      'ao': ' co ed gv it og pb ',
+      'ar': ' com edu gob gov int mil net org tur ',
+      'at': ' ac co gv or ',
+      'au': ' asn com csiro edu gov id net org ',
+      'ba': ' co com edu gov mil net org rs unbi unmo unsa untz unze ',
+      'bb': ' biz co com edu gov info net org store tv ',
+      'bh': ' biz cc com edu gov info net org ',
+      'bn': ' com edu gov net org ',
+      'bo': ' com edu gob gov int mil net org tv ',
+      'br': ' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
+      'bs': ' com edu gov net org ',
+      'bz': ' du et om ov rg ',
+      'ca': ' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
+      'ck': ' biz co edu gen gov info net org ',
+      'cn': ' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
+      'co': ' com edu gov mil net nom org ',
+      'cr': ' ac c co ed fi go or sa ',
+      'cy': ' ac biz com ekloges gov ltd name net org parliament press pro tm ',
+      'do': ' art com edu gob gov mil net org sld web ',
+      'dz': ' art asso com edu gov net org pol ',
+      'ec': ' com edu fin gov info med mil net org pro ',
+      'eg': ' com edu eun gov mil name net org sci ',
+      'er': ' com edu gov ind mil net org rochest w ',
+      'es': ' com edu gob nom org ',
+      'et': ' biz com edu gov info name net org ',
+      'fj': ' ac biz com info mil name net org pro ',
+      'fk': ' ac co gov net nom org ',
+      'fr': ' asso com f gouv nom prd presse tm ',
+      'gg': ' co net org ',
+      'gh': ' com edu gov mil org ',
+      'gn': ' ac com gov net org ',
+      'gr': ' com edu gov mil net org ',
+      'gt': ' com edu gob ind mil net org ',
+      'gu': ' com edu gov net org ',
+      'hk': ' com edu gov idv net org ',
+      'hu': ' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
+      'id': ' ac co go mil net or sch web ',
+      'il': ' ac co gov idf k12 muni net org ',
+      'in': ' ac co edu ernet firm gen gov i ind mil net nic org res ',
+      'iq': ' com edu gov i mil net org ',
+      'ir': ' ac co dnssec gov i id net org sch ',
+      'it': ' edu gov ',
+      'je': ' co net org ',
+      'jo': ' com edu gov mil name net org sch ',
+      'jp': ' ac ad co ed go gr lg ne or ',
+      'ke': ' ac co go info me mobi ne or sc ',
+      'kh': ' com edu gov mil net org per ',
+      'ki': ' biz com de edu gov info mob net org tel ',
+      'km': ' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
+      'kn': ' edu gov net org ',
+      'kr': ' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
+      'kw': ' com edu gov net org ',
+      'ky': ' com edu gov net org ',
+      'kz': ' com edu gov mil net org ',
+      'lb': ' com edu gov net org ',
+      'lk': ' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
+      'lr': ' com edu gov net org ',
+      'lv': ' asn com conf edu gov id mil net org ',
+      'ly': ' com edu gov id med net org plc sch ',
+      'ma': ' ac co gov m net org press ',
+      'mc': ' asso tm ',
+      'me': ' ac co edu gov its net org priv ',
+      'mg': ' com edu gov mil nom org prd tm ',
+      'mk': ' com edu gov inf name net org pro ',
+      'ml': ' com edu gov net org presse ',
+      'mn': ' edu gov org ',
+      'mo': ' com edu gov net org ',
+      'mt': ' com edu gov net org ',
+      'mv': ' aero biz com coop edu gov info int mil museum name net org pro ',
+      'mw': ' ac co com coop edu gov int museum net org ',
+      'mx': ' com edu gob net org ',
+      'my': ' com edu gov mil name net org sch ',
+      'nf': ' arts com firm info net other per rec store web ',
+      'ng': ' biz com edu gov mil mobi name net org sch ',
+      'ni': ' ac co com edu gob mil net nom org ',
+      'np': ' com edu gov mil net org ',
+      'nr': ' biz com edu gov info net org ',
+      'om': ' ac biz co com edu gov med mil museum net org pro sch ',
+      'pe': ' com edu gob mil net nom org sld ',
+      'ph': ' com edu gov i mil net ngo org ',
+      'pk': ' biz com edu fam gob gok gon gop gos gov net org web ',
+      'pl': ' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
+      'pr': ' ac biz com edu est gov info isla name net org pro prof ',
+      'ps': ' com edu gov net org plo sec ',
+      'pw': ' belau co ed go ne or ',
+      'ro': ' arts com firm info nom nt org rec store tm www ',
+      'rs': ' ac co edu gov in org ',
+      'sb': ' com edu gov net org ',
+      'sc': ' com edu gov net org ',
+      'sh': ' co com edu gov net nom org ',
+      'sl': ' com edu gov net org ',
+      'st': ' co com consulado edu embaixada gov mil net org principe saotome store ',
+      'sv': ' com edu gob org red ',
+      'sz': ' ac co org ',
+      'tr': ' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
+      'tt': ' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
+      'tw': ' club com ebiz edu game gov idv mil net org ',
+      'mu': ' ac co com gov net or org ',
+      'mz': ' ac co edu gov org ',
+      'na': ' co com ',
+      'nz': ' ac co cri geek gen govt health iwi maori mil net org parliament school ',
+      'pa': ' abo ac com edu gob ing med net nom org sld ',
+      'pt': ' com edu gov int net nome org publ ',
+      'py': ' com edu gov mil net org ',
+      'qa': ' com edu gov mil net org ',
+      're': ' asso com nom ',
+      'ru': ' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
+      'rw': ' ac co com edu gouv gov int mil net ',
+      'sa': ' com edu gov med net org pub sch ',
+      'sd': ' com edu gov info med net org tv ',
+      'se': ' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
+      'sg': ' com edu gov idn net org per ',
+      'sn': ' art com edu gouv org perso univ ',
+      'sy': ' com edu gov mil net news org ',
+      'th': ' ac co go in mi net or ',
+      'tj': ' ac biz co com edu go gov info int mil name net nic org test web ',
+      'tn': ' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
+      'tz': ' ac co go ne or ',
+      'ua': ' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
+      'ug': ' ac co go ne or org sc ',
+      'uk': ' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
+      'us': ' dni fed isa kids nsn ',
+      'uy': ' com edu gub mil net org ',
+      've': ' co com edu gob info mil net org web ',
+      'vi': ' co com k12 net org ',
+      'vn': ' ac biz com edu gov health info int name net org pro ',
+      'ye': ' co com gov ltd me net org plc ',
+      'yu': ' ac co edu gov org ',
+      'za': ' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
+      'zm': ' ac co com edu gov net org sch ',
+      // https://en.wikipedia.org/wiki/CentralNic#Second-level_domains
+      'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
+      'net': 'gb jp se uk ',
+      'org': 'ae',
+      'de': 'com '
+    },
+    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
+    // in both performance and memory footprint. No initialization required.
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
+    // Following methods use lastIndexOf() rather than array.split() in order
+    // to avoid any memory allocations.
+    has: function has(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') >= 0;
+    },
+    is: function is(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset >= 0) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
+    },
+    get: function get(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return null;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
+        return null;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return null;
+      }
+      if (sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') < 0) {
+        return null;
+      }
+      return domain.slice(sldOffset + 1);
+    },
+    noConflict: function noConflict() {
+      if (root.SecondLevelDomains === this) {
+        root.SecondLevelDomains = _SecondLevelDomains;
+      }
+      return this;
+    }
+  };
+  return SLD;
+});
+
+/***/ }),
+
+/***/ 9216:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+/*!
+ * URI.js - Mutating URLs
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory(__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011));
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+})(this, function (punycode, IPv6, SLD, root) {
+  'use strict';
+
+  /*global location, escape, unescape */
+  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+  /*jshint camelcase: false */
+
+  // save current URI variable, if any
+  var _URI = root && root.URI;
+  function URI(url, base) {
+    var _urlSupplied = arguments.length >= 1;
+    var _baseSupplied = arguments.length >= 2;
+
+    // Allow instantiation without the 'new' keyword
+    if (!(this instanceof URI)) {
+      if (_urlSupplied) {
+        if (_baseSupplied) {
+          return new URI(url, base);
+        }
+        return new URI(url);
+      }
+      return new URI();
+    }
+    if (url === undefined) {
+      if (_urlSupplied) {
+        throw new TypeError('undefined is not a valid argument for URI');
+      }
+      if (typeof location !== 'undefined') {
+        url = location.href + '';
+      } else {
+        url = '';
+      }
+    }
+    if (url === null) {
+      if (_urlSupplied) {
+        throw new TypeError('null is not a valid argument for URI');
+      }
+    }
+    this.href(url);
+
+    // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+    if (base !== undefined) {
+      return this.absoluteTo(base);
+    }
+    return this;
+  }
+  function isInteger(value) {
+    return /^[0-9]+$/.test(value);
+  }
+  URI.version = '1.19.11';
+  var p = URI.prototype;
+  var hasOwn = Object.prototype.hasOwnProperty;
+  function escapeRegEx(string) {
+    // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
+    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+  }
+  function getType(value) {
+    // IE8 doesn't return [Object Undefined] but [Object Object] for undefined value
+    if (value === undefined) {
+      return 'Undefined';
+    }
+    return String(Object.prototype.toString.call(value)).slice(8, -1);
+  }
+  function isArray(obj) {
+    return getType(obj) === 'Array';
+  }
+  function filterArrayValues(data, value) {
+    var lookup = {};
+    var i, length;
+    if (getType(value) === 'RegExp') {
+      lookup = null;
+    } else if (isArray(value)) {
+      for (i = 0, length = value.length; i < length; i++) {
+        lookup[value[i]] = true;
+      }
+    } else {
+      lookup[value] = true;
+    }
+    for (i = 0, length = data.length; i < length; i++) {
+      /*jshint laxbreak: true */
+      var _match = lookup && lookup[data[i]] !== undefined || !lookup && value.test(data[i]);
+      /*jshint laxbreak: false */
+      if (_match) {
+        data.splice(i, 1);
+        length--;
+        i--;
+      }
+    }
+    return data;
+  }
+  function arrayContains(list, value) {
+    var i, length;
+
+    // value may be string, number, array, regexp
+    if (isArray(value)) {
+      // Note: this can be optimized to O(n) (instead of current O(m * n))
+      for (i = 0, length = value.length; i < length; i++) {
+        if (!arrayContains(list, value[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    var _type = getType(value);
+    for (i = 0, length = list.length; i < length; i++) {
+      if (_type === 'RegExp') {
+        if (typeof list[i] === 'string' && list[i].match(value)) {
+          return true;
+        }
+      } else if (list[i] === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function arraysEqual(one, two) {
+    if (!isArray(one) || !isArray(two)) {
+      return false;
+    }
+
+    // arrays can't be equal if they have different amount of content
+    if (one.length !== two.length) {
+      return false;
+    }
+    one.sort();
+    two.sort();
+    for (var i = 0, l = one.length; i < l; i++) {
+      if (one[i] !== two[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  function trimSlashes(text) {
+    var trim_expression = /^\/+|\/+$/g;
+    return text.replace(trim_expression, '');
+  }
+  URI._parts = function () {
+    return {
+      protocol: null,
+      username: null,
+      password: null,
+      hostname: null,
+      urn: null,
+      port: null,
+      path: null,
+      query: null,
+      fragment: null,
+      // state
+      preventInvalidHostname: URI.preventInvalidHostname,
+      duplicateQueryParameters: URI.duplicateQueryParameters,
+      escapeQuerySpace: URI.escapeQuerySpace
+    };
+  };
+  // state: throw on invalid hostname
+  // see https://github.com/medialize/URI.js/pull/345
+  // and https://github.com/medialize/URI.js/issues/354
+  URI.preventInvalidHostname = false;
+  // state: allow duplicate query parameters (a=1&a=1)
+  URI.duplicateQueryParameters = false;
+  // state: replaces + with %20 (space in query strings)
+  URI.escapeQuerySpace = true;
+  // static properties
+  URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
+  URI.idn_expression = /[^a-z0-9\._-]/i;
+  URI.punycode_expression = /(xn--)/i;
+  // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
+  URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  // credits to Rich Brown
+  // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
+  // specification: http://www.ietf.org/rfc/rfc4291.txt
+  URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+  // expression used is "gruber revised" (@gruber v2) determined to be the
+  // best solution in a regex-golf we did a couple of ages ago at
+  // * http://mathiasbynens.be/demo/url-regex
+  // * http://rodneyrehm.de/t/url-regex.html
+  URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
+  URI.findUri = {
+    // valid "scheme://" or "www."
+    start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
+    // everything up to the next whitespace
+    end: /[\s\r\n]|$/,
+    // trim trailing punctuation captured by end RegExp
+    trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/,
+    // balanced parens inclusion (), [], {}, <>
+    parens: /(\([^\)]*\)|\[[^\]]*\]|\{[^}]*\}|<[^>]*>)/g
+  };
+  URI.leading_whitespace_expression = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
+  // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+  URI.ascii_tab_whitespace = /[\u0009\u000A\u000D]+/g;
+  // http://www.iana.org/assignments/uri-schemes.html
+  // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
+  URI.defaultPorts = {
+    http: '80',
+    https: '443',
+    ftp: '21',
+    gopher: '70',
+    ws: '80',
+    wss: '443'
+  };
+  // list of protocols which always require a hostname
+  URI.hostProtocols = ['http', 'https'];
+
+  // allowed hostname characters according to RFC 3986
+  // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
+  // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . - _
+  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.\-:_]/;
+  // map DOM Elements to their URI attribute
+  URI.domAttributes = {
+    'a': 'href',
+    'blockquote': 'cite',
+    'link': 'href',
+    'base': 'href',
+    'script': 'src',
+    'form': 'action',
+    'img': 'src',
+    'area': 'href',
+    'iframe': 'src',
+    'embed': 'src',
+    'source': 'src',
+    'track': 'src',
+    'input': 'src',
+    // but only if type="image"
+    'audio': 'src',
+    'video': 'src'
+  };
+  URI.getDomAttribute = function (node) {
+    if (!node || !node.nodeName) {
+      return undefined;
+    }
+    var nodeName = node.nodeName.toLowerCase();
+    // <input> should only expose src for type="image"
+    if (nodeName === 'input' && node.type !== 'image') {
+      return undefined;
+    }
+    return URI.domAttributes[nodeName];
+  };
+  function escapeForDumbFirefox36(value) {
+    // https://github.com/medialize/URI.js/issues/91
+    return escape(value);
+  }
+
+  // encoding / decoding according to RFC3986
+  function strictEncodeURIComponent(string) {
+    // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
+    return encodeURIComponent(string).replace(/[!'()*]/g, escapeForDumbFirefox36).replace(/\*/g, '%2A');
+  }
+  URI.encode = strictEncodeURIComponent;
+  URI.decode = decodeURIComponent;
+  URI.iso8859 = function () {
+    URI.encode = escape;
+    URI.decode = unescape;
+  };
+  URI.unicode = function () {
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = decodeURIComponent;
+  };
+  URI.characters = {
+    pathname: {
+      encode: {
+        // RFC3986 2.1: For consistency, URI producers and normalizers should
+        // use uppercase hexadecimal digits for all percent-encodings.
+        expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
+        map: {
+          // -._~!'()*
+          '%24': '$',
+          '%26': '&',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%3A': ':',
+          '%40': '@'
+        }
+      },
+      decode: {
+        expression: /[\/\?#]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23'
+        }
+      }
+    },
+    reserved: {
+      encode: {
+        // RFC3986 2.1: For consistency, URI producers and normalizers should
+        // use uppercase hexadecimal digits for all percent-encodings.
+        expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
+        map: {
+          // gen-delims
+          '%3A': ':',
+          '%2F': '/',
+          '%3F': '?',
+          '%23': '#',
+          '%5B': '[',
+          '%5D': ']',
+          '%40': '@',
+          // sub-delims
+          '%21': '!',
+          '%24': '$',
+          '%26': '&',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '='
+        }
+      }
+    },
+    urnpath: {
+      // The characters under `encode` are the characters called out by RFC 2141 as being acceptable
+      // for usage in a URN. RFC2141 also calls out "-", ".", and "_" as acceptable characters, but
+      // these aren't encoded by encodeURIComponent, so we don't have to call them out here. Also
+      // note that the colon character is not featured in the encoding map; this is because URI.js
+      // gives the colons in URNs semantic meaning as the delimiters of path segements, and so it
+      // should not appear unencoded in a segment itself.
+      // See also the note above about RFC3986 and capitalalized hex digits.
+      encode: {
+        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
+        map: {
+          '%21': '!',
+          '%24': '$',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%40': '@'
+        }
+      },
+      // These characters are the characters called out by RFC2141 as "reserved" characters that
+      // should never appear in a URN, plus the colon character (see note above).
+      decode: {
+        expression: /[\/\?#:]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23',
+          ':': '%3A'
+        }
+      }
+    }
+  };
+  URI.encodeQuery = function (string, escapeQuerySpace) {
+    var escaped = URI.encode(string + '');
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
+  };
+  URI.decodeQuery = function (string, escapeQuerySpace) {
+    string += '';
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    try {
+      return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
+    } catch (e) {
+      // we're not going to mess with weird encodings,
+      // give up and return the undecoded original string
+      // see https://github.com/medialize/URI.js/issues/87
+      // see https://github.com/medialize/URI.js/issues/92
+      return string;
+    }
+  };
+  // generate encode/decode path functions
+  var _parts = {
+    'encode': 'encode',
+    'decode': 'decode'
+  };
+  var _part;
+  var generateAccessor = function generateAccessor(_group, _part) {
+    return function (string) {
+      try {
+        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function (c) {
+          return URI.characters[_group][_part].map[c];
+        });
+      } catch (e) {
+        // we're not going to mess with weird encodings,
+        // give up and return the undecoded original string
+        // see https://github.com/medialize/URI.js/issues/87
+        // see https://github.com/medialize/URI.js/issues/92
+        return string;
+      }
+    };
+  };
+  for (_part in _parts) {
+    URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
+    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
+  }
+  var generateSegmentedPathFunction = function generateSegmentedPathFunction(_sep, _codingFuncName, _innerCodingFuncName) {
+    return function (string) {
+      // Why pass in names of functions, rather than the function objects themselves? The
+      // definitions of some functions (but in particular, URI.decode) will occasionally change due
+      // to URI.js having ISO8859 and Unicode modes. Passing in the name and getting it will ensure
+      // that the functions we use here are "fresh".
+      var actualCodingFunc;
+      if (!_innerCodingFuncName) {
+        actualCodingFunc = URI[_codingFuncName];
+      } else {
+        actualCodingFunc = function actualCodingFunc(string) {
+          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
+        };
+      }
+      var segments = (string + '').split(_sep);
+      for (var i = 0, length = segments.length; i < length; i++) {
+        segments[i] = actualCodingFunc(segments[i]);
+      }
+      return segments.join(_sep);
+    };
+  };
+
+  // This takes place outside the above loop because we don't want, e.g., encodeUrnPath functions.
+  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
+  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
+  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
+  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
+  URI.encodeReserved = generateAccessor('reserved', 'encode');
+  URI.parse = function (string, parts) {
+    var pos;
+    if (!parts) {
+      parts = {
+        preventInvalidHostname: URI.preventInvalidHostname
+      };
+    }
+    string = string.replace(URI.leading_whitespace_expression, '');
+    // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+    string = string.replace(URI.ascii_tab_whitespace, '');
+
+    // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
+
+    // extract fragment
+    pos = string.indexOf('#');
+    if (pos > -1) {
+      // escaping?
+      parts.fragment = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+
+    // extract query
+    pos = string.indexOf('?');
+    if (pos > -1) {
+      // escaping?
+      parts.query = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+
+    // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
+    string = string.replace(/^(https?|ftp|wss?)?:+[/\\]*/i, '$1://');
+    // slashes and backslashes have lost all meaning for scheme relative URLs
+    string = string.replace(/^[/\\]{2,}/i, '//');
+
+    // extract protocol
+    if (string.substring(0, 2) === '//') {
+      // relative-scheme
+      parts.protocol = null;
+      string = string.substring(2);
+      // extract "user:pass@host:port"
+      string = URI.parseAuthority(string, parts);
+    } else {
+      pos = string.indexOf(':');
+      if (pos > -1) {
+        parts.protocol = string.substring(0, pos) || null;
+        if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
+          // : may be within the path
+          parts.protocol = undefined;
+        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
+          string = string.substring(pos + 3);
+
+          // extract "user:pass@host:port"
+          string = URI.parseAuthority(string, parts);
+        } else {
+          string = string.substring(pos + 1);
+          parts.urn = true;
+        }
+      }
+    }
+
+    // what's left must be the path
+    parts.path = string;
+
+    // and we're done
+    return parts;
+  };
+  URI.parseHost = function (string, parts) {
+    if (!string) {
+      string = '';
+    }
+
+    // Copy chrome, IE, opera backslash-handling behavior.
+    // Back slashes before the query string get converted to forward slashes
+    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
+    // See: https://code.google.com/p/chromium/issues/detail?id=25916
+    // https://github.com/medialize/URI.js/pull/233
+    string = string.replace(/\\/g, '/');
+
+    // extract host:port
+    var pos = string.indexOf('/');
+    var bracketPos;
+    var t;
+    if (pos === -1) {
+      pos = string.length;
+    }
+    if (string.charAt(0) === '[') {
+      // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
+      // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
+      // IPv6+port in the format [2001:db8::1]:80 (for the time being)
+      bracketPos = string.indexOf(']');
+      parts.hostname = string.substring(1, bracketPos) || null;
+      parts.port = string.substring(bracketPos + 2, pos) || null;
+      if (parts.port === '/') {
+        parts.port = null;
+      }
+    } else {
+      var firstColon = string.indexOf(':');
+      var firstSlash = string.indexOf('/');
+      var nextColon = string.indexOf(':', firstColon + 1);
+      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
+        // IPv6 host contains multiple colons - but no port
+        // this notation is actually not allowed by RFC 3986, but we're a liberal parser
+        parts.hostname = string.substring(0, pos) || null;
+        parts.port = null;
+      } else {
+        t = string.substring(0, pos).split(':');
+        parts.hostname = t[0] || null;
+        parts.port = t[1] || null;
+      }
+    }
+    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
+      pos++;
+      string = '/' + string;
+    }
+    if (parts.preventInvalidHostname) {
+      URI.ensureValidHostname(parts.hostname, parts.protocol);
+    }
+    if (parts.port) {
+      URI.ensureValidPort(parts.port);
+    }
+    return string.substring(pos) || '/';
+  };
+  URI.parseAuthority = function (string, parts) {
+    string = URI.parseUserinfo(string, parts);
+    return URI.parseHost(string, parts);
+  };
+  URI.parseUserinfo = function (string, parts) {
+    // extract username:password
+    var _string = string;
+    var firstBackSlash = string.indexOf('\\');
+    if (firstBackSlash !== -1) {
+      string = string.replace(/\\/g, '/');
+    }
+    var firstSlash = string.indexOf('/');
+    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
+    var t;
+
+    // authority@ must come before /path or \path
+    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
+      t = string.substring(0, pos).split(':');
+      parts.username = t[0] ? URI.decode(t[0]) : null;
+      t.shift();
+      parts.password = t[0] ? URI.decode(t.join(':')) : null;
+      string = _string.substring(pos + 1);
+    } else {
+      parts.username = null;
+      parts.password = null;
+    }
+    return string;
+  };
+  URI.parseQuery = function (string, escapeQuerySpace) {
+    if (!string) {
+      return {};
+    }
+
+    // throw out the funky business - "?"[name"="value"&"]+
+    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
+    if (!string) {
+      return {};
+    }
+    var items = {};
+    var splits = string.split('&');
+    var length = splits.length;
+    var v, name, value;
+    for (var i = 0; i < length; i++) {
+      v = splits[i].split('=');
+      name = URI.decodeQuery(v.shift(), escapeQuerySpace);
+      // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
+      value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
+      if (name === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(items, name)) {
+        if (typeof items[name] === 'string' || items[name] === null) {
+          items[name] = [items[name]];
+        }
+        items[name].push(value);
+      } else {
+        items[name] = value;
+      }
+    }
+    return items;
+  };
+  URI.build = function (parts) {
+    var t = '';
+    var requireAbsolutePath = false;
+    if (parts.protocol) {
+      t += parts.protocol + ':';
+    }
+    if (!parts.urn && (t || parts.hostname)) {
+      t += '//';
+      requireAbsolutePath = true;
+    }
+    t += URI.buildAuthority(parts) || '';
+    if (typeof parts.path === 'string') {
+      if (parts.path.charAt(0) !== '/' && requireAbsolutePath) {
+        t += '/';
+      }
+      t += parts.path;
+    }
+    if (typeof parts.query === 'string' && parts.query) {
+      t += '?' + parts.query;
+    }
+    if (typeof parts.fragment === 'string' && parts.fragment) {
+      t += '#' + parts.fragment;
+    }
+    return t;
+  };
+  URI.buildHost = function (parts) {
+    var t = '';
+    if (!parts.hostname) {
+      return '';
+    } else if (URI.ip6_expression.test(parts.hostname)) {
+      t += '[' + parts.hostname + ']';
+    } else {
+      t += parts.hostname;
+    }
+    if (parts.port) {
+      t += ':' + parts.port;
+    }
+    return t;
+  };
+  URI.buildAuthority = function (parts) {
+    return URI.buildUserinfo(parts) + URI.buildHost(parts);
+  };
+  URI.buildUserinfo = function (parts) {
+    var t = '';
+    if (parts.username) {
+      t += URI.encode(parts.username);
+    }
+    if (parts.password) {
+      t += ':' + URI.encode(parts.password);
+    }
+    if (t) {
+      t += '@';
+    }
+    return t;
+  };
+  URI.buildQuery = function (data, duplicateQueryParameters, escapeQuerySpace) {
+    // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
+    // being »-._~!$&'()*+,;=:@/?« %HEX and alnum are allowed
+    // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
+    // URI.js treats the query string as being application/x-www-form-urlencoded
+    // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
+
+    var t = '';
+    var unique, key, i, length;
+    for (key in data) {
+      if (key === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(data, key)) {
+        if (isArray(data[key])) {
+          unique = {};
+          for (i = 0, length = data[key].length; i < length; i++) {
+            if (data[key][i] !== undefined && unique[data[key][i] + ''] === undefined) {
+              t += '&' + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
+              if (duplicateQueryParameters !== true) {
+                unique[data[key][i] + ''] = true;
+              }
+            }
+          }
+        } else if (data[key] !== undefined) {
+          t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
+        }
+      }
+    }
+    return t.substring(1);
+  };
+  URI.buildQueryParameter = function (name, value, escapeQuerySpace) {
+    // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded
+    // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
+    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
+  };
+  URI.addQuery = function (data, name, value) {
+    if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.addQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (data[name] === undefined) {
+        data[name] = value;
+        return;
+      } else if (typeof data[name] === 'string') {
+        data[name] = [data[name]];
+      }
+      if (!isArray(value)) {
+        value = [value];
+      }
+      data[name] = (data[name] || []).concat(value);
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+  };
+  URI.setQuery = function (data, name, value) {
+    if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.setQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      data[name] = value === undefined ? null : value;
+    } else {
+      throw new TypeError('URI.setQuery() accepts an object, string as the name parameter');
+    }
+  };
+  URI.removeQuery = function (data, name, value) {
+    var i, length, key;
+    if (isArray(name)) {
+      for (i = 0, length = name.length; i < length; i++) {
+        data[name[i]] = undefined;
+      }
+    } else if (getType(name) === 'RegExp') {
+      for (key in data) {
+        if (name.test(key)) {
+          data[key] = undefined;
+        }
+      }
+    } else if (_typeof(name) === 'object') {
+      for (key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.removeQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (value !== undefined) {
+        if (getType(value) === 'RegExp') {
+          if (!isArray(data[name]) && value.test(data[name])) {
+            data[name] = undefined;
+          } else {
+            data[name] = filterArrayValues(data[name], value);
+          }
+        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
+          data[name] = undefined;
+        } else if (isArray(data[name])) {
+          data[name] = filterArrayValues(data[name], value);
+        }
+      } else {
+        data[name] = undefined;
+      }
+    } else {
+      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
+    }
+  };
+  URI.hasQuery = function (data, name, value, withinArray) {
+    switch (getType(name)) {
+      case 'String':
+        // Nothing to do here
+        break;
+      case 'RegExp':
+        for (var key in data) {
+          if (hasOwn.call(data, key)) {
+            if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
+              return true;
+            }
+          }
+        }
+        return false;
+      case 'Object':
+        for (var _key in name) {
+          if (hasOwn.call(name, _key)) {
+            if (!URI.hasQuery(data, _key, name[_key])) {
+              return false;
+            }
+          }
+        }
+        return true;
+      default:
+        throw new TypeError('URI.hasQuery() accepts a string, regular expression or object as the name parameter');
+    }
+    switch (getType(value)) {
+      case 'Undefined':
+        // true if exists (but may be empty)
+        return name in data;
+      // data[name] !== undefined;
+
+      case 'Boolean':
+        // true if exists and non-empty
+        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
+        return value === _booly;
+      case 'Function':
+        // allow complex comparison
+        return !!value(data[name], name, data);
+      case 'Array':
+        if (!isArray(data[name])) {
+          return false;
+        }
+        var op = withinArray ? arrayContains : arraysEqual;
+        return op(data[name], value);
+      case 'RegExp':
+        if (!isArray(data[name])) {
+          return Boolean(data[name] && data[name].match(value));
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      case 'Number':
+        value = String(value);
+      /* falls through */
+      case 'String':
+        if (!isArray(data[name])) {
+          return data[name] === value;
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      default:
+        throw new TypeError('URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter');
+    }
+  };
+  URI.joinPaths = function () {
+    var input = [];
+    var segments = [];
+    var nonEmptySegments = 0;
+    for (var i = 0; i < arguments.length; i++) {
+      var url = new URI(arguments[i]);
+      input.push(url);
+      var _segments = url.segment();
+      for (var s = 0; s < _segments.length; s++) {
+        if (typeof _segments[s] === 'string') {
+          segments.push(_segments[s]);
+        }
+        if (_segments[s]) {
+          nonEmptySegments++;
+        }
+      }
+    }
+    if (!segments.length || !nonEmptySegments) {
+      return new URI('');
+    }
+    var uri = new URI('').segment(segments);
+    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
+      uri.path('/' + uri.path());
+    }
+    return uri.normalize();
+  };
+  URI.commonPath = function (one, two) {
+    var length = Math.min(one.length, two.length);
+    var pos;
+
+    // find first non-matching character
+    for (pos = 0; pos < length; pos++) {
+      if (one.charAt(pos) !== two.charAt(pos)) {
+        pos--;
+        break;
+      }
+    }
+    if (pos < 1) {
+      return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
+    }
+
+    // revert to last /
+    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
+      pos = one.substring(0, pos).lastIndexOf('/');
+    }
+    return one.substring(0, pos + 1);
+  };
+  URI.withinString = function (string, callback, options) {
+    options || (options = {});
+    var _start = options.start || URI.findUri.start;
+    var _end = options.end || URI.findUri.end;
+    var _trim = options.trim || URI.findUri.trim;
+    var _parens = options.parens || URI.findUri.parens;
+    var _attributeOpen = /[a-z0-9-]=["']?$/i;
+    _start.lastIndex = 0;
+    while (true) {
+      var match = _start.exec(string);
+      if (!match) {
+        break;
+      }
+      var start = match.index;
+      if (options.ignoreHtml) {
+        // attribut(e=["']?$)
+        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
+        if (attributeOpen && _attributeOpen.test(attributeOpen)) {
+          continue;
+        }
+      }
+      var end = start + string.slice(start).search(_end);
+      var slice = string.slice(start, end);
+      // make sure we include well balanced parens
+      var parensEnd = -1;
+      while (true) {
+        var parensMatch = _parens.exec(slice);
+        if (!parensMatch) {
+          break;
+        }
+        var parensMatchEnd = parensMatch.index + parensMatch[0].length;
+        parensEnd = Math.max(parensEnd, parensMatchEnd);
+      }
+      if (parensEnd > -1) {
+        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd).replace(_trim, '');
+      } else {
+        slice = slice.replace(_trim, '');
+      }
+      if (slice.length <= match[0].length) {
+        // the extract only contains the starting marker of a URI,
+        // e.g. "www" or "http://"
+        continue;
+      }
+      if (options.ignore && options.ignore.test(slice)) {
+        continue;
+      }
+      end = start + slice.length;
+      var result = callback(slice, start, end, string);
+      if (result === undefined) {
+        _start.lastIndex = end;
+        continue;
+      }
+      result = String(result);
+      string = string.slice(0, start) + result + string.slice(end);
+      _start.lastIndex = start + result.length;
+    }
+    _start.lastIndex = 0;
+    return string;
+  };
+  URI.ensureValidHostname = function (v, protocol) {
+    // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
+    // they are not part of DNS and therefore ignored by URI.js
+
+    var hasHostname = !!v; // not null and not an empty string
+    var hasProtocol = !!protocol;
+    var rejectEmptyHostname = false;
+    if (hasProtocol) {
+      rejectEmptyHostname = arrayContains(URI.hostProtocols, protocol);
+    }
+    if (rejectEmptyHostname && !hasHostname) {
+      throw new TypeError('Hostname cannot be empty, if protocol is ' + protocol);
+    } else if (v && v.match(URI.invalid_hostname_characters)) {
+      // test punycode
+      if (!punycode) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_] and Punycode.js is not available');
+      }
+      if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_]');
+      }
+    }
+  };
+  URI.ensureValidPort = function (v) {
+    if (!v) {
+      return;
+    }
+    var port = Number(v);
+    if (isInteger(port) && port > 0 && port < 65536) {
+      return;
+    }
+    throw new TypeError('Port "' + v + '" is not a valid port');
+  };
+
+  // noConflict
+  URI.noConflict = function (removeAll) {
+    if (removeAll) {
+      var unconflicted = {
+        URI: this.noConflict()
+      };
+      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
+        unconflicted.URITemplate = root.URITemplate.noConflict();
+      }
+      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
+        unconflicted.IPv6 = root.IPv6.noConflict();
+      }
+      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
+        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
+      }
+      return unconflicted;
+    } else if (root.URI === this) {
+      root.URI = _URI;
+    }
+    return this;
+  };
+  p.build = function (deferBuild) {
+    if (deferBuild === true) {
+      this._deferred_build = true;
+    } else if (deferBuild === undefined || this._deferred_build) {
+      this._string = URI.build(this._parts);
+      this._deferred_build = false;
+    }
+    return this;
+  };
+  p.clone = function () {
+    return new URI(this);
+  };
+  p.valueOf = p.toString = function () {
+    return this.build(false)._string;
+  };
+  function generateSimpleAccessor(_part) {
+    return function (v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        this._parts[_part] = v || null;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  function generatePrefixAccessor(_part, _key) {
+    return function (v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        if (v !== null) {
+          v = v + '';
+          if (v.charAt(0) === _key) {
+            v = v.substring(1);
+          }
+        }
+        this._parts[_part] = v;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  p.protocol = generateSimpleAccessor('protocol');
+  p.username = generateSimpleAccessor('username');
+  p.password = generateSimpleAccessor('password');
+  p.hostname = generateSimpleAccessor('hostname');
+  p.port = generateSimpleAccessor('port');
+  p.query = generatePrefixAccessor('query', '?');
+  p.fragment = generatePrefixAccessor('fragment', '#');
+  p.search = function (v, build) {
+    var t = this.query(v, build);
+    return typeof t === 'string' && t.length ? '?' + t : t;
+  };
+  p.hash = function (v, build) {
+    var t = this.fragment(v, build);
+    return typeof t === 'string' && t.length ? '#' + t : t;
+  };
+  p.pathname = function (v, build) {
+    if (v === undefined || v === true) {
+      var res = this._parts.path || (this._parts.hostname ? '/' : '');
+      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
+    } else {
+      if (this._parts.urn) {
+        this._parts.path = v ? URI.recodeUrnPath(v) : '';
+      } else {
+        this._parts.path = v ? URI.recodePath(v) : '/';
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.path = p.pathname;
+  p.href = function (href, build) {
+    var key;
+    if (href === undefined) {
+      return this.toString();
+    }
+    this._string = '';
+    this._parts = URI._parts();
+    var _URI = href instanceof URI;
+    var _object = _typeof(href) === 'object' && (href.hostname || href.path || href.pathname);
+    if (href.nodeName) {
+      var attribute = URI.getDomAttribute(href);
+      href = href[attribute] || '';
+      _object = false;
+    }
+
+    // window.location is reported to be an object, but it's not the sort
+    // of object we're looking for:
+    // * location.protocol ends with a colon
+    // * location.query != object.search
+    // * location.hash != object.fragment
+    // simply serializing the unknown object should do the trick
+    // (for location, not for everything...)
+    if (!_URI && _object && href.pathname !== undefined) {
+      href = href.toString();
+    }
+    if (typeof href === 'string' || href instanceof String) {
+      this._parts = URI.parse(String(href), this._parts);
+    } else if (_URI || _object) {
+      var src = _URI ? href._parts : href;
+      for (key in src) {
+        if (key === 'query') {
+          continue;
+        }
+        if (hasOwn.call(this._parts, key)) {
+          this._parts[key] = src[key];
+        }
+      }
+      if (src.query) {
+        this.query(src.query, false);
+      }
+    } else {
+      throw new TypeError('invalid input');
+    }
+    this.build(!build);
+    return this;
+  };
+
+  // identification accessors
+  p.is = function (what) {
+    var ip = false;
+    var ip4 = false;
+    var ip6 = false;
+    var name = false;
+    var sld = false;
+    var idn = false;
+    var punycode = false;
+    var relative = !this._parts.urn;
+    if (this._parts.hostname) {
+      relative = false;
+      ip4 = URI.ip4_expression.test(this._parts.hostname);
+      ip6 = URI.ip6_expression.test(this._parts.hostname);
+      ip = ip4 || ip6;
+      name = !ip;
+      sld = name && SLD && SLD.has(this._parts.hostname);
+      idn = name && URI.idn_expression.test(this._parts.hostname);
+      punycode = name && URI.punycode_expression.test(this._parts.hostname);
+    }
+    switch (what.toLowerCase()) {
+      case 'relative':
+        return relative;
+      case 'absolute':
+        return !relative;
+
+      // hostname identification
+      case 'domain':
+      case 'name':
+        return name;
+      case 'sld':
+        return sld;
+      case 'ip':
+        return ip;
+      case 'ip4':
+      case 'ipv4':
+      case 'inet4':
+        return ip4;
+      case 'ip6':
+      case 'ipv6':
+      case 'inet6':
+        return ip6;
+      case 'idn':
+        return idn;
+      case 'url':
+        return !this._parts.urn;
+      case 'urn':
+        return !!this._parts.urn;
+      case 'punycode':
+        return punycode;
+    }
+    return null;
+  };
+
+  // component specific input validation
+  var _protocol = p.protocol;
+  var _port = p.port;
+  var _hostname = p.hostname;
+  p.protocol = function (v, build) {
+    if (v) {
+      // accept trailing ://
+      v = v.replace(/:(\/\/)?$/, '');
+      if (!v.match(URI.protocol_expression)) {
+        throw new TypeError('Protocol "' + v + '" contains characters other than [A-Z0-9.+-] or doesn\'t start with [A-Z]');
+      }
+    }
+    return _protocol.call(this, v, build);
+  };
+  p.scheme = p.protocol;
+  p.port = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      if (v === 0) {
+        v = null;
+      }
+      if (v) {
+        v += '';
+        if (v.charAt(0) === ':') {
+          v = v.substring(1);
+        }
+        URI.ensureValidPort(v);
+      }
+    }
+    return _port.call(this, v, build);
+  };
+  p.hostname = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      var x = {
+        preventInvalidHostname: this._parts.preventInvalidHostname
+      };
+      var res = URI.parseHost(v, x);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      v = x.hostname;
+      if (this._parts.preventInvalidHostname) {
+        URI.ensureValidHostname(v, this._parts.protocol);
+      }
+    }
+    return _hostname.call(this, v, build);
+  };
+
+  // compound accessors
+  p.origin = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var protocol = this.protocol();
+      var authority = this.authority();
+      if (!authority) {
+        return '';
+      }
+      return (protocol ? protocol + '://' : '') + this.authority();
+    } else {
+      var origin = URI(v);
+      this.protocol(origin.protocol()).authority(origin.authority()).build(!build);
+      return this;
+    }
+  };
+  p.host = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildHost(this._parts) : '';
+    } else {
+      var res = URI.parseHost(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.authority = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
+    } else {
+      var res = URI.parseAuthority(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.userinfo = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var t = URI.buildUserinfo(this._parts);
+      return t ? t.substring(0, t.length - 1) : t;
+    } else {
+      if (v[v.length - 1] !== '@') {
+        v += '@';
+      }
+      URI.parseUserinfo(v, this._parts);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.resource = function (v, build) {
+    var parts;
+    if (v === undefined) {
+      return this.path() + this.search() + this.hash();
+    }
+    parts = URI.parse(v);
+    this._parts.path = parts.path;
+    this._parts.query = parts.query;
+    this._parts.fragment = parts.fragment;
+    this.build(!build);
+    return this;
+  };
+
+  // fraction accessors
+  p.subdomain = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+
+    // convenience, return "www" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+
+      // grab domain and add another segment
+      var end = this._parts.hostname.length - this.domain().length - 1;
+      return this._parts.hostname.substring(0, end) || '';
+    } else {
+      var e = this._parts.hostname.length - this.domain().length;
+      var sub = this._parts.hostname.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(sub));
+      if (v && v.charAt(v.length - 1) !== '.') {
+        v += '.';
+      }
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
+      }
+      if (v) {
+        URI.ensureValidHostname(v, this._parts.protocol);
+      }
+      this._parts.hostname = this._parts.hostname.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.domain = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+
+    // convenience, return "example.org" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+
+      // if hostname consists of 1 or 2 segments, it must be the domain
+      var t = this._parts.hostname.match(/\./g);
+      if (t && t.length < 2) {
+        return this._parts.hostname;
+      }
+
+      // grab tld and add another segment
+      var end = this._parts.hostname.length - this.tld(build).length - 1;
+      end = this._parts.hostname.lastIndexOf('.', end - 1) + 1;
+      return this._parts.hostname.substring(end) || '';
+    } else {
+      if (!v) {
+        throw new TypeError('cannot set domain empty');
+      }
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
+      }
+      URI.ensureValidHostname(v, this._parts.protocol);
+      if (!this._parts.hostname || this.is('IP')) {
+        this._parts.hostname = v;
+      } else {
+        var replace = new RegExp(escapeRegEx(this.domain()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.tld = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+
+    // return "org" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+      var pos = this._parts.hostname.lastIndexOf('.');
+      var tld = this._parts.hostname.substring(pos + 1);
+      if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
+        return SLD.get(this._parts.hostname) || tld;
+      }
+      return tld;
+    } else {
+      var replace;
+      if (!v) {
+        throw new TypeError('cannot set TLD empty');
+      } else if (v.match(/[^a-zA-Z0-9-]/)) {
+        if (SLD && SLD.is(v)) {
+          replace = new RegExp(escapeRegEx(this.tld()) + '$');
+          this._parts.hostname = this._parts.hostname.replace(replace, v);
+        } else {
+          throw new TypeError('TLD "' + v + '" contains characters other than [A-Z0-9]');
+        }
+      } else if (!this._parts.hostname || this.is('IP')) {
+        throw new ReferenceError('cannot set TLD on non-domain host');
+      } else {
+        replace = new RegExp(escapeRegEx(this.tld()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.directory = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path && !this._parts.hostname) {
+        return '';
+      }
+      if (this._parts.path === '/') {
+        return '/';
+      }
+      var end = this._parts.path.length - this.filename().length - 1;
+      var res = this._parts.path.substring(0, end) || (this._parts.hostname ? '/' : '');
+      return v ? URI.decodePath(res) : res;
+    } else {
+      var e = this._parts.path.length - this.filename().length;
+      var directory = this._parts.path.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(directory));
+
+      // fully qualifier directories begin with a slash
+      if (!this.is('relative')) {
+        if (!v) {
+          v = '/';
+        }
+        if (v.charAt(0) !== '/') {
+          v = '/' + v;
+        }
+      }
+
+      // directories always end with a slash
+      if (v && v.charAt(v.length - 1) !== '/') {
+        v += '/';
+      }
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.filename = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v !== 'string') {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var pos = this._parts.path.lastIndexOf('/');
+      var res = this._parts.path.substring(pos + 1);
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      var mutatedDirectory = false;
+      if (v.charAt(0) === '/') {
+        v = v.substring(1);
+      }
+      if (v.match(/\.?\//)) {
+        mutatedDirectory = true;
+      }
+      var replace = new RegExp(escapeRegEx(this.filename()) + '$');
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      if (mutatedDirectory) {
+        this.normalizePath(build);
+      } else {
+        this.build(!build);
+      }
+      return this;
+    }
+  };
+  p.suffix = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var filename = this.filename();
+      var pos = filename.lastIndexOf('.');
+      var s, res;
+      if (pos === -1) {
+        return '';
+      }
+
+      // suffix may only contain alnum characters (yup, I made this up.)
+      s = filename.substring(pos + 1);
+      res = /^[a-z0-9%]+$/i.test(s) ? s : '';
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      if (v.charAt(0) === '.') {
+        v = v.substring(1);
+      }
+      var suffix = this.suffix();
+      var replace;
+      if (!suffix) {
+        if (!v) {
+          return this;
+        }
+        this._parts.path += '.' + URI.recodePath(v);
+      } else if (!v) {
+        replace = new RegExp(escapeRegEx('.' + suffix) + '$');
+      } else {
+        replace = new RegExp(escapeRegEx(suffix) + '$');
+      }
+      if (replace) {
+        v = URI.recodePath(v);
+        this._parts.path = this._parts.path.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.segment = function (segment, v, build) {
+    var separator = this._parts.urn ? ':' : '/';
+    var path = this.path();
+    var absolute = path.substring(0, 1) === '/';
+    var segments = path.split(separator);
+    if (segment !== undefined && typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (segment !== undefined && typeof segment !== 'number') {
+      throw new Error('Bad segment "' + segment + '", must be 0-based integer');
+    }
+    if (absolute) {
+      segments.shift();
+    }
+    if (segment < 0) {
+      // allow negative indexes to address from the end
+      segment = Math.max(segments.length + segment, 0);
+    }
+    if (v === undefined) {
+      /*jshint laxbreak: true */
+      return segment === undefined ? segments : segments[segment];
+      /*jshint laxbreak: false */
+    } else if (segment === null || segments[segment] === undefined) {
+      if (isArray(v)) {
+        segments = [];
+        // collapse empty elements within array
+        for (var i = 0, l = v.length; i < l; i++) {
+          if (!v[i].length && (!segments.length || !segments[segments.length - 1].length)) {
+            continue;
+          }
+          if (segments.length && !segments[segments.length - 1].length) {
+            segments.pop();
+          }
+          segments.push(trimSlashes(v[i]));
+        }
+      } else if (v || typeof v === 'string') {
+        v = trimSlashes(v);
+        if (segments[segments.length - 1] === '') {
+          // empty trailing elements have to be overwritten
+          // to prevent results such as /foo//bar
+          segments[segments.length - 1] = v;
+        } else {
+          segments.push(v);
+        }
+      }
+    } else {
+      if (v) {
+        segments[segment] = trimSlashes(v);
+      } else {
+        segments.splice(segment, 1);
+      }
+    }
+    if (absolute) {
+      segments.unshift('');
+    }
+    return this.path(segments.join(separator), build);
+  };
+  p.segmentCoded = function (segment, v, build) {
+    var segments, i, l;
+    if (typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (v === undefined) {
+      segments = this.segment(segment, v, build);
+      if (!isArray(segments)) {
+        segments = segments !== undefined ? URI.decode(segments) : undefined;
+      } else {
+        for (i = 0, l = segments.length; i < l; i++) {
+          segments[i] = URI.decode(segments[i]);
+        }
+      }
+      return segments;
+    }
+    if (!isArray(v)) {
+      v = typeof v === 'string' || v instanceof String ? URI.encode(v) : v;
+    } else {
+      for (i = 0, l = v.length; i < l; i++) {
+        v[i] = URI.encode(v[i]);
+      }
+    }
+    return this.segment(segment, v, build);
+  };
+
+  // mutating query string
+  var q = p.query;
+  p.query = function (v, build) {
+    if (v === true) {
+      return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    } else if (typeof v === 'function') {
+      var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+      var result = v.call(this, data);
+      this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else if (v !== undefined && typeof v !== 'string') {
+      this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else {
+      return q.call(this, v, build);
+    }
+  };
+  p.setQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    if (typeof name === 'string' || name instanceof String) {
+      data[name] = value !== undefined ? value : null;
+    } else if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          data[key] = name[key];
+        }
+      }
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.addQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.addQuery(data, name, value === undefined ? null : value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.removeQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.removeQuery(data, name, value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.hasQuery = function (name, value, withinArray) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    return URI.hasQuery(data, name, value, withinArray);
+  };
+  p.setSearch = p.setQuery;
+  p.addSearch = p.addQuery;
+  p.removeSearch = p.removeQuery;
+  p.hasSearch = p.hasQuery;
+
+  // sanitizing URLs
+  p.normalize = function () {
+    if (this._parts.urn) {
+      return this.normalizeProtocol(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+    }
+    return this.normalizeProtocol(false).normalizeHostname(false).normalizePort(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+  };
+  p.normalizeProtocol = function (build) {
+    if (typeof this._parts.protocol === 'string') {
+      this._parts.protocol = this._parts.protocol.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeHostname = function (build) {
+    if (this._parts.hostname) {
+      if (this.is('IDN') && punycode) {
+        this._parts.hostname = punycode.toASCII(this._parts.hostname);
+      } else if (this.is('IPv6') && IPv6) {
+        this._parts.hostname = IPv6.best(this._parts.hostname);
+      }
+      this._parts.hostname = this._parts.hostname.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePort = function (build) {
+    // remove port of it's the protocol's default
+    if (typeof this._parts.protocol === 'string' && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
+      this._parts.port = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePath = function (build) {
+    var _path = this._parts.path;
+    if (!_path) {
+      return this;
+    }
+    if (this._parts.urn) {
+      this._parts.path = URI.recodeUrnPath(this._parts.path);
+      this.build(!build);
+      return this;
+    }
+    if (this._parts.path === '/') {
+      return this;
+    }
+    _path = URI.recodePath(_path);
+    var _was_relative;
+    var _leadingParents = '';
+    var _parent, _pos;
+
+    // handle relative paths
+    if (_path.charAt(0) !== '/') {
+      _was_relative = true;
+      _path = '/' + _path;
+    }
+
+    // handle relative files (as opposed to directories)
+    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
+      _path += '/';
+    }
+
+    // resolve simples
+    _path = _path.replace(/(\/(\.\/)+)|(\/\.$)/g, '/').replace(/\/{2,}/g, '/');
+
+    // remember leading parents
+    if (_was_relative) {
+      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+      if (_leadingParents) {
+        _leadingParents = _leadingParents[0];
+      }
+    }
+
+    // resolve parents
+    while (true) {
+      _parent = _path.search(/\/\.\.(\/|$)/);
+      if (_parent === -1) {
+        // no more ../ to resolve
+        break;
+      } else if (_parent === 0) {
+        // top level cannot be relative, skip it
+        _path = _path.substring(3);
+        continue;
+      }
+      _pos = _path.substring(0, _parent).lastIndexOf('/');
+      if (_pos === -1) {
+        _pos = _parent;
+      }
+      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+    }
+
+    // revert to relative
+    if (_was_relative && this.is('relative')) {
+      _path = _leadingParents + _path.substring(1);
+    }
+    this._parts.path = _path;
+    this.build(!build);
+    return this;
+  };
+  p.normalizePathname = p.normalizePath;
+  p.normalizeQuery = function (build) {
+    if (typeof this._parts.query === 'string') {
+      if (!this._parts.query.length) {
+        this._parts.query = null;
+      } else {
+        this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
+      }
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeFragment = function (build) {
+    if (!this._parts.fragment) {
+      this._parts.fragment = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeSearch = p.normalizeQuery;
+  p.normalizeHash = p.normalizeFragment;
+  p.iso8859 = function () {
+    // expect unicode input, iso8859 output
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = escape;
+    URI.decode = decodeURIComponent;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.unicode = function () {
+    // expect iso8859 input, unicode output
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = unescape;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.readable = function () {
+    var uri = this.clone();
+    // removing username, password, because they shouldn't be displayed according to RFC 3986
+    uri.username('').password('').normalize();
+    var t = '';
+    if (uri._parts.protocol) {
+      t += uri._parts.protocol + '://';
+    }
+    if (uri._parts.hostname) {
+      if (uri.is('punycode') && punycode) {
+        t += punycode.toUnicode(uri._parts.hostname);
+        if (uri._parts.port) {
+          t += ':' + uri._parts.port;
+        }
+      } else {
+        t += uri.host();
+      }
+    }
+    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
+      t += '/';
+    }
+    t += uri.path(true);
+    if (uri._parts.query) {
+      var q = '';
+      for (var i = 0, qp = uri._parts.query.split('&'), l = qp.length; i < l; i++) {
+        var kv = (qp[i] || '').split('=');
+        q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        if (kv[1] !== undefined) {
+          q += '=' + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        }
+      }
+      t += '?' + q.substring(1);
+    }
+    t += URI.decodeQuery(uri.hash(), true);
+    return t;
+  };
+
+  // resolving relative and absolute URLs
+  p.absoluteTo = function (base) {
+    var resolved = this.clone();
+    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+    var basedir, i, p;
+    if (this._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    if (!(base instanceof URI)) {
+      base = new URI(base);
+    }
+    if (resolved._parts.protocol) {
+      // Directly returns even if this._parts.hostname is empty.
+      return resolved;
+    } else {
+      resolved._parts.protocol = base._parts.protocol;
+    }
+    if (this._parts.hostname) {
+      return resolved;
+    }
+    for (i = 0; p = properties[i]; i++) {
+      resolved._parts[p] = base._parts[p];
+    }
+    if (!resolved._parts.path) {
+      resolved._parts.path = base._parts.path;
+      if (!resolved._parts.query) {
+        resolved._parts.query = base._parts.query;
+      }
+    } else {
+      if (resolved._parts.path.substring(-2) === '..') {
+        resolved._parts.path += '/';
+      }
+      if (resolved.path().charAt(0) !== '/') {
+        basedir = base.directory();
+        basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
+        resolved._parts.path = (basedir ? basedir + '/' : '') + resolved._parts.path;
+        resolved.normalizePath();
+      }
+    }
+    resolved.build();
+    return resolved;
+  };
+  p.relativeTo = function (base) {
+    var relative = this.clone().normalize();
+    var relativeParts, baseParts, common, relativePath, basePath;
+    if (relative._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    base = new URI(base).normalize();
+    relativeParts = relative._parts;
+    baseParts = base._parts;
+    relativePath = relative.path();
+    basePath = base.path();
+    if (relativePath.charAt(0) !== '/') {
+      throw new Error('URI is already relative');
+    }
+    if (basePath.charAt(0) !== '/') {
+      throw new Error('Cannot calculate a URI relative to another relative URI');
+    }
+    if (relativeParts.protocol === baseParts.protocol) {
+      relativeParts.protocol = null;
+    }
+    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
+      return relative.build();
+    }
+    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
+      return relative.build();
+    }
+    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
+      relativeParts.hostname = null;
+      relativeParts.port = null;
+    } else {
+      return relative.build();
+    }
+    if (relativePath === basePath) {
+      relativeParts.path = '';
+      return relative.build();
+    }
+
+    // determine common sub path
+    common = URI.commonPath(relativePath, basePath);
+
+    // If the paths have nothing in common, return a relative URL with the absolute path.
+    if (!common) {
+      return relative.build();
+    }
+    var parents = baseParts.path.substring(common.length).replace(/[^\/]*$/, '').replace(/.*?\//g, '../');
+    relativeParts.path = parents + relativeParts.path.substring(common.length) || './';
+    return relative.build();
+  };
+
+  // comparing URIs
+  p.equals = function (uri) {
+    var one = this.clone();
+    var two = new URI(uri);
+    var one_map = {};
+    var two_map = {};
+    var checked = {};
+    var one_query, two_query, key;
+    one.normalize();
+    two.normalize();
+
+    // exact match
+    if (one.toString() === two.toString()) {
+      return true;
+    }
+
+    // extract query string
+    one_query = one.query();
+    two_query = two.query();
+    one.query('');
+    two.query('');
+
+    // definitely not equal if not even non-query parts match
+    if (one.toString() !== two.toString()) {
+      return false;
+    }
+
+    // query parameters have the same length, even if they're permuted
+    if (one_query.length !== two_query.length) {
+      return false;
+    }
+    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
+    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
+    for (key in one_map) {
+      if (hasOwn.call(one_map, key)) {
+        if (!isArray(one_map[key])) {
+          if (one_map[key] !== two_map[key]) {
+            return false;
+          }
+        } else if (!arraysEqual(one_map[key], two_map[key])) {
+          return false;
+        }
+        checked[key] = true;
+      }
+    }
+    for (key in two_map) {
+      if (hasOwn.call(two_map, key)) {
+        if (!checked[key]) {
+          // two contains a parameter not present in one
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  // state
+  p.preventInvalidHostname = function (v) {
+    this._parts.preventInvalidHostname = !!v;
+    return this;
+  };
+  p.duplicateQueryParameters = function (v) {
+    this._parts.duplicateQueryParameters = !!v;
+    return this;
+  };
+  p.escapeQuerySpace = function (v) {
+    this._parts.escapeQuerySpace = !!v;
+    return this;
+  };
+  return URI;
+});
+
+/***/ }),
+
+/***/ 2323:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+/*! https://mths.be/punycode v1.4.0 by @mathias */
+;
+(function (root) {
+  /** Detect free variables */
+  var freeExports = ( false ? 0 : _typeof(exports)) == 'object' && exports && !exports.nodeType && exports;
+  var freeModule = ( false ? 0 : _typeof(module)) == 'object' && module && !module.nodeType && module;
+  var freeGlobal = (typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g;
+  if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal) {
+    root = freeGlobal;
+  }
+
+  /**
+   * The `punycode` object.
+   * @name punycode
+   * @type Object
+   */
+  var punycode,
+    /** Highest positive signed 32-bit float value */
+    maxInt = 2147483647,
+    // aka. 0x7FFFFFFF or 2^31-1
+
+    /** Bootstring parameters */
+    base = 36,
+    tMin = 1,
+    tMax = 26,
+    skew = 38,
+    damp = 700,
+    initialBias = 72,
+    initialN = 128,
+    // 0x80
+    delimiter = '-',
+    // '\x2D'
+
+    /** Regular expressions */
+    regexPunycode = /^xn--/,
+    regexNonASCII = /[^\x20-\x7E]/,
+    // unprintable ASCII chars + non-ASCII chars
+    regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g,
+    // RFC 3490 separators
+
+    /** Error messages */
+    errors = {
+      'overflow': 'Overflow: input needs wider integers to process',
+      'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+      'invalid-input': 'Invalid input'
+    },
+    /** Convenience shortcuts */
+    baseMinusTMin = base - tMin,
+    floor = Math.floor,
+    stringFromCharCode = String.fromCharCode,
+    /** Temporary variable */
+    key;
+
+  /*--------------------------------------------------------------------------*/
+
+  /**
+   * A generic error utility function.
+   * @private
+   * @param {String} type The error type.
+   * @returns {Error} Throws a `RangeError` with the applicable error message.
+   */
+  function error(type) {
+    throw new RangeError(errors[type]);
+  }
+
+  /**
+   * A generic `Array#map` utility function.
+   * @private
+   * @param {Array} array The array to iterate over.
+   * @param {Function} callback The function that gets called for every array
+   * item.
+   * @returns {Array} A new array of values returned by the callback function.
+   */
+  function map(array, fn) {
+    var length = array.length;
+    var result = [];
+    while (length--) {
+      result[length] = fn(array[length]);
+    }
+    return result;
+  }
+
+  /**
+   * A simple `Array#map`-like wrapper to work with domain name strings or email
+   * addresses.
+   * @private
+   * @param {String} domain The domain name or email address.
+   * @param {Function} callback The function that gets called for every
+   * character.
+   * @returns {Array} A new string of characters returned by the callback
+   * function.
+   */
+  function mapDomain(string, fn) {
+    var parts = string.split('@');
+    var result = '';
+    if (parts.length > 1) {
+      // In email addresses, only the domain name should be punycoded. Leave
+      // the local part (i.e. everything up to `@`) intact.
+      result = parts[0] + '@';
+      string = parts[1];
+    }
+    // Avoid `split(regex)` for IE8 compatibility. See #17.
+    string = string.replace(regexSeparators, '\x2E');
+    var labels = string.split('.');
+    var encoded = map(labels, fn).join('.');
+    return result + encoded;
+  }
+
+  /**
+   * Creates an array containing the numeric code points of each Unicode
+   * character in the string. While JavaScript uses UCS-2 internally,
+   * this function will convert a pair of surrogate halves (each of which
+   * UCS-2 exposes as separate characters) into a single code point,
+   * matching UTF-16.
+   * @see `punycode.ucs2.encode`
+   * @see <https://mathiasbynens.be/notes/javascript-encoding>
+   * @memberOf punycode.ucs2
+   * @name decode
+   * @param {String} string The Unicode input string (UCS-2).
+   * @returns {Array} The new array of code points.
+   */
+  function ucs2decode(string) {
+    var output = [],
+      counter = 0,
+      length = string.length,
+      value,
+      extra;
+    while (counter < length) {
+      value = string.charCodeAt(counter++);
+      if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+        // high surrogate, and there is a next character
+        extra = string.charCodeAt(counter++);
+        if ((extra & 0xFC00) == 0xDC00) {
+          // low surrogate
+          output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+        } else {
+          // unmatched surrogate; only append this code unit, in case the next
+          // code unit is the high surrogate of a surrogate pair
+          output.push(value);
+          counter--;
+        }
+      } else {
+        output.push(value);
+      }
+    }
+    return output;
+  }
+
+  /**
+   * Creates a string based on an array of numeric code points.
+   * @see `punycode.ucs2.decode`
+   * @memberOf punycode.ucs2
+   * @name encode
+   * @param {Array} codePoints The array of numeric code points.
+   * @returns {String} The new Unicode string (UCS-2).
+   */
+  function ucs2encode(array) {
+    return map(array, function (value) {
+      var output = '';
+      if (value > 0xFFFF) {
+        value -= 0x10000;
+        output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+        value = 0xDC00 | value & 0x3FF;
+      }
+      output += stringFromCharCode(value);
+      return output;
+    }).join('');
+  }
+
+  /**
+   * Converts a basic code point into a digit/integer.
+   * @see `digitToBasic()`
+   * @private
+   * @param {Number} codePoint The basic numeric code point value.
+   * @returns {Number} The numeric value of a basic code point (for use in
+   * representing integers) in the range `0` to `base - 1`, or `base` if
+   * the code point does not represent a value.
+   */
+  function basicToDigit(codePoint) {
+    if (codePoint - 48 < 10) {
+      return codePoint - 22;
+    }
+    if (codePoint - 65 < 26) {
+      return codePoint - 65;
+    }
+    if (codePoint - 97 < 26) {
+      return codePoint - 97;
+    }
+    return base;
+  }
+
+  /**
+   * Converts a digit/integer into a basic code point.
+   * @see `basicToDigit()`
+   * @private
+   * @param {Number} digit The numeric value of a basic code point.
+   * @returns {Number} The basic code point whose value (when used for
+   * representing integers) is `digit`, which needs to be in the range
+   * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
+   * used; else, the lowercase form is used. The behavior is undefined
+   * if `flag` is non-zero and `digit` has no uppercase form.
+   */
+  function digitToBasic(digit, flag) {
+    //  0..25 map to ASCII a..z or A..Z
+    // 26..35 map to ASCII 0..9
+    return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+  }
+
+  /**
+   * Bias adaptation function as per section 3.4 of RFC 3492.
+   * https://tools.ietf.org/html/rfc3492#section-3.4
+   * @private
+   */
+  function adapt(delta, numPoints, firstTime) {
+    var k = 0;
+    delta = firstTime ? floor(delta / damp) : delta >> 1;
+    delta += floor(delta / numPoints);
+    for (; delta > baseMinusTMin * tMax >> 1; k += base) {
+      delta = floor(delta / baseMinusTMin);
+    }
+    return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+  }
+
+  /**
+   * Converts a Punycode string of ASCII-only symbols to a string of Unicode
+   * symbols.
+   * @memberOf punycode
+   * @param {String} input The Punycode string of ASCII-only symbols.
+   * @returns {String} The resulting string of Unicode symbols.
+   */
+  function decode(input) {
+    // Don't use UCS-2
+    var output = [],
+      inputLength = input.length,
+      out,
+      i = 0,
+      n = initialN,
+      bias = initialBias,
+      basic,
+      j,
+      index,
+      oldi,
+      w,
+      k,
+      digit,
+      t,
+      /** Cached calculation results */
+      baseMinusT;
+
+    // Handle the basic code points: let `basic` be the number of input code
+    // points before the last delimiter, or `0` if there is none, then copy
+    // the first basic code points to the output.
+
+    basic = input.lastIndexOf(delimiter);
+    if (basic < 0) {
+      basic = 0;
+    }
+    for (j = 0; j < basic; ++j) {
+      // if it's not a basic code point
+      if (input.charCodeAt(j) >= 0x80) {
+        error('not-basic');
+      }
+      output.push(input.charCodeAt(j));
+    }
+
+    // Main decoding loop: start just after the last delimiter if any basic code
+    // points were copied; start at the beginning otherwise.
+
+    for (index = basic > 0 ? basic + 1 : 0; index < inputLength;) {
+      // `index` is the index of the next character to be consumed.
+      // Decode a generalized variable-length integer into `delta`,
+      // which gets added to `i`. The overflow checking is easier
+      // if we increase `i` as we go, then subtract off its starting
+      // value at the end to obtain `delta`.
+      for (oldi = i, w = 1, k = base;; k += base) {
+        if (index >= inputLength) {
+          error('invalid-input');
+        }
+        digit = basicToDigit(input.charCodeAt(index++));
+        if (digit >= base || digit > floor((maxInt - i) / w)) {
+          error('overflow');
+        }
+        i += digit * w;
+        t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+        if (digit < t) {
+          break;
+        }
+        baseMinusT = base - t;
+        if (w > floor(maxInt / baseMinusT)) {
+          error('overflow');
+        }
+        w *= baseMinusT;
+      }
+      out = output.length + 1;
+      bias = adapt(i - oldi, out, oldi == 0);
+
+      // `i` was supposed to wrap around from `out` to `0`,
+      // incrementing `n` each time, so we'll fix that now:
+      if (floor(i / out) > maxInt - n) {
+        error('overflow');
+      }
+      n += floor(i / out);
+      i %= out;
+
+      // Insert `n` at position `i` of the output
+      output.splice(i++, 0, n);
+    }
+    return ucs2encode(output);
+  }
+
+  /**
+   * Converts a string of Unicode symbols (e.g. a domain name label) to a
+   * Punycode string of ASCII-only symbols.
+   * @memberOf punycode
+   * @param {String} input The string of Unicode symbols.
+   * @returns {String} The resulting Punycode string of ASCII-only symbols.
+   */
+  function encode(input) {
+    var n,
+      delta,
+      handledCPCount,
+      basicLength,
+      bias,
+      j,
+      m,
+      q,
+      k,
+      t,
+      currentValue,
+      output = [],
+      /** `inputLength` will hold the number of code points in `input`. */
+      inputLength,
+      /** Cached calculation results */
+      handledCPCountPlusOne,
+      baseMinusT,
+      qMinusT;
+
+    // Convert the input in UCS-2 to Unicode
+    input = ucs2decode(input);
+
+    // Cache the length
+    inputLength = input.length;
+
+    // Initialize the state
+    n = initialN;
+    delta = 0;
+    bias = initialBias;
+
+    // Handle the basic code points
+    for (j = 0; j < inputLength; ++j) {
+      currentValue = input[j];
+      if (currentValue < 0x80) {
+        output.push(stringFromCharCode(currentValue));
+      }
+    }
+    handledCPCount = basicLength = output.length;
+
+    // `handledCPCount` is the number of code points that have been handled;
+    // `basicLength` is the number of basic code points.
+
+    // Finish the basic string - if it is not empty - with a delimiter
+    if (basicLength) {
+      output.push(delimiter);
+    }
+
+    // Main encoding loop:
+    while (handledCPCount < inputLength) {
+      // All non-basic code points < n have been handled already. Find the next
+      // larger one:
+      for (m = maxInt, j = 0; j < inputLength; ++j) {
+        currentValue = input[j];
+        if (currentValue >= n && currentValue < m) {
+          m = currentValue;
+        }
+      }
+
+      // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+      // but guard against overflow
+      handledCPCountPlusOne = handledCPCount + 1;
+      if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+        error('overflow');
+      }
+      delta += (m - n) * handledCPCountPlusOne;
+      n = m;
+      for (j = 0; j < inputLength; ++j) {
+        currentValue = input[j];
+        if (currentValue < n && ++delta > maxInt) {
+          error('overflow');
+        }
+        if (currentValue == n) {
+          // Represent delta as a generalized variable-length integer
+          for (q = delta, k = base;; k += base) {
+            t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+            if (q < t) {
+              break;
+            }
+            qMinusT = q - t;
+            baseMinusT = base - t;
+            output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
+            q = floor(qMinusT / baseMinusT);
+          }
+          output.push(stringFromCharCode(digitToBasic(q, 0)));
+          bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+          delta = 0;
+          ++handledCPCount;
+        }
+      }
+      ++delta;
+      ++n;
+    }
+    return output.join('');
+  }
+
+  /**
+   * Converts a Punycode string representing a domain name or an email address
+   * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
+   * it doesn't matter if you call it on a string that has already been
+   * converted to Unicode.
+   * @memberOf punycode
+   * @param {String} input The Punycoded domain name or email address to
+   * convert to Unicode.
+   * @returns {String} The Unicode representation of the given Punycode
+   * string.
+   */
+  function toUnicode(input) {
+    return mapDomain(input, function (string) {
+      return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
+    });
+  }
+
+  /**
+   * Converts a Unicode string representing a domain name or an email address to
+   * Punycode. Only the non-ASCII parts of the domain name will be converted,
+   * i.e. it doesn't matter if you call it with a domain that's already in
+   * ASCII.
+   * @memberOf punycode
+   * @param {String} input The domain name or email address to convert, as a
+   * Unicode string.
+   * @returns {String} The Punycode representation of the given domain name or
+   * email address.
+   */
+  function toASCII(input) {
+    return mapDomain(input, function (string) {
+      return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
+    });
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+  /** Define the public API */
+  punycode = {
+    /**
+     * A string representing the current Punycode.js version number.
+     * @memberOf punycode
+     * @type String
+     */
+    'version': '1.3.2',
+    /**
+     * An object of methods to convert from JavaScript's internal character
+     * representation (UCS-2) to Unicode code points, and back.
+     * @see <https://mathiasbynens.be/notes/javascript-encoding>
+     * @memberOf punycode
+     * @type Object
+     */
+    'ucs2': {
+      'decode': ucs2decode,
+      'encode': ucs2encode
+    },
+    'decode': decode,
+    'encode': encode,
+    'toASCII': toASCII,
+    'toUnicode': toUnicode
+  };
+
+  /** Expose `punycode` */
+  // Some AMD build optimizers, like r.js, check for specific condition patterns
+  // like the following:
+  if ( true && _typeof(__webpack_require__.amdO) == 'object' && __webpack_require__.amdO) {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+      return punycode;
+    }).call(exports, __webpack_require__, exports, module),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (freeExports && freeModule) {
+    if (module.exports == freeExports) {
+      // in Node.js, io.js, or RingoJS v0.8.0+
+      freeModule.exports = punycode;
+    } else {
+      // in Narwhal or RingoJS v0.7.0-
+      for (key in punycode) {
+        punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
+      }
+    }
+  } else {
+    // in Rhino or a web browser
+    root.punycode = punycode;
+  }
+})(this);
+
+/***/ }),
+
+/***/ 4257:
 /***/ (function(__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util
+// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, FetchRequest, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util, VectorClipJobsParameter
 
-;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
+;// ./src/common/commontypes/Pixel.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -2583,7 +3892,7 @@ var Pixel = /*#__PURE__*/function () {
    *
    * @returns {string} 例如: "x=200.4,y=242.2"
    */
-  _createClass(Pixel, [{
+  return _createClass(Pixel, [{
     key: "toString",
     value: function toString() {
       return 'x=' + this.x + ',y=' + this.y;
@@ -2700,7 +4009,6 @@ var Pixel = /*#__PURE__*/function () {
       this.mode = null;
     }
   }]);
-  return Pixel;
 }();
 /**
  * @enum Mode
@@ -2719,11 +4027,11 @@ Pixel.Mode = {
   /** 左下模式。 */
   LeftBottom: 'leftbottom'
 };
-;// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
+;// ./src/common/commontypes/BaseTypes.js
 function BaseTypes_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function BaseTypes_createClass(Constructor, protoProps, staticProps) { if (protoProps) BaseTypes_defineProperties(Constructor.prototype, protoProps); if (staticProps) BaseTypes_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function BaseTypes_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3149,11 +4457,11 @@ var ArrayExt = {
     return selected;
   }
 };
-;// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
+;// ./src/common/commontypes/Geometry.js
 function Geometry_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function Geometry_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function Geometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) Geometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) Geometry_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -3206,7 +4514,7 @@ var Geometry = /*#__PURE__*/function () {
    * @function Geometry.prototype.destroy
    * @description 解构 Geometry 类，释放资源。
    */
-  Geometry_createClass(Geometry, [{
+  return Geometry_createClass(Geometry, [{
     key: "destroy",
     value: function destroy() {
       this.id = null;
@@ -3334,13 +4642,16 @@ var Geometry = /*#__PURE__*/function () {
     // return string;
     // }
   }]);
-  return Geometry;
 }();
-;// CONCATENATED MODULE: ./src/common/commontypes/Util.js
+// EXTERNAL MODULE: ./node_modules/urijs/src/URI.js
+var URI = __webpack_require__(9216);
+var URI_default = /*#__PURE__*/__webpack_require__.n(URI);
+;// ./src/common/commontypes/Util.js
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -3470,12 +4781,12 @@ var DOTS_PER_INCH = 96;
 
 var Util_Util = {
   /**
-     * @memberOf CommonUtil
-     * @description 对象拷贝赋值。
-     * @param {Object} dest - 目标对象。
-     * @param {Object} arguments - 待拷贝的对象。
-     * @returns {Object} 赋值后的目标对象。
-     */
+   * @memberOf CommonUtil
+   * @description 对象拷贝赋值。
+   * @param {Object} dest - 目标对象。
+   * @param {Object} arguments - 待拷贝的对象。
+   * @returns {Object} 赋值后的目标对象。
+   */
   assign: function assign(dest) {
     for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
       var arg = Object.getOwnPropertyNames(arguments)[index];
@@ -3968,45 +5279,13 @@ var Util_Util = {
       return true;
     }
     var index = url.indexOf('//');
-    var documentUrl = document.location.toString();
-    var documentIndex = documentUrl.indexOf('//');
     if (index === -1) {
       return true;
-    } else {
-      var protocol;
-      var substring = protocol = url.substring(0, index);
-      var documentSubString = documentUrl.substring(documentIndex + 2);
-      documentIndex = documentSubString.indexOf('/');
-      var documentPortIndex = documentSubString.indexOf(':');
-      var documentDomainWithPort = documentSubString.substring(0, documentIndex);
-      //var documentPort;
-
-      var documentprotocol = document.location.protocol;
-      if (documentPortIndex !== -1) {
-        // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
-      } else {
-        documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      if (documentprotocol.toLowerCase() !== substring.toLowerCase()) {
-        return false;
-      }
-      substring = url.substring(index + 2);
-      var portIndex = substring.indexOf(':');
-      index = substring.indexOf('/');
-      var domainWithPort = substring.substring(0, index);
-      var domain;
-      if (portIndex !== -1) {
-        domain = substring.substring(0, portIndex);
-      } else {
-        domain = substring.substring(0, index);
-        domainWithPort += ':' + (protocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      var documentDomain = document.domain;
-      if (domain === documentDomain && domainWithPort === documentDomainWithPort) {
-        return true;
-      }
     }
-    return false;
+    return Util_Util.isSameDomain(url, document.location.toString());
+  },
+  isSameDomain: function isSameDomain(url, otherUrl) {
+    return new (URI_default())(url).normalize().origin() === new (URI_default())(otherUrl).normalize().origin();
   },
   /**
    * @memberOf CommonUtil
@@ -4539,8 +5818,8 @@ function canBeJsonified(str) {
   }
 }
 
-;// CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/common/commontypes/Event.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4849,12 +6128,12 @@ var Event = {
 };
 /* prevent memory leaks in IE */
 Event.observe(window, 'resize', Event.unloadCache, false);
-;// CONCATENATED MODULE: ./src/common/commontypes/Events.js
+;// ./src/common/commontypes/Events.js
 function Events_typeof(obj) { "@babel/helpers - typeof"; return Events_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, Events_typeof(obj); }
 function Events_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function Events_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function Events_createClass(Constructor, protoProps, staticProps) { if (protoProps) Events_defineProperties(Constructor.prototype, protoProps); if (staticProps) Events_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4969,7 +6248,7 @@ var Events = /*#__PURE__*/function () {
    * @function Events.prototype.destroy
    * @description 移除当前要素 element 上的所有事件监听和处理。
    */
-  Events_createClass(Events, [{
+  return Events_createClass(Events, [{
     key: "destroy",
     value: function destroy() {
       for (var e in this.extensions) {
@@ -5322,10 +6601,9 @@ var Events = /*#__PURE__*/function () {
       return new Pixel(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
     }
   }]);
-  return Events;
 }();
 Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
+;// ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5336,7 +6614,7 @@ function ElasticSearch_typeof(obj) { "@babel/helpers - typeof"; return ElasticSe
 function ElasticSearch_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function ElasticSearch_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function ElasticSearch_createClass(Constructor, protoProps, staticProps) { if (protoProps) ElasticSearch_defineProperties(Constructor.prototype, protoProps); if (staticProps) ElasticSearch_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5446,7 +6724,7 @@ var ElasticSearch = /*#__PURE__*/function () {
    * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
    * @param {Geometry} geoFence - 地理围栏。
    */
-  ElasticSearch_createClass(ElasticSearch, [{
+  return ElasticSearch_createClass(ElasticSearch, [{
     key: "setGeoFence",
     value: function setGeoFence(geoFence) {
       this.geoFence = geoFence;
@@ -6084,17 +7362,16 @@ var ElasticSearch = /*#__PURE__*/function () {
       return meterPerMapUnit;
     }
   }]);
-  return ElasticSearch;
 }();
 // EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(2347);
+var polyfill = __webpack_require__(3819);
 // EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(5122);
+var fetch = __webpack_require__(4537);
 // EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(683);
+var fetch_jsonp = __webpack_require__(9005);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
-;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/common/util/FetchRequest.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6651,11 +7928,11 @@ var FetchRequest = {
     return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
   }
 };
-;// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
+;// ./src/common/commontypes/Credential.js
 function Credential_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function Credential_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function Credential_createClass(Constructor, protoProps, staticProps) { if (protoProps) Credential_defineProperties(Constructor.prototype, protoProps); if (staticProps) Credential_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6700,7 +7977,7 @@ var Credential = /*#__PURE__*/function () {
    * var str = credential.getUrlParameters();
    * @returns {string} 安全信息组成的 url 片段。
    */
-  Credential_createClass(Credential, [{
+  return Credential_createClass(Credential, [{
     key: "getUrlParameters",
     value: function getUrlParameters() {
       //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
@@ -6737,7 +8014,6 @@ var Credential = /*#__PURE__*/function () {
       this.name = null;
     }
   }]);
-  return Credential;
 }();
 
 /**
@@ -6754,11 +8030,11 @@ var Credential = /*#__PURE__*/function () {
  */
 
 Credential.CREDENTIAL = null;
-;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
+;// ./src/common/security/SecurityManager.js
 function SecurityManager_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SecurityManager_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SecurityManager_createClass(Constructor, protoProps, staticProps) { if (protoProps) SecurityManager_defineProperties(Constructor.prototype, protoProps); if (staticProps) SecurityManager_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6780,7 +8056,7 @@ var SecurityManager = /*#__PURE__*/function () {
   function SecurityManager() {
     SecurityManager_classCallCheck(this, SecurityManager);
   }
-  SecurityManager_createClass(SecurityManager, null, [{
+  return SecurityManager_createClass(SecurityManager, null, [{
     key: "generateToken",
     value:
     /**
@@ -7161,14 +8437,13 @@ var SecurityManager = /*#__PURE__*/function () {
       return result[0];
     }
   }]);
-  return SecurityManager;
 }();
 SecurityManager.INNER_WINDOW_WIDTH = 600;
 SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
-;// CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/common/REST.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9548,11 +10823,11 @@ var CellSizeType = {
   MIN: "MIN"
 };
 
-;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
+;// ./src/common/iServer/DatasourceConnectionInfo.js
 function DatasourceConnectionInfo_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function DatasourceConnectionInfo_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function DatasourceConnectionInfo_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceConnectionInfo_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceConnectionInfo_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9671,7 +10946,7 @@ var DatasourceConnectionInfo = /*#__PURE__*/function () {
    * @function DatasourceConnectionInfo.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  DatasourceConnectionInfo_createClass(DatasourceConnectionInfo, [{
+  return DatasourceConnectionInfo_createClass(DatasourceConnectionInfo, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -9688,13 +10963,12 @@ var DatasourceConnectionInfo = /*#__PURE__*/function () {
       me.user = null;
     }
   }]);
-  return DatasourceConnectionInfo;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
+;// ./src/common/iServer/OutputSetting.js
 function OutputSetting_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function OutputSetting_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function OutputSetting_createClass(Constructor, protoProps, staticProps) { if (protoProps) OutputSetting_defineProperties(Constructor.prototype, protoProps); if (staticProps) OutputSetting_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9747,7 +11021,7 @@ var OutputSetting = /*#__PURE__*/function () {
    * @function OutputSetting.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  OutputSetting_createClass(OutputSetting, [{
+  return OutputSetting_createClass(OutputSetting, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -9760,13 +11034,12 @@ var OutputSetting = /*#__PURE__*/function () {
       }
     }
   }]);
-  return OutputSetting;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
+;// ./src/common/iServer/MappingParameters.js
 function MappingParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function MappingParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function MappingParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) MappingParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) MappingParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9825,7 +11098,7 @@ var MappingParameters = /*#__PURE__*/function () {
    * @function MappingParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  MappingParameters_createClass(MappingParameters, [{
+  return MappingParameters_createClass(MappingParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -9844,13 +11117,12 @@ var MappingParameters = /*#__PURE__*/function () {
       me.colorGradientType = null;
     }
   }]);
-  return MappingParameters;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
+;// ./src/common/iServer/KernelDensityJobParameter.js
 function KernelDensityJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function KernelDensityJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function KernelDensityJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9963,7 +11235,7 @@ var KernelDensityJobParameter = /*#__PURE__*/function () {
    * @function KernelDensityJobParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  KernelDensityJobParameter_createClass(KernelDensityJobParameter, [{
+  return KernelDensityJobParameter_createClass(KernelDensityJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10020,13 +11292,12 @@ var KernelDensityJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return KernelDensityJobParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
+;// ./src/common/iServer/SingleObjectQueryJobsParameter.js
 function SingleObjectQueryJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SingleObjectQueryJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SingleObjectQueryJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10096,7 +11367,7 @@ var SingleObjectQueryJobsParameter = /*#__PURE__*/function () {
    * @function SingleObjectQueryJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SingleObjectQueryJobsParameter_createClass(SingleObjectQueryJobsParameter, [{
+  return SingleObjectQueryJobsParameter_createClass(SingleObjectQueryJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10142,13 +11413,12 @@ var SingleObjectQueryJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SingleObjectQueryJobsParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
+;// ./src/common/iServer/SummaryAttributesJobsParameter.js
 function SummaryAttributesJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryAttributesJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryAttributesJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10213,7 +11483,7 @@ var SummaryAttributesJobsParameter = /*#__PURE__*/function () {
    * @function SummaryAttributesJobsParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  SummaryAttributesJobsParameter_createClass(SummaryAttributesJobsParameter, [{
+  return SummaryAttributesJobsParameter_createClass(SummaryAttributesJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10259,13 +11529,12 @@ var SummaryAttributesJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryAttributesJobsParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
+;// ./src/common/iServer/SummaryMeshJobParameter.js
 function SummaryMeshJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryMeshJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryMeshJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10364,7 +11633,7 @@ var SummaryMeshJobParameter = /*#__PURE__*/function () {
    * @function SummaryMeshJobParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  SummaryMeshJobParameter_createClass(SummaryMeshJobParameter, [{
+  return SummaryMeshJobParameter_createClass(SummaryMeshJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10433,13 +11702,12 @@ var SummaryMeshJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryMeshJobParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
+;// ./src/common/iServer/SummaryRegionJobParameter.js
 function SummaryRegionJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryRegionJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryRegionJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10581,7 +11849,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
    * @function SummaryRegionJobParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SummaryRegionJobParameter_createClass(SummaryRegionJobParameter, [{
+  return SummaryRegionJobParameter_createClass(SummaryRegionJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10651,13 +11919,12 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return SummaryRegionJobParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
+;// ./src/common/iServer/OverlayGeoJobParameter.js
 function OverlayGeoJobParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function OverlayGeoJobParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function OverlayGeoJobParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10734,7 +12001,7 @@ var OverlayGeoJobParameter = /*#__PURE__*/function () {
    * @function OverlayGeoJobParameter.prototype.destroy
    * @description 释放资源，将资源的属性置空。
    */
-  OverlayGeoJobParameter_createClass(OverlayGeoJobParameter, [{
+  return OverlayGeoJobParameter_createClass(OverlayGeoJobParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10781,13 +12048,12 @@ var OverlayGeoJobParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return OverlayGeoJobParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
+;// ./src/common/iServer/BuffersAnalystJobsParameter.js
 function BuffersAnalystJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function BuffersAnalystJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function BuffersAnalystJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10871,7 +12137,7 @@ var BuffersAnalystJobsParameter = /*#__PURE__*/function () {
    * @function BuffersAnalystJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  BuffersAnalystJobsParameter_createClass(BuffersAnalystJobsParameter, [{
+  return BuffersAnalystJobsParameter_createClass(BuffersAnalystJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -10923,13 +12189,12 @@ var BuffersAnalystJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return BuffersAnalystJobsParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
+;// ./src/common/iServer/TopologyValidatorJobsParameter.js
 function TopologyValidatorJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function TopologyValidatorJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function TopologyValidatorJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11000,7 +12265,7 @@ var TopologyValidatorJobsParameter = /*#__PURE__*/function () {
    * @function TopologyValidatorJobsParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  TopologyValidatorJobsParameter_createClass(TopologyValidatorJobsParameter, [{
+  return TopologyValidatorJobsParameter_createClass(TopologyValidatorJobsParameter, [{
     key: "destroy",
     value: function destroy() {
       this.datasetName = null;
@@ -11046,13 +12311,12 @@ var TopologyValidatorJobsParameter = /*#__PURE__*/function () {
       }
     }
   }]);
-  return TopologyValidatorJobsParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
+;// ./src/common/iServer/GeoCodingParameter.js
 function GeoCodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function GeoCodingParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function GeoCodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoCodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoCodingParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11119,7 +12383,7 @@ var GeoCodingParameter = /*#__PURE__*/function () {
    * @function GeoCodingParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  GeoCodingParameter_createClass(GeoCodingParameter, [{
+  return GeoCodingParameter_createClass(GeoCodingParameter, [{
     key: "destroy",
     value: function destroy() {
       this.address = null;
@@ -11130,13 +12394,12 @@ var GeoCodingParameter = /*#__PURE__*/function () {
       this.maxReturn = null;
     }
   }]);
-  return GeoCodingParameter;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
+;// ./src/common/iServer/GeoDecodingParameter.js
 function GeoDecodingParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function GeoDecodingParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function GeoDecodingParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) GeoDecodingParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) GeoDecodingParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11216,7 +12479,7 @@ var GeoDecodingParameter = /*#__PURE__*/function () {
    * @function GeoDecodingParameter.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  GeoDecodingParameter_createClass(GeoDecodingParameter, [{
+  return GeoDecodingParameter_createClass(GeoDecodingParameter, [{
     key: "destroy",
     value: function destroy() {
       this.x = null;
@@ -11229,18 +12492,139 @@ var GeoDecodingParameter = /*#__PURE__*/function () {
       this.geoDecodingRadius = null;
     }
   }]);
-  return GeoDecodingParameter;
 }();
-;// CONCATENATED MODULE: ./src/classic/SuperMap.js
-var SuperMap = window.SuperMap = window.SuperMap || {};
-SuperMap.REST = SuperMap.REST || {};
+;// ./src/common/iServer/VectorClipJobsParameter.js
+function VectorClipJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function VectorClipJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-;// CONCATENATED MODULE: external "function(){try{return mapv}catch(e){return {}}}()"
-var external_function_try_return_mapv_catch_e_return_namespaceObject = function(){try{return mapv}catch(e){return {}}}();
-;// CONCATENATED MODULE: ./src/common/util/MapCalculateUtil.js
+
+
 
 
 /**
+ * @class VectorClipJobsParameter
+ * @deprecatedclass SuperMap.VectorClipJobsParameter
+ * @category  iServer ProcessingService VectorClip
+ * @classdesc 矢量裁剪分析任务参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetOverlay - 裁剪对象数据集。
+ * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
+ * @param {OutputSetting} [options.output] - 输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
+ */
+var VectorClipJobsParameter = /*#__PURE__*/function () {
+  function VectorClipJobsParameter(options) {
+    VectorClipJobsParameter_classCallCheck(this, VectorClipJobsParameter);
+    options = options || {};
+
+    /**
+     * @member {string} VectorClipJobsParameter.prototype.datasetName
+     * @description 数据集名。
+     */
+    this.datasetName = "";
+
+    /**
+     * @member {string} VectorClipJobsParameter.prototype.datasetOverlay
+     * @description 裁剪对象数据集。
+     */
+    this.datasetVectorClip = "";
+
+    /**
+     * @member {string} VectorClipJobsParameter.prototype.geometryClip
+     * @description 裁剪几何对象。
+     */
+    this.geometryClip = "";
+
+    /**
+     * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
+     * @description 裁剪分析模式 。
+     */
+    this.mode = ClipAnalystMode.CLIP;
+
+    /**
+     * @member {OutputSetting} VectorClipJobsParameter.prototype.output
+     * @description 输出参数设置类。
+     */
+    this.output = null;
+
+    /**
+     * @member {MappingParameters} [VectorClipJobsParameter.prototype.mappingParameters]
+     * @description 分析后结果可视化的参数类。
+     */
+    this.mappingParameters = null;
+    Util_Util.extend(this, options);
+    this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
+  }
+
+  /**
+   * @function VectorClipJobsParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+  return VectorClipJobsParameter_createClass(VectorClipJobsParameter, [{
+    key: "destroy",
+    value: function destroy() {
+      this.datasetName = null;
+      this.datasetVectorClip = null;
+      this.geometryClip = null;
+      this.mode = null;
+      if (this.output instanceof OutputSetting) {
+        this.output.destroy();
+        this.output = null;
+      }
+      if (this.mappingParameters instanceof MappingParameters) {
+        this.mappingParameters.destroy();
+        this.mappingParameters = null;
+      }
+    }
+
+    /**
+     * @function VectorClipJobsParameter.toObject
+     * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 矢量裁剪分析任务对象。
+     */
+  }], [{
+    key: "toObject",
+    value: function toObject(vectorClipJobsParameter, tempObj) {
+      for (var name in vectorClipJobsParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = vectorClipJobsParameter[name];
+          continue;
+        }
+        if (name === "output") {
+          tempObj['output'] = tempObj['output'] || {};
+          tempObj['output'] = vectorClipJobsParameter[name];
+          continue;
+        }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = vectorClipJobsParameter[name];
+        if (name === 'mappingParameters') {
+          tempObj['analyst'][name] = tempObj['analyst'][name] || {};
+          tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
+        }
+      }
+    }
+  }]);
+}();
+;// ./src/classic/SuperMap.js
+var SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.REST = SuperMap.REST || {};
+
+;// external "function(){try{return mapv}catch(e){return {}}}()"
+var external_function_try_return_mapv_catch_e_return_namespaceObject = function(){try{return mapv}catch(e){return {}}}();
+;// ./src/common/util/MapCalculateUtil.js
+
+
+/**
+ * @private
  * @function getMeterPerMapUnit
  * @description 单位换算，把米|度|千米|英寸|英尺换成米。
  * @category BaseTypes Util
@@ -11262,11 +12646,14 @@ var external_function_try_return_mapv_catch_e_return_namespaceObject = function(
  * ```
  */
 var getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
-  var earchRadiusInMeters = 6378137;
   var meterPerMapUnit;
-  if (mapUnit === Unit.METER) {
+  if (!mapUnit) {
+    return meterPerMapUnit;
+  }
+  var earchRadiusInMeters = 6378137;
+  if (['m', 'meter', 'meters'].indexOf(mapUnit.toLocaleLowerCase()) > -1) {
     meterPerMapUnit = 1;
-  } else if (mapUnit === Unit.DEGREE) {
+  } else if (['degrees', 'deg', 'degree', 'dd'].indexOf(mapUnit.toLocaleLowerCase()) > -1) {
     // 每度表示多少米。
     meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
   } else if (mapUnit === Unit.KILOMETER) {
@@ -11275,13 +12662,12 @@ var getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
     meterPerMapUnit = 1 / 2.5399999918e-2;
   } else if (mapUnit === Unit.FOOT) {
     meterPerMapUnit = 0.3048;
-  } else {
-    return meterPerMapUnit;
   }
   return meterPerMapUnit;
 };
 
 /**
+ * @private
  * @function getWrapNum
  * @description 获取该坐标系的经纬度范围的经度或纬度。
  * @category BaseTypes Util
@@ -11326,6 +12712,7 @@ function getWrapNum(x) {
 }
 
 /**
+ * @private
  * @function conversionDegree
  * @description 转换经纬度。
  * @category BaseTypes Util
@@ -11356,29 +12743,30 @@ function conversionDegree(degrees) {
 }
 
 /**
-  * @function scalesToResolutions
-  * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
-  * @version 11.0.1
-  * @param {Array} scales - 比例尺数组。
-  * @param {Object} bounds - 地图范围。
-  * @param {number} dpi - 屏幕分辨率。
-  * @param {string} mapUnit - 地图单位。
-  * @param {number} [level=22] - 地图最大级别。
-  * @returns {number} 分辨率。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { scalesToResolutions } from '{npm}';
-  *
-  * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
-  * ```
+ *  @private
+ * @function scalesToResolutions
+ * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
+ * @version 11.0.1
+ * @param {Array} scales - 比例尺数组。
+ * @param {Object} bounds - 地图范围。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @param {number} [level=22] - 地图最大级别。
+ * @returns {number} 分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { scalesToResolutions } from '{npm}';
+ *
+ * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
+ * ```
  */
 function scalesToResolutions(scales, bounds, dpi, mapUnit) {
   var level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 22;
@@ -11398,26 +12786,27 @@ function scalesToResolutions(scales, bounds, dpi, mapUnit) {
   });
 }
 /**
-  * @function getZoomByResolution
-  * @description 通过分辨率获取地图级别。
-  * @version 11.0.1
-  * @param {number} resolution - 分辨率。
-  * @param {Array} resolutions - 分辨率数组。
-  * @returns {number} 地图级别。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { getZoomByResolution } from '{npm}';
-  *
-  * const result = getZoomByResolution(resolution, resolutions);
-  * ```
+ * @private
+ * @function getZoomByResolution
+ * @description 通过分辨率获取地图级别。
+ * @version 11.0.1
+ * @param {number} resolution - 分辨率。
+ * @param {Array} resolutions - 分辨率数组。
+ * @returns {number} 地图级别。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getZoomByResolution } from '{npm}';
+ *
+ * const result = getZoomByResolution(resolution, resolutions);
+ * ```
  */
 function getZoomByResolution(resolution, resolutions) {
   var zoom = 0;
@@ -11435,27 +12824,28 @@ function getZoomByResolution(resolution, resolutions) {
 }
 
 /**
-  * @function scaleToResolution
-  * @description 通过比例尺计算分辨率。
-  * @version 11.0.1
-  * @param {number} scale - 比例尺。
-  * @param {number} dpi - 屏幕分辨率。
-  * @param {string} mapUnit - 地图单位。
-  * @returns {number} 分辨率。
-  * @usage
-  * ```
-  * // 浏览器
-  * <script type="text/javascript" src="{cdn}"></script>
-  * <script>
-  *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
-  *
-  * </script>
-  *
-  * // ES6 Import
-  * import { scaleToResolution } from '{npm}';
-  *
-  * const result = scaleToResolution(scale, dpi, mapUnit);
-  * ```
+ * @private
+ * @function scaleToResolution
+ * @description 通过比例尺计算分辨率。
+ * @version 11.0.1
+ * @param {number} scale - 比例尺。
+ * @param {number} dpi - 屏幕分辨率。
+ * @param {string} mapUnit - 地图单位。
+ * @returns {number} 分辨率。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { scaleToResolution } from '{npm}';
+ *
+ * const result = scaleToResolution(scale, dpi, mapUnit);
+ * ```
  */
 function scaleToResolution(scale, dpi, mapUnit) {
   var inchPerMeter = 1 / 0.0254;
@@ -11465,6 +12855,7 @@ function scaleToResolution(scale, dpi, mapUnit) {
 }
 
 /**
+ * @private
  * 范围是否相交
  * @param {Array} extent1 范围1
  * @param {Array} extent2 范围2
@@ -11475,6 +12866,7 @@ function intersects(extent1, extent2) {
 }
 
 /**
+ * @private
  * 获取两个范围的交集
  * @param {Array} extent1 Extent 1
  * @param {Array} extent2 Extent 2
@@ -11507,21 +12899,33 @@ function getIntersection(extent1, extent2) {
   }
   return intersection;
 }
-;// CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
+;// ./src/classic/overlay/mapv/MapVRenderer.js
 function MapVRenderer_typeof(obj) { "@babel/helpers - typeof"; return MapVRenderer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MapVRenderer_typeof(obj); }
 function MapVRenderer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function MapVRenderer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function MapVRenderer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVRenderer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVRenderer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = _getPrototypeOf(derived);
+  return _possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], _getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function _possibleConstructorReturn(self, call) { if (call && (MapVRenderer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11540,24 +12944,22 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  */
 var MapVBaseLayer = external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer ? external_function_try_return_mapv_catch_e_return_namespaceObject.baiduMapLayer.__proto__ : Function;
 var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
-  _inherits(MapVRenderer, _MapVBaseLayer);
-  var _super = _createSuper(MapVRenderer);
   function MapVRenderer(map, layer, dataSet, options) {
-    var _this;
+    var _this2;
     MapVRenderer_classCallCheck(this, MapVRenderer);
-    _this = _super.call(this, map, dataSet, options);
+    _this2 = _callSuper(this, MapVRenderer, [map, dataSet, options]);
     if (!MapVBaseLayer) {
-      return _possibleConstructorReturn(_this, _assertThisInitialized(_this));
+      return _possibleConstructorReturn(_this2, _this2);
     }
-    var self = _assertThisInitialized(_this);
+    var self = _this2;
     options = options || {};
     self.init(options);
     self.argCheck(options);
-    _this.canvasLayer = layer;
-    _this.clickEvent = _this.clickEvent.bind(_assertThisInitialized(_this));
-    _this.mousemoveEvent = _this.mousemoveEvent.bind(_assertThisInitialized(_this));
-    _this.bindEvent();
-    return _this;
+    _this2.canvasLayer = layer;
+    _this2.clickEvent = _this2.clickEvent.bind(_this2);
+    _this2.mousemoveEvent = _this2.mousemoveEvent.bind(_this2);
+    _this2.bindEvent();
+    return _this2;
   }
 
   /**
@@ -11565,7 +12967,8 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
    * @description 点击事件。
    * @param {Object} e -  触发对象。
    */
-  MapVRenderer_createClass(MapVRenderer, [{
+  _inherits(MapVRenderer, _MapVBaseLayer);
+  return MapVRenderer_createClass(MapVRenderer, [{
     key: "clickEvent",
     value: function clickEvent(e) {
       var pixel = e.xy;
@@ -11906,23 +13309,34 @@ var MapVRenderer = /*#__PURE__*/function (_MapVBaseLayer) {
       this.canvasLayer.redraw();
     }
   }]);
-  return MapVRenderer;
 }(MapVBaseLayer);
-;// CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
+;// ./src/classic/overlay/MapVLayer.js
 function MapVLayer_typeof(obj) { "@babel/helpers - typeof"; return MapVLayer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MapVLayer_typeof(obj); }
 function MapVLayer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function MapVLayer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function MapVLayer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MapVLayer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MapVLayer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function MapVLayer_get() { if (typeof Reflect !== "undefined" && Reflect.get) { MapVLayer_get = Reflect.get.bind(); } else { MapVLayer_get = function _get(target, property, receiver) { var base = MapVLayer_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return MapVLayer_get.apply(this, arguments); }
-function MapVLayer_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = MapVLayer_getPrototypeOf(object); if (object === null) break; } return object; }
-function MapVLayer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MapVLayer_setPrototypeOf(subClass, superClass); }
-function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVLayer_setPrototypeOf(o, p); }
-function MapVLayer_createSuper(Derived) { var hasNativeReflectConstruct = MapVLayer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MapVLayer_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MapVLayer_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MapVLayer_possibleConstructorReturn(this, result); }; }
+function MapVLayer_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = MapVLayer_getPrototypeOf(derived);
+  return MapVLayer_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], MapVLayer_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function MapVLayer_possibleConstructorReturn(self, call) { if (call && (MapVLayer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MapVLayer_assertThisInitialized(self); }
 function MapVLayer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function MapVLayer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function MapVLayer_get() { if (typeof Reflect !== "undefined" && Reflect.get) { MapVLayer_get = Reflect.get.bind(); } else { MapVLayer_get = function _get(target, property, receiver) { var base = MapVLayer_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return MapVLayer_get.apply(this, arguments); }
+function MapVLayer_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = MapVLayer_getPrototypeOf(object); if (object === null) break; } return object; }
 function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MapVLayer_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function MapVLayer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MapVLayer_setPrototypeOf(subClass, superClass); }
+function MapVLayer_setPrototypeOf(o, p) { MapVLayer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MapVLayer_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11940,68 +13354,66 @@ function MapVLayer_getPrototypeOf(o) { MapVLayer_getPrototypeOf = Object.setProt
  * @param {Object} options.options - MapV 绘图风格配置信息。
  */
 var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
-  MapVLayer_inherits(MapVLayer, _SuperMap$Layer);
-  var _super = MapVLayer_createSuper(MapVLayer);
   function MapVLayer(name, options) {
-    var _this;
+    var _this2;
     MapVLayer_classCallCheck(this, MapVLayer);
-    _this = _super.call(this, name, options);
+    _this2 = MapVLayer_callSuper(this, MapVLayer, [name, options]);
 
     /**
      * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
      * @description MapV 的 dataset 对象。
      */
-    _this.dataSet = null;
+    _this2.dataSet = null;
 
     /**
      * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
      * @description MapV 绘图风格配置信息。
      */
-    _this.options = null;
+    _this2.options = null;
 
     /**
      * @member {boolean} [SuperMap.Layer.MapVLayer.prototype.supported=false]
      * @description 当前浏览器是否支持 canvas 绘制。决定了 MapV 图是否可用，内部判断使用。
      */
-    _this.supported = false;
+    _this2.supported = false;
 
     /**
      * @member {HTMLCanvasElement} SuperMap.Layer.MapVLayer.prototype.canvas
      * @description MapV 图主绘制面板。
      */
-    _this.canvas = null;
+    _this2.canvas = null;
 
     /**
      * @private
      * @member {CanvasContext} SuperMap.Layer.MapVLayer.prototype.canvasContext
      * @description MapV 图主绘制对象。
      */
-    _this.canvasContext = null;
+    _this2.canvasContext = null;
     if (options) {
-      SuperMap.Util.extend(MapVLayer_assertThisInitialized(_this), options);
+      SuperMap.Util.extend(_this2, options);
     }
 
     //MapV图要求使用canvas绘制，判断是否支持
-    _this.canvas = document.createElement('canvas');
-    if (!_this.canvas.getContext) {
-      return MapVLayer_possibleConstructorReturn(_this);
+    _this2.canvas = document.createElement('canvas');
+    if (!_this2.canvas.getContext) {
+      return MapVLayer_possibleConstructorReturn(_this2);
     }
-    _this.supported = true;
+    _this2.supported = true;
     //构建绘图面板
-    _this.canvas.style.position = 'absolute';
-    _this.canvas.style.top = 0 + 'px';
-    _this.canvas.style.left = 0 + 'px';
-    _this.div.appendChild(_this.canvas);
-    var context = _this.options && _this.options.context || '2d';
-    _this.canvasContext = _this.canvas.getContext(context);
+    _this2.canvas.style.position = 'absolute';
+    _this2.canvas.style.top = 0 + 'px';
+    _this2.canvas.style.left = 0 + 'px';
+    _this2.div.appendChild(_this2.canvas);
+    var context = _this2.options && _this2.options.context || '2d';
+    _this2.canvasContext = _this2.canvas.getContext(context);
     var global$2 = typeof window === 'undefined' ? {} : window;
-    var devicePixelRatio = _this.devicePixelRatio = global$2.devicePixelRatio || 1;
+    var devicePixelRatio = _this2.devicePixelRatio = global$2.devicePixelRatio || 1;
     if (context === '2d') {
-      _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
+      _this2.canvasContext.scale(devicePixelRatio, devicePixelRatio);
     }
-    _this.attribution = "© 2018 百度 <a href='https://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='https://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
-    _this.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
-    return _this;
+    _this2.attribution = "© 2018 百度 <a href='https://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='https://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+    _this2.CLASS_NAME = 'SuperMap.Layer.MapVLayer';
+    return _this2;
   }
 
   /**
@@ -12009,7 +13421,8 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
    * @description 销毁此图层，销毁后此图层的所有属性为 null。
    * @override
    */
-  MapVLayer_createClass(MapVLayer, [{
+  MapVLayer_inherits(MapVLayer, _SuperMap$Layer);
+  return MapVLayer_createClass(MapVLayer, [{
     key: "destroy",
     value: function destroy() {
       if (this.renderer && this.renderer.animator) {
@@ -12176,25 +13589,24 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
       return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
   }]);
-  return MapVLayer;
 }(SuperMap.Layer);
 SuperMap.Layer.MapVLayer = MapVLayer;
-;// CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/classic/overlay/mapv/index.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-;// CONCATENATED MODULE: ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/classic/overlay/index.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-;// CONCATENATED MODULE: ./src/common/format/Format.js
+;// ./src/common/format/Format.js
 function Format_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function Format_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function Format_createClass(Constructor, protoProps, staticProps) { if (protoProps) Format_defineProperties(Constructor.prototype, protoProps); if (staticProps) Format_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12232,7 +13644,7 @@ var Format = /*#__PURE__*/function () {
    * @function Format.prototype.destroy
    * @description 销毁该格式类，释放相关资源。
    */
-  Format_createClass(Format, [{
+  return Format_createClass(Format, [{
     key: "destroy",
     value: function destroy() {
       //用来销毁该格式类，释放相关资源
@@ -12261,21 +13673,32 @@ var Format = /*#__PURE__*/function () {
       //用来写字符串
     }
   }]);
-  return Format;
 }();
-;// CONCATENATED MODULE: ./src/common/format/JSON.js
+;// ./src/common/format/JSON.js
 function JSON_typeof(obj) { "@babel/helpers - typeof"; return JSON_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, JSON_typeof(obj); }
 function JSON_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function JSON_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function JSON_createClass(Constructor, protoProps, staticProps) { if (protoProps) JSON_defineProperties(Constructor.prototype, protoProps); if (staticProps) JSON_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function JSON_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) JSON_setPrototypeOf(subClass, superClass); }
-function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSON_setPrototypeOf(o, p); }
-function JSON_createSuper(Derived) { var hasNativeReflectConstruct = JSON_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = JSON_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = JSON_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return JSON_possibleConstructorReturn(this, result); }; }
+function JSON_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = JSON_getPrototypeOf(derived);
+  return JSON_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], JSON_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function JSON_possibleConstructorReturn(self, call) { if (call && (JSON_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return JSON_assertThisInitialized(self); }
 function JSON_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function JSON_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function JSON_getPrototypeOf(o) { JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return JSON_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function JSON_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) JSON_setPrototypeOf(subClass, superClass); }
+function JSON_setPrototypeOf(o, p) { JSON_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSON_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12297,55 +13720,53 @@ function JSON_getPrototypeOf(o) { JSON_getPrototypeOf = Object.setPrototypeOf ? 
  * @usage
  */
 var JSONFormat = /*#__PURE__*/function (_Format) {
-  JSON_inherits(JSONFormat, _Format);
-  var _super = JSON_createSuper(JSONFormat);
   function JSONFormat(options) {
-    var _this;
+    var _this2;
     JSON_classCallCheck(this, JSONFormat);
-    _this = _super.call(this, options);
+    _this2 = JSON_callSuper(this, JSONFormat, [options]);
     /**
      * @member {string} [JSONFormat.prototype.indent="    "]
      * @description 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
      */
-    _this.indent = "    ";
+    _this2.indent = "    ";
 
     /**
      * @member {string} [JSONFormat.prototype.space=" "]
      * @description 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
      */
-    _this.space = " ";
+    _this2.space = " ";
 
     /**
      * @member {string} [JSONFormat.prototype.newline="\n"]
      * @description 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
      */
-    _this.newline = "\n";
+    _this2.newline = "\n";
 
     /**
      * @member {number} [JSONFormat.prototype.level=0]
      * @description 用于格式化输出, 表示的是缩进级别。
      */
-    _this.level = 0;
+    _this2.level = 0;
 
     /**
      * @member {boolean} [JSONFormat.prototype.pretty=false]
      * @description 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
      */
-    _this.pretty = false;
+    _this2.pretty = false;
 
     /**
      * @member {boolean} JSONFormat.prototype.nativeJSON
      * @description 判断浏览器是否原生支持 JSON 格式数据。
      */
-    _this.nativeJSON = function () {
+    _this2.nativeJSON = function () {
       return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
     }();
-    _this.CLASS_NAME = "SuperMap.Format.JSON";
+    _this2.CLASS_NAME = "SuperMap.Format.JSON";
     /**
      * @member JSONFormat.prototype.serialize
      * @description 提供一些类型对象转 JSON 字符串的方法。
      */
-    _this.serialize = {
+    _this2.serialize = {
       /**
        * @function JSONFormat.serialize.object
        * @description 把对象转换为 JSON 字符串。
@@ -12474,7 +13895,7 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
         return '"' + _date.getFullYear() + '-' + format(_date.getMonth() + 1) + '-' + format(_date.getDate()) + 'T' + format(_date.getHours()) + ':' + format(_date.getMinutes()) + ':' + format(_date.getSeconds()) + '"';
       }
     };
-    return _this;
+    return _this2;
   }
 
   /**
@@ -12484,7 +13905,8 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
    * @param {function} filter - 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
    * @returns {(Object|string|Array|number|boolean)} 对象，数组，字符串或数字。
    */
-  JSON_createClass(JSONFormat, [{
+  JSON_inherits(JSONFormat, _Format);
+  return JSON_createClass(JSONFormat, [{
     key: "read",
     value: function read(json, filter) {
       var object;
@@ -12570,9 +13992,8 @@ var JSONFormat = /*#__PURE__*/function (_Format) {
       return this.pretty ? this.space : '';
     }
   }]);
-  return JSONFormat;
 }(Format);
-;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
+;// ./src/common/iServer/CommonServiceBase.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -12580,7 +14001,7 @@ function CommonServiceBase_typeof(obj) { "@babel/helpers - typeof"; return Commo
 function CommonServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function CommonServiceBase_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function CommonServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) CommonServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) CommonServiceBase_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12654,7 +14075,7 @@ var CommonServiceBase = /*#__PURE__*/function () {
    * @function CommonServiceBase.prototype.destroy
    * @description 释放资源，将引用的资源属性置空。
    */
-  CommonServiceBase_createClass(CommonServiceBase, [{
+  return CommonServiceBase_createClass(CommonServiceBase, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -12968,7 +14389,6 @@ var CommonServiceBase = /*#__PURE__*/function () {
       });
     }
   }]);
-  return CommonServiceBase;
 }();
 
 /**
@@ -12986,21 +14406,33 @@ var CommonServiceBase = /*#__PURE__*/function () {
  * @param {Object} serviceResult.type 事件类型。
  * @param {Object} serviceResult.options 请求参数。
  */
-;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
+;// ./src/common/iServer/AddressMatchService.js
 function AddressMatchService_typeof(obj) { "@babel/helpers - typeof"; return AddressMatchService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, AddressMatchService_typeof(obj); }
 function AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function AddressMatchService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) AddressMatchService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function AddressMatchService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { AddressMatchService_get = Reflect.get.bind(); } else { AddressMatchService_get = function _get(target, property, receiver) { var base = AddressMatchService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return AddressMatchService_get.apply(this, arguments); }
-function AddressMatchService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = AddressMatchService_getPrototypeOf(object); if (object === null) break; } return object; }
-function AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) AddressMatchService_setPrototypeOf(subClass, superClass); }
-function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AddressMatchService_setPrototypeOf(o, p); }
-function AddressMatchService_createSuper(Derived) { var hasNativeReflectConstruct = AddressMatchService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = AddressMatchService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = AddressMatchService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return AddressMatchService_possibleConstructorReturn(this, result); }; }
+function AddressMatchService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = AddressMatchService_getPrototypeOf(derived);
+  return AddressMatchService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], AddressMatchService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function AddressMatchService_possibleConstructorReturn(self, call) { if (call && (AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return AddressMatchService_assertThisInitialized(self); }
 function AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function AddressMatchService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function AddressMatchService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { AddressMatchService_get = Reflect.get.bind(); } else { AddressMatchService_get = function _get(target, property, receiver) { var base = AddressMatchService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return AddressMatchService_get.apply(this, arguments); }
+function AddressMatchService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = AddressMatchService_getPrototypeOf(object); if (object === null) break; } return object; }
 function AddressMatchService_getPrototypeOf(o) { AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return AddressMatchService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) AddressMatchService_setPrototypeOf(subClass, superClass); }
+function AddressMatchService_setPrototypeOf(o, p) { AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return AddressMatchService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13019,22 +14451,21 @@ function AddressMatchService_getPrototypeOf(o) { AddressMatchService_getPrototyp
  * @usage
  */
 var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
-  AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
-  var _super = AddressMatchService_createSuper(AddressMatchService);
   function AddressMatchService(url, options) {
-    var _this;
+    var _this2;
     AddressMatchService_classCallCheck(this, AddressMatchService);
-    _this = _super.call(this, url, options);
-    _this.options = options || {};
-    _this.CLASS_NAME = 'SuperMap.AddressMatchService';
-    return _this;
+    _this2 = AddressMatchService_callSuper(this, AddressMatchService, [url, options]);
+    _this2.options = options || {};
+    _this2.CLASS_NAME = 'SuperMap.AddressMatchService';
+    return _this2;
   }
 
   /**
    * @function AddressMatchService.prototype.destroy
    * @override
    */
-  AddressMatchService_createClass(AddressMatchService, [{
+  AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+  return AddressMatchService_createClass(AddressMatchService, [{
     key: "destroy",
     value: function destroy() {
       AddressMatchService_get(AddressMatchService_getPrototypeOf(AddressMatchService.prototype), "destroy", this).call(this);
@@ -13111,21 +14542,32 @@ var AddressMatchService_AddressMatchService = /*#__PURE__*/function (_CommonServ
       };
     }
   }]);
-  return AddressMatchService;
 }(CommonServiceBase);
-;// CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
+;// ./src/classic/services/AddressMatchService.js
 function services_AddressMatchService_typeof(obj) { "@babel/helpers - typeof"; return services_AddressMatchService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, services_AddressMatchService_typeof(obj); }
 function services_AddressMatchService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function services_AddressMatchService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function services_AddressMatchService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_AddressMatchService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_AddressMatchService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_AddressMatchService_setPrototypeOf(subClass, superClass); }
-function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_AddressMatchService_setPrototypeOf(o, p); }
-function services_AddressMatchService_createSuper(Derived) { var hasNativeReflectConstruct = services_AddressMatchService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_AddressMatchService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_AddressMatchService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_AddressMatchService_possibleConstructorReturn(this, result); }; }
+function services_AddressMatchService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = services_AddressMatchService_getPrototypeOf(derived);
+  return services_AddressMatchService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], services_AddressMatchService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function services_AddressMatchService_possibleConstructorReturn(self, call) { if (call && (services_AddressMatchService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_AddressMatchService_assertThisInitialized(self); }
 function services_AddressMatchService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function services_AddressMatchService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_AddressMatchService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function services_AddressMatchService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_AddressMatchService_setPrototypeOf(subClass, superClass); }
+function services_AddressMatchService_setPrototypeOf(o, p) { services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_AddressMatchService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13144,14 +14586,12 @@ function services_AddressMatchService_getPrototypeOf(o) { services_AddressMatchS
  * @param {Object} [options.headers] - 请求头。
  */
 var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
-  var _super = services_AddressMatchService_createSuper(AddressMatchService);
   function AddressMatchService(url, options) {
-    var _this;
+    var _this2;
     services_AddressMatchService_classCallCheck(this, AddressMatchService);
-    _this = _super.call(this, url, options);
-    _this.CLASS_NAME = "SuperMap.REST.AddressMatchService";
-    return _this;
+    _this2 = services_AddressMatchService_callSuper(this, AddressMatchService, [url, options]);
+    _this2.CLASS_NAME = "SuperMap.REST.AddressMatchService";
+    return _this2;
   }
 
   /**
@@ -13161,7 +14601,8 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_AddressMatchService_createClass(AddressMatchService, [{
+  services_AddressMatchService_inherits(AddressMatchService, _CommonServiceBase);
+  return services_AddressMatchService_createClass(AddressMatchService, [{
     key: "code",
     value: function code(params, callback) {
       var me = this;
@@ -13194,24 +14635,35 @@ var AddressMatchService = /*#__PURE__*/function (_CommonServiceBase) {
       return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
   }]);
-  return AddressMatchService;
 }(CommonServiceBase);
 SuperMap.REST.AddressMatchService = AddressMatchService;
-;// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
+;// ./src/common/iServer/DatasetService.js
 function DatasetService_typeof(obj) { "@babel/helpers - typeof"; return DatasetService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, DatasetService_typeof(obj); }
 function DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasetService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function DatasetService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasetService_get = Reflect.get.bind(); } else { DatasetService_get = function _get(target, property, receiver) { var base = DatasetService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasetService_get.apply(this, arguments); }
-function DatasetService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasetService_getPrototypeOf(object); if (object === null) break; } return object; }
-function DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasetService_setPrototypeOf(subClass, superClass); }
-function DatasetService_setPrototypeOf(o, p) { DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetService_setPrototypeOf(o, p); }
-function DatasetService_createSuper(Derived) { var hasNativeReflectConstruct = DatasetService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = DatasetService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = DatasetService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return DatasetService_possibleConstructorReturn(this, result); }; }
+function DatasetService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = DatasetService_getPrototypeOf(derived);
+  return DatasetService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], DatasetService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function DatasetService_possibleConstructorReturn(self, call) { if (call && (DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return DatasetService_assertThisInitialized(self); }
 function DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function DatasetService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function DatasetService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasetService_get = Reflect.get.bind(); } else { DatasetService_get = function _get(target, property, receiver) { var base = DatasetService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasetService_get.apply(this, arguments); }
+function DatasetService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasetService_getPrototypeOf(object); if (object === null) break; } return object; }
 function DatasetService_getPrototypeOf(o) { DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasetService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasetService_setPrototypeOf(subClass, superClass); }
+function DatasetService_setPrototypeOf(o, p) { DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasetService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13231,38 +14683,37 @@ function DatasetService_getPrototypeOf(o) { DatasetService_getPrototypeOf = Obje
  * @usage
  */
 var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
-  DatasetService_inherits(DatasetService, _CommonServiceBase);
-  var _super = DatasetService_createSuper(DatasetService);
   function DatasetService(url, options) {
-    var _this;
+    var _this2;
     DatasetService_classCallCheck(this, DatasetService);
-    _this = _super.call(this, url, options);
+    _this2 = DatasetService_callSuper(this, DatasetService, [url, options]);
     if (!options) {
-      return DatasetService_possibleConstructorReturn(_this);
+      return DatasetService_possibleConstructorReturn(_this2);
     }
     /**
      * @member {string} DatasetService.prototype.datasource
      * @description 要查询的数据集所在的数据源名称。
      */
-    _this.datasource = null;
+    _this2.datasource = null;
 
     /**
      *  @member {string} DatasetService.prototype.dataset
      *  @description 要查询的数据集名称。
      */
-    _this.dataset = null;
+    _this2.dataset = null;
     if (options) {
-      Util_Util.extend(DatasetService_assertThisInitialized(_this), options);
+      Util_Util.extend(_this2, options);
     }
-    _this.CLASS_NAME = "SuperMap.DatasetService";
-    return _this;
+    _this2.CLASS_NAME = "SuperMap.DatasetService";
+    return _this2;
   }
 
   /**
    * @function DatasetService.prototype.destroy
    * @override
    */
-  DatasetService_createClass(DatasetService, [{
+  DatasetService_inherits(DatasetService, _CommonServiceBase);
+  return DatasetService_createClass(DatasetService, [{
     key: "destroy",
     value: function destroy() {
       DatasetService_get(DatasetService_getPrototypeOf(DatasetService.prototype), "destroy", this).call(this);
@@ -13340,13 +14791,12 @@ var DatasetService_DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       return me.request(requestConfig);
     }
   }]);
-  return DatasetService;
 }(CommonServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
+;// ./src/common/iServer/CreateDatasetParameters.js
 function CreateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function CreateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function CreateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) CreateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) CreateDatasetParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13395,7 +14845,7 @@ var CreateDatasetParameters = /*#__PURE__*/function () {
    * @function CreateDatasetParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  CreateDatasetParameters_createClass(CreateDatasetParameters, [{
+  return CreateDatasetParameters_createClass(CreateDatasetParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -13404,13 +14854,12 @@ var CreateDatasetParameters = /*#__PURE__*/function () {
       me.datasetType = null;
     }
   }]);
-  return CreateDatasetParameters;
 }();
-;// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
+;// ./src/common/iServer/UpdateDatasetParameters.js
 function UpdateDatasetParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function UpdateDatasetParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function UpdateDatasetParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) UpdateDatasetParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) UpdateDatasetParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13495,7 +14944,7 @@ var UpdateDatasetParameters = /*#__PURE__*/function () {
    * @function UpdateDatasetParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  UpdateDatasetParameters_createClass(UpdateDatasetParameters, [{
+  return UpdateDatasetParameters_createClass(UpdateDatasetParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -13508,21 +14957,32 @@ var UpdateDatasetParameters = /*#__PURE__*/function () {
       me.noValue = null;
     }
   }]);
-  return UpdateDatasetParameters;
 }();
-;// CONCATENATED MODULE: ./src/classic/services/DatasetService.js
+;// ./src/classic/services/DatasetService.js
 function services_DatasetService_typeof(obj) { "@babel/helpers - typeof"; return services_DatasetService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, services_DatasetService_typeof(obj); }
 function services_DatasetService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function services_DatasetService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function services_DatasetService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasetService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasetService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasetService_setPrototypeOf(subClass, superClass); }
-function services_DatasetService_setPrototypeOf(o, p) { services_DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasetService_setPrototypeOf(o, p); }
-function services_DatasetService_createSuper(Derived) { var hasNativeReflectConstruct = services_DatasetService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_DatasetService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_DatasetService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_DatasetService_possibleConstructorReturn(this, result); }; }
+function services_DatasetService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = services_DatasetService_getPrototypeOf(derived);
+  return services_DatasetService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], services_DatasetService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function services_DatasetService_possibleConstructorReturn(self, call) { if (call && (services_DatasetService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_DatasetService_assertThisInitialized(self); }
 function services_DatasetService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function services_DatasetService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function services_DatasetService_getPrototypeOf(o) { services_DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasetService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function services_DatasetService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasetService_setPrototypeOf(subClass, superClass); }
+function services_DatasetService_setPrototypeOf(o, p) { services_DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasetService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13542,21 +15002,19 @@ function services_DatasetService_getPrototypeOf(o) { services_DatasetService_get
  * @param {Object} [options.headers] - 请求头。
  */
 var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_DatasetService_inherits(DatasetService, _CommonServiceBase);
-  var _super = services_DatasetService_createSuper(DatasetService);
   function DatasetService(url, options) {
-    var _this;
+    var _this2;
     services_DatasetService_classCallCheck(this, DatasetService);
-    _this = _super.call(this, url, options);
-    var me = services_DatasetService_assertThisInitialized(_this);
-    _this._datasetService = new DatasetService_DatasetService(me.url, {
+    _this2 = services_DatasetService_callSuper(this, DatasetService, [url, options]);
+    var me = _this2;
+    _this2._datasetService = new DatasetService_DatasetService(me.url, {
       proxy: me.proxy,
       withCredentials: me.withCredentials,
       crossOrigin: me.crossOrigin,
       headers: me.headers
     });
-    _this.CLASS_NAME = "SuperMap.REST.DatasetService";
-    return _this;
+    _this2.CLASS_NAME = "SuperMap.REST.DatasetService";
+    return _this2;
   }
 
   /**
@@ -13570,7 +15028,8 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_DatasetService_createClass(DatasetService, [{
+  services_DatasetService_inherits(DatasetService, _CommonServiceBase);
+  return services_DatasetService_createClass(DatasetService, [{
     key: "getDatasets",
     value: function getDatasets(datasourceName, callback) {
       if (!datasourceName) {
@@ -13655,24 +15114,35 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
       return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
   }]);
-  return DatasetService;
 }(CommonServiceBase);
 SuperMap.REST.DatasetService = DatasetService;
-;// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
+;// ./src/common/iServer/DatasourceService.js
 function DatasourceService_typeof(obj) { "@babel/helpers - typeof"; return DatasourceService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, DatasourceService_typeof(obj); }
 function DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) DatasourceService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function DatasourceService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasourceService_get = Reflect.get.bind(); } else { DatasourceService_get = function _get(target, property, receiver) { var base = DatasourceService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasourceService_get.apply(this, arguments); }
-function DatasourceService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasourceService_getPrototypeOf(object); if (object === null) break; } return object; }
-function DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasourceService_setPrototypeOf(subClass, superClass); }
-function DatasourceService_setPrototypeOf(o, p) { DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasourceService_setPrototypeOf(o, p); }
-function DatasourceService_createSuper(Derived) { var hasNativeReflectConstruct = DatasourceService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = DatasourceService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = DatasourceService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return DatasourceService_possibleConstructorReturn(this, result); }; }
+function DatasourceService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = DatasourceService_getPrototypeOf(derived);
+  return DatasourceService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], DatasourceService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function DatasourceService_possibleConstructorReturn(self, call) { if (call && (DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return DatasourceService_assertThisInitialized(self); }
 function DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function DatasourceService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function DatasourceService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { DatasourceService_get = Reflect.get.bind(); } else { DatasourceService_get = function _get(target, property, receiver) { var base = DatasourceService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return DatasourceService_get.apply(this, arguments); }
+function DatasourceService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = DatasourceService_getPrototypeOf(object); if (object === null) break; } return object; }
 function DatasourceService_getPrototypeOf(o) { DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return DatasourceService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) DatasourceService_setPrototypeOf(subClass, superClass); }
+function DatasourceService_setPrototypeOf(o, p) { DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return DatasourceService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13695,24 +15165,23 @@ function DatasourceService_getPrototypeOf(o) { DatasourceService_getPrototypeOf 
  */
 
 var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
-  DatasourceService_inherits(DatasourceService, _CommonServiceBase);
-  var _super = DatasourceService_createSuper(DatasourceService);
   function DatasourceService(url, options) {
-    var _this;
+    var _this2;
     DatasourceService_classCallCheck(this, DatasourceService);
-    _this = _super.call(this, url, options);
+    _this2 = DatasourceService_callSuper(this, DatasourceService, [url, options]);
     if (options) {
-      Util_Util.extend(DatasourceService_assertThisInitialized(_this), options);
+      Util_Util.extend(_this2, options);
     }
-    _this.CLASS_NAME = "SuperMap.DatasourceService";
-    return _this;
+    _this2.CLASS_NAME = "SuperMap.DatasourceService";
+    return _this2;
   }
 
   /**
    * @function DatasourceService.prototype.destroy
    * @override
    */
-  DatasourceService_createClass(DatasourceService, [{
+  DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+  return DatasourceService_createClass(DatasourceService, [{
     key: "destroy",
     value: function destroy() {
       DatasourceService_get(DatasourceService_getPrototypeOf(DatasourceService.prototype), "destroy", this).call(this);
@@ -13775,13 +15244,12 @@ var DatasourceService_DatasourceService = /*#__PURE__*/function (_CommonServiceB
       return me.request(requestConfig);
     }
   }]);
-  return DatasourceService;
 }(CommonServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
+;// ./src/common/iServer/SetDatasourceParameters.js
 function SetDatasourceParameters_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SetDatasourceParameters_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SetDatasourceParameters_createClass(Constructor, protoProps, staticProps) { if (protoProps) SetDatasourceParameters_defineProperties(Constructor.prototype, protoProps); if (staticProps) SetDatasourceParameters_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13838,7 +15306,7 @@ var SetDatasourceParameters = /*#__PURE__*/function () {
    * @function SetDatasourceParameters.prototype.destroy
    * @description 释放资源，将引用资源的属性置空。
    */
-  SetDatasourceParameters_createClass(SetDatasourceParameters, [{
+  return SetDatasourceParameters_createClass(SetDatasourceParameters, [{
     key: "destroy",
     value: function destroy() {
       var me = this;
@@ -13848,21 +15316,32 @@ var SetDatasourceParameters = /*#__PURE__*/function () {
       me.distanceUnit = null;
     }
   }]);
-  return SetDatasourceParameters;
 }();
-;// CONCATENATED MODULE: ./src/classic/services/DatasourceService.js
+;// ./src/classic/services/DatasourceService.js
 function services_DatasourceService_typeof(obj) { "@babel/helpers - typeof"; return services_DatasourceService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, services_DatasourceService_typeof(obj); }
 function services_DatasourceService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function services_DatasourceService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function services_DatasourceService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_DatasourceService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_DatasourceService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function services_DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasourceService_setPrototypeOf(subClass, superClass); }
-function services_DatasourceService_setPrototypeOf(o, p) { services_DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasourceService_setPrototypeOf(o, p); }
-function services_DatasourceService_createSuper(Derived) { var hasNativeReflectConstruct = services_DatasourceService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = services_DatasourceService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = services_DatasourceService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return services_DatasourceService_possibleConstructorReturn(this, result); }; }
+function services_DatasourceService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = services_DatasourceService_getPrototypeOf(derived);
+  return services_DatasourceService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], services_DatasourceService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function services_DatasourceService_possibleConstructorReturn(self, call) { if (call && (services_DatasourceService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return services_DatasourceService_assertThisInitialized(self); }
 function services_DatasourceService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function services_DatasourceService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function services_DatasourceService_getPrototypeOf(o) { services_DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return services_DatasourceService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function services_DatasourceService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) services_DatasourceService_setPrototypeOf(subClass, superClass); }
+function services_DatasourceService_setPrototypeOf(o, p) { services_DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return services_DatasourceService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13881,21 +15360,19 @@ function services_DatasourceService_getPrototypeOf(o) { services_DatasourceServi
  * @param {Object} [options.headers] - 请求头。
  */
 var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
-  services_DatasourceService_inherits(DatasourceService, _CommonServiceBase);
-  var _super = services_DatasourceService_createSuper(DatasourceService);
   function DatasourceService(url, options) {
-    var _this;
+    var _this2;
     services_DatasourceService_classCallCheck(this, DatasourceService);
-    _this = _super.call(this, url, options);
-    var me = services_DatasourceService_assertThisInitialized(_this);
-    _this._datasourceService = new DatasourceService_DatasourceService(me.url, {
+    _this2 = services_DatasourceService_callSuper(this, DatasourceService, [url, options]);
+    var me = _this2;
+    _this2._datasourceService = new DatasourceService_DatasourceService(me.url, {
       proxy: me.proxy,
       withCredentials: me.withCredentials,
       crossOrigin: me.crossOrigin,
       headers: me.headers
     });
-    _this.CLASS_NAME = "SuperMap.REST.DatasourceService";
-    return _this;
+    _this2.CLASS_NAME = "SuperMap.REST.DatasourceService";
+    return _this2;
   }
 
   /**
@@ -13908,7 +15385,8 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  services_DatasourceService_createClass(DatasourceService, [{
+  services_DatasourceService_inherits(DatasourceService, _CommonServiceBase);
+  return services_DatasourceService_createClass(DatasourceService, [{
     key: "getDatasources",
     value: function getDatasources(callback) {
       return this._datasourceService.getDatasourcesService(callback);
@@ -13960,24 +15438,35 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
       return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
   }]);
-  return DatasourceService;
 }(CommonServiceBase);
 SuperMap.REST.DatasourceService = DatasourceService;
-;// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
+;// ./src/common/iServer/ProcessingServiceBase.js
 function ProcessingServiceBase_typeof(obj) { "@babel/helpers - typeof"; return ProcessingServiceBase_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, ProcessingServiceBase_typeof(obj); }
 function ProcessingServiceBase_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function ProcessingServiceBase_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function ProcessingServiceBase_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingServiceBase_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingServiceBase_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function ProcessingServiceBase_get() { if (typeof Reflect !== "undefined" && Reflect.get) { ProcessingServiceBase_get = Reflect.get.bind(); } else { ProcessingServiceBase_get = function _get(target, property, receiver) { var base = ProcessingServiceBase_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return ProcessingServiceBase_get.apply(this, arguments); }
-function ProcessingServiceBase_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = ProcessingServiceBase_getPrototypeOf(object); if (object === null) break; } return object; }
-function ProcessingServiceBase_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) ProcessingServiceBase_setPrototypeOf(subClass, superClass); }
-function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingServiceBase_setPrototypeOf(o, p); }
-function ProcessingServiceBase_createSuper(Derived) { var hasNativeReflectConstruct = ProcessingServiceBase_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = ProcessingServiceBase_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = ProcessingServiceBase_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return ProcessingServiceBase_possibleConstructorReturn(this, result); }; }
+function ProcessingServiceBase_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = ProcessingServiceBase_getPrototypeOf(derived);
+  return ProcessingServiceBase_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], ProcessingServiceBase_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function ProcessingServiceBase_possibleConstructorReturn(self, call) { if (call && (ProcessingServiceBase_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return ProcessingServiceBase_assertThisInitialized(self); }
 function ProcessingServiceBase_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function ProcessingServiceBase_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function ProcessingServiceBase_get() { if (typeof Reflect !== "undefined" && Reflect.get) { ProcessingServiceBase_get = Reflect.get.bind(); } else { ProcessingServiceBase_get = function _get(target, property, receiver) { var base = ProcessingServiceBase_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return ProcessingServiceBase_get.apply(this, arguments); }
+function ProcessingServiceBase_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = ProcessingServiceBase_getPrototypeOf(object); if (object === null) break; } return object; }
 function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ProcessingServiceBase_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function ProcessingServiceBase_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) ProcessingServiceBase_setPrototypeOf(subClass, superClass); }
+function ProcessingServiceBase_setPrototypeOf(o, p) { ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ProcessingServiceBase_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14001,22 +15490,21 @@ function ProcessingServiceBase_getPrototypeOf(o) { ProcessingServiceBase_getProt
  * @usage
  */
 var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
-  ProcessingServiceBase_inherits(ProcessingServiceBase, _CommonServiceBase);
-  var _super = ProcessingServiceBase_createSuper(ProcessingServiceBase);
   function ProcessingServiceBase(url, options) {
-    var _this;
+    var _this2;
     ProcessingServiceBase_classCallCheck(this, ProcessingServiceBase);
     options = options || {};
-    _this = _super.call(this, url, options);
-    _this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
-    return _this;
+    _this2 = ProcessingServiceBase_callSuper(this, ProcessingServiceBase, [url, options]);
+    _this2.CLASS_NAME = "SuperMap.ProcessingServiceBase";
+    return _this2;
   }
 
   /**
    * @function ProcessingServiceBase.prototype.destroy
    * @override
    */
-  ProcessingServiceBase_createClass(ProcessingServiceBase, [{
+  ProcessingServiceBase_inherits(ProcessingServiceBase, _CommonServiceBase);
+  return ProcessingServiceBase_createClass(ProcessingServiceBase, [{
     key: "destroy",
     value: function destroy() {
       ProcessingServiceBase_get(ProcessingServiceBase_getPrototypeOf(ProcessingServiceBase.prototype), "destroy", this).call(this);
@@ -14168,23 +15656,34 @@ var ProcessingServiceBase = /*#__PURE__*/function (_CommonServiceBase) {
       }
     }
   }]);
-  return ProcessingServiceBase;
 }(CommonServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
+;// ./src/common/iServer/KernelDensityJobsService.js
 function KernelDensityJobsService_typeof(obj) { "@babel/helpers - typeof"; return KernelDensityJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, KernelDensityJobsService_typeof(obj); }
 function KernelDensityJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function KernelDensityJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function KernelDensityJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) KernelDensityJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) KernelDensityJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function KernelDensityJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { KernelDensityJobsService_get = Reflect.get.bind(); } else { KernelDensityJobsService_get = function _get(target, property, receiver) { var base = KernelDensityJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return KernelDensityJobsService_get.apply(this, arguments); }
-function KernelDensityJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = KernelDensityJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function KernelDensityJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) KernelDensityJobsService_setPrototypeOf(subClass, superClass); }
-function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return KernelDensityJobsService_setPrototypeOf(o, p); }
-function KernelDensityJobsService_createSuper(Derived) { var hasNativeReflectConstruct = KernelDensityJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = KernelDensityJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = KernelDensityJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return KernelDensityJobsService_possibleConstructorReturn(this, result); }; }
+function KernelDensityJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = KernelDensityJobsService_getPrototypeOf(derived);
+  return KernelDensityJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], KernelDensityJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function KernelDensityJobsService_possibleConstructorReturn(self, call) { if (call && (KernelDensityJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return KernelDensityJobsService_assertThisInitialized(self); }
 function KernelDensityJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function KernelDensityJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function KernelDensityJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { KernelDensityJobsService_get = Reflect.get.bind(); } else { KernelDensityJobsService_get = function _get(target, property, receiver) { var base = KernelDensityJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return KernelDensityJobsService_get.apply(this, arguments); }
+function KernelDensityJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = KernelDensityJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function KernelDensityJobsService_getPrototypeOf(o) { KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return KernelDensityJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function KernelDensityJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) KernelDensityJobsService_setPrototypeOf(subClass, superClass); }
+function KernelDensityJobsService_setPrototypeOf(o, p) { KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return KernelDensityJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14204,22 +15703,21 @@ function KernelDensityJobsService_getPrototypeOf(o) { KernelDensityJobsService_g
  * @usage
  */
 var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  KernelDensityJobsService_inherits(KernelDensityJobsService, _ProcessingServiceBas);
-  var _super = KernelDensityJobsService_createSuper(KernelDensityJobsService);
   function KernelDensityJobsService(url, options) {
-    var _this;
+    var _this2;
     KernelDensityJobsService_classCallCheck(this, KernelDensityJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/density');
-    _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
-    return _this;
+    _this2 = KernelDensityJobsService_callSuper(this, KernelDensityJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/density');
+    _this2.CLASS_NAME = "SuperMap.KernelDensityJobsService";
+    return _this2;
   }
 
   /**
    * @function KernelDensityJobsService.prototype.destroy
    * @override
    */
-  KernelDensityJobsService_createClass(KernelDensityJobsService, [{
+  KernelDensityJobsService_inherits(KernelDensityJobsService, _ProcessingServiceBas);
+  return KernelDensityJobsService_createClass(KernelDensityJobsService, [{
     key: "destroy",
     value: function destroy() {
       KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "destroy", this).call(this);
@@ -14265,23 +15763,34 @@ var KernelDensityJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return KernelDensityJobsService_get(KernelDensityJobsService_getPrototypeOf(KernelDensityJobsService.prototype), "addJob", this).call(this, this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return KernelDensityJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
+;// ./src/common/iServer/SingleObjectQueryJobsService.js
 function SingleObjectQueryJobsService_typeof(obj) { "@babel/helpers - typeof"; return SingleObjectQueryJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SingleObjectQueryJobsService_typeof(obj); }
 function SingleObjectQueryJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SingleObjectQueryJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SingleObjectQueryJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SingleObjectQueryJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SingleObjectQueryJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SingleObjectQueryJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SingleObjectQueryJobsService_get = Reflect.get.bind(); } else { SingleObjectQueryJobsService_get = function _get(target, property, receiver) { var base = SingleObjectQueryJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SingleObjectQueryJobsService_get.apply(this, arguments); }
-function SingleObjectQueryJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SingleObjectQueryJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SingleObjectQueryJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SingleObjectQueryJobsService_setPrototypeOf(subClass, superClass); }
-function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SingleObjectQueryJobsService_setPrototypeOf(o, p); }
-function SingleObjectQueryJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SingleObjectQueryJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SingleObjectQueryJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SingleObjectQueryJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SingleObjectQueryJobsService_possibleConstructorReturn(this, result); }; }
+function SingleObjectQueryJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = SingleObjectQueryJobsService_getPrototypeOf(derived);
+  return SingleObjectQueryJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], SingleObjectQueryJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function SingleObjectQueryJobsService_possibleConstructorReturn(self, call) { if (call && (SingleObjectQueryJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SingleObjectQueryJobsService_assertThisInitialized(self); }
 function SingleObjectQueryJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function SingleObjectQueryJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function SingleObjectQueryJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SingleObjectQueryJobsService_get = Reflect.get.bind(); } else { SingleObjectQueryJobsService_get = function _get(target, property, receiver) { var base = SingleObjectQueryJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SingleObjectQueryJobsService_get.apply(this, arguments); }
+function SingleObjectQueryJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SingleObjectQueryJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function SingleObjectQueryJobsService_getPrototypeOf(o) { SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SingleObjectQueryJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function SingleObjectQueryJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SingleObjectQueryJobsService_setPrototypeOf(subClass, superClass); }
+function SingleObjectQueryJobsService_setPrototypeOf(o, p) { SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SingleObjectQueryJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14301,21 +15810,20 @@ function SingleObjectQueryJobsService_getPrototypeOf(o) { SingleObjectQueryJobsS
  * @usage
  */
 var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SingleObjectQueryJobsService_inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
-  var _super = SingleObjectQueryJobsService_createSuper(SingleObjectQueryJobsService);
   function SingleObjectQueryJobsService(url, options) {
-    var _this;
+    var _this2;
     SingleObjectQueryJobsService_classCallCheck(this, SingleObjectQueryJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/query');
-    _this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
-    return _this;
+    _this2 = SingleObjectQueryJobsService_callSuper(this, SingleObjectQueryJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/query');
+    _this2.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
+    return _this2;
   }
 
   /**
    *@override
    */
-  SingleObjectQueryJobsService_createClass(SingleObjectQueryJobsService, [{
+  SingleObjectQueryJobsService_inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
+  return SingleObjectQueryJobsService_createClass(SingleObjectQueryJobsService, [{
     key: "destroy",
     value: function destroy() {
       SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "destroy", this).call(this);
@@ -14360,23 +15868,34 @@ var SingleObjectQueryJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
       return SingleObjectQueryJobsService_get(SingleObjectQueryJobsService_getPrototypeOf(SingleObjectQueryJobsService.prototype), "addJob", this).call(this, this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return SingleObjectQueryJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
+;// ./src/common/iServer/SummaryMeshJobsService.js
 function SummaryMeshJobsService_typeof(obj) { "@babel/helpers - typeof"; return SummaryMeshJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SummaryMeshJobsService_typeof(obj); }
 function SummaryMeshJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryMeshJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryMeshJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryMeshJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryMeshJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryMeshJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryMeshJobsService_get = Reflect.get.bind(); } else { SummaryMeshJobsService_get = function _get(target, property, receiver) { var base = SummaryMeshJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryMeshJobsService_get.apply(this, arguments); }
-function SummaryMeshJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryMeshJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryMeshJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryMeshJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryMeshJobsService_setPrototypeOf(o, p); }
-function SummaryMeshJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryMeshJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryMeshJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryMeshJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryMeshJobsService_possibleConstructorReturn(this, result); }; }
+function SummaryMeshJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = SummaryMeshJobsService_getPrototypeOf(derived);
+  return SummaryMeshJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], SummaryMeshJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function SummaryMeshJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryMeshJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryMeshJobsService_assertThisInitialized(self); }
 function SummaryMeshJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function SummaryMeshJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function SummaryMeshJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryMeshJobsService_get = Reflect.get.bind(); } else { SummaryMeshJobsService_get = function _get(target, property, receiver) { var base = SummaryMeshJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryMeshJobsService_get.apply(this, arguments); }
+function SummaryMeshJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryMeshJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryMeshJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryMeshJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryMeshJobsService_setPrototypeOf(subClass, superClass); }
+function SummaryMeshJobsService_setPrototypeOf(o, p) { SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryMeshJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14398,21 +15917,20 @@ function SummaryMeshJobsService_getPrototypeOf(o) { SummaryMeshJobsService_getPr
  * @usage
  */
 var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryMeshJobsService_inherits(SummaryMeshJobsService, _ProcessingServiceBas);
-  var _super = SummaryMeshJobsService_createSuper(SummaryMeshJobsService);
   function SummaryMeshJobsService(url, options) {
-    var _this;
+    var _this2;
     SummaryMeshJobsService_classCallCheck(this, SummaryMeshJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/aggregatepoints');
-    _this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
-    return _this;
+    _this2 = SummaryMeshJobsService_callSuper(this, SummaryMeshJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/aggregatepoints');
+    _this2.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
+    return _this2;
   }
 
   /**
    * @override
    */
-  SummaryMeshJobsService_createClass(SummaryMeshJobsService, [{
+  SummaryMeshJobsService_inherits(SummaryMeshJobsService, _ProcessingServiceBas);
+  return SummaryMeshJobsService_createClass(SummaryMeshJobsService, [{
     key: "destroy",
     value: function destroy() {
       SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "destroy", this).call(this);
@@ -14457,145 +15975,34 @@ var SummaryMeshJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return SummaryMeshJobsService_get(SummaryMeshJobsService_getPrototypeOf(SummaryMeshJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return SummaryMeshJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
-function VectorClipJobsParameter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function VectorClipJobsParameter_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function VectorClipJobsParameter_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsParameter_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsParameter_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-/**
- * @class VectorClipJobsParameter
- * @deprecatedclass SuperMap.VectorClipJobsParameter
- * @category  iServer ProcessingService VectorClip
- * @classdesc 矢量裁剪分析任务参数类。
- * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
- * @param {string} options.datasetOverlay - 裁剪对象数据集。
- * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
- * @param {string} [options.geometryClip] - 裁剪几何对象。
- * @param {OutputSetting} [options.output] - 输出参数设置。
- * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
- * @usage
- */
-var VectorClipJobsParameter = /*#__PURE__*/function () {
-  function VectorClipJobsParameter(options) {
-    VectorClipJobsParameter_classCallCheck(this, VectorClipJobsParameter);
-    options = options || {};
-
-    /**
-     * @member {string} VectorClipJobsParameter.prototype.datasetName
-     * @description 数据集名。
-     */
-    this.datasetName = "";
-
-    /**
-     * @member {string} VectorClipJobsParameter.prototype.datasetOverlay
-     * @description 裁剪对象数据集。
-     */
-    this.datasetVectorClip = "";
-
-    /**
-     * @member {string} VectorClipJobsParameter.prototype.geometryClip
-     * @description 裁剪几何对象。
-     */
-    this.geometryClip = "";
-
-    /**
-     * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-     * @description 裁剪分析模式 。
-     */
-    this.mode = ClipAnalystMode.CLIP;
-
-    /**
-     * @member {OutputSetting} VectorClipJobsParameter.prototype.output
-     * @description 输出参数设置类。
-     */
-    this.output = null;
-
-    /**
-     * @member {MappingParameters} [VectorClipJobsParameter.prototype.mappingParameters]
-     * @description 分析后结果可视化的参数类。
-     */
-    this.mappingParameters = null;
-    Util_Util.extend(this, options);
-    this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
-  }
-
-  /**
-   * @function VectorClipJobsParameter.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-  VectorClipJobsParameter_createClass(VectorClipJobsParameter, [{
-    key: "destroy",
-    value: function destroy() {
-      this.datasetName = null;
-      this.datasetVectorClip = null;
-      this.geometryClip = null;
-      this.mode = null;
-      if (this.output instanceof OutputSetting) {
-        this.output.destroy();
-        this.output = null;
-      }
-      if (this.mappingParameters instanceof MappingParameters) {
-        this.mappingParameters.destroy();
-        this.mappingParameters = null;
-      }
-    }
-
-    /**
-     * @function VectorClipJobsParameter.toObject
-     * @param {Object} vectorClipJobsParameter - 区域汇总分析服务参数。
-     * @param {Object} tempObj - 目标对象。
-     * @description 矢量裁剪分析任务对象。
-     */
-  }], [{
-    key: "toObject",
-    value: function toObject(vectorClipJobsParameter, tempObj) {
-      for (var name in vectorClipJobsParameter) {
-        if (name === "datasetName") {
-          tempObj['input'] = tempObj['input'] || {};
-          tempObj['input'][name] = vectorClipJobsParameter[name];
-          continue;
-        }
-        if (name === "output") {
-          tempObj['output'] = tempObj['output'] || {};
-          tempObj['output'] = vectorClipJobsParameter[name];
-          continue;
-        }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        tempObj['analyst'][name] = vectorClipJobsParameter[name];
-        if (name === 'mappingParameters') {
-          tempObj['analyst'][name] = tempObj['analyst'][name] || {};
-          tempObj['analyst']['mappingParameters'] = vectorClipJobsParameter[name];
-        }
-      }
-    }
-  }]);
-  return VectorClipJobsParameter;
-}();
-;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
+;// ./src/common/iServer/VectorClipJobsService.js
 function VectorClipJobsService_typeof(obj) { "@babel/helpers - typeof"; return VectorClipJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, VectorClipJobsService_typeof(obj); }
 function VectorClipJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function VectorClipJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function VectorClipJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) VectorClipJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) VectorClipJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function VectorClipJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { VectorClipJobsService_get = Reflect.get.bind(); } else { VectorClipJobsService_get = function _get(target, property, receiver) { var base = VectorClipJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return VectorClipJobsService_get.apply(this, arguments); }
-function VectorClipJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = VectorClipJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function VectorClipJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) VectorClipJobsService_setPrototypeOf(subClass, superClass); }
-function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VectorClipJobsService_setPrototypeOf(o, p); }
-function VectorClipJobsService_createSuper(Derived) { var hasNativeReflectConstruct = VectorClipJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = VectorClipJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = VectorClipJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return VectorClipJobsService_possibleConstructorReturn(this, result); }; }
+function VectorClipJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = VectorClipJobsService_getPrototypeOf(derived);
+  return VectorClipJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], VectorClipJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function VectorClipJobsService_possibleConstructorReturn(self, call) { if (call && (VectorClipJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return VectorClipJobsService_assertThisInitialized(self); }
 function VectorClipJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function VectorClipJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function VectorClipJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { VectorClipJobsService_get = Reflect.get.bind(); } else { VectorClipJobsService_get = function _get(target, property, receiver) { var base = VectorClipJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return VectorClipJobsService_get.apply(this, arguments); }
+function VectorClipJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = VectorClipJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function VectorClipJobsService_getPrototypeOf(o) { VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VectorClipJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function VectorClipJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) VectorClipJobsService_setPrototypeOf(subClass, superClass); }
+function VectorClipJobsService_setPrototypeOf(o, p) { VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VectorClipJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14615,21 +16022,20 @@ function VectorClipJobsService_getPrototypeOf(o) { VectorClipJobsService_getProt
  * @usage
  */
 var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  VectorClipJobsService_inherits(VectorClipJobsService, _ProcessingServiceBas);
-  var _super = VectorClipJobsService_createSuper(VectorClipJobsService);
   function VectorClipJobsService(url, options) {
-    var _this;
+    var _this2;
     VectorClipJobsService_classCallCheck(this, VectorClipJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/vectorclip');
-    _this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
-    return _this;
+    _this2 = VectorClipJobsService_callSuper(this, VectorClipJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/vectorclip');
+    _this2.CLASS_NAME = 'SuperMap.VectorClipJobsService';
+    return _this2;
   }
 
   /**
    *@override
    */
-  VectorClipJobsService_createClass(VectorClipJobsService, [{
+  VectorClipJobsService_inherits(VectorClipJobsService, _ProcessingServiceBas);
+  return VectorClipJobsService_createClass(VectorClipJobsService, [{
     key: "destroy",
     value: function destroy() {
       VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "destroy", this).call(this);
@@ -14675,23 +16081,34 @@ var VectorClipJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return VectorClipJobsService_get(VectorClipJobsService_getPrototypeOf(VectorClipJobsService.prototype), "addJob", this).call(this, this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return VectorClipJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
+;// ./src/common/iServer/OverlayGeoJobsService.js
 function OverlayGeoJobsService_typeof(obj) { "@babel/helpers - typeof"; return OverlayGeoJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, OverlayGeoJobsService_typeof(obj); }
 function OverlayGeoJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function OverlayGeoJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function OverlayGeoJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) OverlayGeoJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) OverlayGeoJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function OverlayGeoJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { OverlayGeoJobsService_get = Reflect.get.bind(); } else { OverlayGeoJobsService_get = function _get(target, property, receiver) { var base = OverlayGeoJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return OverlayGeoJobsService_get.apply(this, arguments); }
-function OverlayGeoJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = OverlayGeoJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function OverlayGeoJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) OverlayGeoJobsService_setPrototypeOf(subClass, superClass); }
-function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayGeoJobsService_setPrototypeOf(o, p); }
-function OverlayGeoJobsService_createSuper(Derived) { var hasNativeReflectConstruct = OverlayGeoJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = OverlayGeoJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = OverlayGeoJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return OverlayGeoJobsService_possibleConstructorReturn(this, result); }; }
+function OverlayGeoJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = OverlayGeoJobsService_getPrototypeOf(derived);
+  return OverlayGeoJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], OverlayGeoJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function OverlayGeoJobsService_possibleConstructorReturn(self, call) { if (call && (OverlayGeoJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return OverlayGeoJobsService_assertThisInitialized(self); }
 function OverlayGeoJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function OverlayGeoJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function OverlayGeoJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { OverlayGeoJobsService_get = Reflect.get.bind(); } else { OverlayGeoJobsService_get = function _get(target, property, receiver) { var base = OverlayGeoJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return OverlayGeoJobsService_get.apply(this, arguments); }
+function OverlayGeoJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = OverlayGeoJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return OverlayGeoJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function OverlayGeoJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) OverlayGeoJobsService_setPrototypeOf(subClass, superClass); }
+function OverlayGeoJobsService_setPrototypeOf(o, p) { OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return OverlayGeoJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14713,21 +16130,20 @@ function OverlayGeoJobsService_getPrototypeOf(o) { OverlayGeoJobsService_getProt
  * @usage
  */
 var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  OverlayGeoJobsService_inherits(OverlayGeoJobsService, _ProcessingServiceBas);
-  var _super = OverlayGeoJobsService_createSuper(OverlayGeoJobsService);
   function OverlayGeoJobsService(url, options) {
-    var _this;
+    var _this2;
     OverlayGeoJobsService_classCallCheck(this, OverlayGeoJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/overlay');
-    _this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
-    return _this;
+    _this2 = OverlayGeoJobsService_callSuper(this, OverlayGeoJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/overlay');
+    _this2.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
+    return _this2;
   }
 
   /**
    * @override
    */
-  OverlayGeoJobsService_createClass(OverlayGeoJobsService, [{
+  OverlayGeoJobsService_inherits(OverlayGeoJobsService, _ProcessingServiceBas);
+  return OverlayGeoJobsService_createClass(OverlayGeoJobsService, [{
     key: "destroy",
     value: function destroy() {
       OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "destroy", this).call(this);
@@ -14772,23 +16188,34 @@ var OverlayGeoJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return OverlayGeoJobsService_get(OverlayGeoJobsService_getPrototypeOf(OverlayGeoJobsService.prototype), "addJob", this).call(this, this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return OverlayGeoJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
+;// ./src/common/iServer/SummaryRegionJobsService.js
 function SummaryRegionJobsService_typeof(obj) { "@babel/helpers - typeof"; return SummaryRegionJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SummaryRegionJobsService_typeof(obj); }
 function SummaryRegionJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryRegionJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryRegionJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryRegionJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryRegionJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryRegionJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get.bind(); } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryRegionJobsService_get.apply(this, arguments); }
-function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
-function SummaryRegionJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryRegionJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryRegionJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryRegionJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryRegionJobsService_possibleConstructorReturn(this, result); }; }
+function SummaryRegionJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = SummaryRegionJobsService_getPrototypeOf(derived);
+  return SummaryRegionJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], SummaryRegionJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function SummaryRegionJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryRegionJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryRegionJobsService_assertThisInitialized(self); }
 function SummaryRegionJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function SummaryRegionJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function SummaryRegionJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryRegionJobsService_get = Reflect.get.bind(); } else { SummaryRegionJobsService_get = function _get(target, property, receiver) { var base = SummaryRegionJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryRegionJobsService_get.apply(this, arguments); }
+function SummaryRegionJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryRegionJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryRegionJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryRegionJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryRegionJobsService_setPrototypeOf(subClass, superClass); }
+function SummaryRegionJobsService_setPrototypeOf(o, p) { SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryRegionJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14808,21 +16235,20 @@ function SummaryRegionJobsService_getPrototypeOf(o) { SummaryRegionJobsService_g
  * @usage
  */
 var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
-  var _super = SummaryRegionJobsService_createSuper(SummaryRegionJobsService);
   function SummaryRegionJobsService(url, options) {
-    var _this;
+    var _this2;
     SummaryRegionJobsService_classCallCheck(this, SummaryRegionJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryregion');
-    _this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
-    return _this;
+    _this2 = SummaryRegionJobsService_callSuper(this, SummaryRegionJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/summaryregion');
+    _this2.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
+    return _this2;
   }
 
   /**
    *@override
    */
-  SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
+  SummaryRegionJobsService_inherits(SummaryRegionJobsService, _ProcessingServiceBas);
+  return SummaryRegionJobsService_createClass(SummaryRegionJobsService, [{
     key: "destroy",
     value: function destroy() {
       SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "destroy", this).call(this);
@@ -14867,23 +16293,34 @@ var SummaryRegionJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return SummaryRegionJobsService_get(SummaryRegionJobsService_getPrototypeOf(SummaryRegionJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return SummaryRegionJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
+;// ./src/common/iServer/BuffersAnalystJobsService.js
 function BuffersAnalystJobsService_typeof(obj) { "@babel/helpers - typeof"; return BuffersAnalystJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, BuffersAnalystJobsService_typeof(obj); }
 function BuffersAnalystJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function BuffersAnalystJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function BuffersAnalystJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) BuffersAnalystJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) BuffersAnalystJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function BuffersAnalystJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { BuffersAnalystJobsService_get = Reflect.get.bind(); } else { BuffersAnalystJobsService_get = function _get(target, property, receiver) { var base = BuffersAnalystJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return BuffersAnalystJobsService_get.apply(this, arguments); }
-function BuffersAnalystJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = BuffersAnalystJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function BuffersAnalystJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) BuffersAnalystJobsService_setPrototypeOf(subClass, superClass); }
-function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BuffersAnalystJobsService_setPrototypeOf(o, p); }
-function BuffersAnalystJobsService_createSuper(Derived) { var hasNativeReflectConstruct = BuffersAnalystJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = BuffersAnalystJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = BuffersAnalystJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return BuffersAnalystJobsService_possibleConstructorReturn(this, result); }; }
+function BuffersAnalystJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = BuffersAnalystJobsService_getPrototypeOf(derived);
+  return BuffersAnalystJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], BuffersAnalystJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function BuffersAnalystJobsService_possibleConstructorReturn(self, call) { if (call && (BuffersAnalystJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return BuffersAnalystJobsService_assertThisInitialized(self); }
 function BuffersAnalystJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function BuffersAnalystJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function BuffersAnalystJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { BuffersAnalystJobsService_get = Reflect.get.bind(); } else { BuffersAnalystJobsService_get = function _get(target, property, receiver) { var base = BuffersAnalystJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return BuffersAnalystJobsService_get.apply(this, arguments); }
+function BuffersAnalystJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = BuffersAnalystJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return BuffersAnalystJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function BuffersAnalystJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) BuffersAnalystJobsService_setPrototypeOf(subClass, superClass); }
+function BuffersAnalystJobsService_setPrototypeOf(o, p) { BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return BuffersAnalystJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14903,21 +16340,20 @@ function BuffersAnalystJobsService_getPrototypeOf(o) { BuffersAnalystJobsService
  * @usage
  */
 var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  BuffersAnalystJobsService_inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
-  var _super = BuffersAnalystJobsService_createSuper(BuffersAnalystJobsService);
   function BuffersAnalystJobsService(url, options) {
-    var _this;
+    var _this2;
     BuffersAnalystJobsService_classCallCheck(this, BuffersAnalystJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/buffers');
-    _this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
-    return _this;
+    _this2 = BuffersAnalystJobsService_callSuper(this, BuffersAnalystJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/buffers');
+    _this2.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
+    return _this2;
   }
 
   /**
    *@override
    */
-  BuffersAnalystJobsService_createClass(BuffersAnalystJobsService, [{
+  BuffersAnalystJobsService_inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
+  return BuffersAnalystJobsService_createClass(BuffersAnalystJobsService, [{
     key: "destroy",
     value: function destroy() {
       BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "destroy", this).call(this);
@@ -14963,23 +16399,34 @@ var BuffersAnalystJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
       return BuffersAnalystJobsService_get(BuffersAnalystJobsService_getPrototypeOf(BuffersAnalystJobsService.prototype), "addJob", this).call(this, this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return BuffersAnalystJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
+;// ./src/common/iServer/TopologyValidatorJobsService.js
 function TopologyValidatorJobsService_typeof(obj) { "@babel/helpers - typeof"; return TopologyValidatorJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, TopologyValidatorJobsService_typeof(obj); }
 function TopologyValidatorJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function TopologyValidatorJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function TopologyValidatorJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) TopologyValidatorJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) TopologyValidatorJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function TopologyValidatorJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { TopologyValidatorJobsService_get = Reflect.get.bind(); } else { TopologyValidatorJobsService_get = function _get(target, property, receiver) { var base = TopologyValidatorJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return TopologyValidatorJobsService_get.apply(this, arguments); }
-function TopologyValidatorJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = TopologyValidatorJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function TopologyValidatorJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) TopologyValidatorJobsService_setPrototypeOf(subClass, superClass); }
-function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TopologyValidatorJobsService_setPrototypeOf(o, p); }
-function TopologyValidatorJobsService_createSuper(Derived) { var hasNativeReflectConstruct = TopologyValidatorJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = TopologyValidatorJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = TopologyValidatorJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return TopologyValidatorJobsService_possibleConstructorReturn(this, result); }; }
+function TopologyValidatorJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = TopologyValidatorJobsService_getPrototypeOf(derived);
+  return TopologyValidatorJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], TopologyValidatorJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function TopologyValidatorJobsService_possibleConstructorReturn(self, call) { if (call && (TopologyValidatorJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return TopologyValidatorJobsService_assertThisInitialized(self); }
 function TopologyValidatorJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function TopologyValidatorJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function TopologyValidatorJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { TopologyValidatorJobsService_get = Reflect.get.bind(); } else { TopologyValidatorJobsService_get = function _get(target, property, receiver) { var base = TopologyValidatorJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return TopologyValidatorJobsService_get.apply(this, arguments); }
+function TopologyValidatorJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = TopologyValidatorJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function TopologyValidatorJobsService_getPrototypeOf(o) { TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TopologyValidatorJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function TopologyValidatorJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) TopologyValidatorJobsService_setPrototypeOf(subClass, superClass); }
+function TopologyValidatorJobsService_setPrototypeOf(o, p) { TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TopologyValidatorJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14999,21 +16446,20 @@ function TopologyValidatorJobsService_getPrototypeOf(o) { TopologyValidatorJobsS
  * @usage
  */
 var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  TopologyValidatorJobsService_inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
-  var _super = TopologyValidatorJobsService_createSuper(TopologyValidatorJobsService);
   function TopologyValidatorJobsService(url, options) {
-    var _this;
+    var _this2;
     TopologyValidatorJobsService_classCallCheck(this, TopologyValidatorJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/topologyvalidator');
-    _this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
-    return _this;
+    _this2 = TopologyValidatorJobsService_callSuper(this, TopologyValidatorJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/topologyvalidator');
+    _this2.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
+    return _this2;
   }
 
   /**
    *@override
    */
-  TopologyValidatorJobsService_createClass(TopologyValidatorJobsService, [{
+  TopologyValidatorJobsService_inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
+  return TopologyValidatorJobsService_createClass(TopologyValidatorJobsService, [{
     key: "destroy",
     value: function destroy() {
       TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "destroy", this).call(this);
@@ -15058,23 +16504,34 @@ var TopologyValidatorJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
       return TopologyValidatorJobsService_get(TopologyValidatorJobsService_getPrototypeOf(TopologyValidatorJobsService.prototype), "addJob", this).call(this, this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return TopologyValidatorJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
+;// ./src/common/iServer/SummaryAttributesJobsService.js
 function SummaryAttributesJobsService_typeof(obj) { "@babel/helpers - typeof"; return SummaryAttributesJobsService_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, SummaryAttributesJobsService_typeof(obj); }
 function SummaryAttributesJobsService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function SummaryAttributesJobsService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function SummaryAttributesJobsService_createClass(Constructor, protoProps, staticProps) { if (protoProps) SummaryAttributesJobsService_defineProperties(Constructor.prototype, protoProps); if (staticProps) SummaryAttributesJobsService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function SummaryAttributesJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryAttributesJobsService_get = Reflect.get.bind(); } else { SummaryAttributesJobsService_get = function _get(target, property, receiver) { var base = SummaryAttributesJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryAttributesJobsService_get.apply(this, arguments); }
-function SummaryAttributesJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryAttributesJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
-function SummaryAttributesJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryAttributesJobsService_setPrototypeOf(subClass, superClass); }
-function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryAttributesJobsService_setPrototypeOf(o, p); }
-function SummaryAttributesJobsService_createSuper(Derived) { var hasNativeReflectConstruct = SummaryAttributesJobsService_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = SummaryAttributesJobsService_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = SummaryAttributesJobsService_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return SummaryAttributesJobsService_possibleConstructorReturn(this, result); }; }
+function SummaryAttributesJobsService_callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = SummaryAttributesJobsService_getPrototypeOf(derived);
+  return SummaryAttributesJobsService_possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], SummaryAttributesJobsService_getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function SummaryAttributesJobsService_possibleConstructorReturn(self, call) { if (call && (SummaryAttributesJobsService_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return SummaryAttributesJobsService_assertThisInitialized(self); }
 function SummaryAttributesJobsService_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function SummaryAttributesJobsService_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function SummaryAttributesJobsService_get() { if (typeof Reflect !== "undefined" && Reflect.get) { SummaryAttributesJobsService_get = Reflect.get.bind(); } else { SummaryAttributesJobsService_get = function _get(target, property, receiver) { var base = SummaryAttributesJobsService_superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return SummaryAttributesJobsService_get.apply(this, arguments); }
+function SummaryAttributesJobsService_superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = SummaryAttributesJobsService_getPrototypeOf(object); if (object === null) break; } return object; }
 function SummaryAttributesJobsService_getPrototypeOf(o) { SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return SummaryAttributesJobsService_getPrototypeOf(o); }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+function SummaryAttributesJobsService_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) SummaryAttributesJobsService_setPrototypeOf(subClass, superClass); }
+function SummaryAttributesJobsService_setPrototypeOf(o, p) { SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return SummaryAttributesJobsService_setPrototypeOf(o, p); }
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15094,21 +16551,20 @@ function SummaryAttributesJobsService_getPrototypeOf(o) { SummaryAttributesJobsS
  * @usage
  */
 var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas) {
-  SummaryAttributesJobsService_inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
-  var _super = SummaryAttributesJobsService_createSuper(SummaryAttributesJobsService);
   function SummaryAttributesJobsService(url, options) {
-    var _this;
+    var _this2;
     SummaryAttributesJobsService_classCallCheck(this, SummaryAttributesJobsService);
-    _this = _super.call(this, url, options);
-    _this.url = Util_Util.urlPathAppend(_this.url, 'spatialanalyst/summaryattributes');
-    _this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
-    return _this;
+    _this2 = SummaryAttributesJobsService_callSuper(this, SummaryAttributesJobsService, [url, options]);
+    _this2.url = Util_Util.urlPathAppend(_this2.url, 'spatialanalyst/summaryattributes');
+    _this2.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
+    return _this2;
   }
 
   /**
    *@override
    */
-  SummaryAttributesJobsService_createClass(SummaryAttributesJobsService, [{
+  SummaryAttributesJobsService_inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
+  return SummaryAttributesJobsService_createClass(SummaryAttributesJobsService, [{
     key: "destroy",
     value: function destroy() {
       SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "destroy", this).call(this);
@@ -15153,13 +16609,12 @@ var SummaryAttributesJobsService = /*#__PURE__*/function (_ProcessingServiceBas)
       return SummaryAttributesJobsService_get(SummaryAttributesJobsService_getPrototypeOf(SummaryAttributesJobsService.prototype), "addJob", this).call(this, this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
     }
   }]);
-  return SummaryAttributesJobsService;
 }(ProcessingServiceBase);
-;// CONCATENATED MODULE: ./src/common/iServer/ProcessingService.js
+;// ./src/common/iServer/ProcessingService.js
 function ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15214,7 +16669,7 @@ var ProcessingService_ProcessingService = /*#__PURE__*/function () {
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
    * @returns {Promise} Promise 对象。
    */
-  ProcessingService_createClass(ProcessingService, [{
+  return ProcessingService_createClass(ProcessingService, [{
     key: "getKernelDensityJobs",
     value: function getKernelDensityJobs(callback, resultFormat) {
       var me = this,
@@ -15959,13 +17414,12 @@ var ProcessingService_ProcessingService = /*#__PURE__*/function () {
       return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
   }]);
-  return ProcessingService;
 }();
-;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
+;// ./src/classic/services/ProcessingService.js
 function services_ProcessingService_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function services_ProcessingService_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function services_ProcessingService_createClass(Constructor, protoProps, staticProps) { if (protoProps) services_ProcessingService_defineProperties(Constructor.prototype, protoProps); if (staticProps) services_ProcessingService_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16000,7 +17454,7 @@ var ProcessingService = /*#__PURE__*/function () {
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
    * @returns {Promise} Promise 对象。
    */
-  services_ProcessingService_createClass(ProcessingService, [{
+  return services_ProcessingService_createClass(ProcessingService, [{
     key: "getKernelDensityJobs",
     value: function getKernelDensityJobs(callback, resultFormat) {
       return this._processingService.getKernelDensityJobs(callback, resultFormat);
@@ -16526,19 +17980,18 @@ var ProcessingService = /*#__PURE__*/function () {
       return geometryParam;
     }
   }]);
-  return ProcessingService;
 }();
 SuperMap.REST.ProcessingService = ProcessingService;
-;// CONCATENATED MODULE: ./src/classic/services/index.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/classic/services/index.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
 
-;// CONCATENATED MODULE: ./src/classic/index.js
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+;// ./src/classic/index.js
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16560,13 +18013,16 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 
-;// CONCATENATED MODULE: ./src/classic/namespace.js
+
+
+;// ./src/classic/namespace.js
 function namespace_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function namespace_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? namespace_ownKeys(Object(source), !0).forEach(function (key) { namespace_defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : namespace_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function namespace_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 SuperMap.ElasticSearch = ElasticSearch;
 SuperMap.SecurityManager = SecurityManager;
+SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
@@ -16579,8 +18035,1692 @@ SuperMap.OutputSetting = OutputSetting;
 SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
+SuperMap.FetchRequest = FetchRequest;
 SuperMap.Util = namespace_objectSpread(namespace_objectSpread({}, SuperMap.Util), Util_Util);
 
+
+/***/ }),
+
+/***/ 3416:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(3725);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 5641:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(756);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 1606:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(6186);
+var path = __webpack_require__(7520);
+module.exports = path.Object.assign;
+
+/***/ }),
+
+/***/ 379:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(9319);
+var WrappedWellKnownSymbolModule = __webpack_require__(8490);
+module.exports = WrappedWellKnownSymbolModule.f('asyncIterator');
+
+/***/ }),
+
+/***/ 3873:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(5164);
+var tryToString = __webpack_require__(6390);
+var $TypeError = TypeError;
+
+// `Assert: IsCallable(argument) is true`
+module.exports = function (argument) {
+  if (isCallable(argument)) return argument;
+  throw new $TypeError(tryToString(argument) + ' is not a function');
+};
+
+/***/ }),
+
+/***/ 5546:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isObject = __webpack_require__(5343);
+var $String = String;
+var $TypeError = TypeError;
+
+// `Assert: Type(argument) is Object`
+module.exports = function (argument) {
+  if (isObject(argument)) return argument;
+  throw new $TypeError($String(argument) + ' is not an object');
+};
+
+/***/ }),
+
+/***/ 5282:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIndexedObject = __webpack_require__(1212);
+var toAbsoluteIndex = __webpack_require__(9603);
+var lengthOfArrayLike = __webpack_require__(8765);
+
+// `Array.prototype.{ indexOf, includes }` methods implementation
+var createMethod = function createMethod(IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIndexedObject($this);
+    var length = lengthOfArrayLike(O);
+    if (length === 0) return !IS_INCLUDES && -1;
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare -- NaN check
+    if (IS_INCLUDES && el !== el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare -- NaN check
+      if (value !== value) return true;
+      // Array#indexOf ignores holes, Array#includes - not
+    } else for (; length > index; index++) {
+      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
+    }
+    return !IS_INCLUDES && -1;
+  };
+};
+module.exports = {
+  // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
+  includes: createMethod(true),
+  // `Array.prototype.indexOf` method
+  // https://tc39.es/ecma262/#sec-array.prototype.indexof
+  indexOf: createMethod(false)
+};
+
+/***/ }),
+
+/***/ 7953:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var toString = uncurryThis({}.toString);
+var stringSlice = uncurryThis(''.slice);
+module.exports = function (it) {
+  return stringSlice(toString(it), 8, -1);
+};
+
+/***/ }),
+
+/***/ 4017:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var hasOwn = __webpack_require__(2770);
+var ownKeys = __webpack_require__(6608);
+var getOwnPropertyDescriptorModule = __webpack_require__(3880);
+var definePropertyModule = __webpack_require__(754);
+module.exports = function (target, source, exceptions) {
+  var keys = ownKeys(source);
+  var defineProperty = definePropertyModule.f;
+  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!hasOwn(target, key) && !(exceptions && hasOwn(exceptions, key))) {
+      defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+    }
+  }
+};
+
+/***/ }),
+
+/***/ 7592:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var definePropertyModule = __webpack_require__(754);
+var createPropertyDescriptor = __webpack_require__(19);
+module.exports = DESCRIPTORS ? function (object, key, value) {
+  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+/***/ }),
+
+/***/ 19:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+/***/ }),
+
+/***/ 4197:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(5164);
+var definePropertyModule = __webpack_require__(754);
+var makeBuiltIn = __webpack_require__(6514);
+var defineGlobalProperty = __webpack_require__(9998);
+module.exports = function (O, key, value, options) {
+  if (!options) options = {};
+  var simple = options.enumerable;
+  var name = options.name !== undefined ? options.name : key;
+  if (isCallable(value)) makeBuiltIn(value, name, options);
+  if (options.global) {
+    if (simple) O[key] = value;else defineGlobalProperty(key, value);
+  } else {
+    try {
+      if (!options.unsafe) delete O[key];else if (O[key]) simple = true;
+    } catch (error) {/* empty */}
+    if (simple) O[key] = value;else definePropertyModule.f(O, key, {
+      value: value,
+      enumerable: false,
+      configurable: !options.nonConfigurable,
+      writable: !options.nonWritable
+    });
+  }
+  return O;
+};
+
+/***/ }),
+
+/***/ 9998:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+module.exports = function (key, value) {
+  try {
+    defineProperty(globalThis, key, {
+      value: value,
+      configurable: true,
+      writable: true
+    });
+  } catch (error) {
+    globalThis[key] = value;
+  }
+  return value;
+};
+
+/***/ }),
+
+/***/ 4797:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(3634);
+
+// Detect IE8's incomplete defineProperty implementation
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty({}, 1, {
+    get: function get() {
+      return 7;
+    }
+  })[1] !== 7;
+});
+
+/***/ }),
+
+/***/ 9750:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var isObject = __webpack_require__(5343);
+var document = globalThis.document;
+// typeof document.createElement is 'object' in old IE
+var EXISTS = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
+  return EXISTS ? document.createElement(it) : {};
+};
+
+/***/ }),
+
+/***/ 3690:
+/***/ (function(module) {
+
+"use strict";
+
+
+// IE8- don't enum bug keys
+module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
+
+/***/ }),
+
+/***/ 2940:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var navigator = globalThis.navigator;
+var userAgent = navigator && navigator.userAgent;
+module.exports = userAgent ? String(userAgent) : '';
+
+/***/ }),
+
+/***/ 2944:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var userAgent = __webpack_require__(2940);
+var process = globalThis.process;
+var Deno = globalThis.Deno;
+var versions = process && process.versions || Deno && Deno.version;
+var v8 = versions && versions.v8;
+var match, version;
+if (v8) {
+  match = v8.split('.');
+  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+  // but their correct versions are not interesting for us
+  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
+}
+
+// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+// so check `userAgent` even if `.v8` exists, but 0
+if (!version && userAgent) {
+  match = userAgent.match(/Edge\/(\d+)/);
+  if (!match || match[1] >= 74) {
+    match = userAgent.match(/Chrome\/(\d+)/);
+    if (match) version = +match[1];
+  }
+}
+module.exports = version;
+
+/***/ }),
+
+/***/ 3485:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var globalThis = __webpack_require__(8029);
+var getOwnPropertyDescriptor = (__webpack_require__(3880).f);
+var createNonEnumerableProperty = __webpack_require__(7592);
+var defineBuiltIn = __webpack_require__(4197);
+var defineGlobalProperty = __webpack_require__(9998);
+var copyConstructorProperties = __webpack_require__(4017);
+var isForced = __webpack_require__(4857);
+
+/*
+  options.target         - name of the target object
+  options.global         - target is the global object
+  options.stat           - export as static methods of target
+  options.proto          - export as prototype methods of target
+  options.real           - real prototype method for the `pure` version
+  options.forced         - export even if the native feature is available
+  options.bind           - bind methods to the target, required for the `pure` version
+  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
+  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
+  options.sham           - add a flag to not completely full polyfills
+  options.enumerable     - export as enumerable property
+  options.dontCallGetSet - prevent calling a getter on target
+  options.name           - the .name of the function if it does not match the key
+*/
+module.exports = function (options, source) {
+  var TARGET = options.target;
+  var GLOBAL = options.global;
+  var STATIC = options.stat;
+  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
+  if (GLOBAL) {
+    target = globalThis;
+  } else if (STATIC) {
+    target = globalThis[TARGET] || defineGlobalProperty(TARGET, {});
+  } else {
+    target = globalThis[TARGET] && globalThis[TARGET].prototype;
+  }
+  if (target) for (key in source) {
+    sourceProperty = source[key];
+    if (options.dontCallGetSet) {
+      descriptor = getOwnPropertyDescriptor(target, key);
+      targetProperty = descriptor && descriptor.value;
+    } else targetProperty = target[key];
+    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
+    // contained in target
+    if (!FORCED && targetProperty !== undefined) {
+      if (_typeof(sourceProperty) == _typeof(targetProperty)) continue;
+      copyConstructorProperties(sourceProperty, targetProperty);
+    }
+    // add a flag to not completely full polyfills
+    if (options.sham || targetProperty && targetProperty.sham) {
+      createNonEnumerableProperty(sourceProperty, 'sham', true);
+    }
+    defineBuiltIn(target, key, sourceProperty, options);
+  }
+};
+
+/***/ }),
+
+/***/ 3634:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (error) {
+    return true;
+  }
+};
+
+/***/ }),
+
+/***/ 8607:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(3634);
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-function-prototype-bind -- safe
+  var test = function () {/* empty */}.bind();
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return typeof test != 'function' || test.hasOwnProperty('prototype');
+});
+
+/***/ }),
+
+/***/ 3736:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_BIND = __webpack_require__(8607);
+var call = Function.prototype.call;
+module.exports = NATIVE_BIND ? call.bind(call) : function () {
+  return call.apply(call, arguments);
+};
+
+/***/ }),
+
+/***/ 9071:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var hasOwn = __webpack_require__(2770);
+var FunctionPrototype = Function.prototype;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
+var EXISTS = hasOwn(FunctionPrototype, 'name');
+// additional protection from minified / mangled / dropped function names
+var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
+var CONFIGURABLE = EXISTS && (!DESCRIPTORS || DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable);
+module.exports = {
+  EXISTS: EXISTS,
+  PROPER: PROPER,
+  CONFIGURABLE: CONFIGURABLE
+};
+
+/***/ }),
+
+/***/ 7889:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_BIND = __webpack_require__(8607);
+var FunctionPrototype = Function.prototype;
+var call = FunctionPrototype.call;
+var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
+module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
+  return function () {
+    return call.apply(fn, arguments);
+  };
+};
+
+/***/ }),
+
+/***/ 148:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var isCallable = __webpack_require__(5164);
+var aFunction = function aFunction(argument) {
+  return isCallable(argument) ? argument : undefined;
+};
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(globalThis[namespace]) : globalThis[namespace] && globalThis[namespace][method];
+};
+
+/***/ }),
+
+/***/ 4897:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var aCallable = __webpack_require__(3873);
+var isNullOrUndefined = __webpack_require__(4350);
+
+// `GetMethod` abstract operation
+// https://tc39.es/ecma262/#sec-getmethod
+module.exports = function (V, P) {
+  var func = V[P];
+  return isNullOrUndefined(func) ? undefined : aCallable(func);
+};
+
+/***/ }),
+
+/***/ 8029:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var check = function check(it) {
+  return it && it.Math === Math && it;
+};
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+module.exports =
+// eslint-disable-next-line es/no-global-this -- safe
+check((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) == 'object' && globalThis) || check((typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && window) ||
+// eslint-disable-next-line no-restricted-globals -- safe
+check((typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self) || check((typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g) || check(_typeof(this) == 'object' && this) ||
+// eslint-disable-next-line no-new-func -- fallback
+function () {
+  return this;
+}() || Function('return this')();
+
+/***/ }),
+
+/***/ 2770:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var toObject = __webpack_require__(9452);
+var hasOwnProperty = uncurryThis({}.hasOwnProperty);
+
+// `HasOwnProperty` abstract operation
+// https://tc39.es/ecma262/#sec-hasownproperty
+// eslint-disable-next-line es/no-object-hasown -- safe
+module.exports = Object.hasOwn || function hasOwn(it, key) {
+  return hasOwnProperty(toObject(it), key);
+};
+
+/***/ }),
+
+/***/ 7076:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = {};
+
+/***/ }),
+
+/***/ 6182:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var fails = __webpack_require__(3634);
+var createElement = __webpack_require__(9750);
+
+// Thanks to IE8 for its funny defineProperty
+module.exports = !DESCRIPTORS && !fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty(createElement('div'), 'a', {
+    get: function get() {
+      return 7;
+    }
+  }).a !== 7;
+});
+
+/***/ }),
+
+/***/ 4384:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var fails = __webpack_require__(3634);
+var classof = __webpack_require__(7953);
+var $Object = Object;
+var split = uncurryThis(''.split);
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+module.exports = fails(function () {
+  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return !$Object('z').propertyIsEnumerable(0);
+}) ? function (it) {
+  return classof(it) === 'String' ? split(it, '') : $Object(it);
+} : $Object;
+
+/***/ }),
+
+/***/ 9413:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var isCallable = __webpack_require__(5164);
+var store = __webpack_require__(3094);
+var functionToString = uncurryThis(Function.toString);
+
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+if (!isCallable(store.inspectSource)) {
+  store.inspectSource = function (it) {
+    return functionToString(it);
+  };
+}
+module.exports = store.inspectSource;
+
+/***/ }),
+
+/***/ 6814:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_WEAK_MAP = __webpack_require__(6185);
+var globalThis = __webpack_require__(8029);
+var isObject = __webpack_require__(5343);
+var createNonEnumerableProperty = __webpack_require__(7592);
+var hasOwn = __webpack_require__(2770);
+var shared = __webpack_require__(3094);
+var sharedKey = __webpack_require__(56);
+var hiddenKeys = __webpack_require__(7076);
+var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
+var TypeError = globalThis.TypeError;
+var WeakMap = globalThis.WeakMap;
+var set, get, has;
+var enforce = function enforce(it) {
+  return has(it) ? get(it) : set(it, {});
+};
+var getterFor = function getterFor(TYPE) {
+  return function (it) {
+    var state;
+    if (!isObject(it) || (state = get(it)).type !== TYPE) {
+      throw new TypeError('Incompatible receiver, ' + TYPE + ' required');
+    }
+    return state;
+  };
+};
+if (NATIVE_WEAK_MAP || shared.state) {
+  var store = shared.state || (shared.state = new WeakMap());
+  /* eslint-disable no-self-assign -- prototype methods protection */
+  store.get = store.get;
+  store.has = store.has;
+  store.set = store.set;
+  /* eslint-enable no-self-assign -- prototype methods protection */
+  set = function set(it, metadata) {
+    if (store.has(it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    store.set(it, metadata);
+    return metadata;
+  };
+  get = function get(it) {
+    return store.get(it) || {};
+  };
+  has = function has(it) {
+    return store.has(it);
+  };
+} else {
+  var STATE = sharedKey('state');
+  hiddenKeys[STATE] = true;
+  set = function set(it, metadata) {
+    if (hasOwn(it, STATE)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    createNonEnumerableProperty(it, STATE, metadata);
+    return metadata;
+  };
+  get = function get(it) {
+    return hasOwn(it, STATE) ? it[STATE] : {};
+  };
+  has = function has(it) {
+    return hasOwn(it, STATE);
+  };
+}
+module.exports = {
+  set: set,
+  get: get,
+  has: has,
+  enforce: enforce,
+  getterFor: getterFor
+};
+
+/***/ }),
+
+/***/ 5164:
+/***/ (function(module) {
+
+"use strict";
+
+
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var documentAll = (typeof document === "undefined" ? "undefined" : _typeof(document)) == 'object' && document.all;
+
+// `IsCallable` abstract operation
+// https://tc39.es/ecma262/#sec-iscallable
+// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
+module.exports = typeof documentAll == 'undefined' && documentAll !== undefined ? function (argument) {
+  return typeof argument == 'function' || argument === documentAll;
+} : function (argument) {
+  return typeof argument == 'function';
+};
+
+/***/ }),
+
+/***/ 4857:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(3634);
+var isCallable = __webpack_require__(5164);
+var replacement = /#|\.prototype\./;
+var isForced = function isForced(feature, detection) {
+  var value = data[normalize(feature)];
+  return value === POLYFILL ? true : value === NATIVE ? false : isCallable(detection) ? fails(detection) : !!detection;
+};
+var normalize = isForced.normalize = function (string) {
+  return String(string).replace(replacement, '.').toLowerCase();
+};
+var data = isForced.data = {};
+var NATIVE = isForced.NATIVE = 'N';
+var POLYFILL = isForced.POLYFILL = 'P';
+module.exports = isForced;
+
+/***/ }),
+
+/***/ 4350:
+/***/ (function(module) {
+
+"use strict";
+
+
+// we can't use just `it == null` since of `document.all` special case
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
+module.exports = function (it) {
+  return it === null || it === undefined;
+};
+
+/***/ }),
+
+/***/ 5343:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var isCallable = __webpack_require__(5164);
+module.exports = function (it) {
+  return _typeof(it) == 'object' ? it !== null : isCallable(it);
+};
+
+/***/ }),
+
+/***/ 2358:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = false;
+
+/***/ }),
+
+/***/ 5648:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var getBuiltIn = __webpack_require__(148);
+var isCallable = __webpack_require__(5164);
+var isPrototypeOf = __webpack_require__(6466);
+var USE_SYMBOL_AS_UID = __webpack_require__(2865);
+var $Object = Object;
+module.exports = USE_SYMBOL_AS_UID ? function (it) {
+  return _typeof(it) == 'symbol';
+} : function (it) {
+  var $Symbol = getBuiltIn('Symbol');
+  return isCallable($Symbol) && isPrototypeOf($Symbol.prototype, $Object(it));
+};
+
+/***/ }),
+
+/***/ 8765:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toLength = __webpack_require__(1995);
+
+// `LengthOfArrayLike` abstract operation
+// https://tc39.es/ecma262/#sec-lengthofarraylike
+module.exports = function (obj) {
+  return toLength(obj.length);
+};
+
+/***/ }),
+
+/***/ 6514:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var fails = __webpack_require__(3634);
+var isCallable = __webpack_require__(5164);
+var hasOwn = __webpack_require__(2770);
+var DESCRIPTORS = __webpack_require__(4797);
+var CONFIGURABLE_FUNCTION_NAME = (__webpack_require__(9071).CONFIGURABLE);
+var inspectSource = __webpack_require__(9413);
+var InternalStateModule = __webpack_require__(6814);
+var enforceInternalState = InternalStateModule.enforce;
+var getInternalState = InternalStateModule.get;
+var $String = String;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+var stringSlice = uncurryThis(''.slice);
+var replace = uncurryThis(''.replace);
+var join = uncurryThis([].join);
+var CONFIGURABLE_LENGTH = DESCRIPTORS && !fails(function () {
+  return defineProperty(function () {/* empty */}, 'length', {
+    value: 8
+  }).length !== 8;
+});
+var TEMPLATE = String(String).split('String');
+var makeBuiltIn = module.exports = function (value, name, options) {
+  if (stringSlice($String(name), 0, 7) === 'Symbol(') {
+    name = '[' + replace($String(name), /^Symbol\(([^)]*)\).*$/, '$1') + ']';
+  }
+  if (options && options.getter) name = 'get ' + name;
+  if (options && options.setter) name = 'set ' + name;
+  if (!hasOwn(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+    if (DESCRIPTORS) defineProperty(value, 'name', {
+      value: name,
+      configurable: true
+    });else value.name = name;
+  }
+  if (CONFIGURABLE_LENGTH && options && hasOwn(options, 'arity') && value.length !== options.arity) {
+    defineProperty(value, 'length', {
+      value: options.arity
+    });
+  }
+  try {
+    if (options && hasOwn(options, 'constructor') && options.constructor) {
+      if (DESCRIPTORS) defineProperty(value, 'prototype', {
+        writable: false
+      });
+      // in V8 ~ Chrome 53, prototypes of some methods, like `Array.prototype.values`, are non-writable
+    } else if (value.prototype) value.prototype = undefined;
+  } catch (error) {/* empty */}
+  var state = enforceInternalState(value);
+  if (!hasOwn(state, 'source')) {
+    state.source = join(TEMPLATE, typeof name == 'string' ? name : '');
+  }
+  return value;
+};
+
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+// eslint-disable-next-line no-extend-native -- required
+Function.prototype.toString = makeBuiltIn(function toString() {
+  return isCallable(this) && getInternalState(this).source || inspectSource(this);
+}, 'toString');
+
+/***/ }),
+
+/***/ 4433:
+/***/ (function(module) {
+
+"use strict";
+
+
+var ceil = Math.ceil;
+var floor = Math.floor;
+
+// `Math.trunc` method
+// https://tc39.es/ecma262/#sec-math.trunc
+// eslint-disable-next-line es/no-math-trunc -- safe
+module.exports = Math.trunc || function trunc(x) {
+  var n = +x;
+  return (n > 0 ? floor : ceil)(n);
+};
+
+/***/ }),
+
+/***/ 8192:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var uncurryThis = __webpack_require__(7889);
+var call = __webpack_require__(3736);
+var fails = __webpack_require__(3634);
+var objectKeys = __webpack_require__(1185);
+var getOwnPropertySymbolsModule = __webpack_require__(7260);
+var propertyIsEnumerableModule = __webpack_require__(128);
+var toObject = __webpack_require__(9452);
+var IndexedObject = __webpack_require__(4384);
+
+// eslint-disable-next-line es/no-object-assign -- safe
+var $assign = Object.assign;
+// eslint-disable-next-line es/no-object-defineproperty -- required for testing
+var defineProperty = Object.defineProperty;
+var concat = uncurryThis([].concat);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+module.exports = !$assign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (DESCRIPTORS && $assign({
+    b: 1
+  }, $assign(defineProperty({}, 'a', {
+    enumerable: true,
+    get: function get() {
+      defineProperty(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), {
+    b: 2
+  })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line es/no-symbol -- safe
+  var symbol = Symbol('assign detection');
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) {
+    B[chr] = chr;
+  });
+  return $assign({}, A)[symbol] !== 7 || objectKeys($assign({}, B)).join('') !== alphabet;
+}) ? function assign(target, source) {
+  // eslint-disable-line no-unused-vars -- required for `.length`
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  var propertyIsEnumerable = propertyIsEnumerableModule.f;
+  while (argumentsLength > index) {
+    var S = IndexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? concat(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || call(propertyIsEnumerable, S, key)) T[key] = S[key];
+    }
+  }
+  return T;
+} : $assign;
+
+/***/ }),
+
+/***/ 754:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var IE8_DOM_DEFINE = __webpack_require__(6182);
+var V8_PROTOTYPE_DEFINE_BUG = __webpack_require__(1363);
+var anObject = __webpack_require__(5546);
+var toPropertyKey = __webpack_require__(8);
+var $TypeError = TypeError;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $defineProperty = Object.defineProperty;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var ENUMERABLE = 'enumerable';
+var CONFIGURABLE = 'configurable';
+var WRITABLE = 'writable';
+
+// `Object.defineProperty` method
+// https://tc39.es/ecma262/#sec-object.defineproperty
+exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
+    var current = $getOwnPropertyDescriptor(O, P);
+    if (current && current[WRITABLE]) {
+      O[P] = Attributes.value;
+      Attributes = {
+        configurable: CONFIGURABLE in Attributes ? Attributes[CONFIGURABLE] : current[CONFIGURABLE],
+        enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
+        writable: false
+      };
+    }
+  }
+  return $defineProperty(O, P, Attributes);
+} : $defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return $defineProperty(O, P, Attributes);
+  } catch (error) {/* empty */}
+  if ('get' in Attributes || 'set' in Attributes) throw new $TypeError('Accessors not supported');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+/***/ }),
+
+/***/ 3880:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var call = __webpack_require__(3736);
+var propertyIsEnumerableModule = __webpack_require__(128);
+var createPropertyDescriptor = __webpack_require__(19);
+var toIndexedObject = __webpack_require__(1212);
+var toPropertyKey = __webpack_require__(8);
+var hasOwn = __webpack_require__(2770);
+var IE8_DOM_DEFINE = __webpack_require__(6182);
+
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+  O = toIndexedObject(O);
+  P = toPropertyKey(P);
+  if (IE8_DOM_DEFINE) try {
+    return $getOwnPropertyDescriptor(O, P);
+  } catch (error) {/* empty */}
+  if (hasOwn(O, P)) return createPropertyDescriptor(!call(propertyIsEnumerableModule.f, O, P), O[P]);
+};
+
+/***/ }),
+
+/***/ 125:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(3763);
+var enumBugKeys = __webpack_require__(3690);
+var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+
+// `Object.getOwnPropertyNames` method
+// https://tc39.es/ecma262/#sec-object.getownpropertynames
+// eslint-disable-next-line es/no-object-getownpropertynames -- safe
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return internalObjectKeys(O, hiddenKeys);
+};
+
+/***/ }),
+
+/***/ 7260:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ }),
+
+/***/ 6466:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+module.exports = uncurryThis({}.isPrototypeOf);
+
+/***/ }),
+
+/***/ 3763:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var hasOwn = __webpack_require__(2770);
+var toIndexedObject = __webpack_require__(1212);
+var indexOf = (__webpack_require__(5282).indexOf);
+var hiddenKeys = __webpack_require__(7076);
+var push = uncurryThis([].push);
+module.exports = function (object, names) {
+  var O = toIndexedObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (hasOwn(O, key = names[i++])) {
+    ~indexOf(result, key) || push(result, key);
+  }
+  return result;
+};
+
+/***/ }),
+
+/***/ 1185:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(3763);
+var enumBugKeys = __webpack_require__(3690);
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+// eslint-disable-next-line es/no-object-keys -- safe
+module.exports = Object.keys || function keys(O) {
+  return internalObjectKeys(O, enumBugKeys);
+};
+
+/***/ }),
+
+/***/ 128:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+var $propertyIsEnumerable = {}.propertyIsEnumerable;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// Nashorn ~ JDK8 bug
+var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({
+  1: 2
+}, 1);
+
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
+  var descriptor = getOwnPropertyDescriptor(this, V);
+  return !!descriptor && descriptor.enumerable;
+} : $propertyIsEnumerable;
+
+/***/ }),
+
+/***/ 8367:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var call = __webpack_require__(3736);
+var isCallable = __webpack_require__(5164);
+var isObject = __webpack_require__(5343);
+var $TypeError = TypeError;
+
+// `OrdinaryToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive
+module.exports = function (input, pref) {
+  var fn, val;
+  if (pref === 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
+  if (isCallable(fn = input.valueOf) && !isObject(val = call(fn, input))) return val;
+  if (pref !== 'string' && isCallable(fn = input.toString) && !isObject(val = call(fn, input))) return val;
+  throw new $TypeError("Can't convert object to primitive value");
+};
+
+/***/ }),
+
+/***/ 6608:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var getBuiltIn = __webpack_require__(148);
+var uncurryThis = __webpack_require__(7889);
+var getOwnPropertyNamesModule = __webpack_require__(125);
+var getOwnPropertySymbolsModule = __webpack_require__(7260);
+var anObject = __webpack_require__(5546);
+var concat = uncurryThis([].concat);
+
+// all object keys, includes non-enumerable and symbols
+module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
+  var keys = getOwnPropertyNamesModule.f(anObject(it));
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
+};
+
+/***/ }),
+
+/***/ 7520:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+module.exports = globalThis;
+
+/***/ }),
+
+/***/ 1365:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isNullOrUndefined = __webpack_require__(4350);
+var $TypeError = TypeError;
+
+// `RequireObjectCoercible` abstract operation
+// https://tc39.es/ecma262/#sec-requireobjectcoercible
+module.exports = function (it) {
+  if (isNullOrUndefined(it)) throw new $TypeError("Can't call method on " + it);
+  return it;
+};
+
+/***/ }),
+
+/***/ 56:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var shared = __webpack_require__(1930);
+var uid = __webpack_require__(6177);
+var keys = shared('keys');
+module.exports = function (key) {
+  return keys[key] || (keys[key] = uid(key));
+};
+
+/***/ }),
+
+/***/ 3094:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var IS_PURE = __webpack_require__(2358);
+var globalThis = __webpack_require__(8029);
+var defineGlobalProperty = __webpack_require__(9998);
+var SHARED = '__core-js_shared__';
+var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
+(store.versions || (store.versions = [])).push({
+  version: '3.38.1',
+  mode: IS_PURE ? 'pure' : 'global',
+  copyright: '© 2014-2024 Denis Pushkarev (zloirock.ru)',
+  license: 'https://github.com/zloirock/core-js/blob/v3.38.1/LICENSE',
+  source: 'https://github.com/zloirock/core-js'
+});
+
+/***/ }),
+
+/***/ 1930:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var store = __webpack_require__(3094);
+module.exports = function (key, value) {
+  return store[key] || (store[key] = value || {});
+};
+
+/***/ }),
+
+/***/ 6576:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable es/no-symbol -- required for testing */
+var V8_VERSION = __webpack_require__(2944);
+var fails = __webpack_require__(3634);
+var globalThis = __webpack_require__(8029);
+var $String = globalThis.String;
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
+  var symbol = Symbol('symbol detection');
+  // Chrome 38 Symbol has incorrect toString conversion
+  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
+  // of course, fail.
+  return !$String(symbol) || !(Object(symbol) instanceof Symbol) ||
+  // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+  !Symbol.sham && V8_VERSION && V8_VERSION < 41;
+});
+
+/***/ }),
+
+/***/ 9603:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIntegerOrInfinity = __webpack_require__(3784);
+var max = Math.max;
+var min = Math.min;
+
+// Helper for a popular repeating case of the spec:
+// Let integer be ? ToInteger(index).
+// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
+module.exports = function (index, length) {
+  var integer = toIntegerOrInfinity(index);
+  return integer < 0 ? max(integer + length, 0) : min(integer, length);
+};
+
+/***/ }),
+
+/***/ 1212:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+// toObject with fallback for non-array-like ES3 strings
+var IndexedObject = __webpack_require__(4384);
+var requireObjectCoercible = __webpack_require__(1365);
+module.exports = function (it) {
+  return IndexedObject(requireObjectCoercible(it));
+};
+
+/***/ }),
+
+/***/ 3784:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var trunc = __webpack_require__(4433);
+
+// `ToIntegerOrInfinity` abstract operation
+// https://tc39.es/ecma262/#sec-tointegerorinfinity
+module.exports = function (argument) {
+  var number = +argument;
+  // eslint-disable-next-line no-self-compare -- NaN check
+  return number !== number || number === 0 ? 0 : trunc(number);
+};
+
+/***/ }),
+
+/***/ 1995:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toIntegerOrInfinity = __webpack_require__(3784);
+var min = Math.min;
+
+// `ToLength` abstract operation
+// https://tc39.es/ecma262/#sec-tolength
+module.exports = function (argument) {
+  var len = toIntegerOrInfinity(argument);
+  return len > 0 ? min(len, 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
+
+/***/ }),
+
+/***/ 9452:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var requireObjectCoercible = __webpack_require__(1365);
+var $Object = Object;
+
+// `ToObject` abstract operation
+// https://tc39.es/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return $Object(requireObjectCoercible(argument));
+};
+
+/***/ }),
+
+/***/ 7762:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var call = __webpack_require__(3736);
+var isObject = __webpack_require__(5343);
+var isSymbol = __webpack_require__(5648);
+var getMethod = __webpack_require__(4897);
+var ordinaryToPrimitive = __webpack_require__(8367);
+var wellKnownSymbol = __webpack_require__(1642);
+var $TypeError = TypeError;
+var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+
+// `ToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-toprimitive
+module.exports = function (input, pref) {
+  if (!isObject(input) || isSymbol(input)) return input;
+  var exoticToPrim = getMethod(input, TO_PRIMITIVE);
+  var result;
+  if (exoticToPrim) {
+    if (pref === undefined) pref = 'default';
+    result = call(exoticToPrim, input, pref);
+    if (!isObject(result) || isSymbol(result)) return result;
+    throw new $TypeError("Can't convert object to primitive value");
+  }
+  if (pref === undefined) pref = 'number';
+  return ordinaryToPrimitive(input, pref);
+};
+
+/***/ }),
+
+/***/ 8:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toPrimitive = __webpack_require__(7762);
+var isSymbol = __webpack_require__(5648);
+
+// `ToPropertyKey` abstract operation
+// https://tc39.es/ecma262/#sec-topropertykey
+module.exports = function (argument) {
+  var key = toPrimitive(argument, 'string');
+  return isSymbol(key) ? key : key + '';
+};
+
+/***/ }),
+
+/***/ 6390:
+/***/ (function(module) {
+
+"use strict";
+
+
+var $String = String;
+module.exports = function (argument) {
+  try {
+    return $String(argument);
+  } catch (error) {
+    return 'Object';
+  }
+};
+
+/***/ }),
+
+/***/ 6177:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var id = 0;
+var postfix = Math.random();
+var toString = uncurryThis(1.0.toString);
+module.exports = function (key) {
+  return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
+};
+
+/***/ }),
+
+/***/ 2865:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable es/no-symbol -- required for testing */
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var NATIVE_SYMBOL = __webpack_require__(6576);
+module.exports = NATIVE_SYMBOL && !Symbol.sham && _typeof(Symbol.iterator) == 'symbol';
+
+/***/ }),
+
+/***/ 1363:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var fails = __webpack_require__(3634);
+
+// V8 ~ Chrome 36-
+// https://bugs.chromium.org/p/v8/issues/detail?id=3334
+module.exports = DESCRIPTORS && fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty(function () {/* empty */}, 'prototype', {
+    value: 42,
+    writable: false
+  }).prototype !== 42;
+});
+
+/***/ }),
+
+/***/ 6185:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var isCallable = __webpack_require__(5164);
+var WeakMap = globalThis.WeakMap;
+module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
+
+/***/ }),
+
+/***/ 2860:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var path = __webpack_require__(7520);
+var hasOwn = __webpack_require__(2770);
+var wrappedWellKnownSymbolModule = __webpack_require__(8490);
+var defineProperty = (__webpack_require__(754).f);
+module.exports = function (NAME) {
+  var _Symbol = path.Symbol || (path.Symbol = {});
+  if (!hasOwn(_Symbol, NAME)) defineProperty(_Symbol, NAME, {
+    value: wrappedWellKnownSymbolModule.f(NAME)
+  });
+};
+
+/***/ }),
+
+/***/ 8490:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var wellKnownSymbol = __webpack_require__(1642);
+exports.f = wellKnownSymbol;
+
+/***/ }),
+
+/***/ 1642:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var shared = __webpack_require__(1930);
+var hasOwn = __webpack_require__(2770);
+var uid = __webpack_require__(6177);
+var NATIVE_SYMBOL = __webpack_require__(6576);
+var USE_SYMBOL_AS_UID = __webpack_require__(2865);
+var _Symbol = globalThis.Symbol;
+var WellKnownSymbolsStore = shared('wks');
+var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
+module.exports = function (name) {
+  if (!hasOwn(WellKnownSymbolsStore, name)) {
+    WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(_Symbol, name) ? _Symbol[name] : createWellKnownSymbol('Symbol.' + name);
+  }
+  return WellKnownSymbolsStore[name];
+};
+
+/***/ }),
+
+/***/ 6186:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var $ = __webpack_require__(3485);
+var assign = __webpack_require__(8192);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+// eslint-disable-next-line es/no-object-assign -- required for testing
+$({
+  target: 'Object',
+  stat: true,
+  arity: 2,
+  forced: Object.assign !== assign
+}, {
+  assign: assign
+});
+
+/***/ }),
+
+/***/ 9319:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var defineWellKnownSymbol = __webpack_require__(2860);
+
+// `Symbol.asyncIterator` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.asynciterator
+defineWellKnownSymbol('asyncIterator');
+
+/***/ }),
+
+/***/ 3725:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(1606);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 756:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(379);
+module.exports = parent;
 
 /***/ })
 
@@ -16598,19 +19738,27 @@ SuperMap.Util = namespace_objectSpread(namespace_objectSpread({}, SuperMap.Util)
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/amd options */
+/******/ 	!function() {
+/******/ 		__webpack_require__.amdO = {};
+/******/ 	}();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -16652,14 +19800,23 @@ SuperMap.Util = namespace_objectSpread(namespace_objectSpread({}, SuperMap.Util)
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	!function() {
+/******/ 		__webpack_require__.nmd = function(module) {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	}();
+/******/ 	
 /************************************************************************/
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	__webpack_require__(6396);
-/******/ 	__webpack_require__(3393);
-/******/ 	var __webpack_exports__ = __webpack_require__(4794);
+/******/ 	__webpack_require__(5641);
+/******/ 	__webpack_require__(3416);
+/******/ 	var __webpack_exports__ = __webpack_require__(4257);
 /******/ 	
 /******/ })()
 ;
