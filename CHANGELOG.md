@@ -1,3 +1,39 @@
+# 11.1.2 #
+
+## Fixed
+
+### for Leaflet
+- 修复 [L.supermap.DataServiceQueryView](https://iclient.supermap.io/11.1.2/docs/leaflet/DataServiceQueryView.html) 设置 `onEachFeature` 参数不生效的问题
+- 修复 [L.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/11.1.2/docs/leaflet/DatasetThiessenAnalystParameters.html)，传入 [L.Polygon](https://leafletjs.com/reference.html#polygon) | [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 `clipRegion` 报错的问题
+- 修复 [L.supermap.ImageMapLayer](https://iclient.supermap.io/11.1.2/docs/leaflet/ImageMapLayer.html) 与 [L.supermap.TiledMapLayer](https://iclient.supermap.io/11.1.2/docs/leaflet/TiledMapLayer.html) 叠加时， 缩放、平移出现叠加顺序错误的问题
+- 修复 [L.supermap.EchartsLayer](https://iclient.supermap.io/11.1.2/docs/leaflet/EchartsLayer.html) 与 [L.supermap.RangeThemeLayer](https://iclient.supermap.io/11.1.2/docs/leaflet/RangeThemeLayer.html) 叠加时的顺序不正确的问题
+- 优化知识图谱加载动画效果
+
+### for OpenLayers
+- 修复 [ol.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/11.1.2/docs/openlayers/DatasetThiessenAnalystParameters.html)，传入 [ol.geom.Polygon](https://openlayers.org/en/v6.14.1/apidoc/module-ol_geom_Polygon-Polygon.html) | [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 `clipRegion` 报错的问题
+- 修复打印服务接口响应正常，但是提示打印失败的问题
+- 优化知识图谱加载动画效果
+
+### for MapboxGL
+- 修复 [mapboxgl.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/11.1.2/docs/mapboxgl/DatasetThiessenAnalystParameters.html)，传入 [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 `clipRegion` 报错的问题
+- 优化知识图谱加载动画效果
+- 修复 [mapboxgl.supermap.GraticuleLayer](https://iclient.supermap.io/11.1.2/docs/mapboxgl/GraticuleLayer.html) 初始化设置 `visible` 参数不生效的问题
+
+### for MaplibreGL
+- 修复 [maplibregl.supermap.DatasetThiessenAnalystParameters](https://iclient.supermap.io/11.1.2/docs/maplibregl/DatasetThiessenAnalystParameters.html)，传入 [GeoJSONObject](https://geojson.org/) 格式的裁剪区域参数 `clipRegion` 报错的问题
+- 修复使用 maplibregl-enhance 时，地图初始级别小于 3 级时 `flyTo` 定位错误的问题
+- 优化知识图谱加载动画效果
+
+### Component
+- vue-iclient-mapboxgl
+    - 修复指标组件([sm-indicator](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/common/indicator.html))配置小数位数参数无效的问题
+    - 优化地图组件([sm-web-map](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/web-map/map.html))显示半透明背景色文本标签、数字文本标签、英文字符文本标签的显示效果。
+    - 修复地图组件([sm-web-map](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/web-map/map.html))动态标记图层无法通过图层列表控制显隐的问题
+    - 修复地图倾斜时比例尺组件([sm-scale](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/control/scale.html))比例尺值不对的问题
+    - 修复数据上图制作的矢量图层配置了定时刷新，地图组件([sm-web-map](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/web-map/map.html))不会按时刷新的问题
+    - 修复天地图POI 搜索组件([sm-tdt-search](https://iclient.supermap.io/11.1.2/web/apis/vue/zh/api/tdt/tdt-search.html))查询失败的问题
+
+
 # 11.1.1 #
 
 ## 新特性
