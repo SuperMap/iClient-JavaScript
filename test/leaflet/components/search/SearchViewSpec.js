@@ -192,4 +192,16 @@ describe('leaflet_search_SearchView', () => {
         document.getElementsByClassName('component-citytabpag__content')[0].childNodes[0].click();
 
     })
+
+    it('clearSearchResult', (done) => {
+      poiSearch._selectMarkerFeature = {};
+      poiSearch.isSearchLayer = true;
+      poiSearch._selectFeature = {
+        addTo: () => {}
+      };
+      const spy = spyOn(poiSearch._selectFeature, 'addTo');
+      poiSearch.clearSearchResult();
+      expect(spy).toHaveBeenCalled();
+      done();
+    })
 })
