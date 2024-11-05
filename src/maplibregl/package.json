@@ -1,7 +1,7 @@
 {
   "name": "@supermapgis/iclient-maplibregl",
   "description": "",
-  "version": "11.3.0-dev",
+  "version": "11.3.0",
   "keywords": [
     "SuperMap",
     "maplibregl"
@@ -20,7 +20,7 @@
     "mapv": "2.0.62",
     "three": "0.150.1",
     "canvg": "3.0.10",
-    "@supermapgis/iclient-common": "11.3.0-dev",
+    "@supermapgis/iclient-common": "11.3.0",
     "rbush": "^2.0.2"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@supermapgis/iclient-classic",
   "description": "",
-  "version": "11.3.0-dev",
+  "version": "11.3.0",
   "keywords": [
     "SuperMap"
   ],
@@ -15,6 +15,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "mapv": "2.0.62",
-    "@supermapgis/iclient-common": "11.3.0-dev"
+    "@supermapgis/iclient-common": "11.3.0"
   }
 }

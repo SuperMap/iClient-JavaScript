@@ -1,7 +1,7 @@
 {
   "name": "@supermapgis/iclient-common",
   "description": "",
-  "version": "11.3.0-dev",
+  "version": "11.3.0",
   "keywords": [
     "SuperMap"
   ],
