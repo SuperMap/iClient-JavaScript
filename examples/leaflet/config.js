@@ -1513,16 +1513,16 @@ var exampleConfig = {
           fileName: "snapAndModify"
         }]
       },
-      "changeTileVersion": {
-        name: "缓存切换",
-        name_en: "Tile version switch",
-        content: [{
-          name: "多版本缓存切换控件",
-          name_en: "tile version switch control",
-          thumbnail: "l_changeTileVersion.png",
-          fileName: "changeTileVersion"
-        }]
-      },
+      // "changeTileVersion": {
+      //   name: "缓存切换",
+      //   name_en: "Tile version switch",
+      //   content: [{
+      //     name: "多版本缓存切换控件",
+      //     name_en: "tile version switch control",
+      //     thumbnail: "l_changeTileVersion.png",
+      //     fileName: "changeTileVersion"
+      //   }]
+      // },
       "leafletOfficialControl": {
         name: "基础控件",
         name_en: "Base control",

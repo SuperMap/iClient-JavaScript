@@ -1338,16 +1338,16 @@ var exampleConfig = {
         name: "控件",
         name_en: "Control",
         content: {
-            "changeTileVersion": {
-                name: "缓存切换",
-                name_en: "Tile version switch",
-                content: [{
-                    name: "多版本缓存切换控件",
-                    name_en: "tile version switch control",
-                    thumbnail: "ol_changeTileVersion.png",
-                    fileName: "changeTileVersion"
-                }]
-            },
+            // "changeTileVersion": {
+            //     name: "缓存切换",
+            //     name_en: "Tile version switch",
+            //     content: [{
+            //         name: "多版本缓存切换控件",
+            //         name_en: "tile version switch control",
+            //         thumbnail: "ol_changeTileVersion.png",
+            //         fileName: "changeTileVersion"
+            //     }]
+            // },
             "openlayersOfficialControl": {
                 name: "基础控件",
                 name_en: "Base control",
