@@ -445,7 +445,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
             layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs), 0);
             layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs) + 0.0000001);
           }
-          console.log('_initOverlayLayers')
 
           if (type === 'tile') {
             if (layer.autoUpdateTime) {
