@@ -463,6 +463,14 @@ var exampleConfig = {
             localIgnore: true,
             thumbnail: 'components_video_plus_vue.png',
             fileName: 'components_video_plus_vue'
+          },
+          {
+            name: '属性面板组件',
+            name_en: 'Attribute Panel Component',
+            version: '11.3.0',
+            localIgnore: true,
+            thumbnail: 'components_attribute_panel_vue.png',
+            fileName: 'components_attribute_panel_vue'
           }
         ]
       },

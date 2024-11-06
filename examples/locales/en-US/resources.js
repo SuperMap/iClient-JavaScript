@@ -681,6 +681,7 @@ window.examplesResources = {
         "title_componentsIdentify_Vue": 'Identify component(Vue)',
         "title_componentsPopup_Vue": 'Popup(Vue)',
         "title_componentsCoordinateConversion_Vue":"Coordinate Conversion(Vue)",
+        "title_componentsAttributePanel_Vue":"Attribute Panel component",
         "title_attributes_Vue":"Attributes(Vue)",
         "title_layerColor_Vue":"LayerColor(Vue)",
         "title_componentsLayerManager_vue": 'LayerManager component(Vue)',

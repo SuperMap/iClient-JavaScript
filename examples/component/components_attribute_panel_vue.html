@@ -1,0 +1,142 @@
+<!--********************************************************************
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* vue-iclient (https://github.com/SuperMap/vue-iclient)
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="resources.title_componentsAttributePanel_Vue"></title>
+  <script type="text/javascript" include="vue" src="../js/include-web.js"></script>
+  <script include="iclient-mapboxgl-vue,mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <style>
+    #main {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sm-component-table-popup__table.sm-component-table-wrapper .sm-component-table-content {
+      max-height: 400px;
+      padding: 10px;
+    }
+
+    .panel-wrapper {
+      background: #fff;
+      box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 300px;
+      height: 400px;
+      border-radius: 4px;
+      z-index: 10000
+    }
+
+    .sm-component-table-placeholder {
+      border: none;
+    }
+
+  </style>
+</head>
+
+<body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+  <div id="main">
+    <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" @load="mapLoad">
+    </sm-web-map>
+    <div class="panel-wrapper">
+      <sm-attribute-panel :attributes="attrbiutes" :columns="tableColumns">
+      </sm-attribute-panel>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#main',
+      data() {
+        return {
+          attrbiutes: []
+        };
+      },
+      mounted() {
+        this.$message.info(resources.msg_clickLayerToPopup);
+      },
+      computed: {
+        tableColumns() {
+          return [{
+              dataIndex: 'attribute'
+            },
+            {
+              dataIndex: 'attributeValue'
+            }
+          ];
+        }
+      },
+      methods: {
+        mapLoad(obj) {
+          var vm = this;
+          vm.map = obj.map;
+          vm.map.on('click', function (e) {
+            var bbox = [
+              [e.point.x - 2, e.point.y - 2],
+              [e.point.x + 2, e.point.y + 2]
+            ];
+            var features = vm.map.queryRenderedFeatures(bbox);
+            if (features.length > 0) {
+              var matchFature = features[0];
+              vm.attrbiutes = Object.keys(matchFature.properties).map(function (prop) {
+                return {
+                  attribute: prop,
+                  attributeValue: matchFature.properties[prop]
+                }
+              });
+              vm.addHighlightLayer(matchFature);
+            } else {
+              vm.attrbiutes = [];
+              vm.removeHighlight();
+            }
+          });
+          vm.map.on('mousemove', '民航数据', function (e) {
+            vm.map.getCanvas().style.cursor = 'pointer';
+          });
+          vm.map.on('mouseout', '民航数据', function () {
+            vm.map.getCanvas().style.cursor = '';
+          })
+        },
+        addHighlightLayer(matchFature) {
+          this.removeHighlight();
+          var layer = matchFature.layer;
+          var properties = matchFature.properties;
+          var highlightLayer = Object.assign({}, layer, {
+            id: 'highlight',
+            type: 'circle',
+            paint: Object.assign({}, layer.paint, {
+              'circle-color': '#01ffff',
+              'circle-opacity': 0.6,
+              'circle-stroke-color': '#01ffff',
+              'circle-stroke-opacity': 1
+            }),
+            layout: Object.assign({}, {
+              visibility: 'visible'
+            }),
+            filter: ['all', ['==', 'index', properties.index]]
+          });
+          this.map.addLayer(highlightLayer);
+        },
+        removeHighlight() {
+          if (this.map.getLayer('highlight')) {
+            this.map.removeLayer('highlight');
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>

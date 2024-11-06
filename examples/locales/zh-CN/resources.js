@@ -649,6 +649,7 @@ window.examplesResources = {
         "title_componentsLayerManager_vue": '图层管理组件',
         "title_componentsTimeLine_Vue": "时间轴组件",
         "title_componentsCoordinateConversion_Vue":"坐标转换组件",
+        "title_componentsAttributePanel_Vue":"属性面板组件",
         "title_attributes_Vue":"属性表组件",
         "title_layerColor_Vue":"图层颜色组件",
         "title_componentsTimeLineSupermap_Vue": "超图大厦历史影像",
