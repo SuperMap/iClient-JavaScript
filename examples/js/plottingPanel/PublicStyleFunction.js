@@ -327,7 +327,7 @@ function fillGradientModeToString(fillGradientMode) {
     if (fillGradientMode === "NONE") {
         return resources.text_noGradient;
     } else if (fillGradientMode === "LINEAR") {
-        return resources.text_lineGradient;
+        return resources.text_linerGradient;
     } else if (fillGradientMode === "RADIAL") {
         return resources.text_radialGradient;
     } else {
@@ -337,7 +337,7 @@ function fillGradientModeToString(fillGradientMode) {
 function getFillGradientModeRows() {
     var rows = [];
     rows.push({ "value": "NONE", "text": resources.text_noGradient });
-    rows.push({ "value": "LINEAR", "text": resources.text_lineGradient });
+    rows.push({ "value": "LINEAR", "text": resources.text_linerGradient });
     rows.push({ "value": "RADIAL", "text": resources.text_radialGradient });
     return rows;
 }

@@ -344,7 +344,7 @@ function updateSelectFeature(updated, selectfeatures) {
                         if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
                             selectfeatures[i].route.applyTextStyle({ lineSymbolID: updated.value });
                         } else {
-                            if (selectFeatures[i].symbolType != 1 && selectfeatures[i].setDashLine != undefined) {
+                            if (selectFeatures[i].symbolType != 1 && selectFeatures[i].setDashLine != undefined) {
                                 selectfeatures[i].setDashLine([]);
                                 selectfeatures[i].setStyle({ lineSymbolID: 0 });
                             }
@@ -362,7 +362,7 @@ function updateSelectFeature(updated, selectfeatures) {
                                 }
                                 else if (parseInt(updated.value) == 8) {
                                     selectfeatures[i].setDashLine([0.14, 0.032]);
-                                } else if (parseInt(updated.value) == 0) {
+                                } else if (parseInt(updated.value) == 0 && selectfeatures[i].setDashLine != undefined) {
                                     selectfeatures[i].setDashLine([]);
                                 } else if (parseInt(updated.value) == 888) {
                                     selectfeatures[i].setDashLine([0]);
