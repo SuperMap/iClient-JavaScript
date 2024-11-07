@@ -664,6 +664,9 @@ export var SearchView = ComponentsViewBase.extend({
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
             !this.isSearchLayer && this.map.removeLayer(this.searchResultLayer);
+            this.searchResultLayer.eachLayer((layer) => {
+              layer.off('click');
+            });
             if (this._selectMarkerFeature) {
               this.map.removeLayer(this._selectMarkerFeature);
               this.isSearchLayer && this._selectFeature.addTo(this.map);
