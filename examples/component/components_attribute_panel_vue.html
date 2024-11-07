@@ -21,11 +21,6 @@
       height: 100%;
     }
 
-    .sm-component-table-popup__table.sm-component-table-wrapper .sm-component-table-content {
-      max-height: 400px;
-      padding: 10px;
-    }
-
     .panel-wrapper {
       background: #fff;
       box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
@@ -50,7 +45,7 @@
     <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" @load="mapLoad">
     </sm-web-map>
     <div class="panel-wrapper">
-      <sm-attribute-panel :attributes="attrbiutes" :columns="tableColumns">
+      <sm-attribute-panel :attributes="attrbiutes" :columns="tableColumns" :title="panelTitle">
       </sm-attribute-panel>
     </div>
   </div>
@@ -60,13 +55,17 @@
       el: '#main',
       data() {
         return {
-          attrbiutes: []
+          attrbiutes: [],
+          title: ''
         };
       },
       mounted() {
         this.$message.info(resources.msg_clickLayerToPopup);
       },
       computed: {
+        panelTitle() {
+          return this.title || resources.text_attributePanel
+        },
         tableColumns() {
           return [{
               dataIndex: 'attribute'
@@ -89,6 +88,7 @@
             var features = vm.map.queryRenderedFeatures(bbox);
             if (features.length > 0) {
               var matchFature = features[0];
+              vm.title = matchFature.layer.id;
               vm.attrbiutes = Object.keys(matchFature.properties).map(function (prop) {
                 return {
                   attribute: prop,
@@ -98,6 +98,7 @@
               vm.addHighlightLayer(matchFature);
             } else {
               vm.attrbiutes = [];
+              vm.title = ''
               vm.removeHighlight();
             }
           });
