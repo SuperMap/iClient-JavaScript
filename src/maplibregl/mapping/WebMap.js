@@ -13,7 +13,7 @@ import MapManager from './webmap/MapManager';
 
 /**
   * @class WebMap
-  * @version 11.2.1
+  * @version 11.3.0
   * @extends {WebMapBase}
   * @category  iPortal/Online Resources Map
   * @classdesc 对接 iPortal/Online 地图类。
