@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { getLayerInfosFromCatalogs, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
+import { getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
 
 const LEGEND_RENDER_TYPE = {
@@ -710,9 +710,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       if (!renderer) {
         continue;
       }
-      const layerFromMapInfo = this._mapInfo.layers.find((item) => {
-        return item.id === layer.id;
-      });
+      const layerFromMapInfo = getMainLayerFromCatalog(layer.layersContent, layer.id, this._mapInfo.layers);
       let themeField;
       const sourceInfo = this._mapInfo.sources[layerFromMapInfo.source];
       if ('clusterField' in sourceInfo) {

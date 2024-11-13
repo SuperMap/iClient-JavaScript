@@ -3238,3 +3238,167 @@ var msProjectINfo_chart = JSON.stringify({
   "status": null,
   "favoriteCount": 0
 })
+
+var mapstudioWebMap_separate_layerCatalogId = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        parts: ['北京轨道交通分布.geojson'],
+        id: 'layer_北京轨道交通分布.geojson',
+        title: '北京轨道交通分布.geojson',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['北京住宅小区分布.geojson'],
+        id: 'layer_北京住宅小区分布.geojson',
+        title: '北京住宅小区分布.geojson',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: 'ms-background',
+        title: '纯色底图',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    ms_1731639917_1731394669710_25: {
+      tiles: [
+        'ttp://localhost:8190/iportal/web/datas/1731639917/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%E5%B0%8F%E5%8C%BA%E5%90%8D%22%2C%22SmGeometrySize%22%2C%22%E5%B9%B4%E4%BB%A3%22%2C%22%E5%8D%95%E4%BB%B7%22%2C%22%E6%A5%BC%E5%B1%82%22%2C%22SmID%22%2C%22%E6%80%BB%E4%BB%B7%22%2C%22SmUserID%22%2C%22%E6%88%B7%E5%9E%8B%22%2C%22%E6%9C%9D%E5%90%91%22%2C%22%E5%9C%B0%E5%9D%80%22%2C%22SmY%22%2C%22SmX%22%2C%22SmLibTileID%22%2C%22%E9%9D%A2%E7%A7%AF%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [115.89763001613301, 39.40605999999998, 117.48732001635403, 40.65001000642029],
+      type: 'vector'
+    },
+    ms_318218382_1731394700155_28: {
+      tiles: [
+        'ttp://localhost:8190/iportal/web/datas/318218382/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [116.1021443681324, 39.67036946821773, 116.6890734187427, 40.206933499104196],
+      type: 'vector'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [116.3956088934375, 39.93917738600356],
+  zoom: 9.986952543786419,
+  glyphs: {},
+  version: '3.2.2',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '无标题地图',
+  viewExtent: [115.84407357731546, 39.702628586353086, 116.94714420955526, 40.17491130005204],
+  layers: [
+    {
+      paint: {
+        'background-color': '#242424'
+      },
+      id: 'ms-background',
+      type: 'background'
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'circle-color': '#EE4D5A',
+        'circle-opacity': 0.9,
+        'circle-translate-anchor': 'map',
+        'circle-radius': 4,
+        'circle-translate': [0, 0]
+      },
+      id: '北京住宅小区分布.geojson',
+      source: 'ms_1731639917_1731394669710_25',
+      'source-layer': '1731639917$geometry',
+      type: 'circle',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'line-width': 2,
+        'line-color': '#4CC8A3'
+      },
+      id: '北京轨道交通分布.geojson',
+      source: 'ms_318218382_1731394700155_28',
+      'source-layer': '318218382$geometry',
+      type: 'line',
+      minzoom: 0
+    }
+  ],
+  sprite: 'ttp://localhost:8190/iportal/web/maps/1090355953/sprites/sprite',
+  pitch: 0,
+  minzoom: 0
+});
+
+var msProjectINfo_separate_layerCatalogId = JSON.stringify({
+  extent: {
+    top: 40.17491130005204,
+    left: 115.84407357731546,
+    bottom: 39.702628586353086,
+    leftBottom: {
+      x: 115.84407357731546,
+      y: 39.702628586353086
+    },
+    right: 116.94714420955526,
+    rightTop: {
+      x: 116.94714420955526,
+      y: 40.17491130005204
+    }
+  },
+  controls: null,
+  extentString:
+    '{"top":40.17491130005204,"left":115.84407357731546,"bottom":39.702628586353086,"leftBottom":{"x":115.84407357731546,"y":39.702628586353086},"right":116.94714420955526,"rightTop":{"x":116.94714420955526,"y":40.17491130005204}}',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: '无标题地图',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo:
+    '{"images":"ttp://localhost:8190/iportal/web/maps/1090355953/sprites/sprite","catalogs":[{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"styleRenderMode":"mapboxgl","symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"layout":{"visibility":"visible"},"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineGapWidth":{"type":"simple","value":0},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1731394700150_26","bounds":[116.1021443681324,39.67036946821773,116.6890734187427,40.206933499104196],"id":"layer_北京轨道交通分布.geojson","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京轨道交通分布.geojson"},"title":"北京轨道交通分布.geojson","layerSourceType":"Data","zoomRange":[0,24],"layersContent":["北京轨道交通分布.geojson"]},{"visualization":{"renderer":[{"symbolsContent":{"type":"simple","value":{"symbolId":"circle","style":{"layout":{"icon-image":"circle"}}}},"size":{"type":"simple","value":8},"color":{"type":"simple","value":"#EE4D5A"},"translateAnchor":{"type":"simple","value":"map"},"opacity":{"type":"simple","value":0.9},"translate":{"type":"simple","value":[0,0]},"styleRenderMode":"mapboxgl"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1731394669706_23","bounds":[115.89763001613301,39.40605999999998,117.48732001635403,40.65001000642029],"id":"layer_北京住宅小区分布.geojson","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"小区名","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"年代","type":"FIELD"},{"fieldName":"单价","type":"FIELD"},{"fieldName":"楼层","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"总价","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"户型","type":"FIELD"},{"fieldName":"朝向","type":"FIELD"},{"fieldName":"地址","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"面积","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京住宅小区分布.geojson"},"title":"北京住宅小区分布.geojson","layerSourceType":"Data","zoomRange":[0,24],"layersContent":["北京住宅小区分布.geojson"]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"长江三角洲省级区划面.geojson","msDatasetId":"ms_datasetId_1731394462325_18","datasetId":"985604117"}],"title":"长江三角洲省级区划面.geojson"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"长江三角洲省级区划面.geojson","msDatasetId":"ms_datasetId_1731394495175_19","datasetId":"985604117","geometryField":"geometry"}],"title":"长江三角洲省级区划面.geojson"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京住宅小区分布.geojson","msDatasetId":"ms_datasetId_1731394669706_23","datasetId":"1731639917","geometryField":"geometry"}],"title":"北京住宅小区分布.geojson"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京轨道交通分布.geojson","msDatasetId":"ms_datasetId_1731394700150_26","datasetId":"318218382","geometryField":"geometry"}],"title":"北京轨道交通分布.geojson"}],"baseLayer":{"color":"#242424","projection":"EPSG:3857","type":"BACKGROUND"},"version":"3.0.5"}',
+  visitCount: 26,
+  centerString: '{"x":116.3956088934375,"y":39.93917738600356}',
+  epsgCode: 3857,
+  nickname: 'admin_123',
+  layers: null,
+  id: 1090355953,
+  searchSetting: null,
+  thumbnail: 'ttp://localhost:8190/iportal/resources/thumbnail/map/map1090355953.png',
+  level: 9,
+  center: {
+    x: 116.3956088934375,
+    y: 39.93917738600356
+  },
+  authorizeSetting: [
+    {
+      permissionType: 'DELETE',
+      aliasName: 'admin_123',
+      entityRoles: ['ADMIN', 'SYSTEM'],
+      entityType: 'USER',
+      entityName: 'admin_123',
+      entityId: null
+    },
+    {
+      permissionType: 'READWRITE',
+      aliasName: 'GUEST',
+      entityRoles: [],
+      entityType: 'USER',
+      entityName: 'GUEST',
+      entityId: null
+    }
+  ],
+  updateTime: 1731416707750,
+  userName: 'admin_123',
+  tags: [],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1731394506912,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
+  favoriteCount: 0
+});

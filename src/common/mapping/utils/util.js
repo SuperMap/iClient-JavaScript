@@ -186,3 +186,17 @@ export function createAppreciableLayerId(layer) {
   // type: background 和某些 overlaymanager layers 只有 id
   return layer.sourceLayer || layer.source || layer.id;
 }
+
+export function getLayerCatalogRenderLayers(parts, catalogId, layersOnMap) {
+  // ms 3.0.5以下的版本 layerCatalogs layersContent/parts 不包括自身的上图layerid 只包含复合图层的id
+  const renderLayers = layersOnMap.some(item => item.id === catalogId) ? [catalogId] : [];
+  if (parts) {
+    renderLayers.push(...parts);
+  }
+  return Array.from(new Set(renderLayers)).filter(item => !!item);
+}
+
+export function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
+  const renderLayers = getLayerCatalogRenderLayers(layerParts, catalogId, layersOnMap);
+  return layersOnMap.find(item => item.id === renderLayers[0]);
+}
