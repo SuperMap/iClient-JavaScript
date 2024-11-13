@@ -45,7 +45,7 @@
     <sm-web-map server-url="https://iportal.supermap.io/iportal" map-id="801571284" @load="mapLoad">
     </sm-web-map>
     <div class="panel-wrapper">
-      <sm-attribute-panel :attributes="attrbiutes" :columns="tableColumns" :title="panelTitle">
+      <sm-attribute-panel :attributes="attrbiutes" :value-render="customValueRender" :title="panelTitle">
       </sm-attribute-panel>
     </div>
   </div>
@@ -65,15 +65,6 @@
       computed: {
         panelTitle() {
           return this.title || resources.text_attributePanel
-        },
-        tableColumns() {
-          return [{
-              dataIndex: 'attribute'
-            },
-            {
-              dataIndex: 'attributeValue'
-            }
-          ];
         }
       },
       methods: {
@@ -91,10 +82,11 @@
               vm.title = matchFature.layer.id;
               vm.attrbiutes = Object.keys(matchFature.properties).map(function (prop) {
                 return {
-                  attribute: prop,
-                  attributeValue: matchFature.properties[prop]
+                  title: prop,
+                  value: matchFature.properties[prop]
                 }
               });
+              vm.attrbiutes = vm.attrbiutes.slice(4);
               vm.addHighlightLayer(matchFature);
             } else {
               vm.attrbiutes = [];
@@ -133,6 +125,12 @@
           if (this.map.getLayer('highlight')) {
             this.map.removeLayer('highlight');
           }
+        },
+        customValueRender(text, record, index) {
+          if (index === 3) {
+            return '第 ' + record.value + ' 名';
+          }
+          return record.value;
         }
       }
     });
