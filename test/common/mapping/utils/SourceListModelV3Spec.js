@@ -271,6 +271,66 @@ describe('SourceListV3', () => {
     done();
   });
 
+  it('layerCatalog parts not include self layer and ui id is layerId on Map', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layerList = sourceListModel.getLayerCatalog();
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 4);
+    const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
+    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
+    done();
+  });
+
+  it('layerCatalog parts include self layer', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_labelLegend);
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layerList = sourceListModel.getLayerCatalog();
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
+    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
+    done();
+  });
+
+  it('layerCatalog parts not include self layer and ui id is not layerId on Map', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_separate_layerCatalogId);
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layerList = sourceListModel.getLayerCatalog();
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 4);
+    const selfIds = mapInfo.metadata.layerCatalog.filter(item => item.parts).map(item => item.id);
+    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some(layer => layer.renderLayers.includes(layer.id))).toBe(false);
+    done();
+  });
+
   it('destroy', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_chart);
     const sourceListModel = new SourceListModelV3({

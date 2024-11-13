@@ -1370,4 +1370,42 @@ describe('mapboxgl-webmap3.0', () => {
       mapstudioWebmap.setLayersVisible([layers[0]], 'visible');
     });
   });
+
+  it('layerCatalog separate ui id and render id', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_separate_layerCatalogId));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_separate_layerCatalogId));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      const mapInfo = JSON.parse(mapstudioWebMap_separate_layerCatalogId);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(webMapV3.getLegends().length).not.toBe(0);
+      const layerCatalogs = webMapV3.getLayerCatalog();
+      expect(layerCatalogs.length).not.toBe(0);
+      expect(layerCatalogs.length).toBe(mapInfo.metadata.layerCatalog.length);
+      const appreciableLayers = webMapV3.getLayers();
+      expect(layerCatalogs.length).toBe(appreciableLayers.length);
+      done();
+    });
+  });
 });

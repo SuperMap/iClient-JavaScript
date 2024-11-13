@@ -1,6 +1,6 @@
 
 import { AppreciableLayerBase } from './AppreciableLayerBase';
-import { getLayerInfosFromCatalogs } from './util';
+import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog } from './util';
 
 export class SourceListModelV3 extends AppreciableLayerBase {
   constructor(options = {}) {
@@ -50,7 +50,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
   _createSourceCatalogs(catalogs, appreciableLayers) {
     const formatCatalogs = catalogs.map((catalog) => {
       let formatItem;
-      const { id, title = id, type, visible, children } = catalog;
+      const { id, title = id, type, visible, children, parts } = catalog;
       if (type === 'group') {
         formatItem = {
           children: this._createSourceCatalogs(children, appreciableLayers),
@@ -60,7 +60,8 @@ export class SourceListModelV3 extends AppreciableLayerBase {
           visible
         };
       } else {
-        const matchLayer = appreciableLayers.find((layer) => layer.id === id);
+        const renderLayers = getLayerCatalogRenderLayers(parts, id, this._mapInfo.layers);
+        const matchLayer = appreciableLayers.find((layer) => layer.id === renderLayers[0]);
         this.removeLayerExtralFields([matchLayer]);
         formatItem = Object.assign({}, matchLayer);
       }
@@ -75,8 +76,9 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     const metadataCatalogs = getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
     const l7MarkerLayers = this._l7LayerUtil.getL7MarkerLayers();
     const layerDatas = metadataCatalogs.map(layerCatalog => {
-      const layer = this._mapInfo.layers.find(item => item.id === layerCatalog.id) || {};
-      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers: this._getRenderLayers(layerCatalog.parts, layerCatalog.id), reused: layer.metadata && layer.metadata.reused };
+      const renderLayers = getLayerCatalogRenderLayers(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
+      const layer = getMainLayerFromCatalog(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
+      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers, reused: layer.metadata && layer.metadata.reused };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
       const { msDatasetId } = matchProjectCatalog;
       let dataSource = {};
@@ -132,17 +134,5 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     });
     layerDatas.reverse();
     return layerDatas;
-  }
-
-  _getRenderLayers(layerIds, layerId) {
-    if (layerIds) {
-      if (layerIds.includes(layerId)) {
-        return layerIds;
-      } else {
-        return [layerId, ...layerIds];
-      }
-    } else {
-      return [layerId];
-    }
   }
 }
