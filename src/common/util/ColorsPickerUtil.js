@@ -33,6 +33,7 @@ export class ColorsPickerUtil  {
      * @description 创建 DOM canvas。
      * @param {number} height - canvas 高度。
      * @param {number} width - canvas 宽度。
+     * @version 11.3.0
      */
 
     static createCanvas (height, width){
