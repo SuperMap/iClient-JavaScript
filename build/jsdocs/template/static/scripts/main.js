@@ -1,7 +1,7 @@
 $(function () {
     $('.navigationDiv').load("nav.html .main-sidebar", null, function () {
-        // var height = $('.sidebar').height();
-        // $('.main-sidebar #categories').css('height', height - 72 + 'px');
+        var height = $('.sidebar').height();
+        $('.main-sidebar #categories').css('height', height - 125 + 'px');
         // Search Items
         $('#searchBox').on('keyup', function (e) {
 
@@ -99,8 +99,8 @@ $(function () {
         })
 
     });
-    // $(window).resize(function () {
-    //   var height = $('.navigationDiv .sidebar').height();
-    //   $('.main-sidebar #categories').css('height', height - 72 + 'px');
-    // })
+    $(window).resize(function () {
+      var height = $('.navigationDiv .sidebar').height();
+      $('.main-sidebar #categories').css('height', height - 125 + 'px');
+    })
 });
