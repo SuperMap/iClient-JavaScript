@@ -14,7 +14,8 @@ export class AppreciableLayerBase extends Events {
       'smmeasure',
       'mapbox-gl-draw',
       'maplibre-gl-draw',
-      /tracklayer-\d+-line/
+      /tracklayer-\d+-line/,
+      /graticuleLayer_\d+_line/
     ];
     this.uniqueId = +new Date();
     this.layersVisibleMap = new Map();

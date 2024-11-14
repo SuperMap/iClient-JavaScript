@@ -56,6 +56,20 @@ describe('SourceListV3', () => {
         }
       },
       {
+        id: 'graticuleLayer_1_line',
+        type: 'line',
+        source: 'graticuleLayer_1_line',
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#065726',
+          'line-width': 5,
+          'line-opacity': 0.8
+        }
+      },
+      {
         id: 'tdt-search-line',
         type: 'line',
         source: 'tdt-search-line',
@@ -227,13 +241,12 @@ describe('SourceListV3', () => {
     });
     const appreciableLayers = sourceListModel.getLayers();
     const selfAppreciableLayers = sourceListModel.getSelfLayers();
-    expect(appreciableLayers.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(appreciableLayers.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     expect(selfAppreciableLayers.length).toBe(mapInfo.metadata.layerCatalog.length);
     const extraLayers = appreciableLayers.slice(mapInfo.metadata.layerCatalog.length);
     expect(extraLayers[1].title).toBe('test-source');
     expect(extraLayers[1].renderLayers).toEqual(['test-id', 'test-id-label']);
-    expect(extraLayers[2].title).toBe('graticuleLayer_1723443238046_line');
-    expect(extraLayers[2].renderLayers).toEqual(['graticuleLayer_1723443238046_line', 'graticuleLayer_1723443238046']);
+    expect(extraLayers[2]).toBe(undefined);
     done();
   });
 
@@ -250,7 +263,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     done();
   });
 
@@ -267,7 +280,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     done();
   });
 
@@ -284,7 +297,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 4);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
     const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
     const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
     expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
@@ -304,7 +317,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
     const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
     expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
@@ -324,7 +337,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 4);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
     const selfIds = mapInfo.metadata.layerCatalog.filter(item => item.parts).map(item => item.id);
     const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
     expect(selfLayerCatalogs.some(layer => layer.renderLayers.includes(layer.id))).toBe(false);
@@ -368,7 +381,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     expect(layerList[0].id).toBe('中国金牌个人获奖者(1)');
     expect(layerList[0].type).toBe('chart');
     expect(layerList[0].visible).toBeTruthy();
@@ -402,7 +415,7 @@ describe('SourceListV3', () => {
       }
     });
     let layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     expect(layerList[0].visible).toBeTruthy();
     sourceListModel.toggleLayerVisible(layerList[0], false);
     layerList = sourceListModel.getLayerCatalog();
@@ -460,7 +473,7 @@ describe('SourceListV3', () => {
       }
     });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
+    expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
     expect(layerList[4].visible).toBeTruthy();
     sourceListModel.on({
       layerupdatechanged: () => {

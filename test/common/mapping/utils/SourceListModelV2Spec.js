@@ -54,6 +54,20 @@ describe('SourceListV2', () => {
         }
       },
       {
+        id: 'graticuleLayer_1_line',
+        type: 'line',
+        source: 'graticuleLayer_1_line',
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#065726',
+          'line-width': 5,
+          'line-opacity': 0.8
+        }
+      },
+      {
         id: 'tdt-search-line',
         type: 'line',
         source: 'tdt-search-line',
@@ -215,14 +229,9 @@ describe('SourceListV2', () => {
     const sourceListModel = new SourceListModelV2({ map });
     const appreciableLayers = sourceListModel.getLayers();
     const selfAppreciableLayers = sourceListModel.getSelfLayers();
-    expect(appreciableLayers.length).toBe(4);
+    expect(appreciableLayers.length).toBe(3);
     expect(appreciableLayers[2].title).toBe('test-source');
     expect(appreciableLayers[2].renderLayers).toEqual(['test-id', 'test-id-label']);
-    expect(appreciableLayers[3].title).toBe('graticuleLayer_1723443238046_line');
-    expect(appreciableLayers[3].renderLayers).toEqual([
-      'graticuleLayer_1723443238046_line',
-      'graticuleLayer_1723443238046'
-    ]);
     expect(selfAppreciableLayers.length).toBe(0);
     done();
   });
@@ -241,20 +250,15 @@ describe('SourceListV2', () => {
     });
     const appreciableLayers = sourceListModel.getLayers();
     const selfAppreciableLayers = sourceListModel.getSelfLayers(appreciableLayers);
-    expect(appreciableLayers.length).toBe(4);
-    expect(selfAppreciableLayers.length).toBe(1);
-    expect(selfAppreciableLayers[0].title).toBe('GraticuleLayer');
-    expect(selfAppreciableLayers[0].renderLayers).toEqual([
-      'graticuleLayer_1723443238046',
-      'graticuleLayer_1723443238046_line'
-    ]);
+    expect(appreciableLayers.length).toBe(3);
+    expect(selfAppreciableLayers.length).toBe(0);
     done();
   });
 
   it('getLayerCatalog', (done) => {
     const sourceListModel = new SourceListModelV2({ map });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(4);
+    expect(layerList.length).toBe(3);
     done();
   });
 
@@ -525,7 +529,7 @@ describe('SourceListV2', () => {
   it('toggleLayerVisible', (done) => {
     const sourceListModel = new SourceListModelV2({ map });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(4);
+    expect(layerList.length).toBe(3);
     expect(layerList[1].visible).toBeTruthy();
     sourceListModel.on({
       layerupdatechanged: () => {
@@ -543,7 +547,7 @@ describe('SourceListV2', () => {
   it('setLayersVisible', (done) => {
     const sourceListModel = new SourceListModelV2({ map });
     const layerList = sourceListModel.getLayerCatalog();
-    expect(layerList.length).toBe(4);
+    expect(layerList.length).toBe(3);
     expect(layerList[1].visible).toBeTruthy();
     sourceListModel.on({
       layerupdatechanged: () => {
