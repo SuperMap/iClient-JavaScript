@@ -33,7 +33,6 @@ export class ColorsPickerUtil  {
      * @description 创建 DOM canvas。
      * @param {number} height - canvas 高度。
      * @param {number} width - canvas 宽度。
-     * @version 11.3.0
      */
 
     static createCanvas (height, width){
@@ -177,6 +176,7 @@ export class ColorsPickerUtil  {
     }
 
     /**
+     * @version 11.3.0
      * @function ColorsPickerUtil.getColorWithOpacity
      * @description 设置颜色透明度
      * @param {string} color - 颜色。
