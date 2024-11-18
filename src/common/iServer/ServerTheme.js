@@ -38,9 +38,9 @@ export class ServerTheme extends UGCSubLayer {
          * @description 专题图元素位置。
          */
         this.themeElementPosition = null;
-
+        
         this.CLASS_NAME = "SuperMap.ServerTheme";
-
+        Util.extend(this, options);
     }
 
 

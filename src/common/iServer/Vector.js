@@ -26,8 +26,8 @@ export class Vector extends UGCSubLayer {
          * @description 矢量图层的风格。
          */
         this.style = null;
-
         this.CLASS_NAME = "SuperMap.Vector";
+        Util.extend(this, options);
     }
 
     /**

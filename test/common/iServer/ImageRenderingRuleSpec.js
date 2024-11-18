@@ -22,6 +22,7 @@ var option = {
     colorScheme: ['255,0,0'],
     colorTable: ['500: 255,0,0'],
     brightness: 100,
+    gamma: 8,
     contrast: 100,
     noData: [2],
     noDataColor: '255,0,0',
@@ -40,6 +41,7 @@ describe('ImageRenderingRule', () => {
     it('constructor destroy', () => {
         var parameter = new ImageRenderingRule(option);
         expect(parameter.displayMode).toEqual('Composite');
+        expect(parameter.gamma).toEqual(8);
         expect(parameter.displayBands.length).toEqual(option.displayBands.length);
         expect(parameter.stretchOption).not.toBeNull();
         expect(parameter.interpolationMode).toEqual('NearestNeighbor');
@@ -57,6 +59,7 @@ describe('ImageRenderingRule', () => {
         expect(parameter.CLASS_NAME).toEqual('SuperMap.ImageRenderingRule');
         parameter.destroy();
         expect(parameter.displayMode).toEqual(undefined);
+        expect(parameter.gamma).toEqual(undefined);
         expect(parameter.displayBands).toEqual(undefined);
         expect(parameter.stretchOption).toEqual(undefined);
         expect(parameter.interpolationMode).toEqual(undefined);

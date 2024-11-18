@@ -79,8 +79,9 @@ export class UGCMapLayer extends UGCLayer {
          * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
          */
         this.overlapDisplayedOptions = null;
-
+        
         this.CLASS_NAME = "SuperMap.UGCMapLayer";
+        Util.extend(this, options);
     }
 
     /**

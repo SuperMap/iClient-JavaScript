@@ -57,6 +57,7 @@ export class UGCSubLayer extends UGCMapLayer {
         this.ugcLayerType = null;
 
         this.CLASS_NAME = "SuperMap.UGCSubLayer";
+        Util.extend(this, options);
     }
 
 

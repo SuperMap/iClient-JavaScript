@@ -28,6 +28,10 @@ import {ColorDictionary} from './ColorDictionary';
  * @param {number} [options.specialValue] - 图层的特殊值。
  * @param {boolean} [options.specialValueTransparent] - 图层的特殊值（specialValue）所处区域是否透明。
  * @param {number} [options.verticalSpacing] - 格网垂直间隔大小。
+ * @param {number} [options.gamma] - Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现栅格非线性亮度和对比度调整，
+ * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+ * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+ * 但暗部区域的细节会有所损失，整体图像变暗。
  * @usage
  */
 export class Grid extends UGCSubLayer {
@@ -121,8 +125,18 @@ export class Grid extends UGCSubLayer {
          */
         this.verticalSpacing = null;
 
+        /**
+           * @member {number} Grid.prototype.gamma
+           * @description Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现栅格非线性亮度和对比度调整，
+           * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+           * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+           * 但暗部区域的细节会有所损失，整体图像变暗。
+         */
+        this.gamma = null;
+
 
         this.CLASS_NAME = "SuperMap.Grid";
+        Util.extend(this, options);
     }
 
     /**

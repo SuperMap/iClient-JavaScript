@@ -814,6 +814,7 @@ window.examplesResources = {
         "title_ugcPointPosition": "Point And Line Analysis",
         "title_ugcSpatial": "Spacial Analysis",
         "title_multiphaseplay": "Multiphase Play",
+        "title_createTempLayer": "Create Temp Layer",
 
         "text_graphmap_shortest_analysis": "Shortest Path Analysis",
         "text_startNode": "start node",
@@ -1696,6 +1697,9 @@ window.examplesResources = {
         "text_queryDistanceLimit": "The query distance must be greater than zero",
         "text_multiphaseplay": "Multiphase Play(2009-2016 years of NDVI)",
         "text_2009To2016NDVI": "2009-2016 years of NDVI",
+        "text_create": "Create",
+        "text_gamma": "Gamma param",
+        "text_gammaParamBounds": "Gamma input bounds is 0 to 10",
 
         "btn_previous":"Previous",
         "btn_next":"Next",

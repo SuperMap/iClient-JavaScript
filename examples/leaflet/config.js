@@ -121,6 +121,13 @@ var exampleConfig = {
           version: '11.2.0',
           thumbnail: "chart.png",
           fileName: "01_chartService"
+        },
+        {
+          name: "创建临时图层",
+          name_en: "Create temporary layer",
+          version: '11.3.0',
+          thumbnail: "createTempLayer.png",
+          fileName: "createTempLayer"
         }
         ]
       },

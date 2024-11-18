@@ -779,6 +779,7 @@ window.examplesResources = {
         "title_l7_snow_particle": "雪花粒子",
         "title_l7_rain_particle": "雨滴粒子",
         "title_multiphaseplay": "多时相播放",
+        "title_createTempLayer": "创建临时图层",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -1652,6 +1653,9 @@ window.examplesResources = {
         "text_queryDistanceLimit": "查询距离必须大于零",
         "text_multiphaseplay": "多时相播放",
         "text_2009To2016NDVI": "2009-2016年5月植被指数",
+        "text_create": "创建",
+        "text_gamma": "Gamma 参数",
+        "text_gammaParamBounds": "Gamma 数值范围为 0 到 10",
 
 
 
