@@ -38,7 +38,7 @@
           type="button"
           class="btn btn-default"
           data-i18n="[value]resources.text_create"
-          onclick="createTempLayer()"
+          onclick="updateTempLayer()"
         />
       </div>
     </div>
@@ -49,8 +49,11 @@
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var tempLayer;
-      var url = host + '/iserver/services/map-World/rest/maps/World';
+      var tempLayer,
+      layerInfoService,
+        newResourceID,
+        result;
+      var url = host + '/iserver/services/map-world/rest/maps/World';
       var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults
@@ -67,19 +70,19 @@
 
       function createTempLayer() {
         new ol.supermap.LayerInfoService(url).getLayersInfo().then((serviceResult) => {
-          serviceResult.result.subLayers.layers.map(function (layer, index) {
-            if (index === 15) {
+          result = serviceResult.result;
+          layer = serviceResult.result.subLayers.layers[15];
               layer.gamma = document.getElementById("gammaParam").value || 1;
-              serviceResult.result.subLayers.layers = [layer];
-              new ol.supermap.LayerInfoService(url)
-                .setLayersInfo(
+              result.subLayers.layers = [layer];
+              layerInfoService = new ol.supermap.LayerInfoService(url);
+              layerInfoService.setLayersInfo(
                   new ol.supermap.SetLayersInfoParameters({
-                    layersInfo: serviceResult.result
+                    layersInfo: result
                   })
                 )
                 .then((res) => {
                   if (res.result && res.result.newResourceID) {
-                    map.removeLayer(tempLayer);
+                    newResourceID = res.result.newResourceID;
                     tempLayer = new ol.layer.Tile({
                       source: new ol.source.TileSuperMapRest({
                         url: url,
@@ -93,9 +96,24 @@
                     map.addLayer(tempLayer);
                   }
                 });
-            }
-          });
         });
+      }
+
+      function updateTempLayer() {
+        if (!newResourceID) {
+          return;
+        }
+        var layer = result.subLayers.layers[0];
+        layer.gamma = document.getElementById("gammaParam").value || 1;
+        layerInfoService.setLayersInfo(
+                  new ol.supermap.SetLayersInfoParameters({
+                    layersInfo: result,
+                    resourceID: newResourceID,
+                    isTempLayers: true
+                  })
+                ).then((res) => {
+                  tempLayer.getSource().updateParams();
+                });
       }
     </script>
   </body>

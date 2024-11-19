@@ -38,7 +38,7 @@
           type="button"
           class="btn btn-default"
           data-i18n="[value]resources.text_create"
-          onclick="createTempLayer()"
+          onclick="updateTempLayer()"
         />
       </div>
     </div>
@@ -46,7 +46,11 @@
     <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var url = host + '/iserver/services/map-World/rest/maps/World';
+      var layerInfoService,
+        tempLayer,
+        newResourceID,
+        result,
+        url = host + '/iserver/services/map-world/rest/maps/World';
       var map = new maplibregl.Map({
         container: 'map',
         style: {
@@ -57,28 +61,26 @@
         center: [0, 0],
         zoom: 2
       });
-      createTempLayer();
+      map.on('load', function () {
+        createTempLayer();
+      });
 
       function createTempLayer() {
         new maplibregl.supermap.LayerInfoService(url).getLayersInfo().then((serviceResult) => {
-          var result = serviceResult.result;
-          result.subLayers.layers.map(function (layer, index) {
-            if (index === 15) {
-              layer.gamma = document.getElementById("gammaParam").value || 1;
+          result = serviceResult.result;
+          layer = result.subLayers.layers[15]
+              layer.gamma = document.getElementById('gammaParam').value || 1;
               result.subLayers.layers = [layer];
-              new maplibregl.supermap.LayerInfoService(url)
-                .setLayersInfo(
+              layerInfoService = new maplibregl.supermap.LayerInfoService(url)
+              layerInfoService.setLayersInfo(
                   new maplibregl.supermap.SetLayersInfoParameters({
                     layersInfo: result
                   })
                 )
                 .then((res) => {
                   var result = res.result;
+                  newResourceID = result.newResourceID;
                   if (result && result.newResourceID) {
-                    if (map.getLayer('layer')) {
-                      map.removeLayer('layer');
-                      map.removeSource('layer');
-                    }
                     map.addLayer({
                       id: 'layer',
                       type: 'raster',
@@ -93,9 +95,26 @@
                     });
                   }
                 });
-            }
-          });
         });
+      }
+
+      function updateTempLayer() {
+        if (!newResourceID) {
+          return;
+        }
+        var layer = result.subLayers.layers[0];
+        layer.gamma = document.getElementById("gammaParam").value || 1;
+        layerInfoService.setLayersInfo(
+                  new maplibregl.supermap.SetLayersInfoParameters({
+                    layersInfo: result,
+                    resourceID: newResourceID,
+                    isTempLayers: true
+                  })
+                ).then((res) => {
+                  map.style.sourceCaches['layer'].clearTiles();
+                  map.style.sourceCaches['layer'].update(map.transform);
+                  map.triggerRepaint();
+                });
       }
     </script>
   </body>

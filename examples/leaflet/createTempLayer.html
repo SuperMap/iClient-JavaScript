@@ -38,7 +38,7 @@
           type="button"
           class="btn btn-default"
           data-i18n="[value]resources.text_create"
-          onclick="createTempLayer()"
+          onclick="updateTempLayer()"
         />
       </div>
     </div>
@@ -47,8 +47,11 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
+        layerInfoService,
         tempLayer,
-        url = host + '/iserver/services/map-World/rest/maps/World';
+        newResourceID,
+        result,
+        url = host + '/iserver/services/map-world/rest/maps/World';
       map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -60,30 +63,44 @@
 
       function createTempLayer() {
         new L.supermap.LayerInfoService(url).getLayersInfo().then((serviceResult) => {
-          var result = serviceResult.result;
-          result.subLayers.layers.map(function (layer, index) {
-            if (index === 15) {
-              layer.gamma = document.getElementById("gammaParam").value || 1;
-              result.subLayers.layers = [layer];
-              new L.supermap.LayerInfoService(url)
-                .setLayersInfo(
-                  new L.supermap.SetLayersInfoParameters({
-                    layersInfo: result
-                  })
-                )
-                .then((res) => {
-                  tempLayer && tempLayer.remove();
-                  tempLayer = new L.supermap.TiledMapLayer(url, {
-                    noWrap: true,
-                    cacheEnabled: false,
-                    transparent: true,
-                    layersID: res.result.newResourceID
-                  })
-                  tempLayer.addTo(map);
-                });
-            }
-          });
+          result = serviceResult.result;
+          var layer = result.subLayers.layers[15];
+          layer.gamma = document.getElementById("gammaParam").value || 1;
+          result.subLayers.layers = [layer];
+          layerInfoService = new L.supermap.LayerInfoService(url);
+          layerInfoService.setLayersInfo(
+              new L.supermap.SetLayersInfoParameters({
+                layersInfo: result
+              })
+            )
+            .then((res) => {
+              newResourceID = res.result.newResourceID;
+              tempLayer = new L.supermap.TiledMapLayer(url, {
+                noWrap: true,
+                cacheEnabled: false,
+                transparent: true,
+                layersID: res.result.newResourceID
+              })
+              tempLayer.addTo(map);
+            });
         });
+      }
+
+      function updateTempLayer() {
+        if (!newResourceID) {
+          return;
+        }
+        var layer = result.subLayers.layers[0];
+        layer.gamma = document.getElementById("gammaParam").value || 1;
+        layerInfoService.setLayersInfo(
+                  new L.supermap.SetLayersInfoParameters({
+                    layersInfo: result,
+                    resourceID: newResourceID,
+                    isTempLayers: true
+                  })
+                ).then((res) => {
+                  tempLayer.updateParams();
+                });
       }
     </script>
   </body>
