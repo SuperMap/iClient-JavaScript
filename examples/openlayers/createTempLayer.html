@@ -7,18 +7,19 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_createTempLayer"></title>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 300px;
+        text-align: center;
+        z-index: 500;
+        border-radius: 4px;
+      }
+    </style>
   </head>
-  <style>
-    #toolbar {
-      position: absolute;
-      top: 50px;
-      right: 10px;
-      width: 300px;
-      text-align: center;
-      z-index: 500;
-      border-radius: 4px;
-    }
-  </style>
+  
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
@@ -31,7 +32,7 @@
         <div class="panel">
           <div class="input-group">
             <span class="input-group-addon" data-i18n="resources.text_gamma"></span>
-            <input id="gammaParam" value="1" class="form-control"></input>
+            <input id="gammaParam" value="1" class="form-control" />
           </div>
         </div>
         <input
@@ -106,14 +107,14 @@
         var layer = result.subLayers.layers[0];
         layer.gamma = document.getElementById("gammaParam").value || 1;
         layerInfoService.setLayersInfo(
-                  new ol.supermap.SetLayersInfoParameters({
-                    layersInfo: result,
-                    resourceID: newResourceID,
-                    isTempLayers: true
-                  })
-                ).then((res) => {
-                  tempLayer.getSource().updateParams();
-                });
+          new ol.supermap.SetLayersInfoParameters({
+            layersInfo: result,
+            resourceID: newResourceID,
+            isTempLayers: true
+          })
+        ).then((res) => {
+          tempLayer.getSource().updateParams();
+        });
       }
     </script>
   </body>
