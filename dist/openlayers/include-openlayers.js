@@ -89,7 +89,7 @@
             inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript(libsurl + '/openlayers/plugins/ol-mapbox-style/2.11.2-5/olms.js');
+            inputScript(libsurl + '/openlayers/plugins/ol-mapbox-style/2.11.2-6/olms.js');
         }
         if (inArray(includes, 'deck')) {
             inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
