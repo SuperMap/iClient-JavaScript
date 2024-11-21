@@ -67,10 +67,11 @@ export function createMapClassExtending(SuperClass = class {}) {
       const sourceList = [];
       for (const item of layers) {
         item.renderLayers.forEach((layerId) => {
-          if (this.map.getLayer(layerId)) {
+          const layer = this.map.getLayer(layerId);
+          if (layer) {
             this.map.removeLayer(layerId);
-            if (!item.l7Layer && this.map.getSource(layerId)) {
-              sourceList.push(layerId);
+            if (!item.l7Layer && layer.source && typeof layer.source === 'string') {
+              sourceList.push(layer.source);
             }
           }
         });
