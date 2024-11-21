@@ -137,7 +137,7 @@
 
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {
-            if (supportES6()) {
+            if (supportES6() && !inArray(includes, 'iclient-leaflet-vue')) {
                 inputScript(disturl + '/leaflet/iclient-leaflet-es6.min.js');
             } else {
                 inputScript(disturl + '/leaflet/iclient-leaflet.min.js');
