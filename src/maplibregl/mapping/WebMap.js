@@ -28,7 +28,7 @@ import MapManager from './webmap/MapManager';
   *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/antv/g2/4.2.8/g2.min.js">G2: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/antv/g2/4.2.8/g2.min.js"&gt;&lt;/script&gt;</p>
   *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/antv/g6/4.3.2/g6.min.js">G6: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/antv/g6/4.3.2/g6.min.js"&gt;&lt;/script&gt;</p>
   *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/fast-xml-parser/4.2.7/fxparser.min.js">fast-xml-parser: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/fast-xml-parser/4.2.7/fxparser.min.js"&gt;&lt;/script&gt;</p>
-  *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/4.3.0-2/maplibre-gl-enhance.js"&gt;&lt;/script&gt;</p>
+  *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/4.3.0-2/maplibre-gl-enhance.js">maplibre-gl-js-enhance: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/4.3.0-2/maplibre-gl-enhance.js"&gt;&lt;/script&gt;</p>
   * </div>
   * @modulecategory Mapping
   * @param {number} id - iPortal|Online 地图 ID。
