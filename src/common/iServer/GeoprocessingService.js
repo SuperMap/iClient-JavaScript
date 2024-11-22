@@ -52,7 +52,7 @@ export class GeoprocessingService extends CommonServiceBase {
         parameter = parameter ? parameter : null;
         environment = environment ? environment : null;
         const executeParamter = { parameter, environment };
-        return this._processAsync({ url: `${this.url}/${identifier}/execute`, executeParamter, callback });
+        return this._processAsync({ url: `${this.url}/${identifier}/execute`, paramter:executeParamter, callback });
     }
     /**
      * @function GeoprocessingService.prototype.submitJob
@@ -67,7 +67,7 @@ export class GeoprocessingService extends CommonServiceBase {
         parameter = parameter ? parameter : null;
         environments = environments ? environments : null;
         const asyncParamter = JSON.stringify({ parameter: parameter, environments: environments });
-        return this._processAsync({ url: `${this.url}/${identifier}/jobs`, method: 'POST', callback, params: asyncParamter });
+        return this._processAsync({ url: `${this.url}/${identifier}/jobs`, method: 'POST', callback, data: asyncParamter });
     }
 
     /**
@@ -152,11 +152,12 @@ export class GeoprocessingService extends CommonServiceBase {
         return this._processAsync({ url, callback });
     }
    
-    _processAsync({ url, method, callback, paramter }) {
+    _processAsync({ url, method, callback, paramter, data }) {
           return this.request({
               url: url,
               method: method || 'GET',
               params: paramter,
+              data,
               headers: { 'Content-type': 'application/json' },
               scope: this,
               success: callback,
