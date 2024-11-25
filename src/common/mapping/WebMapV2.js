@@ -350,6 +350,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           (style) => {
             const sourceIds = Object.keys(style.sources);
             if (sourceIds.some((id) => this.map.getSource(id))) {
+              this.fire('layerorsourcenameduplicated', {});
               addedCallback && addedCallback();
               return;
             }

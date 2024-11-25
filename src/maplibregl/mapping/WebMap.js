@@ -61,6 +61,7 @@ import MapManager from './webmap/MapManager';
   * @fires WebMap#addlayerssucceeded
   * @fires WebMap#layercreatefailed
   * @fires WebMap#baidumapnotsupport
+  * @fires WebMap#layerorsourcenameduplicated
   * @fires WebMap#dataflowfeatureupdated
   * @fires WebMap#projectionnotmatch
   * @fires WebMap#mapbeforeremove

@@ -43,6 +43,7 @@ const WORLD_WIDTH = 360;
  * @fires WebMapBase#addlayerssucceeded
  * @fires WebMapBase#layercreatefailed
  * @fires WebMapBase#baidumapnotsupport
+ * @fires WebMapBase#layerorsourcenameduplicated
  * @fires WebMapBase#dataflowfeatureupdated
  * @fires WebMapBase#projectionnotmatch
  * @fires WebMapBase#mapbeforeremove
@@ -144,6 +145,11 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
          * @description 不支持百度地图。
          */
         'baidumapnotsupport',
+        /**
+         * @event WebMapBase#layerorsourcenameduplicated
+         * @description 图层名或数据源名重复。
+         */
+        'layerorsourcenameduplicated',
         /**
          * @event WebMapBase#dataflowfeatureupdated
          * @description 数据流图层要素更新。
