@@ -46,12 +46,12 @@
     <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <span id="show"></span>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var host = window.isLocal ? window.server : 'http://localhost:8090';
       var layerInfoService,
         tempLayer,
         newResourceID,
         result,
-        url = host + '/iserver/services/map-world/rest/maps/World';
+        url = host + '/iserver/services/map-World/rest/maps/World';
       var map = new mapboxgl.Map({
         container: 'map',
         style: {
@@ -88,7 +88,7 @@
                       source: {
                         type: 'raster',
                         tiles: [
-                          host + '/iserver/services/map-World/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}&transparent=true&cacheEnabled=false&noWrap=true&layersID=' +
+                          host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}&transparent=true&cacheEnabled=false&noWrap=true&layersID=' +
                             result.newResourceID
                         ],
                         tileSize: 256
