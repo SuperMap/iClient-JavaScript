@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
+import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
 
 const LEGEND_RENDER_TYPE = {
@@ -504,7 +504,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
           layer.id = layerId;
         }
       }
-      layerIdToChange.push({ originId: originId, renderId: layer.id });
+      layerIdToChange.push({ originId: originId, renderId: layer.id, id: originId });
     }
     const layerCatalogFromMapJson = JSON.parse(JSON.stringify(style.metadata.layerCatalog), 'parts');
     this._updateLayerCatalogsId({
@@ -592,7 +592,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
         });
         return;
       }
-      const matchLayer = layerIdMapList.find((item) => item.originId === id);
+      const renderLayers = getLayerCatalogRenderLayers(loopItem[layerIdsField], id, layerIdMapList);
+      const matchLayer = layerIdMapList.find((item) => item.originId === renderLayers[0]);
       if (matchLayer) {
         const catalog = this._findLayerCatalog(catalogs, id);
         catalog.id = matchLayer.renderId;
@@ -602,7 +603,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
         }
         return;
       }
-      if (unspportedLayers.includes(id)) {
+      if (unspportedLayers.includes(id) || renderLayers.some((layerId) => unspportedLayers.includes(layerId))) {
         this._deleteLayerCatalog(catalogs, id);
       }
     });
@@ -1407,9 +1408,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     const unSupportedMsg = 'layer are not supported yet';
     const { interaction } = mapInfo;
     if (interaction && interaction.drill) {
-      this.fire('layercreatefailed', { error: `drill ${unSupportedMsg}`, map: this.map });
+      this.fire('layercreatefailed', { error: `drill ${unSupportedMsg}`, map: this.map, error_code: 'DRILL_LAYERS_NOT_SUPPORTED' });
       interaction.drill.forEach((drillItem) => {
-        filterLayerIds.push(...drillItem.layerIds);
+        const drillLayerIds = drillItem.layerIds || drillItem.layers.reduce((ids, item) => ids.concat(item.layerIds), []);
+        filterLayerIds.push(...drillLayerIds);
       });
     }
     return filterLayerIds;

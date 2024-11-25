@@ -404,8 +404,65 @@ describe('maplibregl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('layercreatefailed', ({ error }) => {
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
       expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const style = map.getStyle();
+      expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
+
+  it('filter drill ui id test', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
+    const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
+      expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const style = map.getStyle();
+      expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
+
+  it('filter drill interaction changed test', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
+    const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
+      expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
     });
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const style = map.getStyle();
