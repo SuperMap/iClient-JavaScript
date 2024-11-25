@@ -1153,6 +1153,457 @@ var mapstudioWebMap_drill = JSON.stringify({
   minzoom: 0
 });
 
+// layerCatalog id的结构变化，其id表示UI id，不等同于上图id
+var mapstudioWebMap_drill_layers1 = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        parts: ['ms_buffer_up'],
+        id: 'layer_ms_buffer_up',
+        title: '中华人民共和国行政区划边界上',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['ms_administrative_polygon', 'ms_administrative_center_text'],
+        id: 'layer_ms_administrative_polygon',
+        title: '中华人民共和国行政区划',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['ms_buffer_down'],
+        id: 'layer_ms_buffer_down',
+        title: '中华人民共和国行政区划边界下',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: 'ms-background',
+        title: '纯色底图',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    'ms_administrative_buffer_source_province_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_polygon_source_city_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_center_source_city_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_buffer_source_city_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_polygon_source_china_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_polygon_source_province_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_center_source_china_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_center_source_province_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    },
+    'ms_administrative_buffer_source_china_{adcode}': {
+      data: 'http://localhost:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
+      type: 'geojson'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [104.29901249999989, 31.7698179004973],
+  zoom: 3.374469300475214,
+  glyphs: {},
+  version: '3.2.2',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '44-下钻',
+  viewExtent: [40.8402045707692, 3.3971620000014293, 167.7578204292263, 53.56326900000056],
+  layers: [
+    {
+      metadata: {},
+      paint: {
+        'background-color': '#242424'
+      },
+      id: 'ms-background',
+      type: 'background'
+    },
+    {
+      metadata: {},
+      paint: {
+        'fill-extrusion-height': ['*', 1000, 10],
+        'fill-extrusion-opacity': 0.1,
+        'fill-extrusion-base': ['*', 0, 10],
+        'fill-extrusion-vertical-gradient': true,
+        'fill-extrusion-translate-anchor': 'map',
+        'fill-extrusion-color': 'rgba(13,204,255,1)',
+        'fill-extrusion-translate': [0, 0]
+      },
+      id: 'ms_buffer_down',
+      source: 'ms_administrative_buffer_source_china_100000',
+      type: 'fill-extrusion'
+    },
+    {
+      metadata: {},
+      paint: {
+        'fill-extrusion-height': ['*', 3000, 10],
+        'fill-extrusion-opacity': 0.44,
+        'fill-extrusion-base': ['*', 1000, 10],
+        'fill-extrusion-vertical-gradient': true,
+        'fill-extrusion-translate-anchor': 'map',
+        'fill-extrusion-color': 'rgba(13,204,255,1)',
+        'fill-extrusion-translate': [0, 0]
+      },
+      id: 'ms_administrative_polygon',
+      source: 'ms_administrative_polygon_source_china_100000',
+      type: 'fill-extrusion'
+    },
+    {
+      layout: {
+        'text-letter-spacing': 0,
+        'text-field': '{name}',
+        'text-anchor': 'left',
+        'text-size': 16,
+        'text-allow-overlap': true,
+        'text-font': ['sans-serif']
+      },
+      metadata: {},
+      paint: {
+        'text-halo-color': '#242424',
+        'icon-color': '#EE4D5A',
+        'text-halo-blur': 2,
+        'text-color': '#FFFFFF',
+        'text-halo-width': 1,
+        'text-opacity': 1,
+        'text-translate': [10, 10]
+      },
+      id: 'ms_administrative_center_text',
+      source: 'ms_administrative_center_source_china_100000',
+      type: 'symbol'
+    },
+    {
+      metadata: {},
+      paint: {
+        'fill-extrusion-height': ['*', 3005, 10],
+        'fill-extrusion-opacity': 0.8,
+        'fill-extrusion-base': ['*', 3000, 10],
+        'fill-extrusion-vertical-gradient': true,
+        'fill-extrusion-translate-anchor': 'map',
+        'fill-extrusion-color': 'rgba(13,204,255,1)',
+        'fill-extrusion-translate': [0, 0]
+      },
+      id: 'ms_buffer_up',
+      source: 'ms_administrative_buffer_source_china_100000',
+      type: 'fill-extrusion'
+    }
+  ],
+  interaction: {
+    drill: [
+      {
+        triggerUp: 'unclick',
+        triggerDown: 'click',
+        steps: [
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_china_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_province_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_city_{adcode}',
+            upField: 'parent'
+          }
+        ],
+        layerIds: ['ms_buffer_down']
+      },
+      {
+        triggerUp: 'unclick',
+        triggerDown: 'click',
+        steps: [
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_polygon_source_china_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_polygon_source_province_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_polygon_source_city_{adcode}',
+            upField: 'parent'
+          }
+        ],
+        layerIds: ['ms_administrative_polygon']
+      },
+      {
+        triggerUp: 'unclick',
+        triggerDown: 'click',
+        steps: [
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_center_source_china_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_center_source_province_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_center_source_city_{adcode}',
+            upField: 'parent'
+          }
+        ],
+        layerIds: ['ms_administrative_center_text']
+      },
+      {
+        triggerUp: 'unclick',
+        triggerDown: 'click',
+        steps: [
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_china_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_province_{adcode}',
+            upField: 'parent'
+          },
+          {
+            identifierField: 'adcode',
+            source: 'ms_administrative_buffer_source_city_{adcode}',
+            upField: 'parent'
+          }
+        ],
+        layerIds: ['ms_buffer_up']
+      }
+    ]
+  },
+  pitch: 0,
+  minzoom: 0
+});
+
+// layerCatalog id的结构变化，其id表示UI id，不等同于上图id，且 interaction 结构更改
+var mapstudioWebMap_drill_layers2 = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        parts: ['100000'],
+        id: 'layer_100000_1732257433732_4',
+        title: '100000',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['510000'],
+        id: 'layer_510000_1732257460063_8',
+        title: '510000',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['510100'],
+        id: 'layer_510100_1732257474372_12',
+        title: '510100',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: '中国暗色地图',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    ms_1367413424_1732257474372_11: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/1367413424/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22name%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [102.992886, 30.089615, 104.89738, 31.435321],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: [
+        'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
+      ],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    },
+    ms_1293694757_1732257433732_3: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/1293694757/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22name%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [73.502355, 3.823583, 135.09567, 53.563269],
+      type: 'vector'
+    },
+    ms_1330380753_1732257460063_7: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/1330380753/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22name%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [97.350096, 26.045865, 108.546488, 34.312446],
+      type: 'vector'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [103.7727199849844, 26.91936589628129],
+  zoom: 4.812313211603576,
+  glyphs: {},
+  version: '3.3.0',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '下钻',
+  viewExtent: [83.85246091366045, 16.606818495496714, 123.69297905631716, 36.37032856968463],
+  layers: [
+    {
+      maxzoom: 12,
+      id: 'CHINA_DARK',
+      source: 'CHINA_DARK',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      filter: ['all', ['==', 'parent', 510100]],
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: '510100',
+      source: 'ms_1367413424_1732257474372_11',
+      'source-layer': '1367413424$geometry',
+      type: 'fill',
+      minzoom: 0
+    },
+    {
+      filter: ['all', ['==', 'parent', 510000]],
+      layout: {
+        visibility: 'none'
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: '510000',
+      source: 'ms_1330380753_1732257460063_7',
+      'source-layer': '1330380753$geometry',
+      type: 'fill',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'none'
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: '100000',
+      source: 'ms_1293694757_1732257433732_3',
+      'source-layer': '1293694757$geometry',
+      type: 'fill',
+      minzoom: 0
+    }
+  ],
+  interaction: {
+    drill: [
+      {
+        layers: [
+          {
+            triggerUp: 'unclick',
+            triggerDown: 'click',
+            layerIds: ['100000'],
+            identityField: 'adcode'
+          }
+        ]
+      },
+      {
+        layers: [
+          {
+            filter: ['all', ['==', 'parent', 510000]],
+            upperRelations: [
+              {
+                relatedField: 'parent',
+                layerIds: ['100000']
+              }
+            ],
+            triggerUp: 'unclick',
+            triggerDown: 'click',
+            layerIds: ['510000'],
+            identityField: 'adcode'
+          }
+        ]
+      },
+      {
+        layers: [
+          {
+            filter: ['all', ['==', 'parent', 510100]],
+            upperRelations: [
+              {
+                relatedField: 'parent',
+                layerIds: ['510000']
+              }
+            ],
+            triggerUp: 'unclick',
+            triggerDown: 'click',
+            layerIds: ['510100'],
+            identityField: 'adcode'
+          }
+        ]
+      }
+    ]
+  },
+  pitch: 0,
+  minzoom: 0
+});
+
 var msProjectINfo_L7Layers = JSON.stringify({
   extent: null,
   controls: null,
