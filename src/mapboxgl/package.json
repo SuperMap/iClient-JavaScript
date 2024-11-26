@@ -15,7 +15,6 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "@antv/g2": "^4.2.11",
     "@mapbox/mapbox-gl-style-spec": "^14.3.0",
     "@turf/center": "^6.5.0",
     "@turf/turf": "6.5.0",

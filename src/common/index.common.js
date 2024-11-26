@@ -750,4 +750,3 @@ export { CartoCSS, ThemeStyle };
 export { ElasticSearch };
 export { Lang };
 export { KnowledgeGraph } from './overlay/KnowledgeGraph';
-export * from './mapping';
