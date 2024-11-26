@@ -191,7 +191,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
         }
       } else {
         wkt = mapRepo.CRS.get(this.baseProjection).WKT
-        this._defineProj4(wkt);
+        this._defineProj4(wkt || projection);
         bounds = [
           mapInfo.extent.leftBottom.x,
           mapInfo.extent.leftBottom.y,

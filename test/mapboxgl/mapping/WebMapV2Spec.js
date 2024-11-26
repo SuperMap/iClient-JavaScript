@@ -1443,7 +1443,6 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     };
     datavizWebmap.on('mapcreatesucceeded', callback);
-    done();
   });
 
   it('updateOverlayLayer unique', (done) => {
