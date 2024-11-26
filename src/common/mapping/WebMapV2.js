@@ -473,7 +473,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       }
     }
 
-    _initOverlayLayer(layerInfo, features = [], mergeByField) {
+    _initOverlayLayer(layerInfo, features = [], mergeByField, featureProjection) {
       const { layerID, layerType, visible, style, featureType, projection } = layerInfo;
       layerInfo.visible = visible ? 'visible' : 'none';
       features = mergeFeatures({ sourceId: layerID, features, mergeByField, map: this.map });
@@ -491,10 +491,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       if (features && features[0] && features[0].geometry && features[0].geometry.type === 'Polygon') {
         features = this._handleMultyPolygon(features);
       }
+      const realProjection = featureProjection || projection;
       if (
         features &&
-        projection &&
-        projection !== 'EPSG:4326' &&
+        realProjection &&
+        realProjection !== 'EPSG:4326' &&
         layerInfo.dataSource &&
         layerInfo.dataSource.type !== 'REST_DATA'
       ) {
@@ -2979,12 +2980,12 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       this.map.triggerRepaint();
     }
 
-    updateOverlayLayer(layerInfo, features, mergeByField) {
+    updateOverlayLayer(layerInfo, features, mergeByField, featureProjection) {
       const originLayerInfo = this._mapInfo.layers.find((layer) => {
         return layer.layerID === layerInfo.id;
       });
       if (features) {
-        this._initOverlayLayer(originLayerInfo, features, mergeByField);
+        this._initOverlayLayer(originLayerInfo, features, mergeByField, featureProjection);
       } else {
         const type = this.webMapService.getDatasourceType(originLayerInfo);
         this.getLayerFeatures(originLayerInfo, this._taskID, type);

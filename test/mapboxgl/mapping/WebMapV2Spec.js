@@ -1414,6 +1414,38 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
+  it('updateOverlayLayer featureProjection', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('1788054202/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(uniqueLayer_polygon)));
+      } else if (url.indexOf('datas/1960447494/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      } else if (url.indexOf('datas/144371940/content.json')) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
+      }
+    });
+    datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
+
+    const callback = function (data) {
+      const spy = spyOn(datavizWebmap._handler, 'transformFeatures').and.callThrough();
+      datavizWebmap.updateOverlayLayer(
+        { id: 'test', projection: 'EPSG:3857' },
+        {
+          type: 'FeatureCollection',
+          features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [110, 10] } }]
+        },
+        '',
+        'EPSG:4326'
+      );
+      expect(spy).not.toHaveBeenCalled();
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    done();
+  });
+
   it('updateOverlayLayer unique', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -2983,7 +3015,7 @@ describe('mapboxgl_WebMapV2', () => {
           minzoom: 0
         });
         return Promise.resolve(new Response(JSON.stringify(nextStyleJSON)));
-      }  
+      }
       if (url.indexOf('China.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify({})));
       }
@@ -3169,11 +3201,11 @@ describe('mapboxgl_WebMapV2', () => {
         let style = map.getStyle();
         expect(style.layers.length).toBeGreaterThan(layers.length);
         const sourceIds = Object.keys(style.sources);
-        const layerIds = style.layers.map(item => item.id);
+        const layerIds = style.layers.map((item) => item.id);
         webMap1.cleanLayers();
         style = map.getStyle();
-        expect(style.layers.some(layer => layerIds.some(id => id === layer.id))).toBeFalsy();
-        expect(Object.keys(style.sources).some(sourceId => sourceIds.some(id => id === sourceId))).toBeFalsy();
+        expect(style.layers.some((layer) => layerIds.some((id) => id === layer.id))).toBeFalsy();
+        expect(Object.keys(style.sources).some((sourceId) => sourceIds.some((id) => id === sourceId))).toBeFalsy();
         const webMap2 = new WebMap(106007908, { server, map: firstMap });
         webMap2.once('mapcreatesucceeded', ({ layers }) => {
           expect(layers.length).toBe(2);
