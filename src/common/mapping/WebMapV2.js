@@ -190,7 +190,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
           this.fire('mapcreatefailed', { error });
         }
       } else {
-        this._defineProj4(projection);
+        wkt = mapRepo.CRS.get(this.baseProjection).WKT
+        this._defineProj4(wkt);
         bounds = [
           mapInfo.extent.leftBottom.x,
           mapInfo.extent.leftBottom.y,
@@ -2674,16 +2675,16 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       return styleParameters;
     }
 
-    _unproject(point, isReverse = true) {
+    _unproject(point) {
       const sourceProjection = this._unprojectProjection || this.baseProjection;
       if (sourceProjection === 'EPSG:4326') {
         return point;
       }
       const coor = transformCoodinates({ coordinates: point, sourceProjection, proj4: this.specifiedProj4 });
-      const proj = getProjection(sourceProjection, this.specifiedProj4);
-      if (isReverse && proj.axis && proj.axis.indexOf('ne') === 0) {
-        coor.reverse();
-      }
+      // const proj = getProjection(sourceProjection, this.specifiedProj4);
+      // if (isReverse && proj.axis && proj.axis.indexOf('ne') === 0) {
+      //   coor.reverse();
+      // }
       return coor;
     }
 
