@@ -1,5 +1,5 @@
 import proj4FromNpm from 'proj4';
-import { FetchRequest } from "../../util";
+import { FetchRequest } from "../../util/FetchRequest";
 import { transformServerUrl } from './util';
 
 function defineProjection(epsgCode, projection, proj4) {

@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import { FetchRequest } from "../util";
+import { FetchRequest } from "../util/FetchRequest";
 import { Util } from '../commontypes/Util';
 import { QueryBySQLService } from '../iServer/QueryBySQLService';
 import { FilterParameter } from '../iServer/FilterParameter';
