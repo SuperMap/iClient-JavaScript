@@ -9,3 +9,4 @@
 /web/
 /package-lock.json
 .npmrc
+/dist/mapboxgl/resources/
