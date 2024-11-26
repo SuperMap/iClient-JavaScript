@@ -1431,7 +1431,7 @@ describe('mapboxgl_WebMapV2', () => {
     const callback = function (data) {
       const spy = spyOn(datavizWebmap._handler, 'transformFeatures').and.callThrough();
       datavizWebmap.updateOverlayLayer(
-        { id: 'test', projection: 'EPSG:3857' },
+        { id: uniqueLayer_polygon.layers[0].name, projection: 'EPSG:3857' },
         {
           type: 'FeatureCollection',
           features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [110, 10] } }]
