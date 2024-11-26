@@ -37,7 +37,6 @@ export var MapExtend = (function () {
         super(options);
       }
     }
-    // 防止引入多个 iclient-mapboxgl 导致死循环
     mapboxgl.Map.prototype._inherit = true;
   }
 })();
