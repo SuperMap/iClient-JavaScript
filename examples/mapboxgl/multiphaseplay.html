@@ -122,8 +122,15 @@
     }
 
     function start() {
+      map.on('sourcedata', onSourceData);
       addStaticImageLayer();
-      map.on('load', addTimeLine);
+    }
+
+    function onSourceData(e) {
+      if (e.sourceId === 'static-image-layer' && e.isSourceLoaded) {
+        map.off('sourcedata', onSourceData);
+        addTimeLine();
+      }
     }
 
     function addStaticImageLayer() {
@@ -142,7 +149,7 @@
     }
 
     function addTimeLine() {
-      var allTime = allFeatures.map(feature => feature.time.split('/')[0]);
+      var allTime = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016'];
       myChart = echarts.init(document.getElementById('timeline'));
       var option = {
         timeline: {
@@ -177,8 +184,8 @@
         map.getSource('static-image-layer').updateImage({
           url: url
         });
-        changeTimelinePlay(false);
         map.once('idle', changeTimelinePlay);
+        changeTimelinePlay(false);
       });
     }
 
