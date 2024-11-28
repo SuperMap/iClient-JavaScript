@@ -24,7 +24,6 @@
     "@supermapgis/iclient-common": "11.3.0",
     "canvg": "3.0.10",
     "flatgeobuf": "3.31.1",
-    "lodash.debounce": "^4.0.8",
     "rbush": "^2.0.2",
     "proj4": "2.11.0",
     "flv.js": "^1.6.2",
