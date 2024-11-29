@@ -122,8 +122,15 @@
     }
 
     function start() {
+      map.on('sourcedata', onSourceData); 
       addStaticImageLayer();
-      map.on('load', addTimeLine)
+    }
+
+    function onSourceData(e) {
+      if (e.sourceId === 'static-image-layer' && e.isSourceLoaded) {
+        map.off('sourcedata', onSourceData);
+        addTimeLine();
+      }
     }
 
     function addStaticImageLayer() {
@@ -177,8 +184,8 @@
         map.getSource('static-image-layer').updateImage({
           url: url
         });
-        changeTimelinePlay(false);
         map.once('idle', changeTimelinePlay);
+        changeTimelinePlay(false);
       });
     }
 
