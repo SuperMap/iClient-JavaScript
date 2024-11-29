@@ -25,6 +25,6 @@
     "lodash.remove": "^4.7.0",
     "lodash.difference": "^4.5.0",
     "flatgeobuf": "3.31.1",
-    "rbush": "^2.0.2"
+    "proj4": "2.11.0"
   }
 }
