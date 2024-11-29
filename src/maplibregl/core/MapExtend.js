@@ -10,9 +10,14 @@ import { createMapExtendExtending } from '@supermapgis/iclient-common/util/MapEx
   * @private
   */
  export var MapExtend = (function () {
+  const originMapProto = maplibregl.Map.prototype;
+
+  if (!originMapProto._inherit) {
     maplibregl.Map = class MapEnhance extends createMapExtendExtending(maplibregl) {
       constructor(options) {
         super(options);
       }
     }
+    maplibregl.Map.prototype._inherit = true;
+  }
 })();
