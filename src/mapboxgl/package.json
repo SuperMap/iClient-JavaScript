@@ -16,18 +16,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@mapbox/mapbox-gl-style-spec": "^14.3.0",
-    "@turf/center": "^6.5.0",
     "@turf/turf": "6.5.0",
+    "@turf/meta": "^6.5.0",
     "mapv": "2.0.62",
     "mapbox-gl": "1.13.2",
-    "three": "0.150.1",
     "@supermapgis/iclient-common": "11.3.0",
-    "canvg": "3.0.10",
-    "flatgeobuf": "3.31.1",
-    "rbush": "^2.0.2",
-    "proj4": "2.11.0",
-    "flv.js": "^1.6.2",
-    "video.js": "^7.10.2",
-    "videojs-flvjs-es6": "^1.0.1"
+    "lodash.clonedeep": "^4.5.0",
+    "proj4": "2.11.0"
   }
 }

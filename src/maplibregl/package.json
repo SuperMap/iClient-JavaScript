@@ -17,10 +17,8 @@
   "dependencies": {
     "@maplibre/maplibre-gl-style-spec": "^20.3.0",
     "maplibre-gl": "4.3.2",
-    "mapv": "2.0.62",
-    "three": "0.150.1",
-    "canvg": "3.0.10",
     "@supermapgis/iclient-common": "11.3.0",
-    "rbush": "^2.0.2"
+    "lodash.clonedeep": "^4.5.0",
+    "proj4": "2.11.0"
   }
 }
