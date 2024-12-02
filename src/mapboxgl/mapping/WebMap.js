@@ -10,6 +10,8 @@ import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
 import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 import { L7Layer, L7 } from '../overlay/L7Layer';
 import MapManager from './webmap/MapManager';
+import { DataFlowService } from '../services/DataFlowService';
+import { GraticuleLayer } from '../overlay/GraticuleLayer';
 
 /**
   * @class WebMap
@@ -71,7 +73,7 @@ import MapManager from './webmap/MapManager';
  */
 export class WebMap extends createWebMapBaseExtending(mapboxgl.Evented, { mapRepo: mapboxgl }) {
   _createWebMapFactory(type) {
-    const commonFactoryOptions = { MapManager, mapRepo: mapboxgl, mapRepoName: 'mapbox-gl' };
+    const commonFactoryOptions = { MapManager, mapRepo: mapboxgl, mapRepoName: 'mapbox-gl', DataFlowService, GraticuleLayer };
     const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7, proj4: this.options.proj4 });
     switch (type) {
       case 'MapStyle':

@@ -10,6 +10,8 @@ import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
 import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 import { L7Layer, L7 } from '../overlay/L7Layer';
 import MapManager from './webmap/MapManager';
+import { DataFlowService } from '../services/DataFlowService';
+import { GraticuleLayer } from '../overlay/GraticuleLayer';
 
 /**
   * @class WebMap
@@ -71,7 +73,7 @@ import MapManager from './webmap/MapManager';
  */
 export class WebMap extends createWebMapBaseExtending(maplibregl.Evented, { mapRepo: maplibregl }) {
   _createWebMapFactory(type) {
-    const commonFactoryOptions = { MapManager, mapRepo: maplibregl, mapRepoName: 'maplibre-gl' };
+    const commonFactoryOptions = { MapManager, mapRepo: maplibregl, mapRepoName: 'maplibre-gl', DataFlowService, GraticuleLayer };
     const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7, proj4: this.options.proj4 });
     switch (type) {
       case 'MapStyle':

@@ -4,6 +4,7 @@ import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import * as DataFlowServiceUtil from '../../../src/maplibregl/services/DataFlowService';
 import '../../resources/WebMapV5.js';
 
 function DataFlowService(serviceUrl) {
@@ -189,8 +190,10 @@ describe('maplibregl_WebMapV2', () => {
       getNorth: () => -1
     }
   };
+  var dataFlowServiceSpyTest;
   beforeEach(() => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    dataFlowServiceSpyTest = spyOn(DataFlowServiceUtil, 'DataFlowService').and.callFake(DataFlowService);
     maplibregl.CRS = CRS;
     commonMap = {
       style: {},
@@ -1193,12 +1196,11 @@ describe('maplibregl_WebMapV2', () => {
       }
       return Promise.resolve();
     });
-    const spyTest = spyOn(maplibregl.supermap, 'DataFlowService').and.callFake(DataFlowService);
     datavizWebmap = new WebMap(dataflowLayer, { ...commonOption, map: commonMap }, undefined);
     const callback = function (data) {
       if (data.allLoaded) {
         const appreciableLayers = datavizWebmap.getLayers();
-        expect(spyTest.calls.count()).toBe(dataflowLayer.layers.length);
+        expect(dataFlowServiceSpyTest.calls.count()).toBe(dataflowLayer.layers.length);
         expect(appreciableLayers.length).toBe(dataflowLayer.layers.length + 1);
         const updateLayer = { ...dataflowLayer.layers[2], id: appreciableLayers[3].renderLayers[0] };
         datavizWebmap.updateOverlayLayer(updateLayer);

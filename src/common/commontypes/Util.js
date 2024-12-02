@@ -1086,6 +1086,30 @@ const Util = {
       }
       return encodeURIComponent(value);
     });
+  },
+  /**
+    * @description 十六进制转 RGBA 格式。
+    * @param {Object} hex - 十六进制格式。
+    * @param {number} opacity - 不透明度Alpha。
+    * @returns {string} 生成的 RGBA 格式。
+    */
+  hexToRgba(hex, opacity) {
+      var color = [],
+          rgba = [];
+      hex = hex.replace(/#/, "");
+      if (hex.length == 3) {
+          var tmp = [];
+          for (let i = 0; i < 3; i++) {
+              tmp.push(hex.charAt(i) + hex.charAt(i));
+          }
+          hex = tmp.join("");
+      }
+      for (let i = 0; i < 6; i += 2) {
+          color[i] = "0x" + hex.substr(i, 2);
+          rgba.push(parseInt(Number(color[i])));
+      }
+      rgba.push(opacity);
+      return "rgba(" + rgba.join(",") + ")";
   }
 };
 
