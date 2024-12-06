@@ -660,7 +660,7 @@ describe('maplibregl_WebMap', () => {
         var mapJson = datavizWebMap_RestMap;
         return Promise.resolve(new Response(mapJson));
       }
-      lve(new Response(JSON.stringify({})));
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
 
     var datavizWebmap = new WebMap(id, options);
