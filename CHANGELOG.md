@@ -1,3 +1,78 @@
+# 11.3.0 #
+
+## API changes
+
+### for MapLibreGL
+
+- 新增 [maplibregl.supermap.WebMap](https://iclient.supermap.io/docs/maplibregl/WebMap.html) 接口， 支持加载 SuperMap iPortal 数据上图、地图工作室制作的地图
+
+### Components
+
+- 点选查询地图子组件 ([sm-identify](https://iclient.supermap.io/web/apis/vue/zh/api/control/identify.html)) 新增 [keyWordStyle](https://iclient.supermap.io/web/apis/vue/zh/api/control/identify.html#attributes)、[valueWordStyle](https://iclient.supermap.io/web/apis/vue/zh/api/control/identify.html#attributes) 参数，支持配置属性弹窗显示的字段名称、文本是否自动换行 
+
+- 数据查询地图子组件 ([sm-query](https://iclient.supermap.io/web/apis/vue/zh/api/control/query.html)) 的 [restMap](https://iclient.supermap.io/web/apis/vue/zh/api/control/query.html#attributes)、[restData](https://iclient.supermap.io/web/apis/vue/zh/api/control/query.html#attributes)、[iportalData](https://iclient.supermap.io/web/apis/vue/zh/api/control/query.html#attributes) 参数新增 [queryMode](https://iclient.supermap.io/web/apis/vue/zh/api/control/query.html#attributes) 参数，支持关键字查询
+
+- 新增属性面板组件 ([sm-attribute-panel](https://iclient.supermap.io/web/apis/vue/zh/api/common/attribute-panel.html))，支持显示数据的属性信息
+
+- 图层列表组件 ([sm-layer-list](https://iclient.supermap.io/web/apis/vue/zh/api/control/layer-list.html)) 新增 [operations](https://iclient.supermap.io/web/apis/vue/zh/api/control/layer-list.html#operations) 参数，支持缩放至图层、调整图层顺序、图层透明度 
+
+- 图层管理组件 ([sm-layer-manager](https://iclient.supermap.io/web/apis/vue/zh/api/control/layer-manager.html)) 新增 [visible](https://iclient.supermap.io/web/apis/vue/zh/api/control/layer-manager.html#layer) 参数，支持配置图层是否默认加载
+
+- 图片组件 ([sm-image](https://iclient.supermap.io/web/apis/vue/zh/api/common/image.html)) 新增 [previewMode](https://iclient.supermap.io/web/apis/vue/zh/api/common/image.html#attributes) 参数，支持图片预览
+  
+## Fixed
+
+### for Leaflet
+
+- 修复[数据服务查询组件](https://iclient.supermap.io/examples/leaflet/editor.html#components_dataServiceQuery)在 Bounds 模式下查询时，输入查询范围不生效的问题
+ 
+- 修复[搜索组件](https://iclient.supermap.io/examples/leaflet/editor.html#components_Search)在多次查询后，查询结果要素在地图中消失的问题 
+
+# 11.2.1 #
+
+## Fixed
+
+### for Leaflet
+
+   - 修复 [L.supermap.ImageMapLayer](https://iclient.supermap.io/docs/leaflet/ImageMapLayer.html) 与 [L.supermap.TiledMapLayer](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 叠加时， 缩放、平移出现叠加顺序错误的问题
+
+   - 修复对数据集进行几何查询时排序无效的问题
+  
+   - 修复 [L.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/leaflet/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/leaflet/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+### for OpenLayers
+
+   - 修复显示矢量瓦片时，自定义请求头对 sprite.png 不生效的问题
+
+   - 修复对数据集进行几何查询时排序无效的问题
+
+   - 修复 [ol.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/openlayers/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/openlayers/GeometryAnalysis.html#computeGeodesicArea)  经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+   
+### for MapboxGL
+
+   - 修复对数据集进行几何查询时排序无效的问题
+  
+   - 修复 [mapboxgl.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/mapboxgl/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/mapboxgl/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+### for MaplibreGL
+
+   - 修复对数据集进行几何查询时排序无效的问题
+
+   - 修复使用 maplibregl-enhance 时，地图初始级别小于3级时 flyTo 定位错误的问题
+
+   - 修复 [maplibregl.supermap.GeometryAnalysis](https://iclient.supermap.io/docs/maplibregl/GeometryAnalysis.html) [computeGeodesicArea](https://iclient.supermap.io/docs/maplibregl/GeometryAnalysis.html#computeGeodesicArea) 经纬度面积计算结果不对的问题
+
+   - 优化知识图谱加载动画效果
+
+
+
 # 11.2.0 #
 
 ## 重要
