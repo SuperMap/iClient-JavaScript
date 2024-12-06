@@ -420,7 +420,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(raster4490));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(RET_MAP_INFO_4490));
     });
     datavizWebmap = new WebMap(
       id,
@@ -484,7 +484,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = heatLayer;
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -500,7 +500,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1171594968/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = rangeLayer;
     const callback = function (data) {
@@ -550,7 +550,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('web/maps/test/map.json') > -1) {
         return Promise.resolve(new Response(raster4490));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(RET_MAP_INFO_4490));
     });
     datavizWebmap = new WebMap(
       'test',
@@ -628,7 +628,7 @@ describe('maplibregl_WebMapV2', () => {
 
   it('request wkt info and visibleExtend without EPSFG Prefix ', (done) => {
     const epsgeCode =
-      'PROJCS["Google Maps Global Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Meter",1],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","900913"]]';
+      'PROJCS["unnamed",GEOGCS["GRS 1980(IUGG, 1980)",DATUM["unknown",SPHEROID["GRS80",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic_1SP"],PARAMETER["latitude_of_origin",43.0695160375],PARAMETER["central_meridian",-89.42222222222223],PARAMETER["scale_factor",1.0000384786],PARAMETER["false_easting",811000],PARAMETER["false_northing",480943.886],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Foot_US",0.3048006096012192],AUTHORITY["epsg","7599"]]';
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/676516522/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
@@ -652,7 +652,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('web/datas/13136933/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = vectorLayer_point;
     const callback = function (data) {
@@ -668,7 +668,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const style = JSON.parse(JSON.stringify(vectorLayer_line.layers[0].style));
     const roadId = {
@@ -698,7 +698,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const style = vectorLayer_line.layers[0].style;
     const subwayId = {
@@ -729,7 +729,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1171594968/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = rangeLayer;
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -1043,7 +1043,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/123456/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['MARKER_GEOJSON'])));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = markerLayer;
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -1059,7 +1059,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/123456/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['MARKER_GEOJSON'])));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = markerLayer;
     datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
@@ -1087,7 +1087,7 @@ describe('maplibregl_WebMapV2', () => {
           )
         );
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = markerLayer;
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -1105,12 +1105,11 @@ describe('maplibregl_WebMapV2', () => {
       ...layerData_geojson['MARKER_GEOJSON'],
       content
     };
-    const contentData = JSON.parse(content);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1795361105/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(newLayerData_geojson)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const layers = [
       {
@@ -1147,7 +1146,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1184572358/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(JSON.parse(migrationLayer), { ...commonOption });
     const callback = function (data) {
@@ -1167,7 +1166,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/676516522/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = ranksymbolLayer;
     datavizWebmap = new WebMap(id, { ...commonOption });
@@ -1194,7 +1193,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('iserver/services/dataflowTest/dataflow/subscribe') > -1) {
         return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(dataflowLayer, { ...commonOption, map: commonMap }, undefined);
     const callback = function (data) {
@@ -1224,6 +1223,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('datas/144371940/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['LINE_GEOJSON'])));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
     datavizWebmap.on('mapcreatesucceeded', (data) => {
@@ -1413,7 +1413,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('web/datas/13136933/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = vectorLayer_point;
     datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, undefined);
@@ -1470,7 +1470,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('web/maps/test/map.json') > -1) {
         return Promise.resolve(new Response(raster4490));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify(RET_MAP_INFO_4490)));
     });
     datavizWebmap = new WebMap(
       'test',
@@ -1661,7 +1661,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('map-world/wms130') > -1) {
         return Promise.resolve(new Response(wmsCapabilitiesText));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const mapData = {
       ...wmsLayer,
@@ -1686,7 +1686,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('map-world/wms130') > -1) {
         return Promise.resolve(new Response(wmsCapabilitiesTextWith130));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const callback = function (data) {
       expect(data).not.toBeUndefined();
@@ -1712,7 +1712,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('map-china400/wmts100') > -1) {
         return Promise.resolve(new Response(wmtsCapabilitiesText));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(baseLayers['WMTS'], { ...commonOption });
     const callback = function (data) {
@@ -1758,6 +1758,9 @@ describe('maplibregl_WebMapV2', () => {
   });
 
   it('tile layer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
     datavizWebmap = new WebMap(
       restmapLayer,
       { ...commonOption, ignoreBaseProjection: true, map: commonMap },
@@ -1774,7 +1777,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(heatLayer, { ...commonOption, map: commonMap }, { ...commonMapOptions });
     const callback = function () {
@@ -1785,6 +1788,9 @@ describe('maplibregl_WebMapV2', () => {
   });
 
   it('different projection', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
     const callback = function (data) {
       expect(data).not.toBeUndefined();
       done();
@@ -1803,6 +1809,9 @@ describe('maplibregl_WebMapV2', () => {
   });
 
   it('add online map', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
     datavizWebmap = new WebMap(baseLayers['TILE'], {
       isSuperMapOnline: true,
       serverUrl: 'https://www.supermapol.com'
@@ -1957,7 +1966,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(
       vectorLayer_line,
@@ -1984,7 +1993,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('web/datas/13136933/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = {
       ...uniqueLayer_multi_points,
@@ -2020,6 +2029,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('China.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify({})));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, { ...commonOption });
     const callback = function (data) {
@@ -2083,6 +2093,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('China.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify({})));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const map = {
       ...commonMap,
@@ -2327,7 +2338,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2347,7 +2358,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(123456, {
       server: server
@@ -2375,7 +2386,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2402,7 +2413,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2427,7 +2438,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2454,7 +2465,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     spyOn(ArrayStatistic, 'getArraySegments').and.callFake(function (array, type, segNum) {
       return [
@@ -2493,7 +2504,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2522,7 +2533,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2606,7 +2617,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2625,7 +2636,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2652,7 +2663,7 @@ describe('maplibregl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
           return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(id, {
       server: server
@@ -2726,6 +2737,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('T202007210600.json') > -1 || url.indexOf('T202007210700.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify({})));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     datavizWebmap = new WebMap(
       '',
@@ -2809,6 +2821,7 @@ describe('maplibregl_WebMapV2', () => {
       if (url.indexOf('/content.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(projection_4548_content)));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     spyOn(FetchRequest, 'post').and.callFake(url => {
       if (url.indexOf('/featureResults') > -1) {

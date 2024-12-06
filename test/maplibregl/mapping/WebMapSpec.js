@@ -660,7 +660,7 @@ describe('maplibregl_WebMap', () => {
         var mapJson = datavizWebMap_RestMap;
         return Promise.resolve(new Response(mapJson));
       }
-      return Promise.resolve();
+      lve(new Response(JSON.stringify({})));
     });
 
     var datavizWebmap = new WebMap(id, options);
@@ -1293,7 +1293,7 @@ describe('maplibregl_WebMap', () => {
       target: 'map',
       withCredentials: false
     };
-    var datavizWebmap1 = new WebMap(
+    datavizWebmap = new WebMap(
       '',
       { ...commonOption },
       mapOptionsList[0]
@@ -1304,13 +1304,14 @@ describe('maplibregl_WebMap', () => {
         server: server
       });
       datavizWebmap2.once('mapcreatesucceeded', function () {
-        const type1 = datavizWebmap1.getWebMapType();
+        const type1 = datavizWebmap.getWebMapType();
         const type2 = datavizWebmap2.getWebMapType();
         expect(type1).toBe('MapStyle');
         expect(type2).toBe('WebMap2');
+        datavizWebmap2.cleanLayers();
         done();
       });
     };
-    datavizWebmap1.once('mapcreatesucceeded', callback);
+    datavizWebmap.once('mapcreatesucceeded', callback);
   });
 });
