@@ -135,6 +135,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
+
   it('setWebMapOptions', (done) => {
     let options = {
       server: server
@@ -151,13 +152,18 @@ describe('mapboxgl_WebMap', () => {
     });
     datavizWebmap = new WebMap(id, options);
     datavizWebmap.once('mapcreatesucceeded', () => {
-      const nextUrl = 'http://www.test.com';
-      datavizWebmap.setServerUrl('http://www.test.com');
-      expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
+      expect(datavizWebmap.options.server).toBe(server);
       expect(datavizWebmap.options.serverUrl).toBe(datavizWebmap.options.server);
-      done();
+      const nextUrl = 'http://www.test.com';
+      datavizWebmap.setWebMapOptions({ server: nextUrl });
+      datavizWebmap.on('mapcreatesucceeded', () => {
+        expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
+        expect(datavizWebmap.options.serverUrl).toBe(datavizWebmap.options.server);
+        done();
+      });
     });
   });
+
   it('setMapOptions', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
