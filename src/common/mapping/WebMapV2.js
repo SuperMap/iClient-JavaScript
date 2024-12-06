@@ -17,7 +17,7 @@ const INTERNET_MAP_BOUNDS = {
   BING: [-180, -90, 180, 90]
 } 
 
-export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
+export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataFlowService, GraticuleLayer }) {
   return class WebMapV2 extends SuperClass {
     constructor(
       id,
@@ -537,7 +537,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
 
     _initGraticuleLayer(graticuleInfo) {
       const options = this._createGraticuleOptions(graticuleInfo);
-      const graticuleLayer = new mapRepo.supermap.GraticuleLayer(options);
+      const graticuleLayer = new GraticuleLayer(options);
       this._setGraticuleDash(options.strokeStyle, graticuleLayer);
       this._graticuleLayer = graticuleLayer;
       this.map.addLayer(graticuleLayer);
@@ -950,7 +950,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
     }
 
     _createDataflowLayer(layerInfo) {
-      const dataflowService = new mapRepo.supermap.DataFlowService(layerInfo.wsUrl).initSubscribe();
+      const dataflowService = new DataFlowService(layerInfo.wsUrl).initSubscribe();
       this._handleDataflowFeaturesCallback = this._handleDataflowFeatures.bind(this, layerInfo);
       this._initDataflowLayerCallback = this._initDataflowLayer.bind(this, layerInfo);
       dataflowService.on('subscribesucceeded', this._initDataflowLayerCallback);
@@ -2179,10 +2179,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo }) {
       layerOption.gradient.forEach((item, index) => {
         color.push(step[index]);
         if (index === 0) {
-          item = mapRepo.supermap.Util.hexToRgba(item, 0);
+          item = Util.hexToRgba(item, 0);
         }
         if (index === 1) {
-          item = mapRepo.supermap.Util.hexToRgba(item, 0.5);
+          item = Util.hexToRgba(item, 0.5);
         }
         color.push(item);
       });

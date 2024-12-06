@@ -172,7 +172,7 @@
             inputScript(libsurl + '/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js');
         }
         if (inArray(includes, 'ugcwasm')) {
-          inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+          inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
         }
     }
 

@@ -30,12 +30,12 @@ export class GeometryAnalysis extends Events {
   constructor(Module) {
     super();
     if (Module) {
-      window.Module = Module;
+      window.ugcModule = Module;
     }
-    if (!window.Module) {
-      window.Module = defaultModule;
+    if (!window.ugcModule) {
+      window.ugcModule = defaultModule;
     }
-    this.module = window.Module;
+    this.module = window.ugcModule;
     this.addEventType('loaded');
     if (this.module.calledRun) {
       /**

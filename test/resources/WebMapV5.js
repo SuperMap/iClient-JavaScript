@@ -3897,3 +3897,21 @@ var csv_city_nogeo = {
     ]
   }
 }
+
+var RET_MAP_INFO_4490 = JSON.stringify({
+  prjCoordSys: { epsgCode: 4490 },
+  bounds: {
+    top: 83.62359619161411,
+    left: -180,
+    bottom: -90,
+    leftBottom: {
+      x: -180,
+      y: -90
+    },
+    right: 180,
+    rightTop: {
+      x: 180,
+      y: 83.62359619161411
+    }
+  }
+});

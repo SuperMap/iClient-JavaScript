@@ -135,6 +135,7 @@ describe('maplibregl_WebMap', () => {
       done();
     });
   });
+  
   it('setWebMapOptions', (done) => {
     let options = {
       server: server
@@ -151,13 +152,18 @@ describe('maplibregl_WebMap', () => {
     });
     datavizWebmap = new WebMap(id, options);
     datavizWebmap.once('mapcreatesucceeded', () => {
-      const nextUrl = 'http://www.test.com';
-      datavizWebmap.setServerUrl('http://www.test.com');
-      expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
+      expect(datavizWebmap.options.server).toBe(server);
       expect(datavizWebmap.options.serverUrl).toBe(datavizWebmap.options.server);
-      done();
+      const nextUrl = 'http://www.test.com';
+      datavizWebmap.setWebMapOptions({ server: nextUrl });
+      datavizWebmap.on('mapcreatesucceeded', () => {
+        expect(datavizWebmap.options.server).toBe(`${nextUrl}/`);
+        expect(datavizWebmap.options.serverUrl).toBe(datavizWebmap.options.server);
+        done();
+      });
     });
   });
+
   it('setMapOptions', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -654,7 +660,7 @@ describe('maplibregl_WebMap', () => {
         var mapJson = datavizWebMap_RestMap;
         return Promise.resolve(new Response(mapJson));
       }
-      return Promise.resolve();
+      lve(new Response(JSON.stringify({})));
     });
 
     var datavizWebmap = new WebMap(id, options);
@@ -1287,7 +1293,7 @@ describe('maplibregl_WebMap', () => {
       target: 'map',
       withCredentials: false
     };
-    var datavizWebmap1 = new WebMap(
+    datavizWebmap = new WebMap(
       '',
       { ...commonOption },
       mapOptionsList[0]
@@ -1298,13 +1304,14 @@ describe('maplibregl_WebMap', () => {
         server: server
       });
       datavizWebmap2.once('mapcreatesucceeded', function () {
-        const type1 = datavizWebmap1.getWebMapType();
+        const type1 = datavizWebmap.getWebMapType();
         const type2 = datavizWebmap2.getWebMapType();
         expect(type1).toBe('MapStyle');
         expect(type2).toBe('WebMap2');
+        datavizWebmap2.cleanLayers();
         done();
       });
     };
-    datavizWebmap1.once('mapcreatesucceeded', callback);
+    datavizWebmap.once('mapcreatesucceeded', callback);
   });
 });

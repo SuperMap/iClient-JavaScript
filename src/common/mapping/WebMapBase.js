@@ -350,7 +350,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      */
     setWebMapOptions(webMapOptions) {
       this.setServerUrl(webMapOptions.server);
-      this._createWebMap();
+      this._initWebMap();
     }
 
     /**
