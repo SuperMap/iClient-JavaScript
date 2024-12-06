@@ -628,13 +628,14 @@ describe('maplibregl_WebMapV2', () => {
 
   it('request wkt info and visibleExtend without EPSFG Prefix ', (done) => {
     const epsgeCode =
-      'PROJCS["unnamed",GEOGCS["GRS 1980(IUGG, 1980)",DATUM["unknown",SPHEROID["GRS80",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic_1SP"],PARAMETER["latitude_of_origin",43.0695160375],PARAMETER["central_meridian",-89.42222222222223],PARAMETER["scale_factor",1.0000384786],PARAMETER["false_easting",811000],PARAMETER["false_northing",480943.886],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Foot_US",0.3048006096012192],AUTHORITY["epsg","7599"]]';
+    'PROJCS["Google Maps Global Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Meter",1],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","900913"]]';
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/676516522/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
       } else if (url.indexOf('web/datas/13136933/content.json')) {
         return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
       }
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
     const id = { ...uniqueLayer_point, projection: epsgeCode };
     const callback = function (data) {
