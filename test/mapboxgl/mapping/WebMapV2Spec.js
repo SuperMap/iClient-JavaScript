@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
@@ -195,6 +195,7 @@ describe('mapboxgl_WebMapV2', () => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     dataFlowServiceSpyTest = spyOn(DataFlowServiceUtil, 'DataFlowService').and.callFake(DataFlowService);
     mapboxgl.CRS = CRS;
+    mapboxgl.proj4 = proj4;
     commonMap = {
       style: {},
       resize: jasmine.createSpy('resize').and.callFake(() => {}),
@@ -343,6 +344,7 @@ describe('mapboxgl_WebMapV2', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     mapboxgl.CRS = undefined;
+    mapboxgl.proj4 = undefined;
     window.jsonsql = undefined;
     window.canvg = undefined;
     window.geostats = undefined;
@@ -350,38 +352,6 @@ describe('mapboxgl_WebMapV2', () => {
     dataFlowServiceSpyTest = null;
   });
 
-  xit('_setCRS', (done) => {
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('portal.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
-      }
-      if (url.indexOf('map.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(webmap_MAPBOXSTYLE_Tile)));
-      }
-      if (url.indexOf('maps/China_4326/style.json') > -1) {
-        return Promise.resolve(new Response(styleJson));
-      }
-      return Promise.resolve();
-    });
-    datavizWebmap = new WebMap(id, {
-      server: server
-    });
-
-    spyOn(mapboxgl.CRS.prototype, 'get').and.callFake((crs) => {
-      if (crs === 'EPSG:4326') {
-        return crs;
-      }
-      return null;
-    });
-    datavizWebmap.on('mapcreatesucceeded', () => {
-      spyOn(mapboxgl.CRS.prototype, 'set');
-      datavizWebmap._handler._setCRS('EPSG:4326', 'test', { left: -180, right: 180 });
-      expect(mapboxgl.CRS.prototype.set).not.toHaveBeenCalled();
-      datavizWebmap._handler._setCRS('EPSG:2362', 'test', { left: -180, right: 180 });
-      expect(mapboxgl.CRS.prototype.set).toHaveBeenCalled();
-      done();
-    });
-  });
   it('test baseLayer layers count maploaded', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -674,7 +644,7 @@ describe('mapboxgl_WebMapV2', () => {
 
   it('request wkt info and visibleExtend without EPSFG Prefix ', (done) => {
     const epsgeCode =
-      'PROJCS["Google Maps Global Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Meter",1],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","900913"]]';
+      'PROJCS["unnamed",GEOGCS["GRS 1980(IUGG, 1980)",DATUM["unknown",SPHEROID["GRS80",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic_1SP"],PARAMETER["latitude_of_origin",43.0695160375],PARAMETER["central_meridian",-89.42222222222223],PARAMETER["scale_factor",1.0000384786],PARAMETER["false_easting",811000],PARAMETER["false_northing",480943.886],AXIS["Northing", "NORTH"],AXIS["Easting", "EAST"],UNIT["Foot_US",0.3048006096012192],AUTHORITY["epsg","7599"]]';
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/676516522/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
@@ -3229,6 +3199,264 @@ describe('mapboxgl_WebMapV2', () => {
         'EPSG:4326'
       );
       expect(spy).not.toHaveBeenCalled();
+      done();
+    });
+  });
+
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = datavizWebMap_RestMap;
+        return Promise.resolve(new Response(mapJson));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    const originCrs = mapboxgl.CRS.get('EPSG:3857');
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('mapcreatesucceeded', function ({ map }) {
+      expect(crsSetSpy).not.toHaveBeenCalled();
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(originCrs);
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(map.getCRS());
+      expect(map.getStyle().layers.length).toBe(2);
+      done();
+    });
+  });
+
+  it('when uncommon crs was defined, dont set repeat', (done) => {
+    const mapInfo = JSON.parse(raster4490);
+    const epsgCode = 'EPSG:4214';
+    const wkt_4214 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4214"]]';
+    mapInfo.projection = wkt_4214;
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              ...mapInfo,
+              baseLayer: {
+                ...mapInfo.baseLayer,
+                url: 'http://fake:8090/iserver/services/map-test4241/rest/maps/4214_123'
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('456/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              ...mapInfo,
+              baseLayer: {
+                ...mapInfo.baseLayer,
+                url: 'http://fake:8090/iserver/services/map-test4241/rest/maps/4214_456'
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('4214_123.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 4214 },
+              bounds: {
+                top: 85,
+                left: -180,
+                bottom: -85,
+                leftBottom: {
+                  x: -180,
+                  y: -85
+                },
+                right: 180,
+                rightTop: {
+                  x: 180,
+                  y: 85
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('4214_456.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 4214 },
+              bounds: {
+                top: 65,
+                left: -120,
+                bottom: -65,
+                leftBottom: {
+                  x: -120,
+                  y: -65
+                },
+                right: 120,
+                rightTop: {
+                  x: 120,
+                  y: 6
+                }
+              }
+            })
+          )
+        );
+      }
+    });
+    const originCrs = mapboxgl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    datavizWebmap = new WebMap(
+      '123',
+      {
+        target: 'map',
+        serverUrl: 'http://fake/fakeiportal',
+        withCredentials: false
+      }
+    );
+    datavizWebmap.once('mapcreatesucceeded', ({ map: map1 }) => {
+      expect(originCrs).toBeFalsy();
+      expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+      expect(mapboxgl.CRS.get(epsgCode)).toEqual(map1.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map1.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map1.getCRS().getWKT()).toBe(wkt_4214);
+      const originRange = [-180, 85];
+      expect(map1.getCRS().getOrigin()).toEqual(originRange);
+      expect(map1.getStyle().layers.length).toBe(1);
+      datavizWebmap.setMapId('456');
+      datavizWebmap.on('mapcreatesucceeded', ({ map: map2 }) => {
+        expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+        expect(mapboxgl.CRS.get(epsgCode)).toEqual(map2.getCRS());
+        expect(map1.getCRS()).toEqual(map2.getCRS());
+        expect(crsSetSpy).toHaveBeenCalledTimes(2);
+        expect(map2.getCRS().getEpsgCode()).toBe(epsgCode);
+        expect(map2.getCRS().getWKT()).toBe(wkt_4214);
+        expect(map2.getCRS().getOrigin()).toEqual(originRange);
+        expect(map2.getStyle().layers.length).toBe(1);
+        done();
+      });
+    });
+  });
+
+  it('when uncommon crs was defined, baselayer is TILE', (done) => {
+    const mapInfo = JSON.parse(raster4490);
+    const epsgCode = 'EPSG:4215';
+    mapInfo.projection = epsgCode;
+    const wkt_4215 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4215"]]';
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              ...mapInfo,
+              baseLayer: {
+                ...mapInfo.baseLayer,
+                url: 'http://fake:8090/iserver/services/map-test4241/rest/maps/4215_123'
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('4215_123.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 4215 },
+              bounds: {
+                top: 85,
+                left: -180,
+                bottom: -85,
+                leftBottom: {
+                  x: -180,
+                  y: -85
+                },
+                right: 180,
+                rightTop: {
+                  x: 180,
+                  y: 85
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('prjCoordSys.wkt')) {
+        return Promise.resolve(new Response(wkt_4215));
+      }
+    });
+    const originCrs = mapboxgl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    datavizWebmap = new WebMap(
+      '123',
+      {
+        target: 'map',
+        serverUrl: 'http://fake/fakeiportal',
+        withCredentials: false
+      }
+    );
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(originCrs).toBeFalsy();
+      expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+      expect(mapboxgl.CRS.get(epsgCode)).toEqual(map.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map.getCRS().getWKT()).toBe(wkt_4215);
+      expect(map.getCRS().getOrigin()).toEqual([-180, 85]);
+      expect(map.getStyle().layers.length).toBe(1);
+      done();
+    });
+  });
+
+  it('when uncommon crs was defined, baselayer is MAPBOXSTYLE', (done) => {
+    const epsgCode = 'EPSG:4216';
+    const wkt_4216 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4216"]]';
+    const mapInfo = {
+      ...webmap_MAPBOXSTYLE_Tile,
+      layers: [],
+      projection: wkt_4216
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    const originCrs = mapboxgl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    datavizWebmap = new WebMap(
+      '123',
+      {
+        target: 'map',
+        serverUrl: 'http://fake/fakeiportal',
+        withCredentials: false
+      }
+    );
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(originCrs).toBeFalsy();
+      expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+      expect(mapboxgl.CRS.get(epsgCode)).toEqual(map.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map.getCRS().getWKT()).toBe(wkt_4216);
+      expect(map.getCRS().getOrigin()).toEqual([vectorTile_style.metadata.indexbounds[0], vectorTile_style.metadata.indexbounds[3]]);
+      expect(map.getStyle().layers.length).toBe(vectorTile_style.layers.length - 1);
       done();
     });
   });

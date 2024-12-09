@@ -1,4 +1,6 @@
 import mapboxgl from 'mapbox-gl';
+import proj4 from 'proj4';
+
 class VectorTileSource {
   constructor(id, options) {
     this.id = id;
@@ -408,10 +410,9 @@ const Map = function (options) {
 };
 
 class CRS {
-  constructor(epsgCode, WKT, extent, unit) {
+  constructor(epsgCode, WKT, extent) {
     this.epsgCode = epsgCode;
     this.extent = extent;
-    this.unit = unit;
     if (Array.isArray(WKT)) {
         this.extent = WKT;
         WKT = null;
@@ -420,6 +421,14 @@ class CRS {
         this.extent[1] = Math.max(this.extent[1], -90);
     }
     this.WKT = WKT || CRS.defaultWKTs[epsgCode];
+    if (this.WKT) {
+        proj4.defs(epsgCode, this.WKT);
+    }
+    const defs = proj4.defs(epsgCode);
+    if (!defs) {
+        throw new Error(`${epsgCode} was not defined,make sure the WKT param was not null`);
+    }
+    this.unit = defs.units || 'degree';
     CRS.set(this);
   }
 
@@ -439,6 +448,14 @@ class CRS {
 
   getEpsgCode() {
       return this.epsgCode;
+  }
+
+  getUnit() {
+      return this.unit;
+  }
+
+  getWKT() {
+      return this.WKT;
   }
 
   getOrigin() {
@@ -473,4 +490,4 @@ CRS.EPSG4326 = new CRS('EPSG:4326', [-180, -90, 180, 90]);
 
 export default Map;
 var mapboxglMock = { Map };
-export { mapboxglMock, CRS };
+export { mapboxglMock, CRS, proj4 };

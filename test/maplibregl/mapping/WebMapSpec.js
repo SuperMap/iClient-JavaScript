@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl';
-import mbglmap, { CRS } from '../../tool/mock_maplibregl_map';
+import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
@@ -14,6 +14,7 @@ describe('maplibregl_WebMap', () => {
   beforeEach(() => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     maplibregl.CRS = CRS;
+    maplibregl.proj4 = proj4;
 
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
@@ -36,6 +37,7 @@ describe('maplibregl_WebMap', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     maplibregl.CRS = undefined;
+    maplibregl.proj4 = undefined;
     window.jsonsql = undefined;
   });
   it('initialize_TIANDITU_VEC', (done) => {
@@ -1313,5 +1315,69 @@ describe('maplibregl_WebMap', () => {
       });
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
+    const originCrs = maplibregl.CRS.get('EPSG:3857');
+    const crsSetSpy = spyOn(maplibregl.CRS, 'set').and.callThrough();
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap('', { ...commonOption }, mapOptionsList[0]);
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(crsSetSpy).not.toHaveBeenCalled();
+      expect(maplibregl.CRS.get('EPSG:3857')).toEqual(originCrs);
+      expect(maplibregl.CRS.get('EPSG:3857')).toEqual(map.getCRS());
+      done();
+    });
+  });
+
+  it('when uncommon crs was defined, dont set repeat', (done) => {
+    const wkt_4223 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4223"]]';
+    const epsgCode = 'EPSG:4223';
+    const originCrs = maplibregl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(maplibregl.CRS, 'set').and.callThrough();
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap('', { ...commonOption }, { ...mapOptionsList[0], crs: {
+      epsgCode: epsgCode,
+      extent: [-180, -85, 180, 85],
+      WKT: wkt_4223
+    }});
+    datavizWebmap.once('mapcreatesucceeded', ({ map: map1 }) => {
+      expect(originCrs).toBeFalsy();
+      expect(maplibregl.CRS.get(epsgCode)).toBeTruthy();
+      expect(maplibregl.CRS.get(epsgCode)).toEqual(map1.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map1.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map1.getCRS().getWKT()).toBe(wkt_4223);
+      const originRange = [-180, 85];
+      expect(map1.getCRS().getOrigin()).toEqual(originRange);
+      datavizWebmap.setMapOptions({
+        ...mapOptionsList[1],
+        crs: {
+          name: epsgCode,
+          extent: [-120, -65, 120, 65],
+          wkt: wkt_4223
+        }
+      });
+      datavizWebmap.setStyle(mapOptionsList[1].style);
+      datavizWebmap.once('mapcreatesucceeded', ({ map: map2 }) => {
+        expect(maplibregl.CRS.get(epsgCode)).toBeTruthy();
+        expect(maplibregl.CRS.get(epsgCode)).toEqual(map2.getCRS());
+        expect(map1.getCRS()).toEqual(map2.getCRS());
+        expect(crsSetSpy).toHaveBeenCalledTimes(2);
+        expect(map2.getCRS().getEpsgCode()).toBe(epsgCode);
+        expect(map2.getCRS().getWKT()).toBe(wkt_4223);
+        expect(map2.getCRS().getOrigin()).toEqual(originRange);
+        delete maplibregl.CRS[epsgCode.replace(':', '')];
+        done();
+      });
+    });
   });
 });

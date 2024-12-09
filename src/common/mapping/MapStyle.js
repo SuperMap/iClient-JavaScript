@@ -2,7 +2,7 @@ import { WebMapService } from './WebMapService';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
 import { createAppreciableLayerId, isSameRasterLayer } from './utils/util';
 
-export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
+export function createMapStyleExtending(SuperClass, { MapManager, crsManager }) {
   return class MapStyle extends SuperClass {
     constructor(id, options = {}, mapOptions = {}) {
       super();
@@ -11,24 +11,22 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
       this.webMapService = new WebMapService(id, options);
       this._layerIdRenameMapList = [];
       this._appendLayers = false;
+      this._baseProjection = '';
     }
 
     initializeMap(_, map) {
+      this._baseProjection = this._registerMapCRS(this.mapOptions);
       if (map) {
+        if (!crsManager.isSameProjection(map, this._baseProjection)) {
+          this.fire('projectionnotmatch');
+          return;
+        }
         this._appendLayers = true;
         this.map = map;
         this._addLayersToMap();
         return;
       }
       this.mapOptions.container = this.options.target;
-      if (typeof this.mapOptions.crs === 'object' && this.mapOptions.crs.epsgCode) {
-        this.mapOptions.crs = new mapRepo.CRS(
-          this.mapOptions.crs.epsgCode,
-          this.mapOptions.crs.WKT,
-          this.mapOptions.crs.extent,
-          this.mapOptions.crs.unit
-        );
-      }
       if (!this.mapOptions.transformRequest) {
         this.mapOptions.transformRequest = (url, resourceType) => {
           let proxy = '';
@@ -53,7 +51,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
       if (Object.prototype.hasOwnProperty.call(this.mapOptions, 'fadeDuration')) {
         fadeDuration = this.mapOptions.fadeDuration;
       }
-      this.map = new MapManager({ ...this.mapOptions, fadeDuration });
+      this.map = new MapManager({ ...this.mapOptions, fadeDuration, crs: this._baseProjection });
       this.fire('mapinitialized', { map: this.map });
       this.map.on('load', () => {
         this._sendMapToUser();
@@ -69,6 +67,17 @@ export function createMapStyleExtending(SuperClass, { MapManager, mapRepo }) {
         removeMap && this.map.remove();
         this.map = null;
       }
+    }
+
+    _registerMapCRS(mapOptions) {
+      const { crs } = mapOptions;
+      let epsgCode = crs;
+      if (typeof crs === 'object' && crs.epsgCode) {
+        const { epsgCode: name, WKT: wkt, extent, unit  } = crs;
+        crsManager.registerCRS({ name, wkt, extent, unit });
+        epsgCode = name;
+      }
+      return epsgCode;
     }
 
     _addLayersToMap() {

@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */
 import cloneDeep from 'lodash.clonedeep';
-import { getProjection, registerProjection, toEpsgCode, transformCoodinates } from './utils/epsg-define';
+import { getProjection, toEpsgCode, transformCoodinates } from './utils/epsg-define';
 import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
@@ -17,7 +17,7 @@ const INTERNET_MAP_BOUNDS = {
   BING: [-180, -90, 180, 90]
 } 
 
-export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataFlowService, GraticuleLayer }) {
+export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, DataFlowService, GraticuleLayer }) {
   return class WebMapV2 extends SuperClass {
     constructor(
       id,
@@ -49,12 +49,23 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       this._appendLayers = false;
     }
 
-    initializeMap(mapInfo, map) {
-      if (map) {
-        this._appendLayers = true;
-        this.map = map;
+    async initializeMap(mapInfo, map) {
+      try {
+        this.baseProjection = await this._registerMapCRS(mapInfo);
+        if (map) {
+          if (!crsManager.isSameProjection(map, this.baseProjection) && !this.ignoreBaseProjection) {
+            this.fire('projectionnotmatch');
+            return;
+          }
+          this._appendLayers = true;
+          this.map = map;
+        }
+        this._mapInfo = mapInfo;
+        this._loadLayers(mapInfo, this._taskID);
+      } catch (error) {
+        console.error(error);
+        this.fire('mapcreatefailed', { error });
       }
-      this._getMapInfo(mapInfo, this._taskID);
     }
 
     cleanLayers(layers) {
@@ -95,12 +106,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
 
     _initWebMap() {}
 
+    _getMapInfo() {}
+
     _loadLayers(mapInfo, _taskID) {
       if (this.map) {
-        if (this.map.getCRS().epsgCode !== this.baseProjection && !this.ignoreBaseProjection) {
-          this.fire('projectionnotmatch', {});
-          return;
-        }
         this._handleLayerInfo(mapInfo, _taskID);
       } else {
         setTimeout(() => {
@@ -112,95 +121,59 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       }
     }
 
-    _setCRS(baseProjection, wkt, bounds) {
-      if (mapRepo.CRS.get(baseProjection)) {
-        return;
-      }
-      const crs = new mapRepo.CRS(baseProjection, wkt, bounds, bounds[2] > 180 ? 'meter' : 'degree');
-      mapRepo.CRS.set(crs);
-    }
-
-    _getMapInfo(mapInfo, _taskID) {
-      this._mapInfo = mapInfo;
-      const { projection } = mapInfo;
-      let bounds, wkt;
-      this.baseProjection = toEpsgCode(projection);
-      let defaultWktValue = getProjection(this.baseProjection, this.specifiedProj4);
-
-      if (defaultWktValue) {
-        wkt = defaultWktValue;
-      }
-      if (!mapRepo.CRS.get(this.baseProjection)) {
-        if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
-          let url = mapInfo.baseLayer.dataSource.url;
-          if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
-            url += '/style.json';
-          }
-          this.webMapService.getMapBoxStyle(url).then((res) => {
+    async _registerMapCRS(mapInfo) {
+      const { projection, extent, baseLayer = {} } = mapInfo;
+      const epsgCode = toEpsgCode(projection);
+      let crs = {
+        name: epsgCode,
+        extent: [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y],
+        wkt: this._getProjectionWKT(projection)
+      };
+      if (!crsManager.getCRS(epsgCode)) {
+        switch (baseLayer.layerType) {
+          case 'MAPBOXSTYLE': {
+            let url = baseLayer.dataSource.url;
+            if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
+              url += '/style.json';
+            }
+            const res = await this.webMapService.getMapBoxStyle(url);
             if (res && res.metadata && res.metadata.indexbounds) {
-              bounds = res.metadata.indexbounds;
-            } else {
-              bounds = [
-                mapInfo.extent.leftBottom.x,
-                mapInfo.extent.leftBottom.y,
-                mapInfo.extent.rightTop.x,
-                mapInfo.extent.rightTop.y
+              crs.extent = res.metadata.indexbounds;
+            }
+            break;
+          }
+          case 'TILE': {
+            // 获取地图的wkt
+            if (!crs.wkt) {
+              crs.wkt = await this.getEpsgCodeWKT(`${baseLayer.url}/prjCoordSys.wkt`, {
+                withoutFormatSuffix: true,
+                withCredentials: this.webMapService.handleWithCredentials('', baseLayer.url, false)
+              });
+            }
+            const boundsRes = await this.getBounds(`${baseLayer.url}.json`, {
+              withoutFormatSuffix: true,
+              withCredentials: this.webMapService.handleWithCredentials('', baseLayer.url, false)
+            });
+            if (boundsRes && boundsRes.bounds) {
+              crs.extent = [
+                boundsRes.bounds.leftBottom.x,
+                boundsRes.bounds.leftBottom.y,
+                boundsRes.bounds.rightTop.x,
+                boundsRes.bounds.rightTop.y
               ];
             }
-            this._defineProj4(projection);
-            this._setCRS(this.baseProjection, wkt, bounds);
-            this._loadLayers(mapInfo, _taskID);
-          });
-        } else if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'TILE') {
-          // 获取地图的wkt
-          this.getEpsgCodeWKT(`${mapInfo.baseLayer.url}/prjCoordSys.wkt`, {
-            withoutFormatSuffix: true,
-            withCredentials: this.webMapService.handleWithCredentials('', mapInfo.baseLayer.url, false)
-          }).then((res) => {
-            if (!wkt) {
-              wkt = res;
-            }
-            this.getBounds(`${mapInfo.baseLayer.url}.json`, {
-              withoutFormatSuffix: true,
-              withCredentials: this.webMapService.handleWithCredentials('', mapInfo.baseLayer.url, false)
-            }).then((res) => {
-              if (res && res.bounds) {
-                bounds = [
-                  res.bounds.leftBottom.x,
-                  res.bounds.leftBottom.y,
-                  res.bounds.rightTop.x,
-                  res.bounds.rightTop.y
-                ];
-              } else {
-                bounds = [
-                  mapInfo.extent.leftBottom.x,
-                  mapInfo.extent.leftBottom.y,
-                  mapInfo.extent.rightTop.x,
-                  mapInfo.extent.rightTop.y
-                ];
-              }
-              this._defineProj4(wkt, projection);
-              this._setCRS(this.baseProjection, wkt, bounds);
-              this._loadLayers(mapInfo, _taskID);
-            });
-          });
-        } else {
-          const error = new Error('Unsupported coordinate system!');
-          console.log(error);
-          this.fire('mapcreatefailed', { error });
+            break;
+          }
+          default:
+            crs = null;
+            break;
         }
-      } else {
-        wkt = mapRepo.CRS.get(this.baseProjection).WKT
-        this._defineProj4(wkt || projection);
-        bounds = [
-          mapInfo.extent.leftBottom.x,
-          mapInfo.extent.leftBottom.y,
-          mapInfo.extent.rightTop.x,
-          mapInfo.extent.rightTop.y
-        ];
-        this._setCRS(this.baseProjection, wkt, bounds);
-        this._loadLayers(mapInfo, _taskID);
       }
+      if (!crs) {
+        throw new Error('Unsupported coordinate system!')
+      }
+      crsManager.registerCRS(crs);
+      return epsgCode;
     }
 
     _handleLayerInfo(mapInfo, _taskID) {
@@ -499,7 +472,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
         layerInfo.dataSource &&
         layerInfo.dataSource.type !== 'REST_DATA'
       ) {
-        this._unprojectProjection = this._defineProj4(projection);
+        this._unprojectProjection = toEpsgCode(projection);
         features = this.transformFeatures(features);
       }
 
@@ -2772,15 +2745,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       return tiandituUrls;
     }
 
-    _defineProj4(projection, defaultEpsgCode) {
+    _getProjectionWKT(projection) {
       let epsgCode = toEpsgCode(projection);
       const reg = /^EPSG:/;
-      const defValue = epsgCode && projection.match(reg) ? getProjection(epsgCode, this.specifiedProj4) : projection;
-      if (!epsgCode && defaultEpsgCode && defaultEpsgCode.match(reg)) {
-        epsgCode = defaultEpsgCode;
-      }
-      registerProjection(epsgCode, defValue, this.specifiedProj4);
-      return epsgCode;
+      return epsgCode && projection.match(reg) ? getProjection(epsgCode, this.specifiedProj4) : projection;
     }
 
     _fetchRequest(url, type, options) {
@@ -2805,7 +2773,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
 
     getBounds(baseUrl, options) {
       if (!baseUrl) {
-        return;
+        return Promise.resolve(null);
       }
       return this._fetchRequest(baseUrl, 'json', options);
     }

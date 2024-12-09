@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
@@ -14,6 +14,7 @@ describe('mapboxgl_WebMap', () => {
   beforeEach(() => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     mapboxgl.CRS = CRS;
+    mapboxgl.proj4 = proj4;
 
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
@@ -36,6 +37,7 @@ describe('mapboxgl_WebMap', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     mapboxgl.CRS = undefined;
+    mapboxgl.proj4 = undefined;
     window.jsonsql = undefined;
   });
   it('initialize_TIANDITU_VEC', (done) => {
@@ -199,6 +201,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
+  
   it('initialize_TIANDITU_IMAGE', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -1135,8 +1138,6 @@ describe('mapboxgl_WebMap', () => {
           }
           return null;
         });
-        datavizWebmap.setCRS('EPSG:4326');
-        expect(map.setCRS).not.toHaveBeenCalled();
         datavizWebmap.setCRS('EPSG:3857');
         expect(map.setCRS).toHaveBeenCalled();
         datavizWebmap.map = null;
@@ -1333,5 +1334,69 @@ describe('mapboxgl_WebMap', () => {
       });
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
+    const originCrs = mapboxgl.CRS.get('EPSG:3857');
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap('', { ...commonOption }, mapOptionsList[0]);
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(crsSetSpy).not.toHaveBeenCalled();
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(originCrs);
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(map.getCRS());
+      done();
+    });
+  });
+
+  it('when uncommon crs was defined, dont set repeat', (done) => {
+    const wkt_4222 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4222"]]';
+    const epsgCode = 'EPSG:4222';
+    const originCrs = mapboxgl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    datavizWebmap = new WebMap('', { ...commonOption }, { ...mapOptionsList[0], crs: {
+      epsgCode: epsgCode,
+      extent: [-180, -85, 180, 85],
+      WKT: wkt_4222
+    }});
+    datavizWebmap.once('mapcreatesucceeded', ({ map: map1 }) => {
+      expect(originCrs).toBeFalsy();
+      expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+      expect(mapboxgl.CRS.get(epsgCode)).toEqual(map1.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map1.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map1.getCRS().getWKT()).toBe(wkt_4222);
+      const originRange = [-180, 85];
+      expect(map1.getCRS().getOrigin()).toEqual(originRange);
+      datavizWebmap.setMapOptions({
+        ...mapOptionsList[1],
+        crs: {
+          name: epsgCode,
+          extent: [-120, -65, 120, 65],
+          wkt: wkt_4222
+        }
+      });
+      datavizWebmap.setStyle(mapOptionsList[1].style);
+      datavizWebmap.once('mapcreatesucceeded', ({ map: map2 }) => {
+        expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+        expect(mapboxgl.CRS.get(epsgCode)).toEqual(map2.getCRS());
+        expect(map1.getCRS()).toEqual(map2.getCRS());
+        expect(crsSetSpy).toHaveBeenCalledTimes(2);
+        expect(map2.getCRS().getEpsgCode()).toBe(epsgCode);
+        expect(map2.getCRS().getWKT()).toBe(wkt_4222);
+        expect(map2.getCRS().getOrigin()).toEqual(originRange);
+        delete mapboxgl.CRS[epsgCode.replace(':', '')];
+        done();
+      });
+    });
   });
 });

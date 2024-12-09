@@ -172,7 +172,6 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       this._mapInitializedHandler = this._mapInitializedHandler.bind(this);
       this._mapCreateSucceededHandler = this._mapCreateSucceededHandler.bind(this);
       this._addLayerChangedHandler = this._addLayerChangedHandler.bind(this);
-      this._initWebMap(!this.map);
     }
 
     /**
@@ -189,33 +188,6 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
         const zoom = this._getResizedZoom(bounds, mapContainerStyle);
         if (zoom !== this.map.getZoom()) {
           this.map && this.map.setZoom(zoom);
-        }
-      }
-    }
-
-    /**
-     * @function WebMapBase.prototype.setCRS
-     * @description 更新地图投影。
-     * @param {string|Object} crs - 地图 crs。
-     */
-    setCRS(crs) {
-      if (this.map) {
-        this.mapOptions.crs = crs;
-        if (this.mapOptions.crs) {
-          if (this.map.getCRS(typeof crs === 'string' ? crs : crs.epsgCode)) {
-            return;
-          }
-          if (crs.epsgCode) {
-            this.mapOptions.crs = new mapRepo.CRS(
-              this.mapOptions.crs.epsgCode,
-              this.mapOptions.crs.WKT,
-              this.mapOptions.crs.extent,
-              this.mapOptions.crs.unit
-            );
-            this.map.setCRS(this.mapOptions.crs);
-          } else {
-            this.map.setCRS(mapRepo.CRS.get(crs));
-          }
         }
       }
     }
@@ -500,6 +472,10 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       this.clean(false);
     }
 
+    _readyForInitializingWebMap() {
+      this._initWebMap(!this.map);
+    }
+
     _initWebMap(clean = true) {
       clean && this.clean();
       if (this.webMapInfo) {
@@ -660,6 +636,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
         };
       }
       this.type = type;
+      // initializeMap 完成3个步骤：1. 注册投影 2. 判断投影与存在的map是否一致 3. 创建地图
       this._handler.initializeMap(_mapInfo, this.map);
     }
 

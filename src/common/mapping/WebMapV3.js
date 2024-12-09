@@ -158,7 +158,7 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRepoName, l7LayerUtil }) {
+export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil }) {
   return class WebMapV3 extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
     super();
@@ -175,13 +175,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
 
   initializeMap(mapInfo, map) {
     this._mapInfo = mapInfo;
-    const proj = this._setBaseProjection();
-    if (!proj) {
-      return;
-    }
+    this._baseProjection = this._registerMapCRS(mapInfo);
     if (map) {
-      this._appendLayers = true;
       this.map = map;
+      if (!crsManager.isSameProjection(this.map, this._baseProjection)) {
+        this.fire('projectionnotmatch');
+        return;
+      }
+      this._appendLayers = true;
        // 处理图层管理添加 sprite
        const sprite = this._mapInfo.sprite;
        if (sprite) {
@@ -323,29 +324,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     });
   }
 
-  _setBaseProjection() {
-    let crs = this._mapInfo.crs;
-    let baseProjection = crs;
+  _registerMapCRS(mapInfo) {
+    const { crs } = mapInfo;
+    let epsgCode = crs;
     if (typeof crs === 'object') {
-      baseProjection = crs.name;
-      if (!mapRepo.CRS) {
-        const error = `The EPSG code ${baseProjection} needs to include ${mapRepoName}-enhance.js. Refer to the example: https://iclient.supermap.io/examples/${mapRepoName.replace('-', '')}/editor.html#mvtVectorTile_2362`;
-        this.fire('mapcreatefailed', { error: error });
-        console.error(error);
-        return;
-      }
-      this._setCRS(crs);
+      crsManager.registerCRS(crs);
+      epsgCode = crs.name;
     }
-    this._baseProjection = baseProjection;
-    return this._baseProjection;
-  }
-
-  _setCRS({ name, wkt, extent }) {
-    if (mapRepo.CRS.get(name)) {
-      return;
-    }
-    const crs = new mapRepo.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
-    mapRepo.CRS.set(crs);
+    return epsgCode;
   }
 
   /**
@@ -354,10 +340,6 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
    * @description emit 图层加载成功事件。
    */
   async _initLayers() {
-    if (this.map.getCRS && this.map.getCRS().epsgCode !== this._baseProjection) {
-      this.fire('projectionnotmatch');
-      return;
-    }
     await this._getSpriteDatas();
     if (Object.prototype.toString.call(this.mapId) === '[object Object]') {
       this.mapParams = {
