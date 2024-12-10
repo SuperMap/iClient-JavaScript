@@ -1208,7 +1208,8 @@ export class WebMapService {
       fromIndex: 0,
       toIndex: -1,
       maxFeatures: -1,
-      returnContent: true
+      returnContent: true,
+      returnFeaturesOnly: true
     });
     if (baseProjection && baseProjection !== 'EPSG:4326') {
       getFeatureBySQLParams.targetEpsgCode = 4326;

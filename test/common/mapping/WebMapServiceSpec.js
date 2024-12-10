@@ -880,7 +880,8 @@ describe('WebMapServiceSpec.js', () => {
     let getFeatureBySQLParams;
     spyOn(FetchRequest, 'post').and.callFake((url, options) => {
       getFeatureBySQLParams = options;
-      return Promise.resolve(new Response(JSON.stringify(REST_DATA_SQL_RESULT)));
+      expect(url.includes('returnFeaturesOnly=true')).toBeTruthy()
+      return Promise.resolve(new Response(JSON.stringify(REST_DATA_SQL_RESULT.features)));
     });
     const type = 'rest_data';
     const layer = {
@@ -894,13 +895,14 @@ describe('WebMapServiceSpec.js', () => {
     const baseProjection = 'EPSG:3857';
     const service = new WebMapService(mapId, options);
     const spy = spyOn(service, '_getFeatureBySQL').and.callThrough();;
-    service.getLayerFeatures(type, layer, baseProjection).then(() => {
+    service.getLayerFeatures(type, layer, baseProjection).then((res) => {
       const params = spy.calls.allArgs()[0];
       expect(params[0]).toBe(layer.dataSource.url);
       expect(params[1]).toEqual(["中国矢量数据:飞机场"]);
       expect(params[4]).toEqual(baseProjection);
       expect(typeof getFeatureBySQLParams).toBe('string');
       expect(getFeatureBySQLParams).toContain(`'targetEpsgCode':4326`);
+      expect(res.features instanceof Array).toBeTruthy();
       done();
     });
   });
