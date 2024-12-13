@@ -838,12 +838,17 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         width: 256,
         height: 256
       };
-      if (version === '1.3.0') {
-        options.bbox = this.baseProjection === 'EPSG:4326' ? '{bbox-wms-1.3.0}' : '{bbox-epsg-3857}';
-        options.crs = this.baseProjection;
-      } else {
-        options.bbox = '{bbox-epsg-3857}';
-        options.srs = this.baseProjection;
+      options.bbox = '{bbox}';
+      options.crs = this.baseProjection;
+      if (version === '1.3.0' ) {
+        if (this.baseProjection === 'EPSG:4326') {
+          options.bbox = '{bbox-wms-1.3.0}';
+        } else {
+          const proj = crsManager.getProj4().defs(this.baseProjection);
+          if (proj.axis && proj.axis.indexOf('ne') === 0) {
+            options.bbox = '{bbox-wms-1.3.0}';
+          } 
+        }
       }
       return Util.urlAppend(url, this._getParamString(options, url));
     }
