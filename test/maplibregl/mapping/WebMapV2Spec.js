@@ -1708,6 +1708,32 @@ describe('maplibregl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
+  it('add wmsLayer with 2326WKT and version is 1.3.0', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('map-world/wms130') > -1) {
+          return Promise.resolve(new Response(wmsCapabilitiesTextWith130));
+        }
+        return Promise.resolve(new Response(JSON.stringify({})));
+      });
+      const callback = function (data) {
+        expect(data).not.toBeUndefined();
+        expect(data.map.getSource('世界地图_Day').tiles[0].indexOf('{bbox-wms-1.3.0}')).toBeGreaterThan(-1);
+        done();
+      };
+      datavizWebmap = new WebMap({
+        ...wmsLayer,
+        projection: 'PROJCS[\"Hong Kong 1980 Grid System\", \r\n  GEOGCS[\"Hong Kong 1980\", \r\n    DATUM[\"Hong Kong 1980\", \r\n      SPHEROID[\"International 1924\", 6378388.0, 297.0, AUTHORITY[\"EPSG\",\"7022\"]], \r\n      TOWGS84[-162.619, -276.959, -161.764, 0.067753, -2.243649, -1.158827, -1.094246], \r\n      AUTHORITY[\"EPSG\",\"6611\"]], \r\n    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \r\n    UNIT[\"degree\", 0.017453292519943295], \r\n    AXIS[\"lat\", NORTH], \r\n    AXIS[\"lon\", EAST], \r\n    AUTHORITY[\"EPSG\",\"4611\"]], \r\n  PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \r\n  PARAMETER[\"central_meridian\", 114.17855555555556], \r\n  PARAMETER[\"latitude_of_origin\", 22.312133333333335], \r\n  PARAMETER[\"scale_factor\", 1.0], \r\n  PARAMETER[\"false_easting\", 836694.05], \r\n  PARAMETER[\"false_northing\", 819069.8], \r\n  UNIT[\"m\", 1.0], \r\n  AXIS[\"Northing\", NORTH], \r\n  AXIS[\"Easting\", EAST], \r\n  AUTHORITY[\"EPSG\",\"2326\"]]',
+        center: { x: 113.90326937827093,y: 22.285836066567555 },
+        layers: [
+          {
+            ...wmsLayer.layers[0],
+            url: 'http://fack/iserver/services/map-world/wms130/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Day?'
+          }
+        ]
+      });
+      datavizWebmap.on('mapcreatesucceeded', callback);
+    });
+
   it('add wmtsLayer with correct url', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map-china400/wmts100') > -1) {

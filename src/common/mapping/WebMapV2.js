@@ -2,11 +2,11 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */
 import cloneDeep from 'lodash.clonedeep';
-import { getProjection, registerProjection, toEpsgCode, transformCoodinates } from './utils/epsg-define';
-import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { Util } from '../commontypes/Util';
 import { ArrayStatistic } from '../util/ArrayStatistic';
+import { ColorsPickerUtil } from '../util/ColorsPickerUtil';
 import { FetchRequest } from '../util/FetchRequest';
+import { getProjection, registerProjection, toEpsgCode, transformCoodinates } from './utils/epsg-define';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
 import { isSameRasterLayer, mergeFeatures } from './utils/util';
 
@@ -124,12 +124,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       this._mapInfo = mapInfo;
       const { projection } = mapInfo;
       let bounds, wkt;
-      this.baseProjection = toEpsgCode(projection);
-      let defaultWktValue = getProjection(this.baseProjection, this.specifiedProj4);
-
-      if (defaultWktValue) {
-        wkt = defaultWktValue;
+      if (projection.indexOf('EPSG') === 0) {
+        this.baseProjection = projection;
+        wkt = getProjection(projection, this.specifiedProj4);
+      } else {
+        this.baseProjection = toEpsgCode(projection);
+        wkt = projection;
       }
+
       if (!mapRepo.CRS.get(this.baseProjection)) {
         if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
           let url = mapInfo.baseLayer.dataSource.url;
@@ -865,12 +867,17 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
         width: 256,
         height: 256
       };
+      options.bbox = '{bbox}';
+      options.crs = this.baseProjection;
       if (version === '1.3.0') {
-        options.bbox = this.baseProjection === 'EPSG:4326' ? '{bbox-wms-1.3.0}' : '{bbox-epsg-3857}';
-        options.crs = this.baseProjection;
-      } else {
-        options.bbox = '{bbox-epsg-3857}';
-        options.srs = this.baseProjection;
+        if (this.baseProjection === 'EPSG:4326') {
+          options.bbox = '{bbox-wms-1.3.0}';
+        } else {
+          const proj = getProjection(this.baseProjection, this.specifiedProj4);
+          if (proj.axis && proj.axis.indexOf('ne') === 0) {
+            options.bbox = '{bbox-wms-1.3.0}';
+          }
+        }
       }
       return Util.urlAppend(url, this._getParamString(options, url));
     }
