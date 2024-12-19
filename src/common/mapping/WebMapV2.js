@@ -47,6 +47,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       this._cacheLayerId = new Map();
       this._layerTimerList = [];
       this._appendLayers = false;
+      this._tileTransformRequest = options.tileTransformRequest;
     }
 
     initializeMap(mapInfo, map) {
@@ -332,7 +333,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
             const proxy = this.webMapService.handleProxy('image');
             return {
               url: url,
-              credentials: this.webMapService.handleWithCredentials(proxy, url, false) ? 'include' : undefined
+              credentials: this.webMapService.handleWithCredentials(proxy, url, false) ? 'include' : undefined,
+              ...(this._tileTransformRequest && this._tileTransformRequest(url))
             };
           }
           return { url };

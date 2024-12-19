@@ -234,13 +234,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
     if (l7LayerUtil.isL7Layer(copyLayer)) {
       const layers = [copyLayer];
-      await l7LayerUtil.addL7Layers({
-        map: this.map,
-        webMapInfo: { ...this._mapInfo, layers, sources: this._mapInfo.sources },
-        l7Layers: layers,
-        spriteDatas: this._spriteDatas,
-        options: this.options
-      });
+      const params = this._getAddL7LayersParams(layers, this._mapInfo.sources, layers);
+      await l7LayerUtil.addL7Layers(params);
     } else {
       if (typeof copyLayer.source === 'object') {
         this.map.addSource(copyLayer.id, copyLayer.source);
@@ -286,18 +281,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
-      transformRequest: (url, resourceType) => {
-        const res = { url };
-        if (
-          resourceType === 'Tile' &&
-          this.options.iportalServiceProxyUrl &&
-          url.indexOf(this.options.iportalServiceProxyUrl) >= 0
-          ) {
-          res.credentials = 'include';
-        }
-        return res;
-      },
       ...this.mapOptions,
+      transformRequest: this._getTransformRequest(),
       container: this.options.target,
       crs: this._baseProjection,
       center,
@@ -321,6 +306,23 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     this.map.on('load', () => {
       this._initLayers();
     });
+  }
+
+  _getTransformRequest() {
+    if (this.mapOptions.transformRequest) {
+      return this.mapOptions.transformRequest;
+    }
+    return (url, resourceType) => {
+      if (resourceType === 'Tile') {
+        const withCredentials = this.options.iportalServiceProxyUrl && url.indexOf(this.options.iportalServiceProxyUrl) >= 0;
+        return {
+          url: url,
+          credentials: withCredentials ? 'include' : undefined,
+          ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
+        };
+      }
+      return { url };
+    }
   }
 
   _setBaseProjection() {
@@ -441,22 +443,28 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
       });
       const l7Layers = layers.filter((layer) => l7LayerUtil.isL7Layer(layer));
       if (l7Layers.length > 0) {
-        await l7LayerUtil.addL7Layers({
-          map: this.map,
-          webMapInfo: { ...this._mapInfo, layers, sources },
-          l7Layers,
-          spriteDatas: this._spriteDatas,
-          options: {
-            ...this.options,
-            emitterEvent: this.fire.bind(this)
-          }
-        });
+        const params = this._getAddL7LayersParams(layers, sources, l7Layers);
+        await l7LayerUtil.addL7Layers(params);
       }
       this._createLegendInfo();
       this._sendMapToUser();
     } catch (error) {
       this.fire('mapcreatefailed', { error, map: this.map });
       console.error(error);
+    }
+  }
+
+  _getAddL7LayersParams(layers, sources, l7Layers) {
+    return {
+      map: this.map,
+      webMapInfo: { ...this._mapInfo, layers, sources },
+      l7Layers,
+      spriteDatas: this._spriteDatas,
+      options: {
+        ...this.options,
+        emitterEvent: this.fire.bind(this),
+        transformRequest: this._getTransformRequest()
+      }
     }
   }
 

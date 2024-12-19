@@ -735,10 +735,17 @@ describe('mapboxgl-webmap3.0', () => {
     });
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_raster);
+    const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
+    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
     mapstudioWebmap = new WebMap(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
+      iportalServiceProxyUrl,
+      tileTransformRequest: (url) => {
+        if (url.includes(iportalServiceProxyUrl)) {
+          return { headers: tileCustomRequestHeaders };
+        }
+      }
     });
     mapstudioWebmap.on('mapinitialized', ({ map }) => {
       expect(map).not.toBeUndefined();
@@ -746,9 +753,11 @@ describe('mapboxgl-webmap3.0', () => {
         'http://localhost:8195/portalproxy/7c851958ab40a5e0/iserver/services/map_world1_y6nykx3f/rest/maps/World1/tileimage.png?scale=6.760654286410619e-9&x=1&y=0&width=256&height=256&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D';
       let transformed = map.options.transformRequest(mockTileUrl, 'Tile');
       expect(transformed.credentials).toBe('include');
+      expect(transformed.headers).toEqual(tileCustomRequestHeaders);
       mockTileUrl = 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
       transformed = map.options.transformRequest(mockTileUrl, 'Tile');
       expect(transformed.credentials).toBeUndefined();
+      expect(transformed.headers).toBeUndefined();
       spyTest.calls.reset();
       done();
     });

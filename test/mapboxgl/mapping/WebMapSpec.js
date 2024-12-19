@@ -1334,4 +1334,53 @@ describe('mapboxgl_WebMap', () => {
     };
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
+
+  it('test transformRequest when url includes iportalproxy', (done) => {
+    const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
+    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false,
+      iportalServiceProxyUrlPrefix: iportalServiceProxyUrl,
+      tileTransformRequest: (url) => {
+        if (url.includes(iportalServiceProxyUrl)) {
+          return { headers: tileCustomRequestHeaders };
+        }
+      }
+    };
+    const mapOptions = {
+      style: {
+        version: 8,
+        sources: {
+          baseLayer: {
+            type: 'raster',
+            tiles: ['https://test'],
+            tileSize: 256
+          }
+        },
+        layers: [{ id: 'baseLayer', type: 'raster', source: 'baseLayer' }]
+      },
+      center: [107.7815, 39.9788],
+      zoom: 5,
+      renderWorldCopies: false,
+      crs: 'EPSG:3857',
+      minzoom: 0,
+      maxzoom: 22
+    };
+    datavizWebmap = new WebMap('', { ...commonOption }, { ...mapOptions });
+    datavizWebmap.on('mapinitialized', ({ map }) => {
+      let mockTileUrl =
+        'http://localhost:8195/portalproxy/7c851958ab40a5e0/iserver/services/map_world1_y6nykx3f/rest/maps/World1/tileimage.png?scale=6.760654286410619e-9&x=1&y=0&width=256&height=256&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D';
+      let transformed = datavizWebmap._handler.mapOptions.transformRequest(mockTileUrl, 'Tile');
+      expect(transformed.credentials).toBe('include');
+      expect(transformed.headers).toEqual(tileCustomRequestHeaders);
+      expect(transformed.url).toBe(mockTileUrl);
+      mockTileUrl = 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
+      transformed = map.options.transformRequest(mockTileUrl, 'Tile');
+      expect(transformed.credentials).toBeUndefined();
+      expect(transformed.headers).toBeUndefined();
+      done();
+    });
+  });
 });
