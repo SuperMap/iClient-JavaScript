@@ -638,12 +638,14 @@ function vectorSourceToL7Source(source, sourceLayer, options) {
       sourceLayer
     }
   };
-  if (isIportalProxyServiceUrl(result.data, options)) {
-    Object.assign(result.parser, {
-      requestParameters: {
-        credentials: 'include'
-      }
-    });
+  const requestParameters = options.transformRequest(result.data, 'Tile');
+  if (requestParameters) {
+    if (requestParameters.credentials) {
+      result.parser.requestParameters = { credentials: requestParameters.credentials };
+    }
+    if (requestParameters.headers) {
+      result.parser.requestParameters = { ...result.parser.requestParameters, headers: requestParameters.headers };
+    }
   }
   return result;
 }

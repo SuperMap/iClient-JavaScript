@@ -231,13 +231,8 @@ export class WebMap extends mapboxgl.Evented {
     const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
     if (isL7Layer(copyLayer)) {
       const layers = [copyLayer];
-      await addL7Layers({
-        map: this.map,
-        webMapInfo: { ...this._mapInfo, layers, sources: this._mapInfo.sources },
-        l7Layers: layers,
-        spriteDatas: this._spriteDatas,
-        options: this.options
-      });
+      const params = this._getAddL7LayersParams(layers, this._mapInfo.sources, layers);
+      await addL7Layers(params);
       return;
     }
     if (typeof copyLayer.source === 'object') {
@@ -327,18 +322,8 @@ export class WebMap extends mapboxgl.Evented {
     const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
-      transformRequest: (url, resourceType) => {
-        const res = { url };
-        if (
-          resourceType === 'Tile' &&
-          this.options.iportalServiceProxyUrl &&
-          url.indexOf(this.options.iportalServiceProxyUrl) >= 0
-          ) {
-          res.credentials = 'include';
-        }
-        return res;
-      },
       ...this.mapOptions,
+      transformRequest: this._getTransformRequest(),
       container: this.options.target,
       crs: this._baseProjection,
       center,
@@ -362,6 +347,23 @@ export class WebMap extends mapboxgl.Evented {
     this.map.on('load', () => {
       this._initLayers();
     });
+  }
+
+  _getTransformRequest() {
+    if (this.mapOptions.transformRequest) {
+      return this.mapOptions.transformRequest;
+    }
+    return (url, resourceType) => {
+      if (resourceType === 'Tile') {
+        const withCredentials = this.options.iportalServiceProxyUrl && url.indexOf(this.options.iportalServiceProxyUrl) >= 0;
+        return {
+          url: url,
+          credentials: withCredentials ? 'include' : undefined,
+          ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
+        };
+      }
+      return { url };
+    }
   }
 
   _setBaseProjection() {
@@ -480,22 +482,28 @@ export class WebMap extends mapboxgl.Evented {
       });
       const l7Layers = layers.filter((layer) => isL7Layer(layer));
       if (l7Layers.length > 0) {
-        await addL7Layers({
-          map: this.map,
-          webMapInfo: { ...this._mapInfo, layers, sources },
-          l7Layers,
-          spriteDatas: this._spriteDatas,
-          options: {
-            ...this.options,
-            emitterEvent: this.fire.bind(this)
-          }
-        });
+        const params = this._getAddL7LayersParams(layers, sources, l7Layers);
+        await addL7Layers(params);
       }
       this._createLegendInfo();
       this._sendMapToUser();
     } catch (error) {
       this.fire('getlayersfailed', { error, map: this.map });
       console.error(error);
+    }
+  }
+
+  _getAddL7LayersParams(layers, sources, l7Layers) {
+    return {
+      map: this.map,
+      webMapInfo: { ...this._mapInfo, layers, sources },
+      l7Layers,
+      spriteDatas: this._spriteDatas,
+      options: {
+        ...this.options,
+        emitterEvent: this.fire.bind(this),
+        transformRequest: this._getTransformRequest()
+      }
     }
   }
 
