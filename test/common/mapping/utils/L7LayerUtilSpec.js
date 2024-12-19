@@ -52,7 +52,8 @@ describe('L7LayerUtil', () => {
   const options = {
     withCredentials: true,
     server: 'http://localhost:8190/iportal/',
-    emitterEvent: function() {}
+    emitterEvent: function() {},
+    transformRequest: function() {}
   };
 
   const addOptions = {
@@ -513,6 +514,7 @@ describe('L7LayerUtil', () => {
       webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
       l7Layers: layers,
       options: {
+        ...addOptions.options,
         withCredentials: false,
         server: '/iportal/',
         iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
@@ -602,5 +604,80 @@ describe('L7LayerUtil', () => {
     const result = getL7Filter(expr, featureFilter);
     expect(result.field).toEqual(['smpid', '新建字段']);
     expect(result.values).not.toBeUndefined();
+  });
+
+  it('add mvt source and requestParameters', (done) => {
+    const layers = [
+      {
+        filter: ['all', ['==', 'smpid', 1]],
+        layout: {
+          'text-z-offset': 200000,
+          'text-letter-spacing': 0,
+          visibility: 'visible',
+          'text-field': '{smpid}',
+          'text-anchor': 'center',
+          'text-size': 36,
+          'text-allow-overlap': true
+        },
+        metadata: {
+          MapStudio: {
+            title: 'ms_label_县级行政区划_1719818803020_5'
+          }
+        },
+        maxzoom: 24,
+        paint: {
+          'text-halo-color': '#242424',
+          'text-halo-blur': 2,
+          'text-color': '#FFFFFF',
+          'text-halo-width': 1,
+          'text-opacity': 0.9,
+          'text-translate': [0, 0]
+        },
+        source: 'ms_label_县级行政区划_1719818803020_5_source',
+        'source-layer': '932916417$geometry',
+        id: 'ms_label_县级行政区划_1719818803020_5',
+        type: 'symbol',
+        minzoom: 0
+      }
+    ];
+    const sources = {
+      ms_label_县级行政区划_1719818803020_5_source: {
+        tiles: [
+          'http://localhost:8190/iportal/services/../web/datas/932916417/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22pac%22%2C%22Video%22%2C%22SmUserID%22%2C%22name%22%2C%22Image%22%2C%22objectid%22%2C%22URL%22%5D&geometryFieldName=geometry'
+        ],
+        bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
+        type: 'vector'
+      }
+    };
+    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+    const nextOptions = {
+      ...addOptions,
+      webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
+      l7Layers: layers,
+      options: {
+        ...addOptions.options,
+        transformRequest: function() {
+          return {
+            credentials: 'include',
+            headers: tileCustomRequestHeaders
+          }
+        }
+      }
+    };
+    const spy1 = spyOn(nextOptions.map, 'addLayer').and.callThrough();
+    const spy2 = spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    l7LayerUtil.addL7Layers(nextOptions).then(() => {
+      expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+      expect(layerMaplist['ms_label_县级行政区划_1719818803020_5']).toBeTruthy();
+      const matchLayer = layerMaplist['ms_label_县级行政区划_1719818803020_5'].getLayer();
+      expect(matchLayer.featureId).toBe('smpid');
+      const matchL7layer = layerMaplist['ms_label_县级行政区划_1719818803020_5'].getL7Layer();
+      expect(matchL7layer.layerSource.parser.requestParameters).not.toBeUndefined();
+      expect(matchL7layer.layerSource.parser.requestParameters.credentials).toBe('include');
+      expect(matchL7layer.layerSource.parser.requestParameters.headers).toEqual(tileCustomRequestHeaders);
+      spy1.calls.reset();
+      spy2.calls.reset();
+      done();
+    });
   });
 });

@@ -41,7 +41,8 @@ export function createMapStyleExtending(SuperClass, { MapManager, crsManager }) 
             url: proxy ? `${proxy}${encodeURIComponent(url)}` : url,
             credentials: this.webMapService.handleWithCredentials(proxy, url, this.options.withCredentials || false)
               ? 'include'
-              : undefined
+              : undefined,
+            ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
           };
         };
       }
