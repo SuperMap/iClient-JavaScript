@@ -7,6 +7,7 @@ import RBush from 'rbush';
 import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
+import throttle from 'lodash.throttle';
 
 /**
  * @class FGBLayer
@@ -28,6 +29,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {boolean} [options.idField='SmID'] - 是否指定要素字段作为唯一 ID，当 strategy 为 bbox 时生效。
  * @param {function} [options.featureLoader] - 要素自定义方法。
  * @param {function} [options.onEachFeature] - 要素创建时调用。
+ * @param {number} [options.renderInterval=500] - 渲染间隔时间。
  * @usage
  * ```
  * // 浏览器
@@ -59,6 +61,8 @@ export var FGBLayer = L.FeatureGroup.extend({
     this._checked = false;
     this.idField = this.options.idField || 'SmID';
     this._updateFeaturesFn = this._updateFeatures.bind(this);
+    this.renderInterval = this.options.renderInterval !== undefined ? this.options.renderInterval : 500;
+    this.options.noClip = true;
     L.Util.setOptions(this, options);
   },
   onAdd: function (map) {
@@ -117,6 +121,11 @@ export var FGBLayer = L.FeatureGroup.extend({
       this.previousLayer = this.curLayer;
       this.curLayer.addTo(this);
     }
+    let featureList = [];
+    const throttleFn = throttle(()=>{
+      this.curLayer.addData(featureList);
+      featureList = [];
+    }, this.renderInterval, { trailing: true, leading: false })
     for await (let feature of fgb) {
       if (this.strategy === 'bbox') {
         let id = feature.properties[this.idField];
@@ -134,7 +143,8 @@ export var FGBLayer = L.FeatureGroup.extend({
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
       }
-      this.curLayer.addData(feature);
+      featureList.push(feature);
+      throttleFn();
     }
   },
   async _getStream(url) {
