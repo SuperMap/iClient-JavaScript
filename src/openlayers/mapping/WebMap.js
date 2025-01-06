@@ -32,6 +32,7 @@ import * as olLayer from 'ol/layer';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import TileGrid from 'ol/tilegrid/TileGrid';
+import * as olTilegrid from 'ol/tilegrid';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import * as olGeometry from 'ol/geom';
 import Vector from 'ol/source/Vector';
@@ -988,7 +989,8 @@ export class WebMap extends Observable {
     var layer = new olLayer.Tile({
       source: source,
       zIndex: layerInfo.zIndex || 1,
-      visible: layerInfo.visible
+      visible: layerInfo.visible,
+      ...this.getLayerOtherOptions(layerInfo)
     });
     var layerID = Util.newGuid(8);
     if (layerInfo.name) {
@@ -1324,6 +1326,38 @@ export class WebMap extends Observable {
     });
   }
 
+  getLayerOtherOptions(layerInfo) {
+    const { layerType, extent, minZoom, maxZoom } = layerInfo;
+    const extentVal = layerType === 'ZXY_TILE' ? this._getZXYTileMapBounds(layerInfo) : extent;
+    const options = { extent: extentVal };
+    if (typeof minZoom === 'number') {
+      options.minZoom = minZoom;
+    }
+    if (typeof maxZoom === 'number') {
+      options.maxZoom = maxZoom;
+    }
+    return options;
+  }
+  _getZXYTileMapBounds(layerInfo) {
+    const { mapBounds, tileSize = 256, resolutions, origin } = layerInfo;
+    if (mapBounds) {
+      return mapBounds;
+    }
+    const getBoundsByResoutions = (maxResolution, origin) => {
+      const size = maxResolution * tileSize;
+      return [origin[0], origin[1] - size, origin[0] + size, origin[1]];
+    };
+
+    if (resolutions) {
+      const maxResolution = resolutions.sort((a, b) => b - a)[0];
+      return getBoundsByResoutions(maxResolution, origin);
+    }
+    // 兼容之前的3857全球剖分
+    const projection = this.baseProjection;
+    if (projection === 'EPSG:3857') {
+      return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+    }
+  }
   /**
    * @private
    * @function WebMap.prototype.createXYZTileSource
@@ -1332,17 +1366,26 @@ export class WebMap extends Observable {
    * @returns {ol.source.XYZ} xyz的source
    */
   createXYZTileSource(layerInfo) {
-    const { url, subdomains } = layerInfo;
-    const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
-    const tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
-    return new XYZ({
+    const { url, subdomains, origin, resolutions, tileSize } = layerInfo;
+    const urls = subdomains && subdomains.length ? subdomains.map((item) => url.replace('{s}', item)) : [url];
+    const options = {
       urls,
       wrapX: false,
       crossOrigin: 'anonymous',
-      tileGrid
-    });
+      tileGrid: this._getTileGrid({ origin, resolutions, tileSize }),
+      projection: this.baseProjection
+    };
+    return new XYZ(options);
   }
-  
+  _getTileGrid({ origin, resolutions, tileSize }) {
+    if (origin === undefined && resolutions === undefined) {
+      // 兼容上一版webMercator全球剖分
+      const extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+      return olTilegrid.createXYZ({ extent });
+    } else {
+      new TileGrid({ origin, resolutions, tileSize });
+    }
+  }
   /**
    * @private
    * @function WebMap.prototype.createWMSSource

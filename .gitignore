@@ -10,3 +10,4 @@
 /package-lock.json
 .npmrc
 /dist/mapboxgl/resources/
+/dist/maplibregl/resources/

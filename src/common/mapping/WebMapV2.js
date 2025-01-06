@@ -687,11 +687,46 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
 
     _createZXYLayer(layerInfo, addedCallback) {
-      const { url, subdomains, layerID, name, visible } = layerInfo;
+      const { url, subdomains, layerID, name, visible, tileSize, resolutions, origin, minZoom: minzoom, maxZoom: maxzoom } = layerInfo;
       const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
       const layerId = layerID || name;
-      this._addBaselayer({ url: urls, layerID: layerId, visibility: visible });
+      const isSupport = this._isSupportZXYTileLayer({ resolutions, tileSize, origin });
+      if (isSupport) {
+        this._addBaselayer({ url: urls, layerID: layerId, visibility: visible, minzoom, maxzoom, isIserver: false, tileSize });
+      } else {
+        this.fire('xyztilelayernotsupport', { error: `The resolutions or origin of layer ${name} on XYZ Tile does not match the map`, error_code: 'XYZ_TILE_LAYER_NOT_SUPPORTED', layer: layerInfo});
+      }
       addedCallback && addedCallback();
+    }
+    _isSupportZXYTileLayer({ resolutions, tileSize, origin }) {
+      const isOldWebMecartor = origin === undefined && resolutions === undefined;
+      if (isOldWebMecartor) {
+        return true;
+      }
+      return this._isSameOrigin(origin) && this._isSameResolutions(resolutions, tileSize);
+    }
+    _isSameOrigin(origin) {
+      const extent = this.map.getCRS().getExtent();
+      return origin[0].toFixed(2) === extent[0].toFixed(2) && origin[1].toFixed(2) === extent[3].toFixed(2);
+    }
+    _isSameResolutions(resolutions, tileSize, mapTileSize = 512) {
+      const mapResolutions = this._getMapResolutions();
+      const conversion = mapTileSize / tileSize;
+      return resolutions.every((item, i) => (item).toFixed(6) === (conversion * mapResolutions[i]).toFixed(6));
+    }
+    _getMapResolutions() {
+      return this._getResolutionsByExtent({extent: this.map.getCRS().getExtent(), tileSize: 512})
+    }
+    _getResolutionsByExtent({ extent, maxZoom = 24, tileSize }) {
+      const width = extent[2] - extent[0];
+      const height = extent[3] - extent[1];
+      const size = width >= height ? width : height;
+      const maxReolution = size / tileSize;
+      const resolutions = [];
+      for (let i = 0; i <= maxZoom; i++) {
+        resolutions.push(maxReolution / Math.pow(2, i));
+      }
+      return resolutions;
     }
 
     _createDynamicTiledLayer(layerInfo, addedCallback) {
@@ -2424,6 +2459,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       minzoom = 0,
       maxzoom = 22,
       isIserver = false,
+      tileSize = 256,
       bounds
     }) {
       const source = {
@@ -2431,7 +2467,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         tiles: url,
         minzoom: minzoom || 0,
         maxzoom: maxzoom || 22,
-        tileSize: isIserver ? this.rasterTileSize : 256,
+        tileSize: isIserver ? this.rasterTileSize : tileSize,
         rasterSource: isIserver ? 'iserver' : '',
         prjCoordSys:
           isIserver && !this.isOnlineBaseLayer(url[0], this.baseProjection) && +this.baseProjection.split(':')[1] > 0

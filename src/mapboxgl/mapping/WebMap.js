@@ -68,6 +68,7 @@ import { GraticuleLayer } from '../overlay/GraticuleLayer';
  * @fires WebMap#dataflowfeatureupdated
  * @fires WebMap#projectionnotmatch
  * @fires WebMap#mapbeforeremove
+ * @fires WebMap#xyztilelayernotsupport
  * @fires WebMap#getmapfailed
  * @fires WebMap#getlayersfailed
  * @usage

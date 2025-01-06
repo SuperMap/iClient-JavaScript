@@ -184,7 +184,7 @@ describe('openlayers_WebMap', () => {
         }
     });
 
-    it('initialize_ZXYtILE', (done) => {
+    it('initialize_ZXYtILE 3857全球剖分', (done) => {
       let options = {
           server: server,
           successCallback,
@@ -195,15 +195,36 @@ describe('openlayers_WebMap', () => {
               var mapJson = datavizWebmap_ZXYTILE;
               return Promise.resolve(new Response(mapJson));
           }
-          return Promise.resolve();
+          return Promise.resolve(new Response(JSON.stringify({})));
       });
       var datavizWebmap = new WebMap(id, options);
 
       function successCallback() {
           expect(datavizWebmap.mapParams.title).toBe('xyz');
-          // expect(datavizWebmap.layerAdded).toBe(2);
+          expect(datavizWebmap.layerAdded).toBe(1);
           done();
       }
+  });
+
+  it('initialize_ZXYtILE world 4326', (done) => {
+    let options = {
+        server: server,
+        successCallback,
+        errorCallback: function () { }
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('map.json') > -1) {
+            var mapJson = datavizWebmap_ZXYTILE_4326;
+            return Promise.resolve(new Response(mapJson));
+        }
+        return Promise.resolve(new Response(JSON.stringify({})));
+      });
+    var datavizWebmap = new WebMap(id, options);
+    function successCallback() {
+      expect(datavizWebmap.mapParams.title).toBe('4326-zxy-tile');
+      expect(datavizWebmap.layerAdded).toBe(1);
+      done();
+    }
   });
 
     it('jsonsql', (done) => {

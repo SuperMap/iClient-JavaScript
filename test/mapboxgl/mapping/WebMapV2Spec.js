@@ -1382,8 +1382,6 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
-  
-
   it('updateOverlayLayer unique', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -1492,12 +1490,42 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
-  it('add zxytile layer', (done) => {
+  it('add zxytile layer 3857全球剖分', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       } else if (url.indexOf('/map.json') > -1) {
         return Promise.resolve(new Response(datavizWebmap_ZXYTILE));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap(
+      'test',
+      {
+        target: 'map',
+        serverUrl: 'http://fake/fakeiportal',
+        withCredentials: false
+      },
+      {
+        style: {
+          version: 8,
+          sources: {},
+          layers: []
+        }
+      }
+    );
+    datavizWebmap.on('mapcreatesucceeded', ({ layers }) => {
+      expect(layers.length).toBe(2);
+      done();
+    });
+  });
+
+  it('add zxytile layer 4326 world', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('/map.json') > -1) {
+        return Promise.resolve(new Response(datavizWebmap_ZXYTILE_4326));
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
@@ -2683,10 +2711,55 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
-  it('initial_xyzLayer', (done) => {
+  it('initial_xyzLayer 3857全球剖分', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(xyzLayer)));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const xyzLayer = layers[0];
+      expect(xyzLayer.id).toBe('OpenStreetMap');
+      expect(xyzLayer.type).toBe('raster');
+      const xyzLayer1 = layers[1];
+      expect(xyzLayer1.id).toBe('xyz');
+      expect(xyzLayer1.type).toBe('raster');
+      done();
+    });
+  });
+  it('initial_xyzLayer world 4326', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(xyzLayer4326)));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const layers = map.getStyle().layers;
+      expect(layers.length).toBe(2);
+      const xyzLayer = layers[1];
+      expect(xyzLayer.id).toBe('mapboxgl-256x2');
+      expect(xyzLayer.type).toBe('raster');
+      done();
+    });
+  });
+  it('initial_xyzLayer jingjin 4326', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(xyzLayerjingjin4326)));
       } else if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
@@ -2695,16 +2768,12 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap = new WebMap(id, {
       server: server
     });
-    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
-      const layers = map.getStyle().layers;
-      expect(layers.length).toBe(1);
-      const xyzLayer = layers[0];
-      expect(xyzLayer.id).toBe('OpenStreetMap');
-      expect(xyzLayer.type).toBe('raster');
+    datavizWebmap.on('xyztilelayernotsupport', (e) => {
+      expect(e.error).toBe(`The resolutions or origin of layer jingjin on XYZ Tile does not match the map`);
+      expect(e.error_code).toBe(`XYZ_TILE_LAYER_NOT_SUPPORTED`);
       done();
     });
   });
-
   it('initial_mapboxstyleLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
