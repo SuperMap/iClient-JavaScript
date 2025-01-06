@@ -1529,6 +1529,16 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
+    const map = {
+      ...commonMap,
+      getCRS: () => {
+        return {
+          epsgCode: 'EPSG:4326',
+          unit: 'degrees',
+          getExtent: () => [-180, -90, 180, 90]
+        };
+      }
+    };
     datavizWebmap = new WebMap(
       'test',
       {
@@ -1542,6 +1552,9 @@ describe('mapboxgl_WebMapV2', () => {
           sources: {},
           layers: []
         }
+      },
+      {
+        map
       }
     );
     datavizWebmap.on('mapcreatesucceeded', ({ layers }) => {
@@ -2744,9 +2757,19 @@ describe('mapboxgl_WebMapV2', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
+    const map = {
+      ...commonMap,
+      getCRS: () => {
+        return {
+          epsgCode: 'EPSG:4326',
+          unit: 'degrees',
+          getExtent: () => [-180, -90, 180, 90]
+        };
+      }
+    };
     datavizWebmap = new WebMap(id, {
       server: server
-    });
+    }, { map });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
       expect(layers.length).toBe(2);
@@ -2763,11 +2786,21 @@ describe('mapboxgl_WebMapV2', () => {
       } else if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
-      return Promise.resolve();
+      return Promise.resolve(new Response(JSON.stringify({})));
     });
+    const map = {
+      ...commonMap,
+      getCRS: () => {
+        return {
+          epsgCode: 'EPSG:4326',
+          unit: 'degrees',
+          getExtent: () => [-180, -90, 180, 90]
+        };
+      }
+    };
     datavizWebmap = new WebMap(id, {
       server: server
-    });
+    }, { map });
     datavizWebmap.on('xyztilelayernotsupport', (e) => {
       expect(e.error).toBe(`The resolutions or origin of layer jingjin on XYZ Tile does not match the map`);
       expect(e.error_code).toBe(`XYZ_TILE_LAYER_NOT_SUPPORTED`);
