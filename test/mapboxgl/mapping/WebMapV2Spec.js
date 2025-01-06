@@ -2769,7 +2769,7 @@ describe('mapboxgl_WebMapV2', () => {
     };
     datavizWebmap = new WebMap(id, {
       server: server
-    }, { map });
+    });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
       expect(layers.length).toBe(2);
@@ -2799,8 +2799,9 @@ describe('mapboxgl_WebMapV2', () => {
       }
     };
     datavizWebmap = new WebMap(id, {
-      server: server
-    }, { map });
+      server: server,
+      map
+    });
     datavizWebmap.on('xyztilelayernotsupport', (e) => {
       expect(e.error).toBe(`The resolutions or origin of layer jingjin on XYZ Tile does not match the map`);
       expect(e.error_code).toBe(`XYZ_TILE_LAYER_NOT_SUPPORTED`);

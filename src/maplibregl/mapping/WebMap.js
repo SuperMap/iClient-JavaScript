@@ -70,6 +70,7 @@ import { GraticuleLayer } from '../overlay/GraticuleLayer';
  * @fires WebMap#mapbeforeremove
  * @fires WebMap#getmapfailed
  * @fires WebMap#getlayersfailed
+ * @fires WebMap#xyztilelayernotsupport
  * @usage
  */
 export class WebMap extends createWebMapBaseExtending(maplibregl.Evented, { mapRepo: maplibregl }) {
