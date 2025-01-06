@@ -1236,12 +1236,10 @@ const xyzLayer4326 = {
     y: 10.42845507988924
   },
   baseLayer: {
-    layerType: 'MAPBOXSTYLE',
+    layerType: 'TILE',
+    visible: true,
     name: 'China_4326',
-    dataSource: {
-      type: 'EXTERNAL',
-      url: 'https://fakeiportal.supermap.io/iserver/services/map-china400/restjsr/v1/vectortile/maps/China_4326'
-    }
+    url: 'http://test:8090/iserver/services/map-China100-3/rest/maps/China_4326'
   },
   layers: [
     {
