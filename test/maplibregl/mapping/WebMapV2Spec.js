@@ -2646,7 +2646,7 @@ describe('maplibregl_WebMapV2', () => {
     });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
-      expect(layers.length).toBe(1);
+      expect(layers.length).toBe(2);
       const xyzLayer = layers[0];
       expect(xyzLayer.id).toBe('OpenStreetMap');
       expect(xyzLayer.type).toBe('raster');
