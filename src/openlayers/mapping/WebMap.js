@@ -1353,8 +1353,7 @@ export class WebMap extends Observable {
       return getBoundsByResoutions(maxResolution, origin);
     }
     // 兼容之前的3857全球剖分
-    const projection = this.baseProjection;
-    if (projection === 'EPSG:3857') {
+    if (this.baseProjection === 'EPSG:3857') {
       return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
     }
   }
@@ -1383,7 +1382,7 @@ export class WebMap extends Observable {
       const extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
       return olTilegrid.createXYZ({ extent });
     } else {
-      new TileGrid({ origin, resolutions, tileSize });
+      return new TileGrid({ origin, resolutions, tileSize });
     }
   }
   /**
