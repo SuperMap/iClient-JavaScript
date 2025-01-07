@@ -66,28 +66,28 @@ module.exports = function (config) {
       './resources/**.js',
       /***classic的源码***/
       /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-      { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', included: true },
-      { pattern: '../src/classic/libs/Lang/*.js', included: true },
-      { pattern: '../src/classic/theme/default/*.css', included: true },
-      { pattern: './resources/data/**.fgb', included: false },
-      { pattern: './resources/data/**.mp4', included: false },
-      { pattern: './resources/img/**.svg', included: false },
-      { pattern: './resources/img/baiduTileTest.png', included: false },
-      /**测试文件**/
-      './test-main-classic.js',
+      // { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', included: true },
+      // { pattern: '../src/classic/libs/Lang/*.js', included: true },
+      // { pattern: '../src/classic/theme/default/*.css', included: true },
+      // { pattern: './resources/data/**.fgb', included: false },
+      // { pattern: './resources/data/**.mp4', included: false },
+      // { pattern: './resources/img/**.svg', included: false },
+      // { pattern: './resources/img/baiduTileTest.png', included: false },
+      // /**测试文件**/
+      // './test-main-classic.js',
 
       /***common的源码***/
       '../src/common/!(ai)/*.js',
       /**测试文件**/
-      './test-main-common.js',
+      // './test-main-common.js',
 
-      /***leaflet的源码***/
-      { pattern: './libs/workers/TurfWorkerForTest.js', included: false },
-      { pattern: '../node_modules/leaflet/dist/leaflet.css', included: true },
-      { pattern: '../src/leaflet/**/**/*.css', included: true },
-      '../src/leaflet/**/!(index).js',
-      /**测试文件**/
-      './test-main-leaflet.js',
+      // /***leaflet的源码***/
+      // { pattern: './libs/workers/TurfWorkerForTest.js', included: false },
+      // { pattern: '../node_modules/leaflet/dist/leaflet.css', included: true },
+      // { pattern: '../src/leaflet/**/**/*.css', included: true },
+      // '../src/leaflet/**/!(index).js',
+      // /**测试文件**/
+      // './test-main-leaflet.js',
 
       /***openlayers的源码***/
       { pattern: '../node_modules/ol/ol.css', included: true },
@@ -102,10 +102,10 @@ module.exports = function (config) {
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
       './test-main-mapboxgl.js',
-      { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
-      '../src/maplibregl/**/!(index).js',
-      /**测试文件**/
-      './test-main-maplibregl.js'
+      // { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
+      // '../src/maplibregl/**/!(index).js',
+      // /**测试文件**/
+      // './test-main-maplibregl.js'
     ],
 
     // list of files to exclude 测试时排除的文件
