@@ -1343,17 +1343,13 @@ export class WebMap extends Observable {
     if (mapBounds) {
       return mapBounds;
     }
-    const getBoundsByResoutions = (maxResolution, origin) => {
-      const size = maxResolution * tileSize;
-      return [origin[0], origin[1] - size, origin[0] + size, origin[1]];
-    };
-
     if (resolutions) {
       const maxResolution = resolutions.sort((a, b) => b - a)[0];
-      return getBoundsByResoutions(maxResolution, origin);
+      const size = maxResolution * tileSize;
+      return [origin[0], origin[1] - size, origin[0] + size, origin[1]];
     }
     // 兼容之前的3857全球剖分
-    if (this.baseProjection === 'EPSG:3857') {
+    if (this.baseProjection == 'EPSG:3857') {
       return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
     }
   }
