@@ -705,14 +705,17 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       }
       return this._isSameOrigin(origin) && this._isSameResolutions(resolutions, tileSize);
     }
+    numberEqual(num1, num2, precision = 10E-6) {
+      return Math.abs(+num1 - +num2) <= precision;
+    }
     _isSameOrigin(origin) {
       const extent = this.map.getCRS().getExtent();
-      return origin[0].toFixed(2) === extent[0].toFixed(2) && origin[1].toFixed(2) === extent[3].toFixed(2);
+      return this.numberEqual(origin[0], extent[0]) && this.numberEqual(origin[1], extent[3]);
     }
     _isSameResolutions(resolutions, tileSize, mapTileSize = 512) {
       const mapResolutions = this._getMapResolutions();
       const conversion = mapTileSize / tileSize;
-      return resolutions.every((item, i) => (item).toFixed(6) === (conversion * mapResolutions[i]).toFixed(6));
+      return resolutions.every((item, i) => this.numberEqual(item, conversion * mapResolutions[i]));
     }
     _getMapResolutions() {
       return this._getResolutionsByExtent({extent: this.map.getCRS().getExtent(), tileSize: 512})
