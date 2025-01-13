@@ -197,9 +197,9 @@ export class WebMapService {
     });
   }
 
-  getMapBoxStyle(styleURL) {
+  getMapBoxStyle(styleURL, withoutFormatSuffix = false) {
     return new Promise((resolve, reject) => {
-      FetchRequest.get(styleURL)
+      FetchRequest.get(styleURL, {}, { withoutFormatSuffix })
         .then(response => {
           return response.json();
         })
