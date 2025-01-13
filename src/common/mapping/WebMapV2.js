@@ -349,8 +349,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
         url += '/style.json';
       }
+      const withoutFormatSuffix = url.indexOf('/restjsr/') === -1;
       this.webMapService
-        .getMapBoxStyle(url)
+        .getMapBoxStyle(url, withoutFormatSuffix)
         .then(
           (style) => {
             const sourceIds = Object.keys(style.sources);
