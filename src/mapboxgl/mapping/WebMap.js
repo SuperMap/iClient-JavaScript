@@ -31,7 +31,7 @@ import { GraticuleLayer } from '../overlay/GraticuleLayer';
  *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/antv/g2/4.2.8/g2.min.js">G2: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/antv/g2/4.2.8/g2.min.js"&gt;&lt;/script&gt;</p>
  *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/antv/g6/4.3.2/g6.min.js">G6: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/antv/g6/4.3.2/g6.min.js"&gt;&lt;/script&gt;</p>
  *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/fast-xml-parser/4.2.7/fxparser.min.js">fast-xml-parser: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/fast-xml-parser/4.2.7/fxparser.min.js"&gt;&lt;/script&gt;</p>
- *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.jss">mapbox-gl-js-enhance: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-7/mapbox-gl-enhance.js"&gt;&lt;/script&gt;</p>
+ *      <p style="font-size: 13px"><a href="https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.jss">mapbox-gl-js-enhance: </a>&lt;script type="text/javascript" src="https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.js"&gt;&lt;/script&gt;</p>
  * </div>
  * @modulecategory Mapping
  * @param {number} id - iPortal|Online 地图 ID。
@@ -68,6 +68,7 @@ import { GraticuleLayer } from '../overlay/GraticuleLayer';
  * @fires WebMap#dataflowfeatureupdated
  * @fires WebMap#projectionnotmatch
  * @fires WebMap#mapbeforeremove
+ * @fires WebMap#xyztilelayernotsupport
  * @fires WebMap#getmapfailed
  * @fires WebMap#getlayersfailed
  * @usage

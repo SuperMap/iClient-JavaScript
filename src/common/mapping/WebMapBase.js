@@ -49,6 +49,7 @@ const WORLD_WIDTH = 360;
  * @fires WebMapBase#mapbeforeremove
  * @fires WebMapBase#getmapfailed
  * @fires WebMapBase#getlayersfailed
+ * @fires WebMapBase#xyztilelayernotsupport
  * @usage
  */
 export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
@@ -160,6 +161,11 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
          * @description 底图投影与底图投影不匹配。
          */
         'projectionnotmatch',
+        /**
+         * @event WebMapBase#xyztilelayernotsupport
+         * @description XYZ TILE图层与底图的分辨率或原点不匹配。
+         */
+        'xyztilelayernotsupport',
         'layeraddchanged',
         'layerupdatechanged',
         /**
