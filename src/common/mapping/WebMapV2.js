@@ -130,7 +130,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         extent: [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y],
         wkt: this._getProjectionWKT(projection)
       };
-      if (!crsManager.getCRS(epsgCode)) {
+      if (!crsManager.getCRS(epsgCode) && baseLayer.layerType !== 'ZXY_TILE') {
         switch (baseLayer.layerType) {
           case 'MAPBOXSTYLE': {
             let url = baseLayer.dataSource.url;

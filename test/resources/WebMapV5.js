@@ -1265,6 +1265,8 @@ const xyzLayer4326 = {
   rootUrl: 'http://test:8190/iportal/'
 };
 
+const datavizWebmap_ZXYTILE_4214 = {};
+
 const xyzLayerjingjin4326 = {
   extent: {
     leftBottom: {
@@ -1316,7 +1318,41 @@ const xyzLayerjingjin4326 = {
   version: '2.4.1',
   rootUrl: 'http://test:8190/iportal/'
 };
-
+const xyzLayer2326 = {
+  "extent": {
+    "leftBottom": { "x": -4786700, "y": -31721916.685568035 },
+    "rightTop": { "x": 35288316.685568035, "y": 8353100 }
+  },
+  level: 3,
+  center: {
+    x: 45.23786343459705,
+    y: 10.42845507988924
+  },
+  baseLayer: {
+    layerType: 'ZXY_TILE',
+    name: '2326底图',
+    visible: true,
+    resolutions: [
+      156543.03392800014, 78271.51696399994, 39135.75848200009, 19567.87924099992, 9783.93962049996, 4891.96981024998,
+      2445.98490512499, 1222.992452562495, 611.4962262813797, 305.74811314055756, 152.87405657041106, 76.43702828507324,
+      38.21851414253662, 19.10925707126831, 9.554628535634155, 4.77731426794937, 2.388657133974685, 1.1943285668550503,
+      0.5971642835598172, 0.29858214164761665, 0.14929107082380833
+    ],
+    origin: [-4786700, 8353100],
+    tileSize: 256,
+    mapBounds: [-4786700, -31721916.685568035, 35288316.685568035, 8353100],
+    minZoom: 0,
+    maxZoom: 24
+  },
+  description: '',
+  projection:
+    'PROJCS["Hong Kong 1980 Grid System",GEOGCS["Hong Kong 1980",DATUM["Hong_Kong_1980",SPHEROID["International 1924",6378388,297],TOWGS84[-162.619,-276.959,-161.764,-0.067753,2.243648,1.158828,-1.094246]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4611"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",22.3121333333333],PARAMETER["central_meridian",114.178555555556],PARAMETER["scale_factor",1],PARAMETER["false_easting",836694.05],PARAMETER["false_northing",819069.8],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2326"]]',
+  minScale: '1:591658710.909131',
+  maxScale: '1:144447.92746805',
+  title: 'zxy_2326',
+  version: '2.4.2',
+  rootUrl: 'http://test:8190/iportal/'
+};
 const mapboxstyleLayer = {
   extent: {
     leftBottom: { x: 8009146.115071949, y: 382872.01868254057 },
