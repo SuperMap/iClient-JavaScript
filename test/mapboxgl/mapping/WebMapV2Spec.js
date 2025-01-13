@@ -2821,7 +2821,11 @@ describe('mapboxgl_WebMapV2', () => {
     const map = {
       ...commonMap,
       getCRS: () => {
-        return null;
+        return {
+          epsgCode: 'EPSG:2326',
+          unit: 'degrees',
+          getExtent: () => [-4786700, -31721916.685568035, 35288316.685568035, 8353100]
+        };
       }
     };
     datavizWebmap = new WebMap(id, {

@@ -1319,17 +1319,10 @@ const xyzLayerjingjin4326 = {
   rootUrl: 'http://test:8190/iportal/'
 };
 const xyzLayer2326 = {
-  extent: {
-    leftBottom: {
-      x: -180,
-      y: -85.0511287798065
-    },
-    rightTop: {
-      x: 180,
-      y: 85.05112877980648
-    }
+  "extent": {
+    "leftBottom": { "x": -4786700, "y": -31721916.685568035 },
+    "rightTop": { "x": 35288316.685568035, "y": 8353100 }
   },
-  maxScale: '1:144447.92746805',
   level: 3,
   center: {
     x: 45.23786343459705,
