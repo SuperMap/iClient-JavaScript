@@ -486,8 +486,8 @@
     function clickHandler(event) {
       var coordinate = event.latlng;
       var pixelCoor = event.layerPoint;
-      var b1 = map.containerPointToLatLng([pixelCoor.x-15,pixelCoor.y+15]);
-      var b2 = map.containerPointToLatLng([pixelCoor.x+15,pixelCoor.y-15]);
+      var b1 = map.layerPointToLatLng([pixelCoor.x-15,pixelCoor.y+15]);
+      var b2 = map.layerPointToLatLng([pixelCoor.x+15,pixelCoor.y-15]);
       // 添加点要素
       pointResultLayer && map.removeLayer(pointResultLayer);
       pointResultLayer = L.circleMarker(coordinate,{radius:5});

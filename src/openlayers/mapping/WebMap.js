@@ -968,6 +968,9 @@ export class WebMap extends Observable {
       case 'SUPERMAP_REST':
         source = that.createDynamicTiledSource(layerInfo, isBaseLayer);
         break;
+      case 'ZXY_TILE':
+        source = this.createXYZTileSource(layerInfo);
+        break;
       case 'CLOUD':
       case 'CLOUD_BLACK':
       case 'OSM':
@@ -1172,6 +1175,24 @@ export class WebMap extends Observable {
         baseLayerInfo.extent = japanOrtBounds;
         break;
     }
+  }
+  /**
+   * @private
+   * @function WebMap.prototype.createXYZTileSource
+   * @description 创建图层的XYZTilesource。
+   * @param {Object} layerInfo - 图层信息
+   * @returns {ol.source.XYZ} xyz的source
+   */
+  createXYZTileSource(layerInfo) {
+    const { url, subdomains } = layerInfo;
+    const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
+    const tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+    return new XYZ({
+      urls,
+      wrapX: false,
+      crossOrigin: 'anonymous',
+      tileGrid
+    });
   }
   /**
    * @private
@@ -2107,6 +2128,10 @@ export class WebMap extends Observable {
               that.errorCallback && that.errorCallback(e, 'getFeatureFaild', that.map);
             }
           );
+        } else if (layer.layerType === 'ZXY_TILE') {
+          that.map.addLayer(that.createBaseLayer(layer, layerIndex));
+          that.layerAdded++;
+          that.sendMapToUser(len);
         }
       }
     }
