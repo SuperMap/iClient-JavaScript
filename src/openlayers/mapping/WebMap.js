@@ -4822,6 +4822,7 @@ export class WebMap extends Observable {
     let url = dataSource.url;
     if (this.isRestMapMapboxStyle(layerInfo)) {
       url = url.replace(restMapMVTStr, '');
+      url = this.getRequestUrl(url + '.json');
     }
     if (url.indexOf('/restjsr/') > -1 && !/\.json$/.test(url)) {
       url = this.getRequestUrl(url + '.json');
