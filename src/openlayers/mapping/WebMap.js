@@ -4525,10 +4525,14 @@ export class WebMap extends Observable {
         let dataSource = layerInfo.dataSource;
         let url = dataSource.url;
         if (this.isRestMapMapboxStyle(layerInfo)) {
-            url = url.replace(restMapMVTStr, '')
+          url = url.replace(restMapMVTStr, '');
+          url = this.getRequestUrl(url + '.json');
         }
-        url = this.getRequestUrl(url + '.json')
-
+        if (url.indexOf('/restjsr/') > -1 && !/\.json$/.test(url)) {
+          url = this.getRequestUrl(url + '.json');
+        } else {
+          url = this.getRequestUrl(url);
+        }
         let credential = layerInfo.credential;
         let credentialValue,keyfix;
         //携带令牌(restmap用的首字母大写，但是这里要用小写)
@@ -4548,10 +4552,23 @@ export class WebMap extends Observable {
             return response.json();
         }).then((result) => {
             layerInfo.visibleScales = result.visibleScales;
-            layerInfo.coordUnit = result.coordUnit;
+            layerInfo.coordUnit = result.coordUnit || 'METER';
             layerInfo.scale = result.scale;
-            layerInfo.epsgCode = result.prjCoordSys.epsgCode;
-            layerInfo.bounds = result.bounds;
+            layerInfo.epsgCode = (result.prjCoordSys && result.prjCoordSys.epsgCode) || '3857';
+            layerInfo.bounds = result.bounds || {
+              top: 20037508.342789244,
+              left: -20037508.342789244,
+              bottom: -20037508.342789244,
+              leftBottom: {
+                x: -20037508.342789244,
+                y: -20037508.342789244
+              },
+              right: 20037508.342789244,
+              rightTop: {
+                x: 20037508.342789244,
+                y: 20037508.342789244
+              }
+            };
             return layerInfo;
         }).catch(error => {
             throw error;
@@ -4571,7 +4588,7 @@ export class WebMap extends Observable {
         let _this = this;
         let url = layerInfo.url || layerInfo.dataSource.url;
         let styleUrl = url;
-        if (styleUrl.indexOf('/restjsr/') > -1) {
+        if (styleUrl.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
             styleUrl = `${styleUrl}/style.json`;
         }
         styleUrl = this.getRequestUrl(styleUrl)
