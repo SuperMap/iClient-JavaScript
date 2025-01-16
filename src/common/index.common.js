@@ -329,6 +329,7 @@ import { ElasticSearch } from './thirdparty';
 import {
     isCORS,
     setCORS,
+    setRequestHeaders,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -501,6 +502,7 @@ export { Format, GeoJSONFormat, JSONFormat, WKTFormat };
 export {
     isCORS,
     setCORS,
+    setRequestHeaders,
     FetchRequest,
     EncryptRequest,
     getServiceKey,
