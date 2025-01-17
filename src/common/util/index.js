@@ -6,6 +6,7 @@ import {
   isCORS,
   setRequestTimeout,
   getRequestTimeout,
+  setRequestHeaders,
   FetchRequest
 } from './FetchRequest';
 
@@ -72,6 +73,7 @@ export {
   isCORS,
   setRequestTimeout,
   getRequestTimeout,
+  setRequestHeaders,
   FetchRequest,
   EncryptRequest,
   getServiceKey,

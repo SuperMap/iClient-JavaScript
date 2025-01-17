@@ -337,6 +337,7 @@ import {
   ElasticSearch,
   isCORS,
   setCORS,
+  setRequestHeaders,
   FetchRequest,
   EncryptRequest,
   getServiceKey,
@@ -497,6 +498,7 @@ SuperMap.setCORS = setCORS;
 SuperMap.isCORS = isCORS;
 SuperMap.setRequestTimeout = setRequestTimeout;
 SuperMap.getRequestTimeout = getRequestTimeout;
+SuperMap.setRequestHeaders = setRequestHeaders;
 SuperMap.FetchRequest = FetchRequest;
 SuperMap.EncryptRequest = EncryptRequest;
 SuperMap.getServiceKey = getServiceKey;

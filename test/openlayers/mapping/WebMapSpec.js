@@ -1683,78 +1683,241 @@ describe('openlayers_WebMap', () => {
         function errorCallback(error) {
           console.log(error);
         }
-      });
-      it('graticuleLayer', (done) => {
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('web/datas/1171594968/content.json') > -1) {
-            return Promise.resolve(new Response(layerData_CSV));
+    });
+    it('graticuleLayer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('web/datas/1171594968/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+        }
+        if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(rangeLayer)));
+        }
+        return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
+    function successCallback(map, mapInfo, layers, baseLayer){
+        expect(map.getLayers().getArray()[1].get('layerID')).toBe('graticule_layer')
+        done();
+    }
+    function errorCallback(error) {
+        console.log(error);
+    }
+    });
+    it('add dataflow and update', (done) => {
+    var urlDataFlow = 'ws://localhost:8004/dataflow';
+    var urlDataFlow1 = 'ws://localhost:8004/dataflow/broadcast';
+    var urlDataFlow2 = 'ws://localhost:8004/dataflow/subscribe';
+    var mockServer = new Server(urlDataFlow);
+    var mockServer1 = new Server(urlDataFlow1);
+    var mockServer2 = new Server(urlDataFlow2);
+    mockServer.on('connection', (socket) => {
+        socket.on('close', () => {});
+    });
+    let socket2;
+    mockServer1.on('connection', (socket) => {
+        socket.on('message', (e) => {
+        socket2 && socket2.send(e);
+        });
+        socket.on('close', () => {});
+    });
+    mockServer2.on('connection', (socket) => {
+        socket2 = socket;
+    });
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('web/datas/676516522/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+        } else if (url.indexOf('dataflow.json') > -1) {
+        const dataflowLayerDataCopy = JSON.parse(JSON.stringify(dataflowLayerData));
+        dataflowLayerDataCopy.dataflow.urls[0].url = urlDataFlow;
+        return Promise.resolve(new Response(JSON.stringify(dataflowLayerDataCopy.dataflow)));
+        } else if (url.indexOf('broadcast') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.broadcast)));
+        } else if (url.indexOf('subscribe') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
+        } else if (url.indexOf('map.json') > -1) {
+        const dataflowLayerCopy = JSON.parse(JSON.stringify(dataflowLayer));
+        dataflowLayerCopy.layers[0].url = urlDataFlow;
+        dataflowLayerCopy.layers[1].url = urlDataFlow;
+        dataflowLayerCopy.layers[2].url = urlDataFlow;
+        dataflowLayerCopy.layers[3].url = urlDataFlow;
+        return Promise.resolve(new Response(JSON.stringify(dataflowLayerCopy)));
+        }
+        return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(id, { successCallback, errorCallback, server: defaultServer });
+    function successCallback(map, mapInfo, layers, baseLayer) {
+        expect(map.getLayers().getArray().length).toBe(7);
+        mockServer.stop();
+        mockServer1.stop();
+        mockServer2.stop();
+        done();
+    }
+    function errorCallback(error) {
+        console.log(error);
+    }
+    });
+
+    it('tileTransformRequest', (done) => {
+        const mapJSONObj = JSON.parse(datavizWebmap_ZXYTILE);
+        mapJSONObj.layers = [
+          {
+            layerType: 'WMTS',
+            name: 'World_AirLine_Part',
+            visible: true,
+            url: 'http://localhost:9876/iserver/services/maps/wmts100?',
+            projection: 'EPSG:3857',
+            tileMatrixSet: 'Custom_China'
+          },
+          {
+            layerType: 'WMS',
+            layers: ['0'],
+            name: 'World',
+            visible: true,
+            url: 'http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&',
+            projection: 'EPSG:3857'
+          },
+          {
+            layerType: 'MAPBOXSTYLE',
+            visible: true,
+            name: 'China',
+            dataSource: {
+              type: 'EXTERNAL',
+              url: 'http://localhost:8090/iserver/services/map-China100/restjsr/v1/vectortile/maps/China'
+            }
+          },
+          {
+            layerType: 'MARKER',
+            name: '未命名标注图层1',
+            visible: true,
+            projection: 'EPSG:4326',
+            dataSource: {
+              type: 'PORTAL_DATA',
+              serverId: '699444680'
+            }
           }
-          if (url.indexOf('map.json') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(rangeLayer)));
-          }
-          return Promise.resolve();
+        ];
+        const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { },
+            tileRequestParameters: function (url){
+                if (url && url.includes('tianditu.gov.cn')) {
+                    return;
+                }
+                return { headers: tileCustomRequestHeaders }
+            }
+        };
+        spyOn(FetchRequest, 'get').and.callFake((fetchUrl) => {
+            const url = decodeURIComponent(fetchUrl);
+            if (url.indexOf('map.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(mapJSONObj)));
+            }
+            if(url.indexOf('/wmts100') > -1) {
+                return Promise.resolve(new Response(wmtsInfo2));
+            }
+            if (url.indexOf('/wms130') > -1) {
+                return Promise.resolve(new Response(wms_capabilities));
+            }
+            if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            if (url.indexOf('style.json') > -1) {
+                const styleJsonData = {
+                  center: [-6.692970425781022e-14, -2.289999370653732e-13],
+                  layers: [
+                    {
+                      paint: {
+                        'background-color': 'rgba(255,255,255,1.00)'
+                      },
+                      id: 'background',
+                      type: 'background'
+                    },
+                    {
+                      layout: {
+                        visibility: 'visible'
+                      },
+                      filter: ['all', ['==', '$type', 'Polygon']],
+                      metadata: {
+                        'layer:caption': 'World_Division_pg@China_L1-L13',
+                        'layer:name': 'World_Division_pl@China'
+                      },
+                      maxzoom: 24,
+                      paint: {
+                        'fill-color': 'rgba(145,185,234,1.00)',
+                        'fill-antialias': true
+                      },
+                      id: 'World_Division_pl@China(0_24)',
+                      source: 'China',
+                      'source-layer': 'World_Division_pg@China',
+                      type: 'fill',
+                      minzoom: 0
+                    }
+                  ],
+                  sources: {
+                    China: {
+                      tiles: [
+                        'http://localhost:8195/portalproxy/2b6651326d8ad1ff/iserver/services/map-China100/restjsr/v1/vectortile/maps/China/tiles/{z}/{x}/{y}.mvt'
+                      ],
+                      bounds: [-180, -90, 180, 90],
+                      type: 'vector'
+                    }
+                  },
+                  version: 8,
+                  zoom: 0
+                };
+                return Promise.resolve(new Response(JSON.stringify(styleJsonData)));
+            }
+            if (url.indexOf('China.json') > -1) {
+                return Promise.resolve(new Response(
+                    `{"viewBounds":{"top":1.0018754171380693E7,"left":-1.0018754171380727E7,"bottom":-1.0018754171380745E7,"leftBottom":{"x":-1.0018754171380727E7,"y":-1.0018754171380745E7},"right":1.0018754171380712E7,"rightTop":{"x":1.0018754171380712E7,"y":1.0018754171380693E7}},"viewer":{"leftTop":{"x":0,"y":0},"top":0,"left":0,"bottom":256,"rightBottom":{"x":256,"y":256},"width":256,"right":256,"height":256},"distanceUnit":"METER","minVisibleTextSize":0.1,"coordUnit":"METER","scale":3.3803271432100002E-9,"description":"","paintBackground":true,"maxVisibleTextSize":1000,"maxVisibleVertex":3600000,"clipRegionEnabled":false,"antialias":true,"textOrientationFixed":false,"angle":0,"prjCoordSys":{"distanceUnit":"METER","projectionParam":{"centralParallel":0,"firstPointLongitude":0,"rectifiedAngle":0,"scaleFactor":1,"falseNorthing":0,"centralMeridian":0,"secondStandardParallel":0,"secondPointLongitude":0,"azimuth":0,"falseEasting":0,"firstStandardParallel":0},"epsgCode":3857,"coordUnit":"METER","name":"User Define","projection":{"name":"SPHERE_MERCATOR","type":"PRJ_SPHERE_MERCATOR"},"type":"PCS_USER_DEFINED","coordSystem":{"datum":{"name":"D_WGS_1984","type":"DATUM_WGS_1984","spheroid":{"flatten":0.00335281066474748,"name":"WGS_1984","axis":6378137,"type":"SPHEROID_WGS_1984"}},"unit":"DEGREE","spatialRefType":"SPATIALREF_EARTH_LONGITUDE_LATITUDE","name":"GCS_WGS_1984","type":"GCS_WGS_1984","primeMeridian":{"longitudeValue":0,"name":"Greenwich","type":"PRIMEMERIDIAN_GREENWICH"}}},"minScale":0,"markerAngleFixed":false,"overlapDisplayedOptions":{"allowPointWithTextDisplay":true,"horizontalOverlappedSpaceSize":0,"allowPointOverlap":false,"allowThemeGraduatedSymbolOverlap":false,"verticalOverlappedSpaceSize":0,"allowTextOverlap":false,"allowThemeGraphOverlap":false,"allowTextAndPointOverlap":false},"visibleScales":[1.6901635716026555E-9,3.3803271432053056E-9,6.760654286410611E-9,1.3521308572821242E-8,2.7042617145642484E-8,5.408523429128511E-8,1.0817046858256998E-7,2.1634093716513974E-7,4.3268187433028044E-7,8.653637486605571E-7,1.7307274973211203E-6,3.4614549946422405E-6,6.9229099892844565E-6],"visibleScalesEnabled":true,"customEntireBoundsEnabled":false,"clipRegion":{"center":null,"parts":null,"style":null,"prjCoordSys":null,"id":0,"type":"REGION","partTopo":null,"points":null},"maxScale":1.0E12,"customParams":"","center":{"x":-7.450580596923828E-9,"y":-2.60770320892334E-8},"dynamicPrjCoordSyses":[{"distanceUnit":null,"projectionParam":null,"epsgCode":0,"coordUnit":null,"name":null,"projection":null,"type":"PCS_ALL","coordSystem":null}],"colorMode":"DEFAULT","textAngleFixed":false,"overlapDisplayed":false,"userToken":{"userID":""},"cacheEnabled":true,"dynamicProjection":false,"autoAvoidEffectEnabled":true,"customEntireBounds":null,"name":"China","bounds":{"top":2.0037508342789087E7,"left":-2.0037508342789248E7,"bottom":-2.003750834278914E7,"leftBottom":{"x":-2.0037508342789248E7,"y":-2.003750834278914E7},"right":2.0037508342789244E7,"rightTop":{"x":2.0037508342789244E7,"y":2.0037508342789087E7}},"backgroundStyle":{"fillGradientOffsetRatioX":0,"markerSize":2.4,"fillForeColor":{"red":255,"green":255,"blue":255,"alpha":255},"fillGradientOffsetRatioY":0,"markerWidth":0,"markerAngle":0,"fillSymbolID":0,"lineColor":{"red":0,"green":0,"blue":0,"alpha":255},"markerSymbolID":0,"lineWidth":0.1,"markerHeight":0,"fillOpaqueRate":100,"fillBackOpaque":true,"fillBackColor":{"red":255,"green":255,"blue":255,"alpha":255},"fillGradientMode":"NONE","lineSymbolID":0,"fillGradientAngle":0}}`
+                ));
+            }
+            if (url.indexOf('error.png') > -1) {
+                return Promise.reject('error');
+            }
+            return Promise.resolve(new Response(JSON.stringify(new Blob([], { type: 'application/x-www-form-urlencoded' }))));
         });
-        var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
-        function successCallback(map, mapInfo, layers, baseLayer){
-          expect(map.getLayers().getArray()[1].get('layerID')).toBe('graticule_layer')
-          done();
+        window.olmsbak =  window.olms;
+        window.olms = { applyBackground: function () { }, stylefunction: function () { return function () { } } }
+        var datavizWebmap = new WebMap(id, options);
+        function successCallback() {
+            const imageUrl = 'blob:fakeimage';
+            spyOn(URL, 'createObjectURL').and.callFake(() => {
+                return imageUrl;
+            });
+            window.olms =  window.olmsbak;
+            const layers = datavizWebmap.map.getLayers().getArray();
+            expect(layers.length).toBe(mapJSONObj.layers.length + 1);
+            expect(layers[1].getSource().tileLoadFunction).not.toBeUndefined();
+            const fakeImage = {
+                src: ''
+            };
+            const imageTile = {
+                getImage: function() {
+                    return fakeImage;
+                },
+                setState: jasmine.createSpy('setState')
+            }
+            layers[1].getSource().tileLoadFunction(imageTile, 'http://scuccess.png');
+            setTimeout(() => {
+                expect(fakeImage.src).toBe(imageUrl);
+                expect(imageTile.setState).not.toHaveBeenCalled();
+                const tdtImage = 'http://tianditu.gov.cn/success.png';
+                layers[1].getSource().tileLoadFunction(imageTile, tdtImage);
+                setTimeout(() => {
+                    expect(fakeImage.src).toContain(tdtImage);
+                    fakeImage.src = '';
+                    expect(imageTile.setState).not.toHaveBeenCalled();
+                    layers[1].getSource().tileLoadFunction(imageTile, 'http://error.png');
+                    setTimeout(() => {
+                        expect(fakeImage.src).toBe('');
+                        expect(imageTile.setState).toHaveBeenCalledWith('error');
+                        done();
+                    }, 500);
+                }, 500);
+            }, 500);
         }
-        function errorCallback(error) {
-          console.log(error);
-        }
-      });
-      it('add dataflow and update', (done) => {
-        var urlDataFlow = 'ws://localhost:8004/dataflow';
-        var urlDataFlow1 = 'ws://localhost:8004/dataflow/broadcast';
-        var urlDataFlow2 = 'ws://localhost:8004/dataflow/subscribe';
-        var mockServer = new Server(urlDataFlow);
-        var mockServer1 = new Server(urlDataFlow1);
-        var mockServer2 = new Server(urlDataFlow2);
-        mockServer.on('connection', (socket) => {
-          socket.on('close', () => {});
-        });
-        let socket2;
-        mockServer1.on('connection', (socket) => {
-          socket.on('message', (e) => {
-            socket2 && socket2.send(e);
-          });
-          socket.on('close', () => {});
-        });
-        mockServer2.on('connection', (socket) => {
-          socket2 = socket;
-        });
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('web/datas/676516522/content.json') > -1) {
-            return Promise.resolve(new Response(layerData_CSV));
-          } else if (url.indexOf('dataflow.json') > -1) {
-            const dataflowLayerDataCopy = JSON.parse(JSON.stringify(dataflowLayerData));
-            dataflowLayerDataCopy.dataflow.urls[0].url = urlDataFlow;
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayerDataCopy.dataflow)));
-          } else if (url.indexOf('broadcast') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.broadcast)));
-          } else if (url.indexOf('subscribe') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayerData.subscribe)));
-          } else if (url.indexOf('map.json') > -1) {
-            const dataflowLayerCopy = JSON.parse(JSON.stringify(dataflowLayer));
-            dataflowLayerCopy.layers[0].url = urlDataFlow;
-            dataflowLayerCopy.layers[1].url = urlDataFlow;
-            dataflowLayerCopy.layers[2].url = urlDataFlow;
-            dataflowLayerCopy.layers[3].url = urlDataFlow;
-            return Promise.resolve(new Response(JSON.stringify(dataflowLayerCopy)));
-          }
-          return Promise.resolve();
-        });
-        var datavizWebmap = new WebMap(id, { successCallback, errorCallback, server: defaultServer });
-        function successCallback(map, mapInfo, layers, baseLayer) {
-          expect(map.getLayers().getArray().length).toBe(7);
-          mockServer.stop();
-          mockServer1.stop();
-          mockServer2.stop();
-          done();
-        }
-        function errorCallback(error) {
-          console.log(error);
-        }
-      });
+    });
     
 });
