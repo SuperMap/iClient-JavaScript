@@ -131,6 +131,7 @@ export class WebMap extends Observable {
     this.webMap = options.webMap;
     this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
     this.restDataSingleRequestCount = options.restDataSingleRequestCount || 1000;
+    this.tileRequestParameters = options.tileRequestParameters;
     this.createMap(options.mapSetting);
     if (this.webMap) {
       // webmap有可能是url地址，有可能是webmap对象
@@ -590,7 +591,8 @@ export class WebMap extends Observable {
           let options = {
             serverType,
             url,
-            tileGrid: TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid
+            tileGrid: TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid,
+            tileLoadFunction: me.getCustomTileLoadFunction()
           };
           if (url && !CommonUtil.isInTheSameDomain(url) && !this.isIportalProxyServiceUrl(url)) {
             options.tileProxy = me.server + 'apps/viewer/getUrlResource.png?url=';
@@ -1178,6 +1180,36 @@ export class WebMap extends Observable {
         break;
     }
   }
+
+  getCustomTileLoadFunction(transformImageUrl) {
+    const that = this;
+    if (this.tileRequestParameters) {
+      return function(imageTile, url) {
+        const src = transformImageUrl ? transformImageUrl(url) : url;
+        const requestParameters = that.tileRequestParameters(src);
+        if (requestParameters) {
+          FetchRequest.get(src, null, {
+            ...requestParameters,
+            withoutFormatSuffix: true
+          })
+            .then(function (response) {
+              return response.blob();
+            })
+            .then(function (blob) {
+              const imageUrl = URL.createObjectURL(blob);
+              imageTile.getImage().src = imageUrl;
+            })
+            .catch(function (error) {
+              console.error('Error fetching the image:', error);
+              imageTile.setState('error');
+            });
+        } else {
+          imageTile.getImage().src = src;
+        }
+      }
+    }
+  }
+
   /**
    * @private
    * @function WebMap.prototype.createDynamicTiledSource
@@ -1208,7 +1240,8 @@ export class WebMap extends Observable {
       // crossOrigin: 'anonymous', //在IE11.0.9600版本，会影响通过注册服务打开的iserver地图，不出图。因为没有携带cookie会报跨域问题
       // extent: this.baseLayerExtent,
       // prjCoordSys: {epsgCode: isBaseLayer ? layerInfo.projection.split(':')[1] : this.baseProjection.split(':')[1]},
-      format: layerInfo.format
+      format: layerInfo.format,
+      tileLoadFunction: this.getCustomTileLoadFunction()
     };
     if (!isBaseLayer && !this.isCustomProjection(this.baseProjection)) {
       options.prjCoordSys = { epsgCode: this.baseProjection.split(':')[1] };
@@ -1322,7 +1355,8 @@ export class WebMap extends Observable {
     return new XYZ({
       url: layerInfo.url,
       wrapX: false,
-      crossOrigin: 'anonymous'
+      crossOrigin: 'anonymous',
+      tileLoadFunction: this.getCustomTileLoadFunction()
     });
   }
 
@@ -1368,7 +1402,8 @@ export class WebMap extends Observable {
       wrapX: false,
       crossOrigin: 'anonymous',
       tileGrid: this._getTileGrid({ origin, resolutions, tileSize }),
-      projection: this.baseProjection
+      projection: this.baseProjection,
+      tileLoadFunction: this.getCustomTileLoadFunction()
     };
     return new XYZ(options);
   }
@@ -1399,9 +1434,7 @@ export class WebMap extends Observable {
         VERSION: layerInfo.version || '1.3.0'
       },
       projection: layerInfo.projection || that.baseProjection,
-      tileLoadFunction: function (imageTile, src) {
-        imageTile.getImage().src = src;
-      }
+      tileLoadFunction: this.getCustomTileLoadFunction()
     });
   }
 
@@ -1794,13 +1827,12 @@ export class WebMap extends Observable {
         layerInfo.origin,
         layerInfo.matrixIds
       ),
-      tileLoadFunction: function (imageTile, src) {
+      tileLoadFunction: this.getCustomTileLoadFunction(function (src) {
         if (src.indexOf('tianditu.gov.cn') >= 0) {
-          imageTile.getImage().src = `${src}&tk=${CommonUtil.getParameters(layerInfo.url)['tk']}`;
-          return;
+          return `${src}&tk=${CommonUtil.getParameters(layerInfo.url)['tk']}`;
         }
-        imageTile.getImage().src = src;
-      }
+        return src;
+      })
     });
   }
 
@@ -2996,13 +3028,15 @@ export class WebMap extends Observable {
     };
     let featureType = layerInfo.featureType;
     let style = await StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);
+    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(layerInfo.url);
     return new olLayer.VectorTile({
       //设置避让参数
       source: new VectorTileSuperMapRest({
         url: layerInfo.url,
         projection: layerInfo.projection,
         tileType: 'ScaleXY',
-        format: format
+        format: format,
+        ...requestParameters
       }),
       style: style
     });
@@ -5119,7 +5153,6 @@ export class WebMap extends Observable {
    * @param {Object} layerInfo - 图层信息
    */
   createMVTLayer(layerInfo) {
-    // let that = this;
     let styles = layerInfo.styles;
     const indexbounds = styles && styles.metadata && styles.metadata.indexbounds;
     const visibleResolution = this.createVisibleResolution(
@@ -5132,13 +5165,15 @@ export class WebMap extends Observable {
     const styleResolutions = this.getStyleResolutions(envelope);
     // const origin = [envelope.left, envelope.top];
     let withCredentials = this.isIportalProxyServiceUrl(styles.sprite);
+    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(styles.sprite);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
       style: styles,
       source: styles.name,
       resolutions: styleResolutions,
       map: this.map,
-      withCredentials
+      withCredentials,
+      ...requestParameters
     });
     return new Promise((resolve) => {
       mapboxStyles.on('styleloaded', function () {
@@ -5154,7 +5189,8 @@ export class WebMap extends Observable {
             format: new MVT({
               featureClass: olRenderFeature
             }),
-            wrapX: false
+            wrapX: false,
+            ...requestParameters
           }),
           style: mapboxStyles.featureStyleFuntion,
           visible: layerInfo.visible,
