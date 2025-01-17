@@ -128,7 +128,7 @@ L.GeoJSON.include({
     layer.defaultOptions = layer.options;
     var defaultGeometryOptions = this.defaultGeometryOptions[geometry.type];
     if (defaultGeometryOptions) {
-      layer.commonOptions = defaultGeometryOptions;
+      layer.commonOptions = Object.assign({}, defaultGeometryOptions);
     } else {
       this.defaultGeometryOptions[geometry.type] = L.Util.extend({}, layer.defaultOptions);
     }

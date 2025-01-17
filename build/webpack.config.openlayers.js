@@ -1,4 +1,6 @@
 var configBase = require('./webpack.config.base');
+var fs = require('fs');
+const chalk = require('chalk');
 //端名
 var libName = 'openlayers';
 //产品包名
@@ -11,6 +13,7 @@ if (origin && origin.includes('deploy-ol')) {
     libName = 'ol';
     productName = 'iclient-ol';
 }
+
 var externals = [
     Object.assign({}, configBase.externals, {
         '@turf/turf': 'function(){try{return turf}catch(e){return {}}}()',
@@ -31,6 +34,23 @@ var externals = [
         callback();
     }
 ];
+
+var methodNames = ['bindFeaturesCollection_', 'addFeaturesInternal'];
+checkPrivateMethodExists(methodNames);
+
+function checkPrivateMethodExists(methodNames) {
+  const file_path = 'node_modules/ol/dist/ol.js';
+  try {
+    const data = fs.readFileSync(file_path, 'utf8');
+    methodNames.forEach((methodName) => {
+      if (!data.includes(methodName)) {
+        console.log(chalk.red(`方法 ${methodName} 不存在于混淆后的 ol 中 ${file_path}，测试 ol fgb 重写方法是否被调用`));
+      }
+    });
+  } catch (err) {
+    console.error('读取文件出错：', err);
+  }
+}
 
 module.exports = {
     target: configBase.target,
