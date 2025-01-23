@@ -8,7 +8,7 @@ var  vectorstylesEscapedJson={
         }
     },
     "name": "California",
-    "sprite": "../../base/resources/img/sprite@2x",
+    "sprite": "http://localhost:9876/base/resources/img/sprite@2x",
     "layers": [
         {
             "paint": {

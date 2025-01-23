@@ -1002,6 +1002,45 @@ var vectorTile_style = {
   version: 8
 };
 
+var vectorTile_style_relative = {
+  layers: [
+    {
+      paint: {
+        'background-color': 'rgba(255,255,255,1.00)'
+      },
+      id: 'background',
+      type: 'background'
+    },
+    {
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {
+        'layer:caption': 'ChinaqxAlberts_4548@fl',
+        'layer:name': 'ChinaqxAlberts_4548@fl'
+      },
+      maxzoom: 24,
+      paint: {
+        'fill-color': 'rgba(151,191,242,1.00)',
+        'fill-antialias': true
+      },
+      id: 'ChinaqxAlberts_4548@fl(0_24)',
+      source: 'ChinaqxAlberts_4548@fl',
+      'source-layer': 'ChinaqxAlberts_4548@fl',
+      type: 'fill',
+      minzoom: 0
+    }
+  ],
+  version: 8,
+  sprite: "../sprites/sprite",
+  glyphs: "../fonts/{fontstack}/{range}.pbf",
+  sources: {
+    esri: {
+      type: "vector"
+    }
+  },
+}
+
 const mapInfo2 = {
   distanceUnit: 'METER',
   coordUnit: 'METER',

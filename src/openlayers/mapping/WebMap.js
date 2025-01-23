@@ -5164,10 +5164,16 @@ export class WebMap extends Observable {
     const envelope = this.getEnvelope(indexbounds, layerInfo.bounds);
     const styleResolutions = this.getStyleResolutions(envelope);
     // const origin = [envelope.left, envelope.top];
-    let withCredentials = this.isIportalProxyServiceUrl(styles.sprite);
-    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(styles.sprite);
+    let baseUrl = layerInfo.url && layerInfo.url.split('?')[0];
+    let spriteUrl = styles.sprite;
+    if (!CommonUtil.isAbsoluteURL(styles.sprite)) {
+      spriteUrl = CommonUtil.relative2absolute(styles.sprite, baseUrl);
+    }
+    let withCredentials = this.isIportalProxyServiceUrl(spriteUrl);
+    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(spriteUrl);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
+      baseUrl,
       style: styles,
       source: styles.name,
       resolutions: styleResolutions,
@@ -5183,6 +5189,7 @@ export class WebMap extends Observable {
           //设置避让参数
           declutter: true,
           source: new VectorTileSuperMapRest({
+            baseUrl,
             style: styles,
             withCredentials,
             projection: layerInfo.projection,
