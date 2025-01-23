@@ -1944,7 +1944,7 @@ export class WebMap extends Observable {
             await that.addLayer(layer, null, layerIndex);
             that.layerAdded++;
             that.sendMapToUser(len);
-            return;
+            continue;
           }
           if (
             layer.layerType === 'MARKER' ||
