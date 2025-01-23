@@ -1805,7 +1805,7 @@ export class WebMap extends Observable {
                       await that.addLayer(layer, null, layerIndex);
                       that.layerAdded++;
                       that.sendMapToUser(len);
-                      return;
+                      continue;
                   }
                   if ((layer.layerType === "MARKER") || (dataSource && (!dataSource.accessType || dataSource.accessType === 'DIRECT')) || isSampleData) {
                       //原来二进制文件

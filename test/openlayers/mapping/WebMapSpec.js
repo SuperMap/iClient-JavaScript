@@ -1343,4 +1343,25 @@ describe('openlayers_WebMap', () => {
       console.log(error);
     }
   });
+
+  it('datavizWebMap_noServerIdMarker', (done) => {
+    let options = {
+      server: server,
+      webMap: defaultServeRequest,
+      successCallback,
+      errorCallback: function () { }
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if (url.indexOf('map.json') > -1) {
+            var mapJson = datavizWebMap_noServerIdMarker;
+            return Promise.resolve(new Response(mapJson));
+        }
+        return Promise.resolve();
+    });
+    var datavizWebmap = new WebMap(options);
+    function successCallback() {
+      expect(datavizWebmap.server).toBe(server);
+      done();
+    }
+  });
 });
