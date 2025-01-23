@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
-import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { olExtends } from './olExtends';
 import remove from 'lodash.remove';
 import Observable from 'ol/Observable';
@@ -25,6 +25,7 @@ import Text from 'ol/style/Text';
  * @param {Object} options - 参数。
  * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与 options.style 互斥，优先级低于 options.style。
  * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
+ * @param {string} [options.baseUrl] - 当传入 style 对象且 style 中包含了相对路径时，需要传入 baseUrl 来拼接资源路径。
  * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
  * @param {(string|Array.<string>|undefined)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
@@ -103,6 +104,7 @@ export class MapboxStyles extends Observable {
                 });
             };
         this.layersBySourceLayer = {};
+        this.baseUrl = options.baseUrl;
         olExtends(this.map);
         this._loadStyle(this.styleTarget);
     }
@@ -248,6 +250,7 @@ export class MapboxStyles extends Observable {
     }
     _loadStyle(style) {
         if (Object.prototype.toString.call(style) == '[object Object]') {
+            this._handleRelativeUrl(style, this.baseUrl);
             this._mbStyle = style;
             setTimeout(() => {
                 this._resolve();
@@ -257,6 +260,7 @@ export class MapboxStyles extends Observable {
             FetchRequest.get(url, null, { withCredentials: this.withCredentials, headers: this.headers })
                 .then(response => response.json())
                 .then(mbStyle => {
+                    this._handleRelativeUrl(mbStyle, url);
                     this._mbStyle = mbStyle;
                     this._resolve();
                 });
@@ -288,7 +292,7 @@ export class MapboxStyles extends Observable {
                 xhr.responseType = 'blob';
                 xhr.addEventListener('loadend',(e) => {
                   var data = e.target.response;
-                  if (data !== undefined) {
+                  if (data !== undefined && data !== null) {
                     const img = new Image();
                     img.src = URL.createObjectURL(data);
                     this._spriteImage = img;
@@ -392,4 +396,29 @@ export class MapboxStyles extends Observable {
         const parts = url.match(this.spriteRegEx);
         return parts ? parts[1] + extension + (parts.length > 2 ? parts[2] : '') : url + extension;
     }
+
+    _handleRelativeUrl(styles, baseUrl) {
+      if (!baseUrl) {
+          return styles;
+      }
+      Object.keys(styles).forEach((fieldName) => {
+          if (fieldName === 'sources') {
+              Object.keys(styles[fieldName]).forEach((sourceName) => {
+                  this._handleRelativeUrl(styles[fieldName][sourceName], baseUrl);
+              })
+          }
+          if (fieldName === 'sprite' || fieldName === 'glyphs' || fieldName === 'url') {
+              if (typeof styles[fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles[fieldName])) {
+                  styles[fieldName] = CommonUtil.relative2absolute(styles[fieldName], baseUrl);
+              }
+          }
+          if (fieldName === 'tiles' && Array.isArray(styles[fieldName])) {
+              styles[fieldName].forEach((tile) => {
+                  if (!CommonUtil.isAbsoluteURL(tile)) {
+                      tile = CommonUtil.relative2absolute(tile, baseUrl);
+                  }
+              })
+          }
+      })
+  }
 }

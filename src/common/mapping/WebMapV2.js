@@ -363,7 +363,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
             style.layers.forEach(layer => {
               layer.layout && (layer.layout.visibility = this._getVisibility(layerInfo.visible));
             });
-            this.map.addStyle(style);
+            this.map.addStyle(style, undefined, undefined, undefined, url);
             const layerIds = [];
             style.layers.forEach((item) => {
               if (item.type !== 'background') {
