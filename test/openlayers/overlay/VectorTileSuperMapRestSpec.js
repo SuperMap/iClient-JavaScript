@@ -4,6 +4,7 @@ import {
 } from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../../../src/openlayers/services/MapService';
 import Map from 'ol/Map';
+import MVT from 'ol/format/MVT';
 import View from 'ol/View';
 import VectorTileLayer from 'ol/layer/VectorTile';
 
@@ -119,6 +120,9 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         return Promise.resolve(new Response(JSON.stringify({
           tiles: ['tile/{z}/{y}/{x}.pbf']
         })));
+      }
+      if (url.indexOf('http://localhost:9876/iserver/services/map-china400/rest/maps/China') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapObject)));
       }
       return Promise.resolve();
     });
