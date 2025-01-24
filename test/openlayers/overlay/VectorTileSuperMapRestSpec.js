@@ -97,8 +97,6 @@ describe('openlayers_VectorTileSuperMapRest', () => {
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
-
-    spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => mockCallback(url, 'GET'));
     spyPost = spyOn(FetchRequest, 'post').and.callFake((url) => mockCallback(url, 'POST'));
     spyCommit = spyOn(FetchRequest, 'commit').and.callFake((method, url) => mockCallback(url, method));
   });
@@ -116,6 +114,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
   });
 
   it('initialize', (done) => {
+    spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => mockCallback(url, 'GET'));
     new MapService(url).getMapInfo((serviceResult) => {
       map = new Map({
         target: 'map',
@@ -144,6 +143,8 @@ describe('openlayers_VectorTileSuperMapRest', () => {
     });
   });
   it('custom_tileLoadFunction', (done) => {
+    spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => mockCallback(url, 'GET'));
+
     var spy = jasmine.createSpy('test');
     var tileLoadFunction = (tile) => {
       tile.setLoader(() => {
@@ -175,6 +176,8 @@ describe('openlayers_VectorTileSuperMapRest', () => {
   });
 
   it('mvt_decrypt ', (done) => {
+    spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => mockCallback(url, 'GET'));
+
     const spy = jasmine.createSpy('test');
     const serviceKey = 'l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=';
     const spyEncrypt = spyOn(EncryptRequest.prototype, 'request').and.callFake(() => ({ json: () => Promise.resolve(serviceKey)}));
