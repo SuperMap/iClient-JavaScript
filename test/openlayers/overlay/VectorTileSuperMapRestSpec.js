@@ -225,4 +225,71 @@ describe('openlayers_VectorTileSuperMapRest', () => {
       });
     });
   });
+
+  it('handle relative url', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+                if (url.indexOf('fake') > -1) {
+                  return Promise.resolve(new Response(JSON.stringify({
+                    tiles: ['tile/{z}/{y}/{x}.pbf']
+                  })));
+                } 
+                return Promise.resolve();
+    });
+    new MapService(url).getMapInfo((serviceResult) => {
+      map = new Map({
+        target: 'map',
+        view: new View({
+          center: [12957388, 4853991],
+          zoom: 11
+        })
+      });
+      vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+      vectorTileOptions.tileLoadFunction = (tile) => {
+        tile.setLoader(() => {
+          tile.setFeatures([]);
+        });
+      };
+      vectorTileOptions.format = new MVT();
+      vectorTileOptions.baseUrl = 'http://fake/iportal/services';
+      vectorTileOptions.style =  {
+        "version" : 8,
+        "sprite" : "../sprites/sprite",
+        "glyphs" : "../fonts/{fontstack}/{range}.pbf",
+        "sources": {
+            "esri": {
+                "type": "vector",
+                "url": "../../"
+            }
+        },
+        "layers" : [{
+                "id" : "Contour_11_main/0",
+                "type" : "line",
+                "source" : "esri",
+                "source-layer" : "Contour",
+                "filter" : ["all", ["==", "Index3", 1], ["==", "Index5", 1]],
+                "minzoom" : 11,
+                "maxzoom" : 12,
+                "paint" : {
+                    "line-color" : "#61674a",
+                    "line-opacity" : 0.5,
+                    "line-width" : {
+                        "base" : 1.2,
+                        "stops" : [[11, 0.7], [16, 1.1]]
+                    }
+                }	
+        }]
+    }
+      vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
+      vectorTileSource.once('tileloadend', () => {
+        expect(vectorTileOptions).not.toBeNull();
+        expect(vectorTileOptions.crossOrigin).toBe('anonymous');
+        expect(vectorTileSource).not.toBeNull();
+        done();
+      });
+      vectorLayer = new VectorTileLayer({
+        source: vectorTileSource
+      });
+      map.addLayer(vectorLayer);
+    });
+  });
 });
