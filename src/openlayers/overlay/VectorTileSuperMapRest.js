@@ -25,6 +25,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - 服务地址。
+ * @param {string} [options.baseUrl] - 当传入 style 对象且 style 中包含了相对路径时，需要传入 baseUrl 来拼接资源路径。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 {@link ol.format.MVT} 且 `options.source` 不为空时有效，优先级高于 `options.url`。
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的source名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
@@ -58,8 +59,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             projection: options.projection,
             state:
                 options.format instanceof MVT &&
-                options.style &&
-                Object.prototype.toString.call(options.style) == '[object String]'
+                options.style
                     ? 'loading'
                     : options.state,
             tileClass: options.tileClass,
@@ -74,22 +74,9 @@ export class VectorTileSuperMapRest extends VectorTile {
         var me = this;
         me.withCredentials = options.withCredentials;
         me._tileType = options.tileType || 'ScaleXY';
+        me.baseUrl = options.baseUrl;
         this.vectorTileStyles = new VectorTileStyles();
-        if (options.format instanceof MVT && options.style) {
-            if (Object.prototype.toString.call(options.style) == '[object String]') {
-                var url = SecurityManager.appendCredential(options.style);
-                FetchRequest.get(url, null, { withCredentials: options.withCredentials })
-                    .then((response) => response.json())
-                    .then((mbStyle) => {
-                        this._fillByStyleJSON(mbStyle, options.source);
-                        this.setState('ready');
-                    });
-            } else {
-                this._fillByStyleJSON(options.style, options.source);
-            }
-        } else {
-            this._fillByRestMapOptions(options.url, options);
-        }
+        this._initialized(options);
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
@@ -313,13 +300,48 @@ export class VectorTileSuperMapRest extends VectorTile {
             });
         }
     }
-    _fillByStyleJSON(style, source) {
+
+    async _initialized(options) {
+      if (options.format instanceof MVT && options.style) {
+        let style = options.style;
+          if (Object.prototype.toString.call(options.style) == '[object String]') {
+            var url = SecurityManager.appendCredential(options.style);
+            const response = await FetchRequest.get(url, null, {
+              withCredentials: options.withCredentials
+            });
+            style = await response.json();
+          }
+          await this._fillByStyleJSON(style, options.source);
+      } else {
+        this._fillByRestMapOptions(options.url, options);
+      }
+      this.setState('ready');
+    }
+    async _fillByStyleJSON(style, source) {
         if (!source) {
             source = Object.keys(style.sources)[0];
         }
         if (style.sources && style.sources[source]) {
-            //ToDo 支持多个tiles地址
-            this._tileUrl = SecurityManager.appendCredential(style.sources[source].tiles[0]);
+          let newUrl;
+          if (style.sources[source].tiles) {
+              newUrl = style.sources[source].tiles[0];
+              if (!CommonUtil.isAbsoluteURL(newUrl)) {
+                  newUrl = CommonUtil.relative2absolute(newUrl, this.baseUrl);
+              }
+          } else if (style.sources[source].url) {
+              let tiles = style.sources[source].url;
+              if (!CommonUtil.isAbsoluteURL(tiles)) {
+                  tiles = CommonUtil.relative2absolute(tiles, this.baseUrl);
+              }
+              const response = await FetchRequest.get(tiles, {}, { withoutFormatSuffix: true });
+              const sourceInfo = await response.json();
+              let tileUrl = sourceInfo.tiles[0];
+              if (!CommonUtil.isAbsoluteURL(tileUrl)) {
+                  tileUrl = CommonUtil.relative2absolute(tileUrl, tiles);
+              }
+              newUrl = SecurityManager.appendCredential(tileUrl);
+          }
+          this._tileUrl = SecurityManager.appendCredential(newUrl);
         }
         if (style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
