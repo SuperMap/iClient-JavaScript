@@ -352,7 +352,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                 const sourceInfo = await response.json();
                 let tileUrl = sourceInfo.tiles[0];
                 if (!CommonUtil.isAbsoluteURL(tileUrl)) {
-                    tileUrl = CommonUtil.relative2absolute(tileUrl, style.sources[source].url);
+                    tileUrl = CommonUtil.relative2absolute(tileUrl, tiles);
                 }
                 newUrl = SecurityManager.appendCredential(tileUrl);
             }
