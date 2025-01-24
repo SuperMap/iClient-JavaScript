@@ -1110,6 +1110,34 @@ const Util = {
       }
       rgba.push(opacity);
       return "rgba(" + rgba.join(",") + ")";
+  },
+   /**
+    * @description 是否是绝对地址。
+    * @private
+    * @param {string} url - 验证地址。
+    * @returns {boolean} 是否是绝对地址。
+    */
+   isAbsoluteURL(url) {
+    try {
+      const res = new URL(url);
+      return !!res;
+    } catch (_) {
+      return false;
+    }
+  },
+   /**
+    * @description 相对地址转绝对地址。
+    * @private
+    * @param {string} url - 相对地址。
+    * @param {string} base - 基础地址。
+    * @returns {string} 完整地址。
+    */
+  relative2absolute(url, base) {
+    let newUrl = new URL(url, base);
+    if (newUrl && newUrl.href) {
+      return decodeURIComponent(newUrl.href);
+    }
+    return;
   }
 };
 

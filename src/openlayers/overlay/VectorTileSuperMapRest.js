@@ -29,6 +29,7 @@ import decryptTileUtil from '@supermapgis/tile-decryptor';
  * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - 服务地址。
+ * @param {string} [options.baseUrl] - 当传入 style 对象且 style 中包含了相对路径时，需要传入 baseUrl 来拼接资源路径。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 {@link ol.format.MVT} 且 `options.source` 不为空时有效，优先级高于 `options.url`。
  * @param {(string|undefined)} options.source - Mapbox Style JSON 对象中的 source 名称。当 `options.style` 设置时有效。当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
@@ -80,6 +81,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         me.withCredentials = options.withCredentials;
         me.headers = options.headers || {};
         me._tileType = options.tileType || 'ScaleXY';
+        me.baseUrl = options.baseUrl;
         this.vectorTileStyles = new VectorTileStyles();
         this._initialized(options);
 
@@ -140,10 +142,10 @@ export class VectorTileSuperMapRest extends VectorTile {
             if (!tileCoord) {
                 return undefined;
             } else {
-                              return me._tileUrl
+                return me._tileUrl
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                     .replace(yRegEx, function () {
+                    .replace(yRegEx, function () {
                         var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
@@ -169,7 +171,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             var height = Number(tileUrl.match(regHeight)[2]);
             var me = this;
             tile.setLoader(function (extent, resolution, projection) {
-                FetchRequest.get(tileUrl, null, {headers:me.headers})
+                FetchRequest.get(tileUrl, null, { headers: me.headers })
                     .then(function (response) {
                         if (tile.getFormat() instanceof GeoJSON) {
                             return response.json();
@@ -254,49 +256,49 @@ export class VectorTileSuperMapRest extends VectorTile {
                 }
                 xhr.withCredentials = me.withCredentials;
                 for (const key in me.headers) {
-                  if (me.headers.hasOwnProperty(key)) {
-                    xhr.setRequestHeader(key, me.headers[key]);
-                  }
+                    if (me.headers.hasOwnProperty(key)) {
+                        xhr.setRequestHeader(key, me.headers[key]);
+                    }
                 }
                 xhr.onload = function () {
-                  if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
-                    const type = format.getType();
-                    let source = void 0;
-                    if (type === 'json' || type === 'text') {
-                      source = xhr.responseText;
-                    } else if (type === 'xml') {
-                      source = xhr.responseXML;
-                      if (!source) {
-                        source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
-                      }
-                    } else if (type === 'arraybuffer') {
-                      source = xhr.response;
-                    }
-                    if (source) {
-                      source = me._decryptMvt(source);
-                      if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
-                        success.call(
-                          this,
-                          format.readFeatures(source, { featureProjection: projection }),
-                          format.readProjection(source),
-                          format.getLastExtent()
-                        );
-                      } else {
-                        success.call(
-                          this,
-                          format.readFeatures(source, {
-                            extent: extent,
-                            featureProjection: projection
-                          }),
-                          format.readProjection(source)
-                        );
-                      }
+                    if (!xhr.status || (xhr.status >= 200 && xhr.status < 300)) {
+                        const type = format.getType();
+                        let source = void 0;
+                        if (type === 'json' || type === 'text') {
+                            source = xhr.responseText;
+                        } else if (type === 'xml') {
+                            source = xhr.responseXML;
+                            if (!source) {
+                                source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
+                            }
+                        } else if (type === 'arraybuffer') {
+                            source = xhr.response;
+                        }
+                        if (source) {
+                            source = me._decryptMvt(source);
+                            if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, { featureProjection: projection }),
+                                    format.readProjection(source),
+                                    format.getLastExtent()
+                                );
+                            } else {
+                                success.call(
+                                    this,
+                                    format.readFeatures(source, {
+                                        extent: extent,
+                                        featureProjection: projection
+                                    }),
+                                    format.readProjection(source)
+                                );
+                            }
+                        } else {
+                            failure.call(this);
+                        }
                     } else {
-                      failure.call(this);
+                        failure.call(this);
                     }
-                  } else {
-                    failure.call(this);
-                  }
                 }.bind(this);
                 xhr.onerror = function () {
                     failure.call(this);
@@ -307,35 +309,54 @@ export class VectorTileSuperMapRest extends VectorTile {
     }
 
     async _initialized(options) {
-      if (options.format instanceof MVT && options.style) {
-          let style = options.style;
-          if (Object.prototype.toString.call(options.style) == '[object String]') {
-            var url = SecurityManager.appendCredential(options.style);
-            const response = await FetchRequest.get(url, null, {
-              withCredentials: options.withCredentials,
-              headers: options.headers
-            });
-            style = await response.json();
-          }
-          this._fillByStyleJSON(style, options.source);
-      } else {
-          this._fillByRestMapOptions(options.url, options);
-      }
-      if (options.format instanceof MVT) {
-        if (options.decrypt) {
-          await this._verifyVectorTileIsEncrypt(options);
+        if (options.format instanceof MVT && options.style) {
+            let style = options.style;
+            if (Object.prototype.toString.call(options.style) == '[object String]') {
+                var url = SecurityManager.appendCredential(options.style);
+                const response = await FetchRequest.get(url, null, {
+                    withCredentials: options.withCredentials,
+                    headers: options.headers
+                });
+                style = await response.json();
+            }
+            await this._fillByStyleJSON(style, options.source);
+        } else {
+            this._fillByRestMapOptions(options.url, options);
         }
-        this.setState('ready');
-      }
+        if (options.format instanceof MVT) {
+            if (options.decrypt) {
+                await this._verifyVectorTileIsEncrypt(options);
+            }
+            this.setState('ready');
+        }
     }
 
-    _fillByStyleJSON(style, source) {
+    async _fillByStyleJSON(style, source) {
         if (!source) {
             source = Object.keys(style.sources)[0];
         }
+        //ToDo 支持多个tiles地址
         if (style.sources && style.sources[source]) {
-            //ToDo 支持多个tiles地址
-            this._tileUrl = SecurityManager.appendCredential(style.sources[source].tiles[0]);
+            let newUrl;
+            if (style.sources[source].tiles) {
+                newUrl = style.sources[source].tiles[0];
+                if (!CommonUtil.isAbsoluteURL(newUrl)) {
+                    newUrl = CommonUtil.relative2absolute(newUrl, this.baseUrl);
+                }
+            } else if (style.sources[source].url) {
+                let tiles = style.sources[source].url;
+                if (!CommonUtil.isAbsoluteURL(tiles)) {
+                    tiles = CommonUtil.relative2absolute(tiles, this.baseUrl);
+                }
+                const response = await FetchRequest.get(tiles, {}, { withoutFormatSuffix: true });
+                const sourceInfo = await response.json();
+                let tileUrl = sourceInfo.tiles[0];
+                if (!CommonUtil.isAbsoluteURL(tileUrl)) {
+                    tileUrl = CommonUtil.relative2absolute(tileUrl, tiles);
+                }
+                newUrl = SecurityManager.appendCredential(tileUrl);
+            }
+            this._tileUrl = SecurityManager.appendCredential(newUrl);
         }
         if (style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
@@ -390,32 +411,32 @@ export class VectorTileSuperMapRest extends VectorTile {
     }
 
     async _verifyVectorTileIsEncrypt(options) {
-      try {
-        let serviceUrl = options.url || typeof options.style === 'string' && options.style;
+        try {
+            let serviceUrl = options.url || typeof options.style === 'string' && options.style;
 
-        if (!serviceUrl && Object.prototype.toString.call(options.style) == '[object Object]') {
-          const firstSource = Object.keys(options.style.sources)[0];
-          serviceUrl = options.style.sources[firstSource].tiles[0];
+            if (!serviceUrl && Object.prototype.toString.call(options.style) == '[object Object]') {
+                const firstSource = Object.keys(options.style.sources)[0];
+                serviceUrl = options.style.sources[firstSource].tiles[0];
+            }
+            const res = await getServiceKey(serviceUrl);
+            if (res) {
+                this.decryptOptions = {
+                    key: res.serviceKey,
+                    algorithm: res.algorithm,
+                    decrypt: typeof options.decrypt === 'boolean' ? undefined : options.decrypt,
+                    decryptCompletedFunction: options.decryptCompletedFunction
+                };
+            }
+        } catch (error) {
+            console.error(error);
         }
-        const res = await getServiceKey(serviceUrl);
-        if (res) {
-          this.decryptOptions = {
-            key: res.serviceKey,
-            algorithm: res.algorithm,
-            decrypt: typeof options.decrypt === 'boolean' ? undefined : options.decrypt,
-            decryptCompletedFunction: options.decryptCompletedFunction
-          };
-        }
-      } catch (error) {
-        console.error(error);
-      }
     }
 
     _decryptMvt(mvtData) {
-      if (this.decryptOptions) {
-        return decryptTileUtil({ ...this.decryptOptions, arrayBuffer: mvtData });
-      }
-      return mvtData;
+        if (this.decryptOptions) {
+            return decryptTileUtil({ ...this.decryptOptions, arrayBuffer: mvtData });
+        }
+        return mvtData;
     }
 
     /**

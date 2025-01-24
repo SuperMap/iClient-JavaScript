@@ -233,6 +233,7 @@ var datavizWebMap_WMTS3 =
   '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:18055.99093350616","level":1,"center":{"x":5439870.428999409,"y":19567.879241008308},"baseLayer":{"layerType":"WMTS","tileMatrixSet":"GoogleMapsCompatible_世界地图_Gray","requestEncoding":"KVP","visible":true,"name":"世界地图_Gray","dpi":90.7142857142857,"url":"http://fack/iserver/services/map-china400/wmts100","layer":"世界地图_Gray"},"description":"","projection":"EPSG:3857","minScale":"1:295829355.4545649","title":"无标题","version":"2.3.0","layers":[]}';
 var datavizWebMap_fiter =
   '{ "extent": { "leftBottom": { "x": -2.00375083427892E7, "y": -2.00375083427892E7 }, "rightTop": { "x": 2.00375083427892E7, "y": 2.00375083427892E7 } }, "level": 11, "center": { "x": 1.2980839382783111E7, "y": 4850526.359611664 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": true, "name": "天地图" }, "layers": [ { "layerType": "VECTOR", "visible": true, "filterCondition": "SmID>20", "name": "北京市轨道交通站点", "featureType": "LINE", "style": { "fillColor": "#ff0000", "strokeWidth": 1, "fillOpacity": 0.9, "type": "BASIC_POINT", "radius": 6, "strokeColor": "#ffffff", "strokeOpacity": 1 }, "projection": "EPSG:4326", "dataSource": { "type": "PORTAL_DATA", "serverId": "1276193546" } } ], "description": "", "projection": "EPSG:3857", "title": "filter", "version": "1.0" }';
+var datavizWebMap_noServerIdMarker = '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:144447.92746805","level":1,"center":{"x":0,"y":-7.081154551613622E-10},"baseLayer":{"layerType":"TILE","visible":true,"name":"中国暗色地图","url":"https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"},"layers":[{"layerType":"MARKER","visible":true,"name":"未命名标注图层1"},{"layerType":"MARKER","visible":true,"name":"未命名标注图层2"}],"description":"","projection":"EPSG:3857","minScale":"1:591658710.909131","title":"无标题","version":"2.4.1","rootUrl":"http://127.0.0.1:8082/iportal/"}';
 
 var xlsData =
   '{"fileName":"671个气象站观测数据(1).xlsx","type":"EXCEL","lineNumber":1,"content":{"colTitles":["区站号","站台","省份","X","Y","海拔","平均最低气温","最热七天气温","最高气温","最低气温","年均降雨"],"rows":[["50136","漠河","黑龙江","122.37","53.47","296","-47","29","33","-53","366.1"]]}}';
@@ -1000,6 +1001,45 @@ var vectorTile_style = {
   zoom: 0,
   version: 8
 };
+
+var vectorTile_style_relative = {
+  layers: [
+    {
+      paint: {
+        'background-color': 'rgba(255,255,255,1.00)'
+      },
+      id: 'background',
+      type: 'background'
+    },
+    {
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {
+        'layer:caption': 'ChinaqxAlberts_4548@fl',
+        'layer:name': 'ChinaqxAlberts_4548@fl'
+      },
+      maxzoom: 24,
+      paint: {
+        'fill-color': 'rgba(151,191,242,1.00)',
+        'fill-antialias': true
+      },
+      id: 'ChinaqxAlberts_4548@fl(0_24)',
+      source: 'ChinaqxAlberts_4548@fl',
+      'source-layer': 'ChinaqxAlberts_4548@fl',
+      type: 'fill',
+      minzoom: 0
+    }
+  ],
+  version: 8,
+  sprite: "../sprites/sprite",
+  glyphs: "../fonts/{fontstack}/{range}.pbf",
+  sources: {
+    esri: {
+      type: "vector"
+    }
+  },
+}
 
 const mapInfo2 = {
   distanceUnit: 'METER',
