@@ -5126,10 +5126,23 @@ export class WebMap extends Observable {
     const envelope = this.getEnvelope(indexbounds, layerInfo.bounds);
     const styleResolutions = this.getStyleResolutions(envelope);
     // const origin = [envelope.left, envelope.top];
-    let baseUrl = layerInfo.url && layerInfo.url.split('?')[0];
+    let baseUrl = layerInfo.url;
+    let paramUrl = baseUrl.split('?')[1];
     let spriteUrl = styles.sprite;
     if (!CommonUtil.isAbsoluteURL(styles.sprite)) {
       spriteUrl = CommonUtil.relative2absolute(styles.sprite, baseUrl);
+    }
+    if (layerInfo.dataSource.type === 'ARCGIS_VECTORTILE') {
+      Object.keys(styles.sources).forEach(function (key) {
+        Object.keys(styles.sources[key]).forEach(function(fieldName) {
+          if (fieldName === 'url') {
+            if (typeof styles.sources[key][fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles.sources[key][fieldName])) {
+              styles.sources[key][fieldName] = CommonUtil.relative2absolute(styles.sources[key][fieldName], baseUrl);
+            }
+            styles.sources[key][fieldName] = styles.sources[key][fieldName] + (paramUrl ? '?' + paramUrl + '&f=json' : '?f=json');
+          }
+        });
+      });
     }
     let withCredentials = this.isIportalProxyServiceUrl(spriteUrl);
     const requestParameters = this.tileRequestParameters && this.tileRequestParameters(spriteUrl);
