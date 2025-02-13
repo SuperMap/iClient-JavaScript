@@ -248,6 +248,7 @@
          this.layersBySourceLayer = {};
          this._loadStyle(style);
      }
+     
      _loadStyle(style) {
          if (Object.prototype.toString.call(style) == '[object Object]') {
              this._handleRelativeUrl(style, this.baseUrl);
@@ -397,29 +398,37 @@
          return parts ? parts[1] + extension + (parts.length > 2 ? parts[2] : '') : url + extension;
      }
  
-     _handleRelativeUrl(styles, baseUrl) {
-       if (!baseUrl) {
-           return styles;
-       }
-       Object.keys(styles).forEach((fieldName) => {
-           if (fieldName === 'sources') {
-               Object.keys(styles[fieldName]).forEach((sourceName) => {
-                   this._handleRelativeUrl(styles[fieldName][sourceName], baseUrl);
-               })
-           }
-           if (fieldName === 'sprite' || fieldName === 'glyphs' || fieldName === 'url') {
-               if (typeof styles[fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles[fieldName])) {
-                   styles[fieldName] = CommonUtil.relative2absolute(styles[fieldName], baseUrl);
-               }
-           }
-           if (fieldName === 'tiles' && Array.isArray(styles[fieldName])) {
-               styles[fieldName].forEach((tile) => {
-                   if (!CommonUtil.isAbsoluteURL(tile)) {
-                       tile = CommonUtil.relative2absolute(tile, baseUrl);
-                   }
-               })
-           }
-       })
-   }
+     _handleRelativeUrl(styles, url) {
+      if (!url) {
+          return styles;
+      }
+      const baseUrl = url.split('?')[0];
+      const paramUrl = url.split('?')[1] || '';
+      Object.keys(styles).forEach((fieldName) => {
+          if (fieldName === 'sources') {
+              Object.keys(styles[fieldName]).forEach((sourceName) => {
+                  this._handleRelativeUrl(styles[fieldName][sourceName], url);
+              })
+          }
+          if (fieldName === 'sprite' || fieldName === 'glyphs' || fieldName === 'url') {
+              if (typeof styles[fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles[fieldName])) {
+                  styles[fieldName] = CommonUtil.relative2absolute(styles[fieldName], baseUrl);
+              }
+              if (paramUrl && !styles[fieldName].includes(paramUrl)) {
+                styles[fieldName] = styles[fieldName] + (paramUrl ? (styles[fieldName].includes('?') ? '&' + paramUrl : '?' + paramUrl) : '');
+              }
+          }
+          if (fieldName === 'tiles' && Array.isArray(styles[fieldName])) {
+              styles[fieldName].forEach((tile) => {
+                  if (!CommonUtil.isAbsoluteURL(tile)) {
+                      tile = CommonUtil.relative2absolute(tile, baseUrl);
+                  }
+                  if (paramUrl && !tile.includes(paramUrl)) {
+                    tile = tile + (paramUrl ? (styles[fieldName].includes('?') ? '&' + paramUrl : '?' + paramUrl) : '');
+                  }
+              })
+          }
+      })
+    }
  }
  

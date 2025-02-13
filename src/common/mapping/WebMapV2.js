@@ -334,6 +334,19 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
             style.layers.forEach(layer => {
               layer.layout && (layer.layout.visibility = this._getVisibility(layerInfo.visible));
             });
+            if (layerInfo.dataSource.type === 'ARCGIS_VECTORTILE') {
+              let paramUrl = url.split('?')[1];
+              Object.keys(style.sources).forEach((key) => {
+                Object.keys(style.sources[key]).forEach((fieldName) => {
+                  if (fieldName === 'url') {
+                    if (typeof style.sources[key][fieldName] === 'string' && !this.isAbsoluteURL(style.sources[key][fieldName])) {
+                      style.sources[key][fieldName] = this.relative2absolute(style.sources[key][fieldName], url);
+                    }
+                    style.sources[key][fieldName] = style.sources[key][fieldName] + (paramUrl ? '?' + paramUrl + '&f=json' : '?f=json');
+                  }
+                });
+              });
+            }
             this.map.addStyle(style, undefined, undefined, undefined, url);
             const layerIds = [];
             style.layers.forEach((item) => {
@@ -3072,6 +3085,23 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     _getVisibility(visible) {
       const visibility = visible === true || visible === 'visible' ? 'visible' : 'none';
       return visibility;
+    }
+
+    isAbsoluteURL(url) {
+      try {
+        const res = new URL(url);
+        return !!res;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    relative2absolute(url, base) {
+      let newUrl = new URL(url, base);
+      if (newUrl && newUrl.href) {
+        return decodeURIComponent(newUrl.href);
+      }
+      return null;
     }
   };
 }
