@@ -309,6 +309,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             const response = await FetchRequest.get(url, null, {
               withCredentials: options.withCredentials
             });
+            this.baseUrl = url;
             style = await response.json();
           }
           await this._fillByStyleJSON(style, options.source);
