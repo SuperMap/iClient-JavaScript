@@ -130,7 +130,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         extent: [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y],
         wkt: this._getProjectionWKT(projection)
       };
-      if (!crsManager.getCRS(epsgCode) && baseLayer.layerType !== 'ZXY_TILE') {
+      if (!crsManager.getCRS(epsgCode)) {
         switch (baseLayer.layerType) {
           case 'MAPBOXSTYLE': {
             let url = baseLayer.dataSource.url;
@@ -163,6 +163,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                 boundsRes.bounds.rightTop.y
               ];
             }
+            break;
+          }
+          case 'ZXY_TILE': {
+            const extent = this._getZXYTileCrsExtent(baseLayer);
+            crs.extent = extent;
             break;
           }
           default:
@@ -240,14 +245,20 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       let zoomBase = 0;
       let { bounds, minZoom, maxZoom } = this.mapOptions;
       const interactive = this.mapOptions.interactive;
+      const tileSize = mapInfo.baseLayer.tileSize;
+
+      if (mapInfo.baseLayer.layerType === 'ZXY_TILE') {
+        const {leftBottom, rightTop} = mapInfo.extent;
+        mapInfo.visibleExtent = [leftBottom.x, leftBottom.y, rightTop.x, rightTop.y];
+      }
       if (isNaN(minZoom)) {
         minZoom = mapInfo.minScale
-          ? this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection))
+          ? this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection), tileSize)
           : 0;
       }
       if (isNaN(maxZoom)) {
         maxZoom = mapInfo.maxScale
-          ? this._transformScaleToZoom(mapInfo.maxScale, mapRepo.CRS.get(this.baseProjection))
+          ? this._transformScaleToZoom(mapInfo.maxScale, mapRepo.CRS.get(this.baseProjection), tileSize)
           : 22;
       }
       if (mapInfo.visibleExtent && mapInfo.visibleExtent.length === 4 && !bounds) {
@@ -262,8 +273,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       if (!bounds) {
         if (mapInfo.minScale && mapInfo.maxScale) {
           zoomBase = Math.min(
-            this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection)),
-            this._transformScaleToZoom(mapInfo.maxScale, mapRepo.CRS.get(this.baseProjection))
+            this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection), tileSize),
+            this._transformScaleToZoom(mapInfo.maxScale, mapRepo.CRS.get(this.baseProjection), tileSize)
           );
         } else {
           zoomBase = +Math.log2(
@@ -433,8 +444,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           if (layer.visibleScale) {
             const { minScale, maxScale } = layer.visibleScale;
             const crs = this.map.getCRS();
-            layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs), 0);
-            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs) + 0.0000001);
+            layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs, layer.tileSize), 0);
+            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs, layer.tileSize) + 0.0000001);
           }
 
           if (type === 'tile') {
@@ -701,16 +712,25 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
 
     _createZXYLayer(layerInfo, addedCallback) {
-      const { url, subdomains, layerID, name, visible, tileSize, resolutions, origin, minZoom: minzoom, maxZoom: maxzoom } = layerInfo;
+      const { url, subdomains, layerID, name, visible, tileSize, resolutions, origin, minZoom: minzoom, maxZoom: maxzoom, mapBounds } = layerInfo;
       const urls = (subdomains && subdomains.length) ? subdomains.map(item => url.replace('{s}', item)) : [url];
       const layerId = layerID || name;
       const isSupport = this._isSupportZXYTileLayer({ resolutions, tileSize, origin });
       if (isSupport) {
-        this._addBaselayer({ url: urls, layerID: layerId, visibility: visible, minzoom, maxzoom, isIserver: false, tileSize });
+        const bounds = this._getSourceBounds(mapBounds);
+        this._addBaselayer({ url: urls, layerID: layerId, visibility: visible, minzoom, maxzoom, bounds, isIserver: false, tileSize });
       } else {
         this.fire('xyztilelayernotsupport', { error: `The resolutions or origin of layer ${name} on XYZ Tile does not match the map`, error_code: 'XYZ_TILE_LAYER_NOT_SUPPORTED', layer: layerInfo});
       }
       addedCallback && addedCallback();
+    }
+    _getSourceBounds(mapBounds) {
+      if(!mapBounds) {
+        return;
+      }
+      const lb = this._unproject([mapBounds[0], mapBounds[1]]);
+      const rt = this._unproject([mapBounds[2], mapBounds[3]]);
+      return [...lb, ...rt];
     }
     _isSupportZXYTileLayer({ resolutions, tileSize, origin }) {
       const isOldWebMecartor = origin === undefined && resolutions === undefined;
@@ -744,6 +764,18 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         resolutions.push(maxReolution / Math.pow(2, i));
       }
       return resolutions;
+    }
+    _getZXYTileCrsExtent(layerInfo) {
+      const { tileSize = 256, resolutions, origin } = layerInfo;
+      if (resolutions) {
+        const maxResolution = resolutions.sort((a, b) => b - a)[0];
+        const size = maxResolution * tileSize;
+        return [origin[0], origin[1] - size, origin[0] + size, origin[1]];
+      }
+      // 兼容之前的3857全球剖分
+      if (this.baseProjection == 'EPSG:3857') {
+        return [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+      }
     }
 
     _createDynamicTiledLayer(layerInfo, addedCallback) {
@@ -2969,10 +3001,11 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       return Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1]) / tileSize;
     }
 
-    _transformScaleToZoom(scale, crs) {
+    _transformScaleToZoom(scale, crs, tileSize) {
+      tileSize = tileSize || 512
       const extent = crs.getExtent();
       const unit = crs.unit;
-      const scaleBase = 1.0 / Util.getScaleFromResolutionDpi((extent[2] - extent[0]) / 512, 96, unit);
+      const scaleBase = 1.0 / Util.getScaleFromResolutionDpi((extent[2] - extent[0]) / tileSize, 96, unit);
       const scaleDenominator = scale.split(':')[1];
       return Math.min(24, +Math.log2(scaleBase / +scaleDenominator).toFixed(2));
     }

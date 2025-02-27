@@ -433,7 +433,7 @@ export class WebMap extends Observable {
       res,
       scale,
       resolutionArray = [],
-      coordUnit = baseLayerInfo.coordUnit || olProj.get(baseLayerInfo.projection).getUnits();
+      coordUnit = baseLayerInfo.coordUnit || baseLayerInfo.units || olProj.get(baseLayerInfo.projection).getUnits();
     if (!coordUnit) {
       coordUnit = this.baseProjection == 'EPSG:3857' ? 'm' : 'degree';
     }
@@ -457,6 +457,14 @@ export class WebMap extends Observable {
         resolutionArray.push(res);
         scales.push(scale);
       }, this);
+    } else if(baseLayerInfo.layerType === 'ZXY_TILE') {
+      const { resolutions: visibleResolution } = baseLayerInfo;
+      visibleResolution.forEach(result => {
+        const currentScale = this.getScaleFromRes(result, coordUnit);
+        resolutions[this.formatScale(currentScale)] = result;
+        scales.push(currentScale);
+      })
+      resolutionArray = visibleResolution;
     } else {
       let { minZoom = 0, maxZoom = 22 } = baseLayerInfo,
         view = this.map.getView();
@@ -775,9 +783,10 @@ export class WebMap extends Observable {
         [minZoom, maxZoom] = [maxZoom, minZoom];
       }
       if (minZoom !== 0 || maxZoom !== visibleScales.length - 1) {
+        const oldViewOptions = this.map.getView().options_ || this.map.getView().getProperties();
         this.map.setView(
           new View(
-            Object.assign({}, this.map.getView().options_, {
+            Object.assign({}, oldViewOptions, {
               maxResolution: undefined,
               minResolution: undefined,
               minZoom,
@@ -882,7 +891,7 @@ export class WebMap extends Observable {
     ) {
       //底图有固定比例尺，就直接获取。不用view计算
       this.getScales(baseLayer);
-    } else if (options.baseLayer && extent && extent.length === 4) {
+    } else if (baseLayer && baseLayer.layerType !=="ZXY_TILE" && extent && extent.length === 4) {
       let width = extent[2] - extent[0];
       let height = extent[3] - extent[1];
       let maxResolution1 = width / 512;
@@ -896,7 +905,11 @@ export class WebMap extends Observable {
     this.map.setView(new View({ zoom, center, projection, maxZoom, maxResolution }));
     let viewOptions = {};
 
-    if (
+    if (baseLayer.layerType === "ZXY_TILE") {
+      const { resolutions, minZoom, maxZoom } = baseLayer;
+      viewOptions = { minZoom, maxZoom, zoom, center, projection, resolutions};
+      this.getScales(baseLayer);
+    } else if (
       (baseLayer.scales && baseLayer.scales.length > 0 && baseLayer.layerType === 'WMTS') ||
       (this.resolutionArray && this.resolutionArray.length > 0)
     ) {
@@ -1364,8 +1377,8 @@ export class WebMap extends Observable {
     const { layerType, extent, minZoom, maxZoom } = layerInfo;
     const extentVal = layerType === 'ZXY_TILE' ? this._getZXYTileMapBounds(layerInfo) : extent;
     const options = { extent: extentVal };
-    if (typeof minZoom === 'number') {
-      options.minZoom = minZoom;
+    if (typeof minZoom === 'number' && minZoom !== 0) {
+      options.minZoom = minZoom - 1;
     }
     if (typeof maxZoom === 'number') {
       options.maxZoom = maxZoom;

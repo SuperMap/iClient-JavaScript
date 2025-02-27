@@ -2834,10 +2834,17 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
+      const sources = map.getStyle().sources;
       expect(layers.length).toBe(1);
       const xyzLayer = layers[0];
       expect(xyzLayer.id).toBe('2326底图');
       expect(xyzLayer.type).toBe('raster');
+      expect(sources['2326底图'].bounds).toEqual([
+        113.77925526971052,
+        22.086139328930617,
+        114.53407583886273,
+        22.61831019233164
+      ]);
       done();
     });
   });

@@ -23,6 +23,8 @@ var datavizWebmap_ZXYTILE =
   '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:144447.92746805","level":1,"center":{"x":0,"y":-7.081154551613622e-10},"baseLayer":{"layerType":"TILE","visible":true,"name":"中国暗色地图","url":"https://iportal/rest/maps/China_Dark"},"layers":[{"layerType":"ZXY_TILE","subdomains":["a","c"],"visible":true,"name":"aaa","url":"https://{s}.tile.fake/{z}/{x}/{y}.png"}],"description":"","projection":"EPSG:3857","minScale":"1:591658710.909131","title":"xyz","version":"2.3.0","rootUrl":"http://127.0.0.1:8190/iportal/"}';
 var datavizWebmap_ZXYTILE_4326 =
   '{"extent":{"leftBottom":{"x":-180,"y":-85.0511287798065},"rightTop":{"x":180,"y":85.05112877980648}},"maxScale":"1:144447.92746805","level":3,"center":{"x":45.23786343459705,"y":10.42845507988924},"baseLayer":{"layerType":"TILE","visible":true,"name":"China_4326","url":"http://test:8090/iserver/services/map-China100-3/rest/maps/China_4326"},"layers":[{"layerType":"ZXY_TILE","subdomains":[],"visible":true,"mapBounds":[-180,-90,180,90],"maxZoom":24,"origin":[-180,90],"tileSize":256,"name":"mapboxgl-256x2","minZoom":0,"resolutions":[1.40625,0.703125,0.3515625,0.17578125,0.087890625],"opacity":0.42,"url":"http://test:8190/iportal/output/world-mapboxgl-256x2/{z}/0/0/{y}x{x}.jpg"}],"description":"","projection":"EPSG:4326","minScale":"1:591658710.909131","title":"4326-zxy-tile","version":"2.4.1","rootUrl":"http://test:8190/iportal/"}';
+  var datavizWebmap_ZXYTILE_2326 =
+  '{"extent":{"leftBottom":{"x":-180,"y":-85.0511287798065},"rightTop":{"x":180,"y":85.05112877980648}},"maxScale":"1:144447.92746805","level":3,"center":{"x":45.23786343459705,"y":10.42845507988924},"baseLayer":{"layerType":"TILE","visible":true,"name":"China_4326","url":"http://test:8090/iserver/services/map-China100-3/rest/maps/China_4326"},"layers":[{"layerType":"ZXY_TILE","subdomains":[],"visible":true,"mapBounds":[-180,-90,180,90],"maxZoom":24,"origin":[-180,90],"tileSize":256,"name":"mapboxgl-256x2","minZoom":0,"resolutions":[1.40625,0.703125,0.3515625,0.17578125,0.087890625],"opacity":0.42,"url":"http://test:8190/iportal/output/world-mapboxgl-256x2/{z}/0/0/{y}x{x}.jpg"}],"description":"","projection":"EPSG:4326","minScale":"1:591658710.909131","title":"4326-zxy-tile","version":"2.4.1","rootUrl":"http://test:8190/iportal/"}';
 
 var datavizWebMap_OPENSTREET =
   '{"version":"2.0","title":"openstreet","description":"","projection":"EPSG:3857","center":{"x":7044436.526761844,"y":-1643701.8562444348},"level":2,"extent":{"leftBottom":{"x":-20037508.34,"y":-20037508.34},"rightTop":{"x":20037508.34,"y":20037508.34}},"baseLayer":{"layerType":"OSM","name":"OpenStreetMap"},"layers":[],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
@@ -1363,7 +1365,7 @@ const xyzLayer2326 = {
     "leftBottom": { "x": -4786700, "y": -31721916.685568035 },
     "rightTop": { "x": 35288316.685568035, "y": 8353100 }
   },
-  level: 3,
+  level: 10,
   center: {
     x: 45.23786343459705,
     y: 10.42845507988924
@@ -1380,17 +1382,18 @@ const xyzLayer2326 = {
     ],
     origin: [-4786700, 8353100],
     tileSize: 256,
-    mapBounds: [-4786700, -31721916.685568035, 35288316.685568035, 8353100],
-    minZoom: 0,
-    maxZoom: 24
+    mapBounds: [795233.5770899998, 794267.8361200001, 872991.5360700004, 853188.3580900002],
+    minZoom: 10,
+    maxZoom: 20
   },
+  center: {x: 834112.5565800001, y: 823728.0971050002},
+  maxScale: "1:564.249716499433",
+  minScale: "1:577791.7098724197",
   description: '',
   projection:
     'PROJCS["Hong Kong 1980 Grid System",GEOGCS["Hong Kong 1980",DATUM["Hong_Kong_1980",SPHEROID["International 1924",6378388,297],TOWGS84[-162.619,-276.959,-161.764,-0.067753,2.243648,1.158828,-1.094246]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4611"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",22.3121333333333],PARAMETER["central_meridian",114.178555555556],PARAMETER["scale_factor",1],PARAMETER["false_easting",836694.05],PARAMETER["false_northing",819069.8],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2326"]]',
-  minScale: '1:591658710.909131',
-  maxScale: '1:144447.92746805',
   title: 'zxy_2326',
-  version: '2.4.2',
+  version: '2.4.4',
   rootUrl: 'http://test:8190/iportal/'
 };
 const mapboxstyleLayer = {
