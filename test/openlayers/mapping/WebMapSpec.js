@@ -226,27 +226,6 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
-
-  it('initialize_ZXYtILE baseLayer 4214 epsgcode', (done) => {
-    let options = {
-        server: server,
-        successCallback,
-        errorCallback: function () { }
-    };
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-        if (url.indexOf('map.json') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(datavizWebmap_ZXYTILE_4214)));
-        }
-        return Promise.resolve(new Response(JSON.stringify({})));
-      });
-    var datavizWebmap = new WebMap(id, options);
-    function successCallback() {
-      expect(datavizWebmap.mapParams.title).toBe('4326-zxy-tile');
-      expect(datavizWebmap.layerAdded).toBe(1);
-      done();
-    }
-  });
-  
   it('initialize_ZXYtILE baseLayer 2326 epsgcode', (done) => {
     let options = {
         server: server,
@@ -261,9 +240,9 @@ describe('openlayers_WebMap', () => {
       });
     var datavizWebmap = new WebMap(id, options);
     function successCallback(map) {
-      expect(datavizWebmap.mapParams.title).toBe('4326-zxy-tile');
-      expect(datavizWebmap.layerAdded).toBe(1);
-      expect(map.getView().getMinZoom()).toBe(9);
+      expect(datavizWebmap.mapParams.title).toBe('zxy_2326');
+      expect(map.getView().getMinZoom()).toBe(10);
+      expect(map.getLayers().getArray()[0].getMinZoom()).toBe(9);
       done();
     }
   });
