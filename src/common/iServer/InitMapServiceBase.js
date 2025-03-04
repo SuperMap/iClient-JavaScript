@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import { scaleToResolution, getZoomByResolution } from '../util/MapCalculateUtil';
+import { scaleToResolution, getZoomByResolution } from '../util/MapCalculateUtil';
 
 /**
  * @private
@@ -149,13 +149,19 @@ export function getTileset(tilesets = [], targets) {
 
 /**
  * @private
- * @function scalesToResolutions
+ * @function extentToResolutions
  * @description mapboxgl maplibregl 获取地图resolutions。
  * @returns {Array} resolutions
  */
- export function scalesToResolutions(bounds, maxZoom = 22, tileSize = 512) {
+export function extentToResolutions(bounds, maxZoom = 22, tileSize = 512) {
   var resolutions = [];
-  const maxReolution = Math.abs(bounds.left - bounds.right) / tileSize;
+  var left = bounds.left;
+  var right = bounds.right;
+  if (Array.isArray(bounds)) {
+    left = bounds[0];
+    right = bounds[2];
+  }
+  const maxReolution = Math.abs(left - right) / tileSize;
   for (let i = 0; i < maxZoom; i++) {
     resolutions.push(maxReolution / Math.pow(2, i));
   }
@@ -175,7 +181,7 @@ export function getTileset(tilesets = [], targets) {
  * @param {Object} extent - extent。
  * @returns {number} zoom
  */
- export function getZoom({ scale, dpi, coordUnit }, extent) {
-  const resolutions = scalesToResolutions(extent);
+export function getZoom({ scale, dpi, coordUnit }, extent) {
+  const resolutions = extentToResolutions(extent);
   return getZoomByResolution(scaleToResolution(scale, dpi, coordUnit), resolutions);
 }
