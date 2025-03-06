@@ -85,8 +85,8 @@ function createSubGalleryItem(config, name) {
 }
 
 function createGalleryItemTitle(id, title) {
-    var menuItemIcon = exampleIconConfig[id];
-    return $("<h3 class='category-title' id='title_" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;" + title + "</h3>");
+    var menuItemIcon = sideBarIconConfig[id];
+    return $("<h3 class='category-title' id='title_" + id + "'>" + "<i class='fa iconfont " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;" + title + "</h3>");
 }
 
 function createSubGalleryItemTitle(id, title) {

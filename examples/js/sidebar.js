@@ -1,7 +1,33 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 //左侧层级是否包含示例
 var containExample = false;
-var sideBarIconConfig = sideBarIconConfig || {};
+var sideBarIconConfig = {
+  "vuecomponents_mbgl": "icon-MapboxGL",
+  "vuecomponents_leaflet": "icon-Leaflet",
+  "reactcomponents_mbgl": "icon-MapboxGL",
+  "iServer": "icon-iServer",
+  "iPortal": "icon-iPortal",
+  "Online": "icon-Online",
+  "iManager": "icon-iManager",
+  "Elasticsearch": "icon-Elasticsearch",
+  "plot": "icon-dynamicPlot",
+  "dynamicPlot": "icon-dynamicPlot",
+  "control": "icon-control",
+  "components": "icon-components",
+  "clientSpatialAnalyst": "icon-clientSpatialAnalyst",
+  "viz": "icon-viz",
+  "OGC": "icon-OGC",
+  "mapping": "icon-mapping",
+  "multiCoordSys": "icon-multiCoordSys",
+  "GTC": "icon-multiCoordSys",
+  "map": "icon-map",
+  "overlay": "icon-overlay",
+  "popup": "icon-popup",
+  "query": "icon-query",
+  "theme": "icon-theme",
+  "analysis": "icon-analysis",
+  "others": "icon-others"
+}
 
 function initSideBar() {
     var sideBar = $("ul#sidebar-menu");
@@ -154,7 +180,7 @@ function createSideBarMenuTitle(id, title, collapse, hasNewExamples) {
     var icon = "",
         iconName = sideBarIconConfig[id];
     if (iconName) {
-        icon = "<i class='fa " + iconName + " iconName'></i>"
+        icon = "<i class='fa iconfont " + iconName + " iconName'></i>"
     }
 
     var div = $("<a href='#" + id + "'>" + icon + "</a>");
@@ -178,7 +204,7 @@ function createSideBarMenuSecondTitle(id, title, collapse, hasNewExamples) {
     var icon = "",
         iconName = sideBarIconConfig[id];
     if (iconName) {
-        icon = "<i class='fa " + iconName + "'></i>"
+        icon = "<i class='fa iconfont" + iconName + "'></i>"
     }
     var newIcon = "";
     if (hasNewExamples) {
@@ -200,7 +226,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
     var icon = "",
         iconName = sideBarIconConfig[id];
     if (iconName) {
-        icon = "<i class='fa " + iconName + "'></i>"
+        icon = "<i class='fa iconfont" + iconName + "'></i>"
     }
     var newIcon="";
     if(window.version===version){
