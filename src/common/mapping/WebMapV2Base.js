@@ -1,4 +1,4 @@
-import Canvg from 'canvg';
+import { Canvg } from 'canvg';
 import { coordEach } from '@turf/meta';
 import difference from 'lodash.difference';
 import { WebMapService } from './WebMapService';
@@ -548,7 +548,7 @@ export function createWebMapV2BaseExtending(SuperClass = Events, fireField = 'tr
       canvas.style.display = 'none';
       divDom.appendChild(canvas);
       if (svgUrl) {
-        const canvgs = (window.canvg || {}).default ? window.canvg.default : Canvg;
+        const canvgs = Canvg;
         const ctx = canvas.getContext('2d');
         canvgs.from(ctx, svgUrl, {
           ignoreMouse: true,

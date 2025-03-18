@@ -131,9 +131,6 @@
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
     }
-    if (inArray(includes, 'canvg')) {
-      inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-    }
     if (inArray(includes, 'XMLParser')) {
       inputScript(libsurl + '/fast-xml-parser/4.2.7/fxparser.min.js');
     }

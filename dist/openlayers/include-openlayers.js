@@ -114,9 +114,6 @@
         if (inArray(includes, 'geostats')) {
             inputScript(libsurl + '/geostats/geostats.js');
         }
-        if (inArray(includes, 'canvg')) {
-          inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-        }
         if (inArray(includes, 'tensorflow')) {
           inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
         }

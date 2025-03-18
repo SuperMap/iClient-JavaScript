@@ -128,9 +128,6 @@
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
     }
-    if (inArray(includes, 'canvg')) {
-      inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-    }
     if (inArray(includes, 'LegacyJSONLoader')) {
       inputScript(libsurl + '/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
     }
