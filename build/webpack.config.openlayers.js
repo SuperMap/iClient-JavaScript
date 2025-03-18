@@ -20,7 +20,6 @@ var externals = [
         'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
         'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
         xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
-        canvg: 'function(){try{return canvg}catch(e){return {}}}()',
         jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
         three: 'function(){try{return THREE}catch(e){return {}}}()'
     }),

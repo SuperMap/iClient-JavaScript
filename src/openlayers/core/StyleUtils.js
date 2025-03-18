@@ -6,7 +6,7 @@ import { StringExt } from '@supermapgis/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
 import { Util } from '../core/Util';
-import Canvg from 'canvg';
+import { Canvg } from 'canvg';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import CircleStyle from 'ol/style/Circle';
@@ -966,7 +966,7 @@ export class StyleUtils {
    */
   static async getCanvasFromSVG(svgUrl, divDom, callBack) {
     //一个图层对应一个canvas
-    const canvgs = window.canvg && window.canvg.default ? window.canvg.default : Canvg;
+    const canvgs = Canvg;
     let canvas = document.createElement('canvas');
     canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
     canvas.style.display = "none";

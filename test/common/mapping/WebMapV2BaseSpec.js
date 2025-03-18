@@ -2,6 +2,7 @@ import { createWebMapV2BaseExtending } from '../../../src/common/mapping/WebMapV
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import * as epsgDefine from '../../../src/common/mapping/utils/epsg-define';
 import cloneDeep from 'lodash.clonedeep';
+import { Canvg } from 'canvg';
 
 describe('WebMapBaseSpec.js', () => {
   const id = 123;
@@ -1018,17 +1019,13 @@ describe('WebMapBaseSpec.js', () => {
       start: jasmine.createSpy('start'),
       stop: jasmine.createSpy('stop')
     };
-    window.canvg = {
-      default: {
-        from: (ctx) => {
-          return {
-            then: (resolveCb) => {
-              resolveCb(mockRes);
-            }
-          };
+    spyOn( Canvg , 'from').and.callFake( (ctx) => {
+      return {
+        then: (resolveCb) => {
+          resolveCb(mockRes);
         }
-      }
-    };
+      };
+    })
     const svgUrl = 'http://testsvg';
     const divDom = {
       appendChild: jasmine.createSpy('appendChild')
@@ -1039,7 +1036,6 @@ describe('WebMapBaseSpec.js', () => {
     expect(divDom.appendChild).toHaveBeenCalled();
     expect(callBack).toHaveBeenCalled();
     expect(webMapBase.canvgsV.length).toBe(1);
-    window.canvg = undefined;
     done();
   });
 

@@ -20,7 +20,7 @@
     "@turf/turf": "6.5.0",
     "mapv": "2.0.62",
     "ol": "7.5.2",
-    "canvg": "3.0.10",
+    "canvg": "^4.0.3",
     "lodash.clonedeep": "^4.5.0",
     "lodash.remove": "^4.7.0",
     "lodash.difference": "^4.5.0",

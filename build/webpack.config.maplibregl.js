@@ -31,7 +31,6 @@ module.exports = {
     'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
     'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
     xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
-    canvg: 'function(){try{return canvg}catch(e){return {}}}()',
     jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
     'xml-js': 'function(){try{return convert}catch(e){return {}}}()',
     './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()',

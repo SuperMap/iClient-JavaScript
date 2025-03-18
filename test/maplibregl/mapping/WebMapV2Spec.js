@@ -6,6 +6,7 @@ import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic'
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import * as DataFlowServiceUtil from '../../../src/maplibregl/services/DataFlowService';
 import '../../resources/WebMapV5.js';
+import { Canvg } from 'canvg';
 
 function DataFlowService(serviceUrl) {
   const dataflowFeature = {
@@ -311,12 +312,9 @@ describe('maplibregl_WebMapV2', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     
     window.jsonsql = { query: () => [{}] };
-    window.canvg = {
-      default: {
-        from: (ctx, url, callback) =>
-          Promise.resolve({ stop: jasmine.createSpy('stop'), start: jasmine.createSpy('start') })
-      }
-    };
+    spyOn( Canvg , 'from').and.callFake((ctx, url, callback) =>{
+        return  Promise.resolve({ stop: jasmine.createSpy('stop'), start: jasmine.createSpy('start') })
+    })
     window.geostats = class {
       setSerie() {}
     };
@@ -345,7 +343,6 @@ describe('maplibregl_WebMapV2', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     maplibregl.CRS = undefined;
     window.jsonsql = undefined;
-    window.canvg = undefined;
     window.geostats = undefined;
     window.EchartsLayer = undefined;
   });
