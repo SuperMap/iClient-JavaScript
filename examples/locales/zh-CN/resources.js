@@ -2057,6 +2057,9 @@ window.examplesResources = {
         "msg_confirmDelete": "删除后要素将无法恢复，是否确认删除？",
         "msg_clickToSelect": "在地图上点击要素进行选择",
         "text_featureToDelete": "待删除要素",
+        "text_outOfRange": "输入值超出值域范围",
+        "text_updateFeaturesSuccess": "更新要素成功",
+        "text_addFeaturesSuccess": "新增要素成功",
 
         "option_scanRadar":"雷达特效",
         "option_sectorDetectionRange":"扫描特效",
