@@ -2692,10 +2692,13 @@ export class WebMap extends Observable {
       if (feature) {
         let newFeature = (window.cloneDeep || cloneDeep)(feature);
         newFeature.properties = {};
+        const titleLen = titles.length;
         row.forEach((item, idx) => {
           //空格问题，看见DV多处处理空格问题，TODO统一整理
-          let key = titles[idx].trim();
-          newFeature.properties[key] = item;
+          if (idx < titleLen) {
+            let key = titles[idx].trim();
+            newFeature.properties[key] = item;
+          }
         });
         geojson.features.push(newFeature);
       }
