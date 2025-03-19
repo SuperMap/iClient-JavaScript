@@ -163,11 +163,6 @@ var exampleConfig = {
                     name_en: "field statistics service",
                     thumbnail: "ol_fieldStatistics.png",
                     fileName: "02_fieldStatistics"
-                }, {
-                    name: "地物编辑",
-                    name_en: "data editing",
-                    thumbnail: "ol_editFeatures.png",
-                    fileName: "02_editFeatures"
                 },
                 {
                     name: "要素关联附件",

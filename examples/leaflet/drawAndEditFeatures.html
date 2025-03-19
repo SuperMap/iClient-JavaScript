@@ -185,13 +185,12 @@
         margin-right: 16px;
       }
       .message {
-        width: 300px;
         height: 50px;
         position: absolute;
         top: 15px;
         font-size: 16px;
         left: 50%;
-        padding-top: 15px;
+        padding: 15px;
         display: none;
         margin-left: -150px;
         background: #fff;
@@ -269,7 +268,7 @@
           </div>
         </div>
         <div class="edit-feature-info">
-          <h4 class="into-title"><span data-i18n="resources.text_editFeature"></span><span class="dataset-info">数据集：<span class="edit-dataset"></span></span></h4>
+          <h4 class="into-title"><span data-i18n="resources.text_editFeature"></span><span class="dataset-info"><span data-i18n="resources.text_dataset"></span>：<span class="edit-dataset"></span></span></h4>
           <h6><span data-i18n="resources.text_spacialInfo"></span></h6>
           <div class="space-info">
             <input class="input-element" type="text">
@@ -409,7 +408,7 @@
             var error = document.createElement('span');
             error.style.color = 'red';
             error.className = 'error-tips';
-            error.innerText = '输入值超出值域范围：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
+            error.innerText = resources.text_outOfRange + '：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
             parent.insertBefore(error, e.target.nextSibling);
             document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
@@ -894,7 +893,7 @@
           });
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
-              widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
+              widgets.alert.showAlert(isUpdate ? resources.text_updateFeaturesSuccess : resources.text_addFeaturesSuccess, true);
               currentAddFeature = null;
             }
           });

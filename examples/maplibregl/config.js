@@ -146,12 +146,6 @@ var exampleConfig = {
             fileName: '02_fieldStatistics'
           },
           {
-            name: '地物编辑',
-            name_en: 'data editing',
-            thumbnail: 'mb_editFeatures.png',
-            fileName: '02_editFeatures'
-          },
-          {
             name: "要素关联附件",
             name_en: "feature attachment",
             thumbnail: "mb_featureAttachments.png",

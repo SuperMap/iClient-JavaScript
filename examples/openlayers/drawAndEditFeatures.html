@@ -186,13 +186,12 @@
         margin-right: 16px;
       }
       .message {
-        width: 300px;
         height: 50px;
         position: absolute;
         top: 15px;
         font-size: 16px;
         left: 50%;
-        padding-top: 15px;
+        padding: 15px;
         display: none;
         margin-left: -150px;
         background: #fff;
@@ -443,7 +442,7 @@
             var error = document.createElement('span');
             error.style.color = 'red';
             error.className = 'error-tips';
-            error.innerText = '输入值超出值域范围：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
+            error.innerText = resources.text_outOfRange + '：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
             parent.insertBefore(error, e.target.nextSibling);
             document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
@@ -937,7 +936,7 @@
             if (serviceResult.result.succeed) {
               // currentSource.removeFeature(currentAddFeature);
               // currentSource.addFeature(currentFeature.origin);
-              widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
+              widgets.alert.showAlert(isUpdate ? resources.text_updateFeaturesSuccess : resources.text_addFeaturesSuccess, true);
             }
           });
         }
