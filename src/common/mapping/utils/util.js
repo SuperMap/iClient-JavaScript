@@ -165,10 +165,27 @@ export function getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
   return results;
 }
 
+function isSameRasterUrl(urlA, urlB) {
+  if (urlA === urlB) {
+    return true;
+  }
+  const uriA = new URL(urlA);
+  const uriB = new URL(urlB);
+  if (uriA.origin !== uriB.origin) {
+    return false;
+  }
+  const regex = /\/([^/?#]+\.\w+)$/;
+  const pathA = uriA.pathname.replace(regex, '');
+  const pathB = uriB.pathname.replace(regex, '');
+
+  // 3. 判断子路径关系
+  return pathA === pathB || pathA.startsWith(pathB + (pathB.endsWith('/') ? '' : '/'));
+}
+
 export function isSameRasterLayer(sourceInfo, compareSource) {
   const { type, tiles } = sourceInfo;
   if (type === 'raster') {
-    return type === compareSource.type && tiles && compareSource.tiles && (tiles[0].includes(compareSource.tiles[0]) || compareSource.tiles[0].includes(tiles[0]))
+    return type === compareSource.type && tiles && compareSource.tiles && isSameRasterUrl(tiles[0], compareSource.tiles[0]);
   }
   return false;
 }

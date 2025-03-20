@@ -231,5 +231,6 @@ import './common/mapping/utils/ColorUtilSpec.js';
 import './common/mapping/utils/SourceListModelV2Spec.js';
 import './common/mapping/utils/SourceListModelV3Spec.js';
 import './common/mapping/utils/epsgDefineSpec.js';
+import './common/mapping/utils/UtilSpec.js';
 import './common/mapping/WebMapServiceSpec';
 import './common/mapping/WebMapV2BaseSpec';
