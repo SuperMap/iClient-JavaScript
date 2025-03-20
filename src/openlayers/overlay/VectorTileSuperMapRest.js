@@ -82,6 +82,9 @@ export class VectorTileSuperMapRest extends VectorTile {
         me.headers = options.headers || {};
         me._tileType = options.tileType || 'ScaleXY';
         me.baseUrl = options.baseUrl;
+        if(options.tileGrid){
+            this.hasTileGrid = true;
+        }
         this.vectorTileStyles = new VectorTileStyles();
         this._initialized(options);
 
@@ -366,7 +369,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             }
             this._tileUrl = SecurityManager.appendCredential(newUrl);
         }
-        if (style.metadata && style.metadata.indexbounds) {
+        if (!this.hasTileGrid && style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
             var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
             const defaultResolutions = [];

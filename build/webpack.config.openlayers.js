@@ -1,15 +1,17 @@
 var configBase = require('./webpack.config.base');
 var fs = require('fs');
 const chalk = require('chalk');
+const minimist = require('minimist');
 //端名
 var libName = 'openlayers';
 //产品包名
 var productName = 'iclient-openlayers';
 
-var argv = JSON.parse(process.env['npm_config_argv']);
-var origin = argv.original;
-
-if (origin && origin.includes('deploy-ol')) {
+const args = minimist(process.argv.slice(2));
+if (
+    args._.includes('deploy-ol') || 
+    (process.env.npm_lifecycle_event?.includes('deploy-ol'))
+) {
     libName = 'ol';
     productName = 'iclient-ol';
 }

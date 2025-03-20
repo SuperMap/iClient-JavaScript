@@ -7,6 +7,7 @@ import View from 'ol/View';
 import MVT from 'ol/format/MVT';
 import Feature from 'ol/Feature';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import TileGrid from 'ol/tilegrid/TileGrid';
 
 var url = GlobeParameter.ChinaURL;
 const mapObject = {
@@ -105,7 +106,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
       map.removeLayer(vectorLayer);
     }
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    spyGet.calls.reset();
+    spyGet && spyGet.calls.reset();
     spyPost.calls.reset();
     spyCommit.calls.reset();
   });
@@ -293,5 +294,94 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         done();
       });
     });
+  });
+  const style = {
+    "version": 8,
+    "name": "",
+    "center": [0, 0],
+    "zoom": 2,
+    "metadata": {
+      "indexbounds": [-400000, -400000, 400000,400000]
+    },
+    "sources": {
+      "aaa": {
+        "tiles": ["http://127.0.0.1:5566/tiles/{z}/{x}/{y}.mvt"],
+        "type": "vector"
+      }
+    },
+    "layers": [{
+      "id": "区级政面0_24",
+      "source": "矢量切片",
+      "source-layer": "区级政面@矢量",
+      "minzoom": 0.0,
+      "maxzoom": 24.0,
+      "type": "fill",
+      "layout": {
+        "visibility": "visible"
+      }
+    }]
+  };
+  it('initialize_with_tilegrid_and_metadata_indexbounds', (done) => {
+      map = new Map({
+        target: 'map',
+        view: new View({
+          center: [0, 0],
+          zoom: 2
+        })
+      });
+      vectorTileOptions = {
+        style: style,
+        tileGrid: new TileGrid({
+        resolutions: [100000,50000],
+        origin: [-4823200, 6183000],
+        tileSize: 512,
+        }),
+        format: new ol.format.MVT(),
+      }
+      vectorTileOptions.tileLoadFunction = (tile) => {
+        tile.setLoader(() => {
+          tile.setFeatures([]);
+        });
+      };
+      vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
+      vectorTileSource.once('tileloadstart', () => {
+        expect(vectorTileSource).not.toBeNull();
+        expect(vectorTileSource.getTileGrid().getResolutions()[0]).toBe(100000)
+        done();
+      });
+      vectorLayer = new VectorTileLayer({
+        source: vectorTileSource
+      });
+      map.addLayer(vectorLayer);
+  });
+
+  
+  it('initialize_without_tilegrid_but_metadata_indexbounds', (done) => {
+      map = new Map({
+        target: 'map',
+        view: new View({
+          center: [0, 0],
+          zoom: 2
+        })
+      });
+      vectorTileOptions = {
+        style: style,
+        format: new ol.format.MVT(),
+      }
+      vectorTileOptions.tileLoadFunction = (tile) => {
+        tile.setLoader(() => {
+          tile.setFeatures([]);
+        });
+      };
+      vectorTileSource = new VectorTileSuperMapRest(vectorTileOptions);
+      vectorTileSource.once('tileloadstart', () => {
+        expect(vectorTileSource).not.toBeNull();
+        expect(vectorTileSource.getTileGrid().getResolutions()[0]).toBe((400000-(-400000))/512)
+        done();
+      });
+      vectorLayer = new VectorTileLayer({
+        source: vectorTileSource
+      });
+      map.addLayer(vectorLayer);
   });
 });

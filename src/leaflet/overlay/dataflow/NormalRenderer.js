@@ -23,7 +23,7 @@ export var NormalRenderer = L.GeoJSON.extend({
         options = options || {};
         if (options.style && !options.pointToLayer) {
             options.pointToLayer = function (geojson, latlng) {
-                return L.circleMarker(latlng, options.style());
+                return L.circleMarker(latlng, options.style(geojson));
             }
         }
         L.Util.setOptions(this, options);

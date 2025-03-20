@@ -115,6 +115,7 @@
     "karma-sonarqube-unit-reporter": "0.0.23",
     "karma-teamcity-reporter": "^1.1.0",
     "mini-css-extract-plugin": "^2.6.1",
+    "minimist": "^1.2.8",
     "mock-socket": "^9.0.3",
     "nightwatch": "^2.3.0",
     "open": "^8.4.0",
