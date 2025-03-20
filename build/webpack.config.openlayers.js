@@ -10,7 +10,7 @@ var productName = 'iclient-openlayers';
 const args = minimist(process.argv.slice(2));
 if (
     args._.includes('deploy-ol') || 
-    (process.env.npm_lifecycle_event?.includes('deploy-ol'))
+    (process.env.npm_lifecycle_event?process.env.npm_lifecycle_event.includes('deploy-ol'):false)
 ) {
     libName = 'ol';
     productName = 'iclient-ol';
