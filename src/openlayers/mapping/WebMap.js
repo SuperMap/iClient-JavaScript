@@ -2031,7 +2031,7 @@ export class WebMap extends Observable {
                       //行政规划信息
                       data.content.rows.unshift(data.content.colTitles);
                       let { divisionType, divisionField } = layer.dataSource.administrativeInfo;
-                      let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                      let geojson = await that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
                       features = that._parseGeoJsonData2Feature({
                         allDatas: { features: geojson.features },
                         fileCode: layer.projection
@@ -2621,7 +2621,7 @@ export class WebMap extends Observable {
    * @returns {Object}  geojson对象
    */
   excelData2FeatureByDivision(content, divisionType, divisionField) {
-    let me = this;
+
     let asyncInport;
     if (divisionType === 'Province') {
       asyncInport = window.ProvinceData;
@@ -2631,10 +2631,33 @@ export class WebMap extends Observable {
       // let geojso;
       asyncInport = window.AdministrativeArea;
     }
-    if (asyncInport) {
-      let geojson = me.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField);
-      return geojson;
+    if(asyncInport){
+      return new Promise(resolve => {
+        resolve(this.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField));
+      });
     }
+    if(divisionType === 'GB-T_2260'){
+      return new Promise(resolve => {
+        resolve({
+          type: 'FeatureCollection',
+          features: []
+        });
+      });
+    }
+    const dataName = divisionType === 'City' ? 'MunicipalData' : 'ProvinceData';
+    const dataFileName = divisionType === 'City' ? 'MunicipalData.js' : 'ProvincialData.js';
+    const dataUrl = CommonUtil.urlPathAppend(this.server,`apps/dataviz/libs/administrative_data/${dataFileName}`);
+    return FetchRequest.get(this.getRequestUrl(dataUrl), null, {
+      withCredentials: false,
+      withoutFormatSuffix: true
+    })
+      .then(response => {
+        return response.text();
+      })
+      .then(result => {
+        new Function(result)();
+        return this.changeExcel2Geojson(window[dataName].features, content.rows, divisionType, divisionField);
+      });
   }
 
   /**

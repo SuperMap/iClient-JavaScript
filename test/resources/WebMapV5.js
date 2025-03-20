@@ -864,18 +864,18 @@ var datavizWebMap_RestMap_1000 = {
   description: 'restMap -1000',
   projection: 'EPSG:-1000',
   center: {
-    x: 13010199.0826792,
-    y: 4882852.51886837
+    x: 38500000,
+    y: 3706540
   },
   level: 7,
   extent: {
     leftBottom: {
-      x: -20037508.3427892,
-      y: -20037508.3427892
+      x: 38344577.81,
+      y: 2380652.6
     },
     rightTop: {
-      x: 20037508.3427892,
-      y: 20037508.3427892
+      x: 38655422.19,
+      y: 5036052.73
     }
   },
   baseLayer: {
@@ -918,6 +918,35 @@ var datavizWebMap_RestMap_100 = {
   layers: []
 };
 
+var datavizWebMap_RestMap_2362 = {
+  title: 'RestMap',
+  description: 'restMap -100',
+  projection: 'EPSG:-100',
+  center: {
+    x: 38500000,
+    y: 3706540
+  },
+  level: 7,
+  extent: {
+    leftBottom: {
+      x: 38344577.81,
+      y: 2380652.6
+    },
+    rightTop: {
+      x: 38655422.19,
+      y: 5036052.73
+    }
+  },
+  baseLayer: {
+    layerType: 'TILE',
+    name: 'map-100',
+    visible: true,
+    credential: 'credential',
+    url: 'https://fake/iserver/services/map-100/rest/maps/map-100',
+    projection: 'EPSG:2362'
+  },
+  layers: []
+};
 var datavizWebMap_MVT = {
   extent: {
     leftBottom: {
@@ -1373,6 +1402,7 @@ const xyzLayer2326 = {
   baseLayer: {
     layerType: 'ZXY_TILE',
     name: '2326底图',
+    "url":"https://{s}.tile.fake/{z}/{x}/{y}.png",
     visible: true,
     resolutions: [
       156543.03392800014, 78271.51696399994, 39135.75848200009, 19567.87924099992, 9783.93962049996, 4891.96981024998,
