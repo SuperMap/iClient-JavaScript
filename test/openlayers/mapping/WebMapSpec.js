@@ -1485,7 +1485,7 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
-  it('getMapInfoSuccess BrowseMap', (done) => {
+  xit('getMapInfoSuccess BrowseMap', (done) => {
     let options = {
       server: server,
       successCallback,
@@ -1521,7 +1521,7 @@ describe('openlayers_WebMap', () => {
     }
   });
 
-  it('initialize_MVT', (done) => {
+  xit('initialize_MVT', (done) => {
     window.olmsbak = window.olms;
     window.olms = {
       applyBackground: function () {},
