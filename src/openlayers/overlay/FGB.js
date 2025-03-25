@@ -7,6 +7,9 @@ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { all, bbox } from 'ol/loadingstrategy';
 import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
 import GeoJSON from 'ol/format/GeoJSON';
+import throttle from 'lodash.throttle';
+import { getUid } from 'ol/util';
+
 /**
  * @class FGB
  * @browsernamespace ol.source
@@ -26,12 +29,50 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {boolean} [opt_options.useSpatialIndex] - 是否启用要素空间索引。
  * @param {boolean} [opt_options.wrapX] - 是否平铺地图。
  * @param {boolean} [opt_options.idField='SmID'] - 要素属性中表示唯一标识的字段，当 strategy 为 ol.loadingstrategy.bbox 时生效。
+ * @param {number} [opt_options.renderInterval=500] - 渲染间隔时间。
  * @extends {ol.source.Vector}
  * @usage
  */
+
+class FeaturesCollection {
+  constructor() {
+    this.features = [];
+  }
+
+  clear() {
+    this.features = [];
+  }
+
+  push(feature) {
+    this.features.push(feature);
+  }
+
+  isEmpty() {
+    return this.features.length === 0;
+  }
+  getArray() {
+    return this.features;
+  }
+
+  forEach(fn) {
+    return this.features.forEach(fn);
+  }
+
+  getLength() {
+    return this.features.length;
+  }
+
+  remove(feature) {
+    const index = this.features.indexOf(feature);
+    if (index !== -1) {
+      this.features.splice(index, 1);
+    }
+  }
+}
+
 export class FGB extends VectorSource {
   constructor(options) {
-    const baseOptions = Object.assign({ strategy: bbox }, options);
+    const baseOptions = Object.assign({ strategy: bbox, useSpatialIndex: false }, options);
     delete baseOptions.url;
     delete baseOptions.extent;
     delete baseOptions.idField;
@@ -42,7 +83,8 @@ export class FGB extends VectorSource {
     this.extent = this.options.extent;
     this._idField = this.options.idField || 'SmID';
     this._validatedId = false;
-    this._checked = false; 
+    this._checked = false;
+    this.renderInterval = this.options.renderInterval !== undefined ? this.options.renderInterval : 500;
     this.setLoader(async function (extent) {
       if (this.strategy === bbox) {
         if (!this._validatedId) {
@@ -75,6 +117,11 @@ export class FGB extends VectorSource {
       };
     }
     const fgb = deserialize(url, rect);
+    let featureList = [];
+    const throttleFn = throttle(() => {
+      this.addFeatures(featureList);
+      featureList = [];
+    }, this.renderInterval, { trailing: true, leading: false });
     for await (let feature of fgb) {
       let id = feature.properties[this._idField];
       if (id && !this._validatedId) {
@@ -88,7 +135,8 @@ export class FGB extends VectorSource {
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
       }
-      this.addFeature(feature);
+      featureList.push(feature);
+      throttleFn();
     }
   }
 
@@ -96,5 +144,22 @@ export class FGB extends VectorSource {
     return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
       return response;
     });
+  }
+
+  bindFeaturesCollection_() {
+    this.featuresCollection_ = new FeaturesCollection();
+  }
+
+  addFeaturesInternal(features) {
+    for (let i = 0, length = features.length; i < length; i++) {
+      const feature = features[i];
+      const featureKey = getUid(feature);
+      this.setupChangeEvents_(featureKey, feature);
+      this.featuresCollection_.push(features[i]);
+      const geometry = feature.getGeometry();
+      if (!geometry) {
+        this.nullGeometryFeatures_[featureKey] = feature;
+      }
+    }
   }
 }

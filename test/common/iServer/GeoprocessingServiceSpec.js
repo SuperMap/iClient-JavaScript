@@ -104,7 +104,9 @@ describe('GeoprocessingService', () => {
         };
         const executeService = new GeoprocessingService(serverUrl);
         expect(executeService).not.toBeNull();
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
+        spyOn(FetchRequest, 'get').and.callFake((url, params) => {
+            expect(params).not.toBeNull();
+            expect(params.parameter['readasfeaturerdd-dataConnInfo']).toBe('sdx --server=C:/Users/MEVHREVO/Desktop/mode/111.udbx --dbType=udbx --dataset=ccccc_result_R');
             const URL = serverUrl + '/sps.WorkflowProcessFactory.models:sps/execute';
             expect(url).toBe(URL);
             return Promise.resolve(new Response(`{"countrdd-resultCount":"12","succeed":true}`));
@@ -140,7 +142,10 @@ describe('GeoprocessingService', () => {
         };
         const submitJobService = new GeoprocessingService(serverUrl);
         expect(submitJobService).not.toBeNull();
-        spyOn(FetchRequest, 'post').and.callFake((url) => {
+        spyOn(FetchRequest, 'post').and.callFake((url, params) => {
+            expect(params).not.toBeNull();
+            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+            expect(paramsObj.parameter['readasfeaturerdd-dataConnInfo']).toBe("sdx --server=C:/Users/MEVHREVO/Desktop/mode/111.udbx --dbType=udbx --dataset=ccccc_result_R");
             expect(url).toBe(`${serverUrl}/sps.WorkflowProcessFactory.models:sps/jobs`);
             return Promise.resolve(
                 new Response(`{"jobID":"gp-20200916-104559-40E52","status":"started","succeed":true}`)

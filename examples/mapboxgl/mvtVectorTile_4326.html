@@ -77,11 +77,9 @@
                             [e.point.x - 5, e.point.y - 5],
                             [e.point.x + 5, e.point.y + 5]
                         ];
-                        var features = map.queryRenderedFeatures(bbox, {
-                            layers: ["Trunk_L@California#6_1"]
-                        });
+                        var features = map.queryRenderedFeatures(bbox);
                         var filter = features.reduce(function (memo, feature) {
-                            if (feature.properties.NAME) {
+                            if (feature.sourceLayer === "Trunk_L@California" && feature.properties.NAME) {
                                 memo.push(feature.properties.NAME);
                             }
                             return memo;

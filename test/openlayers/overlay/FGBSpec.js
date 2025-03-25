@@ -80,11 +80,36 @@ describe('openlayers_FGB', () => {
     var count = 0;
     var fgbSource = new FGB({
       url,
+      renderInterval: 1000,
       strategy: all,
       featureLoader: function (feature) {
         count++;
         if (count === 19) {
           done();
+        }
+        return feature;
+      }
+    });
+    map.addLayer(new VectorLayer({
+      source: fgbSource
+    }));
+    expect(fgbSource).not.toBeNull();
+    expect(fgbSource.url).toBe(url);
+    expect(fgbSource.renderInterval).toBe(1000);
+  });
+
+  it('addfeatures with throttle', (done) => {
+    var count = 0;
+    var fgbSource = new FGB({
+      url,
+      strategy: all,
+      featureLoader: function (feature) {
+        count++;
+        if (count === 19) {
+          setTimeout(() => {
+            expect(fgbSource.featuresCollection_.getLength()).toBe(19);
+            done();
+          }, 1000);
         }
         return feature;
       }

@@ -1,22 +1,20 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
-    after: function (browser) {
-        console.log('Closing down...');
-        browser.end();
-      },
-    'leaflet_02_getFeatureByIDs': function (browser) {
-        var type = 'leaflet';
-        var exampleName = '02_getFeatureByIDs';
-        commonTools.openExampleAndLoadMap(browser, type, exampleName);
-        /*check elements exist*/
-        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane', 10000);
-        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane canvas', 10000);
-        //测试版权点击的正确性
-        //commonTools.verifyCopyrightOfLeaflet(browser);
-        // browser.pause(1000);
-        // browser.end();
-    }
+  after: function (browser) {
+    console.log('Closing down...');
+    browser.end();
+  },
+  leaflet_02_getFeatureByIDs: function (browser) {
+    var type = 'leaflet';
+    var exampleName = '02_getFeatureByIDs';
+    commonTools.openExampleAndLoadMap(browser, type, exampleName);
+    /*check elements exist*/
+    browser.waitForElementPresent('#toolbar .btn').click('#toolbar .btn');
+    browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane', 10000);
+    browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane canvas', 10000);
+    //测试版权点击的正确性
+    //commonTools.verifyCopyrightOfLeaflet(browser);
+    // browser.pause(1000);
+    // browser.end();
+  }
 };
-
-
-

@@ -52,9 +52,10 @@
           restMap: [
             new SuperMap.Components.commontypes.RestMapParameter({
               url: host + "/iserver/services/map-world/rest/maps/World",
-              attributeFilter: "SmID>0",
+              attributeFilter: "he",
               maxFeatures: 30,
               layerName: "Rivers@World",
+              queryMode: 'KEYWORD'
             })
           ],
         }

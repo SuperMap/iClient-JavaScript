@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
     <title data-i18n="resources.title_getFeatureByIDs"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
     <style>
         body {
             margin: 0;
@@ -20,10 +19,29 @@
             bottom: 0;
             width: 100%;
         }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 240px;
+            text-align: center;
+            z-index: 1000;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_getFeatureByIDs"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
@@ -60,6 +78,7 @@
 
     //查询函数：
     function query() {
+        clearFeatures();
         var idsParam = new mapboxgl.supermap.GetFeaturesByIDsParameters({
             IDs: [234],
             datasetNames: ["World:Countries"]
@@ -102,9 +121,12 @@
         });
     }
 
-    map.on('load', function () {
-        query();
-    });
+    function clearFeatures() {
+        if (map.getLayer('queryDatas')) {
+          map.removeLayer('queryDatas');
+          map.removeSource('queryDatas');
+        }
+    }
 
 </script>
 </body>

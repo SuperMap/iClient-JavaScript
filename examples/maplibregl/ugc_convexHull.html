@@ -3,7 +3,7 @@
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
-* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js)
+* UGCWasm (https://iclient.supermap.io/web/libs/ugcwasm/1.0.1/UGCWasmAll.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -159,16 +159,9 @@
           const pointsCoors = pointLists.map(point => point.geometry.coordinates);
           var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
           if (operationFun === 'computeConvexHull') {
-            calRes = geometryAnalysis[operationFun](pointsCoors, pointsCoors.length);
+            calRes = geometryAnalysis[operationFun](pointsCoors);
           } else {
-            const xArrs = [];
-            const yArrs = [];
-            pointsCoors.forEach(p => {
-              xArrs.push(p[0]);
-              yArrs.push(p[1]);
-            });
-            calRes = geometryAnalysis[operationFun](xArrs, yArrs, pointsCoors.length);
-            console.log(calRes)
+            calRes = geometryAnalysis[operationFun](pointLists);
           }
           map.addLayer({
             "id": "fill",

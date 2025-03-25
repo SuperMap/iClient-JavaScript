@@ -18,11 +18,19 @@ export function mockCreateTile() {
 }
 export function mockInitImage() {
     L.ImageOverlay.prototype._initImage=function () {
-        this._image = L.DomUtil.create('img');
+        this._image = L.DomUtil.create('img', 'leaflet-image-layer');
         var me = this;
         setTimeout(function () {
             me.fire('load', {});
         }, 100);
+    };
+    L.ImageOverlay.prototype.setUrl = function (url) {
+      this._url = url;
+      var me = this;
+      setTimeout(function () {
+        me.fire('load', {});
+      }, 100);
+      return this;
     };
 }
 export function mockHeatLayer() {

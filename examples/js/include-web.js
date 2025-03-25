@@ -71,6 +71,7 @@
         const resourceLanguage = getLanguage();
         inputScript("../locales/" + resourceLanguage + "/resources.js");
         inputScript("../js/tokengenerator.js");
+        inputCSS('../css/sidebariconfont/iconfont.css');
         var jQueryInclude = false;
         if (!inArray(excludes, 'example-i18n')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
@@ -235,6 +236,6 @@
     });
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
-    window.version = "11.2.0";
+    window.version = "12.0.0";
     window.preRelease = "";
 })();

@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
 import '../../../src/maplibregl/core/MapExtend';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { CustomOverlayLayer } from '../../../src/common/overlay/Base';
 
 describe('maplibregl MapExtend', () => {
   var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';
@@ -201,5 +202,112 @@ describe('maplibregl MapExtend', () => {
       document.body.removeChild(testDiv2);
       done();
     })
+  });
+
+  it('load layers', (done) => {
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['base/resources/img/baiduTileTest.png'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    map.on('load', () => {
+      spyOn(map, 'addLayer').and.callThrough();
+      const options = {
+        getSource: function () {
+          return {};
+        },
+        removeSource: function() {},
+        isSourceLoaded: function() { return true; },
+        getLayer: function () {
+          return {};
+        },
+        getPaintProperty: function () {},
+        setLayoutProperty: function () {},
+        getLayoutProperty: function () {},
+        getFilter: function () {},
+        setFilter: function () {},
+        queryRenderedFeatures: function () {},
+        querySourceFeatures: function () {},
+        once: function () {},
+        on: function () {},
+        off: function () {}
+      };
+      
+      class L7LayerTest extends CustomOverlayLayer {
+        constructor() {
+          super({ sourceId: 'l7_layer_1', query: true, interaction: true, events: ['click'] });
+          this.id = 'l7_layer_1';
+          this.sourceId = 'l7_layer_1';
+        }
+
+        getSource() {
+          return {};
+        }
+
+        getLayer() {
+          return {}
+        }
+      }
+      const l7_layer_1 = new L7LayerTest();
+      for (const key in options) {
+        spyOn(l7_layer_1, key).and.callThrough();
+      }
+      map.overlayLayersManager = {
+        l7_layer_1,
+        heatmap_1: { id: 'heatmap_1' }
+      };
+      expect(map.getSource('l7_layer_1')).not.toBeUndefined();
+      expect(map.getSource('raster-tiles')).not.toBeUndefined();
+      expect(l7_layer_1.getSource.calls.count()).toEqual(1);
+      expect(map.isSourceLoaded('l7_layer_1')).toBeTruthy();
+      expect(map.isSourceLoaded('raster-tiles')).toBeTruthy();
+      expect(map.getLayer('l7_layer_1')).not.toBeUndefined();
+      expect(map.getLayer('simple-tiles')).not.toBeUndefined();
+      expect(map.getLayer('heatmap_1')).toEqual(map.overlayLayersManager['heatmap_1']);
+      expect(l7_layer_1.getLayer.calls.count()).toEqual(1);
+      const layerToAdd = { type: 'custom', id: 'add1', onAdd() {}, onRemove() {}, render() {} };
+      map.addLayer(layerToAdd);
+      expect(map.addLayer.calls.count()).toEqual(1);
+      map.queryRenderedFeatures([0, 0], { layers: ['l7_layer_1', 'simple-tiles'] });
+      expect(l7_layer_1.queryRenderedFeatures.calls.count()).toEqual(1);
+      map.querySourceFeatures('l7_layer_1');
+      map.querySourceFeatures('raster-tiles');
+      expect(l7_layer_1.querySourceFeatures.calls.count()).toEqual(1);
+      const cb = () => {};
+      map.on('click', 'l7_layer_1', cb);
+      map.on('click',cb);
+      expect(l7_layer_1.on.calls.count()).toEqual(1);
+      map.once('click', 'l7_layer_1', cb);
+      map.once('click', cb);
+      expect(l7_layer_1.once.calls.count()).toEqual(1);
+      map.off('click', 'l7_layer_1', cb);
+      map.off('click', cb);
+      expect(l7_layer_1.off.calls.count()).toEqual(1);
+      map.removeSource('l7_layer_1');
+      map.removeLayer('simple-tiles');
+      map.removeSource('raster-tiles');
+      expect(l7_layer_1.removeSource.calls.count()).toEqual(1);
+      map.remove();
+      done();
+    });
   });
 });

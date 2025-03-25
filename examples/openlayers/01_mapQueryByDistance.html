@@ -6,11 +6,36 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mapQueryByDistance"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 240px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_queryByDistance"></h5></div>
+  <div class='panel-body content'>
+      <div class='panel'>
+        <div class='input-group'>
+          <span class='input-group-addon' data-i18n="resources.text_queryDistance"></span>
+          <input type="number" min="0" class="form-control" id="distance" placeholder="10" />
+        </div>
+      </div>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
     var map, point, vectorLayer, resultLayer,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-world/rest/maps/World";
@@ -34,9 +59,9 @@
         projection: 'EPSG:4326'
     });
     map.addLayer(layer);
-    query();
 
-    function query() {
+    addMarker();
+    function addMarker() {
         //添加查询中心点
         point = new ol.geom.Point([104, 30]);
         var iconStyle = new ol.style.Style({
@@ -54,9 +79,17 @@
             source: pointSource
         });
         map.addLayer(vectorLayer);
+    }
+
+    function query() {
+        clearFeatures();
+        var distance = document.getElementById("distance").value || 10;
+        if (distance <= 0) {
+          return widgets.alert.showAlert(resources.text_queryDistanceLimit, false);
+        }
         var param = new ol.supermap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
-            distance: 10,
+            distance: distance,
             geometry: point
         });
         //创建距离查询实例
@@ -70,6 +103,10 @@
             });
             map.addLayer(resultLayer);
         });
+    }
+
+    function clearFeatures() {
+      map.removeLayer(resultLayer);
     }
 </script>
 </body>

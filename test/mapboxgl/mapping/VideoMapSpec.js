@@ -1,7 +1,7 @@
 import { VideoMap } from '../../../src/mapboxgl/mapping/VideoMap';
 import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
-var videoUrl = 'base/resources/data/index.m3u8';
+var videoUrl = 'base/resources/data/test.mp4';
 describe('mapboxgl_videoMap', () => {
   var originalTimeout;
   var testDiv;

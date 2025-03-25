@@ -8,13 +8,9 @@ import { Point as GeometryPoint } from "@supermapgis/iclient-common/commontypes/
 import { Polygon } from "@supermapgis/iclient-common/commontypes/geometry/Polygon";
 import { LinearRing } from "@supermapgis/iclient-common/commontypes/geometry/LinearRing";
 import { GeoJSON as GeoJSONFormat } from "@supermapgis/iclient-common/format/GeoJSON";
+import { isMatchAdministrativeName } from '@supermapgis/iclient-common/mapping/utils/util';
+import { isArray, isString } from '@supermapgis/iclient-common/util/BaseUtil';
 
-const isArray = function (obj){
-  return Object.prototype.toString.call(obj) == "[object Array]";
-}
-const isString = function (str) {
-  return (typeof str === 'string') && str.constructor === String;
-}
 /**
  * @name Util
  * @namespace
@@ -225,15 +221,5 @@ export const Util = {
      * @param {string} fieldName 待匹配的地名
      * @returns {boolean} 是否匹配
      */
-    isMatchAdministrativeName(featureName, fieldName) {
-      if (isString(fieldName)) {
-          let shortName = featureName.substr(0, 2);
-          // 张家口市和张家界市 特殊处理
-          if (shortName === '张家') {
-              shortName = featureName.substr(0, 3);
-          }
-          return !!fieldName.match(new RegExp(shortName));
-      }
-      return false;
-  }
+    isMatchAdministrativeName
 }

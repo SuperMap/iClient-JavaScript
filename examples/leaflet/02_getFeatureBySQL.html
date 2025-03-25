@@ -6,10 +6,35 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getFeatureBySQL"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 240px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.title_getFeatureBySQL"></h5></div>
+  <div class='panel-body content'>
+      <div class='panel'>
+        <div class='input-group'>
+          <span class='input-group-addon'>SQL</span>
+          <input min="0" class="form-control" id="sql" placeholder="SMID = 234" />
+        </div>
+      </div>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+  </div>
+</div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
@@ -24,13 +49,14 @@
         zoom: 1
     });
     new L.supermap.TiledMapLayer(baseUrl).addTo(map);
-    query();
 
     function query() {
+        clearFeatures();
+        var sql = document.getElementById("sql").value || "SMID = 234";
         var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
-                attributeFilter: "SMID = 234"
+                attributeFilter: sql
             },
             datasetNames: ["World:Countries"]
         });
@@ -39,6 +65,10 @@
             .getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 234');
             });
+    }
+    
+    function clearFeatures() {
+      resultLayer && map.removeLayer(resultLayer);
     }
 </script>
 </body>

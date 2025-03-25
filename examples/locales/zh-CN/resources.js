@@ -649,6 +649,7 @@ window.examplesResources = {
         "title_componentsLayerManager_vue": '图层管理组件',
         "title_componentsTimeLine_Vue": "时间轴组件",
         "title_componentsCoordinateConversion_Vue":"坐标转换组件",
+        "title_componentsAttributePanel_Vue":"属性面板组件",
         "title_attributes_Vue":"属性表组件",
         "title_layerColor_Vue":"图层颜色组件",
         "title_componentsTimeLineSupermap_Vue": "超图大厦历史影像",
@@ -777,6 +778,8 @@ window.examplesResources = {
         "title_l7_3d_terrain": "自定义3D地形（LOD）",
         "title_l7_snow_particle": "雪花粒子",
         "title_l7_rain_particle": "雨滴粒子",
+        "title_multiphaseplay": "多时相播放",
+        "title_createTempLayer": "创建临时图层",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -1646,6 +1649,13 @@ window.examplesResources = {
         "text_prevPage": "上一页",
         "text_nextPage": "下一页",
         "text_lastPage": "尾页",
+        "text_queryDistance": "查询距离(度)",
+        "text_queryDistanceLimit": "查询距离必须大于零",
+        "text_multiphaseplay": "多时相播放",
+        "text_2009To2016NDVI": "2009-2016年5月植被指数",
+        "text_create": "创建",
+        "text_gamma": "Gamma 参数",
+        "text_gammaParamBounds": "Gamma 数值范围为 0 到 10",
 
 
 
@@ -1891,6 +1901,8 @@ window.examplesResources = {
         "msg_login_failed":"用户名或密码错误。",
         "msg_addPath": "请生成路径，用于缓冲区分析",
         "msg_bufferAnalyst": "请先做缓冲区分析，以得到查询的范围",
+        "msg_centerPoint": "请选择服务中心点！",
+        "msg_destination": "请选择配送目标！",
         "msg_eventPoint": "请选择事件点！",
         "msg_check": "站点数目应大于2个",
         "msg_findPath": "站点数目有误",
@@ -2045,6 +2057,9 @@ window.examplesResources = {
         "msg_confirmDelete": "删除后要素将无法恢复，是否确认删除？",
         "msg_clickToSelect": "在地图上点击要素进行选择",
         "text_featureToDelete": "待删除要素",
+        "text_outOfRange": "输入值超出值域范围",
+        "text_updateFeaturesSuccess": "更新要素成功",
+        "text_addFeaturesSuccess": "新增要素成功",
 
         "option_scanRadar":"雷达特效",
         "option_sectorDetectionRange":"扫描特效",
@@ -2485,7 +2500,8 @@ window.examplesResources = {
         "text_subLayer":"子图层",
         "text_setCurrentMapScaleToMintVisibleScale":"设置当前地图比例尺为最小可见比例尺",
         "text_setCurrentMapScaleToMaxVisibleScale":"设置当前地图比例尺为最大可见比例尺",
-        "text_clearVisibleScaleSet":"清除可见比例尺设置"
+        "text_clearVisibleScaleSet":"清除可见比例尺设置",
+        "text_symbolAnnotations":"多注记"
         
 
     }

@@ -54,16 +54,16 @@
     var disturl = config.disturl;
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
-    if (!inArray(excludes, 'maplibregl')) {
+    if (!inArray(includes, 'maplibre-gl-enhance') && !inArray(excludes, 'maplibregl')) {
       inputCSS(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.css');
       inputScript(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.js');
     }
     if (inArray(includes, 'maplibre-gl-enhance')) {
-      inputCSS(libsurl + '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.css');
-      inputScript(libsurl + '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.js');
+      inputCSS(libsurl + '/maplibre-gl-js-enhance/4.3.0-4/maplibre-gl-enhance.css');
+      inputScript(libsurl + '/maplibre-gl-js-enhance/4.3.0-4/maplibre-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
-      inputScript(libsurl + '/maplibregl-l7-render/0.0.1/maplibregl-l7-render.js');
+      inputScript(libsurl + '/maplibregl-l7-render/0.0.2/maplibregl-l7-render.js');
     }
     if (inArray(includes, 'g2')) {
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
@@ -128,9 +128,6 @@
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
     }
-    if (inArray(includes, 'canvg')) {
-      inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-    }
     if (inArray(includes, 'LegacyJSONLoader')) {
       inputScript(libsurl + '/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
     }
@@ -185,7 +182,7 @@
       inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.min.js');
     }
     if (inArray(includes, 'ugcwasm')) {
-      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+      inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
     }
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
@@ -193,6 +190,9 @@
       } else {
         inputScript(disturl + '/maplibregl/iclient-maplibregl.min.js');
       }
+    }
+    if (!inArray(excludes, 'iclient-maplibregl-css')) {
+      inputCSS(disturl + '/maplibregl/iclient-maplibregl.min.css');
     }
   }
 

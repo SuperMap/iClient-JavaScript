@@ -171,6 +171,7 @@ export var RequestJSONPPromise = {
 
 var CORS;
 var RequestTimeout;
+var RequestHeadersGetter;
 /**
  * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -277,6 +278,43 @@ export var setRequestTimeout = function (timeout) {
  */
 export var getRequestTimeout = function () {
     return RequestTimeout || 45000;
+}
+
+/**
+ * @function setRequestHeaders
+ * @category BaseTypes Util
+ * @description 设置请求自定义 request headers。
+ * @param {function} func - 请求自定义 request headers 回调函数。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    const headers = function (url) { return { token: !!url }; };
+    {namespace}.setRequestHeaders(headers);
+
+  </script>
+
+  // ES6 Import
+  import { setRequestHeaders } from '{npm}';
+
+  const headers = function (url) { return { token: !!url }; };
+  setRequestHeaders(headers);
+ * ```
+ */
+export var setRequestHeaders = function (headers) {
+    return RequestHeadersGetter = headers;
+}
+
+/**
+ * @private
+ * @function getRequestTimeout
+ * @category BaseTypes Util
+ * @description 获取请求超时的时间。
+ * @returns {number} 请求超时时间。
+ */
+export var getRequestHeaders = function () {
+    return RequestHeadersGetter;
 }
 
 /**
@@ -500,6 +538,11 @@ export var FetchRequest = {
         options.headers = options.headers || {};
         if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        }
+        const customRequestHeadersGetter = getRequestHeaders();
+        const customRequestHeaders = customRequestHeadersGetter && customRequestHeadersGetter(url);
+        if (customRequestHeaders) {
+            options.headers = Util.extend(options.headers, customRequestHeaders);
         }
         if (options.timeout) {
             return this._timeout(

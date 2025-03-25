@@ -121,6 +121,13 @@ var exampleConfig = {
           version: '11.2.0',
           thumbnail: "chart.png",
           fileName: "01_chartService"
+        },
+        {
+          name: "创建临时图层",
+          name_en: "Create temporary layer",
+          version: '11.3.0',
+          thumbnail: "createTempLayer.png",
+          fileName: "createTempLayer"
         }
         ]
       },
@@ -178,11 +185,6 @@ var exampleConfig = {
           name_en: "field statistics service",
           thumbnail: "l_fieldStatistics.png",
           fileName: "02_fieldStatistics"
-        }, {
-          name: "地物编辑",
-          name_en: "data editing",
-          thumbnail: "l_editFeatures.png",
-          fileName: "02_editFeatures"
         },
         {
           name: "要素关联附件",
@@ -581,6 +583,13 @@ var exampleConfig = {
             version: "10.2.0",
             thumbnail: "imageService.png",
             fileName: "imageService"
+          },
+          {
+            name: "多时相播放",
+            name_en: "Multiphase play",
+            version: '11.3.0',
+            thumbnail: "multiphaseplay.png",
+            fileName: "multiphaseplay"
           }
         ]
       },
@@ -1506,16 +1515,16 @@ var exampleConfig = {
           fileName: "snapAndModify"
         }]
       },
-      "changeTileVersion": {
-        name: "缓存切换",
-        name_en: "Tile version switch",
-        content: [{
-          name: "多版本缓存切换控件",
-          name_en: "tile version switch control",
-          thumbnail: "l_changeTileVersion.png",
-          fileName: "changeTileVersion"
-        }]
-      },
+      // "changeTileVersion": {
+      //   name: "缓存切换",
+      //   name_en: "Tile version switch",
+      //   content: [{
+      //     name: "多版本缓存切换控件",
+      //     name_en: "tile version switch control",
+      //     thumbnail: "l_changeTileVersion.png",
+      //     fileName: "changeTileVersion"
+      //   }]
+      // },
       "leafletOfficialControl": {
         name: "基础控件",
         name_en: "Base control",
@@ -1714,46 +1723,4 @@ var exampleConfig = {
 
 };
 
-/**
- *key值：为exampleConfig配置的key值或者fileName值
- *      （为中间节点时是key值，叶结点是fileName值）
- *value值：fontawesome字体icon名
- *不分层
- */
-var sideBarIconConfig = {
-  "iServer": "fa-server",
-  "iPortal": "fa-desktop",
-  "Online": "fa-cloud",
-  "iManager": "fa-group",
-  "Elasticsearch": "fa-tasks",
-  "plot": "fa-edit",
-  "dynamicPlot": "fa-pencil",
-  "control": "fa-sliders",
-  "components": "fa-window-restore",
-  "clientSpatialAnalyst": "fa-object-group",
-  "viz": "fa-map",
-  "OGC": "fa-globe",
-  "mapping": "fa-send"
-};
-
-/**
- *key值：为exampleConfig配置的key值
- *value值：fontawesome字体icon名
- *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
- */
-var exampleIconConfig = {
-  "iServer": "fa-server",
-  "iPortal": "fa-desktop",
-  "Online": "fa-cloud",
-  "iManager": "fa-group",
-  "Elasticsearch": "fa-tasks",
-  "plot": "fa-edit",
-  "dynamicPlot": "fa-pencil",
-  "control": "fa-sliders",
-  "components": "fa-window-restore",
-  "clientSpatialAnalyst": "fa-object-group",
-  "viz": "fa-map",
-  "OGC": "fa-globe",
-  "mapping": "fa-send"
-};
 window.leafletExampleConfig = exampleConfig;

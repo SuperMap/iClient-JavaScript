@@ -6,13 +6,33 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findLocation"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_findLocation"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_analyst"
+              onclick="findLocationProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+              onclick="clearElements()"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
-    var map, options,
+    var map, options, polygonLayer,
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
@@ -40,10 +60,10 @@
             source: new ol.source.TileSuperMapRest(options)
         });
         map.addLayer(layer);
-        findLocationProcess();
+        init();
     });
 
-    function findLocationProcess() {
+    function init() { 
         //添加设施点
         var facilityPoint1 = new ol.geom.Point([1675.9256791377206, -593.56822512495194]);
         var facilityPoint2 = new ol.geom.Point([2820.35101097629, -2358.0414663985171]);
@@ -86,7 +106,11 @@
         var facilityLayer = new ol.layer.Vector({
             source: facilitySource
         });
+        map.addLayer(facilityLayer);
+    }
 
+    function findLocationProcess() {
+        clearElements();
         // 设置设施点的资源供给中心
         var supplyCenterType_FIXEDCENTER = ol.supermap.SupplyCenterType.FIXEDCENTER,
             supplyCenterType_NULL = ol.supermap.SupplyCenterType.NULL;
@@ -161,7 +185,7 @@
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.demandResults)
             });
-            var polygonLayer = new ol.layer.Vector({
+            polygonLayer = new ol.layer.Vector({
                 source: vectorSource,
                 style: new ol.style.Style({
                     image: new ol.style.Circle({
@@ -173,8 +197,11 @@
                 })
             });
             map.addLayer(polygonLayer);
-            map.addLayer(facilityLayer);
         });
+    }
+
+    function clearElements() { 
+      map.removeLayer(polygonLayer);
     }
 </script>
 </body>

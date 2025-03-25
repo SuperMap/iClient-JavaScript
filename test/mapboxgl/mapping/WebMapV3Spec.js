@@ -1,17 +1,32 @@
 import mapboxgl from 'mapbox-gl';
-import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
-import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
-import '../../resources/WebMapV3.js';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';
+import { createWebMapV3Extending } from '@supermapgis/iclient-common/mapping/WebMapV3';
+import { createMapClassExtending } from '@supermapgis/iclient-common/mapping/MapBase';
+import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
+import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
+import { CRSManager } from '../../../src/mapboxgl/mapping/webmap/CRSManager';
+import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
+import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
+import { L7, L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 import * as mockL7 from '../../tool/mock_l7';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
+import '../../resources/WebMapV3.js';
+import '../../resources/WebMapV5.js';
 
 describe('mapboxgl-webmap3.0', () => {
   var originalTimeout, testDiv;
   var server = 'http://localhost:8190/iportal/';
   var id = 617580084;
   var mapstudioWebmap;
+  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
+  const extendOptions = {
+    MapManager: MapManagerUtil.default,
+    mapRepo: mapboxgl,
+    crsManager: new CRSManager(),
+    l7LayerUtil
+  };
+  const WebMapV3 = createWebMapV3Extending(createMapClassExtending(mapboxgl.Evented), extendOptions);
   beforeEach(() => {
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
@@ -24,6 +39,9 @@ describe('mapboxgl-webmap3.0', () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     mapboxgl.Map.prototype.overlayLayersManager = {};
+    mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
+    mapboxgl.CRS = CRS;
+    mapboxgl.proj4 = proj4;
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
@@ -33,14 +51,21 @@ describe('mapboxgl-webmap3.0', () => {
     }
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    mbglmap.prototype.getL7Scene = undefined;
+    mapboxgl.CRS = undefined;
+    mapboxgl.proj4 = undefined;
   });
 
   it('initialize_background', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         var mapJson = mapstudioWebMap_background;
         return Promise.resolve(new Response(mapJson));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         var appInfo = masBackgroundAppInfo;
         return Promise.resolve(new Response(appInfo));
       }
@@ -51,7 +76,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
     expect(mapstudioWebmap.options.target).toBe('map');
     expect(mapstudioWebmap.mapId).toBe(id);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap.map).toEqual(map);
       expect(mapstudioWebmap.mapParams.title).toBe('空地图');
       expect(mapstudioWebmap.mapParams.description).toBe('');
@@ -65,10 +90,14 @@ describe('mapboxgl-webmap3.0', () => {
 
   it('initialize_raster', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         var mapJson = mapstudioWebMap_raster;
         return Promise.resolve(new Response(mapJson));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         var appInfo = mapstudioAppInfo;
         return Promise.resolve(new Response(appInfo));
       }
@@ -82,7 +111,7 @@ describe('mapboxgl-webmap3.0', () => {
     expect(mapstudioWebmap.credentialValue).toBeUndefined();
     expect(mapstudioWebmap.options.target).toBe('map');
     expect(mapstudioWebmap.mapId).toBe(id);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       expect(map.getZoom()).toBeCloseTo(3.412, 0.001);
@@ -100,11 +129,16 @@ describe('mapboxgl-webmap3.0', () => {
 
   it('vector_symbol', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_symbol));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_symbol));
-      } else if (url.indexOf('/sprite') > -1) {
+      }
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
@@ -113,16 +147,16 @@ describe('mapboxgl-webmap3.0', () => {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(mapstudioWebMap_symbol);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(webMapV3.getLegendInfo().length).not.toBe(0);
+      expect(webMapV3.getLegends().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
-      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(webMapV3.getAppreciableLayers().length);
+      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(webMapV3.getLayers().length);
       done();
     });
   });
@@ -142,15 +176,15 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       map.addLayer({
         metadata: {},
         paint: {
@@ -160,7 +194,7 @@ describe('mapboxgl-webmap3.0', () => {
         type: 'background'
       });
       expect(map.getStyle().layers.length).toBe(mapInfo.layers.length + 1);
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length + 1);
+      expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
       done();
     });
@@ -176,26 +210,30 @@ describe('mapboxgl-webmap3.0', () => {
         wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
       }
     };
-    mapstudioWebmap = new WebMapV3(nextMapInfo, {
-      server: server,
-      target: 'map'
-    });
-    mapstudioWebmap.on('getmapinfofailed', ({ error }) => {
-      const throwError = `The EPSG code ${nextMapInfo.crs.name} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
-      expect(mapstudioWebmap.map).toBeUndefined();
-      expect(error).toBe(throwError);
-      done();
-    });
-    mapstudioWebmap.initializeMap(nextMapInfo);
-  });
-
-  it('projection is 4490 and include mapbox-gl-enhance', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
     });
+    mapboxgl.CRS = undefined;
+    mapstudioWebmap = new WebMap(nextMapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('mapcreatefailed', ({ error }) => {
+      const throwError = 'WebMap needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362';
+      expect(mapstudioWebmap.map).toBeUndefined();
+      expect(error).toBe(throwError);
+      done();
+    });
+  });
+
+  it('projection is 4490 and include mapbox-gl-enhance', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const nextMapInfo = {
       ...mapInfo,
@@ -205,30 +243,31 @@ describe('mapboxgl-webmap3.0', () => {
         wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
       }
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
-    mapstudioWebmap = new WebMapV3(nextMapInfo, {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(nextMapInfo, {
       server: server,
       target: 'map',
       iportalServiceProxyUrl: 'projection is 4490 and include mapbox-gl-enhance'
     });
-    mapstudioWebmap.initializeMap(nextMapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
-      delete mapboxgl.CRS;
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       done();
     });
   });
@@ -250,13 +289,6 @@ describe('mapboxgl-webmap3.0', () => {
         wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
       }
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
       target: 'map'
@@ -286,16 +318,15 @@ describe('mapboxgl-webmap3.0', () => {
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length + 1);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      delete mapboxgl.CRS;
       done();
     });
   });
@@ -315,15 +346,15 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(mapstudioWebmap.getLegends().length).toBe(0);
       map.overlayLayersManager = {
         GraticuleLayer: {
           id: 'GraticuleLayer',
@@ -359,7 +390,7 @@ describe('mapboxgl-webmap3.0', () => {
         }
       };
       const validNum = 4;
-      const appreciableLayers2 = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers2 = mapstudioWebmap.getLayers();
       expect(appreciableLayers2.length).toBe(appreciableLayers.length + validNum);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + validNum);
       expect(appreciableLayers2.find((item) => item.id === 'EchartLayer')).toBeTruthy();
@@ -387,14 +418,71 @@ describe('mapboxgl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('getlayersfailed', ({ error }) => {
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
       expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const style = map.getStyle();
       expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
+
+  it('filter drill ui id test', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
+    const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
+      expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const style = map.getStyle();
+      expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
+
+  it('filter drill interaction changed test', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
+    const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('layercreatefailed', ({ error, error_code }) => {
+      expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      expect(error_code).toBe('DRILL_LAYERS_NOT_SUPPORTED');
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const style = map.getStyle();
+      expect(style.layers.length).toBeLessThan(originMapInfo.layers.length);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(1);
       done();
     });
@@ -416,12 +504,12 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       map.addLayer({
@@ -448,7 +536,7 @@ describe('mapboxgl-webmap3.0', () => {
         source: 'mapbox-gl-draw-hot',
         type: 'circle'
       });
-      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length);
+      expect(mapstudioWebmap.getLayers().length).toBe(appreciableLayers.length);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length);
       done();
     });
@@ -466,6 +554,9 @@ describe('mapboxgl-webmap3.0', () => {
       return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
       }
@@ -489,34 +580,35 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
     const mapOptions = {
-      transformRequest: function(url) { return { url }; }
-    }
+      transformRequest: function (url) {
+        return { url };
+      }
+    };
     spyOn(mapOptions, 'transformRequest').and.callThrough();
-    mapstudioWebmap = new WebMap(id, {
-      server: server
-    }, mapOptions);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
-      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+    mapstudioWebmap = new WebMap(
+      id,
+      {
+        server: server
+      },
+      mapOptions
+    );
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
-      expect(webmapInstance.map).toEqual(map);
+      expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBeLessThan(mapInfo.layers.length);
-      expect(webmapInstance._getLayersOnMap().length).toBe(mapInfo.layers.length);
-      const appreciableLayers = webmapInstance.getAppreciableLayers();
-      const layerCatalogs = webmapInstance.getLayerCatalog();
+      const appreciableLayers = mapstudioWebmap.getLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(webmapInstance.getLegendInfo().length).toBe(8);
+      expect(mapstudioWebmap.getLegends().length).toBe(8);
       expect(mapOptions.transformRequest.calls.count()).toBeGreaterThan(0);
       delete mapboxgl.Map.prototype.getCRS;
-      delete mapboxgl.CRS;
       done();
     });
   });
 
-  it('projectionisnotmatch', (done) => {
+  it('projectionnotmatch', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -524,32 +616,58 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
-    mapboxgl.Map.prototype.getCRS = function () {
+    
+    const existedMap = new mapboxgl.Map({
+      container: testDiv,
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            paint: {
+              'background-color': '#242424'
+            },
+            id: 'background1',
+            type: 'background'
+          }
+        ]
+      },
+      center: [116.640545, 40.531714],
+      zoom: 7
+    });
+    existedMap.getCRS = function () {
       return { epsgCode: '' };
     };
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map'
     });
+    existedMap.on('load', function () {
+      mapstudioWebmap.initializeMap(mapInfo, existedMap);
+    });
 
-    mapstudioWebmap.on('projectionisnotmatch', () => {
+    mapstudioWebmap.on('projectionnotmatch', () => {
       expect(mapstudioWebmap.map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(existedMap);
       const style = mapstudioWebmap.map.getStyle();
-      expect(style.layers.length).toBe(0);
-      delete mapboxgl.Map.prototype.getCRS;
+      expect(style.layers.length).toBe(1);
       done();
     });
-    mapstudioWebmap.initializeMap(mapInfo);
   });
 
   it('layerdatas', (done) => {
-    const spyTest = spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(apstudioWebMap_layerData));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_layerData));
-      } else if (url.indexOf('/sprite') > -1) {
+      }
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
@@ -557,14 +675,15 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
+      expect(map.style.addGlyphs).toHaveBeenCalledTimes(1);
       const style = map.getStyle();
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(apstudioWebMap_layerData);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      const appreciableLayers = webMapV3.getAppreciableLayers();
+      const appreciableLayers = webMapV3.getLayers();
       const layerList = webMapV3.getLayerCatalog();
       expect(layerList.length).toBe(5);
       expect(appreciableLayers.length).toBe(5);
@@ -612,24 +731,39 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_raster);
-    mapstudioWebmap = new WebMapV3(mapInfo, {
+    const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
+    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+    mapstudioWebmap = new WebMap(mapInfo, {
       server: server,
-      iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
+      target: 'map',
+      iportalServiceProxyUrl,
+      tileTransformRequest: (url) => {
+        if (url.includes(iportalServiceProxyUrl)) {
+          return { headers: tileCustomRequestHeaders };
+        }
+      }
     });
-    mapstudioWebmap.initializeMap(mapInfo);
-    expect(mapstudioWebmap.map).not.toBeUndefined();
-    let mockTileUrl = 'http://localhost:8195/portalproxy/7c851958ab40a5e0/iserver/services/map_world1_y6nykx3f/rest/maps/World1/tileimage.png?scale=6.760654286410619e-9&x=1&y=0&width=256&height=256&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D';
-    let transformed = mapstudioWebmap.map.options.transformRequest(mockTileUrl, 'Tile');
-    expect(transformed.credentials).toBe('include');
-    mockTileUrl = 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
-    transformed = mapstudioWebmap.map.options.transformRequest(mockTileUrl, 'Tile');
-    expect(transformed.credentials).toBeUndefined();
-    done();
+    mapstudioWebmap.on('mapinitialized', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      let mockTileUrl =
+        'http://localhost:8195/portalproxy/7c851958ab40a5e0/iserver/services/map_world1_y6nykx3f/rest/maps/World1/tileimage.png?scale=6.760654286410619e-9&x=1&y=0&width=256&height=256&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D';
+      let transformed = map.options.transformRequest(mockTileUrl, 'Tile');
+      expect(transformed.credentials).toBe('include');
+      expect(transformed.headers).toEqual(tileCustomRequestHeaders);
+      mockTileUrl = 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
+      transformed = map.options.transformRequest(mockTileUrl, 'Tile');
+      expect(transformed.credentials).toBeUndefined();
+      expect(transformed.headers).toBeUndefined();
+      spyTest.calls.reset();
+      done();
+    });
   });
 
   it('filter legend', (done) => {
+    mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
+    const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
@@ -637,10 +771,10 @@ describe('mapboxgl-webmap3.0', () => {
     spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
-    mapboxgl.Map.prototype.getCRS = function () {
-      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
-    };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_L7Layers2));
       }
@@ -664,16 +798,13 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
-      expect(webmapInstance.getLegendInfo().length).toBe(4);
-      delete mapboxgl.Map.prototype.getCRS;
-      delete mapboxgl.CRS;
+      expect(webmapInstance.getLegends().length).toBe(4);
+      spyTest.calls.reset();
       done();
     });
   });
@@ -690,6 +821,9 @@ describe('mapboxgl-webmap3.0', () => {
       return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
       }
@@ -713,45 +847,47 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(webmapInstance.map).toEqual(map);
-      let appreciableLayers = webmapInstance.getAppreciableLayers();
+      let appreciableLayers = webmapInstance.getLayers();
       let overlayLayers = Object.keys(map.overlayLayersManager);
       const idToCopy = 'ms_站点3_1715739627423_909';
       webmapInstance.copyLayer(idToCopy, { id: `${idToCopy}-SM-` }).then(() => {
         const currentOverlayLayers = Object.keys(map.overlayLayersManager);
-        const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+        const currentAppreciableLayers = webmapInstance.getLayers();
         expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
         expect(currentAppreciableLayers.length).toBe(appreciableLayers.length);
         appreciableLayers = currentAppreciableLayers;
         overlayLayers = currentOverlayLayers;
         webmapInstance.copyLayer(idToCopy).then(() => {
           const currentOverlayLayers = Object.keys(map.overlayLayersManager);
-          const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+          const currentAppreciableLayers = webmapInstance.getLayers();
           expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
           expect(currentAppreciableLayers.length).toBe(appreciableLayers.length + 1);
           delete mapboxgl.Map.prototype.getCRS;
-          delete mapboxgl.CRS;
           done();
         });
       });
     });
   });
-  
+
   it('copy raster layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_symbol));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_symbol));
-      } else if (url.indexOf('/sprite') > -1) {
+      }
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
@@ -760,7 +896,7 @@ describe('mapboxgl-webmap3.0', () => {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
@@ -770,7 +906,7 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       let layersOnMap = mapInfo.layers;
       let sourcesOnMap = mapInfo.sources;
-      let appreciableLayers = webMapV3.getAppreciableLayers();
+      let appreciableLayers = webMapV3.getLayers();
       expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(appreciableLayers.length);
       const idToCopy = 'CHINA_DARK';
       const nextSource = {
@@ -802,6 +938,9 @@ describe('mapboxgl-webmap3.0', () => {
       return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
       }
@@ -825,16 +964,20 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
-    mapboxgl.CRS = function () {};
-    mapboxgl.CRS.set = function () {};
     const mapOptions = {
-      transformRequest: function(url) { return { url }; }
-    }
+      transformRequest: function (url) {
+        return { url };
+      }
+    };
     spyOn(mapOptions, 'transformRequest').and.callThrough();
-    mapstudioWebmap = new WebMap(id, {
-      server: server
-    }, mapOptions);
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap = new WebMap(
+      id,
+      {
+        server: server
+      },
+      mapOptions
+    );
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       const layerInfo = {
         id: '北京市轨道交通线路减',
@@ -842,26 +985,27 @@ describe('mapboxgl-webmap3.0', () => {
           id: 'ms_1052943054_1715672103742_8',
           type: 'geojson'
         }
-      }
-      const features = [{
-        id: '1',
-        type: 'Feature',
-        properties: {
-          终点y: '39.948990864179734',
-          SmID: 1,
-          标准名称: '地铁二号线',
-          起点x: '116.38050072430798',
-          smpid: 1,
-          起点y: '39.94888011518407',
-          testID: 1,
-          终点x: '116.39553809862188'
+      };
+      const features = [
+        {
+          id: '1',
+          type: 'Feature',
+          properties: {
+            终点y: '39.948990864179734',
+            SmID: 1,
+            标准名称: '地铁二号线',
+            起点x: '116.38050072430798',
+            smpid: 1,
+            起点y: '39.94888011518407',
+            testID: 1,
+            终点x: '116.39553809862188'
+          }
         }
-      }]
+      ];
       webmapInstance.updateOverlayLayer(layerInfo, features, '标准名称');
       const newFeatures = map.getSource('ms_1052943054_1715672103742_8').getData().features;
       expect(newFeatures.length).toBe(1);
       delete mapboxgl.Map.prototype.getCRS;
-      delete mapboxgl.CRS;
       done();
     });
   });
@@ -878,8 +1022,8 @@ describe('mapboxgl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const appreciableLayers = mapstudioWebmap.getLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       done();
@@ -896,21 +1040,16 @@ describe('mapboxgl-webmap3.0', () => {
     });
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const crsInfo = {
+      name: 'EPSG:4490',
+      extent: [-180, -270, 180, 90],
+      wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+    };
+    const crs = new CRS(crsInfo.name, crsInfo.wkt, crsInfo.extent, 'degree');
     const nextMapInfo = {
       ...mapInfo,
-      crs: {
-        name: 'EPSG:4490',
-        extent: [-180, -270, 180, 90],
-        wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
-      }
+      crs: crsInfo
     };
-    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
-      expect(epsgCode).toBe(nextMapInfo.crs.name);
-      expect(wkt).toBe(nextMapInfo.crs.wkt);
-      expect(bounds).toEqual(nextMapInfo.crs.extent);
-      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
-    };
-    mapboxgl.CRS.set = function () {};
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
       target: 'map'
@@ -930,26 +1069,25 @@ describe('mapboxgl-webmap3.0', () => {
           }
         ]
       },
-      crs: 'EPSG:4490',
+      crs,
       center: [116.640545, 40.531714],
       zoom: 7
     });
-    const addSprite = spyOn(existedMap.style, 'addSprite');
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
-      expect(addSprite).toHaveBeenCalledTimes(6);
-      delete mapboxgl.CRS;
+      expect(map.addStyle).toHaveBeenCalled();
       done();
     });
   });
 
   it('label legend', (done) => {
-    const mapInfo = JSON.parse(mapstudioWebMap_labelLegend);
+    mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
+    const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
@@ -957,28 +1095,454 @@ describe('mapboxgl-webmap3.0', () => {
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_labelLegend));
-      } else if (url.indexOf('617580084.json') > -1) {
+      }
+      if (url.indexOf('617580084.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_labelLegend));
-      } else if (url.indexOf('/sprite') > -1) {
+      }
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
     });
-    mapboxgl.Map.prototype.getCRS = function () {
-      return { epsgCode: 'EPSG:3857', getExtent: () => {} };
-    };
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
 
-    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
-      expect(webMapV3.getLegendInfo().length).toBe(9);
-      delete mapboxgl.Map.prototype.getCRS;
+      expect(webMapV3.getLegends().length).toBe(9);
+      mbglmap.prototype.getL7Scene = undefined;
+      spyTest.calls.reset();
       done();
+    });
+  });
+
+  it('handle sprite option is object like { sourceId: url }', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite/rectangle') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              rectangle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 0,
+                y: 0,
+                height: 104
+              }
+            })
+          )
+        );
+      } else if (url.indexOf('/sprite/circle') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              circle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 104,
+                y: 0,
+                height: 104
+              }
+            })
+          )
+        );
+      } else if (url.indexOf('/sprite/triangle') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              triangle: {
+                pixelRatio: 1,
+                width: 104,
+                x: 0,
+                y: 104,
+                height: 104
+              }
+            })
+          )
+        );
+      }
+      return Promise.resolve();
+    });
+    spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapInfo.sprite = {
+      rectangle: 'http://localhost:9876/base/resources/data/sprite/rectangle',
+      circle: 'http://localhost:9876/base/resources/data/sprite/circle',
+      triangle: 'http://localhost:9876/base/resources/data/sprite/triangle'
+    };
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map',
+      relatedInfo: {
+        description: '测试111'
+      }
+    });
+    const existedMap = new mapboxgl.Map({
+      container: testDiv,
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            paint: {
+              'background-color': '#242424'
+            },
+            id: 'background1',
+            type: 'background'
+          }
+        ]
+      },
+      crs: 'EPSG:3857',
+      center: [116.640545, 40.531714],
+      zoom: 7
+    });
+    existedMap.on('load', function () {
+      mapstudioWebmap.initializeMap(mapInfo, existedMap);
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(mapstudioWebmap.mapParams.description).toBe('测试111');
+      expect(Object.keys(mapstudioWebmap._spriteDatas).length).toBe(3);
+      expect(map.addStyle).toHaveBeenCalled();
+      done();
+    });
+  });
+
+  it('test webmapv3 checkSameLayer', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('1209527958/map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_raster));
+      }
+      if (url.indexOf('1209527958.json') > -1) {
+        return Promise.resolve(new Response(mapstudioAppInfo));
+      }
+      if (url.indexOf('106007908/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapstudioWebMap_raster_append)));
+      }
+      if (url.indexOf('106007908.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(msProjectINfo_raster_append)));
+      }
+    });
+    const commonOption = {
+      server: 'http://fack:8190/iportal/',
+      target: 'map',
+      withCredentials: false
+    };
+    mapstudioWebmap = new WebMap(
+      '',
+      { ...commonOption },
+      { style: { version: 8, sources: {}, layers: [] }, center: [0, 0], zoom: 1, crs: 'EPSG:3857' }
+    );
+    const callback = function (data) {
+      const appreciableLayers = mapstudioWebmap.getLayers();
+      expect(appreciableLayers.length).toBe(0);
+      const webMap1 = new WebMap(1209527958, { ...commonOption, map: data.map, checkSameLayer: true });
+      webMap1.once('mapcreatesucceeded', ({ layers }) => {
+        expect(layers.length).toBe(2);
+        expect(layers[0].reused).toBeUndefined();
+        expect(layers[0].id).toBe('CHINA_DARK');
+        expect(layers[1].reused).toBeUndefined();
+        expect(layers[1].id).toBe('PopulationDistribution');
+        const webMap2 = new WebMap(106007908, { ...commonOption, map: data.map, checkSameLayer: true });
+        webMap2.once('mapcreatesucceeded', ({ layers, map }) => {
+          expect(layers.length).toBe(3);
+          expect(layers[0].reused).toBeTruthy();
+          expect(layers[0].id).toBe('CHINA_DARK');
+          expect(layers[1].reused).toBeTruthy();
+          expect(layers[1].id).toBe('PopulationDistribution');
+          expect(layers[2].reused).toBeUndefined();
+          expect(layers[2].id).toBe('未命名数据');
+          let layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(3);
+          expect(layersOnMap[0].id).toBe('CHINA_DARK');
+          expect(layersOnMap[1].id).toBe('PopulationDistribution');
+          expect(layersOnMap[2].id).toBe('未命名数据');
+          const listenEvents = {};
+          spyOn(map, 'off').and.callFake((type, cb) => {
+            listenEvents[type] = cb;
+          });
+          webMap2.cleanLayers();
+          layersOnMap = map.getStyle().layers;
+          expect(layersOnMap.length).toBe(2);
+          expect(layersOnMap[0].id).toBe('CHINA_DARK');
+          expect(layersOnMap[1].id).toBe('PopulationDistribution');
+          expect(listenEvents.styledata).not.toBeUndefined();
+          webMap1.cleanLayers();
+          done();
+        });
+      });
+    };
+    mapstudioWebmap.once('mapcreatesucceeded', callback);
+  });
+
+  it('test webmap with l7layers append l7layers', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf(`${id}/map.json`) > -1) {
+        return Promise.resolve(new Response(JSON.stringify({ ...mapInfo, crs: 'EPSG:3857' })));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      if (url.indexOf('411950022/map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_chart));
+      }
+      if (url.indexOf('411950022.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_chart));
+      }
+      if (url.indexOf('/web/datas/888034348/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/888034348/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.once('mapcreatesucceeded', ({ map: firstMap, layers: firstLayersList }) => {
+      expect(firstMap).not.toBeUndefined();
+      const style = firstMap.getStyle();
+      expect(style.layers.length).toEqual(mapInfo.layers.length);
+      const webMap1 = new WebMap(id, { server, map: firstMap });
+      webMap1.once('mapcreatesucceeded', ({ map, layers }) => {
+        expect(map).toEqual(firstMap);
+        expect(layers.length).toBe(firstLayersList.length);
+        expect(map.$l7scene).not.toBeUndefined();
+        const mapSpy = spyOn(map, 'remove');
+        const sceneSpy = spyOn(map.$l7scene, 'removeAllLayer');
+        webMap1.cleanLayers();
+        expect(mapSpy).not.toHaveBeenCalled();
+        expect(sceneSpy).not.toHaveBeenCalled();
+        const webMap2 = new WebMap(411950022, { server, map: firstMap});
+        webMap2.once('mapcreatesucceeded', ({ layers }) => {
+          expect(layers.length).toBe(4);
+          expect(layers[3].type).toBe('chart');
+          const removeMarkerSpy = spyOn(map.$l7scene, 'removeMarkerLayer').and.callThrough();
+          webMap2.cleanLayers();
+          expect(removeMarkerSpy).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
+    });
+  });
+
+  it('toggle WebMapV3 layers visible', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({ ...mapInfo, crs: 'EPSG:3857' })));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.once('mapcreatesucceeded', () => {
+      let layers = mapstudioWebmap.getLayers();
+      expect(layers.length).toBeGreaterThan(0);
+      expect(layers[0].title).toBe('3D格网热力');
+      expect(layers[0].visible).toBeTruthy();
+      mapstudioWebmap.toggleLayerVisible(layers[0], false);
+      layers = mapstudioWebmap.getLayers();
+      expect(layers[0].visible).toBeFalsy();
+      mapstudioWebmap.once('layerupdatechanged', () => {
+        layers = mapstudioWebmap.getLayers();
+        expect(layers[0].visible).toBeTruthy();
+        done();
+      });
+      mapstudioWebmap.setLayersVisible([layers[0]], 'visible');
+    });
+  });
+
+  it('layerCatalog separate ui id and render id', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_separate_layerCatalogId));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_separate_layerCatalogId));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      const mapInfo = JSON.parse(mapstudioWebMap_separate_layerCatalogId);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(webMapV3.getLegends().length).not.toBe(0);
+      const layerCatalogs = webMapV3.getLayerCatalog();
+      expect(layerCatalogs.length).not.toBe(0);
+      expect(layerCatalogs.length).toBe(mapInfo.metadata.layerCatalog.length);
+      const appreciableLayers = webMapV3.getLayers();
+      expect(layerCatalogs.length).toBe(appreciableLayers.length);
+      done();
+    });
+  });
+
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = mapstudioWebMap_raster;
+        return Promise.resolve(new Response(mapJson));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        var appInfo = mapstudioAppInfo;
+        return Promise.resolve(new Response(appInfo));
+      }
+      return Promise.resolve();
+    });
+    const originCrs = mapboxgl.CRS.get('EPSG:3857');
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(crsSetSpy).not.toHaveBeenCalled();
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(originCrs);
+      expect(mapboxgl.CRS.get('EPSG:3857')).toEqual(map.getCRS());
+      done();
+    });
+  });
+
+  it('when uncommon crs was defined, dont set repeat', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const wkt_4221 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4221"]]';
+    const epsgCode = 'EPSG:4221';
+    const nextMapInfo = {
+      ...mapInfo,
+      crs: {
+        name: epsgCode,
+        extent: [-180, -85, 180, 85],
+        wkt: wkt_4221
+      }
+    };
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const originCrs = mapboxgl.CRS.get(epsgCode);
+    const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
+    mapstudioWebmap = new WebMap(nextMapInfo, {
+      server: server,
+      target: 'map'
+    });
+
+    mapstudioWebmap.once('mapcreatesucceeded', ({ map: map1 }) => {
+      expect(originCrs).toBeFalsy();
+      expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+      expect(mapboxgl.CRS.get(epsgCode)).toEqual(map1.getCRS());
+      expect(crsSetSpy).toHaveBeenCalledTimes(2);
+      expect(map1.getCRS().getEpsgCode()).toBe(epsgCode);
+      expect(map1.getCRS().getWKT()).toBe(wkt_4221);
+      const originRange = [-180, 85];
+      expect(map1.getCRS().getOrigin()).toEqual(originRange);
+      mapstudioWebmap.setMapId({
+        ...mapInfo,
+        crs: {
+          name: epsgCode,
+          extent: [-120, -65, 120, 65],
+          wkt: wkt_4221
+        }
+      });
+      mapstudioWebmap.once('mapcreatesucceeded', ({ map: map2 }) => {
+        expect(mapboxgl.CRS.get(epsgCode)).toBeTruthy();
+        expect(mapboxgl.CRS.get(epsgCode)).toEqual(map2.getCRS());
+        expect(map1.getCRS()).toEqual(map2.getCRS());
+        expect(crsSetSpy).toHaveBeenCalledTimes(2);
+        expect(map2.getCRS().getEpsgCode()).toBe(epsgCode);
+        expect(map2.getCRS().getWKT()).toBe(wkt_4221);
+        expect(map2.getCRS().getOrigin()).toEqual(originRange);
+        delete mapboxgl.CRS[epsgCode.replace(':', '')];
+        done();
+      });
     });
   });
 });

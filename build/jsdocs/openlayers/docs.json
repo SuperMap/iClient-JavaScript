@@ -35,6 +35,7 @@
             "src/common/iServer/ProcessingServiceBase",
             "src/common/iServer/PointWithMeasure",
             "src/common/iServer/ServerTheme",
+            "src/common/iServer/QueryService",
             "src/common/overlay/RankSymbol",
             "src/common/overlay/Graph",
             "src/common/overlay/ThemeVector",
@@ -62,7 +63,8 @@
             "src/common/components/templates/PopContainer",
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
-            "src/common/components/templates/TemplateBase"
+            "src/common/components/templates/TemplateBase",
+            "src/common/mapping"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],

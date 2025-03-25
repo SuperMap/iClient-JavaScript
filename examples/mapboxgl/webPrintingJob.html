@@ -275,7 +275,7 @@
             target: 'map',
             server: 'https://www.supermapol.com'
         });
-        webMap.on('addlayerssucceeded', function (e) {
+        webMap.on('mapcreatesucceeded', function (e) {
             $('#center').val(e.map.getCenter().toArray().join(','));
             var extent = e.map.getCRS().extent;
             var res = Math.max(extent[2] - extent[0], extent[3] - extent[2]) / 512 / Math.pow(2, e.map.getZoom());

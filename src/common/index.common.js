@@ -324,11 +324,12 @@ import {
     FilterField,
     OnlineServiceBase
 } from './online';
-import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter } from './security';
+import { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter, decrypt } from './security';
 import { ElasticSearch } from './thirdparty';
 import {
     isCORS,
     setCORS,
+    setRequestHeaders,
     FetchRequest,
     ColorsPickerUtil,
     ArrayStatistic,
@@ -501,6 +502,7 @@ export { Format, GeoJSONFormat, JSONFormat, WKTFormat };
 export {
     isCORS,
     setCORS,
+    setRequestHeaders,
     FetchRequest,
     EncryptRequest,
     getServiceKey,
@@ -745,7 +747,7 @@ export {
     FeatureTheme,
     Transform
 };
-export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
+export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter, decrypt };
 export { CartoCSS, ThemeStyle };
 export { ElasticSearch };
 export { Lang };

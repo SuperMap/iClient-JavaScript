@@ -67,14 +67,14 @@ export class FilterParameter {
         /**
          * @member {string} [FilterParameter.prototype.orderBy]
          * @description 查询排序的字段，orderBy 的字段须为数值型的。
-         * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，
+         * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>或ORDER BY <列名 排序规则>。
          * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
-         * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；
-         * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。
-         * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，
-         * 分别表示国家的面积和 1994 年的各国人口数量。
-         * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；
-         * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。
+         * 排序规则即按字段的升序或降序排序，asc 表示升序，desc 表示降序，不指定排序规则按升序排序。
+         * 对单个字段排序时，该字段的用法为 orderBy = "字段名"，升序为orderBy = "字段名 asc"；降序为 orderBy = "字段名 desc"； 
+         * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2 asc, 字段名2 desc"。
+         * 例如，在一个国家数据集中，有两个字段，字段名分别为“SmArea”和“pop_1994”，分别表示国家的面积和1994年的各国的人口数量，
+         * 如果要按照各国人口数量对记录进行排序，可以设置 orderBy = "pop_1994"；
+         * 如果要以面积降序和人口升序进行排序， 设置 orderBy = "SmArea desc, pop_1994 asc"。
          */
         this.orderBy = null;
 

@@ -72,4 +72,7 @@ import './maplibregl/overlay/symbol/SymbolUtilSpec';
 import './maplibregl/overlay/symbol/MapExtendSymbolSpec.js';
 
 /*maplibregl -- mapping*/
+import './maplibregl/mapping/WebMapSpec.js';
+import './maplibregl/mapping/WebMapV2Spec.js';
+import './maplibregl/mapping/WebMapV3Spec.js';
 import './maplibregl/mapping/InitMapSpec.js';

@@ -19,11 +19,12 @@
 
       // 方式一：1.调用 L.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
       //         2.调用 L.supermap.TiledMapLayer 创建叠加图层
-      L.supermap.initMap(urlWorld, { mapOptions: { center: [40, 118], zoom: 7 } }).then(({ map }) => {
-        new L.supermap.TiledMapLayer(urlJinjing, {
+      L.supermap.initMap(urlWorld, { mapOptions: { center: [40, 118], zoom: 7 } }).then(({ map, layer }) => {
+        var overlayLayer = new L.supermap.TiledMapLayer(urlJinjing, {
           transparent: true,
           opacity: 0.6
         }).addTo(map);
+        L.control.layers({"baseLayer": layer}, {"overlayLayer": overlayLayer}).setPosition('topleft').addTo(map);
       });
       /*
           // 方式二：1.调用 L.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
@@ -38,11 +39,12 @@
               maxZoom: 18,
               zoom: 7
             });
-            new L.supermap.TiledMapLayer(urlWorld).addTo(map);
-            new L.supermap.TiledMapLayer(urlJinjing, {
+            var layer = new L.supermap.TiledMapLayer(urlWorld).addTo(map);
+            var overlayLayer = new L.supermap.TiledMapLayer(urlJinjing, {
               transparent: true,
               opacity: 0.6
             }).addTo(map);
+            L.control.layers({"baseLayer": layer}, {"overlayLayer": overlayLayer}).setPosition('topleft').addTo(map);
         });
       */
     </script>

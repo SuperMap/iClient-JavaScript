@@ -1,3 +1,5 @@
+import './Base';
+
 /**
  * @name decryptSources
  * @namespace

@@ -681,6 +681,7 @@ window.examplesResources = {
         "title_componentsIdentify_Vue": 'Identify component(Vue)',
         "title_componentsPopup_Vue": 'Popup(Vue)',
         "title_componentsCoordinateConversion_Vue":"Coordinate Conversion(Vue)",
+        "title_componentsAttributePanel_Vue":"Attribute Panel component",
         "title_attributes_Vue":"Attributes(Vue)",
         "title_layerColor_Vue":"LayerColor(Vue)",
         "title_componentsLayerManager_vue": 'LayerManager component(Vue)',
@@ -812,6 +813,8 @@ window.examplesResources = {
         "title_ugcResample": "Resample Analysis",
         "title_ugcPointPosition": "Point And Line Analysis",
         "title_ugcSpatial": "Spacial Analysis",
+        "title_multiphaseplay": "Multiphase Play",
+        "title_createTempLayer": "Create Temp Layer",
 
         "text_graphmap_shortest_analysis": "Shortest Path Analysis",
         "text_startNode": "start node",
@@ -1690,6 +1693,13 @@ window.examplesResources = {
         "text_prevPage": "Prev",
         "text_nextPage": "Next",
         "text_lastPage": "Last",
+        "text_queryDistance": "Query Distance(Degree)",
+        "text_queryDistanceLimit": "The query distance must be greater than zero",
+        "text_multiphaseplay": "Multiphase Play(2009-2016 years of NDVI)",
+        "text_2009To2016NDVI": "2009-2016 years of NDVI",
+        "text_create": "Create",
+        "text_gamma": "Gamma param",
+        "text_gammaParamBounds": "Gamma input bounds is 0 to 10",
 
         "btn_previous":"Previous",
         "btn_next":"Next",
@@ -1930,6 +1940,8 @@ window.examplesResources = {
         "msg_login_failed":"wrong user name or password",
         "msg_addPath": "Please add the path for buffer analysis.",
         "msg_bufferAnalyst": "Please do the buffer analysis at first to get the scope of the query.",
+        "msg_centerPoint": "Please select a service center point!",
+        "msg_destination": "Please select the delivery destination!",
         "msg_eventPoint": "Please choose a event point!",
         "msg_check": "The number of sites should be greater than 2",
         "msg_findPath": "The number of sites is wrong",
@@ -2070,6 +2082,23 @@ window.examplesResources = {
         "option_mileUnit": "Foot",
         "option_degreeUnit": "Degree",
         "text_print": "Print",
+        "text_addFeature": "Add",
+        "text_editFeature": "Edit",
+        "text_deleteFeature": "Delete",
+        "text_targetDataset": "Target Dataset",
+        "text_spacialInfo": "Spatial Information",
+        "msg_pleaseSaveFirst": "There are unsaved changes, please save or cancel the changes first",
+        "msg_inputCoordinates": "Press Tab to start entering coordinate values, press Enter to confirm",
+        "msg_moveToMapDraw": "Move the mouse to the map to draw features",
+        "text_attributeInfo": "Attribute Information",
+        "msg_pleaseSave": "Please save or cancel the changes first",
+        "msg_selectDeleteFeature": "Select the feature to delete on the map",
+        "msg_confirmDelete": "The feature cannot be recovered after deletion, are you sure to delete?",
+        "msg_clickToSelect": "Click on the feature on the map to select",
+        "text_featureToDelete": "Feature to Delete",
+        "text_outOfRange": "The input value is out of range",
+        "text_updateFeaturesSuccess": "Update feature successfully",
+        "text_addFeaturesSuccess": "Add feature successfully",
 
         "option_scanRadar":"scanRadarEffect",
         "option_sectorDetectionRange":"sectorDetectionRangeEffect",
@@ -2510,7 +2539,8 @@ window.examplesResources = {
         "text_subLayer":"subLayer",
         "text_setCurrentMapScaleToMintVisibleScale":"set current map scale to min visible scale",
         "text_setCurrentMapScaleToMaxVisibleScale":"set current map scale to max visible scale",
-        "text_clearVisibleScaleSet":"clear visible scale set"
+        "text_clearVisibleScaleSet":"clear visible scale set",
+        "text_symbolAnnotations":"symbolAnnotations"
     }
 };
 

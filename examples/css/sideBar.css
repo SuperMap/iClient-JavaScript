@@ -154,6 +154,9 @@ a.sidebar-toggle {
 .main-sidebar .iconName {
     margin-right: 4px;
     color: var(--text-color);
+    width: 20px;
+    height: 14px;
+    display: inline-block;
 }
 
 .menuTitle a.active {

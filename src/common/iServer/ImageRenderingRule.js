@@ -26,6 +26,10 @@ import ImageStretchOption from './ImageStretchOption';
  * @param {string} [options.backgroundColor] 指定背景值的颜色。支持指定 RGB 颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
  * @param {boolean} [options.backgroundTransparent] 背景值是否透明显示，true 表示透明显示背景值；否则为 false。
  * @param {Array.<ImageGFHillShade|ImageGFSlope|ImageGFAspect|ImageGFOrtho>} [options.gridFunctions] 栅格函数选项，通过应用栅格函数，可以对影像进行快速显示处理。
+ * @param {number} [options.gamma] - Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现影像非线性亮度和对比度调整，
+ * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+ * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+ * 但暗部区域的细节会有所损失，整体图像变暗。
  * @usage
  */
 export default class ImageRenderingRule {
@@ -107,6 +111,15 @@ export default class ImageRenderingRule {
      */
     this.gridFunctions = undefined;
 
+     /**
+     * @description Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现影像非线性亮度和对比度调整，
+     * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+     * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+     * 但暗部区域的细节会有所损失，整体图像变暗。
+     * @member {number} ImageRenderingRule.prototype.gamma
+     */
+    this.gamma = undefined;
+
     this.CLASS_NAME = 'SuperMap.ImageRenderingRule';
     Util.extend(this, options);
   }
@@ -132,6 +145,7 @@ export default class ImageRenderingRule {
     me.backgroundColor = undefined;
     me.backgroundTransparent = undefined;
     me.gridFuncOptions = undefined;
+    me.gamma = undefined;
   }
 
   /**
@@ -166,6 +180,9 @@ export default class ImageRenderingRule {
       }
       if (data.hasOwnProperty('brightness')) {
         obj.brightness = data.brightness;
+      }
+      if (data.hasOwnProperty('gamma')) {
+        obj.gamma = data.gamma;
       }
       if (data.hasOwnProperty('contrast')) {
         obj.contrast = data.contrast;

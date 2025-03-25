@@ -96,4 +96,28 @@ describe('leaflet_FGBLayer', () => {
     expect(fgblayer).not.toBeNull();
     expect(fgblayer.url).toBe(url);
   });
+
+  it('addfeatures with throttle', (done) => {
+    var count = 0;
+    var fgblayer = new FGBLayer(url, {
+      strategy: 'all',
+      featureLoader: function (feature) {
+        count++;
+        if (count === 19) {
+          setTimeout(() => {
+            expect(addfeatures).toHaveBeenCalledTimes(1);
+            done();
+          }, 1000);
+        }
+        return feature;
+      }
+    });
+    fgblayer.addTo(map);
+    var addfeatures
+    setTimeout(() => {
+      addfeatures = spyOn(fgblayer.curLayer, 'addData');
+      expect(fgblayer).not.toBeNull();
+      expect(fgblayer.url).toBe(url);
+    }, 100);
+  });
 });

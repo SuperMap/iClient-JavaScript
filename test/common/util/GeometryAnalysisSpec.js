@@ -91,7 +91,7 @@ describe('GeometryAnalysis', () => {
       },
       "id": 0
     };
-    const poly2 =  {
+    const poly2 = {
       "type": "Feature",
       "properties": {},
       "geometry": {
@@ -312,6 +312,30 @@ describe('GeometryAnalysis', () => {
     expect(res).toBe(7);
   });
 
+  it('distanceToLineSegment with unit and featureUnit', () => {
+    const res = instance.distanceToLineSegment(123, 25, 120, 30, 125, 30);
+    expect(res).toBe(5);
+
+    const res1 = instance.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'FOOT');
+    expect(res1).toBe(1826107.13243559);
+
+    const res2 = instance.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'INCH');
+    expect(res2).toBe(21913285.65997076);
+
+    const res3 = instance.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'KILOMETER');
+    expect(res3).toBe(556.5974539663679);
+
+    const res4 = instance.distanceToLineSegment(123, 25, 120, 30, 125, 30, 'DEGREE', 'METER');
+    expect(res4).toBe(556597.4539663679);
+
+    const res5 = instance.distanceToLineSegment(13692297.36757265, 2875744.624352243, 13358338.895192828, 3503549.8435043753, 13914936.349159198, 3503549.8435043753, 'METER', 'METER');
+    expect(res5).toBe(627805.2191521325);
+    const res6 = instance.distanceToLineSegment(13692297.36757265, 2875744.624352243, 13358338.895192828, 3503549.8435043753, 13914936.349159198, 3503549.8435043753, 'METER', 'KILOMETER');
+    expect(res6).toBe(627.8052191521325);
+  });
+
+  
+
   it('nearestPointToVertex', () => {
     const result = instance.nearestPointToVertex(111, 35, {
       type: 'Feature',
@@ -333,6 +357,41 @@ describe('GeometryAnalysis', () => {
     const result = instance.computeConcaveHullPoints(xArray, yArray);
     expect(result.geometry.type).toBe('Polygon');
     expect(result.geometry.coordinates[0].length).toBe(5);
+  });
+
+  it('computeConcaveHullPoints pass different xArray param', () => {
+    const xArray = [118, 125, 123, 117];
+    const yArray = [30, 31, 28, 32];
+    const result = instance.computeConcaveHullPoints(xArray, yArray);
+    const datas1 = [[118, 30], [125, 31], [123, 28], [117, 32]];
+    const result1 = instance.computeConcaveHullPoints(datas1);
+    expect(result1.geometry.coordinates[0].length).toBe(5);
+    expect(result.geometry.type).toBe('Polygon');
+    expect(result.geometry.coordinates[0].length).toBe(5);
+    const datas2 = [{
+      x: 118,
+      y: 30
+    }, {
+      x: 125,
+      y: 31
+    }, {
+      x: 123,
+      y: 28
+    }, {
+      x: 117,
+      y: 32
+    }];
+    const result2 = instance.computeConcaveHullPoints(datas2);
+    expect(result2.geometry.coordinates[0].length).toBe(5);
+    const datas3 = [{ type: 'Feature', geometry: { coordinates: [118, 30] } },
+    { type: 'Feature', geometry: { coordinates: [125, 31] } },
+    { type: 'Feature', geometry: { coordinates: [123, 28] } },
+    { type: 'Feature', geometry: { coordinates: [117, 32] } }];
+    const result3 = instance.computeConcaveHullPoints(datas3);
+    expect(result3.geometry.coordinates[0].length).toBe(5);
+    const datas4 = { type: 'FeatureCollection', features: datas3 };
+    const result4 = instance.computeConcaveHullPoints(datas4);
+    expect(result4.geometry.coordinates[0].length).toBe(5);
   });
 
   it('isSegmentIntersect', () => {
@@ -377,6 +436,42 @@ describe('GeometryAnalysis', () => {
     expect(result.geometry.coordinates[14][1]).toBe(40.1362305353);
   });
 
+  it('smooth is wrong type', () => {
+    try {
+      const line = {
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            [116.2937579415, 40.1347201433]
+          ]
+        },
+        type: 'Feature'
+      };
+      instance.smooth(line);
+    } catch (error) {
+      expect(error.message).toBe('only feature type is LineString supported')
+    }
+  });
+
+  it('smooth test coord valid', () => {
+    try {
+      const line = {
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [190.2937579415, 40.1347201433],
+            [190.2936959914, 40.1359171585],
+            [190.2936389424, 40.1362305353]
+          ]
+        },
+        type: 'Feature'
+      };
+      instance.smooth(line);
+    } catch (error) {
+      expect(error.message).toBe('coordinates is invalid latlng')
+    }
+  });
+
   it('computeParallel', () => {
     const result = instance.computeParallel(
       {
@@ -396,11 +491,95 @@ describe('GeometryAnalysis', () => {
     expect(result.geometry.coordinates[1][1]).toBe(35);
   });
 
+  it('computeParallel with unit and featureUnit', () => {
+    const feature = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        coordinates: [
+          [120, 30],
+          [125, 30]
+        ],
+        type: 'LineString'
+      }
+    };
+    const result = instance.computeParallel(
+      feature,
+      5
+    );
+    expect(result.geometry.coordinates[0][1]).toBe(35);
+    expect(result.geometry.coordinates[1][1]).toBe(35);
+
+    const result1 = instance.computeParallel(
+      feature,
+      1640419.9475066,
+      'DEGREE',
+      'FOOT'
+    );
+    expect(result1.geometry.coordinates[0][1]).toBe(34.49157642059771);
+    expect(result1.geometry.coordinates[1][1]).toBe(34.49157642059771);
+
+    const result3 = instance.computeParallel(
+      feature,
+      19685039.370079,
+      'DEGREE',
+      'INCH'
+    );
+    expect(result3.geometry.coordinates[0][1]).toBe(34.4915764060973);
+    expect(result3.geometry.coordinates[1][1]).toBe(34.4915764060973);
+
+    const feature1 = {
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [13358.338895192828, 3503.5498435043753],
+          [13914.936349159198, 3503.5498435043753]
+        ]
+      }
+    }
+    const result4 = instance.computeParallel(
+      feature1,
+      660.3313005599175,
+      'KILOMETER',
+      'KILOMETER'
+    );
+    expect(result4.geometry.coordinates[0][1]).toBe(4163.881144064293);
+    expect(result4.geometry.coordinates[1][1]).toBe(4163.881144064293);
+  });
+
   it('computeConvexHullPoints', () => {
     const xArray = [118, 125, 123, 117];
     const yArray = [30, 31, 28, 32];
     const result = instance.computeConvexHullPoints(xArray, yArray);
     expect(result.geometry.coordinates[0].length).toBe(5);
+    const datas1 = [[118, 30], [125, 31], [123, 28], [117, 32]];
+    const result1 = instance.computeConvexHullPoints(datas1);
+    expect(result1.geometry.coordinates[0].length).toBe(5);
+    const datas2 = [{
+      x: 118,
+      y: 30
+    }, {
+      x: 125,
+      y: 31
+    }, {
+      x: 123,
+      y: 28
+    }, {
+      x: 117,
+      y: 32
+    }]
+    const result2 = instance.computeConvexHullPoints(datas2);
+    expect(result2.geometry.coordinates[0].length).toBe(5);
+    const datas3 = [{ type: 'Feature', geometry: { coordinates: [118, 30] } },
+    { type: 'Feature', geometry: { coordinates: [125, 31] } },
+    { type: 'Feature', geometry: { coordinates: [123, 28] } },
+    { type: 'Feature', geometry: { coordinates: [117, 32] } }];
+    const result3 = instance.computeConvexHullPoints(datas3);
+    expect(result3.geometry.coordinates[0].length).toBe(5);
+    const datas4 = { type: 'FeatureCollection', features: datas3 };
+    const result4 = instance.computeConvexHullPoints(datas4);
+    expect(result4.geometry.coordinates[0].length).toBe(5);
   });
 
   it('isIntersectRegionWithRect', () => {
@@ -469,8 +648,33 @@ describe('GeometryAnalysis', () => {
         type: 'Polygon'
       }
     };
-    const result = instance.computeGeodesicArea(polygon, 4326);
-    expect(result).toBe(6.578677712850164);
+    const result = instance.computeGeodesicArea(polygon);
+    expect(result).toBe(69379492599.1777);
+  });
+
+  it('computeGeodesicArea with unit', () => {
+    var polygon = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        coordinates: [
+          [
+            [121.74162512536924, 32.60736281118376],
+            [120.59633803460247, 32.42386901254892],
+            [119.76027845834045, 31.47151252648368],
+            [120.36728061644811, 29.925467312116822],
+            [121.6843607708318, 29.93539273511712],
+            [122.37153302529236, 30.627700930765172],
+            [123.15032824701461, 31.66667145093632],
+            [122.77238350706119, 32.597714586070424],
+            [121.74162512536924, 32.60736281118376]
+          ]
+        ],
+        type: 'Polygon'
+      }
+    };
+    const result = instance.computeGeodesicArea(polygon);
+    expect(result).toBe(69379492599.1777);
   });
 
   it('computeGeodesicDistance', () => {
@@ -480,5 +684,55 @@ describe('GeometryAnalysis', () => {
     var flatten = 0.0033528106647475;
     const result = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten);
     expect(result).toBe(482393.11011638306);
+  });
+
+  it('computeGeodesicDistance with unit', () => {
+    var xArray = [120, 125];
+    var yArray = [30, 30];
+    var majorAxis = 6378137;
+    var flatten = 0.0033528106647475;
+    const result = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten);
+    expect(result).toBe(482393.11011638306);
+    const result1 = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten, 'KILOMETER');
+    expect(result1).toBe(482.39311011638307);
+    const result2 = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten, 'INCH');
+    expect(result2).toBe(18991854.790303748);
+    const result3 = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten, 'FOOT');
+    expect(result3).toBe(1582654.5607492882);
+  });
+
+  it('computeGeodesicDistance use different param and unit', () => {
+    var xArray = [120, 125];
+    var yArray = [30, 30];
+    var majorAxis = 6378137;
+    var flatten = 0.0033528106647475;
+    const result = instance.computeGeodesicDistance(xArray, yArray, majorAxis, flatten);
+    expect(result).toBe(482393.11011638306);
+
+    var datas1 = [[120, 30], [125, 30]];
+    const result1 = instance.computeGeodesicDistance(datas1, majorAxis, flatten);
+    expect(result1).toBe(482393.11011638306);
+    var datas2 = [{ x: 120, y: 30 }, { x: 125, y: 30 }];
+    const result2 = instance.computeGeodesicDistance(datas2, majorAxis, flatten);
+    expect(result2).toBe(482393.11011638306);
+    var datas3 = [{
+      type: 'Feature',
+      geometry: {
+        coordinates: [120, 30]
+      }
+    }, {
+      type: 'Feature',
+      geometry: {
+        coordinates: [125, 30]
+      }
+    }];
+    const result3 = instance.computeGeodesicDistance(datas3, majorAxis, flatten);
+    expect(result3).toBe(482393.11011638306);
+    var datas4 = {
+      type: 'FeatureCollection',
+      features: datas3
+    };
+    const result4 = instance.computeGeodesicDistance(datas4, majorAxis, flatten);
+    expect(result4).toBe(482393.11011638306);
   });
 });

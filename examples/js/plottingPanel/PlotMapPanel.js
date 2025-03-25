@@ -87,7 +87,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var activePlottingLayer = document.createElement("li");
         activePlottingLayer.id="activePlottingLayer";
-        activePlottingLayer.innerText = resource.text_active;
+        activePlottingLayer.innerText = resources.text_active;
         activePlottingLayer.style.margin = '1px 0';
         activePlottingLayer.style.padding = '0 5px';
         activePlottingLayer.style.cursor = 'pointer';
@@ -105,7 +105,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var activeChildPlotLayer = document.createElement("li");
         activeChildPlotLayer.id="activeChildPlotLayer";
-        activeChildPlotLayer.innerText = resource.text_active;
+        activeChildPlotLayer.innerText = resources.text_active;
         activeChildPlotLayer.style.margin = '1px 0';
         activeChildPlotLayer.style.padding = '0 5px';
         activeChildPlotLayer.style.cursor = 'pointer';

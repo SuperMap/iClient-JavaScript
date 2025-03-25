@@ -33,16 +33,16 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
                 projection: 'EPSG:4326',
             })
         });
-        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-            if (testUrl.indexOf("vectorstyles") > 0) {
-                expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
-                return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
-            } else if (testUrl.indexOf("sprite.json") > 0) {
-                return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
-            };
-            return null;
+        // spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+        //     if (testUrl.indexOf("vectorstyles") > 0) {
+        //         expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
+        //         return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
+        //     } else if (testUrl.indexOf("sprite.json") > 0) {
+        //         return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
+        //     };
+        //     return null;
 
-        });
+        // });
 
 
     });
@@ -113,6 +113,50 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
             console.log(count)
             if(count === 4){
                 expect(vectorLayer.getSource()._tileUrl).toContain("California");
+                expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4);
+                done();
+            }
+            
+        })
+        map.addLayer(vectorLayer);
+
+    });
+
+    it('initialize_headers', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+            if (testUrl.indexOf("vectorstyles") > 0) {
+                expect(options.headers).not.toBeNull();
+                expect(options.headers.appToken).toBe('test');
+                expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
+                return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
+            } 
+            return null;
+        });
+
+        var format = new MVT({
+            featureClass: Feature
+        });
+        vectorLayer = new VectorTileLayer({
+            //设置避让参数
+            declutter: true,
+            source: new VectorTileSuperMapRest({
+                style: url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true",
+                projection: 'EPSG:4326',
+                source: 'California',
+                format: format,
+                headers:{'appToken':'test'}
+            })
+        });
+        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callFake((tile)=>{
+            tile.setLoader(()=>{
+                tile.setFeatures([])
+            })
+        });
+        let count = 0;
+        vectorLayer.getSource().on('tileloadend',()=>{
+            count++;
+            console.log(count)
+            if(count === 4){
                 expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4);
                 done();
             }

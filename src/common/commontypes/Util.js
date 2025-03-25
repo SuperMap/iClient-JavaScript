@@ -1086,6 +1086,58 @@ const Util = {
       }
       return encodeURIComponent(value);
     });
+  },
+  /**
+    * @description 十六进制转 RGBA 格式。
+    * @param {Object} hex - 十六进制格式。
+    * @param {number} opacity - 不透明度Alpha。
+    * @returns {string} 生成的 RGBA 格式。
+    */
+  hexToRgba(hex, opacity) {
+      var color = [],
+          rgba = [];
+      hex = hex.replace(/#/, "");
+      if (hex.length == 3) {
+          var tmp = [];
+          for (let i = 0; i < 3; i++) {
+              tmp.push(hex.charAt(i) + hex.charAt(i));
+          }
+          hex = tmp.join("");
+      }
+      for (let i = 0; i < 6; i += 2) {
+          color[i] = "0x" + hex.substr(i, 2);
+          rgba.push(parseInt(Number(color[i])));
+      }
+      rgba.push(opacity);
+      return "rgba(" + rgba.join(",") + ")";
+  },
+   /**
+    * @description 是否是绝对地址。
+    * @private
+    * @param {string} url - 验证地址。
+    * @returns {boolean} 是否是绝对地址。
+    */
+   isAbsoluteURL(url) {
+    try {
+      const res = new URL(url);
+      return !!res;
+    } catch (_) {
+      return false;
+    }
+  },
+   /**
+    * @description 相对地址转绝对地址。
+    * @private
+    * @param {string} url - 相对地址。
+    * @param {string} base - 基础地址。
+    * @returns {string} 完整地址。
+    */
+  relative2absolute(url, base) {
+    let newUrl = new URL(url, base);
+    if (newUrl && newUrl.href) {
+      return decodeURIComponent(newUrl.href);
+    }
+    return;
   }
 };
 

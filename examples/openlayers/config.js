@@ -103,6 +103,13 @@ var exampleConfig = {
                   version: '11.2.0',
                   thumbnail: "chart.png",
                   fileName: "01_chartService"
+                },
+                {
+                  name: "创建临时图层",
+                  name_en: "Create temporary layer",
+                  version: '11.3.0',
+                  thumbnail: "createTempLayer.png",
+                  fileName: "createTempLayer"
                 }
               ]
             },
@@ -156,11 +163,6 @@ var exampleConfig = {
                     name_en: "field statistics service",
                     thumbnail: "ol_fieldStatistics.png",
                     fileName: "02_fieldStatistics"
-                }, {
-                    name: "地物编辑",
-                    name_en: "data editing",
-                    thumbnail: "ol_editFeatures.png",
-                    fileName: "02_editFeatures"
                 },
                 {
                     name: "要素关联附件",
@@ -560,6 +562,13 @@ var exampleConfig = {
                       version: "10.2.0",
                       thumbnail: "imageService.png",
                       fileName: "imageService"
+                  },
+                  {
+                    name: "多时相播放",
+                    name_en: "Multiphase play",
+                    version: '11.3.0',
+                    thumbnail: "multiphaseplay.png",
+                    fileName: "multiphaseplay"
                   }
               ]
             },
@@ -1331,16 +1340,16 @@ var exampleConfig = {
         name: "控件",
         name_en: "Control",
         content: {
-            "changeTileVersion": {
-                name: "缓存切换",
-                name_en: "Tile version switch",
-                content: [{
-                    name: "多版本缓存切换控件",
-                    name_en: "tile version switch control",
-                    thumbnail: "ol_changeTileVersion.png",
-                    fileName: "changeTileVersion"
-                }]
-            },
+            // "changeTileVersion": {
+            //     name: "缓存切换",
+            //     name_en: "Tile version switch",
+            //     content: [{
+            //         name: "多版本缓存切换控件",
+            //         name_en: "tile version switch control",
+            //         thumbnail: "ol_changeTileVersion.png",
+            //         fileName: "changeTileVersion"
+            //     }]
+            // },
             "openlayersOfficialControl": {
                 name: "基础控件",
                 name_en: "Base control",

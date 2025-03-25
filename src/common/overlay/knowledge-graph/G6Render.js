@@ -1,5 +1,6 @@
 import G6 from '@antv/g6';
 import insertCss from 'insert-css';
+import throttle from 'lodash.throttle';
 /**
  * @private
  * @class G6Render
@@ -123,19 +124,16 @@ export class G6Render {
       offsetX: 16 + 10,
       // 需要加上父级容器的 padding-top 24 、画布兄弟元素高度、与自身偏移量 10
       offsetY: 0,
-      // 在哪些类型的元素上响应
-      itemTypes: ['node', 'edge', 'canvas']
+      itemTypes: ['node']
     });
     return contextMenu;
   }
 
   _getGraphConfig(config) {
     const animateConfig = {
-      speed: 120,
-      maxIteration: 83,
-      tick: () => {
-        this.refreshPositions();
-      }
+      speed: 150,
+      maxIteration: 30,
+      tick: throttle(this.refreshPositions.bind(this), 150)
     };
     const defaultLayout = {
       type: 'fruchterman',

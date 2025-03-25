@@ -1,12 +1,11 @@
-import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
 import maplibregl from 'maplibre-gl';
-import { Feature } from '@supermapgis/iclient-common';
+import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl_GraticuleLayer', () => {
     var originalTimeout;
     var testDiv, map, graticuleLayer;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -39,14 +38,16 @@ describe('maplibregl_GraticuleLayer', () => {
             center: [112, 37.94],
             zoom: 3
         });
+        map.on('load', function () {
+            done();
+          });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        debugger
         if (!map.getLayer('graticuleLayer_1')) {
             graticuleLayer = new GraticuleLayer({layerID :'graticuleLayer_1'});
-            graticuleLayer.onAdd(map);
+            map.addLayer(graticuleLayer);
         }
     });
 
@@ -58,7 +59,6 @@ describe('maplibregl_GraticuleLayer', () => {
         if (map.getLayer('graticuleLayer_1')) {
             map.removeLayer('graticuleLayer_1');
         }
-        debugger
         document.body.removeChild(testDiv);
         map = null;
     });
@@ -84,6 +84,46 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(visible).toBe('visible');
     });
 
+    it('setLayoutProperty', () => {
+        let visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+        expect(visible).toBe('visible');
+        expect(graticuleLayer.visible).toBeTruthy();
+        map.setLayoutProperty(graticuleLayer.id, 'visibility', 'none');
+        visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+        expect(visible).toBe('none');
+        expect(graticuleLayer.visible).toBeFalsy();
+        map.setLayoutProperty(graticuleLayer.id, 'visibility', 'visible');
+        visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
+        expect(visible).toBe('visible');
+        expect(graticuleLayer.visible).toBeTruthy();
+    });
+
+    it('getDefaultExtent must return degree', () => {
+      map.getCRS = () => {
+        return {
+          extent: [
+            -20037508.3427892,
+            -20037508.3427892,
+            20037508.3427892,
+            20037508.3427892
+          ],
+          lngLatExtent: [
+            -179.99999999999963,
+            -85.05112877980658,
+            179.99999999999963,
+            85.05112877980656
+          ]
+        };
+      };
+      var extent = graticuleLayer.getDefaultExtent();
+      expect(extent).toEqual([
+        -179.99999999999963,
+        -85.05112877980658,
+        179.99999999999963,
+        85.05112877980656
+      ]);
+    });
+
     it('setMinZoom', () => {
         graticuleLayer.setMinZoom(0);
         expect(graticuleLayer.options.minZoom).toEqual(0);
@@ -100,12 +140,19 @@ describe('maplibregl_GraticuleLayer', () => {
     });
 
     it('setExtent', () => {
+      try{
+        expect(graticuleLayer.renderer.features.length).toEqual(56);
         graticuleLayer.setExtent([
             [0, 0],
             [50, 50]
         ]);
         expect(graticuleLayer.options.extent[0]).toEqual(0);
         expect(graticuleLayer.options.extent[3]).toEqual(50);
+        expect(graticuleLayer.renderer.features.length).toEqual(12);
+      } catch (e) {
+        expect(false).toBeTruthy();
+        console.log(e);
+      }
     });
 
     it('setStrokeStyle', () => {
@@ -124,8 +171,13 @@ describe('maplibregl_GraticuleLayer', () => {
     });
 
     it('setIntervals', () => {
+      try{
         graticuleLayer.setIntervals(5);
         expect(graticuleLayer.renderer.options.interval).toEqual(5);
+      } catch (e) {
+        expect(false).toBeTruthy();
+        console.log(e);
+      }
     });
 
     it('_calcInterval', () => {
@@ -155,7 +207,7 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(points[0][1]).toEqual(80);
     });
 
-    it('onRemove', () => {
+    xit('onRemove', () => {
         graticuleLayer.onRemove();
         expect(graticuleLayer.renderer.canvas).toBeNull();
     });

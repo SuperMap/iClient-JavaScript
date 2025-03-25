@@ -6,13 +6,32 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findMTSPPathsServiceLogistics"></title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
+  </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_findMTSPPaths"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_target" onclick="selectPoints()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_submit" onclick="findMTSPPathsProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearElements(true)"/>
+  </div>
+</div>
 <div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 <script type="text/javascript">
-    var map, options,
+    var map, options, draw, source, pathLayerArray = [], nodeArray = [],
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
@@ -39,11 +58,16 @@
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest(options)
         });
+        source = new ol.source.Vector();
+        var vectorLayer = new ol.layer.Vector({
+            source: source
+        });
         map.addLayer(layer);
-        findMTSPPathsProcess();
+        map.addLayer(vectorLayer);
+        init();
     });
 
-    function findMTSPPathsProcess() {
+    function init() {
         //添加配送点
         var facilityPoint1 = new ol.geom.Point([6000, -5500]);
         var facilityPoint2 = new ol.geom.Point([5500, -2500]);
@@ -65,25 +89,37 @@
         var facilityLayer = new ol.layer.Vector({
             source: facilitySource
         });
+        map.addLayer(facilityLayer);
+    }
 
-        //添加配送目的地
-        var destPoint1 = new ol.geom.Point([5000, -5000]);
-        var destPoint2 = new ol.geom.Point([6500, -3200]);
-        var destFeature1 = new ol.Feature(destPoint1);
-        var destFeature2 = new ol.Feature(destPoint2);
-        var iconStyle_dest = new ol.style.Style({
-            image: new ol.style.Icon(({
-                src: '../img/marker.png'
-            }))
-        });
-        destFeature1.setStyle(iconStyle_dest);
-        destFeature2.setStyle(iconStyle_dest);
-        var destSource = new ol.source.Vector({
-            features: [destFeature1, destFeature2]
-        });
-        var destLayer = new ol.layer.Vector({
-            source: destSource
-        });
+    function selectPoints() {
+      clearElements(true);
+      //添加配送目的地
+      draw = new ol.interaction.Draw({
+        source: source,
+        type: 'Point'
+      });
+      draw.on('drawend', function(e) {
+        var feature = e.feature;
+        if (feature) {
+          // 设置点的样式
+          var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+              src: '../img/marker.png'
+            }),
+          });
+          feature.setStyle(iconStyle);
+          nodeArray.push(feature.getGeometry());
+        }
+      });
+      map.addInteraction(draw);
+    }
+
+    function findMTSPPathsProcess() {
+        if (!nodeArray.length) {
+          return widgets.alert.showAlert(resources.msg_destination, false);
+        }
+        clearElements();
 
         //创建多旅行商分析参数实例
         var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
@@ -103,7 +139,7 @@
         var findMTSPPathsParameter = new ol.supermap.FindMTSPPathsParameters({
             centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],
+            nodes: nodeArray,
             hasLeastTotalCost: true,
             parameter: analystParameter
         });
@@ -126,10 +162,21 @@
                     })
                 });
                 map.addLayer(pathLayer);
+                pathLayerArray.push(pathLayer);
             });
-            map.addLayer(facilityLayer);
-            map.addLayer(destLayer);
         });
+    }
+
+    function clearElements(clear) {
+      draw && map.removeInteraction(draw);
+      pathLayerArray.forEach(function(layer) {
+        map.removeLayer(layer);
+      });
+      pathLayerArray = [];
+      if (clear) {
+        nodeArray = [];
+        source.clear();
+      }
     }
 </script>
 </body>

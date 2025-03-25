@@ -62,7 +62,6 @@ export class BaiduMap extends TileImage {
                 .replace('{z}', tileCoord[0].toString())
                 .replace('{x}', tileCoord[1].toString())
                 .replace('{y}', function() {
-                    console.log(Util.getOlVersion());
                     var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? tileCoord[2] : -tileCoord[2] - 1;
                     return y.toString();
                 })

@@ -461,10 +461,8 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                     maxFeatures: maxFeatures
                 });
             } else if (getFeatureMode === 'BOUNDS') {
-                if (!bounds) {
-                    let value = JSON.parse(queryRangeTextArea.value);
-                    bounds = L.bounds([value.leftBottom.x, value.leftBottom.y], [value.rightTop.x, value.rightTop.y])
-                }
+                let value = JSON.parse(queryRangeTextArea.value);
+                bounds = L.bounds([value.leftBottom.x, value.leftBottom.y], [value.rightTop.x, value.rightTop.y])
                 queryParam = new GetFeaturesByBoundsParameters({
                     attributeFilter: attributeFilter,
                     datasetNames: datasetArr,
@@ -472,8 +470,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                 });
             } else if (getFeatureMode === 'BUFFER') {
                 let bufferDistance = bufferDistanceInput.value;
-                let defaultGeometryValue = JSON.parse(queryRangeTextArea.value);
-                let geometryLayer = resultLayer || defaultGeometryValue;
+                let geometryLayer = JSON.parse(queryRangeTextArea.value);
                 queryParam = new GetFeaturesByBufferParameters({
                     attributeFilter: attributeFilter,
                     datasetNames: datasetArr,
@@ -482,8 +479,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                 });
             } else if (getFeatureMode === 'SPATIAL') {
                 let spatialQueryMode = spatialQueryModeSelectName.title;
-                let defaultGeometryValue = JSON.parse(queryRangeTextArea.value);
-                let geometryLayer = resultLayer || defaultGeometryValue;
+                let geometryLayer = JSON.parse(queryRangeTextArea.value);
                 queryParam = new GetFeaturesByGeometryParameters({
                     attributeFilter: attributeFilter,
                     datasetNames: datasetArr,

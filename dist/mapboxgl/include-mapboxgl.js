@@ -59,11 +59,11 @@
       inputScript(libsurl + '/mapbox-gl-js/1.13.2/mapbox-gl.js');
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.css');
-      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-6/mapbox-gl-enhance.js');
+      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.css');
+      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
-      inputScript(libsurl + '/mapboxgl-l7-render/0.0.1/mapboxgl-l7-render.js');
+      inputScript(libsurl + '/mapboxgl-l7-render/0.0.2/mapboxgl-l7-render.js');
     }
     if (inArray(includes, 'g2')) {
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
@@ -130,9 +130,6 @@
     }
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
-    }
-    if (inArray(includes, 'canvg')) {
-      inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
     }
     if (inArray(includes, 'XMLParser')) {
       inputScript(libsurl + '/fast-xml-parser/4.2.7/fxparser.min.js');
@@ -211,10 +208,10 @@
       inputScript(libsurl + '/vue-cesium/2.1.4/index.umd.min.js');
     }
     if (inArray(includes, 'snap')) {
-      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.min.js');
+      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.0/mapbox-gl-draw-snap-mode.js');
     }
     if (inArray(includes, 'ugcwasm')) {
-      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+      inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
     }
   }
 

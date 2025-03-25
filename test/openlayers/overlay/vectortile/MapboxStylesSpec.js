@@ -56,7 +56,7 @@ describe("openlayers_MapboxStyles", () => {
             if (testUrl.indexOf("vectorstyles") > 0) {
                 expect(testUrl).toBe(url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true");
                 return Promise.resolve(new Response(JSON.stringify(vectorstylesEscapedJson)));
-            } else if (testUrl.indexOf("sprite.json") > 0) {
+            } else if (testUrl.indexOf("sprite.json") > 0 || testUrl.indexOf("sprite@2x.json") > 0) {
                 return Promise.resolve(new Response(JSON.stringify(spriteEscapedJson)));
             }
             return null;
@@ -254,4 +254,138 @@ describe("openlayers_MapboxStyles", () => {
             }
         });
     });
+
+    it("init_Style_headers", done => {
+        spyOn(XMLHttpRequest.prototype, 'send').and.callThrough();
+        spyOn(XMLHttpRequest.prototype, 'setRequestHeader').and.callThrough();
+        var style;
+        mapboxStyles = new MapboxStyles({
+            style: url + "/tileFeature/vectorstyles?type=MapBox_GL&styleonly=true",
+            map: map,
+            source: "California",
+            headers:{'appToken':'test'}
+        });
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('appToken','test');
+                expect(XMLHttpRequest.prototype.send).toHaveBeenCalledTimes(1);
+                done();
+            } catch (e) {
+                console.log("'init_Style_headers'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
+    it("handle relative url", done => {
+        spyOn(XMLHttpRequest.prototype, 'send').and.callThrough();
+        spyOn(XMLHttpRequest.prototype, 'setRequestHeader').and.callThrough();
+        var style = {
+            "version" : 8,
+            "sprite" : "../sprites/sprite",
+            "glyphs" : "../fonts/{fontstack}/{range}.pbf",
+            "sources": {
+                "esri": {
+                    "type": "vector",
+                    "url": "../../"
+                }
+            },
+            "layers" : [{
+                    "id" : "Contour_11_main/0",
+                    "type" : "line",
+                    "source" : "esri",
+                    "source-layer" : "Contour",
+                    "filter" : ["all", ["==", "Index3", 1], ["==", "Index5", 1]],
+                    "minzoom" : 11,
+                    "maxzoom" : 12,
+                    "paint" : {
+                        "line-color" : "#61674a",
+                        "line-opacity" : 0.5,
+                        "line-width" : {
+                            "base" : 1.2,
+                            "stops" : [[11, 0.7], [16, 1.1]]
+                        }
+                    }	
+            }]
+        }
+        mapboxStyles = new MapboxStyles({
+            style: style,
+            baseUrl: 'http://localhost:9876',
+            map: map,
+            source: "California",
+            headers:{'appToken':'test'}
+        });
+        mapboxStyles.on("styleloaded", () => {
+            try {
+                style = mapboxStyles.getStyleFunction();
+                expect(style).not.toBeNull();
+                console.log('mapboxStyles', mapboxStyles);
+                expect(mapboxStyles._mbStyle.glyphs).toBe('http://localhost:9876/fonts/{fontstack}/{range}.pbf');
+                expect(mapboxStyles._mbStyle.sprite).toBe('http://localhost:9876/sprites/sprite');
+                expect(mapboxStyles._mbStyle.sources['esri']['url']).toBe('http://localhost:9876/');
+                done();
+            } catch (e) {
+                console.log("'init_Style_headers'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
+    it("handle relative url with param", done => {
+      spyOn(XMLHttpRequest.prototype, 'send').and.callThrough();
+      spyOn(XMLHttpRequest.prototype, 'setRequestHeader').and.callThrough();
+      var style = {
+          "version" : 8,
+          "sprite" : "../sprites/sprite",
+          "glyphs" : "../fonts/{fontstack}/{range}.pbf",
+          "sources": {
+              "esri": {
+                  "type": "vector",
+                  "url": "../../"
+              }
+          },
+          "layers" : [{
+                  "id" : "Contour_11_main/0",
+                  "type" : "line",
+                  "source" : "esri",
+                  "source-layer" : "Contour",
+                  "filter" : ["all", ["==", "Index3", 1], ["==", "Index5", 1]],
+                  "minzoom" : 11,
+                  "maxzoom" : 12,
+                  "paint" : {
+                      "line-color" : "#61674a",
+                      "line-opacity" : 0.5,
+                      "line-width" : {
+                          "base" : 1.2,
+                          "stops" : [[11, 0.7], [16, 1.1]]
+                      }
+                  }	
+          }]
+      }
+      mapboxStyles = new MapboxStyles({
+          style: style,
+          baseUrl: 'http://localhost:9876?tkk=ddddssss',
+          map: map,
+          source: "California",
+          headers:{'appToken':'test'}
+      });
+      mapboxStyles.on("styleloaded", () => {
+          try {
+              style = mapboxStyles.getStyleFunction();
+              expect(style).not.toBeNull();
+              expect(mapboxStyles._mbStyle.glyphs).toBe('http://localhost:9876/fonts/{fontstack}/{range}.pbf?tkk=ddddssss');
+              expect(mapboxStyles._mbStyle.sprite).toBe('http://localhost:9876/sprites/sprite?tkk=ddddssss');
+              expect(mapboxStyles._mbStyle.sources['esri']['url']).toBe('http://localhost:9876/?tkk=ddddssss');
+              done();
+          } catch (e) {
+              console.log("'init_Style_headers'案例失败" + e.name + ":" + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+  });
 });

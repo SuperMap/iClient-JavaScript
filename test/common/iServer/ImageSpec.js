@@ -16,7 +16,7 @@ describe('Image', function () {
     });
 
     it('fromJson, toServerJSONObject', function () {
-        var image = new UGCImage();
+        var image = new UGCImage({ gamma: 8});
         var jsonObject = {
             "color": "#a0559c"
         };
@@ -26,6 +26,7 @@ describe('Image', function () {
         var newJsonObject = image.toServerJSONObject();
         expect(newJsonObject).not.toBeNull();
         expect(newJsonObject.color).toEqual("#a0559c");
+        expect(newJsonObject.gamma).toEqual(8);
         expect(newJsonObject.transparentColor.blue).toEqual(60);
         expect(newJsonObject.transparentColor.green).toEqual(120);
         expect(newJsonObject.transparentColor.red).toEqual(100);

@@ -247,13 +247,13 @@
     //SuperMap.Support.cors = false;
     $(document).ready(function () {
         $("#loginUrl_iportal").val("http://localhost:8090/iportal");
-        $("#tokenServiceUrl_iportal").val("https://iportal.supermap.io/iportal/web/services/707656630");
-        $("#token_iportal").val("_Bo_ksR9DC56MvnAXc6liuhAdWmmt1SuoLX758QIeBJUvteLqHqUeeHnQ6OU0i0VBoN5FjNP_SOQ2o1xyudBjA..");
+        $("#tokenServiceUrl_iportal").val("https://iportal.supermap.io/iportal/web/services/925052030");
+        $("#token_iportal").val(window.iportalToken);
 
-        $("#serviceUrl_iportal").val("http://support.supermap.com.cn:8099/ywutslmu/iserver/services/map-china400/rest/maps/China_4326");
-        $('#key_iportal').val("CBIrkfXEAjydLrfp364qgM3P");
-        $("#serviceUrlMap_iportal").val("http://support.supermap.com.cn:8099/ywutslmu/iserver/services/map-china400/rest/maps/China_4326");
-        $('#mapKey_iportal').val("CBIrkfXEAjydLrfp364qgM3P");
+        $("#serviceUrl_iportal").val("https://iportal.supermap.io/portalproxy/rz0fn8kv/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces");
+        $('#key_iportal').val(window.iportalKey);
+        $("#serviceUrlMap_iportal").val("https://iportal.supermap.io/portalproxy/rz0fn8kv/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces");
+        $('#mapKey_iportal').val(window.iportalKey);
 
     });
 
@@ -321,16 +321,9 @@
             return;
         }
         L.supermap.SecurityManager.destroyToken(serviceUrl);
+        L.supermap.SecurityManager.destroyKey(serviceUrl);
         L.supermap.SecurityManager.registerToken(serviceUrl, key);
-        var iPortalService = new L.supermap.iPortalService(serviceUrl);
-        iPortalService.load().then(function (json) {
-            if (json && json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error), false);
-            } else {
-                widgets.alert.showAlert("proxiedUrl:" + iPortalService.proxiedUrl, true);
-            }
-
-        });
+        requestService(serviceUrl);
     }
 
     function getPortalTokenServiceUrl() {
@@ -347,6 +340,7 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
+        L.supermap.SecurityManager.destroyToken(serviceUrl);
         L.supermap.SecurityManager.destroyKey(serviceUrl);
         L.supermap.SecurityManager.registerKey(serviceUrl, key);
         requestService(serviceUrl);

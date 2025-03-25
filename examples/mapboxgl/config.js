@@ -90,6 +90,13 @@ var exampleConfig = {
                       version: '11.2.0',
                       thumbnail: "chart.png",
                       fileName: "01_chartService"
+                    },
+                    {
+                      name: "创建临时图层",
+                      name_en: "Create temporary layer",
+                      version: '11.3.0',
+                      thumbnail: "createTempLayer.png",
+                      fileName: "createTempLayer"
                     }
                 ]
             },
@@ -151,12 +158,6 @@ var exampleConfig = {
                         name_en: 'field statistics service',
                         thumbnail: 'mb_fieldStatistics.png',
                         fileName: '02_fieldStatistics'
-                    },
-                    {
-                        name: '地物编辑',
-                        name_en: 'data editing',
-                        thumbnail: 'mb_editFeatures.png',
-                        fileName: '02_editFeatures'
                     },
                     {
                         name: "要素关联附件",
@@ -522,6 +523,13 @@ var exampleConfig = {
                       version: "10.2.0",
                       thumbnail: "imageService.png",
                       fileName: "imageService"
+                  },
+                  {
+                    name: "多时相播放",
+                    name_en: "Multiphase play",
+                    version: '11.3.0',
+                    thumbnail: "multiphaseplay.png",
+                    fileName: "multiphaseplay"
                   }
               ]
             },
@@ -615,7 +623,7 @@ var exampleConfig = {
                 version: '11.2.0',
                 content: [
                     {
-                        name: '白膜',
+                        name: '白模',
                         name_en: 'Fill Extrusion',
                         version: '11.2.0',
                         thumbnail: 'iPortalWebmap_mapstudio.png',
@@ -2140,33 +2148,5 @@ var exampleConfig = {
         }
     }
 };
-/**
- *key值：为exampleConfig配置的key值或者fileName值
- *      （为中间节点时是key值，叶结点是fileName值）
- *value值：fontawesome字体icon名
- *不分层
- */
-var sideBarIconConfig = {
-    iServer: 'fa-server',
-    iPortal: 'fa-desktop',
-    clientSpatialAnalyst: "fa-object-group",
-    viz: 'fa-map',
-    control: 'fa-sliders',
-    multiCoordSys: 'fa-globe',
-    GTC: 'fa-globe'
-};
 
-/**
- *key值：为exampleConfig配置的key值
- *value值：fontawesome字体icon名
- *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
- */
-var exampleIconConfig = {
-    iServer: 'fa-server',
-    iPortal: 'fa-desktop',
-    clientSpatialAnalyst: "fa-object-group",
-    viz: 'fa-map',
-    GTC: 'fa-globe',
-    multiCoordSys: 'fa-globe'
-};
 window.mapboxglExampleConfig = exampleConfig;

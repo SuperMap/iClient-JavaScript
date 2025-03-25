@@ -46,7 +46,7 @@ import {
   L7Layer
 } from './overlay';
 
-import { initMap } from './mapping';
+import { initMap, WebMap } from './mapping';
 
 import {
   CommonUtil,
@@ -97,4 +97,5 @@ maplibregl.supermap.GraticuleLayer = GraticuleLayer;
 maplibregl.supermap.FGBLayer = FGBLayer;
 maplibregl.supermap.L7Layer = L7Layer;
 maplibregl.supermap.initMap = initMap;
+maplibregl.supermap.WebMap = WebMap;
 maplibregl.supermap.WebSymbol = WebSymbol;

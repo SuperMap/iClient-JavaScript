@@ -10,7 +10,11 @@ module.exports = {
   target: configBase.target,
   mode: configBase.mode,
   //页面入口文件配置
-  entry: [...configBase.entry, `${__dirname}/../src/maplibregl/namespace.js`],
+  entry: [
+    ...configBase.entry,
+    `${__dirname}/../src/maplibregl/namespace.js`,
+    `${__dirname}/../src/maplibregl/css/index.js`
+  ],
   //入口文件输出配置
   output: configBase.output(libName, productName),
   //是否启用压缩
@@ -27,10 +31,10 @@ module.exports = {
     'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
     'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
     xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
-    canvg: 'function(){try{return canvg}catch(e){return {}}}()',
     jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
     'xml-js': 'function(){try{return convert}catch(e){return {}}}()',
-    './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()'
+    './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()',
+    '@antv/g2': 'function(){try{return G2}catch(e){return {}}}()'
   }),
 
   module: {

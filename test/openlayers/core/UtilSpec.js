@@ -160,10 +160,10 @@ describe('openlayers_Util', () => {
         expect(result).toBe(111319.49079327358);
         mapUnit = 'KILOMETER';
         result = Util.getMeterPerMapUnit(mapUnit);
-        expect(result).toBe(0.001);
+        expect(result).toBe(1000);
         mapUnit = 'INCH';
         result = Util.getMeterPerMapUnit(mapUnit);
-        expect(result).toBe(39.37007886725774);
+        expect(result).toBe(0.025399999918);
         mapUnit = 'FOOT';
         result = Util.getMeterPerMapUnit(mapUnit);
         expect(result).toBe(0.3048);

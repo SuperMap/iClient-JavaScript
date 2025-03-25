@@ -7,8 +7,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title data-i18n="resources.title_getFeatureBySQL_FGB"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       body {
         margin: 0;
@@ -21,10 +19,36 @@
         bottom: 0;
         width: 100%;
       }
+
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 240px;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class='panel-heading'>
+          <h5 class='panel-title text-center' data-i18n="resources.title_getFeatureBySQL"></h5></div>
+      <div class='panel-body content'>
+          <div class='panel'>
+            <div class='input-group'>
+              <span class='input-group-addon'>SQL</span>
+              <input min="0" class="form-control" id="sql" placeholder="SMID > 0" />
+            </div>
+          </div>
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+      </div>
+    </div>
     <div id="map"></div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
       var attribution =
         "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
@@ -62,15 +86,13 @@
       map.addControl(new mapboxgl.NavigationControl(), 'top-left');
       map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
-      map.on('load', function () {
-        query();
-      });
-
       function query() {
+        clearFeatures();
+        var sql = document.getElementById("sql").value || "SMID > 0";
         var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
             name: 'world@World',
-            attributeFilter: 'SMID > 0'
+            attributeFilter: sql
           },
           datasetNames: ['World:world']
         });
@@ -81,7 +103,7 @@
         ).then(function (serviceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
-              layerId: 'queryDatas',
+              layerID: 'queryDatas',
               strategy: 'all',
               paint: {
                 'fill-color': '#FF3300' /* 填充的颜色 */,
@@ -102,6 +124,14 @@
                 .addTo(map);
             });
           });
+      }
+
+      function clearFeatures() {
+        if (map.getLayer('queryDatas')) {
+          map.removeLayer('queryDatas');
+          map.removeLayer('queryDatasouter');
+          map.removeSource('queryDatasouter');
+        }
       }
     </script>
   </body>

@@ -7,15 +7,35 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findPath"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        #toolbar {
+          position: absolute;
+          top: 50px;
+          right: 10px;
+          text-align: center;
+          z-index: 1000;
+          border-radius: 4px;
+        }
+    </style>
 </head>
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="toolbar" class="panel panel-primary">
+      <div class='panel-heading'>
+          <h5 class='panel-title text-center' data-i18n="resources.text_findPath"></h5>
+      </div>
+      <div class='panel-body content'>
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_sites" onclick="selectPoints()"/>&nbsp;
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_submit" onclick="findPathProcess()"/>&nbsp;
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearElements(true)"/>
+      </div>
+    </div>
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="leaflet-geoman" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-        var map, findPathService, findPathParameter,
+        var map, findPathService, findPathParameter, resultLayer, guideLayer, nodeArray = [], markerArray = [],
             baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
         //最佳路径分析必须按照指定顺序对站点进行访问
@@ -28,20 +48,33 @@
             maxZoom: 18,
             zoom: 2
         });
-        new L.supermap.TiledMapLayer(baseUrl, { noWrap: true })
-            .addTo(map)
-            .once("load", function () {
-                findPathProcess();
-            });
+        new L.supermap.TiledMapLayer(baseUrl, { noWrap: true }).addTo(map);
+
+        function selectPoints() {
+          clearElements(true);
+          map.pm.enableDraw('Marker', {
+            tooltips: false,
+            markerStyle: {
+              icon: new L.icon({
+                iconUrl: '../img/marker.png',
+                iconSize: [44, 30]
+              })
+            }
+          });
+          map.on('pm:create', function(e) {
+            if (e.layer) {
+              var latLng = e.layer.getLatLng();
+              nodeArray.push(latLng);
+              markerArray.push(e.layer);
+            }
+          });
+        }
 
         function findPathProcess() {
-            //添加站点
-            var marker1 = L.marker([-3000, 4000]).addTo(map);
-            marker1.bindPopup(resources.text_site1);
-            var marker2 = L.marker([-2500, 5500]).addTo(map);
-            marker2.bindPopup(resources.text_site2);
-            var marker3 = L.marker([-4000, 6900]).addTo(map);
-            marker3.bindPopup(resources.text_site3);
+            if (nodeArray.length < 2) {
+              return widgets.alert.showAlert(resources.msg_check, false);
+            }
+            clearElements();
 
             //创建最佳路径分析服务实例
             findPathService = new L.supermap.NetworkAnalystService(serviceUrl);
@@ -62,7 +95,7 @@
             });
             findPathParameter = new L.supermap.FindPathParameters({
                 isAnalyzeById: false,
-                nodes: [L.point(4000, -3000), L.point(5500, -2500), L.point(6900, -4000)],
+                nodes: nodeArray,
                 parameter: analystParameter
             });
             var myIcon = L.icon({
@@ -72,11 +105,11 @@
             //进行查找
             findPathService.findPath(findPathParameter).then(function (serviceResult) {
                 var result = serviceResult.result;
-                result.pathList.map(function (result) {
-                    L.geoJSON(result.route).addTo(map);
-                    L.geoJSON(result.pathGuideItems, {
+                result.pathList && result.pathList.map(function (result) {
+                    resultLayer = L.geoJSON(result.route).addTo(map);
+                    guideLayer = L.geoJSON(result.pathGuideItems, {
                         pointToLayer: function (geoPoints, latlng) {
-                            L.marker(latlng, { icon: myIcon }).addTo(map);
+                            return L.marker(latlng, { icon: myIcon });
                         },
                         filter: function (geoJsonFeature) {
                             if (geoJsonFeature.geometry && geoJsonFeature.geometry.type === 'Point') {
@@ -87,6 +120,20 @@
                     }).addTo(map);
                 })
             });
+        }
+
+        function clearElements(clearPoint) {
+          map.pm.disableDraw();
+          map.off('pm:create');
+          resultLayer && map.removeLayer(resultLayer);
+          guideLayer && map.removeLayer(guideLayer);
+          if (clearPoint) {
+            markerArray.forEach(function(marker) {
+              marker.pm.remove();
+            });
+            markerArray = [];
+            nodeArray = [];
+          }
         }
     </script>
 </body>

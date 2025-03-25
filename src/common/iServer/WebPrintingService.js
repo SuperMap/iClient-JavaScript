@@ -192,11 +192,15 @@ export class WebPrintingService extends CommonServiceBase {
     } else if (layoutOptions.copyright === void 0) {
       params.layoutOptions.copyright = null;
     }
-    if (!hasSummaryText || !layoutOptions.summaryText) {
+    if (!hasSummaryText) {
       delete params.layoutOptions.summaryText;
+    } else if (layoutOptions.summaryText === void 0) {
+      params.layoutOptions.summaryText = null;
     }
-    if (!hasTime || !layoutOptions.time) {
+    if (!hasTime) {
       delete params.layoutOptions.time;
+    } else if (layoutOptions.time === void 0) {
+      params.layoutOptions.time = null;
     }
     if (!hasLittleMap || !layoutOptions.littleMapOptions) {
       delete params.layoutOptions.littleMapOptions;

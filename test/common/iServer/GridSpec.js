@@ -14,12 +14,12 @@ describe('Grid', () => {
         var grid = new Grid(options);
         expect(grid.CLASS_NAME).toEqual("SuperMap.Grid");
         expect(grid.colorDictionarys).toBeNull();
-        expect(grid.colorGradientType).toBeNull();
+        expect(grid.colorGradientType).toEqual(false);
         grid.destroy();
     });
 
     it('fromJson, toServerJSONObject', () => {
-        var grid = new Grid();
+        var grid = new Grid({ gamma: 5 });
         var jsonObject = {
             "color": "#a0559c",
             "dashStyle": new ServerStyle(),
@@ -35,6 +35,7 @@ describe('Grid', () => {
         ];
         grid.fromJson(jsonObject);
         expect(grid.color).toEqual("#a0559c");
+        expect(grid.gamma).toEqual(5);
         expect(grid.dashStyle).not.toBeNull();
         expect(grid.solidStyle).not.toBeNull();
         var newJsonObject = grid.toServerJSONObject();

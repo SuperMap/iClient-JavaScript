@@ -1,6 +1,7 @@
 import { Unit } from '../REST';
 
 /**
+ * @private
  * @function getMeterPerMapUnit
  * @description 单位换算，把米|度|千米|英寸|英尺换算成米。
  * @category BaseTypes Util
@@ -34,9 +35,9 @@ export var getMeterPerMapUnit = function(mapUnit) {
         // 每度表示多少米。
         meterPerMapUnit = (Math.PI * 2 * earchRadiusInMeters) / 360;
     } else if (mapUnit === Unit.KILOMETER) {
-        meterPerMapUnit = 1.0e-3;
+        meterPerMapUnit = 1000;
     } else if (mapUnit === Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918e-2;
+        meterPerMapUnit = 2.5399999918e-2;
     } else if (mapUnit === Unit.FOOT) {
         meterPerMapUnit = 0.3048;
     }
@@ -44,6 +45,44 @@ export var getMeterPerMapUnit = function(mapUnit) {
 };
 
 /**
+ * @private
+ * @function getSquareMeterPerMapUnit
+ * @description 单位换算，把平方米|平方千米|平方英寸|平方英尺换算成平方米。
+ * @category BaseTypes Util
+ * @param {string} mapUnit 需要换算的地图面积单位。
+ * @returns {number} 返回地图的面积单位。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getSquareMeterPerMapUnit(mapUnit);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getMeterPerMapUnit } from '{npm}';
+ *
+ * const result = getMeterPerMapUnit(mapUnit);
+ * ```
+ */
+
+const AREA_MAP = {
+  SquareFoot: 10.763910417,
+  SquareKiloMeter: 0.000001,
+  SquareMeter: 1,
+  SquareMile: 3.86e-7,
+  SquareYard: 1.195990046
+}
+
+export var getSquareMeterPerMapUnit = function(mapUnit) {
+  return AREA_MAP[mapUnit];
+};
+
+
+
+/**
+ * @private
  * @function getWrapNum
  * @description 获取该坐标系的经纬度范围的经度或纬度。
  * @category BaseTypes Util
@@ -85,6 +124,7 @@ export function getWrapNum(x, includeMax = true, includeMin = true, range = [-18
 }
 
 /**
+ * @private
  * @function conversionDegree
  * @description 转换经纬度。
  * @category BaseTypes Util
@@ -115,6 +155,7 @@ export function conversionDegree(degrees) {
 }
 
 /**
+  * @private
   * @function scalesToResolutions
   * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
   * @version 11.0.1
@@ -170,6 +211,7 @@ export function conversionDegree(degrees) {
   });
 }
 /**
+  * @private
   * @function getZoomByResolution
   * @description 通过分辨率获取地图级别。
   * @version 11.0.1
@@ -207,6 +249,7 @@ export function getZoomByResolution(resolution, resolutions) {
 }
 
 /**
+  * @private
   * @function scaleToResolution
   * @description 通过比例尺计算分辨率。
   * @version 11.0.1
@@ -244,6 +287,7 @@ export function getDpi(scale, resolution, mapUnit) {
 }
 
 /**
+ * @private
  * 范围是否相交。
  * @param {Array} extent1 范围 1。
  * @param {Array} extent2 范围 2。
@@ -259,6 +303,7 @@ export function getDpi(scale, resolution, mapUnit) {
 }
 
 /**
+ * @private
  * 获取两个范围的交集。
  * @param {Array} extent1 范围 1。
  * @param {Array} extent2 范围 2。

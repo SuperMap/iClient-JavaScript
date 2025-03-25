@@ -1,16 +1,21 @@
 var configBase = require('./webpack.config.base');
+var fs = require('fs');
+const chalk = require('chalk');
+const minimist = require('minimist');
 //端名
 var libName = 'openlayers';
 //产品包名
 var productName = 'iclient-openlayers';
 
-var argv = JSON.parse(process.env['npm_config_argv']);
-var origin = argv.original;
-
-if (origin && origin.includes('deploy-ol')) {
+const args = minimist(process.argv.slice(2));
+if (
+    args._.includes('deploy-ol') || 
+    (process.env.npm_lifecycle_event?process.env.npm_lifecycle_event.includes('deploy-ol'):false)
+) {
     libName = 'ol';
     productName = 'iclient-ol';
 }
+
 var externals = [
     Object.assign({}, configBase.externals, {
         '@turf/turf': 'function(){try{return turf}catch(e){return {}}}()',
@@ -20,7 +25,6 @@ var externals = [
         'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
         'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
         xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
-        canvg: 'function(){try{return canvg}catch(e){return {}}}()',
         jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
         three: 'function(){try{return THREE}catch(e){return {}}}()'
     }),
@@ -31,6 +35,23 @@ var externals = [
         callback();
     }
 ];
+
+var methodNames = ['bindFeaturesCollection_', 'addFeaturesInternal'];
+checkPrivateMethodExists(methodNames);
+
+function checkPrivateMethodExists(methodNames) {
+  const file_path = 'node_modules/ol/dist/ol.js';
+  try {
+    const data = fs.readFileSync(file_path, 'utf8');
+    methodNames.forEach((methodName) => {
+      if (!data.includes(methodName)) {
+        console.log(chalk.red(`方法 ${methodName} 不存在于混淆后的 ol 中 ${file_path}，测试 ol fgb 重写方法是否被调用`));
+      }
+    });
+  } catch (err) {
+    console.error('读取文件出错：', err);
+  }
+}
 
 module.exports = {
     target: configBase.target,

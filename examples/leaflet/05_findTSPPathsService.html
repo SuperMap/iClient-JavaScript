@@ -6,14 +6,34 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_findTSPPathsService"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        #toolbar {
+          position: absolute;
+          top: 50px;
+          right: 10px;
+          text-align: center;
+          z-index: 1000;
+          border-radius: 4px;
+        }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_findTSPPaths"></h5>
+  </div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_sites" onclick="selectPoints()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_check" onclick="findTSPPathsProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearElements(true)"/>
+  </div>
+</div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" include="leaflet-geoman" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, findTSPPathsService, findTSPPathsParameter, result,
+    var map, findTSPPathsService, findTSPPathsParameter, resultLayer, nodeArray = [], markerArray = []
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     map = L.map('map', {
@@ -25,20 +45,33 @@
         maxZoom: 18,
         zoom: 2
     });
-    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
-        .addTo(map)
-        .once("load", function () {
-            findTSPPathsProcess();
-        });
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+
+    function selectPoints() {
+      clearElements(true);
+      map.pm.enableDraw('Marker', {
+        tooltips: false,
+        markerStyle: {
+          icon: new L.icon({
+            iconUrl: '../img/marker.png',
+            iconSize: [44, 30]
+          })
+        }
+      });
+      map.on('pm:create', function(e) {
+        if (e.layer) {
+          var latLng = e.layer.getLatLng();
+          nodeArray.push(latLng);
+          markerArray.push(e.layer);
+        }
+      });
+    }
 
     function findTSPPathsProcess() {
-        var marker4 = L.marker([-1000, 3000]).addTo(map);
-        var marker5 = L.marker([-4850, 3760]).addTo(map);
-        var marker6 = L.marker([-2700, 8000]).addTo(map);
-        //为配送点添加弹窗
-        marker4.bindPopup(resources.text_retailStation1);
-        marker5.bindPopup(resources.text_retailStation2);
-        marker6.bindPopup(resources.text_retailStation3);
+        if (nodeArray.length < 2) {
+          return widgets.alert.showAlert(resources.msg_check, false);
+        }
+        clearElements();
 
         //创建多旅行商分析服务实例
         findTSPPathsService = new L.supermap.NetworkAnalystService(serviceUrl);
@@ -62,16 +95,29 @@
             endNodeAssigned: false,
             isAnalyzeById: false,
             //旅行商分析途经点数组，必设字段
-            nodes: [L.latLng(-1000, 3000), L.latLng(-4850, 3760), L.latLng(-2700, 8000)],
+            nodes: nodeArray,
             parameter: analystParameter
         });
         //进行查找
         findTSPPathsService.findTSPPaths(findTSPPathsParameter).then(function (serviceResult) {
             var result = serviceResult.result;
-            result.tspPathList.map(function (result) {
-                L.geoJSON(result.route).addTo(map);
+            result.tspPathList && result.tspPathList.map(function (result) {
+              resultLayer = L.geoJSON(result.route).addTo(map);
             });
         });
+    }
+
+    function clearElements(clearPoint) {
+      map.pm.disableDraw();
+      map.off('pm:create');
+      resultLayer && map.removeLayer(resultLayer);
+      if (clearPoint) {
+        markerArray.forEach(function(marker) {
+          marker.pm.remove();
+        });
+        markerArray = [];
+        nodeArray = [];
+      }
     }
 </script>
 </body>

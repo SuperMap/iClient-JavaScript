@@ -664,8 +664,13 @@ export var SearchView = ComponentsViewBase.extend({
             this.map.closePopup();
             //若当前是查询图层的结果，则不删除图层，只修改样式
             !this.isSearchLayer && this.map.removeLayer(this.searchResultLayer);
-            this._selectMarkerFeature && this.map.removeLayer(this._selectMarkerFeature);
-            this._selectFeaturethis && this.map.removeLayer(this._selectFeature);
+            this.searchResultLayer.eachLayer((layer) => {
+              layer.off('click');
+            });
+            if (this._selectMarkerFeature) {
+              this.map.removeLayer(this._selectMarkerFeature);
+              this.isSearchLayer && this._selectFeature.addTo(this.map);
+            }
             this._selectMarkerFeature = null;
             this._selectFeature = null;
             this.searchResultLayer = null;
@@ -737,7 +742,7 @@ export var SearchView = ComponentsViewBase.extend({
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         className: 'component-select-marker-icon',
-                        iconAnchor: [15, 0]
+                        iconAnchor: [15, 42]
                     })
                 })
             },
@@ -755,7 +760,8 @@ export var SearchView = ComponentsViewBase.extend({
                 attributes: layer.feature.properties
             })).getElement()
         }, {
-            closeOnClick: false
+            closeOnClick: false,
+            offset: [0, -36]
         }).openPopup().addTo(this.map);
 
         this._flyToBounds(this.searchResultLayer.getBounds());

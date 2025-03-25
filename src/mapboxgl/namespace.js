@@ -65,8 +65,11 @@
    Transform,
    ChartView
  } from '@supermapgis/iclient-common/namespace';
+ import { createWebMapV2BaseExtending } from '@supermapgis/iclient-common/mapping/WebMapV2Base';
+ import { WebMapService } from '@supermapgis/iclient-common/mapping/WebMapService';
+ import { SourceListModelV2 } from '@supermapgis/iclient-common/mapping/utils/SourceListModelV2';
  
- import { WebMap, initMap, WebMapV3, VideoMap } from './mapping';
+ import { WebMap, initMap, VideoMap } from './mapping';
  import mapboxgl from 'mapbox-gl';
  
  mapboxgl.supermap = {...SuperMap, ...mapboxgl.supermap};
@@ -76,9 +79,11 @@
  mapboxgl.supermap.Util = Util;
  mapboxgl.supermap.decryptSources = decryptSources;
  mapboxgl.supermap.WebMap = WebMap;
+ mapboxgl.supermap.createWebMapV2BaseExtending = createWebMapV2BaseExtending;
+ mapboxgl.supermap.WebMapService = WebMapService;
+ mapboxgl.supermap.SourceListModelV2 = SourceListModelV2;
  mapboxgl.supermap.VideoMap = VideoMap;
  mapboxgl.supermap.initMap = initMap;
- mapboxgl.supermap.WebMapV3 = WebMapV3;
  mapboxgl.supermap.Graphic = Graphic;
  mapboxgl.supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
  mapboxgl.supermap.map.setBackground = setBackground;

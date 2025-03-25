@@ -36,6 +36,7 @@
             "src/common/iServer/ProcessingServiceBase",
             "src/common/iServer/PointWithMeasure",
             "src/common/iServer/ServerTheme",
+            "src/common/iServer/QueryService",
             "src/common/overlay/RankSymbol",
             "src/common/overlay/ThemeVector",
             "src/common/overlay/Graph",
@@ -64,9 +65,16 @@
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
             "src/common/components/templates/TemplateBase",
+            "src/common/mapping/utils/L7LayerUtil",
+            "src/common/mapping/utils/Color",
+            "src/common/mapping/utils/util",
+            "src/common/mapping/WebMapV2",
+            "src/common/mapping/WebMapV3",
+            "src/common/mapping/MapStyle",
+            "src/common/mapping/WebMapV2Base",
+            "src/common/mapping/WebMapService",
             "src/mapboxgl/core/Util",
-            "src/mapboxgl/overlay/L7/l7-render",
-            "src/mapboxgl/mapping/utils"
+            "src/mapboxgl/overlay/L7/l7-render"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],

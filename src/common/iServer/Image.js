@@ -19,6 +19,10 @@ import {Util} from '../commontypes/Util';
  * @param {boolean} [options.transparent] - 背景是否透明。
  * @param {ServerColor} [options.transparentColor] - 返回背景透明色。
  * @param {number} [options.transparentColorTolerance] - 背景透明色容限。
+ * @param {number} [options.gamma] - Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现影像非线性亮度和对比度调整，
+ * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+ * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+ * 但暗部区域的细节会有所损失，整体图像变暗。
  * @usage
  * @private
  */
@@ -70,7 +74,17 @@ export class UGCImage extends UGCSubLayer {
          */
         this.transparentColorTolerance = null;
 
+        /**
+          * @member {number} UGCImage.prototype.gamma
+          * @description Gamma 参数，数值范围为 0 到 10，数值精度为小数点后两位。实现影像非线性亮度和对比度调整，
+          * 当 Gamma 值等于1时，图像没有进行 Gamma 校正。当 Gamma 值大于1时，图像的暗部区域对比度增加，细节更加突出，
+          * 但亮部区域的细节会有所损失，整体图像变亮。当Gamma值小于1时，图像的亮部区域对比度增加，细节更加突出，
+          * 但暗部区域的细节会有所损失，整体图像变暗。
+         */
+        this.gamma = null;
+
         this.CLASS_NAME = "SuperMap.Image";
+        Util.extend(this, options);
     }
 
     /**
