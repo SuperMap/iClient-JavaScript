@@ -47,4 +47,22 @@ describe('LinearRing', function () {
         expect(pointList2).not.toBeNull();
         expect(pointList2.length).toEqual(5);
     });
+     
+     it('addComponent_duplicate_points', function () {
+        // 第一个点和第4个点一样，但是应该正常渲染，不应该丢弃 ICL-1570
+        var pointsRing = [
+            new GeometryPoint(83.4923281624, 63.2826847261),// 1
+            new GeometryPoint(86.2710459516, 66.4473355416),// 2
+            new GeometryPoint(80.7522036759, 66.4473355416),// 3
+            new GeometryPoint(83.4923281624, 63.2826847261),// 4
+            new GeometryPoint(78.9383184524, 63.2826847261),// 5
+            new GeometryPoint(78.9383184524, 69.9979193833),// 6
+            new GeometryPoint(88.3936775961, 69.9979193833),// 7
+            new GeometryPoint(88.3936775961, 63.4370579366),// 8
+            new GeometryPoint(83.4923281624, 63.2826847261)
+        ];
+        var ring = new GeometryLinearRing(pointsRing);
+        expect(ring.components.length).toEqual(9);
+        expect(ring.components[3].x).toEqual(83.4923281624);
+    });
 });
