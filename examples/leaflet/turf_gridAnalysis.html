@@ -201,7 +201,7 @@
 
     function mapDrawListener(e) {
         var layer = e.layer;
-        var layerBounds = layer._bounds;
+        var layerBounds = layer.getBounds();
         if (!bounds.contains(layerBounds)) {
             widgets.alert.showAlert(resources.msg_beyondScope, false);
             return;
