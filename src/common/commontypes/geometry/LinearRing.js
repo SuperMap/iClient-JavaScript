@@ -43,7 +43,7 @@ export class LinearRing extends LineString {
             components = [components];
         }
         let len = components.length;
-        if (components[0].equals(components[components.length - 1])) {
+        if (len > 1 && components[0].equals(components[components.length - 1])) {
             len = components.length - 1;
         }
         for (var i = 0; i < len; i++) {

@@ -116,7 +116,7 @@ describe('openlayers_Util', () => {
         var lineString = polygon.components[0];
         expect(lineString instanceof LinearRing).toBeTruthy();
         expect(lineString.components).not.toBeNull();
-        expect(lineString.components.length).toBe(3);
+        expect(lineString.components.length).toBe(4);
         var point = lineString.components[0];
         expect(point instanceof Point).toBeTruthy();
         expect(point.x).toBe(-2);
