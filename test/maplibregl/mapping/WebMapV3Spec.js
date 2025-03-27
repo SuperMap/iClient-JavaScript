@@ -105,7 +105,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap = new WebMap(id, {
       server: server,
-      iportalServiceProxyUrl: 'initialize_raster'
+      iportalServiceProxyUrlPrefix: 'initialize_raster'
     });
     expect(mapstudioWebmap.credentialKey).toBeUndefined();
     expect(mapstudioWebmap.credentialValue).toBeUndefined();
@@ -172,7 +172,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'mapId is JSON'
+      iportalServiceProxyUrlPrefix: 'mapId is JSON'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -256,7 +256,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(nextMapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'projection is 4490 and include maplibre-gl-enhance'
+      iportalServiceProxyUrlPrefix: 'projection is 4490 and include maplibre-gl-enhance'
     });
 
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
@@ -342,7 +342,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'overlayLayersManager'
+      iportalServiceProxyUrlPrefix: 'overlayLayersManager'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -500,7 +500,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'exclude source and layer'
+      iportalServiceProxyUrlPrefix: 'exclude source and layer'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -732,14 +732,14 @@ describe('maplibregl-webmap3.0', () => {
     });
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_raster);
-    const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
+    const iportalServiceProxyUrlPrefix = 'http://localhost:8195/portalproxy';
     const tileCustomRequestHeaders = { 'Authorization': 'test token' };
     mapstudioWebmap = new WebMap(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl,
+      iportalServiceProxyUrlPrefix,
       tileTransformRequest: (url) => {
-        if (url.includes(iportalServiceProxyUrl)) {
+        if (url.includes(iportalServiceProxyUrlPrefix)) {
           return { headers: tileCustomRequestHeaders };
         }
       }

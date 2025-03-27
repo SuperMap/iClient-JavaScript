@@ -426,7 +426,7 @@ export function L7LayerUtil(config) {
   }
 
   function isIportalProxyServiceUrl(url, options) {
-    return options.iportalServiceProxyUrl && url.indexOf(options.iportalServiceProxyUrl) >= 0;
+    return options.iportalServiceProxyUrlPrefix && url.indexOf(options.iportalServiceProxyUrlPrefix) >= 0;
   }
 
   function handleWithRequestOptions(url, options) {

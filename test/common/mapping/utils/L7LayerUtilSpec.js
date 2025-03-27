@@ -517,7 +517,7 @@ describe('L7LayerUtil', () => {
         ...addOptions.options,
         withCredentials: false,
         server: '/iportal/',
-        iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
+        iportalServiceProxyUrlPrefix: 'http://localhost:8195/portalproxy'
       }
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
