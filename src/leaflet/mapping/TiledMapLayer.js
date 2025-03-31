@@ -1,16 +1,15 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import L from 'leaflet';
- import '../core/Base';
- import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
- import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
- import { Unit } from '@supermapgis/iclient-common/REST';
- import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import L from 'leaflet';
+import '../core/Base';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 
- import * as Util from '../core/Util';
- import Attributions from '../core/Attributions';
-
+import * as Util from '../core/Util';
+import Attributions from '../core/Attributions';
 /**
  * @class TiledMapLayer
  * @deprecatedclassinstance L.supermap.tiledMapLayer
@@ -41,12 +40,12 @@
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
  * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+ * @param {number} [options.overflowTiles = 0] - 绘制超出图层范围的瓦片圈数。常用于位于地图边缘的要素符号显示不全的场景。默认值为0，表示不绘制超出图层范围的瓦片。当 options.noWrap 为 true 时，overflowTiles有效。
  * @fires TiledMapLayer#tilesetsinfoloaded
  * @fires TiledMapLayer#tileversionschanged
  * @usage
  */
 export var TiledMapLayer = L.TileLayer.extend({
-
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -68,9 +67,10 @@ export var TiledMapLayer = L.TileLayer.extend({
         crs: null,
         format: 'png',
         //启用托管地址。
-        tileProxy:null,
+        tileProxy: null,
         attribution: Attributions.Common.attribution,
-        subdomains: null
+        subdomains: null,
+        overflowTiles: 0
     },
 
     initialize: function (url, options) {
@@ -94,7 +94,52 @@ export var TiledMapLayer = L.TileLayer.extend({
         this._crs = this.options.crs || map.options.crs;
         L.TileLayer.prototype.onAdd.call(this, map);
     },
+    /**
+     * @override
+     * @private
+     */
+    _resetGrid: function () {
+        L.TileLayer.prototype._resetGrid.call(this);
+        const overflowTiles = this.options.overflowTiles;
+        if (this._globalTileRange && overflowTiles && this.options.noWrap) {
+            this._globalTileRange.min = this._globalTileRange.min.subtract([overflowTiles, overflowTiles]);
+            this._globalTileRange.max = this._globalTileRange.max.add([overflowTiles, overflowTiles]);
+        }
+        if (this.options.bounds && this.options.noWrap && overflowTiles) {
+            const bounds = L.latLngBounds(this.options.bounds);
+            const sw = bounds.getSouthWest();
+            const ne = bounds.getNorthEast();
+            this._boundsTileRange = this._pxBoundsToTileRange(L.bounds(this._crs.latLngToPoint(sw, this._tileZoom), this._crs.latLngToPoint(ne, this._tileZoom)));
+            this._boundsTileRange.min = this._boundsTileRange.min.subtract([overflowTiles, overflowTiles]);
+            this._boundsTileRange.max = this._boundsTileRange.max.add([overflowTiles, overflowTiles]);
 
+        }
+    },
+    /**
+     * @override
+     * @private
+     */
+    _isValidTile: function (coords) {
+        const crs = this._map.options.crs;
+        if (!crs.infinite) {
+            const bounds = this._globalTileRange;
+            if (
+                ((!crs.wrapLng || this.options.noWrap) && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
+                (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))
+            ) {
+                return false;
+            }
+        }
+        if (!this.options.bounds) {
+            return true;
+        }
+        if (this._boundsTileRange && this.options.noWrap) {
+           return coords.x >= this._boundsTileRange.min.x && coords.x <= this._boundsTileRange.max.x && coords.y >= this._boundsTileRange.min.y && coords.y <= this._boundsTileRange.max.y;
+        } else {
+            var tileBounds = this._tileCoordsToBounds(coords);
+            return L.latLngBounds(this.options.bounds).overlaps(tileBounds);
+        }
+    },
     /**
      * @function TiledMapLayer.prototype.getTileUrl
      * @description 根据行列号获取瓦片地址。
@@ -104,16 +149,16 @@ export var TiledMapLayer = L.TileLayer.extend({
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
-        var tileUrl = layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
+        var tileUrl = layerUrl + '&scale=' + scale + '&x=' + coords.x + '&y=' + coords.y;
         //支持代理
         if (this.options.tileProxy) {
             tileUrl = this.options.tileProxy + encodeURIComponent(tileUrl);
         }
         if (!this.options.cacheEnabled) {
-            tileUrl += "&_t=" + new Date().getTime();
+            tileUrl += '&_t=' + new Date().getTime();
         }
         if (this.options.subdomains) {
-            tileUrl = L.Util.template(tileUrl, {s: this._getSubdomain(coords)});
+            tileUrl = L.Util.template(tileUrl, { s: this._getSubdomain(coords) });
         }
         return tileUrl;
     },
@@ -165,10 +210,7 @@ export var TiledMapLayer = L.TileLayer.extend({
             var ne = crs.project(tileBounds.getNorthEast());
             var sw = crs.project(tileBounds.getSouthWest());
             var tileSize = me.options.tileSize;
-            var resolution = Math.max(
-                Math.abs(ne.x - sw.x) / tileSize,
-                Math.abs(ne.y - sw.y) / tileSize
-            );
+            var resolution = Math.max(Math.abs(ne.x - sw.x) / tileSize, Math.abs(ne.y - sw.y) / tileSize);
             var mapUnit = Unit.METER;
             if (crs.code) {
                 var array = crs.code.split(':');
@@ -180,7 +222,6 @@ export var TiledMapLayer = L.TileLayer.extend({
             return Util.resolutionToScale(resolution, 96, mapUnit);
         }
     },
-
 
     /**
      * @function TiledMapLayer.prototype.setTileSetsInfo
@@ -275,7 +316,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      */
     mergeTileVersionParam: function (version) {
         if (version) {
-            this.requestParams["tileversion"] = version;
+            this.requestParams['tileversion'] = version;
             this._paramsChanged = true;
             this.redraw();
             this._paramsChanged = false;
@@ -288,11 +329,11 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @description 更新参数。
      * @param {Object} params - 参数对象。
      */
-    updateParams: function(params) {
-      Object.assign(this.requestParams, params);
-      this._paramsChanged = true;
-      this.redraw();
-      this._paramsChanged = false;
+    updateParams: function (params) {
+        Object.assign(this.requestParams, params);
+        this._paramsChanged = true;
+        this.redraw();
+        this._paramsChanged = false;
     },
 
     _getLayerUrl: function () {
@@ -320,60 +361,60 @@ export var TiledMapLayer = L.TileLayer.extend({
         if (!(tileSize instanceof L.Point)) {
             tileSize = L.point(tileSize, tileSize);
         }
-        params["width"] = tileSize.x;
-        params["height"] = tileSize.y;
+        params['width'] = tileSize.x;
+        params['height'] = tileSize.y;
 
-        params["redirect"] = options.redirect === true;
-        params["transparent"] = options.transparent === true;
-        params["cacheEnabled"] = !(options.cacheEnabled === false);
+        params['redirect'] = options.redirect === true;
+        params['transparent'] = options.transparent === true;
+        params['cacheEnabled'] = !(options.cacheEnabled === false);
 
         if (options.prjCoordSys) {
-            params["prjCoordSys"] = JSON.stringify(options.prjCoordSys);
+            params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
         }
 
         if (options.layersID) {
-            params["layersID"] = options.layersID.toString();
+            params['layersID'] = options.layersID.toString();
         }
 
         if (options.clipRegionEnabled && options.clipRegion) {
             options.clipRegion = ServerGeometry.fromGeometry(Util.toSuperMapGeometry(options.clipRegion));
-            params["clipRegionEnabled"] = options.clipRegionEnabled;
-            params["clipRegion"] = JSON.stringify(options.clipRegion);
+            params['clipRegionEnabled'] = options.clipRegionEnabled;
+            params['clipRegion'] = JSON.stringify(options.clipRegion);
         }
 
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = me._crs;
         if (crs.options && crs.options.origin) {
-            params["origin"] = JSON.stringify({
+            params['origin'] = JSON.stringify({
                 x: crs.options.origin[0],
                 y: crs.options.origin[1]
             });
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params["origin"] = JSON.stringify({
+            params['origin'] = JSON.stringify({
                 x: tileOrigin.x,
                 y: tileOrigin.y
             });
         }
 
         if (options.overlapDisplayed === false) {
-            params["overlapDisplayed"] = false;
+            params['overlapDisplayed'] = false;
             if (options.overlapDisplayedOptions) {
-                params["overlapDisplayedOptions"] = options.overlapDisplayedOptions;
+                params['overlapDisplayedOptions'] = options.overlapDisplayedOptions;
             }
         } else {
-            params["overlapDisplayed"] = true;
+            params['overlapDisplayed'] = true;
         }
 
         if (params.cacheEnabled === true && options.tileversion) {
-            params["tileversion"] = options.tileversion.toString();
+            params['tileversion'] = options.tileversion.toString();
         }
         if (options.rasterfunction) {
-            params["rasterfunction"] = JSON.stringify(options.rasterfunction);
+            params['rasterfunction'] = JSON.stringify(options.rasterfunction);
         }
         if (options.chartSetting) {
-            params["chartSetting"] = JSON.stringify(options.chartSetting);
+            params['chartSetting'] = JSON.stringify(options.chartSetting);
         }
 
         return params;
