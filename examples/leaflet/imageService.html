@@ -464,7 +464,7 @@
       }
 
       function drawCompleted(e) {
-        var bounds = e.layer._bounds;
+        var bounds = e.layer.getBounds();
         var _northEast = bounds._northEast;
         var _southWest = bounds._southWest;
         plotBbox = [_southWest.lng, _southWest.lat, _northEast.lng, _northEast.lat];

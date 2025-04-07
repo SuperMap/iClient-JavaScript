@@ -315,7 +315,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     return (url, resourceType) => {
       if (resourceType === 'Tile') {
-        const withCredentials = this.options.iportalServiceProxyUrl && url.indexOf(this.options.iportalServiceProxyUrl) >= 0;
+        const withCredentials = this.options.iportalServiceProxyUrlPrefix && url.indexOf(this.options.iportalServiceProxyUrlPrefix) >= 0;
         return {
           url: url,
           credentials: withCredentials ? 'include' : undefined,

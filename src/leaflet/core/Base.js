@@ -126,11 +126,13 @@ L.GeoJSON.include({
     layer.feature = L.GeoJSON.asFeature(geojson);
 
     layer.defaultOptions = layer.options;
-    var defaultGeometryOptions = this.defaultGeometryOptions[geometry.type];
-    if (defaultGeometryOptions) {
-      layer.commonOptions = Object.assign({}, defaultGeometryOptions);
-    } else {
-      this.defaultGeometryOptions[geometry.type] = L.Util.extend({}, layer.defaultOptions);
+    if (this.defaultGeometryOptions) {
+      var defaultGeometryOptions = this.defaultGeometryOptions[geometry.type];
+      if (defaultGeometryOptions) {
+        layer.commonOptions = Object.assign({}, defaultGeometryOptions);
+      } else {
+        this.defaultGeometryOptions[geometry.type] = L.Util.extend({}, layer.defaultOptions);
+      }
     }
     this.resetStyle(layer);
 

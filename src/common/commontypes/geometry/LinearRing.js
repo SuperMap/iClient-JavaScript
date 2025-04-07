@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {LineString} from './LineString';
+import {Util} from '../Util';
 
 /**
  * @class  GeometryLinearRing
@@ -36,6 +37,20 @@ export class LinearRing extends LineString {
         this.geometryType = "LinearRing";
     }
 
+
+    addComponents(components) {
+        if (!(Util.isArray(components))) {
+            components = [components];
+        }
+        let len = components.length;
+        if (len > 1 && components[0].equals(components[components.length - 1])) {
+            len = components.length - 1;
+        }
+        for (var i = 0; i < len; i++) {
+            this.addComponent(components[i]);
+        }
+    }
+
     /**
      * @function GeometryLinearRing.prototype.addComponent
      * @description 添加一个点到几何图形数组中，如果这个点将要被添加到组件数组的末端，并且与数组中已经存在的最后一个点相同，
@@ -49,18 +64,17 @@ export class LinearRing extends LineString {
         var added = false;
 
         //remove last point
-        var lastPoint = this.components.pop();
+        this.components.pop();
 
         // given an index, add the point
         // without an index only add non-duplicate points
-        if (index != null || !point.equals(lastPoint)) {
+        if (index != null || !point.equals(this.components[this.components.length - 1])) {
             added = super.addComponent.apply(this, arguments);
         }
 
         //append copy of first point
         var firstPoint = this.components[0];
         super.addComponent.apply(this, [firstPoint]);
-
         return added;
     }
 
