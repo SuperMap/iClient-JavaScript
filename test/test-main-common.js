@@ -46,6 +46,7 @@ import './common/iServer/GetLayersInfoServiceSpec.js';
 import './common/iServer/GetLayersLegendInfoServiceSpec.js';
 import './common/iServer/GridSpec.js';
 import './common/iServer/ImageSpec.js';
+import './common/iServer/InitMapServiceBaseSpec.js';
 import './common/iServer/InterpolationAnalystServiceSpec.js';
 import './common/iServer/LabelImageCellSpec.js';
 import './common/iServer/LabelMixedStyleSpec.js';

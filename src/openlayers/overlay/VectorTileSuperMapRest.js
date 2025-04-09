@@ -309,6 +309,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             const response = await FetchRequest.get(url, null, {
               withCredentials: options.withCredentials
             });
+            this.baseUrl = url;
             style = await response.json();
           }
           await this._fillByStyleJSON(style, options.source);
@@ -323,10 +324,14 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
         if (style.sources && style.sources[source]) {
           let newUrl;
+          let paramUrl = this.baseUrl && this.baseUrl.split('?')[1];
           if (style.sources[source].tiles) {
               newUrl = style.sources[source].tiles[0];
               if (!CommonUtil.isAbsoluteURL(newUrl)) {
                   newUrl = CommonUtil.relative2absolute(newUrl, this.baseUrl);
+              }
+              if (paramUrl) {
+                  newUrl = CommonUtil.urlAppend(newUrl, paramUrl);
               }
           } else if (style.sources[source].url) {
               let tiles = style.sources[source].url;
@@ -340,6 +345,9 @@ export class VectorTileSuperMapRest extends VectorTile {
                   tileUrl = CommonUtil.relative2absolute(tileUrl, tiles);
               }
               newUrl = SecurityManager.appendCredential(tileUrl);
+              if (paramUrl) {
+                newUrl = CommonUtil.urlAppend(newUrl, paramUrl);
+              }
           }
           this._tileUrl = SecurityManager.appendCredential(newUrl);
         }
