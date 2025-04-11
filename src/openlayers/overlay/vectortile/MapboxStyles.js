@@ -411,7 +411,7 @@
               })
           }
           if (fieldName === 'sprite' || fieldName === 'glyphs' || fieldName === 'url') {
-              if (typeof styles[fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles[fieldName])) {
+              if (styles[fieldName] && typeof styles[fieldName] === 'string' && !CommonUtil.isAbsoluteURL(styles[fieldName])) {
                   styles[fieldName] = CommonUtil.relative2absolute(styles[fieldName], baseUrl);
               }
               if (paramUrl && !styles[fieldName].includes(paramUrl)) {
