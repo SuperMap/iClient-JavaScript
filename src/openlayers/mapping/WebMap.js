@@ -5220,8 +5220,8 @@ export class WebMap extends Observable {
     }
     let sourceName = Object.keys(styles.sources)[0];
     let checkUrl = styles.sources[sourceName].url || styles.sources[sourceName].tiles[0];
-    if (checkUrl && !Util.isAbsoluteURL(checkUrl)) {
-      checkUrl = Util.relative2absolute(checkUrl, baseUrl);
+    if (checkUrl && !CommonUtil.isAbsoluteURL(checkUrl)) {
+      checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
     }
     let withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
     const requestParameters = this.tileRequestParameters && this.tileRequestParameters(spriteUrl);
