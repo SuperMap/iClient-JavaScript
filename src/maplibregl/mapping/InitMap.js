@@ -3,6 +3,7 @@ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../services/MapService';
 import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
 import { Util } from '@supermapgis/iclient-common/commontypes/Util';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
 import proj4 from 'proj4';
 /**
  * @function initMap
@@ -172,6 +173,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
     sourceType === 'vector-tile'
       ? Util.urlAppend(Util.urlPathAppend(url, 'tileFeature/vectorstyles.json'), 'type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY')
       : url;
+  tileUrl = SecurityManager.appendCredential(tileUrl);
   let nonEnhanceExtraInfo = {};
   let enhanceExtraInfo = {};
   let zoom;
