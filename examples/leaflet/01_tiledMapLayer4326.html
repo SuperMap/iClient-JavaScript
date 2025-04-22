@@ -17,7 +17,7 @@
         url = host + '/iserver/services/map-world/rest/maps/World';
 
       // 方式一：1.调用 L.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
-      L.supermap.initMap(url);
+      L.supermap.initMap('http://172.16.15.155:8090/iserver/services/map-WorkSpace-2/rest/maps/%E9%84%82%E5%B0%94%E5%A4%9A%E6%96%AF1');
       /*
         // 方式二：1.调用 L.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
         //         2.调用 L.supermap.crsFromMapJSON 创建 CRS
