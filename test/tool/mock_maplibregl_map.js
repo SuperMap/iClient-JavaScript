@@ -59,13 +59,24 @@ const Map = function (options) {
   };
   this.setStyle = function (style, options) {
     if (style.layers) {
-      for (let i = 0, list = style.layers; i < list.length; i += 1) {
-        const layer = list[i];
-        this._layers[layer.id] = list[i];
+      style.layers.forEach(layer => {
+        this._layers[layer.id] = layer;
+        if (layer.source instanceof Object){
+          this.addSource(layer.id, Object.assign({}, layer.source))
+          this._layers[layer.id].source = layer.id;
+        }
         if (!this._layersList.find(item => item.id === layer.id)) {
           this._layersList.push(layer);
         }
-      }
+        if (layer.onAdd) {
+          layer.onAdd(this);
+        }
+        if (layer.render) {
+          layer.render();
+        }
+        this.fire('styledata');
+        return this;
+      })
     }
     this.sources = style.sources;
   };
