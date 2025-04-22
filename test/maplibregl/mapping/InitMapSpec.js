@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import mbglmap from '../../tool/mock_maplibregl_map';
 import { initMap } from '../../../src/maplibregl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { SecurityManager } from '../../../src/common/security/SecurityManager';
 
 describe('maplibregl_InitMap', () => {
   let originalTimeout, testDiv;
@@ -119,6 +120,47 @@ describe('maplibregl_InitMap', () => {
     expect(map).not.toBeUndefined();
     expect(map.getCenter().toArray()).not.toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
   });
+
+  it('initMap 3857, registerToken', async () => {
+    const url = GlobeParameter.ChinaURL;
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 3857
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+      center: {
+        x: -7.450580596923828e-9,
+        y: -2.60770320892334e-8
+      }
+    };
+    spyOn(FetchRequest, 'get').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+    });
+    SecurityManager.registerToken(url, "test-token")
+    const resData = await initMap(url);
+    const map = resData.map;
+    expect(map).not.toBeUndefined();
+    expect(map.getCenter().toArray()).not.toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
+    expect(Object.values(map.options.style.sources)[0].tiles[0]).toBe(
+      url + '/zxyTileImage.png?token=test-token&z={z}&x={x}&y={y}&width=256&height=256&transparent=true'
+    );
+    SecurityManager.destroyToken(url)
+  });
+
 
   it('initMap 4326, dynamicProjection true', async () => {
     const url = GlobeParameter.ChinaURL;
