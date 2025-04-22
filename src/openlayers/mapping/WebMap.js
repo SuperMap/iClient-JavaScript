@@ -5173,7 +5173,6 @@ export class WebMap extends Observable {
     // const origin = [envelope.left, envelope.top];
     let baseUrl = layerInfo.url;
     let paramUrl = baseUrl.split('?')[1];
-    let spriteUrl = styles.sprite;
     if (layerInfo.dataSource.type === 'ARCGIS_VECTORTILE') {
       Object.keys(styles.sources).forEach(function (key) {
         Object.keys(styles.sources[key]).forEach(function(fieldName) {
@@ -5192,7 +5191,7 @@ export class WebMap extends Observable {
       checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
     }
     let withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
-    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(spriteUrl);
+    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(checkUrl);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
       baseUrl,
