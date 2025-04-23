@@ -1,7 +1,7 @@
 /*!
   *     forked from antvis/L7
   *     Copyright (c) 2018 AntV team
-  *     Copyright© 2000-2024 SuperMap Software Co. Ltdnpm
+  *     Copyright© 2000 - 2025 SuperMap Software Co. Ltdnpm
   *     license: MIT
   *     version: 20240927
   */
