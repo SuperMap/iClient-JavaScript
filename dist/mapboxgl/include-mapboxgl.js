@@ -1,4 +1,4 @@
-﻿/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+﻿/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function () {
@@ -59,8 +59,8 @@
       inputScript(libsurl + '/mapbox-gl-js/1.13.2/mapbox-gl.js');
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.css');
-      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-8/mapbox-gl-enhance.js');
+      inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-9/mapbox-gl-enhance.css');
+      inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-9/mapbox-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
       inputScript(libsurl + '/mapboxgl-l7-render/0.0.2/mapboxgl-l7-render.js');

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
@@ -82,6 +82,9 @@ export class VectorTileSuperMapRest extends VectorTile {
         me.headers = options.headers || {};
         me._tileType = options.tileType || 'ScaleXY';
         me.baseUrl = options.baseUrl;
+        if(options.tileGrid){
+            this.hasTileGrid = true;
+        }
         this.vectorTileStyles = new VectorTileStyles();
         this._initialized(options);
 
@@ -367,7 +370,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             }
             this._tileUrl = SecurityManager.appendCredential(newUrl);
         }
-        if (style.metadata && style.metadata.indexbounds) {
+        if (!this.hasTileGrid && style.metadata && style.metadata.indexbounds) {
             const indexbounds = style.metadata.indexbounds;
             var max = Math.max(indexbounds[2] - indexbounds[0], indexbounds[3] - indexbounds[1]);
             const defaultResolutions = [];

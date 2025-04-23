@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
 import { initMap } from '../../../src/mapboxgl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { SecurityManager } from '../../../src/common/security/SecurityManager';
 
 describe('mapboxgl_InitMap', () => {
   let originalTimeout, testDiv;
@@ -125,6 +126,46 @@ describe('mapboxgl_InitMap', () => {
     expect(Object.values(map.options.style.sources)[0].tiles[0]).toBe(
       url + '/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true'
     );
+  });
+  it('initMap 3857, registerToken', async () => {
+    const url = 'http:/fake:8090/iserver/iserver/services/map-china400/rest/maps/China';
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 3857
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+      center: {
+        x: -7.450580596923828e-9,
+        y: -2.60770320892334e-8
+      }
+    };
+    spyOn(FetchRequest, 'get').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+    });
+    SecurityManager.registerToken(url, "test-token")
+    const resData = await initMap(url);
+    const map = resData.map;
+    expect(map).not.toBeUndefined();
+    expect(map.options.crs).toBe('EPSG:3857');
+    expect(map.options.style.layers.length).toBe(1);
+    expect(Object.values(map.options.style.sources)[0].tiles[0]).toBe(
+      url + '/zxyTileImage.png?token=test-token&z={z}&x={x}&y={y}&width=256&height=256&transparent=true'
+    );
+    SecurityManager.destroyToken(url)
   });
 
   it('initMap 4326, dynamicProjection true, non mapbox-gl-enhance', async () => {

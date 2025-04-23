@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -23,7 +23,7 @@ export var NormalRenderer = L.GeoJSON.extend({
         options = options || {};
         if (options.style && !options.pointToLayer) {
             options.pointToLayer = function (geojson, latlng) {
-                return L.circleMarker(latlng, options.style());
+                return L.circleMarker(latlng, options.style(geojson));
             }
         }
         L.Util.setOptions(this, options);

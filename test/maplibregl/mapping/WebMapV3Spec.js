@@ -105,7 +105,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     mapstudioWebmap = new WebMap(id, {
       server: server,
-      iportalServiceProxyUrl: 'initialize_raster'
+      iportalServiceProxyUrlPrefix: 'initialize_raster'
     });
     expect(mapstudioWebmap.credentialKey).toBeUndefined();
     expect(mapstudioWebmap.credentialValue).toBeUndefined();
@@ -172,7 +172,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'mapId is JSON'
+      iportalServiceProxyUrlPrefix: 'mapId is JSON'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -256,7 +256,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMap(nextMapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'projection is 4490 and include maplibre-gl-enhance'
+      iportalServiceProxyUrlPrefix: 'projection is 4490 and include maplibre-gl-enhance'
     });
 
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
@@ -342,7 +342,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'overlayLayersManager'
+      iportalServiceProxyUrlPrefix: 'overlayLayersManager'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -500,7 +500,7 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl: 'exclude source and layer'
+      iportalServiceProxyUrlPrefix: 'exclude source and layer'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -732,14 +732,14 @@ describe('maplibregl-webmap3.0', () => {
     });
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_raster);
-    const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
+    const iportalServiceProxyUrlPrefix = 'http://localhost:8195/portalproxy';
     const tileCustomRequestHeaders = { 'Authorization': 'test token' };
     mapstudioWebmap = new WebMap(mapInfo, {
       server: server,
       target: 'map',
-      iportalServiceProxyUrl,
+      iportalServiceProxyUrlPrefix,
       tileTransformRequest: (url) => {
-        if (url.includes(iportalServiceProxyUrl)) {
+        if (url.includes(iportalServiceProxyUrlPrefix)) {
           return { headers: tileCustomRequestHeaders };
         }
       }
@@ -1528,6 +1528,93 @@ describe('maplibregl-webmap3.0', () => {
         expect(map2.getCRS().getWKT()).toBe(wkt_4220);
         expect(map2.getCRS().getOrigin()).toEqual(originRange);
         delete maplibregl.CRS[epsgCode.replace(':', '')];
+        done();
+      });
+    });
+  });
+
+  it('setStyle', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_symbol));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_symbol));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+
+    mapstudioWebmap.once('mapcreatesucceeded', ({ map: map1 }) => {
+      expect(map1).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map1);
+      const style = map1.getStyle();
+      const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      const legends = mapstudioWebmap.getLegends();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      const appreciableLayers = mapstudioWebmap.getLayers();
+      expect(legends.length).not.toBe(0);
+      expect(layerCatalogs.length).not.toBe(0);
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      expect(mapstudioWebmap.webMapInfo).toBeFalsy();
+      expect(mapstudioWebmap.mapId).toBe(id);
+      const cleanLayersSpy = spyOn(mapstudioWebmap, 'cleanLayers').and.callThrough();
+      const nextMapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+      spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+      spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+      spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+      spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+      spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+      spyOn(L7, 'Maplibre').and.callFake(mockL7.Maplibre);
+      mapstudioWebmap.map.addStyle = function({ sprite }) {
+        expect(sprite).toEqual(nextMapInfo.sprite);
+      }
+      maplibregl.Map.prototype.getCRS = function () {
+        return { epsgCode: nextMapInfo.crs.name, getExtent: () => {} };
+      };
+      mapstudioWebmap.options.relatedInfo = JSON.parse(msProjectINfo_L7Layers)
+      mapstudioWebmap.setStyle(nextMapInfo, true)
+      expect(cleanLayersSpy).toHaveBeenCalled();
+      expect(mapstudioWebmap.webMapInfo).toEqual(nextMapInfo);
+      expect(mapstudioWebmap.mapId).toBeFalsy();
+      mapstudioWebmap.once('mapcreatesucceeded', ({ map: map2 }) => {
+        expect(map2).not.toBeUndefined();
+        expect(mapstudioWebmap.map).toEqual(map2);
+        expect(map2).toEqual(map1);
+        const style2 = map2.getStyle();
+        expect(style2.layers.length).toBeLessThan(nextMapInfo.layers.length);
+        expect(style2).not.toEqual(style);
+        const legends2 = mapstudioWebmap.getLegends();
+        const layerCatalogs2 = mapstudioWebmap.getLayerCatalog();
+        const appreciableLayers2 = mapstudioWebmap.getLayers();
+        expect(legends2.length).toBe(8);
+        expect(legends2).not.toEqual(legends);
+        expect(layerCatalogs2.length).not.toBe(0);
+        expect(layerCatalogs2).not.toEqual(layerCatalogs);
+        expect(layerCatalogs2.length).toBeLessThanOrEqual(appreciableLayers2.length);
+        expect(appreciableLayers2).not.toEqual(appreciableLayers);
+        delete maplibregl.Map.prototype.getCRS;
         done();
       });
     });

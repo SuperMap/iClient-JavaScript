@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import TileImage from 'ol/source/TileImage';
@@ -62,7 +62,6 @@ export class BaiduMap extends TileImage {
                 .replace('{z}', tileCoord[0].toString())
                 .replace('{x}', tileCoord[1].toString())
                 .replace('{y}', function() {
-                    console.log(Util.getOlVersion());
                     var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? tileCoord[2] : -tileCoord[2] - 1;
                     return y.toString();
                 })

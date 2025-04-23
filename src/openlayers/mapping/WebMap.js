@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import proj4 from 'proj4';
@@ -2031,7 +2031,7 @@ export class WebMap extends Observable {
                       //行政规划信息
                       data.content.rows.unshift(data.content.colTitles);
                       let { divisionType, divisionField } = layer.dataSource.administrativeInfo;
-                      let geojson = that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
+                      let geojson = await that.excelData2FeatureByDivision(data.content, divisionType, divisionField);
                       features = that._parseGeoJsonData2Feature({
                         allDatas: { features: geojson.features },
                         fileCode: layer.projection
@@ -2621,7 +2621,7 @@ export class WebMap extends Observable {
    * @returns {Object}  geojson对象
    */
   excelData2FeatureByDivision(content, divisionType, divisionField) {
-    let me = this;
+
     let asyncInport;
     if (divisionType === 'Province') {
       asyncInport = window.ProvinceData;
@@ -2631,10 +2631,33 @@ export class WebMap extends Observable {
       // let geojso;
       asyncInport = window.AdministrativeArea;
     }
-    if (asyncInport) {
-      let geojson = me.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField);
-      return geojson;
+    if(asyncInport){
+      return new Promise(resolve => {
+        resolve(this.changeExcel2Geojson(asyncInport.features, content.rows, divisionType, divisionField));
+      });
     }
+    if(divisionType === 'GB-T_2260'){
+      return new Promise(resolve => {
+        resolve({
+          type: 'FeatureCollection',
+          features: []
+        });
+      });
+    }
+    const dataName = divisionType === 'City' ? 'MunicipalData' : 'ProvinceData';
+    const dataFileName = divisionType === 'City' ? 'MunicipalData.js' : 'ProvincialData.js';
+    const dataUrl = CommonUtil.urlPathAppend(this.server,`apps/dataviz/libs/administrative_data/${dataFileName}`);
+    return FetchRequest.get(this.getRequestUrl(dataUrl), null, {
+      withCredentials: false,
+      withoutFormatSuffix: true
+    })
+      .then(response => {
+        return response.text();
+      })
+      .then(result => {
+        new Function(result)();
+        return this.changeExcel2Geojson(window[dataName].features, content.rows, divisionType, divisionField);
+      });
   }
 
   /**
@@ -5182,10 +5205,6 @@ export class WebMap extends Observable {
     // const origin = [envelope.left, envelope.top];
     let baseUrl = layerInfo.url;
     let paramUrl = baseUrl.split('?')[1];
-    let spriteUrl = styles.sprite;
-    if (!CommonUtil.isAbsoluteURL(styles.sprite)) {
-      spriteUrl = CommonUtil.relative2absolute(styles.sprite, baseUrl);
-    }
     if (layerInfo.dataSource.type === 'ARCGIS_VECTORTILE') {
       Object.keys(styles.sources).forEach(function (key) {
         Object.keys(styles.sources[key]).forEach(function(fieldName) {
@@ -5198,8 +5217,13 @@ export class WebMap extends Observable {
         });
       });
     }
-    let withCredentials = this.isIportalProxyServiceUrl(spriteUrl);
-    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(spriteUrl);
+    let sourceName = Object.keys(styles.sources)[0];
+    let checkUrl = styles.sources[sourceName].url || styles.sources[sourceName].tiles[0];
+    if (checkUrl && !CommonUtil.isAbsoluteURL(checkUrl)) {
+      checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
+    }
+    let withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
+    const requestParameters = this.tileRequestParameters && this.tileRequestParameters(checkUrl);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
       baseUrl,

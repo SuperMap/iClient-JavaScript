@@ -1305,7 +1305,9 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.once('mapcreatesucceeded', (e) => {
       expect(e.map).not.toBeNull();
       datavizWebmap.setMapId('');
+      expect(datavizWebmap.webMapInfo).toBeFalsy();
       datavizWebmap.setStyle(style);
+      expect(datavizWebmap.webMapInfo).toBeFalsy();
       expect(datavizWebmap.mapOptions.style).toEqual(style);
       datavizWebmap.once('mapcreatesucceeded', ({ layers }) => {
         expect(layers.length).toBe(2);

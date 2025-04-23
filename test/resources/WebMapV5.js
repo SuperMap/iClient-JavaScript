@@ -265,7 +265,7 @@ var wmtsInfo1 =
   '{"extent":[-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],"url":"http://localhost:9876/iserver/services/map-world/wmts100","name": "wmts","tileMatrixSet":"GoogleMapsCompatible_世界地图_Gray","unit":"m","dpi":"90.7","scales": "{TileMatrix: [559082264.0287178, 279541132.0143589, 139770566.00717944, 69885283.00358972, 34942641.50179486, 17471320.75089743, 8735660.375448715, 4367830.1877243575, 2183915.0938621787, 1091957.5469310894, 545978.7734655447, 272989.38673277234, 136494.69336638617, 68247.34668319309, 34123.67334159654, 17061.83667079827, 8530.918335399136, 4265.459167699568, 2132.729583849784]}"}';
 
 var wmsAutoUpdate =
-  '{"extent":{"leftBottom":{"x":-180,"y":-90},"rightTop":{"x":180,"y":90}},"maxScale":"1:70.45225847627215","level":4.806374567849455,"center":{"x":116.62923399039252,"y":38.73426968062019},"baseLayer":{"layerType":"WMS","visible":true,"name":"世界地图_Day","layers":["0"],"url":"http://localhost:9876/iserver/services/map-world/wmts100"},"layers":[{"layerType":"VECTOR","visible":true,"visibleScale":{"maxScale":"1:9234318.423001943","minScale":"1:295498189.5360622"},"autoUpdateTime":180000,"name":"北京市轨道交通站点","featureType":"POINT","style":{"fillColor":"#EE4D5A","strokeWidth":1,"offsetX":0,"offsetY":0,"fillOpacity":0.9,"radius":8,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","enableFields":["SmID","SmX","SmY","SmLibTileID","1111SmUserID","SmGeometrySize","SmGeoPosition","1111标准名称"],"dataSource":{"accessType":"DIRECT","type":"PORTAL_DATA","serverId":"263759920"}}],"description":"","projection":"EPSG:4326","minScale":"1:295498189.5360622","title":"无标题","version":"2.3.0"}';
+  '{"extent":{"leftBottom":{"x":-180,"y":-90},"rightTop":{"x":180,"y":90}},"maxScale":"1:70.45225847627215","level":4.806374567849455,"center":{"x":116.62923399039252,"y":38.73426968062019},"baseLayer":{"layerType":"WMS","visible":true,"name":"世界地图_Day","layers":["0"],"url":"http://localhost:9876/iserver/services/map-world/wms130"},"layers":[{"layerType":"VECTOR","visible":true,"visibleScale":{"maxScale":"1:9234318.423001943","minScale":"1:295498189.5360622"},"autoUpdateTime":180000,"name":"北京市轨道交通站点","featureType":"POINT","style":{"fillColor":"#EE4D5A","strokeWidth":1,"offsetX":0,"offsetY":0,"fillOpacity":0.9,"radius":8,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","enableFields":["SmID","SmX","SmY","SmLibTileID","1111SmUserID","SmGeometrySize","SmGeoPosition","1111标准名称"],"dataSource":{"accessType":"DIRECT","type":"PORTAL_DATA","serverId":"263759920"}}],"description":"","projection":"EPSG:4326","minScale":"1:295498189.5360622","title":"无标题","version":"2.3.0"}';
 
 var wmtsInfo2 = `<Capabilities
 xmlns="http://www.opengis.net/wmts/1.0"
@@ -864,18 +864,18 @@ var datavizWebMap_RestMap_1000 = {
   description: 'restMap -1000',
   projection: 'EPSG:-1000',
   center: {
-    x: 13010199.0826792,
-    y: 4882852.51886837
+    x: 38500000,
+    y: 3706540
   },
   level: 7,
   extent: {
     leftBottom: {
-      x: -20037508.3427892,
-      y: -20037508.3427892
+      x: 38344577.81,
+      y: 2380652.6
     },
     rightTop: {
-      x: 20037508.3427892,
-      y: 20037508.3427892
+      x: 38655422.19,
+      y: 5036052.73
     }
   },
   baseLayer: {
@@ -918,6 +918,35 @@ var datavizWebMap_RestMap_100 = {
   layers: []
 };
 
+var datavizWebMap_RestMap_2362 = {
+  title: 'RestMap',
+  description: 'restMap -100',
+  projection: 'EPSG:-100',
+  center: {
+    x: 38500000,
+    y: 3706540
+  },
+  level: 7,
+  extent: {
+    leftBottom: {
+      x: 38344577.81,
+      y: 2380652.6
+    },
+    rightTop: {
+      x: 38655422.19,
+      y: 5036052.73
+    }
+  },
+  baseLayer: {
+    layerType: 'TILE',
+    name: 'map-100',
+    visible: true,
+    credential: 'credential',
+    url: 'https://fake/iserver/services/map-100/rest/maps/map-100',
+    projection: 'EPSG:2362'
+  },
+  layers: []
+};
 var datavizWebMap_MVT = {
   extent: {
     leftBottom: {
@@ -1373,6 +1402,7 @@ const xyzLayer2326 = {
   baseLayer: {
     layerType: 'ZXY_TILE',
     name: '2326底图',
+    "url":"https://{s}.tile.fake/{z}/{x}/{y}.png",
     visible: true,
     resolutions: [
       156543.03392800014, 78271.51696399994, 39135.75848200009, 19567.87924099992, 9783.93962049996, 4891.96981024998,
