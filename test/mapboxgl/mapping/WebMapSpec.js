@@ -41,7 +41,7 @@ describe('mapboxgl_WebMap', () => {
     mapboxgl.proj4 = undefined;
     window.jsonsql = undefined;
   });
-  xit('initialize_TIANDITU_VEC', (done) => {
+  it('initialize_TIANDITU_VEC', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -72,7 +72,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('resize', (done) => {
+  it('resize', (done) => {
     let options = {
       server: server
     };
@@ -93,7 +93,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
-  xit('setMapId', (done) => {
+  it('setMapId', (done) => {
     let options = {
       server: server
     };
@@ -116,7 +116,7 @@ describe('mapboxgl_WebMap', () => {
       });
     });
   });
-  xit('jsonsql', (done) => {
+  it('jsonsql', (done) => {
     let options = {
       server: server
     };
@@ -139,7 +139,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('setWebMapOptions', (done) => {
+  it('setWebMapOptions', (done) => {
     let options = {
       server: server
     };
@@ -167,7 +167,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('setMapOptions', (done) => {
+  it('setMapOptions', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -203,7 +203,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
   
-  xit('initialize_TIANDITU_IMAGE', (done) => {
+  it('initialize_TIANDITU_IMAGE', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -232,7 +232,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_TIANDITU_TER', (done) => {
+  it('initialize_TIANDITU_TER', (done) => {
     let options = {
       server: server
     };
@@ -254,7 +254,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_OPENSTREET', (done) => {
+  it('initialize_OPENSTREET', (done) => {
     let options = {
       server: server
     };
@@ -282,7 +282,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_FAILD mapcreatefailed', (done) => {
+  it('initialize_FAILD mapcreatefailed', (done) => {
     let options = {
       server: server
     };
@@ -303,7 +303,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_FAILD getmapfailed', (done) => {
+  it('initialize_FAILD getmapfailed', (done) => {
     let options = {
       server: server
     };
@@ -324,7 +324,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_CLOUD mapcreatesucceeded', (done) => {
+  it('initialize_CLOUD mapcreatesucceeded', (done) => {
     let options = {
       server: server
     };
@@ -351,7 +351,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_CLOUD addlayerssucceeded', (done) => {
+  it('initialize_CLOUD addlayerssucceeded', (done) => {
     let options = {
       server: server
     };
@@ -378,7 +378,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_GOOGLE', (done) => {
+  it('initialize_GOOGLE', (done) => {
     let options = {
       server: server
     };
@@ -406,7 +406,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Vector_Basis', (done) => {
+  it('createThemeLayer_Vector_Basis', (done) => {
     let options = {
       server: server
     };
@@ -438,7 +438,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Vector_Basis_Line', (done) => {
+  it('createThemeLayer_Vector_Basis_Line', (done) => {
     let options = {
       server: server
     };
@@ -469,7 +469,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Vector_IMAGE', (done) => {
+  it('createThemeLayer_Vector_IMAGE', (done) => {
     let options = {
       server: server
     };
@@ -509,7 +509,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Unique', (done) => {
+  it('createThemeLayer_Unique', (done) => {
     let options = {
       server: server
     };
@@ -540,7 +540,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Range', (done) => {
+  it('createThemeLayer_Range', (done) => {
     let options = {
       server: server
     };
@@ -574,7 +574,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Heat', (done) => {
+  it('createThemeLayer_Heat', (done) => {
     //插件里面i未定义报错
     let options = {
       server: server
@@ -606,7 +606,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_Marker', (done) => {
+  it('createThemeLayer_Marker', (done) => {
     let options = {
       server: server
     };
@@ -637,7 +637,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
+  it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
     let options = {
       server: server
     };
@@ -671,7 +671,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_SUPERMAP_MAP', (done) => {
+  it('createThemeLayer_SUPERMAP_MAP', (done) => {
     let options = {
       server: server
     };
@@ -700,7 +700,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('createThemeLayer_SUPERMAPREST_DATA', (done) => {
+  it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
     let options = {
       server: server
     };
@@ -732,7 +732,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('WMS', (done) => {
+  it('WMS', (done) => {
     let options = {
       server: server
     };
@@ -761,7 +761,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('getRangeStyleGroup', (done) => {
+  it('getRangeStyleGroup', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -800,7 +800,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('dashStyle', (done) => {
+  it('dashStyle', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -837,7 +837,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('vector_svg', (done) => {
+  it('vector_svg', (done) => {
     let options = {
       server: server
     };
@@ -875,7 +875,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
-  xit('vector_symbol', (done) => {
+  it('vector_symbol', (done) => {
     let options = {
       server: server
     };
@@ -899,7 +899,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
-  xit('_getFiterFeatures', (done) => {
+  it('_getFiterFeatures', (done) => {
     let options = {
       server: server
     };
@@ -925,7 +925,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
-  xit('datavizWebMap_WMTS', (done) => {
+  it('datavizWebMap_WMTS', (done) => {
     let options = {
       server: server
     };
@@ -945,7 +945,7 @@ describe('mapboxgl_WebMap', () => {
       done();
     });
   });
-  xit('datavizWebMap_WMTS_Custom', (done) => {
+  it('datavizWebMap_WMTS_Custom', (done) => {
     let options = {
       server: server
     };
@@ -972,7 +972,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('initialize_MVT', (done) => {
+  it('initialize_MVT', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1017,7 +1017,7 @@ describe('mapboxgl_WebMap', () => {
       }, 1000);
     });
   });
-  xit('createMarkerLayer_svg', (done) => {
+  it('createMarkerLayer_svg', (done) => {
     let options = {
       server: server
     };
@@ -1044,7 +1044,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('switch map and reset center zoom CRS', (done) => {
+  it('switch map and reset center zoom CRS', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1155,7 +1155,7 @@ describe('mapboxgl_WebMap', () => {
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('copy layer', (done) => {
+  it('copy layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1209,7 +1209,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('test mapstyle checkSameLayer', (done) => {
+  it('test mapstyle checkSameLayer', (done) => {
     const commonOption = {
       server: 'http://fack:8190/iportal/',
       target: 'map',
@@ -1260,7 +1260,7 @@ describe('mapboxgl_WebMap', () => {
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('toggle mapstyle layers visible', (done) => {
+  it('toggle mapstyle layers visible', (done) => {
     const commonOption = {
       server: 'http://fack:8190/iportal/',
       target: 'map',
@@ -1285,7 +1285,7 @@ describe('mapboxgl_WebMap', () => {
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('rectifyLayersOrder', (done) => {
+  it('rectifyLayersOrder', (done) => {
     const commonOption = {
       server: 'http://fack:8190/iportal/',
       target: 'map',
@@ -1304,7 +1304,7 @@ describe('mapboxgl_WebMap', () => {
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('getWebMapType', (done) => {
+  it('getWebMapType', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -1341,7 +1341,7 @@ describe('mapboxgl_WebMap', () => {
     datavizWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('when  builtIn crs was defined, dont set repeat', (done) => {
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
     const originCrs = mapboxgl.CRS.get('EPSG:3857');
     const crsSetSpy = spyOn(mapboxgl.CRS, 'set').and.callThrough();
     const commonOption = {
@@ -1358,7 +1358,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
-  xit('when uncommon crs was defined, dont set repeat', (done) => {
+  it('when uncommon crs was defined, dont set repeat', (done) => {
     const wkt_4222 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4222"]]';
     const epsgCode = 'EPSG:4222';
     const originCrs = mapboxgl.CRS.get(epsgCode);
@@ -1409,7 +1409,7 @@ describe('mapboxgl_WebMap', () => {
     });
   });
   
-  xit('test transformRequest when url includes iportalproxy', (done) => {
+  it('test transformRequest when url includes iportalproxy', (done) => {
     const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
     const tileCustomRequestHeaders = { 'Authorization': 'test token' };
     const commonOption = {

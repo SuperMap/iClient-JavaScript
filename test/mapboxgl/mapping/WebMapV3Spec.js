@@ -56,7 +56,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapboxgl.proj4 = undefined;
   });
 
-  xit('initialize_background', (done) => {
+  it('initialize_background', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -88,7 +88,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('initialize_raster', (done) => {
+  it('initialize_raster', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -127,7 +127,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('vector_symbol', (done) => {
+  it('vector_symbol', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -161,7 +161,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('mapId is JSON', (done) => {
+  it('mapId is JSON', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -200,7 +200,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('projection is 4490 and not include mapbox-gl-enhance', (done) => {
+  it('projection is 4490 and not include mapbox-gl-enhance', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const nextMapInfo = {
       ...mapInfo,
@@ -233,7 +233,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('projection is 4490 and include mapbox-gl-enhance', (done) => {
+  it('projection is 4490 and include mapbox-gl-enhance', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const nextMapInfo = {
       ...mapInfo,
@@ -272,7 +272,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('projection is 4490 and with map', (done) => {
+  it('projection is 4490 and with map', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -331,7 +331,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('overlayLayersManager', (done) => {
+  it('overlayLayersManager', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -405,7 +405,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('filter drill test', (done) => {
+  it('filter drill test', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -433,7 +433,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.initializeMap(mapInfo);
   });
 
-  xit('filter drill ui id test', (done) => {
+  it('filter drill ui id test', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -461,7 +461,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.initializeMap(mapInfo);
   });
 
-  xit('filter drill interaction changed test', (done) => {
+  it('filter drill interaction changed test', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -489,7 +489,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.initializeMap(mapInfo);
   });
 
-  xit('exclude source and layer', (done) => {
+  it('exclude source and layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -542,7 +542,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('load l7Layers', (done) => {
+  it('load l7Layers', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
@@ -608,7 +608,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('projectionnotmatch', (done) => {
+  it('projectionnotmatch', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -655,7 +655,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('layerdatas', (done) => {
+  it('layerdatas', (done) => {
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -724,7 +724,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('transformRequest', (done) => {
+  it('transformRequest', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('617580084.json') > -1) {
         return Promise.resolve(new Response(mapstudioAppInfo));
@@ -761,7 +761,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('filter legend', (done) => {
+  it('filter legend', (done) => {
     mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
@@ -808,7 +808,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('copy l7Layer', (done) => {
+  it('copy l7Layer', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
@@ -875,7 +875,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('copy raster layer', (done) => {
+  it('copy raster layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -925,7 +925,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('updateOverlayLayer', (done) => {
+  it('updateOverlayLayer', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
@@ -1009,7 +1009,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('test group', (done) => {
+  it('test group', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -1030,7 +1030,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.initializeMap(mapInfo);
   });
 
-  xit('add sprite when map instance as param', (done) => {
+  it('add sprite when map instance as param', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
@@ -1084,7 +1084,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('label legend', (done) => {
+  it('label legend', (done) => {
     mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
@@ -1122,7 +1122,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('handle sprite option is object like { sourceId: url }', (done) => {
+  it('handle sprite option is object like { sourceId: url }', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite/rectangle') > -1) {
         return Promise.resolve(
@@ -1213,7 +1213,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('test webmapv3 checkSameLayer', (done) => {
+  it('test webmapv3 checkSameLayer', (done) => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -1284,7 +1284,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.once('mapcreatesucceeded', callback);
   });
 
-  xit('test webmap with l7layers append l7layers', (done) => {
+  it('test webmap with l7layers append l7layers', (done) => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
@@ -1362,7 +1362,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('toggle WebMapV3 layers visible', (done) => {
+  it('toggle WebMapV3 layers visible', (done) => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
@@ -1418,7 +1418,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('layerCatalog separate ui id and render id', (done) => {
+  it('layerCatalog separate ui id and render id', (done) => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -1456,7 +1456,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('when  builtIn crs was defined, dont set repeat', (done) => {
+  it('when  builtIn crs was defined, dont set repeat', (done) => {
     spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
@@ -1485,7 +1485,7 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  xit('when uncommon crs was defined, dont set repeat', (done) => {
+  it('when uncommon crs was defined, dont set repeat', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const wkt_4221 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4221"]]';
     const epsgCode = 'EPSG:4221';
