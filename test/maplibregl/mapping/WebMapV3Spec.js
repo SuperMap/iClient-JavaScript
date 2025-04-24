@@ -1,8 +1,8 @@
 import maplibregl from 'maplibre-gl';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { createWebMapV3Extending } from '@supermapgis/iclient-common/mapping/WebMapV3';
-import { createMapClassExtending } from '@supermapgis/iclient-common/mapping/MapBase';
-import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
+import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
+import { L7LayerUtil } from '../../../src/common/mapping/utils/L7LayerUtil';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
 import { CRSManager } from '../../../src/maplibregl/mapping/webmap/CRSManager';

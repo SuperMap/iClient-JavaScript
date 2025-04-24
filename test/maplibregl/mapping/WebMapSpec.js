@@ -2,8 +2,8 @@ import maplibregl from 'maplibre-gl';
 import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
-import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import cloneDeep from 'lodash.clonedeep';
 import '../../resources/WebMapV5.js';
 
