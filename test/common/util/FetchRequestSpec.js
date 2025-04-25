@@ -1,4 +1,4 @@
-import { FetchRequest, isCORS, setCORS, setFetch, RequestJSONPPromise } from '../../../src/common//util/FetchRequest';
+import { FetchRequest, isCORS, setCORS, setFetch, RequestJSONPPromise, setRequestHeaders, getRequestHeaders } from '../../../src/common//util/FetchRequest';
 
 describe('FetchRequest', () => {
     const defaultval = RequestJSONPPromise.limitLength;
@@ -147,6 +147,16 @@ describe('FetchRequest', () => {
         FetchRequest.get(url, params);
         expect(FetchRequest._fetch.calls.count()).toBe(1);
     });
+    it('setRequestHeaders', () => {
+        const authHeaders = { 'Authorization': 'test token' };
+        const tileCustomRequestHeaders = (url) => {
+            if (url.includes('proxy')) {
+                return authHeaders;
+            }
+        };
+        setRequestHeaders(tileCustomRequestHeaders)
+        expect(getRequestHeaders()).toEqual(tileCustomRequestHeaders);
+    })
     afterAll(() => {
         RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);
