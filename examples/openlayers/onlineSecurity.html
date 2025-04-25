@@ -108,8 +108,7 @@
             <tr>
                 <td colspan="3">
                     <div class="row">
-                        <div class="col-md-12  text-center">
-                            <div class="col-md-12" id="online_map" style=" height: 300px;"></div>
+                        <div class="col-md-12  text-center" id="map_container">
                         </div>
                     </div>
                 </td>
@@ -183,6 +182,7 @@
         }
         ol.supermap.SecurityManager.registerKey(mapUrl, key);
 
+        $('#map_container')[0].innerHTML =  `<div class="col-md-12" id="online_map" style=" height: 300px;"></div>`;
         var map = new ol.Map({
             target: 'online_map',
             // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults

@@ -98,6 +98,8 @@
     function clearFeatures() {
       if (map.getLayer('points')) {
         map.removeLayer('points');
+      }
+      if(map.getSource('pointsouter')){
         map.removeLayer('pointsouter');
         map.removeSource('pointsouter');
       }

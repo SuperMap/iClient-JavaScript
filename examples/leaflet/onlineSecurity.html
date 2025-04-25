@@ -175,15 +175,19 @@
     /*注册key end*/
 
     /*出图*/
+    var onlineMap;
     function showMapWithOnlineKey() {
         var key = $('#mapKey_online').val();
         var mapUrl = $('#serviceUrlMap_online').val();
         if (!checkUrl(mapUrl)) {
             return;
         }
+        if (onlineMap) {
+          onlineMap.remove();
+        }
         L.supermap.SecurityManager.registerKey(mapUrl, key);
 
-        var onlineMap = L.map('online_map', {
+        onlineMap = L.map('online_map', {
             crs: L.CRS.EPSG4326,
             center: [30, 104],
             maxZoom: 18,

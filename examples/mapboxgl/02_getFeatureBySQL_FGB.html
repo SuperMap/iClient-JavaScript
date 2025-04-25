@@ -129,6 +129,8 @@
       function clearFeatures() {
         if (map.getLayer('queryDatas')) {
           map.removeLayer('queryDatas');
+        }
+        if (map.getLayer('queryDatasouter')) {
           map.removeLayer('queryDatasouter');
           map.removeSource('queryDatasouter');
         }
