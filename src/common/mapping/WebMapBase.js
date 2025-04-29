@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { WebMapService } from './WebMapService';
@@ -257,11 +257,19 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      * @function WebMapBase.prototype.setStyle
      * @description 更新地图样式。
      * @param {Object} style - 地图 style 样式
+     * @param {boolean} preserveMap - 保留地图实例，覆盖图层样式。
      */
-    setStyle(style) {
+    setStyle(style, preserveMap = false) {
       if (this.map) {
         this.mapOptions.style = style;
-        this._initWebMap();
+        if (preserveMap) {
+          this.cleanLayers();
+        }
+        if (this._isWebMapV3(style)) {
+          this.setMapId(style, preserveMap)
+          return;
+        }
+        this._initWebMap(!preserveMap);
       }
     }
 
@@ -454,7 +462,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
           this._handler.clean(removeMap);
           this._handler = null;
         }
-        this.map = null;
+        removeMap && (this.map = null);
         if (this.mapOptions && (this.mapId || this.webMapInfo)) {
           this.mapOptions.center = null;
           this.mapOptions.zoom = null;
@@ -472,7 +480,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       if (!this.map) {
         return;
       }
-      const layersToClean = this._cacheCleanLayers.filter(item => !item.reused);
+      const layersToClean = this._cacheCleanLayers.filter((item) => !item.reused);
       this._handler && this._handler.cleanLayers(layersToClean);
       this._cacheCleanLayers = [];
       this.clean(false);
@@ -538,7 +546,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       this.webMapService.setProxy(proxy);
     }
 
-    setMapId(mapId) {
+    setMapId(mapId, preserveMap = false) {
       if (typeof mapId === 'string' || typeof mapId === 'number') {
         this.mapId = mapId;
         this.webMapInfo = null;
@@ -551,7 +559,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
         return;
       }
       setTimeout(() => {
-        this._initWebMap();
+        this._initWebMap(!preserveMap);
       }, 0);
     }
 
@@ -601,8 +609,19 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       this.fire('layeraddchanged', params);
     }
 
+    _isWebMapV3(styleInfo) {
+      if (!styleInfo.version) {
+        return false;
+      }
+      const subVersions = `${styleInfo.version}`.split('.')
+      if (subVersions.length <= 1) {
+        return false;
+      }
+      return +subVersions[0] >= 3;
+    }
+
     _getMapInfo(mapInfo) {
-      const type = +mapInfo.version.split('.')[0] >= 3 ? 'WebMap3' : 'WebMap2';
+      const type = this._isWebMapV3(mapInfo) ? 'WebMap3' : 'WebMap2';
       this._createMap(type, mapInfo);
     }
 

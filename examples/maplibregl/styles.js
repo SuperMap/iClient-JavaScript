@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
 
 var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
     "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +

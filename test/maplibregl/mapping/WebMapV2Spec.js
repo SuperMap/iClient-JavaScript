@@ -2,8 +2,8 @@ import maplibregl from 'maplibre-gl';
 import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
-import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import * as DataFlowServiceUtil from '../../../src/maplibregl/services/DataFlowService';
 import '../../resources/WebMapV5.js';
 import { Canvg } from 'canvg';
@@ -1284,7 +1284,9 @@ describe('maplibregl_WebMapV2', () => {
     datavizWebmap.once('mapcreatesucceeded', (e) => {
       expect(e.map).not.toBeNull();
       datavizWebmap.setMapId('');
+      expect(datavizWebmap.webMapInfo).toBeFalsy();
       datavizWebmap.setStyle(style);
+      expect(datavizWebmap.webMapInfo).toBeFalsy();
       expect(datavizWebmap.mapOptions.style).toEqual(style);
       datavizWebmap.once('mapcreatesucceeded', ({ layers }) => {
         expect(layers.length).toBe(2);

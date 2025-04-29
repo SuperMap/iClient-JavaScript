@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -129,6 +129,8 @@
       function clearFeatures() {
         if (map.getLayer('queryDatas')) {
           map.removeLayer('queryDatas');
+        }
+        if (map.getLayer('queryDatasouter')) {
           map.removeLayer('queryDatasouter');
           map.removeSource('queryDatasouter');
         }

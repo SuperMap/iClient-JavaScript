@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import 'promise-polyfill/dist/polyfill';
@@ -282,6 +282,7 @@ export var getRequestTimeout = function () {
 
 /**
  * @function setRequestHeaders
+ * @version 12.0.0
  * @category BaseTypes Util
  * @description 设置请求自定义 request headers。
  * @param {function} func - 请求自定义 request headers 回调函数。

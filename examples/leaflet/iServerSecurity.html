@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -336,16 +336,20 @@
     /*token访问服务 end*/
 
     /*出图*/
+    var onlineMap;
     function showMapWithToken() {
         var token = $('#mapToken_iserver').val();
         var mapUrl = $('#serviceUrlMap_iserver').val();
         if (!checkUrl(mapUrl)) {
             return;
         }
+        if (onlineMap) {
+          onlineMap.remove();
+        }
         //使用前要先注册token,如果为该地址注册过则不用重复注册
         L.supermap.SecurityManager.registerToken(mapUrl, token);
 
-        var onlineMap = L.map('iserver_map', {
+        onlineMap = L.map('iserver_map', {
             center: [30, 104],
             maxZoom: 18,
             zoom: 2

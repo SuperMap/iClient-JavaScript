@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-web\.js)(\\?|$)"),
         s = document.getElementsByTagName('script'), targetScript;
@@ -237,5 +237,5 @@
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
     window.version = "12.0.0";
-    window.preRelease = "";
+    window.preRelease = "beta";
 })();

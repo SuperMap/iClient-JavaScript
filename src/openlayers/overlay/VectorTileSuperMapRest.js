@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
@@ -323,7 +323,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                 this.baseUrl = url;
                 style = await response.json();
             }
-            await this._fillByStyleJSON(style, options.source);
+            await this._fillByStyleJSON(style, options);
         } else {
             this._fillByRestMapOptions(options.url, options);
         }
@@ -335,7 +335,8 @@ export class VectorTileSuperMapRest extends VectorTile {
         }
     }
 
-    async _fillByStyleJSON(style, source) {
+    async _fillByStyleJSON(style, options) {
+        let { source, withCredentials } = options
         if (!source) {
             source = Object.keys(style.sources)[0];
         }
@@ -356,7 +357,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                 if (!CommonUtil.isAbsoluteURL(tiles)) {
                     tiles = CommonUtil.relative2absolute(tiles, this.baseUrl);
                 }
-                const response = await FetchRequest.get(tiles, {}, { withoutFormatSuffix: true });
+                const response = await FetchRequest.get(tiles, {}, { withCredentials, withoutFormatSuffix: true });
                 const sourceInfo = await response.json();
                 let tileUrl = sourceInfo.tiles[0];
                 if (!CommonUtil.isAbsoluteURL(tileUrl)) {
