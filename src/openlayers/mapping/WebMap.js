@@ -83,8 +83,8 @@ const dpiConfig = {
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
  * @param {string} [options.credentialKey] - 凭证密钥。例如为 "key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填。
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey 和 credentialValue 必须一起使用。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
+ * @deprecated {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @deprecated {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
  * @param {Object} [options.serviceProxy] - SuperMap iPortal 内置代理信息，仅矢量瓦片图层上图才会使用。
  * @param {string} [options.tiandituKey] - 天地图的 key。
  * @param {string} [options.bingMapsKey] - 必应地图的 key。
@@ -115,9 +115,7 @@ export class WebMap extends Observable {
     this.errorCallback = options.errorCallback;
     this.credentialKey = options.credentialKey;
     this.credentialValue = options.credentialValue;
-    this.withCredentials = options.withCredentials || false;
     this.target = options.target || 'map';
-    this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
     this.serviceProxy = options.serviceProxy || null;
     this.tiandituKey = options.tiandituKey;
     this.bingMapsKey = options.bingMapsKey || '';
@@ -266,7 +264,7 @@ export class WebMap extends Observable {
       }
       mapUrl = this.server + 'web/maps/' + this.mapId + '/map';
       let filter = 'getUrlResource.json?url=';
-      if (this.excludePortalProxyUrl && this.server.indexOf(filter) > -1) {
+      if (this.server.indexOf(filter) > -1) {
         //大屏需求,或者有加上代理的
         let urlArray = this.server.split(filter);
         if (urlArray.length > 1) {
@@ -292,7 +290,7 @@ export class WebMap extends Observable {
       mapUrl = url;
     }
     FetchRequest.get(that.getRequestUrl(mapUrl), null, {
-      withCredentials: this.withCredentials
+      withCredentials: that.isCredentail(mapUrl)
     })
       .then(function (response) {
         return response.json();
@@ -381,7 +379,7 @@ export class WebMap extends Observable {
     if (this.isCustomProjection(crs)) {
       // 去iServer请求wkt  否则只能预览出图
       await FetchRequest.get(that.getRequestUrl(`${baseLayerUrl}/prjCoordSys.wkt`), null, {
-        withCredentials: that.withCredentials,
+        withCredentials: that.isCredentail(baseLayerUrl),
         withoutFormatSuffix: true
       })
         .then(function (response) {
@@ -565,7 +563,7 @@ export class WebMap extends Observable {
     if (baseLayerType === 'TILE') {
       url = this.handleJSONSuffix(url);
       FetchRequest.get(me.getRequestUrl(url), null, {
-        withCredentials: this.withCredentials
+        withCredentials: me.isCredentail(url)
       })
         .then(function (response) {
           return response.json();
@@ -593,7 +591,7 @@ export class WebMap extends Observable {
             tileGrid: TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid,
             tileLoadFunction: me.getCustomTileLoadFunction()
           };
-          if (url && !CommonUtil.isInTheSameDomain(url) && !this.isIportalProxyServiceUrl(url)) {
+          if (url && this.isAddProxy(url)) {
             options.tileProxy = me.server + 'apps/viewer/getUrlResource.png?url=';
           }
           source = new TileSuperMapRest(options);
@@ -606,8 +604,8 @@ export class WebMap extends Observable {
       source = me.createWMSSource(baseLayerInfo);
       me.addSpecToMap(source);
     } else if (baseLayerType === 'WMTS') {
-      FetchRequest.get(me.getRequestUrl(url, true), null, {
-        withCredentials: this.withCredentials
+      FetchRequest.get(me.getRequestUrl(url), null, {
+        withCredentials: me.isCredentail(url)
       })
         .then(function (response) {
           return response.text();
@@ -1206,6 +1204,12 @@ export class WebMap extends Observable {
         }
       }
     }
+    if(transformImageUrl) {
+      return function(imageTile, url) {
+        const src = transformImageUrl(url);
+        imageTile.getImage().src = src;
+      }
+    }
   }
 
   /**
@@ -1268,9 +1272,8 @@ export class WebMap extends Observable {
     //主机名相同时不添加代理,iportal geturlResource不支持webp代理
     if (
       layerInfo.url &&
-      !CommonUtil.isInTheSameDomain(layerInfo.url) &&
-      !this.isIportalProxyServiceUrl(layerInfo.url) &&
-      layerInfo.format !== 'webp'
+      layerInfo.format !== 'webp' && 
+      this.isAddProxy(layerInfo.url, layerInfo.proxy)
     ) {
       options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
     }
@@ -1396,7 +1399,9 @@ export class WebMap extends Observable {
         VERSION: layerInfo.version || '1.3.0'
       },
       projection: layerInfo.projection || that.baseProjection,
-      tileLoadFunction: this.getCustomTileLoadFunction()
+      tileLoadFunction: this.getCustomTileLoadFunction((src) => {
+        return that.isAddProxy(src, layerInfo.proxy) ? `${that.getProxy('png')}${encodeURIComponent(src)}`: src;
+      })
     });
   }
 
@@ -1444,7 +1449,7 @@ export class WebMap extends Observable {
       url = layerInfo.url.trim(),
       credential = layerInfo.credential,
       options = {
-        withCredentials: this.withCredentials,
+        withCredentials: that.isCredentail(url, layerInfo.proxy),
         withoutFormatSuffix: true
       };
     if (isDynamic) {
@@ -1461,7 +1466,7 @@ export class WebMap extends Observable {
       token = credential.token;
     }
     url = this.handleJSONSuffix(url);
-    return FetchRequest.get(that.getRequestUrl(url), null, options)
+    return FetchRequest.get(that.getRequestUrl(url, layerInfo.proxy), null, options)
       .then(function (response) {
         return response.json();
       })
@@ -1471,7 +1476,7 @@ export class WebMap extends Observable {
         }
         let format = 'png';
         if (that.tileFormat === 'webp') {
-          const isSupportWebp = await that.isSupportWebp(layerInfo.url, token);
+          const isSupportWebp = await that.isSupportWebp(layerInfo.url, token, layerInfo.proxy);
           format = isSupportWebp ? 'webp' : 'png';
         }
         return {
@@ -1501,7 +1506,7 @@ export class WebMap extends Observable {
   getTileInfo(layerInfo, callback, mapInfo) {
     let that = this;
     let options = {
-      withCredentials: this.withCredentials,
+      withCredentials: that.isCredentail(layerInfo.url, layerInfo.proxy),
       withoutFormatSuffix: true
     };
     let tempUrl = layerInfo.url;
@@ -1510,7 +1515,7 @@ export class WebMap extends Observable {
       layerInfo.url = layerInfo.url.split('?token=')[0];
     }
     let url = this.handleJSONSuffix(tempUrl);
-    return FetchRequest.get(that.getRequestUrl(url), null, options)
+    return FetchRequest.get(that.getRequestUrl(url, layerInfo.proxy), null, options)
       .then(function (response) {
         return response.json();
       })
@@ -1534,7 +1539,7 @@ export class WebMap extends Observable {
           that.tileFormat === 'webp' &&
           layerInfo.url !== 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'
         ) {
-          const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token);
+          const isSupprtWebp = await that.isSupportWebp(layerInfo.url, token, layerInfo.proxy);
           layerInfo.format = isSupprtWebp ? 'webp' : 'png';
         }
         // 请求结果完成 继续添加图层
@@ -1555,8 +1560,9 @@ export class WebMap extends Observable {
    * @description 获取wmts请求文档的url
    * @param {string} url - 图层信息。
    * @param {boolean} isKvp - 是否为kvp模式
+   * @param {boolean} proxy - 是否带上代理地址 
    */
-  getWMTSUrl(url, isKvp) {
+  getWMTSUrl(url, isKvp, proxy) {
     let splitStr = '?';
     if (url.indexOf('?') > -1) {
       splitStr = '&';
@@ -1566,7 +1572,7 @@ export class WebMap extends Observable {
     } else {
       url += splitStr + '/1.0.0/WMTSCapabilities.xml';
     }
-    return this.getRequestUrl(url, true);
+    return this.getRequestUrl(url, proxy);
   }
 
   /**
@@ -1579,11 +1585,11 @@ export class WebMap extends Observable {
   getWmtsInfo(layerInfo, callback) {
     let that = this;
     let options = {
-      withCredentials: that.withCredentials,
+      withCredentials: that.isCredentail(layerInfo.proxy), 
       withoutFormatSuffix: true
     };
     const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
-    return FetchRequest.get(that.getWMTSUrl(layerInfo.url, isKvp), null, options)
+    return FetchRequest.get(that.getWMTSUrl(layerInfo.url, isKvp, layerInfo.proxy), null, options)
       .then(function (response) {
         return response.text();
       })
@@ -1686,12 +1692,12 @@ export class WebMap extends Observable {
     let url = layerInfo.url.trim();
     url += url.indexOf('?') > -1 ? '&SERVICE=WMS&REQUEST=GetCapabilities' : '?SERVICE=WMS&REQUEST=GetCapabilities';
     let options = {
-      withCredentials: that.withCredentials,
+      withCredentials: that.isCredentail(url, layerInfo.proxy),
       withoutFormatSuffix: true
     };
 
     let promise = new Promise(function (resolve) {
-      return FetchRequest.get(that.getRequestUrl(url, true), null, options)
+      return FetchRequest.get(that.getRequestUrl(url, layerInfo.proxy), null, options)
         .then(function (response) {
           return response.text();
         })
@@ -1773,7 +1779,7 @@ export class WebMap extends Observable {
 
     // 单位通过坐标系获取 （PS: 以前代码非4326 都默认是米）
     let unit = olProj.get(this.baseProjection).getUnits();
-
+    const that = this;
     return new WMTS({
       url: layerInfo.tileUrl || layerInfo.url,
       layer: layerInfo.layer,
@@ -1792,6 +1798,9 @@ export class WebMap extends Observable {
       tileLoadFunction: this.getCustomTileLoadFunction(function (src) {
         if (src.indexOf('tianditu.gov.cn') >= 0) {
           return `${src}&tk=${CommonUtil.getParameters(layerInfo.url)['tk']}`;
+        }
+        if(that.isAddProxy(src, layerInfo.proxy)) {
+          return `${that.getProxy('png')}${encodeURIComponent(src)}`;
         }
         return src;
       })
@@ -1956,9 +1965,9 @@ export class WebMap extends Observable {
             let url = isSampleData
               ? `${that.server}apps/dataviz/libs/sample-datas/${dataSource.name}.json`
               : `${that.server}web/datas/${serverId}/content.json?pageSize=9999999&currentPage=1`;
-            url = that.getRequestUrl(url);
+            url = that.getRequestUrl(url, layer.proxy);
             FetchRequest.get(url, null, {
-              withCredentials: this.withCredentials
+              withCredentials: that.isCredentail(url, layer.proxy)
             })
               .then(function (response) {
                 return response.json();
@@ -2025,7 +2034,7 @@ export class WebMap extends Observable {
                       //需要判断是使用tile还是mvt服务
                       let dataService = that.getService(dataItemServices, 'RESTDATA');
                       that
-                        .isMvt(dataService.address, datasetName)
+                        .isMvt(dataService.address, datasetName, layer.proxy)
                         .then(async (info) => {
                           await that.getServiceInfoFromLayer(
                             layerIndex,
@@ -2072,7 +2081,7 @@ export class WebMap extends Observable {
               });
           }
         } else if (dataSource && dataSource.type === 'USER_DATA') {
-          that.addGeojsonFromUrl(layer, len, layerIndex, false);
+          that.addGeojsonFromUrl(layer, len, layerIndex);
         } else if (layer.layerType === 'TILE') {
           that.getTileLayerExtent(
             layer,
@@ -2176,15 +2185,14 @@ export class WebMap extends Observable {
    * @param {Object} layerInfo - 图层信息
    * @param {number} len - 总的图层数量
    * @param {number} layerIndex - 当前图层index
-   * @param {boolean} withCredentials - 是否携带cookie
    */
-  addGeojsonFromUrl(layerInfo, len, layerIndex, withCredentials = this.withCredentials) {
+  addGeojsonFromUrl(layerInfo, len, layerIndex) {
     // 通过web添加geojson不需要携带cookie
     let { dataSource } = layerInfo,
       { url } = dataSource,
       that = this;
     FetchRequest.get(url, null, {
-      withCredentials,
+      withCredentials: that.isCredentail(url),
       withoutFormatSuffix: true
     })
       .then(function (response) {
@@ -2263,7 +2271,7 @@ export class WebMap extends Observable {
       if (service && isMapService && service.serviceType === 'RESTMAP') {
         isAdded = true;
         //地图服务,判断使用mvt还是tile
-        that.getTileLayerInfo(service.address).then(function (restMaps) {
+        that.getTileLayerInfo(service.address, layer.proxy).then(function (restMaps) {
           restMaps.forEach(function (restMapInfo) {
             let bounds = restMapInfo.bounds;
             layer.layerType = 'TILE';
@@ -2330,13 +2338,13 @@ export class WebMap extends Observable {
     let url = layerInfo.url,
       token;
     url = this.handleJSONSuffix(url);
-    let requestUrl = that.getRequestUrl(url, false);
+    let requestUrl = that.getRequestUrl(url, layerInfo.proxy);
     if (layerInfo.credential && layerInfo.credential.token) {
       token = layerInfo.credential.token;
       requestUrl += `?token=${token}`;
     }
     FetchRequest.get(requestUrl, null, {
-      withCredentials: this.withCredentials
+      withCredentials: that.isCredentail(url, layerInfo.proxy)
     })
       .then(function (response) {
         return response.json();
@@ -2369,11 +2377,9 @@ export class WebMap extends Observable {
       dataSourceName = dataSource.dataSourceName || layer.name;
     let requestUrl = that.formatUrlWithCredential(url),
       serviceOptions = {};
-    serviceOptions.withCredentials = this.withCredentials;
+    serviceOptions.withCredentials = this.isCredentail(url, layer.proxy);
     if (
-      !this.excludePortalProxyUrl &&
-      !CommonUtil.isInTheSameDomain(requestUrl) &&
-      !this.isIportalProxyServiceUrl(requestUrl)
+      that.isAddProxy(requestUrl, layer.proxy)
     ) {
       serviceOptions.proxy = this.getProxy();
     }
@@ -2495,8 +2501,9 @@ export class WebMap extends Observable {
     if (layerInfo.layerType === 'MIGRATION') {
       try {
         if (dataSource.type === 'PORTAL_DATA') {
-          const { dataMetaInfo } = await FetchRequest.get(`${this.server}web/datas/${dataSource.serverId}.json`, null, {
-            withCredentials: this.withCredentials
+          const requestUrl = `${this.server}web/datas/${dataSource.serverId}.json`;
+          const { dataMetaInfo } = await FetchRequest.get(requestUrl, null, {
+            withCredentials: this.isCredentail(requestUrl)
           }).then((res) => res.json());
           // eslint-disable-next-line require-atomic-updates
           layerInfo.xyField = {
@@ -2907,11 +2914,9 @@ export class WebMap extends Observable {
     } else {
       let requestUrl = that.formatUrlWithCredential(url),
         serviceOptions = {};
-      serviceOptions.withCredentials = this.withCredentials;
+      serviceOptions.withCredentials = that.isCredentail(requestUrl);
       if (
-        !this.excludePortalProxyUrl &&
-        !CommonUtil.isInTheSameDomain(requestUrl) &&
-        !this.isIportalProxyServiceUrl(requestUrl)
+        that.isAddProxy(requestUrl)
       ) {
         serviceOptions.proxy = this.getProxy();
       }
@@ -4237,7 +4242,7 @@ export class WebMap extends Observable {
   checkUploadToRelationship(fileId) {
     let url = this.getRequestUrl(`${this.server}web/datas/${fileId}/datasets.json`);
     return FetchRequest.get(url, null, {
-      withCredentials: this.withCredentials
+      withCredentials: this.isCredentail(url)
     })
       .then(function (response) {
         return response.json();
@@ -4256,7 +4261,7 @@ export class WebMap extends Observable {
   getDatasources(url) {
     let requestUrl = this.getRequestUrl(`${url}/data/datasources.json`);
     return FetchRequest.get(requestUrl, null, {
-      withCredentials: this.withCredentials
+      withCredentials: this.isCredentail(requestUrl)
     })
       .then(function (response) {
         return response.json();
@@ -4277,7 +4282,7 @@ export class WebMap extends Observable {
   getDataService(fileId, datasetName) {
     let url = this.getRequestUrl(`${this.server}web/datas/${fileId}.json`);
     return FetchRequest.get(url, null, {
-      withCredentials: this.withCredentials
+      withCredentials: this.isCredentail(url)
     })
       .then(function (response) {
         return response.json();
@@ -4290,22 +4295,40 @@ export class WebMap extends Observable {
   }
 
   /**
+   * 请求是否带上cookie
+   * @param {string} url 请求地址，必选参数。
+   * @param {boolean} proxy 是否需要加上代理，可选参数。
+   * @returns 
+   */
+  isCredentail(url, proxy) {
+    if(this.isIportalProxyServiceUrl(url) || (proxy !== false && !CommonUtil.isInTheSameDomain(url))) {
+      return true
+    }
+    return;
+  }
+  /**
+   * url是否要带上代理
+   * @param {*} url 请求地址，必选参数。 
+   * @param {*} proxy 是否需要加上代理，可选参数。 
+   * @returns 
+   */
+  isAddProxy(url, proxy) {
+    return !CommonUtil.isInTheSameDomain(url) && !this.isIportalProxyServiceUrl(url) && proxy !== false;
+  }
+
+  /**
    * @private
    * @function WebMap.prototype.getRootUrl
    * @description 获取请求地址。
    * @param {string} url 请求的地址。
-   * @param {boolean} 请求是否带上Credential。
+   * @param {boolean | undefined} proxy 是否带上代理。
    * @returns {Promise<T | never>} 请求地址。
    */
-  getRequestUrl(url, excludeCreditial) {
-    url = excludeCreditial ? url : this.formatUrlWithCredential(url);
-    //如果传入进来的url带了代理则不需要处理
-    if (this.excludePortalProxyUrl) {
-      return;
-    }
-    return CommonUtil.isInTheSameDomain(url) || this.isIportalProxyServiceUrl(url)
-      ? url
-      : `${this.getProxy()}${encodeURIComponent(url)}`;
+  getRequestUrl(url, proxy) {
+    url = this.formatUrlWithCredential(url);
+    return this.isAddProxy(url, proxy) ? 
+    `${this.getProxy()}${encodeURIComponent(url)}`: 
+    url
   }
 
   /**
@@ -4341,14 +4364,15 @@ export class WebMap extends Observable {
    * @function WebMap.prototype.getTileLayerInfo
    * @description 获取地图服务的信息
    * @param {string} url 地图服务的url（没有地图名字）
+   * @param {boolean | undefined} proxy 是否需要代理
    * @returns {Promise<T | never>} 地图服务信息
    */
-  getTileLayerInfo(url) {
+  getTileLayerInfo(url, proxy) {
     let that = this,
       epsgCode = that.baseProjection.split('EPSG:')[1];
-    let requestUrl = that.getRequestUrl(`${url}/maps.json`);
+    let requestUrl = that.getRequestUrl(`${url}/maps.json`, proxy);
     return FetchRequest.get(requestUrl, null, {
-      withCredentials: this.withCredentials
+      withCredentials: this.isCredentail(url, proxy)
     })
       .then(function (response) {
         return response.json();
@@ -4358,10 +4382,11 @@ export class WebMap extends Observable {
         if (mapInfo) {
           mapInfo.forEach(function (info) {
             let mapUrl = that.getRequestUrl(
-              `${info.path}.json?prjCoordSys=${encodeURI(JSON.stringify({ epsgCode: epsgCode }))}`
+              `${info.path}.json?prjCoordSys=${encodeURI(JSON.stringify({ epsgCode: epsgCode }))}`,
+              proxy
             );
             let promise = FetchRequest.get(mapUrl, null, {
-              withCredentials: that.withCredentials
+              withCredentials: that.isCredentail(mapUrl, proxy)
             })
               .then(function (response) {
                 return response.json();
@@ -4705,15 +4730,16 @@ export class WebMap extends Observable {
    * @description 判断当前能否使用数据服务的mvt上图方式
    * @param {string} serviceUrl 数据服务的地址
    * @param {string} datasetName 数据服务的数据集名称
+   * @param {boolean | undefined} proxy 是否带上代理
    * @returns {Object} 数据服务的信息
    */
-  isMvt(serviceUrl, datasetName) {
+  isMvt(serviceUrl, datasetName, proxy) {
     let that = this;
     return this.getDatasetsInfo(serviceUrl, datasetName).then((info) => {
       //判断是否和底图坐标系一直
       if (info.epsgCode == that.baseProjection.split('EPSG:')[1]) {
-        return FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`), null, {
-          withCredentials: that.withCredentials
+        return FetchRequest.get(that.getRequestUrl(`${info.url}/tilefeature.mvt`, proxy), null, {
+          withCredentials: that.isCredentail(info.url, proxy)
         })
           .then(function (response) {
             return response.json();
@@ -4744,7 +4770,7 @@ export class WebMap extends Observable {
       //判断mvt服务是否可用
       let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}.json`;
       return FetchRequest.get(that.getRequestUrl(url), null, {
-        withCredentials: that.withCredentials
+        withCredentials: that.isCredentail(url)
       })
         .then(function (response) {
           return response.json();
@@ -4839,7 +4865,7 @@ export class WebMap extends Observable {
     }
 
     return FetchRequest.get(url, null, {
-      withCredentials: this.withCredentials,
+      withCredentials: this.isCredentail(url),
       withoutFormatSuffix: true,
       headers: {
         'Content-Type': 'application/json;chartset=uft-8'
@@ -4901,7 +4927,7 @@ export class WebMap extends Observable {
     }
 
     return FetchRequest.get(styleUrl, null, {
-      withCredentials: this.withCredentials,
+      withCredentials: this.isCredentail(styleUrl),
       withoutFormatSuffix: true,
       headers: {
         'Content-Type': 'application/json;chartset=uft-8'
@@ -5148,7 +5174,7 @@ export class WebMap extends Observable {
     if (checkUrl && !CommonUtil.isAbsoluteURL(checkUrl)) {
       checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
     }
-    let withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
+    let withCredentials = this.isCredentail(checkUrl, layerInfo.proxy);
     const requestParameters = this.tileRequestParameters && this.tileRequestParameters(checkUrl);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
@@ -5197,9 +5223,10 @@ export class WebMap extends Observable {
    * @description 判断是否支持webP
    * @param {*} url 服务地址
    * @param {*} token 服务token
+   * @param {*} proxy
    * @returns {boolean}
    */
-  isSupportWebp(url, token) {
+  isSupportWebp(url, token, proxy) {
     // 还需要判断浏览器
     let isIE = this.isIE();
     if (
@@ -5210,17 +5237,9 @@ export class WebMap extends Observable {
       return false;
     }
     url = token ? `${url}/tileImage.webp?token=${token}` : `${url}/tileImage.webp`;
-    let isSameDomain = CommonUtil.isInTheSameDomain(url),
-      excledeCreditial;
-    if (isSameDomain && !token) {
-      // online上服务域名一直，要用token值
-      excledeCreditial = false;
-    } else {
-      excledeCreditial = true;
-    }
-    url = this.getRequestUrl(url, excledeCreditial);
+    url = this.getRequestUrl(url, proxy);
     return FetchRequest.get(url, null, {
-      withCredentials: this.withCredentials,
+      withCredentials: this.isCredentail(url, proxy),
       withoutFormatSuffix: true
     })
       .then(function (response) {
