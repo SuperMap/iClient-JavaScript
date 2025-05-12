@@ -264,7 +264,7 @@ export function createMapExtendExtending(product) {
       }
       layers.forEach(id => {
         const overlayLayer = this.overlayLayersManager[id] || {};
-        if (overlayLayer.interaction && overlayLayer[mode] && overlayLayer.events.includes(type)) {
+        if (overlayLayer.interaction && overlayLayer[mode] && (overlayLayer.events === 'all' || overlayLayer.events.includes(type))) {
           overlayLayer[mode](type, listener || layerId);
         }
       });

@@ -72,6 +72,8 @@ export class FGBLayer {
     this.overlay = true;
     this.extent = options.extent;
     this._updateFeaturesFn = this._updateFeatures.bind(this);
+    this.interaction = true;
+    this.events = 'all';
   }
   /**
    * @function FGBLayer.prototype.onAdd
@@ -112,7 +114,28 @@ export class FGBLayer {
    * @function FGBLayer.prototype.onRemove
    */
   onRemove() {
+    if (this.map.getLayer(this.layerId)) {
+      this.map.removeLayer(this.layerId);
+    }
     this.map.off('moveend', this._updateFeaturesFn);
+  }
+  /**
+   * @function FGBLayer.prototype.on
+   */
+  on(type, listener) {
+    this.map.on(type, this.layerId, listener);
+  }
+  /**
+   * @function FGBLayer.prototype.off
+   */
+  off(type, listener) {
+    this.map.off(type, this.layerId, listener);
+  }
+  /**
+   * @function FGBLayer.prototype.once
+   */
+  once(type, listener) {
+    this.map.once(type, this.layerId, listener);
   }
   /**
    * @function FGBLayer.prototype.moveLayer

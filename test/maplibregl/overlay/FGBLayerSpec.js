@@ -123,6 +123,7 @@ describe('maplibregl_FGBLayer', () => {
   it('render moveLayer onRemove setVisibility', (done) => {
     var count = 0;
     fgblayer = new FGBLayer({
+      layerID: 'test',
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
@@ -140,6 +141,10 @@ describe('maplibregl_FGBLayer', () => {
         fgblayer.moveLayer(fgblayer.layerId);
         fgblayer.setVisibility(false);
         map.removeLayer(fgblayer.id);
+        function clickCallback() {}
+        fgblayer.on('click', 'test', clickCallback);
+        fgblayer.once('click', 'test', clickCallback);
+        fgblayer.off('click', 'test', clickCallback);
         fgblayer = null;
         expect(count).toBe(1);
         done();

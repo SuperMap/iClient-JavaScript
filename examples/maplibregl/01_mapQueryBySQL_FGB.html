@@ -30,7 +30,7 @@
         </div>
       </div>
       <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayer()"/>
   </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -72,7 +72,6 @@
 
 
     function query() {
-        clearFeatures();
         var sql = document.getElementById("sql").value || "SMID > 0";
         var param = new maplibregl.supermap.QueryBySQLParameters({
             queryParams: {
@@ -91,17 +90,14 @@
                 'fill-opacity': 0.6 /* 透明度 */
               }
             });
+            clearLayer();
             map.addLayer(FGBLayer);
         });
     }
 
-    function clearFeatures() {
+    function clearLayer() {
       if (map.getLayer('points')) {
         map.removeLayer('points');
-      }
-      if(map.getSource('pointsouter')){
-        map.removeLayer('pointsouter');
-        map.removeSource('pointsouter');
       }
     }
 

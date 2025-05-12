@@ -109,6 +109,7 @@ describe('mapboxgl_FGBLayer', () => {
 
   it('render moveLayer onRemove setVisibility', (done) => {
     var fgblayer = new FGBLayer({
+      layerID: 'test',
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
@@ -122,6 +123,10 @@ describe('mapboxgl_FGBLayer', () => {
     fgblayer.moveLayer(fgblayer.layerId, 'simple-tiles');
     fgblayer.setVisibility(false);
     fgblayer.onRemove();
+    function clickCallback() {}
+    fgblayer.on('click', 'test', clickCallback);
+    fgblayer.once('click', 'test', clickCallback);
+    fgblayer.off('click', 'test', clickCallback);
     expect(fgblayer).not.toBeNull();
   });
 

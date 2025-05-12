@@ -43,7 +43,7 @@
             </div>
           </div>
           <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
-          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+          <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayer()"/>
       </div>
     </div>
     <div id="map"></div>
@@ -87,7 +87,6 @@
       map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
       function query() {
-        clearFeatures();
         var sql = document.getElementById("sql").value || "SMID > 0";
         var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
@@ -110,13 +109,12 @@
                 'fill-opacity': 0.6 /* 透明度 */
               }
             });
+            clearLayer();
             map.addLayer(FGBLayer);
             map.on('click', 'queryDatas', function (e) {
               new maplibregl.Popup()
                 .setLngLat(e.lngLat)
                 .setHTML(
-                  e.features[0].properties.SMID +
-                    '<br>' +
                     resources.text_country +
                     '：' +
                     e.features[0].properties.COUNTRY
@@ -126,13 +124,9 @@
           });
       }
 
-      function clearFeatures() {
+      function clearLayer() {
         if (map.getLayer('queryDatas')) {
           map.removeLayer('queryDatas');
-        }
-        if (map.getLayer('queryDatasouter')) {
-          map.removeLayer('queryDatasouter');
-          map.removeSource('queryDatasouter');
         }
       }
     </script>
