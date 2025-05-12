@@ -1364,4 +1364,27 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
+  it('datavizWebMap_isCredentail_isAddProxy', (done) => {
+    const serviceProxy = {
+        "httpConnPoolInfo": null,
+        "enableAccessStatistics": true,
+        "scheme": null,
+        "enableBuiltinProxy": true,
+        "port": 8195,
+        "proxyServerRootUrl": "http://127.0.0.1:8195/portalproxy",
+        "rootUrlPostfix": "portalproxy",
+        "enable": true,
+        "httpsSetting": null,
+        "cacheConfig": null
+    };
+    var datavizWebmap = new WebMap(id, { webMap: JSON.parse(datavizWebMap_BAIDU), successCallback, serviceProxy: serviceProxy });
+    function successCallback() {
+      const url = 'http://127.0.0.1:8195/portalproxy/11111/iserver/services/map-Population/rest/maps/PopulationDistribution/tileImage'
+      const withCredential = datavizWebmap.isCredentail(url, false);
+      const isProxy = datavizWebmap.isAddProxy(url, false);
+      expect(withCredential).toBeTruthy();
+      expect(isProxy).toBeFalse();
+      done();
+    }
+  });
 });
