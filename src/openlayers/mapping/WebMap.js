@@ -1463,7 +1463,7 @@ export class WebMap extends Observable {
         } else {
             url += splitStr + '/1.0.0/WMTSCapabilities.xml';
         }
-        return this.getRequestUrl(url, true, proxy);
+        return this.getRequestUrl(url, proxy);
     }
 
     /**
@@ -1662,7 +1662,7 @@ export class WebMap extends Observable {
                     return;
                 }
                 if(that.isAddProxy(src, layerInfo.proxy)) {
-                    return `${that.getProxy('png')}${encodeURIComponent(src)}`;
+                    imageTile.getImage().src = `${that.getProxy('png')}${encodeURIComponent(src)}`;
                 }
                 imageTile.getImage().src = src
             }
