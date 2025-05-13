@@ -4859,7 +4859,7 @@ export class WebMap extends Observable {
         if (checkUrl && !CommonUtil.isAbsoluteURL(checkUrl)) {
           checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
         }
-        let withCredentials = this.isCredentail(checkUrl, layerInfo.proxy);
+        let withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
         // 创建MapBoxStyle样式
         let mapboxStyles = new MapboxStyles({
             baseUrl,
