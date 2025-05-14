@@ -1031,17 +1031,11 @@
         modify = new ol.interaction.Modify({
           features: select.getFeatures()
         });
-        modify.on('modifyend', function() {
-          updateChanged = true;
-          document.querySelector('.editSave').disabled = false;
-        });
+        modify.on('modifyend', updatedFeature);
         translate = new ol.interaction.Translate({
           features: select.getFeatures()
         });
-        translate.on('translateend', function() {
-          updateChanged = true;
-          document.querySelector('.editSave').disabled = false;
-        });
+        translate.on('translateend', updatedFeature);
         snap = new ol.interaction.Snap({
           source: source
         });
@@ -1049,6 +1043,15 @@
         map.addInteraction(translate);
         map.addInteraction(modify);
         map.addInteraction(snap);
+      }
+
+      function updatedFeature(e) {
+        var features = JSON.parse(new ol.format.GeoJSON().writeFeature(e.features.getArray()[0]));
+        currentFeature.data = features;
+        currentFeature.origin = e.features.getArray()[0];
+        document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+        updateChanged = true;
+        document.querySelector('.editSave').disabled = false;
       }
 
       function startDraw(type) {

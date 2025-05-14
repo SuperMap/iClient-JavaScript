@@ -932,6 +932,15 @@
           }
         });
         allAvailableLayers.forEach(function(layer) {
+          layer.on('pm:update', function(e) {
+            var feature = e.layer.toGeoJSON();
+            currentFeature.dataset = feature.properties.datasetName;
+            currentFeature.data = feature;
+            document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+            renderEditAttribute('edit', currentFeature.data.properties);
+            updateChanged = true;
+            document.querySelector('.editSave').disabled = false;
+          })
           layer.off('click');
           layer.on('click', function(e) {
             isChanged = true;
