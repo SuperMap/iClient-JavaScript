@@ -1663,6 +1663,7 @@ export class WebMap extends Observable {
                 }
                 if(that.isAddProxy(src, layerInfo.proxy)) {
                     imageTile.getImage().src = `${that.getProxy('png')}${encodeURIComponent(src)}`;
+                    return;
                 }
                 imageTile.getImage().src = src
             }
