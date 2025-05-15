@@ -1584,7 +1584,7 @@ export class WebMap extends Observable {
   getWmtsInfo(layerInfo, callback) {
     let that = this;
     let options = {
-      withCredentials: that.isCredentail(layerInfo.proxy), 
+      withCredentials: that.isCredentail(layerInfo.url, layerInfo.proxy), 
       withoutFormatSuffix: true
     };
     const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
@@ -4892,9 +4892,9 @@ export class WebMap extends Observable {
       url = this.getRequestUrl(url + '.json');
     }
     if (url.indexOf('/restjsr/') > -1 && !/\.json$/.test(url)) {
-      url = this.getRequestUrl(url + '.json');
+      url = this.getRequestUrl(url + '.json', layerInfo.proxy);
     } else {
-      url = this.getRequestUrl(url);
+      url = this.getRequestUrl(url, layerInfo.proxy);
     }
 
     let credential = layerInfo.credential;
@@ -4907,7 +4907,7 @@ export class WebMap extends Observable {
     }
 
     return FetchRequest.get(url, null, {
-      withCredentials: this.isCredentail(url),
+      withCredentials: this.isCredentail(url, layerInfo.proxy),
       withoutFormatSuffix: true,
       headers: {
         'Content-Type': 'application/json;chartset=uft-8'
@@ -4958,7 +4958,7 @@ export class WebMap extends Observable {
     if (styleUrl.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
       styleUrl = `${styleUrl}/style.json`;
     }
-    styleUrl = this.getRequestUrl(styleUrl);
+    styleUrl = this.getRequestUrl(styleUrl, layerInfo.proxy);
     let credential = layerInfo.credential;
     //携带令牌(restmap用的首字母大写，但是这里要用小写)
     let credentialValue, keyfix;
@@ -4969,7 +4969,7 @@ export class WebMap extends Observable {
     }
 
     return FetchRequest.get(styleUrl, null, {
-      withCredentials: this.isCredentail(styleUrl),
+      withCredentials: this.isCredentail(styleUrl, layerInfo.proxy),
       withoutFormatSuffix: true,
       headers: {
         'Content-Type': 'application/json;chartset=uft-8'
