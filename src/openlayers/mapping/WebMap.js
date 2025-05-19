@@ -1636,7 +1636,7 @@ export class WebMap extends Observable {
   getWmtsInfo(layerInfo, callback) {
     let that = this;
     let options = {
-      withCredentials: that.isCredentail(layerInfo.proxy), 
+      withCredentials: that.isCredentail(layerInfo.url, layerInfo.proxy), 
       withoutFormatSuffix: true
     };
     const isKvp = !layerInfo.requestEncoding || layerInfo.requestEncoding === 'KVP';
@@ -5248,7 +5248,7 @@ export class WebMap extends Observable {
     if (checkUrl && !CommonUtil.isAbsoluteURL(checkUrl)) {
       checkUrl = CommonUtil.relative2absolute(checkUrl, baseUrl);
     }
-    let withCredentials = this.isCredentail(checkUrl, layerInfo.proxy);
+    const withCredentials = CommonUtil.isInTheSameDomain(checkUrl) || this.isIportalProxyServiceUrl(checkUrl);
     const requestParameters = this.tileRequestParameters && this.tileRequestParameters(checkUrl);
     // 创建MapBoxStyle样式
     let mapboxStyles = new MapboxStyles({
