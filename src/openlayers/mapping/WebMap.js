@@ -4988,7 +4988,8 @@ export class WebMap extends Observable {
           let sourcesNames = Object.keys(sources);
           sourcesNames.forEach(function (sourceName) {
             styles.sources[sourceName].tiles.forEach(function (tiles, i) {
-              styles.sources[sourceName].tiles[i] = `${tiles}?${keyfix}=${credentialValue}`;
+              const splicing = tiles.includes('?') ? '&' : '?';
+              styles.sources[sourceName].tiles[i] = `${tiles}${splicing}${keyfix}=${credentialValue}`;
             });
           });
         }
