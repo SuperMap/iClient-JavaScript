@@ -45,7 +45,7 @@ export const Util = {
         if (geoJSON && geoJSON.type) {
             var format = new GeoJSONFormat();
             var result = format.read(geoJSON, "FeatureCollection");
-            return result[0].geometry;
+            return result && result[0].geometry;
         }
     },
 

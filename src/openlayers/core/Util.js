@@ -72,7 +72,7 @@
        return null;
      }
      const result = new GeoJSONFormat().read(geoJSON, 'FeatureCollection');
-     return result[0].geometry;
+     return result && result[0].geometry;
    },
 
    /**
