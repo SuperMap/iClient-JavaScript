@@ -95,6 +95,7 @@ export class L7LayerBase extends CustomOverlayLayer {
       source.on('update', () => {
         this.reRender();
       });
+    this.l7layer.on('add', () => this.reRender());
   }
 
   getLayer() {
@@ -215,15 +216,15 @@ export class L7LayerBase extends CustomOverlayLayer {
               type: 'Point'
             },
             properties: {
-             ...feature
+              ...feature
             }
-          }
+          };
         });
         sourceInfo.getData = () => {
           return {
             type: 'FeatureCollection',
             features: formatData
-          }
+          };
         };
         break;
     }
@@ -302,7 +303,9 @@ export class L7LayerBase extends CustomOverlayLayer {
     }
     const { layerSource, pickingService } = this.l7layer;
     let datas = pickingService.handleRawFeature(layerSource.data.dataArray, this.l7layer);
-    const { parser: { type } } = layerSource;
+    const {
+      parser: { type }
+    } = layerSource;
     if (type === 'mvt') {
       const { tileset: { cacheTiles = [] } = {} } = layerSource;
       const { sourceLayer, featureId = 'id' } = this.l7layer.rawConfig;

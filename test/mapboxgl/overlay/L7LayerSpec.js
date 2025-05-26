@@ -94,6 +94,53 @@ describe('mapboxgl_L7Layer', () => {
       done();
     });
   });
+  it('HeatmapLayer grid updateSource', (done) => {
+    var layer = new L7Layer({ type: 'HeatmapLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        },
+        transforms: [
+          {
+            type: 'grid',
+            size: 2000000,
+            field: 'v',
+            method: 'sum'
+          }
+        ]
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    spyOn(layer, 'reRender');
+    map.addLayer(layer);
+    l7Layer.setData(data, {
+      parser: {
+        type: 'json',
+        x: 'j',
+        y: 'w'
+      },
+      transforms: [
+        {
+          type: 'grid',
+          size: 200000,
+          field: 'v',
+          method: 'sum'
+        }
+      ]
+    });
+    expect(l7Layer).not.toBeNull();
+    setTimeout(() => {
+      expect(layer.reRender).toHaveBeenCalledTimes(2);
+      done();
+    }, 200);
+  });
 
   it('getL7Scene1', (done) => {
     var layer = new L7Layer({ type: 'PointLayer' });
@@ -323,51 +370,6 @@ describe('mapboxgl_L7Layer', () => {
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
 
-    done();
-  });
-  it('HeatmapLayer grid updateSource', (done) => {
-    var layer = new L7Layer({ type: 'HeatmapLayer' });
-    var l7Layer = layer.getL7Layer();
-    l7Layer
-      .source(data, {
-        parser: {
-          type: 'json',
-          x: 'longitude',
-          y: 'latitude'
-        },
-        transforms: [
-          {
-            type: 'grid',
-            size: 2000000,
-            field: 'v',
-            method: 'sum'
-          }
-        ]
-      })
-      .shape('circle')
-      .active(true)
-      .animate(true)
-      .size(56)
-      .color('#4cfd47');
-    map.addLayer(layer);
-    spyOn(layer, 'reRender');
-    l7Layer.setData(data, {
-      parser: {
-        type: 'json',
-        x: 'j',
-        y: 'w'
-      },
-      transforms: [
-        {
-          type: 'grid',
-          size: 200000,
-          field: 'v',
-          method: 'sum'
-        }
-      ]
-    });
-    expect(l7Layer).not.toBeNull();
-    expect(layer.reRender).toHaveBeenCalled();
     done();
   });
 
