@@ -1,3 +1,19 @@
+class Event {
+  constructor() {
+    this.stacks = {};
+  }
+
+  on(type, cb) {
+    this.stacks[type] = this.stacks[type] || [];
+    this.stacks[type].push(cb);
+  }
+  emit(type) {
+    this.stacks[type]?.forEach((cb) => {
+      cb();
+    });
+  }
+}
+const event = new Event();
 class Scene {
   constructor() {
     this.layerService = {
@@ -6,12 +22,16 @@ class Scene {
       startAnimate: () => true
     };
     this.callbacks = {};
+    event.stacks = {};
   }
   removeAllLayer() {}
   getLayer() {
     return true;
   }
   addLayer() {
+    setTimeout(() => {
+      event.emit('add');
+    }, 100);
     return true;
   }
   removeLayer() {
@@ -49,10 +69,9 @@ class Layer {
     this.layerModel = {
       spriteAnimate: false
     };
-    this.stacks = {};
     this.rawConfig = options;
     this.layerSource = {
-      originData: {type: 'FeatureCollection', features: []},
+      originData: { type: 'FeatureCollection', features: [] },
       data: {
         dataArray: []
       }
@@ -69,7 +88,7 @@ class Layer {
           }
           const newFeature = {
             properties: {},
-            geometry: { type: '', coordinates: [] },
+            geometry: { type: '', coordinates: [] }
           };
           const coordinates = item.coordinates;
           delete item.coordinates;
@@ -81,12 +100,12 @@ class Layer {
         });
         return res;
       }
-    }
+    };
   }
   source(data, options = {}) {
-    const parser = options.parser || { type: "geojson" };
+    const parser = options.parser || { type: 'geojson' };
     let dataArray = [];
-    if (parser.type === "geojson") {
+    if (parser.type === 'geojson') {
       dataArray = data;
     }
     if (parser.type === 'json') {
@@ -105,18 +124,18 @@ class Layer {
     this.layerSource = {
       ...options,
       parser,
-      originData: data.features ? data : {type: 'FeatureCollection', features: data},
+      originData: data.features ? data : { type: 'FeatureCollection', features: data },
       data: {
-        dataArray: parser.type === "geojson" ? data : []
+        dataArray: parser.type === 'geojson' ? data : []
       }
     };
-    if (parser.type === "mvt") {
+    if (parser.type === 'mvt') {
       this.layerSource.tileset = {
-        cacheTiles: this.rawConfig.name.includes("empty")
+        cacheTiles: this.rawConfig.name.includes('empty')
           ? new Map()
           : new Map([
               [
-                "0",
+                '0',
                 {
                   data: {
                     vectorLayerCache: {
@@ -155,7 +174,7 @@ class Layer {
   }
   shape(type) {
     this.shape = type;
-    if (this.shape === "sprite") {
+    if (this.shape === 'sprite') {
       this.layerModel = {
         spriteAnimate: true
       };
@@ -174,16 +193,7 @@ class Layer {
     return this;
   }
   getSource() {
-    const sourceInfo = {
-      on: (type, cb) => {
-        this.stacks[type] = [cb];
-      },
-      emit: type => {
-        this.stacks[type].forEach(cb => {
-          cb();
-        });
-      }
-    };
+    const sourceInfo = event;
     sourceInfo._data = this.layerSource.originData;
     sourceInfo.getData = () => this.layerSource.originData;
     sourceInfo.setData = this.setData;
@@ -191,10 +201,12 @@ class Layer {
   }
   setData(data) {
     this.layerSource.originData = data;
-    this.getSource().emit("update");
+    this.getSource().emit('update');
   }
 
-  on() {}
+  on(type, cb) {
+    event.on(type, cb);
+  }
 
   once() {}
 
