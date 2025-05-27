@@ -30,7 +30,7 @@ class Scene {
   }
   addLayer() {
     setTimeout(() => {
-      event.emit('add');
+      event.emit('re-render');
     }, 100);
     return true;
   }

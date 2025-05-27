@@ -95,7 +95,7 @@ export class L7LayerBase extends CustomOverlayLayer {
       source.on('update', () => {
         this.reRender();
       });
-    this.l7layer.on('add', () => this.reRender());
+    this.l7layer.on('re-render', () => this.reRender());
   }
 
   getLayer() {
