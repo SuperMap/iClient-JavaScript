@@ -184,7 +184,7 @@ export class ThreeLayerRenderer {
     let map = this.map;
 
     let size = this.getMapSize();
-    let scale = map.transform.zoomScale(projection.nativeMaxZoom - map.getZoom() - 1);
+    let scale = Math.pow(2, projection.nativeMaxZoom - map.getZoom() - 1);
     let fovRatio = Math.tan(map.transform.fov / 2 * RADIAN);
 
     let camera = this.camera;
