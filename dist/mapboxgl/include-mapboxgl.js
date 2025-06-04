@@ -72,7 +72,7 @@
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
     }
     if (inArray(includes, 'turf')) {
-      inputScript(libsurl + '/turf/6.5.0/turf.min.js');
+      inputScript(libsurl + '/turf/7.2.0/turf.min.js');
     }
     if (inArray(includes, 'draw')) {
       inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.css');
@@ -108,7 +108,7 @@
       inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
+      inputScript(libsurl + '/proj4/2.17.0/proj4.min.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(libsurl + '/shapefile/shapefile.js');

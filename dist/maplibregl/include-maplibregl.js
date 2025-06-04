@@ -55,8 +55,8 @@
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(includes, 'maplibre-gl-enhance') && !inArray(excludes, 'maplibregl')) {
-      inputCSS(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.css');
-      inputScript(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.js');
+      inputCSS(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.css');
+      inputScript(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.js');
     }
     if (inArray(includes, 'maplibre-gl-enhance')) {
       inputCSS(libsurl + '/maplibre-gl-js-enhance/4.3.0-5/maplibre-gl-enhance.css');
@@ -69,7 +69,7 @@
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
     }
     if (inArray(includes, 'turf')) {
-      inputScript(libsurl + '/turf/6.5.0/turf.min.js');
+      inputScript(libsurl + '/turf/7.2.0/turf.min.js');
     }
     if (inArray(includes, 'draw')) {
       inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.css');
@@ -77,10 +77,6 @@
     }
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(libsurl + '/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
-    }
-    if (inArray(includes, 'compare')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.js');
     }
     if (inArray(includes, 'mapv')) {
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
@@ -105,7 +101,7 @@
       inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
+      inputScript(libsurl + '/proj4/2.17.0/proj4.min.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(libsurl + '/shapefile/shapefile.js');
@@ -174,9 +170,6 @@
     }
     if (inArray(includes, 'g6')) {
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
-    }
-    if (inArray(includes, 'turf')) {
-      inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
     if (inArray(includes, 'snap')) {
       inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.min.js');

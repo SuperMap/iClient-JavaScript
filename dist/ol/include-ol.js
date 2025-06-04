@@ -74,13 +74,13 @@
             inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript(libsurl + '/turf/6.5.0/turf.min.js');
+            inputScript(libsurl + '/turf/7.2.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
           inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
+            inputScript(libsurl + '/proj4/2.17.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/4.0.1-1/ol-echarts.js');

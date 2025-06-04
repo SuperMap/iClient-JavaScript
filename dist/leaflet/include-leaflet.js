@@ -91,7 +91,7 @@
             inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript(libsurl + '/turf/6.5.0/turf.min.js');
+            inputScript(libsurl + '/turf/7.2.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
           inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
@@ -107,7 +107,7 @@
             inputScript(libsurl + '/leaflet/plugins/leaflet-side-by-side/2.0.1/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
-            inputScript(libsurl + '/d3/7.8.2/d3.min.js');
+            inputScript(libsurl + '/d3/7.9.0/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript(libsurl + '/d3-hexbin/0.2.2/d3-hexbin.v0.2.min.js');

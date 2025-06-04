@@ -16,12 +16,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@mapbox/mapbox-gl-style-spec": "^14.3.0",
-    "@turf/turf": "6.5.0",
-    "@turf/meta": "^6.5.0",
+    "@turf/turf": "7.2.0",
+    "@turf/meta": "^7.2.0",
     "mapv": "2.0.62",
     "mapbox-gl": "1.13.2",
     "@supermapgis/iclient-common": "12.0.0-beta",
     "lodash.clonedeep": "^4.5.0",
-    "proj4": "2.11.0"
+    "proj4": "2.17.0"
   }
 }
