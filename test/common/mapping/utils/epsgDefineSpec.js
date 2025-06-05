@@ -88,7 +88,7 @@ describe('epsg-define', () => {
         sourceProjection: 'EPSG:4548',
         destProjection: 'EPSG:2210'
       })
-    ).toThrow('EPSG:2210 is not defined');
+    ).toThrow('Could not parse to valid json: EPSG:2210 is not defined');
     done();
   });
 });
