@@ -4,7 +4,6 @@
 
 import Scale from 'ol/control/ScaleLine';
 import * as olProj from 'ol/proj';
-import AssertionError from 'ol/AssertionError';
 
 /**
  * @class ScaleLine
@@ -119,7 +118,7 @@ export class ScaleLine extends Scale {
                 pointResolution /= 1609.3472;
             }
         } else {
-            throw new AssertionError(33); // Invalid units
+          throw new Error('Invalid units');// Invalid units
         }
         var DIGITS = [1, 2, 5];
         let i = 3 * Math.floor(

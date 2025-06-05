@@ -88,4 +88,20 @@ describe('openlayers_ScaleLine', () => {
     expect(scaleControl.element.style.display).toBe('none');
     done();
   });
+
+  it('test updateElementRepair error', (done) => {
+    var scaleControl = new ScaleLine();
+    map.addControl(scaleControl);
+    map.once('postrender', () => {
+      setTimeout(() => {
+        try {
+          scaleControl.setUnits('error');
+          scaleControl.updateElementRepair();
+        } catch (error) {
+          expect(error.message).toBe('Invalid units');
+          done();
+        }
+      }, 100);
+    });
+  });
 });
