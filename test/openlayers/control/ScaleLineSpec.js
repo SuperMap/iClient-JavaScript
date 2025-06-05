@@ -99,6 +99,8 @@ describe('openlayers_ScaleLine', () => {
           scaleControl.updateElementRepair();
         } catch (error) {
           expect(error.message).toBe('Invalid units');
+        } finally {
+          map.removeControl(scaleControl);
           done();
         }
       }, 100);
