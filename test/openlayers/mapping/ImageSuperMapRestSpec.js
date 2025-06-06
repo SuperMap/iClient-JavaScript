@@ -3,12 +3,11 @@ import { MapService } from '../../../src/openlayers/services/MapService';
 import { NDVIParameter } from '../../../src/common/iServer/NDVIParameter';
 import { HillshadeParameter } from '../../../src/common/iServer/HillshadeParameter';
 import { getQueryValue } from '../../tool/utils';
-
+import { Util } from '../../../src/openlayers/core/Util';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import ImageLayer from 'ol/layer/Image';
 import Point from 'ol/geom/Point';
-import * as olProj from 'ol/proj';
 
 var url = GlobeParameter.imageURL;
 describe('openlayers_ImageSuperMapRest', () => {
@@ -69,14 +68,20 @@ describe('openlayers_ImageSuperMapRest', () => {
     });
 
     it('getImageInternal', () => {
-       
-        var tileUrl = imageTileSource.getImageInternal(extent, resolution, pixelRatio).src_;
+        var tileUrl = imageTileSource._getImageInternalParams(extent, resolution, pixelRatio).src;
         expect(tileUrl).toBe(
             url +
                 '/image.png?transparent=true&cacheEnabled=true&redirect=false&width=3840&height=794&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-159.16992187500045%2C%22y%22%3A-22.895507812500092%7D%2C%22rightTop%22%3A%7B%22x%22%3A178.33007812500045%2C%22y%22%3A46.88964843750009%7D%7D'
         );
+        const image = imageTileSource.getImageInternal(extent, resolution, pixelRatio);
+        expect(image).not.toBeNull();
     });
 
+    it('getImageInternal ol < 8', () => {
+      spyOn(Util, 'getOlVersion').and.returnValue('7.5.2');
+      const image = imageTileSource.getImageInternal(extent, resolution, pixelRatio);
+      expect(image).not.toBeNull();
+  });
     it('tileUrlFunction_tilePoxy', () => {
         imageTileOptions.tileProxy = 'tileProxy';
         var imageTileSourcetilePoxy = new ImageSuperMapRest(imageTileOptions);
@@ -84,7 +89,7 @@ describe('openlayers_ImageSuperMapRest', () => {
             redirect: true,
             prjCoordSys: { epsgCode: 4326 }
         };
-        var tileUrl = imageTileSourcetilePoxy.getImageInternal(extent, resolution, pixelRatio).src_;
+        var tileUrl = imageTileSourcetilePoxy._getImageInternalParams(extent, resolution, pixelRatio).src;
         expect(tileUrl.startsWith('tileProxy')).toBeTrue();
     });
 
@@ -100,28 +105,28 @@ describe('openlayers_ImageSuperMapRest', () => {
         };
         var pixelRatio = '245';
         var coords = new Point(120.14, 30.24);
-        var tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        var tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         var urlTemp = tileUrl.split('?')[0];
         var format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
         expect(format).toBe('png');
 
         imageTileOptions.format = 'bmp';
         imageTile = new ImageSuperMapRest(imageTileOptions);
-        tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         urlTemp = tileUrl.split('?')[0];
         format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
         expect(format).toBe('bmp');
 
         imageTileOptions.format = 'jpg';
         imageTile = new ImageSuperMapRest(imageTileOptions);
-        tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         urlTemp = tileUrl.split('?')[0];
         format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
         expect(format).toBe('jpg');
 
         imageTileOptions.format = 'gif';
         imageTile = new ImageSuperMapRest(imageTileOptions);
-        tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         urlTemp = tileUrl.split('?')[0];
         format = urlTemp.substring(urlTemp.length - 3, urlTemp.length);
         expect(format).toBe('gif');
@@ -131,7 +136,7 @@ describe('openlayers_ImageSuperMapRest', () => {
         var imageTile = new ImageSuperMapRest(imageTileOptions);
         var pixelRatio = '245';
         var coords = new Point(120.14, 30.24);
-        var tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        var tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         expect(tileUrl).not.toBeNull();
         const ndviParameterValue = getQueryValue(tileUrl, 'rasterfunction');
         expect(ndviParameterValue).not.toBeNull;
@@ -148,7 +153,7 @@ describe('openlayers_ImageSuperMapRest', () => {
         var imageTile = new ImageSuperMapRest(imageTileOptions);
         var pixelRatio = '245';
         var coords = new Point(120.14, 30.24);
-        var tileUrl = imageTile.getImageInternal(extent, resolution, pixelRatio).src_;
+        var tileUrl = imageTile._getImageInternalParams(extent, resolution, pixelRatio).src;
         expect(tileUrl).not.toBeNull();
         const hillshadeParameterValue = getQueryValue(tileUrl, 'rasterfunction');
         expect(hillshadeParameterValue).not.toBeNull;

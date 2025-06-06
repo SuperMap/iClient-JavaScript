@@ -6,8 +6,8 @@ import { Unit } from '@supermapgis/iclient-common/REST';
 import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
 import { Util } from '../core/Util';
-import ImageSource, { defaultImageLoadFunction } from 'ol/source/Image';
-import ImageWrapper from 'ol/Image';
+import ImageSource from 'ol/source/Image';
+import ImageWrapper, { decode } from 'ol/Image';
 import Geometry from 'ol/geom/Geometry';
 import GeoJSON from 'ol/format/GeoJSON';
 import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } from 'ol/extent';
@@ -42,12 +42,23 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
- * @param {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
+ * @deprecated {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
  * @param {string} [options.ratio=1.5] - 	请求图片大小比例。 1 表示请求图片大小和地图视窗范围一致，2 表示请求图片大小是地图视窗范围的2倍，以此类推。
  * @extends {ol.source.Image}
  * @usage
  */
- export class ImageSuperMapRest extends ImageSource {
+
+function defaultImageLoadFunction(image, src) {
+  image.getImage().src = src;
+}
+
+function fromResolutionLike(resolution) {
+  if (Array.isArray(resolution)) {
+    return Math.min(...resolution);
+  }
+  return resolution;
+}
+export class ImageSuperMapRest extends ImageSource {
   constructor(options) {
     super({
       attributions: options.attributions,
@@ -150,7 +161,8 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
       this.tileProxy = options.tileProxy;
     }
   }
-  getImageInternal(extent, resolution, pixelRatio) {
+
+  _getImageInternalParams(extent, resolution, pixelRatio) {
     resolution = this.findNearestResolution(resolution);
     const imageResolution = resolution / pixelRatio;
     const center = getCenter(extent);
@@ -160,6 +172,19 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
     const requestWidth = Math.ceil((this.ratio_ * getWidth(extent)) / imageResolution);
     const requestHeight = Math.ceil((this.ratio_ * getHeight(extent)) / imageResolution);
     const requestExtent = getForViewAndSize(center, imageResolution, 0, [requestWidth, requestHeight]);
+    const imageSize = [
+      Math.round(getWidth(requestExtent) / imageResolution),
+      Math.round(getHeight(requestExtent) / imageResolution)
+    ];
+    const src = this._getRequestUrl(requestExtent, imageSize);
+    return { imageSize, src, requestExtent, resolution, viewExtent };
+  }
+  _getImageInternalBy8(extent, resolutionVal, pixelRatio) {
+    const { src, resolution, requestExtent, viewExtent } = this._getImageInternalParams(
+      extent,
+      resolutionVal,
+      pixelRatio
+    );
     const image = this._image;
     if (
       image &&
@@ -170,22 +195,53 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
     ) {
       return image;
     }
-    const imageSize = [
-      Math.round(getWidth(requestExtent) / imageResolution),
-      Math.round(getHeight(requestExtent) / imageResolution)
-    ];
-    const imageUrl = this._getRequestUrl(requestExtent, imageSize);
     this._image = new ImageWrapper(
       requestExtent,
       resolution,
       pixelRatio,
-      imageUrl,
+      src,
       this._crossOrigin,
       this.imageLoadFunction_
     );
     this.renderedRevision_ = this.getRevision();
     this._image.addEventListener('change', this.handleImageChange.bind(this));
     return this._image;
+  }
+
+  _getImageInternal(extent, resolutionVal, pixelRatio) {
+    const { src, resolution, requestExtent } = this._getImageInternalParams(extent, resolutionVal, pixelRatio);
+    if (this.image) {
+      if (
+        ((this.wantedExtent_ && containsExtent(this.wantedExtent_, requestExtent)) ||
+          containsExtent(this.image.getExtent(), requestExtent)) &&
+        ((this.wantedResolution_ && fromResolutionLike(this.wantedResolution_) === resolution) ||
+          fromResolutionLike(this.image.getResolution()) === resolution)
+      ) {
+        return this.image;
+      }
+    }
+    this.wantedExtent_ = requestExtent;
+    this.wantedResolution_ = resolution;
+    this.loader = this.createLoader({ src, crossOrigin: this._crossOrigin });
+    this.image = new ImageWrapper(requestExtent, resolution, pixelRatio, this.loader);
+    this.image.addEventListener('change', this.handleImageChange.bind(this));
+    return this.image;
+  }
+
+  createLoader({ src, crossOrigin }) {
+    const loadCallback = decode;
+    return (extent, resolution, pixelRatio) => {
+      const image = new Image();
+      image.crossOrigin = crossOrigin ?? null;
+      return loadCallback(image, src).then((image) => ({ image, extent, pixelRatio }));
+    };
+  }
+  
+  getImageInternal(extent, resolutionVal, pixelRatio) {
+    if (Number(Util.getOlVersion()) < 8) {
+      return this._getImageInternalBy8(extent, resolutionVal, pixelRatio);
+    }
+    return this._getImageInternal(extent, resolutionVal, pixelRatio);
   }
   _getRequestUrl(extent, imageSize) {
     const params = {

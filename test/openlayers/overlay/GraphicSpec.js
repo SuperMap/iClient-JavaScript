@@ -428,7 +428,7 @@ describe('openlayers_GraphicLayer', () => {
       source: new GraphicSource({
         graphics: graphics,
         map: map,
-        color: 'red'
+        color: [255, 0, 0, 1]
       })
     });
     map.addLayer(graphicLayer);
@@ -437,7 +437,7 @@ describe('openlayers_GraphicLayer', () => {
         unByKey(key);
         const state = graphicLayer.getSource().getLayerState();
         expect(state).not.toBeNull();
-        expect(state.color).toEqual('red');
+        expect(state.color).toEqual([ 255, 0, 0, 1 ]);
         done();
       }
     });
@@ -511,18 +511,18 @@ describe('openlayers_GraphicLayer', () => {
       source: new GraphicSource({
         graphics: graphics,
         map: map,
-        color: 'red'
+        color: [255, 0, 0, 1]
       })
     });
     map.addLayer(graphicLayer);
     const key = graphicLayer.on('postrender', function () {
       if (graphicLayer.getSource().renderer) {
         unByKey(key);
-        expect(graphicLayer.getSource().color).toEqual('red');
+        expect(graphicLayer.getSource().color).toEqual([ 255, 0, 0, 1 ]);
         graphicLayer.getSource().setStyle({
-          color: 'blue'
+          color: [ 0, 0, 255, 1 ]
         });
-        expect(graphicLayer.getSource().color).toEqual('blue');
+        expect(graphicLayer.getSource().color).toEqual([ 0, 0, 255, 1 ]);
         done();
       }
     });

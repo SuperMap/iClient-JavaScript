@@ -57,7 +57,7 @@
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
             inputCSS(libsurl + '/openlayers/10.5.0/ol.min.css');
-            inputScript(libsurl + '/openlayers//10.5.0/ol.js');
+            inputScript(libsurl + '/openlayers/10.5.0/ol.min.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
