@@ -908,6 +908,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   _createLayerLegendList(layer, styleSetting) {
     const layerId = layer.id;
     const layerTitle = layer.title;
+    const textFieldName = styleSetting.type === 'text' && styleSetting.textField && styleSetting.textField.value.replace(/^\{|\}$/g, '');
     const commonStyleOptions = {
       themeField: layer.themeField || styleSetting.field,
       layerId,
@@ -971,7 +972,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         ...commonStyleOptions,
         styleGroup: [
           {
-            fieldValue: layerTitle || layerId,
+            fieldValue: textFieldName || layerTitle || layerId,
             style: {
               ...simpleResData,
               shape

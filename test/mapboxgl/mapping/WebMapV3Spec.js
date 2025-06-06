@@ -1116,6 +1116,12 @@ describe('mapboxgl-webmap3.0', () => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(webMapV3.getLegends().length).toBe(9);
+      const testLegend= webMapV3.getLegends().filter((item) => {
+        return item.layerId === "上海市可校外学习中心(1)";
+      })
+      expect(testLegend.length).toBe(2);
+      expect(testLegend[0].styleGroup[0].fieldValue).toBe("上海市可校外学习中心(1)");
+      expect(testLegend[1].styleGroup[0].fieldValue).toBe("学习中心（点）名称");
       mbglmap.prototype.getL7Scene = undefined;
       spyTest.calls.reset();
       done();
