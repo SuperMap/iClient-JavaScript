@@ -1192,7 +1192,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     return pages.filter((item) => types.some((type) => item.endsWith(type)));
   }
   function getWhiteLists() {
-    const dir = outdir.replace('./docs/', '');
+    const dir = outdir.replace('./docs/', '').replace('./web/en/docs/', '');
     return whiteLists[dir];
   }
   // 生成产品介绍中模块说明的g6配置
