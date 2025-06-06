@@ -1438,7 +1438,6 @@ describe('openlayers_WebMap', () => {
             successCallback,
             errorCallback: function () { }
         };
-        CommonUtil
         spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
             return true;
         });
