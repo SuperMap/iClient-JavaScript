@@ -232,7 +232,7 @@ export class ImageSuperMapRest extends ImageSource {
     const loadCallback = decode;
     return (extent, resolution, pixelRatio) => {
       const image = new Image();
-      image.crossOrigin = crossOrigin ?? null;
+      image.crossOrigin = crossOrigin;
       return loadCallback(image, src).then((image) => ({ image, extent, pixelRatio }));
     };
   }
