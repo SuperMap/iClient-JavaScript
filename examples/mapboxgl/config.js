@@ -1875,6 +1875,13 @@ var exampleConfig = {
                     version: '11.2.0',
                     thumbnail: 'videoMap.png',
                     fileName: 'videoMap'
+                  },
+                  {
+                    name: '无人机视频',
+                    name_en: 'UAV video',
+                    version: '11.2.0',
+                    thumbnail: 'videoLayerWithTime.png',
+                    fileName: 'videoLayerWithTime'
                   }
                 ]
             }

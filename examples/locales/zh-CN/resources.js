@@ -713,6 +713,7 @@ window.examplesResources = {
         "text_selectEndNode": "捕捉结束节点",
         "title_videoLayer":"视频图层",
         "title_videoMap":"视频地图",
+        "title_uavVideo":"无人机视频",
         "title_knowledgeGraphMap": "知识图谱",
         "title_l7_grid_map": "网格地图",
         "title_l7_circular_sweeping_city": "圆形扫光城市",

@@ -57,14 +57,14 @@ export class VideoLayerRenderer {
       muted: true,
       loop: this.loop
     };
-    if (this.url.includes('mp4')) {
+    if (this.url.includes('mp4') || this.url.includes('MP4')) {
       options['sources'] = [
         {
           src: this.url,
           type: 'video/mp4'
         }
       ];
-    } else if (this.url.includes('flv')) {
+    } else if (this.url.includes('flv') || this.url.includes('FLV')) {
       options = {
         loop: this.loop,
         autoplay: this.autoplay,
@@ -84,7 +84,7 @@ export class VideoLayerRenderer {
           }
         ]
       };
-    } else if (this.url.includes('m3u8')) {
+    } else if (this.url.includes('m3u8') || this.url.includes('M3U8')) {
       options['sources'] = [
         {
           src: this.url
