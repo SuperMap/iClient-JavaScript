@@ -4298,7 +4298,7 @@ export class WebMap extends Observable {
    * 请求是否带上cookie
    * @param {string} url 请求地址，必选参数。
    * @param {boolean} proxy 是否需要加上代理，可选参数。
-   * @returns 
+   * @returns { boolean | undefined } 是否带上cookie
    */
   isCredentail(url, proxy) {
     if(this.isIportalProxyServiceUrl(url) || (proxy !== false && !CommonUtil.isInTheSameDomain(url))) {
@@ -4310,7 +4310,7 @@ export class WebMap extends Observable {
    * url是否要带上代理
    * @param {*} url 请求地址，必选参数。 
    * @param {*} proxy 是否需要加上代理，可选参数。 
-   * @returns 
+   * @returns { boolean } 是否带上代理
    */
   isAddProxy(url, proxy) {
     return !CommonUtil.isInTheSameDomain(url) && !this.isIportalProxyServiceUrl(url) && proxy !== false;
