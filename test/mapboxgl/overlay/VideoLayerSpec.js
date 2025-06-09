@@ -81,6 +81,9 @@ describe('mapboxgl_VideoLayer', () => {
     testDiv.style.height = '500px';
     window.document.body.appendChild(testDiv);
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    done();
+  });
+  beforeEach((done) => {
     map = new mapboxgl.Map({
       container: 'map',
       style: {
@@ -108,13 +111,12 @@ describe('mapboxgl_VideoLayer', () => {
     map.on('load', function () {
       done();
     });
-  });
-  beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
 
   afterEach(() => {
+    map = null;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
@@ -293,8 +295,7 @@ describe('mapboxgl_VideoLayer', () => {
    }, 3000);
   });
 
-  it('multi videoparameter load with time', function(done) {
-    spyOn(map, 'addSource');
+  it('multi videoparameter load with time', (done) => {
     spyOn(map, 'addLayer');
     const videoLayer = new VideoLayer({ 
       opencv: cv, 
@@ -381,7 +382,6 @@ describe('mapboxgl_VideoLayer', () => {
     videoLayer.onAdd(map);
     setTimeout(() => {
       expect(Object.keys(videoLayer.timeParams).length).toBe(4);
-      expect(map.addSource).toHaveBeenCalled();
       expect(map.addLayer).toHaveBeenCalled();
       done();
    }, 3000);

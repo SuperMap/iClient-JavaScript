@@ -166,6 +166,7 @@ const Map = function (options) {
     const sourceInfo = this._sources[name];
     if (sourceInfo && sourceInfo.type === 'video') {
       return {
+        setCoordinates: function () {},
         play: function () {}
       };
     }
