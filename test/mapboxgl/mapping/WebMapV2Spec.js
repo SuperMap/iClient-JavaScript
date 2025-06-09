@@ -350,7 +350,7 @@ describe('mapboxgl_WebMapV2', () => {
   });
 
   it('test baseLayer layers count maploaded', (done) => {
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
@@ -358,6 +358,7 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(webmap_MAPBOXSTYLE_Tile)));
       }
       if (url.indexOf('maps/China_4326/style.json') > -1) {
+        expect(options.withCredentials).not.toBeUndefined();
         return Promise.resolve(new Response(styleJson));
       }
       if (url.indexOf('%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9C%B0%E5%9B%BE.json') > -1) {

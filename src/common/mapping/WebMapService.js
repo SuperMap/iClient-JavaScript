@@ -199,7 +199,11 @@ export class WebMapService {
 
   getMapBoxStyle(styleURL, withoutFormatSuffix = false) {
     return new Promise((resolve, reject) => {
-      FetchRequest.get(styleURL, {}, { withoutFormatSuffix })
+      const proxy = this.handleProxy();
+      FetchRequest.get(styleURL, {}, { 
+        withoutFormatSuffix,
+        withCredentials: this.handleWithCredentials(proxy, styleURL, this.withCredentials)
+       })
         .then(response => {
           return response.json();
         })
