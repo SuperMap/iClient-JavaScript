@@ -273,7 +273,7 @@
      let count = 0;
      const videoEle = this.video.tech().el();
      let current = 0;
-     if (this.videoParameters.length > 1) {
+     if (this.videoParameters.length > 1 && videoEle && videoEle.requestVideoFrameCallback) {
        const updateCanvas = (now, metadata) => {
          current = metadata.mediaTime;
          videoEle.requestVideoFrameCallback(updateCanvas);
