@@ -96,7 +96,7 @@
      this.renderingMode = '3d';
      this.overlay = true;
      if (Array.isArray(this.videoParameters)) {
-      this.videoParameters = smartTimeProcessor(this.interval, this.videoParameters, ['yaw', 'pitch', 'roll', 'x', 'y', 'z', 'extent']);
+       this.videoParameters = smartTimeProcessor(this.interval, this.videoParameters, ['yaw', 'pitch', 'roll', 'x', 'y', 'z', 'extent']);
        const timeArr = this.videoParameters.map((item) => {
          return item.time;
        })
@@ -271,32 +271,43 @@
      let canvas = document.createElement('canvas');
      let { clipMat, dst1 } = this._updateMask(canvas, that.timeParams[0].realHeight, that.timeParams[0].ratio);
      let count = 0;
+     const videoEle = this.video.tech().el();
+     let current = 0;
+     if (this.videoParameters.length > 1) {
+       const updateCanvas = (now, metadata) => {
+         current = metadata.mediaTime;
+         videoEle.requestVideoFrameCallback(updateCanvas);
+       };
+ 
+       videoEle.requestVideoFrameCallback(updateCanvas);
+     }
      map.addSource(this.layerId, {
        type: 'video',
        urls: [url],
        drawImageCallback(frame) {
-         const current = that.video.currentTime();
          if (that.videoParameters.length > 1) {
+           current = that.video.currentTime();
            let res = that.finder.findNearest(current);
            if (res) {
              count = res.value;
            }
-         }
-         if (that.videoParameters.length > 1 && count) {
-           let curData = that.timeParams[count];
-           count = 0;
-           if (curData) {
-             that.dsize = curData.dsize;
-             dstTri = curData.dstTri;
-             result = curData.result;
-             setTimeout(() => {
-               that.map.getSource(that.layerId).setCoordinates([
-                 [result[0], result[3]],
-                 [result[2], result[3]],
-                 [result[2], result[1]],
-                 [result[0], result[1]]
-               ])
-             }, 0);
+ 
+           if (count) {
+             let curData = that.timeParams[count];
+             count = 0;
+             if (curData) {
+               that.dsize = curData.dsize;
+               dstTri = curData.dstTri;
+               result = curData.result;
+               setTimeout(() => {
+                 that.map.getSource(that.layerId).setCoordinates([
+                   [result[0], result[3]],
+                   [result[2], result[3]],
+                   [result[2], result[1]],
+                   [result[0], result[1]]
+                 ])
+               }, 0);
+             }
            }
          }
          let src = that.cv.matFromImageData(frame);
