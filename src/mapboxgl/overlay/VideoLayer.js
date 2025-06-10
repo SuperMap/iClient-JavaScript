@@ -286,8 +286,8 @@
        urls: [url],
        drawImageCallback(frame) {
          if (that.videoParameters.length > 1) {
-           current = that.video.currentTime();
-           let res = that.finder.findNearest(current);
+           let time = current || that.video.currentTime();
+           let res = that.finder.findNearest(time);
            if (res) {
              count = res.value;
            }
