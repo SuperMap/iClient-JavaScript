@@ -4301,7 +4301,7 @@ export class WebMap extends Observable {
    * @returns { boolean | undefined } 是否带上cookie
    */
   isCredentail(url, proxy) {
-    if(this.isIportalProxyServiceUrl(url) || (proxy !== false && !CommonUtil.isInTheSameDomain(url))) {
+    if(proxy || this.isIportalProxyServiceUrl(url) || CommonUtil.isInTheSameDomain(url)) {
       return true
     }
     return;
