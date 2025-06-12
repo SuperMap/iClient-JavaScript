@@ -23,7 +23,7 @@ var datavizWebmap_ZXYTILE =
   '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:144447.92746805","level":1,"center":{"x":0,"y":-7.081154551613622e-10},"baseLayer":{"layerType":"TILE","visible":true,"name":"中国暗色地图","url":"https://iportal/rest/maps/China_Dark"},"layers":[{"layerType":"ZXY_TILE","subdomains":["a","c"],"visible":true,"name":"aaa","url":"https://{s}.tile.fake/{z}/{x}/{y}.png"}],"description":"","projection":"EPSG:3857","minScale":"1:591658710.909131","title":"xyz","version":"2.3.0","rootUrl":"http://127.0.0.1:8190/iportal/"}';
 var datavizWebmap_ZXYTILE_4326 =
   '{"extent":{"leftBottom":{"x":-180,"y":-85.0511287798065},"rightTop":{"x":180,"y":85.05112877980648}},"maxScale":"1:144447.92746805","level":3,"center":{"x":45.23786343459705,"y":10.42845507988924},"baseLayer":{"layerType":"TILE","visible":true,"name":"China_4326","url":"http://test:8090/iserver/services/map-China100-3/rest/maps/China_4326"},"layers":[{"layerType":"ZXY_TILE","subdomains":[],"visible":true,"mapBounds":[-180,-90,180,90],"maxZoom":24,"origin":[-180,90],"tileSize":256,"name":"mapboxgl-256x2","minZoom":0,"resolutions":[1.40625,0.703125,0.3515625,0.17578125,0.087890625],"opacity":0.42,"url":"http://test:8190/iportal/output/world-mapboxgl-256x2/{z}/0/0/{y}x{x}.jpg"}],"description":"","projection":"EPSG:4326","minScale":"1:591658710.909131","title":"4326-zxy-tile","version":"2.4.1","rootUrl":"http://test:8190/iportal/"}';
-  var datavizWebmap_ZXYTILE_2326 =
+var datavizWebmap_ZXYTILE_2326 =
   '{"extent":{"leftBottom":{"x":-180,"y":-85.0511287798065},"rightTop":{"x":180,"y":85.05112877980648}},"maxScale":"1:144447.92746805","level":3,"center":{"x":45.23786343459705,"y":10.42845507988924},"baseLayer":{"layerType":"TILE","visible":true,"name":"China_4326","url":"http://test:8090/iserver/services/map-China100-3/rest/maps/China_4326"},"layers":[{"layerType":"ZXY_TILE","subdomains":[],"visible":true,"mapBounds":[-180,-90,180,90],"maxZoom":24,"origin":[-180,90],"tileSize":256,"name":"mapboxgl-256x2","minZoom":0,"resolutions":[1.40625,0.703125,0.3515625,0.17578125,0.087890625],"opacity":0.42,"url":"http://test:8190/iportal/output/world-mapboxgl-256x2/{z}/0/0/{y}x{x}.jpg"}],"description":"","projection":"EPSG:4326","minScale":"1:591658710.909131","title":"4326-zxy-tile","version":"2.4.1","rootUrl":"http://test:8190/iportal/"}';
 
 var datavizWebMap_OPENSTREET =
@@ -235,7 +235,8 @@ var datavizWebMap_WMTS3 =
   '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:18055.99093350616","level":1,"center":{"x":5439870.428999409,"y":19567.879241008308},"baseLayer":{"layerType":"WMTS","tileMatrixSet":"GoogleMapsCompatible_世界地图_Gray","requestEncoding":"KVP","visible":true,"name":"世界地图_Gray","dpi":90.7142857142857,"url":"http://fack/iserver/services/map-china400/wmts100","layer":"世界地图_Gray"},"description":"","projection":"EPSG:3857","minScale":"1:295829355.4545649","title":"无标题","version":"2.3.0","layers":[]}';
 var datavizWebMap_fiter =
   '{ "extent": { "leftBottom": { "x": -2.00375083427892E7, "y": -2.00375083427892E7 }, "rightTop": { "x": 2.00375083427892E7, "y": 2.00375083427892E7 } }, "level": 11, "center": { "x": 1.2980839382783111E7, "y": 4850526.359611664 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": true, "name": "天地图" }, "layers": [ { "layerType": "VECTOR", "visible": true, "filterCondition": "SmID>20", "name": "北京市轨道交通站点", "featureType": "LINE", "style": { "fillColor": "#ff0000", "strokeWidth": 1, "fillOpacity": 0.9, "type": "BASIC_POINT", "radius": 6, "strokeColor": "#ffffff", "strokeOpacity": 1 }, "projection": "EPSG:4326", "dataSource": { "type": "PORTAL_DATA", "serverId": "1276193546" } } ], "description": "", "projection": "EPSG:3857", "title": "filter", "version": "1.0" }';
-var datavizWebMap_noServerIdMarker = '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:144447.92746805","level":1,"center":{"x":0,"y":-7.081154551613622E-10},"baseLayer":{"layerType":"TILE","visible":true,"name":"中国暗色地图","url":"https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"},"layers":[{"layerType":"MARKER","visible":true,"name":"未命名标注图层1"},{"layerType":"MARKER","visible":true,"name":"未命名标注图层2"}],"description":"","projection":"EPSG:3857","minScale":"1:591658710.909131","title":"无标题","version":"2.4.1","rootUrl":"http://127.0.0.1:8082/iportal/"}';
+var datavizWebMap_noServerIdMarker =
+  '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"maxScale":"1:144447.92746805","level":1,"center":{"x":0,"y":-7.081154551613622E-10},"baseLayer":{"layerType":"TILE","visible":true,"name":"中国暗色地图","url":"https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark"},"layers":[{"layerType":"MARKER","visible":true,"name":"未命名标注图层1"},{"layerType":"MARKER","visible":true,"name":"未命名标注图层2"}],"description":"","projection":"EPSG:3857","minScale":"1:591658710.909131","title":"无标题","version":"2.4.1","rootUrl":"http://127.0.0.1:8082/iportal/"}';
 
 var xlsData =
   '{"fileName":"671个气象站观测数据(1).xlsx","type":"EXCEL","lineNumber":1,"content":{"colTitles":["区站号","站台","省份","X","Y","海拔","平均最低气温","最热七天气温","最高气温","最低气温","年均降雨"],"rows":[["50136","漠河","黑龙江","122.37","53.47","296","-47","29","33","-53","366.1"]]}}';
@@ -1063,14 +1064,14 @@ var vectorTile_style_relative = {
     }
   ],
   version: 8,
-  sprite: "../sprites/sprite",
-  glyphs: "../fonts/{fontstack}/{range}.pbf",
+  sprite: '../sprites/sprite',
+  glyphs: '../fonts/{fontstack}/{range}.pbf',
   sources: {
     esri: {
-      type: "vector"
+      type: 'vector'
     }
-  },
-}
+  }
+};
 
 const mapInfo2 = {
   distanceUnit: 'METER',
@@ -1390,9 +1391,9 @@ const xyzLayerjingjin4326 = {
   rootUrl: 'http://test:8190/iportal/'
 };
 const xyzLayer2326 = {
-  "extent": {
-    "leftBottom": { "x": -4786700, "y": -31721916.685568035 },
-    "rightTop": { "x": 35288316.685568035, "y": 8353100 }
+  extent: {
+    leftBottom: { x: -4786700, y: -31721916.685568035 },
+    rightTop: { x: 35288316.685568035, y: 8353100 }
   },
   level: 10,
   center: {
@@ -1402,7 +1403,7 @@ const xyzLayer2326 = {
   baseLayer: {
     layerType: 'ZXY_TILE',
     name: '2326底图',
-    "url":"https://{s}.tile.fake/{z}/{x}/{y}.png",
+    url: 'https://{s}.tile.fake/{z}/{x}/{y}.png',
     visible: true,
     resolutions: [
       156543.03392800014, 78271.51696399994, 39135.75848200009, 19567.87924099992, 9783.93962049996, 4891.96981024998,
@@ -1416,9 +1417,9 @@ const xyzLayer2326 = {
     minZoom: 10,
     maxZoom: 20
   },
-  center: {x: 834112.5565800001, y: 823728.0971050002},
-  maxScale: "1:564.249716499433",
-  minScale: "1:577791.7098724197",
+  center: { x: 834112.5565800001, y: 823728.0971050002 },
+  maxScale: '1:564.249716499433',
+  minScale: '1:577791.7098724197',
   description: '',
   projection:
     'PROJCS["Hong Kong 1980 Grid System",GEOGCS["Hong Kong 1980",DATUM["Hong_Kong_1980",SPHEROID["International 1924",6378388,297],TOWGS84[-162.619,-276.959,-161.764,-0.067753,2.243648,1.158828,-1.094246]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4611"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",22.3121333333333],PARAMETER["central_meridian",114.178555555556],PARAMETER["scale_factor",1],PARAMETER["false_easting",836694.05],PARAMETER["false_northing",819069.8],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2326"]]',
@@ -4059,3 +4060,47 @@ var RET_MAP_INFO_4490 = JSON.stringify({
     }
   }
 });
+
+var dynamicProjectionMapInfo = {
+  extent: {
+    leftBottom: {
+      x: -20037508.342789244,
+      y: -25819498.513543323
+    },
+    rightTop: {
+      x: 20037508.342789244,
+      y: 20037508.34258019
+    }
+  },
+  maxScale: '1:144447.9275',
+  level: 12,
+  center: {
+    x: 12654327.874745157,
+    y: 248497.88596388634
+  },
+  baseLayer: {
+    layerType: 'TILE',
+    name: '中国暗色地图',
+    url: 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'
+  },
+  layers: [
+    {
+      layerType: 'TILE',
+      visible: true,
+      name: 'test',
+      url: 'http://localhost:8090/iserver/services/map-shp/rest/maps/test'
+    },
+    {
+      layerType: 'TILE',
+      visible: true,
+      name: 'china',
+      url: 'http://localhost:8090/iserver/services/china/rest/maps/china'
+    }
+  ],
+  description: '',
+  projection: 'EPSG:3857',
+  minScale: '1:591658710.91',
+  title: '动态投影',
+  version: '2.4.3',
+  rootUrl: 'http://localhost:8190/iportal/'
+};

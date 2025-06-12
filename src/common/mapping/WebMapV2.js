@@ -778,24 +778,21 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       }
     }
 
-    _createDynamicTiledLayer(layerInfo, addedCallback) {
+    async _createDynamicTiledLayer(layerInfo, addedCallback) {
       const url = layerInfo.url;
       const layerId = layerInfo.layerID || layerInfo.name;
       const { minzoom, maxzoom } = layerInfo;
-      this.getBounds(`${url}.json`, {
+      const reqOptions = {
         withoutFormatSuffix: true,
         withCredentials: this.webMapService.handleWithCredentials('', url, false)
-      }).then((res) => {
-        let bounds = null;
-        if (res && res.bounds) {
-          bounds = [
-            res.bounds.left,
-            res.bounds.bottom,
-            res.bounds.right,
-            res.bounds.top
-          ];
-          const epsgCode = res.prjCoordSys.epsgCode;
-          if (epsgCode !== 4326) {
+      };
+      let res = await this.getBounds(`${url}.json`, reqOptions)
+      let bounds = null;
+      if (res && res.bounds) {
+        bounds = this._getBoundList(res);
+        const epsgCode = res.prjCoordSys.epsgCode;
+        if (epsgCode !== 4326) {
+          if (`EPSG:${epsgCode}` === this.baseProjection || this._mapInfo.baseLayer.url === url) {
             const [left, bottom] = this._unproject(
               [res.bounds.left, res.bounds.bottom]
             );
@@ -808,19 +805,22 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
               right,
               top
             ];
+          } else {
+            res = await this.getBounds(`${url}.json?prjCoordSys=${JSON.stringify({ epsgCode: 4326 })}`, reqOptions)
+            bounds = this._getBoundList(res);
           }
         }
-        this._addBaselayer({
-          url: [url],
-          layerID: layerId,
-          visibility: layerInfo.visible,
-          minzoom,
-          maxzoom,
-          isIserver: true,
-          bounds
-        });
-        addedCallback && addedCallback();
+      }
+      this._addBaselayer({
+        url: [url],
+        layerID: layerId,
+        visibility: layerInfo.visible,
+        minzoom,
+        maxzoom,
+        isIserver: true,
+        bounds
       });
+      addedCallback && addedCallback();
     }
 
     _createWMSLayer(layerInfo, addedCallback) {
@@ -2868,6 +2868,17 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         return Promise.resolve(null);
       }
       return this._fetchRequest(baseUrl, 'json', options);
+    }
+
+    _getBoundList(res) {
+      if (res && res.bounds) {
+        return [
+          res.bounds.left,
+          res.bounds.bottom,
+          res.bounds.right,
+          res.bounds.top
+        ];
+      }
     }
 
     _addLayer(layerInfo, parentLayerId = layerInfo.id, beforeId) {
