@@ -95,11 +95,13 @@
      this.type = 'custom';
      this.renderingMode = '3d';
      this.overlay = true;
+     this.beginIndex = 0;
      if (Array.isArray(this.videoParameters)) {
        this.videoParameters = smartTimeProcessor(this.interval, this.videoParameters, ['yaw', 'pitch', 'roll', 'x', 'y', 'z', 'extent']);
        const timeArr = this.videoParameters.map((item) => {
          return item.time;
        })
+       this.beginIndex = timeArr[0];
        this.finder = new FastRangeSearcher(timeArr);
      }
    }
@@ -266,10 +268,10 @@
      let srcTri = this.cv.matFromArray(4, 1, this.cv.CV_32FC2,
        srcPixelCoords
      );
-     that.dsize = that.timeParams[0].dsize;
-     let dstTri = that.timeParams[0].dstTri;
+     that.dsize = that.timeParams[that.beginIndex].dsize;
+     let dstTri = that.timeParams[that.beginIndex].dstTri;
      let canvas = document.createElement('canvas');
-     let { clipMat, dst1 } = this._updateMask(canvas, that.timeParams[0].realHeight, that.timeParams[0].ratio);
+     let { clipMat, dst1 } = this._updateMask(canvas, that.timeParams[that.beginIndex].realHeight, that.timeParams[that.beginIndex].ratio);
      let count = 0;
      const videoEle = this.video.tech().el();
      let current = 0;
@@ -319,7 +321,7 @@
            newFrame = new ImageData(new Uint8ClampedArray(dst.data), dst.cols, dst.rows);
          } else {
            if (that.videoParameters.length > 1) {
-             const res = that._updateMask(canvas, that.timeParams[0].realHeight, that.timeParams[0].ratio);
+             const res = that._updateMask(canvas, that.timeParams[that.beginIndex].realHeight, that.timeParams[that.beginIndex].ratio);
              clipMat = res.clipMat;
              dst1 = res.dst1;
            }
@@ -378,7 +380,7 @@
    }
  
    _contain(coord, bounds) {
-     return coord[0] >= bounds[0] && coord[0] <= bounds[2] && coord[1] >= bounds[1] && coord[1] <= bounds[3];
+      return (coord[0] > bounds[0] || Math.abs(coord[0] - bounds[0]) < 0.000001 ) && (coord[0] < bounds[2] || Math.abs(coord[0] - bounds[2]) < 0.000001 ) && (coord[1] > bounds[1] ||  Math.abs(coord[1] - bounds[1]) < 0.000001) && (coord[1] < bounds[3] ||  Math.abs(coord[1] - bounds[3]) < 0.000001);
    }
  
    /**
