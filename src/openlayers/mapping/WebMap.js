@@ -3992,7 +3992,7 @@ export class WebMap extends Observable {
      * @returns 
      */
     isCredentail(url, proxy) {
-        if(this.isIportalProxyServiceUrl(url) || (proxy !== false && !CommonUtil.isInTheSameDomain(url))) {
+        if(proxy || this.isIportalProxyServiceUrl(url) || CommonUtil.isInTheSameDomain(url)) {
             return true
         }
         return;
