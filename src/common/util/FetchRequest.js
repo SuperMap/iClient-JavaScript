@@ -282,7 +282,7 @@ export var getRequestTimeout = function () {
 
 /**
  * @function setRequestHeaders
- * @version 12.0.0
+ * @version 12.0.0-r
  * @category BaseTypes Util
  * @description 设置请求自定义 request headers。
  * @param {function} func - 请求自定义 request headers 回调函数。
