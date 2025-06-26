@@ -56,8 +56,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
-            inputCSS(libsurl + '/openlayers/7.5.2/ol.min.css');
-            inputScript(libsurl + '/openlayers/7.5.2/ol.js');
+            inputCSS(libsurl + '/openlayers/10.5.0/ol.min.css');
+            inputScript(libsurl + '/openlayers/10.5.0/ol.min.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
@@ -83,7 +83,7 @@
           inputScript(libsurl + '/proj4/2.17.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-          inputScript(includes + '/openlayers/ol3-echarts/4.0.1-1/ol-echarts.js');
+          inputScript(libsurl + '/openlayers/ol3-echarts/4.0.2/ol-echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
@@ -119,6 +119,12 @@
         }
         if (inArray(includes, 'xlsx')) {
             inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
+        }
+        if (inArray(includes, 'lodash')) {
+          inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
+        }
+        if (inArray(includes, 'ugcwasm')) {
+          inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
         }
 
         // dist
