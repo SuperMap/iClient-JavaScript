@@ -1,3323 +1,327 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 4537:
+/***/ 8:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toPrimitive = __webpack_require__(7762);
+var isSymbol = __webpack_require__(5648);
+
+// `ToPropertyKey` abstract operation
+// https://tc39.es/ecma262/#sec-topropertykey
+module.exports = function (argument) {
+  var key = toPrimitive(argument, 'string');
+  return isSymbol(key) ? key : key + '';
+};
+
+/***/ }),
+
+/***/ 19:
 /***/ (function(module) {
 
-(function (self) {
-  'use strict';
+"use strict";
 
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return;
-  }
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name);
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name');
-    }
-    return name.toLowerCase();
-  }
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value);
-    }
-    return value;
-  }
-  function Headers(headers) {
-    this.map = {};
-    if (headers instanceof Headers) {
-      headers.forEach(function (value, name) {
-        this.append(name, value);
-      }, this);
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function (name) {
-        this.append(name, headers[name]);
-      }, this);
-    }
-  }
-  Headers.prototype.append = function (name, value) {
-    name = normalizeName(name);
-    value = normalizeValue(value);
-    var list = this.map[name];
-    if (!list) {
-      list = [];
-      this.map[name] = list;
-    }
-    list.push(value);
-  };
-  Headers.prototype['delete'] = function (name) {
-    delete this.map[normalizeName(name)];
-  };
-  Headers.prototype.get = function (name) {
-    var values = this.map[normalizeName(name)];
-    return values ? values[0] : null;
-  };
-  Headers.prototype.getAll = function (name) {
-    return this.map[normalizeName(name)] || [];
-  };
-  Headers.prototype.has = function (name) {
-    return this.map.hasOwnProperty(normalizeName(name));
-  };
-  Headers.prototype.set = function (name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)];
-  };
-  Headers.prototype.forEach = function (callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function (name) {
-      this.map[name].forEach(function (value) {
-        callback.call(thisArg, value, name, this);
-      }, this);
-    }, this);
-  };
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'));
-    }
-    body.bodyUsed = true;
-  }
-  function fileReaderReady(reader) {
-    return new Promise(function (resolve, reject) {
-      reader.onload = function () {
-        resolve(reader.result);
-      };
-      reader.onerror = function () {
-        reject(reader.error);
-      };
-    });
-  }
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(blob);
-    return fileReaderReady(reader);
-  }
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader();
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : '';
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/;
-    var _charset = blob.type.match(regex) || contentType.match(regex);
-    var args = [blob];
-    if (_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''));
-    }
-    reader.readAsText.apply(reader, args);
-    return fileReaderReady(reader);
-  }
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && function () {
-      try {
-        new Blob();
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  };
-  function Body() {
-    this.bodyUsed = false;
-    this._initBody = function (body, options) {
-      this._bodyInit = body;
-      if (typeof body === 'string') {
-        this._bodyText = body;
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body;
-        this._options = options;
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body;
-      } else if (!body) {
-        this._bodyText = '';
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type');
-      }
-    };
-    if (support.blob) {
-      this.blob = function () {
-        var rejected = consumed(this);
-        if (rejected) {
-          return rejected;
-        }
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob);
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob');
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]));
-        }
-      };
-      this.arrayBuffer = function () {
-        return this.blob().then(readBlobAsArrayBuffer);
-      };
-      this.text = function () {
-        var rejected = consumed(this);
-        if (rejected) {
-          return rejected;
-        }
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options);
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text');
-        } else {
-          return Promise.resolve(this._bodyText);
-        }
-      };
-    } else {
-      this.text = function () {
-        var rejected = consumed(this);
-        return rejected ? rejected : Promise.resolve(this._bodyText);
-      };
-    }
-    if (support.formData) {
-      this.formData = function () {
-        return this.text().then(decode);
-      };
-    }
-    this.json = function () {
-      return this.text().then(JSON.parse);
-    };
-    return this;
-  }
 
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase();
-    return methods.indexOf(upcased) > -1 ? upcased : method;
-  }
-  function Request(input, options) {
-    options = options || {};
-    var body = options.body;
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read');
-      }
-      this.url = input.url;
-      this.credentials = input.credentials;
-      if (!options.headers) {
-        this.headers = new Headers(input.headers);
-      }
-      this.method = input.method;
-      this.mode = input.mode;
-      if (!body) {
-        body = input._bodyInit;
-        input.bodyUsed = true;
-      }
-    } else {
-      this.url = input;
-    }
-    this.credentials = options.credentials || this.credentials || 'omit';
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers);
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET');
-    this.mode = options.mode || this.mode || null;
-    this.referrer = null;
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests');
-    }
-    this._initBody(body, options);
-  }
-  Request.prototype.clone = function () {
-    return new Request(this);
-  };
-  function decode(body) {
-    var form = new FormData();
-    body.trim().split('&').forEach(function (bytes) {
-      if (bytes) {
-        var split = bytes.split('=');
-        var name = split.shift().replace(/\+/g, ' ');
-        var value = split.join('=').replace(/\+/g, ' ');
-        form.append(decodeURIComponent(name), decodeURIComponent(value));
-      }
-    });
-    return form;
-  }
-  function headers(xhr) {
-    var head = new Headers();
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n');
-    pairs.forEach(function (header) {
-      var split = header.trim().split(':');
-      var key = split.shift().trim();
-      var value = split.join(':').trim();
-      head.append(key, value);
-    });
-    return head;
-  }
-  Body.call(Request.prototype);
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {};
-    }
-    this._initBody(bodyInit, options);
-    this.type = 'default';
-    this.status = options.status;
-    this.ok = this.status >= 200 && this.status < 300;
-    this.statusText = options.statusText;
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers);
-    this.url = options.url || '';
-  }
-  Body.call(Response.prototype);
-  Response.prototype.clone = function () {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    });
-  };
-  Response.error = function () {
-    var response = new Response(null, {
-      status: 0,
-      statusText: ''
-    });
-    response.type = 'error';
-    return response;
-  };
-  var redirectStatuses = [301, 302, 303, 307, 308];
-  Response.redirect = function (url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code');
-    }
-    return new Response(null, {
-      status: status,
-      headers: {
-        location: url
-      }
-    });
-  };
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-  self.fetch = function (input, init) {
-    return new Promise(function (resolve, reject) {
-      var request;
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input;
-      } else {
-        request = new Request(input, init);
-      }
-      var xhr = new XMLHttpRequest();
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL;
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL');
-        }
-        return;
-      }
-      var __onLoadHandled = false;
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return;
-        }
-        var status = xhr.status === 1223 ? 204 : xhr.status;
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) {
-            return;
-          } else {
-            __onLoadHandled = true;
-          }
-          reject(new TypeError('Network request failed'));
-          return;
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        };
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-        if (__onLoadHandled) {
-          return;
-        } else {
-          __onLoadHandled = true;
-        }
-        resolve(new Response(body, options));
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function () {
-        if (__onLoadHandled) {
-          return;
-        } else {
-          __onLoadHandled = true;
-        }
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.open(request.method, request.url, true);
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob';
-      }
-      request.headers.forEach(function (value, name) {
-        xhr.setRequestHeader(name, value);
-      });
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
-    });
-  };
-  self.fetch.polyfill = true;
-
-  // Support CommonJS
-  if ( true && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-/***/ }),
-
-/***/ 9005:
-/***/ (function(module, exports) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (exports, module) {
-  'use strict';
-
-  var defaultOptions = {
-    timeout: 5000,
-    jsonpCallback: 'callback',
-    jsonpCallbackFunction: null
-  };
-  function generateCallbackFunction() {
-    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-  }
-  function clearFunction(functionName) {
-    // IE8 throws an exception when you try to delete a property on window
-    // http://stackoverflow.com/a/1824228/751089
-    try {
-      delete window[functionName];
-    } catch (e) {
-      window[functionName] = undefined;
-    }
-  }
-  function removeScript(scriptId) {
-    var script = document.getElementById(scriptId);
-    if (script) {
-      document.getElementsByTagName('head')[0].removeChild(script);
-    }
-  }
-  function fetchJsonp(_url) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    // to avoid param reassign
-    var url = _url;
-    var timeout = options.timeout || defaultOptions.timeout;
-    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-    var timeoutId = undefined;
-    return new Promise(function (resolve, reject) {
-      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-      var scriptId = jsonpCallback + '_' + callbackFunction;
-      window[callbackFunction] = function (response) {
-        resolve({
-          ok: true,
-          // keep consistent with fetch API
-          json: function json() {
-            return Promise.resolve(response);
-          }
-        });
-        if (timeoutId) clearTimeout(timeoutId);
-        removeScript(scriptId);
-        clearFunction(callbackFunction);
-      };
-
-      // Check if the user set their own params, and if not add a ? to start a list of params
-      url += url.indexOf('?') === -1 ? '?' : '&';
-      var jsonpScript = document.createElement('script');
-      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-      if (options.charset) {
-        jsonpScript.setAttribute('charset', options.charset);
-      }
-      jsonpScript.id = scriptId;
-      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-      timeoutId = setTimeout(function () {
-        reject(new Error('JSONP request to ' + _url + ' timed out'));
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        window[callbackFunction] = function () {
-          clearFunction(callbackFunction);
-        };
-      }, timeout);
-
-      // Caught if got 404/500
-      jsonpScript.onerror = function () {
-        reject(new Error('JSONP request to ' + _url + ' failed'));
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        if (timeoutId) clearTimeout(timeoutId);
-      };
-    });
-  }
-
-  // export as global function
-  /*
-  let local;
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-  local.fetchJsonp = fetchJsonp;
-  */
-
-  module.exports = fetchJsonp;
-});
-
-/***/ }),
-
-/***/ 3819:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : 0;
-})(this, function () {
-  'use strict';
-
-  /**
-   * @this {Promise}
-   */
-  function finallyConstructor(callback) {
-    var constructor = this.constructor;
-    return this.then(function (value) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function () {
-        return value;
-      });
-    }, function (reason) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function () {
-        // @ts-ignore
-        return constructor.reject(reason);
-      });
-    });
-  }
-  function allSettled(arr) {
-    var P = this;
-    return new P(function (resolve, reject) {
-      if (!(arr && typeof arr.length !== 'undefined')) {
-        return reject(new TypeError(_typeof(arr) + ' ' + arr + ' is not iterable(cannot read property Symbol(Symbol.iterator))'));
-      }
-      var args = Array.prototype.slice.call(arr);
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-      function res(i, val) {
-        if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
-          var then = val.then;
-          if (typeof then === 'function') {
-            then.call(val, function (val) {
-              res(i, val);
-            }, function (e) {
-              args[i] = {
-                status: 'rejected',
-                reason: e
-              };
-              if (--remaining === 0) {
-                resolve(args);
-              }
-            });
-            return;
-          }
-        }
-        args[i] = {
-          status: 'fulfilled',
-          value: val
-        };
-        if (--remaining === 0) {
-          resolve(args);
-        }
-      }
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  }
-
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
-  var setTimeoutFunc = setTimeout;
-  function isArray(x) {
-    return Boolean(x && typeof x.length !== 'undefined');
-  }
-  function noop() {}
-
-  // Polyfill for Function.prototype.bind
-  function bind(fn, thisArg) {
-    return function () {
-      fn.apply(thisArg, arguments);
-    };
-  }
-
-  /**
-   * @constructor
-   * @param {Function} fn
-   */
-  function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    /** @type {!number} */
-    this._state = 0;
-    /** @type {!boolean} */
-    this._handled = false;
-    /** @type {Promise|undefined} */
-    this._value = undefined;
-    /** @type {!Array<!Function>} */
-    this._deferreds = [];
-    doResolve(fn, this);
-  }
-  function handle(self, deferred) {
-    while (self._state === 3) {
-      self = self._value;
-    }
-    if (self._state === 0) {
-      self._deferreds.push(deferred);
-      return;
-    }
-    self._handled = true;
-    Promise._immediateFn(function () {
-      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-      if (cb === null) {
-        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-        return;
-      }
-      var ret;
-      try {
-        ret = cb(self._value);
-      } catch (e) {
-        reject(deferred.promise, e);
-        return;
-      }
-      resolve(deferred.promise, ret);
-    });
-  }
-  function resolve(self, newValue) {
-    try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
-        var then = newValue.then;
-        if (newValue instanceof Promise) {
-          self._state = 3;
-          self._value = newValue;
-          finale(self);
-          return;
-        } else if (typeof then === 'function') {
-          doResolve(bind(then, newValue), self);
-          return;
-        }
-      }
-      self._state = 1;
-      self._value = newValue;
-      finale(self);
-    } catch (e) {
-      reject(self, e);
-    }
-  }
-  function reject(self, newValue) {
-    self._state = 2;
-    self._value = newValue;
-    finale(self);
-  }
-  function finale(self) {
-    if (self._state === 2 && self._deferreds.length === 0) {
-      Promise._immediateFn(function () {
-        if (!self._handled) {
-          Promise._unhandledRejectionFn(self._value);
-        }
-      });
-    }
-    for (var i = 0, len = self._deferreds.length; i < len; i++) {
-      handle(self, self._deferreds[i]);
-    }
-    self._deferreds = null;
-  }
-
-  /**
-   * @constructor
-   */
-  function Handler(onFulfilled, onRejected, promise) {
-    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-    this.promise = promise;
-  }
-
-  /**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
-  function doResolve(fn, self) {
-    var done = false;
-    try {
-      fn(function (value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      }, function (reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      });
-    } catch (ex) {
-      if (done) return;
-      done = true;
-      reject(self, ex);
-    }
-  }
-  Promise.prototype['catch'] = function (onRejected) {
-    return this.then(null, onRejected);
-  };
-  Promise.prototype.then = function (onFulfilled, onRejected) {
-    // @ts-ignore
-    var prom = new this.constructor(noop);
-    handle(this, new Handler(onFulfilled, onRejected, prom));
-    return prom;
-  };
-  Promise.prototype['finally'] = finallyConstructor;
-  Promise.all = function (arr) {
-    return new Promise(function (resolve, reject) {
-      if (!isArray(arr)) {
-        return reject(new TypeError('Promise.all accepts an array'));
-      }
-      var args = Array.prototype.slice.call(arr);
-      if (args.length === 0) return resolve([]);
-      var remaining = args.length;
-      function res(i, val) {
-        try {
-          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
-            var then = val.then;
-            if (typeof then === 'function') {
-              then.call(val, function (val) {
-                res(i, val);
-              }, reject);
-              return;
-            }
-          }
-          args[i] = val;
-          if (--remaining === 0) {
-            resolve(args);
-          }
-        } catch (ex) {
-          reject(ex);
-        }
-      }
-      for (var i = 0; i < args.length; i++) {
-        res(i, args[i]);
-      }
-    });
-  };
-  Promise.allSettled = allSettled;
-  Promise.resolve = function (value) {
-    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
-      return value;
-    }
-    return new Promise(function (resolve) {
-      resolve(value);
-    });
-  };
-  Promise.reject = function (value) {
-    return new Promise(function (resolve, reject) {
-      reject(value);
-    });
-  };
-  Promise.race = function (arr) {
-    return new Promise(function (resolve, reject) {
-      if (!isArray(arr)) {
-        return reject(new TypeError('Promise.race accepts an array'));
-      }
-      for (var i = 0, len = arr.length; i < len; i++) {
-        Promise.resolve(arr[i]).then(resolve, reject);
-      }
-    });
-  };
-
-  // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn =
-  // @ts-ignore
-  typeof setImmediate === 'function' && function (fn) {
-    // @ts-ignore
-    setImmediate(fn);
-  } || function (fn) {
-    setTimeoutFunc(fn, 0);
-  };
-  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-
-  /** @suppress {undefinedVars} */
-  var globalNS = function () {
-    // the only reliable means to get the global object is
-    // `Function('return this')()`
-    // However, this causes CSP violations in Chrome apps.
-    if (typeof self !== 'undefined') {
-      return self;
-    }
-    if (typeof window !== 'undefined') {
-      return window;
-    }
-    if (typeof __webpack_require__.g !== 'undefined') {
-      return __webpack_require__.g;
-    }
-    throw new Error('unable to locate global object');
-  }();
-
-  // Expose the polyfill if Promise is undefined or set to a
-  // non-function value. The latter can be due to a named HTMLElement
-  // being exposed by browsers for legacy reasons.
-  // https://github.com/taylorhakes/promise-polyfill/issues/114
-  if (typeof globalNS['Promise'] !== 'function') {
-    globalNS['Promise'] = Promise;
-  } else {
-    if (!globalNS.Promise.prototype['finally']) {
-      globalNS.Promise.prototype['finally'] = finallyConstructor;
-    }
-    if (!globalNS.Promise.allSettled) {
-      globalNS.Promise.allSettled = allSettled;
-    }
-  }
-});
-
-/***/ }),
-
-/***/ 6369:
-/***/ (function(module, exports, __webpack_require__) {
-
-/* module decorator */ module = __webpack_require__.nmd(module);
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
- * URI.js - Mutating URLs
- * IPv6 Support
- *
- * Version: 1.19.11
- *
- * Author: Rodney Rehm
- * Web: http://medialize.github.io/URI.js/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *
- */
-
-(function (root, factory) {
-  'use strict';
-
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
-    // Node
-    module.exports = factory();
-  } else if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-})(this, function (root) {
-  'use strict';
-
-  /*
-  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
-  var _out = IPv6.best(_in);
-  var _expected = "fe80::204:61ff:fe9d:f156";
-   console.log(_in, _out, _expected, _out === _expected);
-  */
-
-  // save current IPv6 variable, if any
-  var _IPv6 = root && root.IPv6;
-  function bestPresentation(address) {
-    // based on:
-    // Javascript to test an IPv6 address for proper format, and to
-    // present the "best text representation" according to IETF Draft RFC at
-    // http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04
-    // 8 Feb 2010 Rich Brown, Dartware, LLC
-    // Please feel free to use this code as long as you provide a link to
-    // http://www.intermapper.com
-    // http://intermapper.com/support/tools/IPV6-Validator.aspx
-    // http://download.dartware.com/thirdparty/ipv6validator.js
-
-    var _address = address.toLowerCase();
-    var segments = _address.split(':');
-    var length = segments.length;
-    var total = 8;
-
-    // trim colons (:: or ::a:b:c… or …a:b:c::)
-    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
-      // must have been ::
-      // remove first two items
-      segments.shift();
-      segments.shift();
-    } else if (segments[0] === '' && segments[1] === '') {
-      // must have been ::xxxx
-      // remove the first item
-      segments.shift();
-    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
-      // must have been xxxx::
-      segments.pop();
-    }
-    length = segments.length;
-
-    // adjust total segments for IPv4 trailer
-    if (segments[length - 1].indexOf('.') !== -1) {
-      // found a "." which means IPv4
-      total = 7;
-    }
-
-    // fill empty segments them with "0000"
-    var pos;
-    for (pos = 0; pos < length; pos++) {
-      if (segments[pos] === '') {
-        break;
-      }
-    }
-    if (pos < total) {
-      segments.splice(pos, 1, '0000');
-      while (segments.length < total) {
-        segments.splice(pos, 0, '0000');
-      }
-    }
-
-    // strip leading zeros
-    var _segments;
-    for (var i = 0; i < total; i++) {
-      _segments = segments[i].split('');
-      for (var j = 0; j < 3; j++) {
-        if (_segments[0] === '0' && _segments.length > 1) {
-          _segments.splice(0, 1);
-        } else {
-          break;
-        }
-      }
-      segments[i] = _segments.join('');
-    }
-
-    // find longest sequence of zeroes and coalesce them into one segment
-    var best = -1;
-    var _best = 0;
-    var _current = 0;
-    var current = -1;
-    var inzeroes = false;
-    // i; already declared
-
-    for (i = 0; i < total; i++) {
-      if (inzeroes) {
-        if (segments[i] === '0') {
-          _current += 1;
-        } else {
-          inzeroes = false;
-          if (_current > _best) {
-            best = current;
-            _best = _current;
-          }
-        }
-      } else {
-        if (segments[i] === '0') {
-          inzeroes = true;
-          current = i;
-          _current = 1;
-        }
-      }
-    }
-    if (_current > _best) {
-      best = current;
-      _best = _current;
-    }
-    if (_best > 1) {
-      segments.splice(best, _best, '');
-    }
-    length = segments.length;
-
-    // assemble remaining segments
-    var result = '';
-    if (segments[0] === '') {
-      result = ':';
-    }
-    for (i = 0; i < length; i++) {
-      result += segments[i];
-      if (i === length - 1) {
-        break;
-      }
-      result += ':';
-    }
-    if (segments[length - 1] === '') {
-      result += ':';
-    }
-    return result;
-  }
-  function noConflict() {
-    /*jshint validthis: true */
-    if (root.IPv6 === this) {
-      root.IPv6 = _IPv6;
-    }
-    return this;
-  }
+module.exports = function (bitmap, value) {
   return {
-    best: bestPresentation,
-    noConflict: noConflict
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
   };
+};
+
+/***/ }),
+
+/***/ 56:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var shared = __webpack_require__(1930);
+var uid = __webpack_require__(6177);
+var keys = shared('keys');
+module.exports = function (key) {
+  return keys[key] || (keys[key] = uid(key));
+};
+
+/***/ }),
+
+/***/ 125:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(3763);
+var enumBugKeys = __webpack_require__(3690);
+var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+
+// `Object.getOwnPropertyNames` method
+// https://tc39.es/ecma262/#sec-object.getownpropertynames
+// eslint-disable-next-line es/no-object-getownpropertynames -- safe
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return internalObjectKeys(O, hiddenKeys);
+};
+
+/***/ }),
+
+/***/ 128:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+var $propertyIsEnumerable = {}.propertyIsEnumerable;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// Nashorn ~ JDK8 bug
+var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({
+  1: 2
+}, 1);
+
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
+  var descriptor = getOwnPropertyDescriptor(this, V);
+  return !!descriptor && descriptor.enumerable;
+} : $propertyIsEnumerable;
+
+/***/ }),
+
+/***/ 148:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var isCallable = __webpack_require__(5164);
+var aFunction = function aFunction(argument) {
+  return isCallable(argument) ? argument : undefined;
+};
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(globalThis[namespace]) : globalThis[namespace] && globalThis[namespace][method];
+};
+
+/***/ }),
+
+/***/ 379:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(9319);
+var WrappedWellKnownSymbolModule = __webpack_require__(8490);
+module.exports = WrappedWellKnownSymbolModule.f('asyncIterator');
+
+/***/ }),
+
+/***/ 754:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var IE8_DOM_DEFINE = __webpack_require__(6182);
+var V8_PROTOTYPE_DEFINE_BUG = __webpack_require__(1363);
+var anObject = __webpack_require__(5546);
+var toPropertyKey = __webpack_require__(8);
+var $TypeError = TypeError;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $defineProperty = Object.defineProperty;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var ENUMERABLE = 'enumerable';
+var CONFIGURABLE = 'configurable';
+var WRITABLE = 'writable';
+
+// `Object.defineProperty` method
+// https://tc39.es/ecma262/#sec-object.defineproperty
+exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
+    var current = $getOwnPropertyDescriptor(O, P);
+    if (current && current[WRITABLE]) {
+      O[P] = Attributes.value;
+      Attributes = {
+        configurable: CONFIGURABLE in Attributes ? Attributes[CONFIGURABLE] : current[CONFIGURABLE],
+        enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
+        writable: false
+      };
+    }
+  }
+  return $defineProperty(O, P, Attributes);
+} : $defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPropertyKey(P);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return $defineProperty(O, P, Attributes);
+  } catch (error) {/* empty */}
+  if ('get' in Attributes || 'set' in Attributes) throw new $TypeError('Accessors not supported');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+/***/ }),
+
+/***/ 756:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(379);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 1185:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var internalObjectKeys = __webpack_require__(3763);
+var enumBugKeys = __webpack_require__(3690);
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+// eslint-disable-next-line es/no-object-keys -- safe
+module.exports = Object.keys || function keys(O) {
+  return internalObjectKeys(O, enumBugKeys);
+};
+
+/***/ }),
+
+/***/ 1212:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+// toObject with fallback for non-array-like ES3 strings
+var IndexedObject = __webpack_require__(4384);
+var requireObjectCoercible = __webpack_require__(1365);
+module.exports = function (it) {
+  return IndexedObject(requireObjectCoercible(it));
+};
+
+/***/ }),
+
+/***/ 1363:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var fails = __webpack_require__(3634);
+
+// V8 ~ Chrome 36-
+// https://bugs.chromium.org/p/v8/issues/detail?id=3334
+module.exports = DESCRIPTORS && fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty(function () {/* empty */}, 'prototype', {
+    value: 42,
+    writable: false
+  }).prototype !== 42;
 });
 
 /***/ }),
 
-/***/ 7011:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 1365:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-/* module decorator */ module = __webpack_require__.nmd(module);
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
- * URI.js - Mutating URLs
- * Second Level Domain (SLD) Support
- *
- * Version: 1.19.11
- *
- * Author: Rodney Rehm
- * Web: http://medialize.github.io/URI.js/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *
- */
+"use strict";
 
-(function (root, factory) {
-  'use strict';
 
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
-    // Node
-    module.exports = factory();
-  } else if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-})(this, function (root) {
-  'use strict';
+var isNullOrUndefined = __webpack_require__(4350);
+var $TypeError = TypeError;
 
-  // save current SecondLevelDomains variable, if any
-  var _SecondLevelDomains = root && root.SecondLevelDomains;
-  var SLD = {
-    // list of known Second Level Domains
-    // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
-    // ----
-    // publicsuffix.org is more current and actually used by a couple of browsers internally.
-    // downside is it also contains domains like "dyndns.org" - which is fine for the security
-    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
-    // ----
-    list: {
-      'ac': ' com gov mil net org ',
-      'ae': ' ac co gov mil name net org pro sch ',
-      'af': ' com edu gov net org ',
-      'al': ' com edu gov mil net org ',
-      'ao': ' co ed gv it og pb ',
-      'ar': ' com edu gob gov int mil net org tur ',
-      'at': ' ac co gv or ',
-      'au': ' asn com csiro edu gov id net org ',
-      'ba': ' co com edu gov mil net org rs unbi unmo unsa untz unze ',
-      'bb': ' biz co com edu gov info net org store tv ',
-      'bh': ' biz cc com edu gov info net org ',
-      'bn': ' com edu gov net org ',
-      'bo': ' com edu gob gov int mil net org tv ',
-      'br': ' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
-      'bs': ' com edu gov net org ',
-      'bz': ' du et om ov rg ',
-      'ca': ' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
-      'ck': ' biz co edu gen gov info net org ',
-      'cn': ' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
-      'co': ' com edu gov mil net nom org ',
-      'cr': ' ac c co ed fi go or sa ',
-      'cy': ' ac biz com ekloges gov ltd name net org parliament press pro tm ',
-      'do': ' art com edu gob gov mil net org sld web ',
-      'dz': ' art asso com edu gov net org pol ',
-      'ec': ' com edu fin gov info med mil net org pro ',
-      'eg': ' com edu eun gov mil name net org sci ',
-      'er': ' com edu gov ind mil net org rochest w ',
-      'es': ' com edu gob nom org ',
-      'et': ' biz com edu gov info name net org ',
-      'fj': ' ac biz com info mil name net org pro ',
-      'fk': ' ac co gov net nom org ',
-      'fr': ' asso com f gouv nom prd presse tm ',
-      'gg': ' co net org ',
-      'gh': ' com edu gov mil org ',
-      'gn': ' ac com gov net org ',
-      'gr': ' com edu gov mil net org ',
-      'gt': ' com edu gob ind mil net org ',
-      'gu': ' com edu gov net org ',
-      'hk': ' com edu gov idv net org ',
-      'hu': ' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
-      'id': ' ac co go mil net or sch web ',
-      'il': ' ac co gov idf k12 muni net org ',
-      'in': ' ac co edu ernet firm gen gov i ind mil net nic org res ',
-      'iq': ' com edu gov i mil net org ',
-      'ir': ' ac co dnssec gov i id net org sch ',
-      'it': ' edu gov ',
-      'je': ' co net org ',
-      'jo': ' com edu gov mil name net org sch ',
-      'jp': ' ac ad co ed go gr lg ne or ',
-      'ke': ' ac co go info me mobi ne or sc ',
-      'kh': ' com edu gov mil net org per ',
-      'ki': ' biz com de edu gov info mob net org tel ',
-      'km': ' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
-      'kn': ' edu gov net org ',
-      'kr': ' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
-      'kw': ' com edu gov net org ',
-      'ky': ' com edu gov net org ',
-      'kz': ' com edu gov mil net org ',
-      'lb': ' com edu gov net org ',
-      'lk': ' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
-      'lr': ' com edu gov net org ',
-      'lv': ' asn com conf edu gov id mil net org ',
-      'ly': ' com edu gov id med net org plc sch ',
-      'ma': ' ac co gov m net org press ',
-      'mc': ' asso tm ',
-      'me': ' ac co edu gov its net org priv ',
-      'mg': ' com edu gov mil nom org prd tm ',
-      'mk': ' com edu gov inf name net org pro ',
-      'ml': ' com edu gov net org presse ',
-      'mn': ' edu gov org ',
-      'mo': ' com edu gov net org ',
-      'mt': ' com edu gov net org ',
-      'mv': ' aero biz com coop edu gov info int mil museum name net org pro ',
-      'mw': ' ac co com coop edu gov int museum net org ',
-      'mx': ' com edu gob net org ',
-      'my': ' com edu gov mil name net org sch ',
-      'nf': ' arts com firm info net other per rec store web ',
-      'ng': ' biz com edu gov mil mobi name net org sch ',
-      'ni': ' ac co com edu gob mil net nom org ',
-      'np': ' com edu gov mil net org ',
-      'nr': ' biz com edu gov info net org ',
-      'om': ' ac biz co com edu gov med mil museum net org pro sch ',
-      'pe': ' com edu gob mil net nom org sld ',
-      'ph': ' com edu gov i mil net ngo org ',
-      'pk': ' biz com edu fam gob gok gon gop gos gov net org web ',
-      'pl': ' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
-      'pr': ' ac biz com edu est gov info isla name net org pro prof ',
-      'ps': ' com edu gov net org plo sec ',
-      'pw': ' belau co ed go ne or ',
-      'ro': ' arts com firm info nom nt org rec store tm www ',
-      'rs': ' ac co edu gov in org ',
-      'sb': ' com edu gov net org ',
-      'sc': ' com edu gov net org ',
-      'sh': ' co com edu gov net nom org ',
-      'sl': ' com edu gov net org ',
-      'st': ' co com consulado edu embaixada gov mil net org principe saotome store ',
-      'sv': ' com edu gob org red ',
-      'sz': ' ac co org ',
-      'tr': ' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
-      'tt': ' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
-      'tw': ' club com ebiz edu game gov idv mil net org ',
-      'mu': ' ac co com gov net or org ',
-      'mz': ' ac co edu gov org ',
-      'na': ' co com ',
-      'nz': ' ac co cri geek gen govt health iwi maori mil net org parliament school ',
-      'pa': ' abo ac com edu gob ing med net nom org sld ',
-      'pt': ' com edu gov int net nome org publ ',
-      'py': ' com edu gov mil net org ',
-      'qa': ' com edu gov mil net org ',
-      're': ' asso com nom ',
-      'ru': ' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
-      'rw': ' ac co com edu gouv gov int mil net ',
-      'sa': ' com edu gov med net org pub sch ',
-      'sd': ' com edu gov info med net org tv ',
-      'se': ' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
-      'sg': ' com edu gov idn net org per ',
-      'sn': ' art com edu gouv org perso univ ',
-      'sy': ' com edu gov mil net news org ',
-      'th': ' ac co go in mi net or ',
-      'tj': ' ac biz co com edu go gov info int mil name net nic org test web ',
-      'tn': ' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
-      'tz': ' ac co go ne or ',
-      'ua': ' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
-      'ug': ' ac co go ne or org sc ',
-      'uk': ' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
-      'us': ' dni fed isa kids nsn ',
-      'uy': ' com edu gub mil net org ',
-      've': ' co com edu gob info mil net org web ',
-      'vi': ' co com k12 net org ',
-      'vn': ' ac biz com edu gov health info int name net org pro ',
-      'ye': ' co com gov ltd me net org plc ',
-      'yu': ' ac co edu gov org ',
-      'za': ' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
-      'zm': ' ac co com edu gov net org sch ',
-      // https://en.wikipedia.org/wiki/CentralNic#Second-level_domains
-      'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
-      'net': 'gb jp se uk ',
-      'org': 'ae',
-      'de': 'com '
-    },
-    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
-    // in both performance and memory footprint. No initialization required.
-    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
-    // Following methods use lastIndexOf() rather than array.split() in order
-    // to avoid any memory allocations.
-    has: function has(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') >= 0;
-    },
-    is: function is(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset >= 0) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
-    },
-    get: function get(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
-        return null;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
-        return null;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return null;
-      }
-      if (sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') < 0) {
-        return null;
-      }
-      return domain.slice(sldOffset + 1);
-    },
-    noConflict: function noConflict() {
-      if (root.SecondLevelDomains === this) {
-        root.SecondLevelDomains = _SecondLevelDomains;
-      }
-      return this;
-    }
-  };
-  return SLD;
-});
+// `RequireObjectCoercible` abstract operation
+// https://tc39.es/ecma262/#sec-requireobjectcoercible
+module.exports = function (it) {
+  if (isNullOrUndefined(it)) throw new $TypeError("Can't call method on " + it);
+  return it;
+};
 
 /***/ }),
 
-/***/ 9216:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 1606:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-/* module decorator */ module = __webpack_require__.nmd(module);
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
- * URI.js - Mutating URLs
- *
- * Version: 1.19.11
- *
- * Author: Rodney Rehm
- * Web: http://medialize.github.io/URI.js/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *
- */
-(function (root, factory) {
-  'use strict';
+"use strict";
 
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
-    // Node
-    module.exports = factory(__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011));
-  } else if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-})(this, function (punycode, IPv6, SLD, root) {
-  'use strict';
 
-  /*global location, escape, unescape */
-  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
-  /*jshint camelcase: false */
+__webpack_require__(6186);
+var path = __webpack_require__(7520);
+module.exports = path.Object.assign;
 
-  // save current URI variable, if any
-  var _URI = root && root.URI;
-  function URI(url, base) {
-    var _urlSupplied = arguments.length >= 1;
-    var _baseSupplied = arguments.length >= 2;
+/***/ }),
 
-    // Allow instantiation without the 'new' keyword
-    if (!(this instanceof URI)) {
-      if (_urlSupplied) {
-        if (_baseSupplied) {
-          return new URI(url, base);
-        }
-        return new URI(url);
-      }
-      return new URI();
-    }
-    if (url === undefined) {
-      if (_urlSupplied) {
-        throw new TypeError('undefined is not a valid argument for URI');
-      }
-      if (typeof location !== 'undefined') {
-        url = location.href + '';
-      } else {
-        url = '';
-      }
-    }
-    if (url === null) {
-      if (_urlSupplied) {
-        throw new TypeError('null is not a valid argument for URI');
-      }
-    }
-    this.href(url);
+/***/ 1642:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-    // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
-    if (base !== undefined) {
-      return this.absoluteTo(base);
-    }
-    return this;
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var shared = __webpack_require__(1930);
+var hasOwn = __webpack_require__(2770);
+var uid = __webpack_require__(6177);
+var NATIVE_SYMBOL = __webpack_require__(6576);
+var USE_SYMBOL_AS_UID = __webpack_require__(2865);
+var _Symbol = globalThis.Symbol;
+var WellKnownSymbolsStore = shared('wks');
+var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
+module.exports = function (name) {
+  if (!hasOwn(WellKnownSymbolsStore, name)) {
+    WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(_Symbol, name) ? _Symbol[name] : createWellKnownSymbol('Symbol.' + name);
   }
-  function isInteger(value) {
-    return /^[0-9]+$/.test(value);
-  }
-  URI.version = '1.19.11';
-  var p = URI.prototype;
-  var hasOwn = Object.prototype.hasOwnProperty;
-  function escapeRegEx(string) {
-    // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
-    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-  }
-  function getType(value) {
-    // IE8 doesn't return [Object Undefined] but [Object Object] for undefined value
-    if (value === undefined) {
-      return 'Undefined';
-    }
-    return String(Object.prototype.toString.call(value)).slice(8, -1);
-  }
-  function isArray(obj) {
-    return getType(obj) === 'Array';
-  }
-  function filterArrayValues(data, value) {
-    var lookup = {};
-    var i, length;
-    if (getType(value) === 'RegExp') {
-      lookup = null;
-    } else if (isArray(value)) {
-      for (i = 0, length = value.length; i < length; i++) {
-        lookup[value[i]] = true;
-      }
-    } else {
-      lookup[value] = true;
-    }
-    for (i = 0, length = data.length; i < length; i++) {
-      /*jshint laxbreak: true */
-      var _match = lookup && lookup[data[i]] !== undefined || !lookup && value.test(data[i]);
-      /*jshint laxbreak: false */
-      if (_match) {
-        data.splice(i, 1);
-        length--;
-        i--;
-      }
-    }
-    return data;
-  }
-  function arrayContains(list, value) {
-    var i, length;
+  return WellKnownSymbolsStore[name];
+};
 
-    // value may be string, number, array, regexp
-    if (isArray(value)) {
-      // Note: this can be optimized to O(n) (instead of current O(m * n))
-      for (i = 0, length = value.length; i < length; i++) {
-        if (!arrayContains(list, value[i])) {
-          return false;
-        }
-      }
-      return true;
-    }
-    var _type = getType(value);
-    for (i = 0, length = list.length; i < length; i++) {
-      if (_type === 'RegExp') {
-        if (typeof list[i] === 'string' && list[i].match(value)) {
-          return true;
-        }
-      } else if (list[i] === value) {
-        return true;
-      }
-    }
-    return false;
-  }
-  function arraysEqual(one, two) {
-    if (!isArray(one) || !isArray(two)) {
-      return false;
-    }
+/***/ }),
 
-    // arrays can't be equal if they have different amount of content
-    if (one.length !== two.length) {
-      return false;
-    }
-    one.sort();
-    two.sort();
-    for (var i = 0, l = one.length; i < l; i++) {
-      if (one[i] !== two[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-  function trimSlashes(text) {
-    var trim_expression = /^\/+|\/+$/g;
-    return text.replace(trim_expression, '');
-  }
-  URI._parts = function () {
-    return {
-      protocol: null,
-      username: null,
-      password: null,
-      hostname: null,
-      urn: null,
-      port: null,
-      path: null,
-      query: null,
-      fragment: null,
-      // state
-      preventInvalidHostname: URI.preventInvalidHostname,
-      duplicateQueryParameters: URI.duplicateQueryParameters,
-      escapeQuerySpace: URI.escapeQuerySpace
-    };
-  };
-  // state: throw on invalid hostname
-  // see https://github.com/medialize/URI.js/pull/345
-  // and https://github.com/medialize/URI.js/issues/354
-  URI.preventInvalidHostname = false;
-  // state: allow duplicate query parameters (a=1&a=1)
-  URI.duplicateQueryParameters = false;
-  // state: replaces + with %20 (space in query strings)
-  URI.escapeQuerySpace = true;
-  // static properties
-  URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
-  URI.idn_expression = /[^a-z0-9\._-]/i;
-  URI.punycode_expression = /(xn--)/i;
-  // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
-  URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-  // credits to Rich Brown
-  // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
-  // specification: http://www.ietf.org/rfc/rfc4291.txt
-  URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
-  // expression used is "gruber revised" (@gruber v2) determined to be the
-  // best solution in a regex-golf we did a couple of ages ago at
-  // * http://mathiasbynens.be/demo/url-regex
-  // * http://rodneyrehm.de/t/url-regex.html
-  URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
-  URI.findUri = {
-    // valid "scheme://" or "www."
-    start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
-    // everything up to the next whitespace
-    end: /[\s\r\n]|$/,
-    // trim trailing punctuation captured by end RegExp
-    trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/,
-    // balanced parens inclusion (), [], {}, <>
-    parens: /(\([^\)]*\)|\[[^\]]*\]|\{[^}]*\}|<[^>]*>)/g
-  };
-  URI.leading_whitespace_expression = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
-  // https://infra.spec.whatwg.org/#ascii-tab-or-newline
-  URI.ascii_tab_whitespace = /[\u0009\u000A\u000D]+/g;
-  // http://www.iana.org/assignments/uri-schemes.html
-  // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
-  URI.defaultPorts = {
-    http: '80',
-    https: '443',
-    ftp: '21',
-    gopher: '70',
-    ws: '80',
-    wss: '443'
-  };
-  // list of protocols which always require a hostname
-  URI.hostProtocols = ['http', 'https'];
+/***/ 1930:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-  // allowed hostname characters according to RFC 3986
-  // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
-  // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . - _
-  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.\-:_]/;
-  // map DOM Elements to their URI attribute
-  URI.domAttributes = {
-    'a': 'href',
-    'blockquote': 'cite',
-    'link': 'href',
-    'base': 'href',
-    'script': 'src',
-    'form': 'action',
-    'img': 'src',
-    'area': 'href',
-    'iframe': 'src',
-    'embed': 'src',
-    'source': 'src',
-    'track': 'src',
-    'input': 'src',
-    // but only if type="image"
-    'audio': 'src',
-    'video': 'src'
-  };
-  URI.getDomAttribute = function (node) {
-    if (!node || !node.nodeName) {
-      return undefined;
-    }
-    var nodeName = node.nodeName.toLowerCase();
-    // <input> should only expose src for type="image"
-    if (nodeName === 'input' && node.type !== 'image') {
-      return undefined;
-    }
-    return URI.domAttributes[nodeName];
-  };
-  function escapeForDumbFirefox36(value) {
-    // https://github.com/medialize/URI.js/issues/91
-    return escape(value);
-  }
+"use strict";
 
-  // encoding / decoding according to RFC3986
-  function strictEncodeURIComponent(string) {
-    // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
-    return encodeURIComponent(string).replace(/[!'()*]/g, escapeForDumbFirefox36).replace(/\*/g, '%2A');
-  }
-  URI.encode = strictEncodeURIComponent;
-  URI.decode = decodeURIComponent;
-  URI.iso8859 = function () {
-    URI.encode = escape;
-    URI.decode = unescape;
-  };
-  URI.unicode = function () {
-    URI.encode = strictEncodeURIComponent;
-    URI.decode = decodeURIComponent;
-  };
-  URI.characters = {
-    pathname: {
-      encode: {
-        // RFC3986 2.1: For consistency, URI producers and normalizers should
-        // use uppercase hexadecimal digits for all percent-encodings.
-        expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
-        map: {
-          // -._~!'()*
-          '%24': '$',
-          '%26': '&',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '=',
-          '%3A': ':',
-          '%40': '@'
-        }
-      },
-      decode: {
-        expression: /[\/\?#]/g,
-        map: {
-          '/': '%2F',
-          '?': '%3F',
-          '#': '%23'
-        }
-      }
-    },
-    reserved: {
-      encode: {
-        // RFC3986 2.1: For consistency, URI producers and normalizers should
-        // use uppercase hexadecimal digits for all percent-encodings.
-        expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
-        map: {
-          // gen-delims
-          '%3A': ':',
-          '%2F': '/',
-          '%3F': '?',
-          '%23': '#',
-          '%5B': '[',
-          '%5D': ']',
-          '%40': '@',
-          // sub-delims
-          '%21': '!',
-          '%24': '$',
-          '%26': '&',
-          '%27': '\'',
-          '%28': '(',
-          '%29': ')',
-          '%2A': '*',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '='
-        }
-      }
-    },
-    urnpath: {
-      // The characters under `encode` are the characters called out by RFC 2141 as being acceptable
-      // for usage in a URN. RFC2141 also calls out "-", ".", and "_" as acceptable characters, but
-      // these aren't encoded by encodeURIComponent, so we don't have to call them out here. Also
-      // note that the colon character is not featured in the encoding map; this is because URI.js
-      // gives the colons in URNs semantic meaning as the delimiters of path segements, and so it
-      // should not appear unencoded in a segment itself.
-      // See also the note above about RFC3986 and capitalalized hex digits.
-      encode: {
-        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
-        map: {
-          '%21': '!',
-          '%24': '$',
-          '%27': '\'',
-          '%28': '(',
-          '%29': ')',
-          '%2A': '*',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '=',
-          '%40': '@'
-        }
-      },
-      // These characters are the characters called out by RFC2141 as "reserved" characters that
-      // should never appear in a URN, plus the colon character (see note above).
-      decode: {
-        expression: /[\/\?#:]/g,
-        map: {
-          '/': '%2F',
-          '?': '%3F',
-          '#': '%23',
-          ':': '%3A'
-        }
-      }
-    }
-  };
-  URI.encodeQuery = function (string, escapeQuerySpace) {
-    var escaped = URI.encode(string + '');
-    if (escapeQuerySpace === undefined) {
-      escapeQuerySpace = URI.escapeQuerySpace;
-    }
-    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
-  };
-  URI.decodeQuery = function (string, escapeQuerySpace) {
-    string += '';
-    if (escapeQuerySpace === undefined) {
-      escapeQuerySpace = URI.escapeQuerySpace;
-    }
-    try {
-      return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
-    } catch (e) {
-      // we're not going to mess with weird encodings,
-      // give up and return the undecoded original string
-      // see https://github.com/medialize/URI.js/issues/87
-      // see https://github.com/medialize/URI.js/issues/92
-      return string;
-    }
-  };
-  // generate encode/decode path functions
-  var _parts = {
-    'encode': 'encode',
-    'decode': 'decode'
-  };
-  var _part;
-  var generateAccessor = function generateAccessor(_group, _part) {
-    return function (string) {
-      try {
-        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function (c) {
-          return URI.characters[_group][_part].map[c];
-        });
-      } catch (e) {
-        // we're not going to mess with weird encodings,
-        // give up and return the undecoded original string
-        // see https://github.com/medialize/URI.js/issues/87
-        // see https://github.com/medialize/URI.js/issues/92
-        return string;
-      }
-    };
-  };
-  for (_part in _parts) {
-    URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
-    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
-  }
-  var generateSegmentedPathFunction = function generateSegmentedPathFunction(_sep, _codingFuncName, _innerCodingFuncName) {
-    return function (string) {
-      // Why pass in names of functions, rather than the function objects themselves? The
-      // definitions of some functions (but in particular, URI.decode) will occasionally change due
-      // to URI.js having ISO8859 and Unicode modes. Passing in the name and getting it will ensure
-      // that the functions we use here are "fresh".
-      var actualCodingFunc;
-      if (!_innerCodingFuncName) {
-        actualCodingFunc = URI[_codingFuncName];
-      } else {
-        actualCodingFunc = function actualCodingFunc(string) {
-          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
-        };
-      }
-      var segments = (string + '').split(_sep);
-      for (var i = 0, length = segments.length; i < length; i++) {
-        segments[i] = actualCodingFunc(segments[i]);
-      }
-      return segments.join(_sep);
-    };
-  };
 
-  // This takes place outside the above loop because we don't want, e.g., encodeUrnPath functions.
-  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
-  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
-  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
-  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
-  URI.encodeReserved = generateAccessor('reserved', 'encode');
-  URI.parse = function (string, parts) {
-    var pos;
-    if (!parts) {
-      parts = {
-        preventInvalidHostname: URI.preventInvalidHostname
-      };
-    }
-    string = string.replace(URI.leading_whitespace_expression, '');
-    // https://infra.spec.whatwg.org/#ascii-tab-or-newline
-    string = string.replace(URI.ascii_tab_whitespace, '');
+var store = __webpack_require__(3094);
+module.exports = function (key, value) {
+  return store[key] || (store[key] = value || {});
+};
 
-    // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
+/***/ }),
 
-    // extract fragment
-    pos = string.indexOf('#');
-    if (pos > -1) {
-      // escaping?
-      parts.fragment = string.substring(pos + 1) || null;
-      string = string.substring(0, pos);
-    }
+/***/ 1995:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-    // extract query
-    pos = string.indexOf('?');
-    if (pos > -1) {
-      // escaping?
-      parts.query = string.substring(pos + 1) || null;
-      string = string.substring(0, pos);
-    }
+"use strict";
 
-    // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
-    string = string.replace(/^(https?|ftp|wss?)?:+[/\\]*/i, '$1://');
-    // slashes and backslashes have lost all meaning for scheme relative URLs
-    string = string.replace(/^[/\\]{2,}/i, '//');
 
-    // extract protocol
-    if (string.substring(0, 2) === '//') {
-      // relative-scheme
-      parts.protocol = null;
-      string = string.substring(2);
-      // extract "user:pass@host:port"
-      string = URI.parseAuthority(string, parts);
-    } else {
-      pos = string.indexOf(':');
-      if (pos > -1) {
-        parts.protocol = string.substring(0, pos) || null;
-        if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
-          // : may be within the path
-          parts.protocol = undefined;
-        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
-          string = string.substring(pos + 3);
+var toIntegerOrInfinity = __webpack_require__(3784);
+var min = Math.min;
 
-          // extract "user:pass@host:port"
-          string = URI.parseAuthority(string, parts);
-        } else {
-          string = string.substring(pos + 1);
-          parts.urn = true;
-        }
-      }
-    }
-
-    // what's left must be the path
-    parts.path = string;
-
-    // and we're done
-    return parts;
-  };
-  URI.parseHost = function (string, parts) {
-    if (!string) {
-      string = '';
-    }
-
-    // Copy chrome, IE, opera backslash-handling behavior.
-    // Back slashes before the query string get converted to forward slashes
-    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
-    // See: https://code.google.com/p/chromium/issues/detail?id=25916
-    // https://github.com/medialize/URI.js/pull/233
-    string = string.replace(/\\/g, '/');
-
-    // extract host:port
-    var pos = string.indexOf('/');
-    var bracketPos;
-    var t;
-    if (pos === -1) {
-      pos = string.length;
-    }
-    if (string.charAt(0) === '[') {
-      // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
-      // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
-      // IPv6+port in the format [2001:db8::1]:80 (for the time being)
-      bracketPos = string.indexOf(']');
-      parts.hostname = string.substring(1, bracketPos) || null;
-      parts.port = string.substring(bracketPos + 2, pos) || null;
-      if (parts.port === '/') {
-        parts.port = null;
-      }
-    } else {
-      var firstColon = string.indexOf(':');
-      var firstSlash = string.indexOf('/');
-      var nextColon = string.indexOf(':', firstColon + 1);
-      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
-        // IPv6 host contains multiple colons - but no port
-        // this notation is actually not allowed by RFC 3986, but we're a liberal parser
-        parts.hostname = string.substring(0, pos) || null;
-        parts.port = null;
-      } else {
-        t = string.substring(0, pos).split(':');
-        parts.hostname = t[0] || null;
-        parts.port = t[1] || null;
-      }
-    }
-    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
-      pos++;
-      string = '/' + string;
-    }
-    if (parts.preventInvalidHostname) {
-      URI.ensureValidHostname(parts.hostname, parts.protocol);
-    }
-    if (parts.port) {
-      URI.ensureValidPort(parts.port);
-    }
-    return string.substring(pos) || '/';
-  };
-  URI.parseAuthority = function (string, parts) {
-    string = URI.parseUserinfo(string, parts);
-    return URI.parseHost(string, parts);
-  };
-  URI.parseUserinfo = function (string, parts) {
-    // extract username:password
-    var _string = string;
-    var firstBackSlash = string.indexOf('\\');
-    if (firstBackSlash !== -1) {
-      string = string.replace(/\\/g, '/');
-    }
-    var firstSlash = string.indexOf('/');
-    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
-    var t;
-
-    // authority@ must come before /path or \path
-    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
-      t = string.substring(0, pos).split(':');
-      parts.username = t[0] ? URI.decode(t[0]) : null;
-      t.shift();
-      parts.password = t[0] ? URI.decode(t.join(':')) : null;
-      string = _string.substring(pos + 1);
-    } else {
-      parts.username = null;
-      parts.password = null;
-    }
-    return string;
-  };
-  URI.parseQuery = function (string, escapeQuerySpace) {
-    if (!string) {
-      return {};
-    }
-
-    // throw out the funky business - "?"[name"="value"&"]+
-    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
-    if (!string) {
-      return {};
-    }
-    var items = {};
-    var splits = string.split('&');
-    var length = splits.length;
-    var v, name, value;
-    for (var i = 0; i < length; i++) {
-      v = splits[i].split('=');
-      name = URI.decodeQuery(v.shift(), escapeQuerySpace);
-      // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
-      value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
-      if (name === '__proto__') {
-        // ignore attempt at exploiting JavaScript internals
-        continue;
-      } else if (hasOwn.call(items, name)) {
-        if (typeof items[name] === 'string' || items[name] === null) {
-          items[name] = [items[name]];
-        }
-        items[name].push(value);
-      } else {
-        items[name] = value;
-      }
-    }
-    return items;
-  };
-  URI.build = function (parts) {
-    var t = '';
-    var requireAbsolutePath = false;
-    if (parts.protocol) {
-      t += parts.protocol + ':';
-    }
-    if (!parts.urn && (t || parts.hostname)) {
-      t += '//';
-      requireAbsolutePath = true;
-    }
-    t += URI.buildAuthority(parts) || '';
-    if (typeof parts.path === 'string') {
-      if (parts.path.charAt(0) !== '/' && requireAbsolutePath) {
-        t += '/';
-      }
-      t += parts.path;
-    }
-    if (typeof parts.query === 'string' && parts.query) {
-      t += '?' + parts.query;
-    }
-    if (typeof parts.fragment === 'string' && parts.fragment) {
-      t += '#' + parts.fragment;
-    }
-    return t;
-  };
-  URI.buildHost = function (parts) {
-    var t = '';
-    if (!parts.hostname) {
-      return '';
-    } else if (URI.ip6_expression.test(parts.hostname)) {
-      t += '[' + parts.hostname + ']';
-    } else {
-      t += parts.hostname;
-    }
-    if (parts.port) {
-      t += ':' + parts.port;
-    }
-    return t;
-  };
-  URI.buildAuthority = function (parts) {
-    return URI.buildUserinfo(parts) + URI.buildHost(parts);
-  };
-  URI.buildUserinfo = function (parts) {
-    var t = '';
-    if (parts.username) {
-      t += URI.encode(parts.username);
-    }
-    if (parts.password) {
-      t += ':' + URI.encode(parts.password);
-    }
-    if (t) {
-      t += '@';
-    }
-    return t;
-  };
-  URI.buildQuery = function (data, duplicateQueryParameters, escapeQuerySpace) {
-    // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
-    // being »-._~!$&'()*+,;=:@/?« %HEX and alnum are allowed
-    // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
-    // URI.js treats the query string as being application/x-www-form-urlencoded
-    // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
-
-    var t = '';
-    var unique, key, i, length;
-    for (key in data) {
-      if (key === '__proto__') {
-        // ignore attempt at exploiting JavaScript internals
-        continue;
-      } else if (hasOwn.call(data, key)) {
-        if (isArray(data[key])) {
-          unique = {};
-          for (i = 0, length = data[key].length; i < length; i++) {
-            if (data[key][i] !== undefined && unique[data[key][i] + ''] === undefined) {
-              t += '&' + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
-              if (duplicateQueryParameters !== true) {
-                unique[data[key][i] + ''] = true;
-              }
-            }
-          }
-        } else if (data[key] !== undefined) {
-          t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
-        }
-      }
-    }
-    return t.substring(1);
-  };
-  URI.buildQueryParameter = function (name, value, escapeQuerySpace) {
-    // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded
-    // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
-  };
-  URI.addQuery = function (data, name, value) {
-    if (_typeof(name) === 'object') {
-      for (var key in name) {
-        if (hasOwn.call(name, key)) {
-          URI.addQuery(data, key, name[key]);
-        }
-      }
-    } else if (typeof name === 'string') {
-      if (data[name] === undefined) {
-        data[name] = value;
-        return;
-      } else if (typeof data[name] === 'string') {
-        data[name] = [data[name]];
-      }
-      if (!isArray(value)) {
-        value = [value];
-      }
-      data[name] = (data[name] || []).concat(value);
-    } else {
-      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
-    }
-  };
-  URI.setQuery = function (data, name, value) {
-    if (_typeof(name) === 'object') {
-      for (var key in name) {
-        if (hasOwn.call(name, key)) {
-          URI.setQuery(data, key, name[key]);
-        }
-      }
-    } else if (typeof name === 'string') {
-      data[name] = value === undefined ? null : value;
-    } else {
-      throw new TypeError('URI.setQuery() accepts an object, string as the name parameter');
-    }
-  };
-  URI.removeQuery = function (data, name, value) {
-    var i, length, key;
-    if (isArray(name)) {
-      for (i = 0, length = name.length; i < length; i++) {
-        data[name[i]] = undefined;
-      }
-    } else if (getType(name) === 'RegExp') {
-      for (key in data) {
-        if (name.test(key)) {
-          data[key] = undefined;
-        }
-      }
-    } else if (_typeof(name) === 'object') {
-      for (key in name) {
-        if (hasOwn.call(name, key)) {
-          URI.removeQuery(data, key, name[key]);
-        }
-      }
-    } else if (typeof name === 'string') {
-      if (value !== undefined) {
-        if (getType(value) === 'RegExp') {
-          if (!isArray(data[name]) && value.test(data[name])) {
-            data[name] = undefined;
-          } else {
-            data[name] = filterArrayValues(data[name], value);
-          }
-        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
-          data[name] = undefined;
-        } else if (isArray(data[name])) {
-          data[name] = filterArrayValues(data[name], value);
-        }
-      } else {
-        data[name] = undefined;
-      }
-    } else {
-      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
-    }
-  };
-  URI.hasQuery = function (data, name, value, withinArray) {
-    switch (getType(name)) {
-      case 'String':
-        // Nothing to do here
-        break;
-      case 'RegExp':
-        for (var key in data) {
-          if (hasOwn.call(data, key)) {
-            if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
-              return true;
-            }
-          }
-        }
-        return false;
-      case 'Object':
-        for (var _key in name) {
-          if (hasOwn.call(name, _key)) {
-            if (!URI.hasQuery(data, _key, name[_key])) {
-              return false;
-            }
-          }
-        }
-        return true;
-      default:
-        throw new TypeError('URI.hasQuery() accepts a string, regular expression or object as the name parameter');
-    }
-    switch (getType(value)) {
-      case 'Undefined':
-        // true if exists (but may be empty)
-        return name in data;
-      // data[name] !== undefined;
-
-      case 'Boolean':
-        // true if exists and non-empty
-        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
-        return value === _booly;
-      case 'Function':
-        // allow complex comparison
-        return !!value(data[name], name, data);
-      case 'Array':
-        if (!isArray(data[name])) {
-          return false;
-        }
-        var op = withinArray ? arrayContains : arraysEqual;
-        return op(data[name], value);
-      case 'RegExp':
-        if (!isArray(data[name])) {
-          return Boolean(data[name] && data[name].match(value));
-        }
-        if (!withinArray) {
-          return false;
-        }
-        return arrayContains(data[name], value);
-      case 'Number':
-        value = String(value);
-      /* falls through */
-      case 'String':
-        if (!isArray(data[name])) {
-          return data[name] === value;
-        }
-        if (!withinArray) {
-          return false;
-        }
-        return arrayContains(data[name], value);
-      default:
-        throw new TypeError('URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter');
-    }
-  };
-  URI.joinPaths = function () {
-    var input = [];
-    var segments = [];
-    var nonEmptySegments = 0;
-    for (var i = 0; i < arguments.length; i++) {
-      var url = new URI(arguments[i]);
-      input.push(url);
-      var _segments = url.segment();
-      for (var s = 0; s < _segments.length; s++) {
-        if (typeof _segments[s] === 'string') {
-          segments.push(_segments[s]);
-        }
-        if (_segments[s]) {
-          nonEmptySegments++;
-        }
-      }
-    }
-    if (!segments.length || !nonEmptySegments) {
-      return new URI('');
-    }
-    var uri = new URI('').segment(segments);
-    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
-      uri.path('/' + uri.path());
-    }
-    return uri.normalize();
-  };
-  URI.commonPath = function (one, two) {
-    var length = Math.min(one.length, two.length);
-    var pos;
-
-    // find first non-matching character
-    for (pos = 0; pos < length; pos++) {
-      if (one.charAt(pos) !== two.charAt(pos)) {
-        pos--;
-        break;
-      }
-    }
-    if (pos < 1) {
-      return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
-    }
-
-    // revert to last /
-    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
-      pos = one.substring(0, pos).lastIndexOf('/');
-    }
-    return one.substring(0, pos + 1);
-  };
-  URI.withinString = function (string, callback, options) {
-    options || (options = {});
-    var _start = options.start || URI.findUri.start;
-    var _end = options.end || URI.findUri.end;
-    var _trim = options.trim || URI.findUri.trim;
-    var _parens = options.parens || URI.findUri.parens;
-    var _attributeOpen = /[a-z0-9-]=["']?$/i;
-    _start.lastIndex = 0;
-    while (true) {
-      var match = _start.exec(string);
-      if (!match) {
-        break;
-      }
-      var start = match.index;
-      if (options.ignoreHtml) {
-        // attribut(e=["']?$)
-        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
-        if (attributeOpen && _attributeOpen.test(attributeOpen)) {
-          continue;
-        }
-      }
-      var end = start + string.slice(start).search(_end);
-      var slice = string.slice(start, end);
-      // make sure we include well balanced parens
-      var parensEnd = -1;
-      while (true) {
-        var parensMatch = _parens.exec(slice);
-        if (!parensMatch) {
-          break;
-        }
-        var parensMatchEnd = parensMatch.index + parensMatch[0].length;
-        parensEnd = Math.max(parensEnd, parensMatchEnd);
-      }
-      if (parensEnd > -1) {
-        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd).replace(_trim, '');
-      } else {
-        slice = slice.replace(_trim, '');
-      }
-      if (slice.length <= match[0].length) {
-        // the extract only contains the starting marker of a URI,
-        // e.g. "www" or "http://"
-        continue;
-      }
-      if (options.ignore && options.ignore.test(slice)) {
-        continue;
-      }
-      end = start + slice.length;
-      var result = callback(slice, start, end, string);
-      if (result === undefined) {
-        _start.lastIndex = end;
-        continue;
-      }
-      result = String(result);
-      string = string.slice(0, start) + result + string.slice(end);
-      _start.lastIndex = start + result.length;
-    }
-    _start.lastIndex = 0;
-    return string;
-  };
-  URI.ensureValidHostname = function (v, protocol) {
-    // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
-    // they are not part of DNS and therefore ignored by URI.js
-
-    var hasHostname = !!v; // not null and not an empty string
-    var hasProtocol = !!protocol;
-    var rejectEmptyHostname = false;
-    if (hasProtocol) {
-      rejectEmptyHostname = arrayContains(URI.hostProtocols, protocol);
-    }
-    if (rejectEmptyHostname && !hasHostname) {
-      throw new TypeError('Hostname cannot be empty, if protocol is ' + protocol);
-    } else if (v && v.match(URI.invalid_hostname_characters)) {
-      // test punycode
-      if (!punycode) {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_] and Punycode.js is not available');
-      }
-      if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_]');
-      }
-    }
-  };
-  URI.ensureValidPort = function (v) {
-    if (!v) {
-      return;
-    }
-    var port = Number(v);
-    if (isInteger(port) && port > 0 && port < 65536) {
-      return;
-    }
-    throw new TypeError('Port "' + v + '" is not a valid port');
-  };
-
-  // noConflict
-  URI.noConflict = function (removeAll) {
-    if (removeAll) {
-      var unconflicted = {
-        URI: this.noConflict()
-      };
-      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
-        unconflicted.URITemplate = root.URITemplate.noConflict();
-      }
-      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
-        unconflicted.IPv6 = root.IPv6.noConflict();
-      }
-      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
-        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
-      }
-      return unconflicted;
-    } else if (root.URI === this) {
-      root.URI = _URI;
-    }
-    return this;
-  };
-  p.build = function (deferBuild) {
-    if (deferBuild === true) {
-      this._deferred_build = true;
-    } else if (deferBuild === undefined || this._deferred_build) {
-      this._string = URI.build(this._parts);
-      this._deferred_build = false;
-    }
-    return this;
-  };
-  p.clone = function () {
-    return new URI(this);
-  };
-  p.valueOf = p.toString = function () {
-    return this.build(false)._string;
-  };
-  function generateSimpleAccessor(_part) {
-    return function (v, build) {
-      if (v === undefined) {
-        return this._parts[_part] || '';
-      } else {
-        this._parts[_part] = v || null;
-        this.build(!build);
-        return this;
-      }
-    };
-  }
-  function generatePrefixAccessor(_part, _key) {
-    return function (v, build) {
-      if (v === undefined) {
-        return this._parts[_part] || '';
-      } else {
-        if (v !== null) {
-          v = v + '';
-          if (v.charAt(0) === _key) {
-            v = v.substring(1);
-          }
-        }
-        this._parts[_part] = v;
-        this.build(!build);
-        return this;
-      }
-    };
-  }
-  p.protocol = generateSimpleAccessor('protocol');
-  p.username = generateSimpleAccessor('username');
-  p.password = generateSimpleAccessor('password');
-  p.hostname = generateSimpleAccessor('hostname');
-  p.port = generateSimpleAccessor('port');
-  p.query = generatePrefixAccessor('query', '?');
-  p.fragment = generatePrefixAccessor('fragment', '#');
-  p.search = function (v, build) {
-    var t = this.query(v, build);
-    return typeof t === 'string' && t.length ? '?' + t : t;
-  };
-  p.hash = function (v, build) {
-    var t = this.fragment(v, build);
-    return typeof t === 'string' && t.length ? '#' + t : t;
-  };
-  p.pathname = function (v, build) {
-    if (v === undefined || v === true) {
-      var res = this._parts.path || (this._parts.hostname ? '/' : '');
-      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
-    } else {
-      if (this._parts.urn) {
-        this._parts.path = v ? URI.recodeUrnPath(v) : '';
-      } else {
-        this._parts.path = v ? URI.recodePath(v) : '/';
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.path = p.pathname;
-  p.href = function (href, build) {
-    var key;
-    if (href === undefined) {
-      return this.toString();
-    }
-    this._string = '';
-    this._parts = URI._parts();
-    var _URI = href instanceof URI;
-    var _object = _typeof(href) === 'object' && (href.hostname || href.path || href.pathname);
-    if (href.nodeName) {
-      var attribute = URI.getDomAttribute(href);
-      href = href[attribute] || '';
-      _object = false;
-    }
-
-    // window.location is reported to be an object, but it's not the sort
-    // of object we're looking for:
-    // * location.protocol ends with a colon
-    // * location.query != object.search
-    // * location.hash != object.fragment
-    // simply serializing the unknown object should do the trick
-    // (for location, not for everything...)
-    if (!_URI && _object && href.pathname !== undefined) {
-      href = href.toString();
-    }
-    if (typeof href === 'string' || href instanceof String) {
-      this._parts = URI.parse(String(href), this._parts);
-    } else if (_URI || _object) {
-      var src = _URI ? href._parts : href;
-      for (key in src) {
-        if (key === 'query') {
-          continue;
-        }
-        if (hasOwn.call(this._parts, key)) {
-          this._parts[key] = src[key];
-        }
-      }
-      if (src.query) {
-        this.query(src.query, false);
-      }
-    } else {
-      throw new TypeError('invalid input');
-    }
-    this.build(!build);
-    return this;
-  };
-
-  // identification accessors
-  p.is = function (what) {
-    var ip = false;
-    var ip4 = false;
-    var ip6 = false;
-    var name = false;
-    var sld = false;
-    var idn = false;
-    var punycode = false;
-    var relative = !this._parts.urn;
-    if (this._parts.hostname) {
-      relative = false;
-      ip4 = URI.ip4_expression.test(this._parts.hostname);
-      ip6 = URI.ip6_expression.test(this._parts.hostname);
-      ip = ip4 || ip6;
-      name = !ip;
-      sld = name && SLD && SLD.has(this._parts.hostname);
-      idn = name && URI.idn_expression.test(this._parts.hostname);
-      punycode = name && URI.punycode_expression.test(this._parts.hostname);
-    }
-    switch (what.toLowerCase()) {
-      case 'relative':
-        return relative;
-      case 'absolute':
-        return !relative;
-
-      // hostname identification
-      case 'domain':
-      case 'name':
-        return name;
-      case 'sld':
-        return sld;
-      case 'ip':
-        return ip;
-      case 'ip4':
-      case 'ipv4':
-      case 'inet4':
-        return ip4;
-      case 'ip6':
-      case 'ipv6':
-      case 'inet6':
-        return ip6;
-      case 'idn':
-        return idn;
-      case 'url':
-        return !this._parts.urn;
-      case 'urn':
-        return !!this._parts.urn;
-      case 'punycode':
-        return punycode;
-    }
-    return null;
-  };
-
-  // component specific input validation
-  var _protocol = p.protocol;
-  var _port = p.port;
-  var _hostname = p.hostname;
-  p.protocol = function (v, build) {
-    if (v) {
-      // accept trailing ://
-      v = v.replace(/:(\/\/)?$/, '');
-      if (!v.match(URI.protocol_expression)) {
-        throw new TypeError('Protocol "' + v + '" contains characters other than [A-Z0-9.+-] or doesn\'t start with [A-Z]');
-      }
-    }
-    return _protocol.call(this, v, build);
-  };
-  p.scheme = p.protocol;
-  p.port = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v !== undefined) {
-      if (v === 0) {
-        v = null;
-      }
-      if (v) {
-        v += '';
-        if (v.charAt(0) === ':') {
-          v = v.substring(1);
-        }
-        URI.ensureValidPort(v);
-      }
-    }
-    return _port.call(this, v, build);
-  };
-  p.hostname = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v !== undefined) {
-      var x = {
-        preventInvalidHostname: this._parts.preventInvalidHostname
-      };
-      var res = URI.parseHost(v, x);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      v = x.hostname;
-      if (this._parts.preventInvalidHostname) {
-        URI.ensureValidHostname(v, this._parts.protocol);
-      }
-    }
-    return _hostname.call(this, v, build);
-  };
-
-  // compound accessors
-  p.origin = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      var protocol = this.protocol();
-      var authority = this.authority();
-      if (!authority) {
-        return '';
-      }
-      return (protocol ? protocol + '://' : '') + this.authority();
-    } else {
-      var origin = URI(v);
-      this.protocol(origin.protocol()).authority(origin.authority()).build(!build);
-      return this;
-    }
-  };
-  p.host = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      return this._parts.hostname ? URI.buildHost(this._parts) : '';
-    } else {
-      var res = URI.parseHost(v, this._parts);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.authority = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
-    } else {
-      var res = URI.parseAuthority(v, this._parts);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.userinfo = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      var t = URI.buildUserinfo(this._parts);
-      return t ? t.substring(0, t.length - 1) : t;
-    } else {
-      if (v[v.length - 1] !== '@') {
-        v += '@';
-      }
-      URI.parseUserinfo(v, this._parts);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.resource = function (v, build) {
-    var parts;
-    if (v === undefined) {
-      return this.path() + this.search() + this.hash();
-    }
-    parts = URI.parse(v);
-    this._parts.path = parts.path;
-    this._parts.query = parts.query;
-    this._parts.fragment = parts.fragment;
-    this.build(!build);
-    return this;
-  };
-
-  // fraction accessors
-  p.subdomain = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-
-    // convenience, return "www" from "www.example.org"
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-
-      // grab domain and add another segment
-      var end = this._parts.hostname.length - this.domain().length - 1;
-      return this._parts.hostname.substring(0, end) || '';
-    } else {
-      var e = this._parts.hostname.length - this.domain().length;
-      var sub = this._parts.hostname.substring(0, e);
-      var replace = new RegExp('^' + escapeRegEx(sub));
-      if (v && v.charAt(v.length - 1) !== '.') {
-        v += '.';
-      }
-      if (v.indexOf(':') !== -1) {
-        throw new TypeError('Domains cannot contain colons');
-      }
-      if (v) {
-        URI.ensureValidHostname(v, this._parts.protocol);
-      }
-      this._parts.hostname = this._parts.hostname.replace(replace, v);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.domain = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (typeof v === 'boolean') {
-      build = v;
-      v = undefined;
-    }
-
-    // convenience, return "example.org" from "www.example.org"
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-
-      // if hostname consists of 1 or 2 segments, it must be the domain
-      var t = this._parts.hostname.match(/\./g);
-      if (t && t.length < 2) {
-        return this._parts.hostname;
-      }
-
-      // grab tld and add another segment
-      var end = this._parts.hostname.length - this.tld(build).length - 1;
-      end = this._parts.hostname.lastIndexOf('.', end - 1) + 1;
-      return this._parts.hostname.substring(end) || '';
-    } else {
-      if (!v) {
-        throw new TypeError('cannot set domain empty');
-      }
-      if (v.indexOf(':') !== -1) {
-        throw new TypeError('Domains cannot contain colons');
-      }
-      URI.ensureValidHostname(v, this._parts.protocol);
-      if (!this._parts.hostname || this.is('IP')) {
-        this._parts.hostname = v;
-      } else {
-        var replace = new RegExp(escapeRegEx(this.domain()) + '$');
-        this._parts.hostname = this._parts.hostname.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.tld = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (typeof v === 'boolean') {
-      build = v;
-      v = undefined;
-    }
-
-    // return "org" from "www.example.org"
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-      var pos = this._parts.hostname.lastIndexOf('.');
-      var tld = this._parts.hostname.substring(pos + 1);
-      if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
-        return SLD.get(this._parts.hostname) || tld;
-      }
-      return tld;
-    } else {
-      var replace;
-      if (!v) {
-        throw new TypeError('cannot set TLD empty');
-      } else if (v.match(/[^a-zA-Z0-9-]/)) {
-        if (SLD && SLD.is(v)) {
-          replace = new RegExp(escapeRegEx(this.tld()) + '$');
-          this._parts.hostname = this._parts.hostname.replace(replace, v);
-        } else {
-          throw new TypeError('TLD "' + v + '" contains characters other than [A-Z0-9]');
-        }
-      } else if (!this._parts.hostname || this.is('IP')) {
-        throw new ReferenceError('cannot set TLD on non-domain host');
-      } else {
-        replace = new RegExp(escapeRegEx(this.tld()) + '$');
-        this._parts.hostname = this._parts.hostname.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.directory = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined || v === true) {
-      if (!this._parts.path && !this._parts.hostname) {
-        return '';
-      }
-      if (this._parts.path === '/') {
-        return '/';
-      }
-      var end = this._parts.path.length - this.filename().length - 1;
-      var res = this._parts.path.substring(0, end) || (this._parts.hostname ? '/' : '');
-      return v ? URI.decodePath(res) : res;
-    } else {
-      var e = this._parts.path.length - this.filename().length;
-      var directory = this._parts.path.substring(0, e);
-      var replace = new RegExp('^' + escapeRegEx(directory));
-
-      // fully qualifier directories begin with a slash
-      if (!this.is('relative')) {
-        if (!v) {
-          v = '/';
-        }
-        if (v.charAt(0) !== '/') {
-          v = '/' + v;
-        }
-      }
-
-      // directories always end with a slash
-      if (v && v.charAt(v.length - 1) !== '/') {
-        v += '/';
-      }
-      v = URI.recodePath(v);
-      this._parts.path = this._parts.path.replace(replace, v);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.filename = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (typeof v !== 'string') {
-      if (!this._parts.path || this._parts.path === '/') {
-        return '';
-      }
-      var pos = this._parts.path.lastIndexOf('/');
-      var res = this._parts.path.substring(pos + 1);
-      return v ? URI.decodePathSegment(res) : res;
-    } else {
-      var mutatedDirectory = false;
-      if (v.charAt(0) === '/') {
-        v = v.substring(1);
-      }
-      if (v.match(/\.?\//)) {
-        mutatedDirectory = true;
-      }
-      var replace = new RegExp(escapeRegEx(this.filename()) + '$');
-      v = URI.recodePath(v);
-      this._parts.path = this._parts.path.replace(replace, v);
-      if (mutatedDirectory) {
-        this.normalizePath(build);
-      } else {
-        this.build(!build);
-      }
-      return this;
-    }
-  };
-  p.suffix = function (v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined || v === true) {
-      if (!this._parts.path || this._parts.path === '/') {
-        return '';
-      }
-      var filename = this.filename();
-      var pos = filename.lastIndexOf('.');
-      var s, res;
-      if (pos === -1) {
-        return '';
-      }
-
-      // suffix may only contain alnum characters (yup, I made this up.)
-      s = filename.substring(pos + 1);
-      res = /^[a-z0-9%]+$/i.test(s) ? s : '';
-      return v ? URI.decodePathSegment(res) : res;
-    } else {
-      if (v.charAt(0) === '.') {
-        v = v.substring(1);
-      }
-      var suffix = this.suffix();
-      var replace;
-      if (!suffix) {
-        if (!v) {
-          return this;
-        }
-        this._parts.path += '.' + URI.recodePath(v);
-      } else if (!v) {
-        replace = new RegExp(escapeRegEx('.' + suffix) + '$');
-      } else {
-        replace = new RegExp(escapeRegEx(suffix) + '$');
-      }
-      if (replace) {
-        v = URI.recodePath(v);
-        this._parts.path = this._parts.path.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.segment = function (segment, v, build) {
-    var separator = this._parts.urn ? ':' : '/';
-    var path = this.path();
-    var absolute = path.substring(0, 1) === '/';
-    var segments = path.split(separator);
-    if (segment !== undefined && typeof segment !== 'number') {
-      build = v;
-      v = segment;
-      segment = undefined;
-    }
-    if (segment !== undefined && typeof segment !== 'number') {
-      throw new Error('Bad segment "' + segment + '", must be 0-based integer');
-    }
-    if (absolute) {
-      segments.shift();
-    }
-    if (segment < 0) {
-      // allow negative indexes to address from the end
-      segment = Math.max(segments.length + segment, 0);
-    }
-    if (v === undefined) {
-      /*jshint laxbreak: true */
-      return segment === undefined ? segments : segments[segment];
-      /*jshint laxbreak: false */
-    } else if (segment === null || segments[segment] === undefined) {
-      if (isArray(v)) {
-        segments = [];
-        // collapse empty elements within array
-        for (var i = 0, l = v.length; i < l; i++) {
-          if (!v[i].length && (!segments.length || !segments[segments.length - 1].length)) {
-            continue;
-          }
-          if (segments.length && !segments[segments.length - 1].length) {
-            segments.pop();
-          }
-          segments.push(trimSlashes(v[i]));
-        }
-      } else if (v || typeof v === 'string') {
-        v = trimSlashes(v);
-        if (segments[segments.length - 1] === '') {
-          // empty trailing elements have to be overwritten
-          // to prevent results such as /foo//bar
-          segments[segments.length - 1] = v;
-        } else {
-          segments.push(v);
-        }
-      }
-    } else {
-      if (v) {
-        segments[segment] = trimSlashes(v);
-      } else {
-        segments.splice(segment, 1);
-      }
-    }
-    if (absolute) {
-      segments.unshift('');
-    }
-    return this.path(segments.join(separator), build);
-  };
-  p.segmentCoded = function (segment, v, build) {
-    var segments, i, l;
-    if (typeof segment !== 'number') {
-      build = v;
-      v = segment;
-      segment = undefined;
-    }
-    if (v === undefined) {
-      segments = this.segment(segment, v, build);
-      if (!isArray(segments)) {
-        segments = segments !== undefined ? URI.decode(segments) : undefined;
-      } else {
-        for (i = 0, l = segments.length; i < l; i++) {
-          segments[i] = URI.decode(segments[i]);
-        }
-      }
-      return segments;
-    }
-    if (!isArray(v)) {
-      v = typeof v === 'string' || v instanceof String ? URI.encode(v) : v;
-    } else {
-      for (i = 0, l = v.length; i < l; i++) {
-        v[i] = URI.encode(v[i]);
-      }
-    }
-    return this.segment(segment, v, build);
-  };
-
-  // mutating query string
-  var q = p.query;
-  p.query = function (v, build) {
-    if (v === true) {
-      return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    } else if (typeof v === 'function') {
-      var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-      var result = v.call(this, data);
-      this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-      this.build(!build);
-      return this;
-    } else if (v !== undefined && typeof v !== 'string') {
-      this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-      this.build(!build);
-      return this;
-    } else {
-      return q.call(this, v, build);
-    }
-  };
-  p.setQuery = function (name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    if (typeof name === 'string' || name instanceof String) {
-      data[name] = value !== undefined ? value : null;
-    } else if (_typeof(name) === 'object') {
-      for (var key in name) {
-        if (hasOwn.call(name, key)) {
-          data[key] = name[key];
-        }
-      }
-    } else {
-      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
-    }
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
-  };
-  p.addQuery = function (name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    URI.addQuery(data, name, value === undefined ? null : value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
-  };
-  p.removeQuery = function (name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    URI.removeQuery(data, name, value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
-  };
-  p.hasQuery = function (name, value, withinArray) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    return URI.hasQuery(data, name, value, withinArray);
-  };
-  p.setSearch = p.setQuery;
-  p.addSearch = p.addQuery;
-  p.removeSearch = p.removeQuery;
-  p.hasSearch = p.hasQuery;
-
-  // sanitizing URLs
-  p.normalize = function () {
-    if (this._parts.urn) {
-      return this.normalizeProtocol(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
-    }
-    return this.normalizeProtocol(false).normalizeHostname(false).normalizePort(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
-  };
-  p.normalizeProtocol = function (build) {
-    if (typeof this._parts.protocol === 'string') {
-      this._parts.protocol = this._parts.protocol.toLowerCase();
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeHostname = function (build) {
-    if (this._parts.hostname) {
-      if (this.is('IDN') && punycode) {
-        this._parts.hostname = punycode.toASCII(this._parts.hostname);
-      } else if (this.is('IPv6') && IPv6) {
-        this._parts.hostname = IPv6.best(this._parts.hostname);
-      }
-      this._parts.hostname = this._parts.hostname.toLowerCase();
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizePort = function (build) {
-    // remove port of it's the protocol's default
-    if (typeof this._parts.protocol === 'string' && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
-      this._parts.port = null;
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizePath = function (build) {
-    var _path = this._parts.path;
-    if (!_path) {
-      return this;
-    }
-    if (this._parts.urn) {
-      this._parts.path = URI.recodeUrnPath(this._parts.path);
-      this.build(!build);
-      return this;
-    }
-    if (this._parts.path === '/') {
-      return this;
-    }
-    _path = URI.recodePath(_path);
-    var _was_relative;
-    var _leadingParents = '';
-    var _parent, _pos;
-
-    // handle relative paths
-    if (_path.charAt(0) !== '/') {
-      _was_relative = true;
-      _path = '/' + _path;
-    }
-
-    // handle relative files (as opposed to directories)
-    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
-      _path += '/';
-    }
-
-    // resolve simples
-    _path = _path.replace(/(\/(\.\/)+)|(\/\.$)/g, '/').replace(/\/{2,}/g, '/');
-
-    // remember leading parents
-    if (_was_relative) {
-      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
-      if (_leadingParents) {
-        _leadingParents = _leadingParents[0];
-      }
-    }
-
-    // resolve parents
-    while (true) {
-      _parent = _path.search(/\/\.\.(\/|$)/);
-      if (_parent === -1) {
-        // no more ../ to resolve
-        break;
-      } else if (_parent === 0) {
-        // top level cannot be relative, skip it
-        _path = _path.substring(3);
-        continue;
-      }
-      _pos = _path.substring(0, _parent).lastIndexOf('/');
-      if (_pos === -1) {
-        _pos = _parent;
-      }
-      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
-    }
-
-    // revert to relative
-    if (_was_relative && this.is('relative')) {
-      _path = _leadingParents + _path.substring(1);
-    }
-    this._parts.path = _path;
-    this.build(!build);
-    return this;
-  };
-  p.normalizePathname = p.normalizePath;
-  p.normalizeQuery = function (build) {
-    if (typeof this._parts.query === 'string') {
-      if (!this._parts.query.length) {
-        this._parts.query = null;
-      } else {
-        this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
-      }
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeFragment = function (build) {
-    if (!this._parts.fragment) {
-      this._parts.fragment = null;
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeSearch = p.normalizeQuery;
-  p.normalizeHash = p.normalizeFragment;
-  p.iso8859 = function () {
-    // expect unicode input, iso8859 output
-    var e = URI.encode;
-    var d = URI.decode;
-    URI.encode = escape;
-    URI.decode = decodeURIComponent;
-    try {
-      this.normalize();
-    } finally {
-      URI.encode = e;
-      URI.decode = d;
-    }
-    return this;
-  };
-  p.unicode = function () {
-    // expect iso8859 input, unicode output
-    var e = URI.encode;
-    var d = URI.decode;
-    URI.encode = strictEncodeURIComponent;
-    URI.decode = unescape;
-    try {
-      this.normalize();
-    } finally {
-      URI.encode = e;
-      URI.decode = d;
-    }
-    return this;
-  };
-  p.readable = function () {
-    var uri = this.clone();
-    // removing username, password, because they shouldn't be displayed according to RFC 3986
-    uri.username('').password('').normalize();
-    var t = '';
-    if (uri._parts.protocol) {
-      t += uri._parts.protocol + '://';
-    }
-    if (uri._parts.hostname) {
-      if (uri.is('punycode') && punycode) {
-        t += punycode.toUnicode(uri._parts.hostname);
-        if (uri._parts.port) {
-          t += ':' + uri._parts.port;
-        }
-      } else {
-        t += uri.host();
-      }
-    }
-    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
-      t += '/';
-    }
-    t += uri.path(true);
-    if (uri._parts.query) {
-      var q = '';
-      for (var i = 0, qp = uri._parts.query.split('&'), l = qp.length; i < l; i++) {
-        var kv = (qp[i] || '').split('=');
-        q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace).replace(/&/g, '%26');
-        if (kv[1] !== undefined) {
-          q += '=' + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace).replace(/&/g, '%26');
-        }
-      }
-      t += '?' + q.substring(1);
-    }
-    t += URI.decodeQuery(uri.hash(), true);
-    return t;
-  };
-
-  // resolving relative and absolute URLs
-  p.absoluteTo = function (base) {
-    var resolved = this.clone();
-    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
-    var basedir, i, p;
-    if (this._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierarchical components');
-    }
-    if (!(base instanceof URI)) {
-      base = new URI(base);
-    }
-    if (resolved._parts.protocol) {
-      // Directly returns even if this._parts.hostname is empty.
-      return resolved;
-    } else {
-      resolved._parts.protocol = base._parts.protocol;
-    }
-    if (this._parts.hostname) {
-      return resolved;
-    }
-    for (i = 0; p = properties[i]; i++) {
-      resolved._parts[p] = base._parts[p];
-    }
-    if (!resolved._parts.path) {
-      resolved._parts.path = base._parts.path;
-      if (!resolved._parts.query) {
-        resolved._parts.query = base._parts.query;
-      }
-    } else {
-      if (resolved._parts.path.substring(-2) === '..') {
-        resolved._parts.path += '/';
-      }
-      if (resolved.path().charAt(0) !== '/') {
-        basedir = base.directory();
-        basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
-        resolved._parts.path = (basedir ? basedir + '/' : '') + resolved._parts.path;
-        resolved.normalizePath();
-      }
-    }
-    resolved.build();
-    return resolved;
-  };
-  p.relativeTo = function (base) {
-    var relative = this.clone().normalize();
-    var relativeParts, baseParts, common, relativePath, basePath;
-    if (relative._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierarchical components');
-    }
-    base = new URI(base).normalize();
-    relativeParts = relative._parts;
-    baseParts = base._parts;
-    relativePath = relative.path();
-    basePath = base.path();
-    if (relativePath.charAt(0) !== '/') {
-      throw new Error('URI is already relative');
-    }
-    if (basePath.charAt(0) !== '/') {
-      throw new Error('Cannot calculate a URI relative to another relative URI');
-    }
-    if (relativeParts.protocol === baseParts.protocol) {
-      relativeParts.protocol = null;
-    }
-    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
-      return relative.build();
-    }
-    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
-      return relative.build();
-    }
-    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
-      relativeParts.hostname = null;
-      relativeParts.port = null;
-    } else {
-      return relative.build();
-    }
-    if (relativePath === basePath) {
-      relativeParts.path = '';
-      return relative.build();
-    }
-
-    // determine common sub path
-    common = URI.commonPath(relativePath, basePath);
-
-    // If the paths have nothing in common, return a relative URL with the absolute path.
-    if (!common) {
-      return relative.build();
-    }
-    var parents = baseParts.path.substring(common.length).replace(/[^\/]*$/, '').replace(/.*?\//g, '../');
-    relativeParts.path = parents + relativeParts.path.substring(common.length) || './';
-    return relative.build();
-  };
-
-  // comparing URIs
-  p.equals = function (uri) {
-    var one = this.clone();
-    var two = new URI(uri);
-    var one_map = {};
-    var two_map = {};
-    var checked = {};
-    var one_query, two_query, key;
-    one.normalize();
-    two.normalize();
-
-    // exact match
-    if (one.toString() === two.toString()) {
-      return true;
-    }
-
-    // extract query string
-    one_query = one.query();
-    two_query = two.query();
-    one.query('');
-    two.query('');
-
-    // definitely not equal if not even non-query parts match
-    if (one.toString() !== two.toString()) {
-      return false;
-    }
-
-    // query parameters have the same length, even if they're permuted
-    if (one_query.length !== two_query.length) {
-      return false;
-    }
-    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
-    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
-    for (key in one_map) {
-      if (hasOwn.call(one_map, key)) {
-        if (!isArray(one_map[key])) {
-          if (one_map[key] !== two_map[key]) {
-            return false;
-          }
-        } else if (!arraysEqual(one_map[key], two_map[key])) {
-          return false;
-        }
-        checked[key] = true;
-      }
-    }
-    for (key in two_map) {
-      if (hasOwn.call(two_map, key)) {
-        if (!checked[key]) {
-          // two contains a parameter not present in one
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  // state
-  p.preventInvalidHostname = function (v) {
-    this._parts.preventInvalidHostname = !!v;
-    return this;
-  };
-  p.duplicateQueryParameters = function (v) {
-    this._parts.duplicateQueryParameters = !!v;
-    return this;
-  };
-  p.escapeQuerySpace = function (v) {
-    this._parts.escapeQuerySpace = !!v;
-    return this;
-  };
-  return URI;
-});
+// `ToLength` abstract operation
+// https://tc39.es/ecma262/#sec-tolength
+module.exports = function (argument) {
+  var len = toIntegerOrInfinity(argument);
+  return len > 0 ? min(len, 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
 
 /***/ }),
 
@@ -3830,6 +834,734 @@ var __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof
 
 /***/ }),
 
+/***/ 2358:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = false;
+
+/***/ }),
+
+/***/ 2770:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var toObject = __webpack_require__(9452);
+var hasOwnProperty = uncurryThis({}.hasOwnProperty);
+
+// `HasOwnProperty` abstract operation
+// https://tc39.es/ecma262/#sec-hasownproperty
+// eslint-disable-next-line es/no-object-hasown -- safe
+module.exports = Object.hasOwn || function hasOwn(it, key) {
+  return hasOwnProperty(toObject(it), key);
+};
+
+/***/ }),
+
+/***/ 2860:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var path = __webpack_require__(7520);
+var hasOwn = __webpack_require__(2770);
+var wrappedWellKnownSymbolModule = __webpack_require__(8490);
+var defineProperty = (__webpack_require__(754).f);
+module.exports = function (NAME) {
+  var _Symbol = path.Symbol || (path.Symbol = {});
+  if (!hasOwn(_Symbol, NAME)) defineProperty(_Symbol, NAME, {
+    value: wrappedWellKnownSymbolModule.f(NAME)
+  });
+};
+
+/***/ }),
+
+/***/ 2865:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable es/no-symbol -- required for testing */
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var NATIVE_SYMBOL = __webpack_require__(6576);
+module.exports = NATIVE_SYMBOL && !Symbol.sham && _typeof(Symbol.iterator) == 'symbol';
+
+/***/ }),
+
+/***/ 2940:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var navigator = globalThis.navigator;
+var userAgent = navigator && navigator.userAgent;
+module.exports = userAgent ? String(userAgent) : '';
+
+/***/ }),
+
+/***/ 2944:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var userAgent = __webpack_require__(2940);
+var process = globalThis.process;
+var Deno = globalThis.Deno;
+var versions = process && process.versions || Deno && Deno.version;
+var v8 = versions && versions.v8;
+var match, version;
+if (v8) {
+  match = v8.split('.');
+  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+  // but their correct versions are not interesting for us
+  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
+}
+
+// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+// so check `userAgent` even if `.v8` exists, but 0
+if (!version && userAgent) {
+  match = userAgent.match(/Edge\/(\d+)/);
+  if (!match || match[1] >= 74) {
+    match = userAgent.match(/Chrome\/(\d+)/);
+    if (match) version = +match[1];
+  }
+}
+module.exports = version;
+
+/***/ }),
+
+/***/ 3094:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var IS_PURE = __webpack_require__(2358);
+var globalThis = __webpack_require__(8029);
+var defineGlobalProperty = __webpack_require__(9998);
+var SHARED = '__core-js_shared__';
+var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
+(store.versions || (store.versions = [])).push({
+  version: '3.43.0',
+  mode: IS_PURE ? 'pure' : 'global',
+  copyright: '© 2014-2025 Denis Pushkarev (zloirock.ru)',
+  license: 'https://github.com/zloirock/core-js/blob/v3.43.0/LICENSE',
+  source: 'https://github.com/zloirock/core-js'
+});
+
+/***/ }),
+
+/***/ 3416:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(3725);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 3485:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var globalThis = __webpack_require__(8029);
+var getOwnPropertyDescriptor = (__webpack_require__(3880).f);
+var createNonEnumerableProperty = __webpack_require__(7592);
+var defineBuiltIn = __webpack_require__(4197);
+var defineGlobalProperty = __webpack_require__(9998);
+var copyConstructorProperties = __webpack_require__(4017);
+var isForced = __webpack_require__(4857);
+
+/*
+  options.target         - name of the target object
+  options.global         - target is the global object
+  options.stat           - export as static methods of target
+  options.proto          - export as prototype methods of target
+  options.real           - real prototype method for the `pure` version
+  options.forced         - export even if the native feature is available
+  options.bind           - bind methods to the target, required for the `pure` version
+  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
+  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
+  options.sham           - add a flag to not completely full polyfills
+  options.enumerable     - export as enumerable property
+  options.dontCallGetSet - prevent calling a getter on target
+  options.name           - the .name of the function if it does not match the key
+*/
+module.exports = function (options, source) {
+  var TARGET = options.target;
+  var GLOBAL = options.global;
+  var STATIC = options.stat;
+  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
+  if (GLOBAL) {
+    target = globalThis;
+  } else if (STATIC) {
+    target = globalThis[TARGET] || defineGlobalProperty(TARGET, {});
+  } else {
+    target = globalThis[TARGET] && globalThis[TARGET].prototype;
+  }
+  if (target) for (key in source) {
+    sourceProperty = source[key];
+    if (options.dontCallGetSet) {
+      descriptor = getOwnPropertyDescriptor(target, key);
+      targetProperty = descriptor && descriptor.value;
+    } else targetProperty = target[key];
+    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
+    // contained in target
+    if (!FORCED && targetProperty !== undefined) {
+      if (_typeof(sourceProperty) == _typeof(targetProperty)) continue;
+      copyConstructorProperties(sourceProperty, targetProperty);
+    }
+    // add a flag to not completely full polyfills
+    if (options.sham || targetProperty && targetProperty.sham) {
+      createNonEnumerableProperty(sourceProperty, 'sham', true);
+    }
+    defineBuiltIn(target, key, sourceProperty, options);
+  }
+};
+
+/***/ }),
+
+/***/ 3634:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (error) {
+    return true;
+  }
+};
+
+/***/ }),
+
+/***/ 3690:
+/***/ (function(module) {
+
+"use strict";
+
+
+// IE8- don't enum bug keys
+module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
+
+/***/ }),
+
+/***/ 3725:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var parent = __webpack_require__(1606);
+module.exports = parent;
+
+/***/ }),
+
+/***/ 3736:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var NATIVE_BIND = __webpack_require__(8607);
+var call = Function.prototype.call;
+// eslint-disable-next-line es/no-function-prototype-bind -- safe
+module.exports = NATIVE_BIND ? call.bind(call) : function () {
+  return call.apply(call, arguments);
+};
+
+/***/ }),
+
+/***/ 3763:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var hasOwn = __webpack_require__(2770);
+var toIndexedObject = __webpack_require__(1212);
+var indexOf = (__webpack_require__(5282).indexOf);
+var hiddenKeys = __webpack_require__(7076);
+var push = uncurryThis([].push);
+module.exports = function (object, names) {
+  var O = toIndexedObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (hasOwn(O, key = names[i++])) {
+    ~indexOf(result, key) || push(result, key);
+  }
+  return result;
+};
+
+/***/ }),
+
+/***/ 3784:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var trunc = __webpack_require__(4433);
+
+// `ToIntegerOrInfinity` abstract operation
+// https://tc39.es/ecma262/#sec-tointegerorinfinity
+module.exports = function (argument) {
+  var number = +argument;
+  // eslint-disable-next-line no-self-compare -- NaN check
+  return number !== number || number === 0 ? 0 : trunc(number);
+};
+
+/***/ }),
+
+/***/ 3819:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : 0;
+})(this, function () {
+  'use strict';
+
+  /**
+   * @this {Promise}
+   */
+  function finallyConstructor(callback) {
+    var constructor = this.constructor;
+    return this.then(function (value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        return value;
+      });
+    }, function (reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function () {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    });
+  }
+  function allSettled(arr) {
+    var P = this;
+    return new P(function (resolve, reject) {
+      if (!(arr && typeof arr.length !== 'undefined')) {
+        return reject(new TypeError(_typeof(arr) + ' ' + arr + ' is not iterable(cannot read property Symbol(Symbol.iterator))'));
+      }
+      var args = Array.prototype.slice.call(arr);
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+      function res(i, val) {
+        if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
+          var then = val.then;
+          if (typeof then === 'function') {
+            then.call(val, function (val) {
+              res(i, val);
+            }, function (e) {
+              args[i] = {
+                status: 'rejected',
+                reason: e
+              };
+              if (--remaining === 0) {
+                resolve(args);
+              }
+            });
+            return;
+          }
+        }
+        args[i] = {
+          status: 'fulfilled',
+          value: val
+        };
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      }
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  }
+
+  // Store setTimeout reference so promise-polyfill will be unaffected by
+  // other code modifying setTimeout (like sinon.useFakeTimers())
+  var setTimeoutFunc = setTimeout;
+  function isArray(x) {
+    return Boolean(x && typeof x.length !== 'undefined');
+  }
+  function noop() {}
+
+  // Polyfill for Function.prototype.bind
+  function bind(fn, thisArg) {
+    return function () {
+      fn.apply(thisArg, arguments);
+    };
+  }
+
+  /**
+   * @constructor
+   * @param {Function} fn
+   */
+  function Promise(fn) {
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (typeof fn !== 'function') throw new TypeError('not a function');
+    /** @type {!number} */
+    this._state = 0;
+    /** @type {!boolean} */
+    this._handled = false;
+    /** @type {Promise|undefined} */
+    this._value = undefined;
+    /** @type {!Array<!Function>} */
+    this._deferreds = [];
+    doResolve(fn, this);
+  }
+  function handle(self, deferred) {
+    while (self._state === 3) {
+      self = self._value;
+    }
+    if (self._state === 0) {
+      self._deferreds.push(deferred);
+      return;
+    }
+    self._handled = true;
+    Promise._immediateFn(function () {
+      var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+      if (cb === null) {
+        (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+        return;
+      }
+      var ret;
+      try {
+        ret = cb(self._value);
+      } catch (e) {
+        reject(deferred.promise, e);
+        return;
+      }
+      resolve(deferred.promise, ret);
+    });
+  }
+  function resolve(self, newValue) {
+    try {
+      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
+      if (newValue && (_typeof(newValue) === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then;
+        if (newValue instanceof Promise) {
+          self._state = 3;
+          self._value = newValue;
+          finale(self);
+          return;
+        } else if (typeof then === 'function') {
+          doResolve(bind(then, newValue), self);
+          return;
+        }
+      }
+      self._state = 1;
+      self._value = newValue;
+      finale(self);
+    } catch (e) {
+      reject(self, e);
+    }
+  }
+  function reject(self, newValue) {
+    self._state = 2;
+    self._value = newValue;
+    finale(self);
+  }
+  function finale(self) {
+    if (self._state === 2 && self._deferreds.length === 0) {
+      Promise._immediateFn(function () {
+        if (!self._handled) {
+          Promise._unhandledRejectionFn(self._value);
+        }
+      });
+    }
+    for (var i = 0, len = self._deferreds.length; i < len; i++) {
+      handle(self, self._deferreds[i]);
+    }
+    self._deferreds = null;
+  }
+
+  /**
+   * @constructor
+   */
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  /**
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
+  function doResolve(fn, self) {
+    var done = false;
+    try {
+      fn(function (value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      }, function (reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      });
+    } catch (ex) {
+      if (done) return;
+      done = true;
+      reject(self, ex);
+    }
+  }
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    // @ts-ignore
+    var prom = new this.constructor(noop);
+    handle(this, new Handler(onFulfilled, onRejected, prom));
+    return prom;
+  };
+  Promise.prototype['finally'] = finallyConstructor;
+  Promise.all = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.all accepts an array'));
+      }
+      var args = Array.prototype.slice.call(arr);
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+      function res(i, val) {
+        try {
+          if (val && (_typeof(val) === 'object' || typeof val === 'function')) {
+            var then = val.then;
+            if (typeof then === 'function') {
+              then.call(val, function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+          args[i] = val;
+          if (--remaining === 0) {
+            resolve(args);
+          }
+        } catch (ex) {
+          reject(ex);
+        }
+      }
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+  Promise.allSettled = allSettled;
+  Promise.resolve = function (value) {
+    if (value && _typeof(value) === 'object' && value.constructor === Promise) {
+      return value;
+    }
+    return new Promise(function (resolve) {
+      resolve(value);
+    });
+  };
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+  Promise.race = function (arr) {
+    return new Promise(function (resolve, reject) {
+      if (!isArray(arr)) {
+        return reject(new TypeError('Promise.race accepts an array'));
+      }
+      for (var i = 0, len = arr.length; i < len; i++) {
+        Promise.resolve(arr[i]).then(resolve, reject);
+      }
+    });
+  };
+
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn =
+  // @ts-ignore
+  typeof setImmediate === 'function' && function (fn) {
+    // @ts-ignore
+    setImmediate(fn);
+  } || function (fn) {
+    setTimeoutFunc(fn, 0);
+  };
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
+  /** @suppress {undefinedVars} */
+  var globalNS = function () {
+    // the only reliable means to get the global object is
+    // `Function('return this')()`
+    // However, this causes CSP violations in Chrome apps.
+    if (typeof self !== 'undefined') {
+      return self;
+    }
+    if (typeof window !== 'undefined') {
+      return window;
+    }
+    if (typeof __webpack_require__.g !== 'undefined') {
+      return __webpack_require__.g;
+    }
+    throw new Error('unable to locate global object');
+  }();
+
+  // Expose the polyfill if Promise is undefined or set to a
+  // non-function value. The latter can be due to a named HTMLElement
+  // being exposed by browsers for legacy reasons.
+  // https://github.com/taylorhakes/promise-polyfill/issues/114
+  if (typeof globalNS['Promise'] !== 'function') {
+    globalNS['Promise'] = Promise;
+  } else {
+    if (!globalNS.Promise.prototype['finally']) {
+      globalNS.Promise.prototype['finally'] = finallyConstructor;
+    }
+    if (!globalNS.Promise.allSettled) {
+      globalNS.Promise.allSettled = allSettled;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ 3873:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(5164);
+var tryToString = __webpack_require__(6390);
+var $TypeError = TypeError;
+
+// `Assert: IsCallable(argument) is true`
+module.exports = function (argument) {
+  if (isCallable(argument)) return argument;
+  throw new $TypeError(tryToString(argument) + ' is not a function');
+};
+
+/***/ }),
+
+/***/ 3880:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var call = __webpack_require__(3736);
+var propertyIsEnumerableModule = __webpack_require__(128);
+var createPropertyDescriptor = __webpack_require__(19);
+var toIndexedObject = __webpack_require__(1212);
+var toPropertyKey = __webpack_require__(8);
+var hasOwn = __webpack_require__(2770);
+var IE8_DOM_DEFINE = __webpack_require__(6182);
+
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+  O = toIndexedObject(O);
+  P = toPropertyKey(P);
+  if (IE8_DOM_DEFINE) try {
+    return $getOwnPropertyDescriptor(O, P);
+  } catch (error) {/* empty */}
+  if (hasOwn(O, P)) return createPropertyDescriptor(!call(propertyIsEnumerableModule.f, O, P), O[P]);
+};
+
+/***/ }),
+
+/***/ 4017:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var hasOwn = __webpack_require__(2770);
+var ownKeys = __webpack_require__(6608);
+var getOwnPropertyDescriptorModule = __webpack_require__(3880);
+var definePropertyModule = __webpack_require__(754);
+module.exports = function (target, source, exceptions) {
+  var keys = ownKeys(source);
+  var defineProperty = definePropertyModule.f;
+  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (!hasOwn(target, key) && !(exceptions && hasOwn(exceptions, key))) {
+      defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+    }
+  }
+};
+
+/***/ }),
+
+/***/ 4197:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var isCallable = __webpack_require__(5164);
+var definePropertyModule = __webpack_require__(754);
+var makeBuiltIn = __webpack_require__(6514);
+var defineGlobalProperty = __webpack_require__(9998);
+module.exports = function (O, key, value, options) {
+  if (!options) options = {};
+  var simple = options.enumerable;
+  var name = options.name !== undefined ? options.name : key;
+  if (isCallable(value)) makeBuiltIn(value, name, options);
+  if (options.global) {
+    if (simple) O[key] = value;else defineGlobalProperty(key, value);
+  } else {
+    try {
+      if (!options.unsafe) delete O[key];else if (O[key]) simple = true;
+    } catch (error) {/* empty */}
+    if (simple) O[key] = value;else definePropertyModule.f(O, key, {
+      value: value,
+      enumerable: false,
+      configurable: !options.nonConfigurable,
+      writable: !options.nonWritable
+    });
+  }
+  return O;
+};
+
+/***/ }),
+
 /***/ 4257:
 /***/ (function(__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
@@ -3844,7 +1576,7 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4041,7 +1773,7 @@ function BaseTypes_createClass(e, r, t) { return r && BaseTypes_defineProperties
 function BaseTypes_toPropertyKey(t) { var i = BaseTypes_toPrimitive(t, "string"); return "symbol" == BaseTypes_typeof(i) ? i : i + ""; }
 function BaseTypes_toPrimitive(t, r) { if ("object" != BaseTypes_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != BaseTypes_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function BaseTypes_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4474,7 +2206,7 @@ function Geometry_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { 
 function Geometry_createClass(e, r, t) { return r && Geometry_defineProperties(e.prototype, r), t && Geometry_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Geometry_toPropertyKey(t) { var i = Geometry_toPrimitive(t, "string"); return "symbol" == Geometry_typeof(i) ? i : i + ""; }
 function Geometry_toPrimitive(t, r) { if ("object" != Geometry_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Geometry_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -4661,7 +2393,7 @@ var URI = __webpack_require__(9216);
 var URI_default = /*#__PURE__*/__webpack_require__.n(URI);
 ;// ./src/common/commontypes/Util.js
 function Util_typeof(o) { "@babel/helpers - typeof"; return Util_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Util_typeof(o); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5676,6 +3408,34 @@ var Util_Util = {
     }
     rgba.push(opacity);
     return "rgba(" + rgba.join(",") + ")";
+  },
+  /**
+   * @description 是否是绝对地址。
+   * @private
+   * @param {string} url - 验证地址。
+   * @returns {boolean} 是否是绝对地址。
+   */
+  isAbsoluteURL: function isAbsoluteURL(url) {
+    try {
+      var res = new URL(url);
+      return !!res;
+    } catch (_) {
+      return false;
+    }
+  },
+  /**
+   * @description 相对地址转绝对地址。
+   * @private
+   * @param {string} url - 相对地址。
+   * @param {string} base - 基础地址。
+   * @returns {string} 完整地址。
+   */
+  relative2absolute: function relative2absolute(url, base) {
+    var newUrl = new URL(url, base);
+    if (newUrl && newUrl.href) {
+      return decodeURIComponent(newUrl.href);
+    }
+    return;
   }
 };
 
@@ -5854,7 +3614,7 @@ function canBeJsonified(str) {
 }
 
 ;// ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6170,7 +3930,7 @@ function Events_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { va
 function Events_createClass(e, r, t) { return r && Events_defineProperties(e.prototype, r), t && Events_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Events_toPropertyKey(t) { var i = Events_toPrimitive(t, "string"); return "symbol" == Events_typeof(i) ? i : i + ""; }
 function Events_toPrimitive(t, r) { if ("object" != Events_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Events_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6653,7 +4413,7 @@ function ElasticSearch_defineProperties(e, r) { for (var t = 0; t < r.length; t+
 function ElasticSearch_createClass(e, r, t) { return r && ElasticSearch_defineProperties(e.prototype, r), t && ElasticSearch_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function ElasticSearch_toPropertyKey(t) { var i = ElasticSearch_toPrimitive(t, "string"); return "symbol" == ElasticSearch_typeof(i) ? i : i + ""; }
 function ElasticSearch_toPrimitive(t, r) { if ("object" != ElasticSearch_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != ElasticSearch_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7410,7 +5170,7 @@ var fetch = __webpack_require__(4537);
 var fetch_jsonp = __webpack_require__(9005);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 ;// ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7571,6 +5331,7 @@ var RequestJSONPPromise = {
 };
 var CORS;
 var RequestTimeout;
+var RequestHeadersGetter;
 /**
  * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
@@ -7677,6 +5438,44 @@ var setRequestTimeout = function setRequestTimeout(timeout) {
  */
 var getRequestTimeout = function getRequestTimeout() {
   return RequestTimeout || 45000;
+};
+
+/**
+ * @function setRequestHeaders
+ * @version 12.0.0-r
+ * @category BaseTypes Util
+ * @description 设置请求自定义 request headers。
+ * @param {function} func - 请求自定义 request headers 回调函数。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    const headers = function (url) { return { token: !!url }; };
+    {namespace}.setRequestHeaders(headers);
+
+  </script>
+
+  // ES6 Import
+  import { setRequestHeaders } from '{npm}';
+
+  const headers = function (url) { return { token: !!url }; };
+  setRequestHeaders(headers);
+ * ```
+ */
+var setRequestHeaders = function setRequestHeaders(headers) {
+  return RequestHeadersGetter = headers;
+};
+
+/**
+ * @private
+ * @function getRequestTimeout
+ * @category BaseTypes Util
+ * @description 获取请求超时的时间。
+ * @returns {number} 请求超时时间。
+ */
+var getRequestHeaders = function getRequestHeaders() {
+  return RequestHeadersGetter;
 };
 
 /**
@@ -7898,6 +5697,11 @@ var FetchRequest = {
     if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
       options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
     }
+    var customRequestHeadersGetter = getRequestHeaders();
+    var customRequestHeaders = customRequestHeadersGetter && customRequestHeadersGetter(url);
+    if (customRequestHeaders) {
+      options.headers = Util_Util.extend(options.headers, customRequestHeaders);
+    }
     if (options.timeout) {
       return this._timeout(options.timeout, FetchRequest_fetch(url, {
         method: type,
@@ -7974,7 +5778,7 @@ function Credential_defineProperties(e, r) { for (var t = 0; t < r.length; t++) 
 function Credential_createClass(e, r, t) { return r && Credential_defineProperties(e.prototype, r), t && Credential_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Credential_toPropertyKey(t) { var i = Credential_toPrimitive(t, "string"); return "symbol" == Credential_typeof(i) ? i : i + ""; }
 function Credential_toPrimitive(t, r) { if ("object" != Credential_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Credential_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8079,7 +5883,7 @@ function SecurityManager_defineProperties(e, r) { for (var t = 0; t < r.length; 
 function SecurityManager_createClass(e, r, t) { return r && SecurityManager_defineProperties(e.prototype, r), t && SecurityManager_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SecurityManager_toPropertyKey(t) { var i = SecurityManager_toPrimitive(t, "string"); return "symbol" == SecurityManager_typeof(i) ? i : i + ""; }
 function SecurityManager_toPrimitive(t, r) { if ("object" != SecurityManager_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SecurityManager_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8488,7 +6292,7 @@ SecurityManager.INNER_WINDOW_HEIGHT = 600;
 SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
 ;// ./src/common/REST.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10960,7 +8764,7 @@ function DatasourceConnectionInfo_defineProperties(e, r) { for (var t = 0; t < r
 function DatasourceConnectionInfo_createClass(e, r, t) { return r && DatasourceConnectionInfo_defineProperties(e.prototype, r), t && DatasourceConnectionInfo_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function DatasourceConnectionInfo_toPropertyKey(t) { var i = DatasourceConnectionInfo_toPrimitive(t, "string"); return "symbol" == DatasourceConnectionInfo_typeof(i) ? i : i + ""; }
 function DatasourceConnectionInfo_toPrimitive(t, r) { if ("object" != DatasourceConnectionInfo_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DatasourceConnectionInfo_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11104,7 +8908,7 @@ function OutputSetting_defineProperties(e, r) { for (var t = 0; t < r.length; t+
 function OutputSetting_createClass(e, r, t) { return r && OutputSetting_defineProperties(e.prototype, r), t && OutputSetting_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function OutputSetting_toPropertyKey(t) { var i = OutputSetting_toPrimitive(t, "string"); return "symbol" == OutputSetting_typeof(i) ? i : i + ""; }
 function OutputSetting_toPrimitive(t, r) { if ("object" != OutputSetting_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OutputSetting_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11178,7 +8982,7 @@ function MappingParameters_defineProperties(e, r) { for (var t = 0; t < r.length
 function MappingParameters_createClass(e, r, t) { return r && MappingParameters_defineProperties(e.prototype, r), t && MappingParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function MappingParameters_toPropertyKey(t) { var i = MappingParameters_toPrimitive(t, "string"); return "symbol" == MappingParameters_typeof(i) ? i : i + ""; }
 function MappingParameters_toPrimitive(t, r) { if ("object" != MappingParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != MappingParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11264,7 +9068,7 @@ function KernelDensityJobParameter_defineProperties(e, r) { for (var t = 0; t < 
 function KernelDensityJobParameter_createClass(e, r, t) { return r && KernelDensityJobParameter_defineProperties(e.prototype, r), t && KernelDensityJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function KernelDensityJobParameter_toPropertyKey(t) { var i = KernelDensityJobParameter_toPrimitive(t, "string"); return "symbol" == KernelDensityJobParameter_typeof(i) ? i : i + ""; }
 function KernelDensityJobParameter_toPrimitive(t, r) { if ("object" != KernelDensityJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != KernelDensityJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11443,7 +9247,7 @@ function SingleObjectQueryJobsParameter_defineProperties(e, r) { for (var t = 0;
 function SingleObjectQueryJobsParameter_createClass(e, r, t) { return r && SingleObjectQueryJobsParameter_defineProperties(e.prototype, r), t && SingleObjectQueryJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SingleObjectQueryJobsParameter_toPropertyKey(t) { var i = SingleObjectQueryJobsParameter_toPrimitive(t, "string"); return "symbol" == SingleObjectQueryJobsParameter_typeof(i) ? i : i + ""; }
 function SingleObjectQueryJobsParameter_toPrimitive(t, r) { if ("object" != SingleObjectQueryJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SingleObjectQueryJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11568,7 +9372,7 @@ function SummaryAttributesJobsParameter_defineProperties(e, r) { for (var t = 0;
 function SummaryAttributesJobsParameter_createClass(e, r, t) { return r && SummaryAttributesJobsParameter_defineProperties(e.prototype, r), t && SummaryAttributesJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SummaryAttributesJobsParameter_toPropertyKey(t) { var i = SummaryAttributesJobsParameter_toPrimitive(t, "string"); return "symbol" == SummaryAttributesJobsParameter_typeof(i) ? i : i + ""; }
 function SummaryAttributesJobsParameter_toPrimitive(t, r) { if ("object" != SummaryAttributesJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryAttributesJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11691,7 +9495,7 @@ function SummaryMeshJobParameter_defineProperties(e, r) { for (var t = 0; t < r.
 function SummaryMeshJobParameter_createClass(e, r, t) { return r && SummaryMeshJobParameter_defineProperties(e.prototype, r), t && SummaryMeshJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SummaryMeshJobParameter_toPropertyKey(t) { var i = SummaryMeshJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryMeshJobParameter_typeof(i) ? i : i + ""; }
 function SummaryMeshJobParameter_toPrimitive(t, r) { if ("object" != SummaryMeshJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryMeshJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11868,7 +9672,7 @@ function SummaryRegionJobParameter_defineProperties(e, r) { for (var t = 0; t < 
 function SummaryRegionJobParameter_createClass(e, r, t) { return r && SummaryRegionJobParameter_defineProperties(e.prototype, r), t && SummaryRegionJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SummaryRegionJobParameter_toPropertyKey(t) { var i = SummaryRegionJobParameter_toPrimitive(t, "string"); return "symbol" == SummaryRegionJobParameter_typeof(i) ? i : i + ""; }
 function SummaryRegionJobParameter_toPrimitive(t, r) { if ("object" != SummaryRegionJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SummaryRegionJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12089,7 +9893,7 @@ function OverlayGeoJobParameter_defineProperties(e, r) { for (var t = 0; t < r.l
 function OverlayGeoJobParameter_createClass(e, r, t) { return r && OverlayGeoJobParameter_defineProperties(e.prototype, r), t && OverlayGeoJobParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function OverlayGeoJobParameter_toPropertyKey(t) { var i = OverlayGeoJobParameter_toPrimitive(t, "string"); return "symbol" == OverlayGeoJobParameter_typeof(i) ? i : i + ""; }
 function OverlayGeoJobParameter_toPrimitive(t, r) { if ("object" != OverlayGeoJobParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OverlayGeoJobParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12221,7 +10025,7 @@ function BuffersAnalystJobsParameter_defineProperties(e, r) { for (var t = 0; t 
 function BuffersAnalystJobsParameter_createClass(e, r, t) { return r && BuffersAnalystJobsParameter_defineProperties(e.prototype, r), t && BuffersAnalystJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function BuffersAnalystJobsParameter_toPropertyKey(t) { var i = BuffersAnalystJobsParameter_toPrimitive(t, "string"); return "symbol" == BuffersAnalystJobsParameter_typeof(i) ? i : i + ""; }
 function BuffersAnalystJobsParameter_toPrimitive(t, r) { if ("object" != BuffersAnalystJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != BuffersAnalystJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12366,7 +10170,7 @@ function TopologyValidatorJobsParameter_defineProperties(e, r) { for (var t = 0;
 function TopologyValidatorJobsParameter_createClass(e, r, t) { return r && TopologyValidatorJobsParameter_defineProperties(e.prototype, r), t && TopologyValidatorJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function TopologyValidatorJobsParameter_toPropertyKey(t) { var i = TopologyValidatorJobsParameter_toPrimitive(t, "string"); return "symbol" == TopologyValidatorJobsParameter_typeof(i) ? i : i + ""; }
 function TopologyValidatorJobsParameter_toPrimitive(t, r) { if ("object" != TopologyValidatorJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != TopologyValidatorJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12491,7 +10295,7 @@ function GeoCodingParameter_defineProperties(e, r) { for (var t = 0; t < r.lengt
 function GeoCodingParameter_createClass(e, r, t) { return r && GeoCodingParameter_defineProperties(e.prototype, r), t && GeoCodingParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function GeoCodingParameter_toPropertyKey(t) { var i = GeoCodingParameter_toPrimitive(t, "string"); return "symbol" == GeoCodingParameter_typeof(i) ? i : i + ""; }
 function GeoCodingParameter_toPrimitive(t, r) { if ("object" != GeoCodingParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != GeoCodingParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12578,7 +10382,7 @@ function GeoDecodingParameter_defineProperties(e, r) { for (var t = 0; t < r.len
 function GeoDecodingParameter_createClass(e, r, t) { return r && GeoDecodingParameter_defineProperties(e.prototype, r), t && GeoDecodingParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function GeoDecodingParameter_toPropertyKey(t) { var i = GeoDecodingParameter_toPrimitive(t, "string"); return "symbol" == GeoDecodingParameter_typeof(i) ? i : i + ""; }
 function GeoDecodingParameter_toPrimitive(t, r) { if ("object" != GeoDecodingParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != GeoDecodingParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12680,7 +10484,7 @@ function VectorClipJobsParameter_defineProperties(e, r) { for (var t = 0; t < r.
 function VectorClipJobsParameter_createClass(e, r, t) { return r && VectorClipJobsParameter_defineProperties(e.prototype, r), t && VectorClipJobsParameter_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function VectorClipJobsParameter_toPropertyKey(t) { var i = VectorClipJobsParameter_toPrimitive(t, "string"); return "symbol" == VectorClipJobsParameter_typeof(i) ? i : i + ""; }
 function VectorClipJobsParameter_toPrimitive(t, r) { if ("object" != VectorClipJobsParameter_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != VectorClipJobsParameter_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13155,7 +10959,7 @@ function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !==
 function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
 function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13557,7 +11361,7 @@ function MapVLayer_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) &&
 function MapVLayer_getPrototypeOf(t) { return MapVLayer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, MapVLayer_getPrototypeOf(t); }
 function MapVLayer_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && MapVLayer_setPrototypeOf(t, e); }
 function MapVLayer_setPrototypeOf(t, e) { return MapVLayer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, MapVLayer_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13816,12 +11620,12 @@ var MapVLayer = /*#__PURE__*/function (_SuperMap$Layer) {
 }(SuperMap.Layer);
 SuperMap.Layer.MapVLayer = MapVLayer;
 ;// ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 ;// ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13833,7 +11637,7 @@ function Format_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { va
 function Format_createClass(e, r, t) { return r && Format_defineProperties(e.prototype, r), t && Format_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Format_toPropertyKey(t) { var i = Format_toPrimitive(t, "string"); return "symbol" == Format_typeof(i) ? i : i + ""; }
 function Format_toPrimitive(t, r) { if ("object" != Format_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Format_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13915,7 +11719,7 @@ function JSON_isNativeReflectConstruct() { try { var t = !Boolean.prototype.valu
 function JSON_getPrototypeOf(t) { return JSON_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, JSON_getPrototypeOf(t); }
 function JSON_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && JSON_setPrototypeOf(t, e); }
 function JSON_setPrototypeOf(t, e) { return JSON_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, JSON_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14220,7 +12024,7 @@ function CommonServiceBase_defineProperties(e, r) { for (var t = 0; t < r.length
 function CommonServiceBase_createClass(e, r, t) { return r && CommonServiceBase_defineProperties(e.prototype, r), t && CommonServiceBase_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function CommonServiceBase_toPropertyKey(t) { var i = CommonServiceBase_toPrimitive(t, "string"); return "symbol" == CommonServiceBase_typeof(i) ? i : i + ""; }
 function CommonServiceBase_toPrimitive(t, r) { if ("object" != CommonServiceBase_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != CommonServiceBase_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14642,7 +12446,7 @@ function AddressMatchService_superPropBase(t, o) { for (; !{}.hasOwnProperty.cal
 function AddressMatchService_getPrototypeOf(t) { return AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, AddressMatchService_getPrototypeOf(t); }
 function AddressMatchService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && AddressMatchService_setPrototypeOf(t, e); }
 function AddressMatchService_setPrototypeOf(t, e) { return AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, AddressMatchService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14767,7 +12571,7 @@ function services_AddressMatchService_isNativeReflectConstruct() { try { var t =
 function services_AddressMatchService_getPrototypeOf(t) { return services_AddressMatchService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_AddressMatchService_getPrototypeOf(t); }
 function services_AddressMatchService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_AddressMatchService_setPrototypeOf(t, e); }
 function services_AddressMatchService_setPrototypeOf(t, e) { return services_AddressMatchService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_AddressMatchService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14854,7 +12658,7 @@ function DatasetService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, 
 function DatasetService_getPrototypeOf(t) { return DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, DatasetService_getPrototypeOf(t); }
 function DatasetService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && DatasetService_setPrototypeOf(t, e); }
 function DatasetService_setPrototypeOf(t, e) { return DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, DatasetService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14990,7 +12794,7 @@ function CreateDatasetParameters_defineProperties(e, r) { for (var t = 0; t < r.
 function CreateDatasetParameters_createClass(e, r, t) { return r && CreateDatasetParameters_defineProperties(e.prototype, r), t && CreateDatasetParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function CreateDatasetParameters_toPropertyKey(t) { var i = CreateDatasetParameters_toPrimitive(t, "string"); return "symbol" == CreateDatasetParameters_typeof(i) ? i : i + ""; }
 function CreateDatasetParameters_toPrimitive(t, r) { if ("object" != CreateDatasetParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != CreateDatasetParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15057,7 +12861,7 @@ function UpdateDatasetParameters_defineProperties(e, r) { for (var t = 0; t < r.
 function UpdateDatasetParameters_createClass(e, r, t) { return r && UpdateDatasetParameters_defineProperties(e.prototype, r), t && UpdateDatasetParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function UpdateDatasetParameters_toPropertyKey(t) { var i = UpdateDatasetParameters_toPrimitive(t, "string"); return "symbol" == UpdateDatasetParameters_typeof(i) ? i : i + ""; }
 function UpdateDatasetParameters_toPrimitive(t, r) { if ("object" != UpdateDatasetParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != UpdateDatasetParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15171,7 +12975,7 @@ function services_DatasetService_isNativeReflectConstruct() { try { var t = !Boo
 function services_DatasetService_getPrototypeOf(t) { return services_DatasetService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_DatasetService_getPrototypeOf(t); }
 function services_DatasetService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_DatasetService_setPrototypeOf(t, e); }
 function services_DatasetService_setPrototypeOf(t, e) { return services_DatasetService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_DatasetService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15322,7 +13126,7 @@ function DatasourceService_superPropBase(t, o) { for (; !{}.hasOwnProperty.call(
 function DatasourceService_getPrototypeOf(t) { return DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, DatasourceService_getPrototypeOf(t); }
 function DatasourceService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && DatasourceService_setPrototypeOf(t, e); }
 function DatasourceService_setPrototypeOf(t, e) { return DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, DatasourceService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15432,7 +13236,7 @@ function SetDatasourceParameters_defineProperties(e, r) { for (var t = 0; t < r.
 function SetDatasourceParameters_createClass(e, r, t) { return r && SetDatasourceParameters_defineProperties(e.prototype, r), t && SetDatasourceParameters_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function SetDatasourceParameters_toPropertyKey(t) { var i = SetDatasourceParameters_toPrimitive(t, "string"); return "symbol" == SetDatasourceParameters_typeof(i) ? i : i + ""; }
 function SetDatasourceParameters_toPrimitive(t, r) { if ("object" != SetDatasourceParameters_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != SetDatasourceParameters_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15514,7 +13318,7 @@ function services_DatasourceService_isNativeReflectConstruct() { try { var t = !
 function services_DatasourceService_getPrototypeOf(t) { return services_DatasourceService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, services_DatasourceService_getPrototypeOf(t); }
 function services_DatasourceService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && services_DatasourceService_setPrototypeOf(t, e); }
 function services_DatasourceService_setPrototypeOf(t, e) { return services_DatasourceService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, services_DatasourceService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15631,7 +13435,7 @@ function ProcessingServiceBase_superPropBase(t, o) { for (; !{}.hasOwnProperty.c
 function ProcessingServiceBase_getPrototypeOf(t) { return ProcessingServiceBase_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, ProcessingServiceBase_getPrototypeOf(t); }
 function ProcessingServiceBase_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && ProcessingServiceBase_setPrototypeOf(t, e); }
 function ProcessingServiceBase_setPrototypeOf(t, e) { return ProcessingServiceBase_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, ProcessingServiceBase_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15841,7 +13645,7 @@ function KernelDensityJobsService_superPropBase(t, o) { for (; !{}.hasOwnPropert
 function KernelDensityJobsService_getPrototypeOf(t) { return KernelDensityJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, KernelDensityJobsService_getPrototypeOf(t); }
 function KernelDensityJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && KernelDensityJobsService_setPrototypeOf(t, e); }
 function KernelDensityJobsService_setPrototypeOf(t, e) { return KernelDensityJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, KernelDensityJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15943,7 +13747,7 @@ function SingleObjectQueryJobsService_superPropBase(t, o) { for (; !{}.hasOwnPro
 function SingleObjectQueryJobsService_getPrototypeOf(t) { return SingleObjectQueryJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SingleObjectQueryJobsService_getPrototypeOf(t); }
 function SingleObjectQueryJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SingleObjectQueryJobsService_setPrototypeOf(t, e); }
 function SingleObjectQueryJobsService_setPrototypeOf(t, e) { return SingleObjectQueryJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SingleObjectQueryJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16040,7 +13844,7 @@ function SummaryMeshJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.
 function SummaryMeshJobsService_getPrototypeOf(t) { return SummaryMeshJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryMeshJobsService_getPrototypeOf(t); }
 function SummaryMeshJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryMeshJobsService_setPrototypeOf(t, e); }
 function SummaryMeshJobsService_setPrototypeOf(t, e) { return SummaryMeshJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryMeshJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16141,7 +13945,7 @@ function VectorClipJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.c
 function VectorClipJobsService_getPrototypeOf(t) { return VectorClipJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, VectorClipJobsService_getPrototypeOf(t); }
 function VectorClipJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && VectorClipJobsService_setPrototypeOf(t, e); }
 function VectorClipJobsService_setPrototypeOf(t, e) { return VectorClipJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, VectorClipJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16240,7 +14044,7 @@ function OverlayGeoJobsService_superPropBase(t, o) { for (; !{}.hasOwnProperty.c
 function OverlayGeoJobsService_getPrototypeOf(t) { return OverlayGeoJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, OverlayGeoJobsService_getPrototypeOf(t); }
 function OverlayGeoJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && OverlayGeoJobsService_setPrototypeOf(t, e); }
 function OverlayGeoJobsService_setPrototypeOf(t, e) { return OverlayGeoJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, OverlayGeoJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16340,7 +14144,7 @@ function SummaryRegionJobsService_superPropBase(t, o) { for (; !{}.hasOwnPropert
 function SummaryRegionJobsService_getPrototypeOf(t) { return SummaryRegionJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryRegionJobsService_getPrototypeOf(t); }
 function SummaryRegionJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryRegionJobsService_setPrototypeOf(t, e); }
 function SummaryRegionJobsService_setPrototypeOf(t, e) { return SummaryRegionJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryRegionJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16440,7 +14244,7 @@ function BuffersAnalystJobsService_superPropBase(t, o) { for (; !{}.hasOwnProper
 function BuffersAnalystJobsService_getPrototypeOf(t) { return BuffersAnalystJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, BuffersAnalystJobsService_getPrototypeOf(t); }
 function BuffersAnalystJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && BuffersAnalystJobsService_setPrototypeOf(t, e); }
 function BuffersAnalystJobsService_setPrototypeOf(t, e) { return BuffersAnalystJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, BuffersAnalystJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16538,7 +14342,7 @@ function TopologyValidatorJobsService_superPropBase(t, o) { for (; !{}.hasOwnPro
 function TopologyValidatorJobsService_getPrototypeOf(t) { return TopologyValidatorJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, TopologyValidatorJobsService_getPrototypeOf(t); }
 function TopologyValidatorJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && TopologyValidatorJobsService_setPrototypeOf(t, e); }
 function TopologyValidatorJobsService_setPrototypeOf(t, e) { return TopologyValidatorJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, TopologyValidatorJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16636,7 +14440,7 @@ function SummaryAttributesJobsService_superPropBase(t, o) { for (; !{}.hasOwnPro
 function SummaryAttributesJobsService_getPrototypeOf(t) { return SummaryAttributesJobsService_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, SummaryAttributesJobsService_getPrototypeOf(t); }
 function SummaryAttributesJobsService_inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && SummaryAttributesJobsService_setPrototypeOf(t, e); }
 function SummaryAttributesJobsService_setPrototypeOf(t, e) { return SummaryAttributesJobsService_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, SummaryAttributesJobsService_setPrototypeOf(t, e); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16723,7 +14527,7 @@ function ProcessingService_defineProperties(e, r) { for (var t = 0; t < r.length
 function ProcessingService_createClass(e, r, t) { return r && ProcessingService_defineProperties(e.prototype, r), t && ProcessingService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function ProcessingService_toPropertyKey(t) { var i = ProcessingService_toPrimitive(t, "string"); return "symbol" == ProcessingService_typeof(i) ? i : i + ""; }
 function ProcessingService_toPrimitive(t, r) { if ("object" != ProcessingService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != ProcessingService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17560,7 +15364,7 @@ function services_ProcessingService_defineProperties(e, r) { for (var t = 0; t <
 function services_ProcessingService_createClass(e, r, t) { return r && services_ProcessingService_defineProperties(e.prototype, r), t && services_ProcessingService_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function services_ProcessingService_toPropertyKey(t) { var i = services_ProcessingService_toPrimitive(t, "string"); return "symbol" == services_ProcessingService_typeof(i) ? i : i + ""; }
 function services_ProcessingService_toPrimitive(t, r) { if ("object" != services_ProcessingService_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != services_ProcessingService_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18153,7 +15957,7 @@ var ProcessingService = /*#__PURE__*/function () {
 }();
 SuperMap.REST.ProcessingService = ProcessingService;
 ;// ./src/classic/services/index.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18161,7 +15965,7 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 ;// ./src/classic/index.js
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18214,84 +16018,526 @@ SuperMap.Util = namespace_objectSpread(namespace_objectSpread({}, SuperMap.Util)
 
 /***/ }),
 
-/***/ 3416:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+/***/ 4350:
+/***/ (function(module) {
 
 "use strict";
 
 
-var parent = __webpack_require__(3725);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 5641:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(756);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 1606:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(6186);
-var path = __webpack_require__(7520);
-module.exports = path.Object.assign;
-
-/***/ }),
-
-/***/ 379:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(9319);
-var WrappedWellKnownSymbolModule = __webpack_require__(8490);
-module.exports = WrappedWellKnownSymbolModule.f('asyncIterator');
-
-/***/ }),
-
-/***/ 3873:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isCallable = __webpack_require__(5164);
-var tryToString = __webpack_require__(6390);
-var $TypeError = TypeError;
-
-// `Assert: IsCallable(argument) is true`
-module.exports = function (argument) {
-  if (isCallable(argument)) return argument;
-  throw new $TypeError(tryToString(argument) + ' is not a function');
+// we can't use just `it == null` since of `document.all` special case
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
+module.exports = function (it) {
+  return it === null || it === undefined;
 };
 
 /***/ }),
 
-/***/ 5546:
+/***/ 4384:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var isObject = __webpack_require__(5343);
-var $String = String;
-var $TypeError = TypeError;
+var uncurryThis = __webpack_require__(7889);
+var fails = __webpack_require__(3634);
+var classof = __webpack_require__(7953);
+var $Object = Object;
+var split = uncurryThis(''.split);
 
-// `Assert: Type(argument) is Object`
-module.exports = function (argument) {
-  if (isObject(argument)) return argument;
-  throw new $TypeError($String(argument) + ' is not an object');
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+module.exports = fails(function () {
+  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return !$Object('z').propertyIsEnumerable(0);
+}) ? function (it) {
+  return classof(it) === 'String' ? split(it, '') : $Object(it);
+} : $Object;
+
+/***/ }),
+
+/***/ 4433:
+/***/ (function(module) {
+
+"use strict";
+
+
+var ceil = Math.ceil;
+var floor = Math.floor;
+
+// `Math.trunc` method
+// https://tc39.es/ecma262/#sec-math.trunc
+// eslint-disable-next-line es/no-math-trunc -- safe
+module.exports = Math.trunc || function trunc(x) {
+  var n = +x;
+  return (n > 0 ? floor : ceil)(n);
+};
+
+/***/ }),
+
+/***/ 4537:
+/***/ (function(module) {
+
+(function (self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return;
+  }
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name);
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name');
+    }
+    return name.toLowerCase();
+  }
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value);
+    }
+    return value;
+  }
+  function Headers(headers) {
+    this.map = {};
+    if (headers instanceof Headers) {
+      headers.forEach(function (value, name) {
+        this.append(name, value);
+      }, this);
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function (name) {
+        this.append(name, headers[name]);
+      }, this);
+    }
+  }
+  Headers.prototype.append = function (name, value) {
+    name = normalizeName(name);
+    value = normalizeValue(value);
+    var list = this.map[name];
+    if (!list) {
+      list = [];
+      this.map[name] = list;
+    }
+    list.push(value);
+  };
+  Headers.prototype['delete'] = function (name) {
+    delete this.map[normalizeName(name)];
+  };
+  Headers.prototype.get = function (name) {
+    var values = this.map[normalizeName(name)];
+    return values ? values[0] : null;
+  };
+  Headers.prototype.getAll = function (name) {
+    return this.map[normalizeName(name)] || [];
+  };
+  Headers.prototype.has = function (name) {
+    return this.map.hasOwnProperty(normalizeName(name));
+  };
+  Headers.prototype.set = function (name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)];
+  };
+  Headers.prototype.forEach = function (callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function (name) {
+      this.map[name].forEach(function (value) {
+        callback.call(thisArg, value, name, this);
+      }, this);
+    }, this);
+  };
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'));
+    }
+    body.bodyUsed = true;
+  }
+  function fileReaderReady(reader) {
+    return new Promise(function (resolve, reject) {
+      reader.onload = function () {
+        resolve(reader.result);
+      };
+      reader.onerror = function () {
+        reject(reader.error);
+      };
+    });
+  }
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader();
+    reader.readAsArrayBuffer(blob);
+    return fileReaderReady(reader);
+  }
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader();
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : '';
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/;
+    var _charset = blob.type.match(regex) || contentType.match(regex);
+    var args = [blob];
+    if (_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''));
+    }
+    reader.readAsText.apply(reader, args);
+    return fileReaderReady(reader);
+  }
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && function () {
+      try {
+        new Blob();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  };
+  function Body() {
+    this.bodyUsed = false;
+    this._initBody = function (body, options) {
+      this._bodyInit = body;
+      if (typeof body === 'string') {
+        this._bodyText = body;
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body;
+        this._options = options;
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body;
+      } else if (!body) {
+        this._bodyText = '';
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type');
+      }
+    };
+    if (support.blob) {
+      this.blob = function () {
+        var rejected = consumed(this);
+        if (rejected) {
+          return rejected;
+        }
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob);
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob');
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]));
+        }
+      };
+      this.arrayBuffer = function () {
+        return this.blob().then(readBlobAsArrayBuffer);
+      };
+      this.text = function () {
+        var rejected = consumed(this);
+        if (rejected) {
+          return rejected;
+        }
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options);
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text');
+        } else {
+          return Promise.resolve(this._bodyText);
+        }
+      };
+    } else {
+      this.text = function () {
+        var rejected = consumed(this);
+        return rejected ? rejected : Promise.resolve(this._bodyText);
+      };
+    }
+    if (support.formData) {
+      this.formData = function () {
+        return this.text().then(decode);
+      };
+    }
+    this.json = function () {
+      return this.text().then(JSON.parse);
+    };
+    return this;
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase();
+    return methods.indexOf(upcased) > -1 ? upcased : method;
+  }
+  function Request(input, options) {
+    options = options || {};
+    var body = options.body;
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read');
+      }
+      this.url = input.url;
+      this.credentials = input.credentials;
+      if (!options.headers) {
+        this.headers = new Headers(input.headers);
+      }
+      this.method = input.method;
+      this.mode = input.mode;
+      if (!body) {
+        body = input._bodyInit;
+        input.bodyUsed = true;
+      }
+    } else {
+      this.url = input;
+    }
+    this.credentials = options.credentials || this.credentials || 'omit';
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers);
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET');
+    this.mode = options.mode || this.mode || null;
+    this.referrer = null;
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests');
+    }
+    this._initBody(body, options);
+  }
+  Request.prototype.clone = function () {
+    return new Request(this);
+  };
+  function decode(body) {
+    var form = new FormData();
+    body.trim().split('&').forEach(function (bytes) {
+      if (bytes) {
+        var split = bytes.split('=');
+        var name = split.shift().replace(/\+/g, ' ');
+        var value = split.join('=').replace(/\+/g, ' ');
+        form.append(decodeURIComponent(name), decodeURIComponent(value));
+      }
+    });
+    return form;
+  }
+  function headers(xhr) {
+    var head = new Headers();
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n');
+    pairs.forEach(function (header) {
+      var split = header.trim().split(':');
+      var key = split.shift().trim();
+      var value = split.join(':').trim();
+      head.append(key, value);
+    });
+    return head;
+  }
+  Body.call(Request.prototype);
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {};
+    }
+    this._initBody(bodyInit, options);
+    this.type = 'default';
+    this.status = options.status;
+    this.ok = this.status >= 200 && this.status < 300;
+    this.statusText = options.statusText;
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers);
+    this.url = options.url || '';
+  }
+  Body.call(Response.prototype);
+  Response.prototype.clone = function () {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    });
+  };
+  Response.error = function () {
+    var response = new Response(null, {
+      status: 0,
+      statusText: ''
+    });
+    response.type = 'error';
+    return response;
+  };
+  var redirectStatuses = [301, 302, 303, 307, 308];
+  Response.redirect = function (url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code');
+    }
+    return new Response(null, {
+      status: status,
+      headers: {
+        location: url
+      }
+    });
+  };
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+  self.fetch = function (input, init) {
+    return new Promise(function (resolve, reject) {
+      var request;
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input;
+      } else {
+        request = new Request(input, init);
+      }
+      var xhr = new XMLHttpRequest();
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL;
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL');
+        }
+        return;
+      }
+      var __onLoadHandled = false;
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+        var status = xhr.status === 1223 ? 204 : xhr.status;
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) {
+            return;
+          } else {
+            __onLoadHandled = true;
+          }
+          reject(new TypeError('Network request failed'));
+          return;
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        };
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+        if (__onLoadHandled) {
+          return;
+        } else {
+          __onLoadHandled = true;
+        }
+        resolve(new Response(body, options));
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function () {
+        if (__onLoadHandled) {
+          return;
+        } else {
+          __onLoadHandled = true;
+        }
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.open(request.method, request.url, true);
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob';
+      }
+      request.headers.forEach(function (value, name) {
+        xhr.setRequestHeader(name, value);
+      });
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
+    });
+  };
+  self.fetch.polyfill = true;
+
+  // Support CommonJS
+  if ( true && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+/***/ }),
+
+/***/ 4797:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(3634);
+
+// Detect IE8's incomplete defineProperty implementation
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+  return Object.defineProperty({}, 1, {
+    get: function get() {
+      return 7;
+    }
+  })[1] !== 7;
+});
+
+/***/ }),
+
+/***/ 4857:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(3634);
+var isCallable = __webpack_require__(5164);
+var replacement = /#|\.prototype\./;
+var isForced = function isForced(feature, detection) {
+  var value = data[normalize(feature)];
+  return value === POLYFILL ? true : value === NATIVE ? false : isCallable(detection) ? fails(detection) : !!detection;
+};
+var normalize = isForced.normalize = function (string) {
+  return String(string).replace(replacement, '.').toLowerCase();
+};
+var data = isForced.data = {};
+var NATIVE = isForced.NATIVE = 'N';
+var POLYFILL = isForced.POLYFILL = 'P';
+module.exports = isForced;
+
+/***/ }),
+
+/***/ 4897:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var aCallable = __webpack_require__(3873);
+var isNullOrUndefined = __webpack_require__(4350);
+
+// `GetMethod` abstract operation
+// https://tc39.es/ecma262/#sec-getmethod
+module.exports = function (V, P) {
+  var func = V[P];
+  return isNullOrUndefined(func) ? undefined : aCallable(func);
+};
+
+/***/ }),
+
+/***/ 5164:
+/***/ (function(module) {
+
+"use strict";
+
+
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var documentAll = (typeof document === "undefined" ? "undefined" : _typeof(document)) == 'object' && document.all;
+
+// `IsCallable` abstract operation
+// https://tc39.es/ecma262/#sec-iscallable
+// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
+module.exports = typeof documentAll == 'undefined' && documentAll !== undefined ? function (argument) {
+  return typeof argument == 'function' || argument === documentAll;
+} : function (argument) {
+  return typeof argument == 'function';
 };
 
 /***/ }),
@@ -18338,468 +16584,83 @@ module.exports = {
 
 /***/ }),
 
-/***/ 7953:
+/***/ 5343:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var uncurryThis = __webpack_require__(7889);
-var toString = uncurryThis({}.toString);
-var stringSlice = uncurryThis(''.slice);
-module.exports = function (it) {
-  return stringSlice(toString(it), 8, -1);
-};
-
-/***/ }),
-
-/***/ 4017:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var hasOwn = __webpack_require__(2770);
-var ownKeys = __webpack_require__(6608);
-var getOwnPropertyDescriptorModule = __webpack_require__(3880);
-var definePropertyModule = __webpack_require__(754);
-module.exports = function (target, source, exceptions) {
-  var keys = ownKeys(source);
-  var defineProperty = definePropertyModule.f;
-  var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    if (!hasOwn(target, key) && !(exceptions && hasOwn(exceptions, key))) {
-      defineProperty(target, key, getOwnPropertyDescriptor(source, key));
-    }
-  }
-};
-
-/***/ }),
-
-/***/ 7592:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(4797);
-var definePropertyModule = __webpack_require__(754);
-var createPropertyDescriptor = __webpack_require__(19);
-module.exports = DESCRIPTORS ? function (object, key, value) {
-  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-/***/ }),
-
-/***/ 19:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-/***/ }),
-
-/***/ 4197:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var isCallable = __webpack_require__(5164);
-var definePropertyModule = __webpack_require__(754);
-var makeBuiltIn = __webpack_require__(6514);
-var defineGlobalProperty = __webpack_require__(9998);
-module.exports = function (O, key, value, options) {
-  if (!options) options = {};
-  var simple = options.enumerable;
-  var name = options.name !== undefined ? options.name : key;
-  if (isCallable(value)) makeBuiltIn(value, name, options);
-  if (options.global) {
-    if (simple) O[key] = value;else defineGlobalProperty(key, value);
-  } else {
-    try {
-      if (!options.unsafe) delete O[key];else if (O[key]) simple = true;
-    } catch (error) {/* empty */}
-    if (simple) O[key] = value;else definePropertyModule.f(O, key, {
-      value: value,
-      enumerable: false,
-      configurable: !options.nonConfigurable,
-      writable: !options.nonWritable
-    });
-  }
-  return O;
+module.exports = function (it) {
+  return _typeof(it) == 'object' ? it !== null : isCallable(it);
 };
 
 /***/ }),
 
-/***/ 9998:
+/***/ 5546:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var globalThis = __webpack_require__(8029);
-
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var defineProperty = Object.defineProperty;
-module.exports = function (key, value) {
-  try {
-    defineProperty(globalThis, key, {
-      value: value,
-      configurable: true,
-      writable: true
-    });
-  } catch (error) {
-    globalThis[key] = value;
-  }
-  return value;
-};
-
-/***/ }),
-
-/***/ 4797:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(3634);
-
-// Detect IE8's incomplete defineProperty implementation
-module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  return Object.defineProperty({}, 1, {
-    get: function get() {
-      return 7;
-    }
-  })[1] !== 7;
-});
-
-/***/ }),
-
-/***/ 9750:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var globalThis = __webpack_require__(8029);
 var isObject = __webpack_require__(5343);
-var document = globalThis.document;
-// typeof document.createElement is 'object' in old IE
-var EXISTS = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return EXISTS ? document.createElement(it) : {};
+var $String = String;
+var $TypeError = TypeError;
+
+// `Assert: Type(argument) is Object`
+module.exports = function (argument) {
+  if (isObject(argument)) return argument;
+  throw new $TypeError($String(argument) + ' is not an object');
 };
 
 /***/ }),
 
-/***/ 3690:
-/***/ (function(module) {
-
-"use strict";
-
-
-// IE8- don't enum bug keys
-module.exports = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
-
-/***/ }),
-
-/***/ 2940:
+/***/ 5641:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var globalThis = __webpack_require__(8029);
-var navigator = globalThis.navigator;
-var userAgent = navigator && navigator.userAgent;
-module.exports = userAgent ? String(userAgent) : '';
+var parent = __webpack_require__(756);
+module.exports = parent;
 
 /***/ }),
 
-/***/ 2944:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var globalThis = __webpack_require__(8029);
-var userAgent = __webpack_require__(2940);
-var process = globalThis.process;
-var Deno = globalThis.Deno;
-var versions = process && process.versions || Deno && Deno.version;
-var v8 = versions && versions.v8;
-var match, version;
-if (v8) {
-  match = v8.split('.');
-  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
-  // but their correct versions are not interesting for us
-  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
-}
-
-// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
-// so check `userAgent` even if `.v8` exists, but 0
-if (!version && userAgent) {
-  match = userAgent.match(/Edge\/(\d+)/);
-  if (!match || match[1] >= 74) {
-    match = userAgent.match(/Chrome\/(\d+)/);
-    if (match) version = +match[1];
-  }
-}
-module.exports = version;
-
-/***/ }),
-
-/***/ 3485:
+/***/ 5648:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var globalThis = __webpack_require__(8029);
-var getOwnPropertyDescriptor = (__webpack_require__(3880).f);
-var createNonEnumerableProperty = __webpack_require__(7592);
-var defineBuiltIn = __webpack_require__(4197);
-var defineGlobalProperty = __webpack_require__(9998);
-var copyConstructorProperties = __webpack_require__(4017);
-var isForced = __webpack_require__(4857);
-
-/*
-  options.target         - name of the target object
-  options.global         - target is the global object
-  options.stat           - export as static methods of target
-  options.proto          - export as prototype methods of target
-  options.real           - real prototype method for the `pure` version
-  options.forced         - export even if the native feature is available
-  options.bind           - bind methods to the target, required for the `pure` version
-  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
-  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
-  options.sham           - add a flag to not completely full polyfills
-  options.enumerable     - export as enumerable property
-  options.dontCallGetSet - prevent calling a getter on target
-  options.name           - the .name of the function if it does not match the key
-*/
-module.exports = function (options, source) {
-  var TARGET = options.target;
-  var GLOBAL = options.global;
-  var STATIC = options.stat;
-  var FORCED, target, key, targetProperty, sourceProperty, descriptor;
-  if (GLOBAL) {
-    target = globalThis;
-  } else if (STATIC) {
-    target = globalThis[TARGET] || defineGlobalProperty(TARGET, {});
-  } else {
-    target = globalThis[TARGET] && globalThis[TARGET].prototype;
-  }
-  if (target) for (key in source) {
-    sourceProperty = source[key];
-    if (options.dontCallGetSet) {
-      descriptor = getOwnPropertyDescriptor(target, key);
-      targetProperty = descriptor && descriptor.value;
-    } else targetProperty = target[key];
-    FORCED = isForced(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
-    // contained in target
-    if (!FORCED && targetProperty !== undefined) {
-      if (_typeof(sourceProperty) == _typeof(targetProperty)) continue;
-      copyConstructorProperties(sourceProperty, targetProperty);
-    }
-    // add a flag to not completely full polyfills
-    if (options.sham || targetProperty && targetProperty.sham) {
-      createNonEnumerableProperty(sourceProperty, 'sham', true);
-    }
-    defineBuiltIn(target, key, sourceProperty, options);
-  }
-};
-
-/***/ }),
-
-/***/ 3634:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (error) {
-    return true;
-  }
-};
-
-/***/ }),
-
-/***/ 8607:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(3634);
-module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-function-prototype-bind -- safe
-  var test = function () {/* empty */}.bind();
-  // eslint-disable-next-line no-prototype-builtins -- safe
-  return typeof test != 'function' || test.hasOwnProperty('prototype');
-});
-
-/***/ }),
-
-/***/ 3736:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var NATIVE_BIND = __webpack_require__(8607);
-var call = Function.prototype.call;
-module.exports = NATIVE_BIND ? call.bind(call) : function () {
-  return call.apply(call, arguments);
-};
-
-/***/ }),
-
-/***/ 9071:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(4797);
-var hasOwn = __webpack_require__(2770);
-var FunctionPrototype = Function.prototype;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
-var EXISTS = hasOwn(FunctionPrototype, 'name');
-// additional protection from minified / mangled / dropped function names
-var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
-var CONFIGURABLE = EXISTS && (!DESCRIPTORS || DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable);
-module.exports = {
-  EXISTS: EXISTS,
-  PROPER: PROPER,
-  CONFIGURABLE: CONFIGURABLE
-};
-
-/***/ }),
-
-/***/ 7889:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var NATIVE_BIND = __webpack_require__(8607);
-var FunctionPrototype = Function.prototype;
-var call = FunctionPrototype.call;
-var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
-module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
-  return function () {
-    return call.apply(fn, arguments);
-  };
-};
-
-/***/ }),
-
-/***/ 148:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var globalThis = __webpack_require__(8029);
+var getBuiltIn = __webpack_require__(148);
 var isCallable = __webpack_require__(5164);
-var aFunction = function aFunction(argument) {
-  return isCallable(argument) ? argument : undefined;
-};
-module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(globalThis[namespace]) : globalThis[namespace] && globalThis[namespace][method];
-};
-
-/***/ }),
-
-/***/ 4897:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var aCallable = __webpack_require__(3873);
-var isNullOrUndefined = __webpack_require__(4350);
-
-// `GetMethod` abstract operation
-// https://tc39.es/ecma262/#sec-getmethod
-module.exports = function (V, P) {
-  var func = V[P];
-  return isNullOrUndefined(func) ? undefined : aCallable(func);
+var isPrototypeOf = __webpack_require__(6466);
+var USE_SYMBOL_AS_UID = __webpack_require__(2865);
+var $Object = Object;
+module.exports = USE_SYMBOL_AS_UID ? function (it) {
+  return _typeof(it) == 'symbol';
+} : function (it) {
+  var $Symbol = getBuiltIn('Symbol');
+  return isCallable($Symbol) && isPrototypeOf($Symbol.prototype, $Object(it));
 };
 
 /***/ }),
 
-/***/ 8029:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var check = function check(it) {
-  return it && it.Math === Math && it;
-};
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-module.exports =
-// eslint-disable-next-line es/no-global-this -- safe
-check((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) == 'object' && globalThis) || check((typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && window) ||
-// eslint-disable-next-line no-restricted-globals -- safe
-check((typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self) || check((typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g) || check(_typeof(this) == 'object' && this) ||
-// eslint-disable-next-line no-new-func -- fallback
-function () {
-  return this;
-}() || Function('return this')();
-
-/***/ }),
-
-/***/ 2770:
+/***/ 6177:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
 var uncurryThis = __webpack_require__(7889);
-var toObject = __webpack_require__(9452);
-var hasOwnProperty = uncurryThis({}.hasOwnProperty);
-
-// `HasOwnProperty` abstract operation
-// https://tc39.es/ecma262/#sec-hasownproperty
-// eslint-disable-next-line es/no-object-hasown -- safe
-module.exports = Object.hasOwn || function hasOwn(it, key) {
-  return hasOwnProperty(toObject(it), key);
+var id = 0;
+var postfix = Math.random();
+var toString = uncurryThis(1.1.toString);
+module.exports = function (key) {
+  return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
 };
-
-/***/ }),
-
-/***/ 7076:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = {};
 
 /***/ }),
 
@@ -18825,7 +16686,252 @@ module.exports = !DESCRIPTORS && !fails(function () {
 
 /***/ }),
 
-/***/ 4384:
+/***/ 6185:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var globalThis = __webpack_require__(8029);
+var isCallable = __webpack_require__(5164);
+var WeakMap = globalThis.WeakMap;
+module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
+
+/***/ }),
+
+/***/ 6186:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var $ = __webpack_require__(3485);
+var assign = __webpack_require__(8192);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+// eslint-disable-next-line es/no-object-assign -- required for testing
+$({
+  target: 'Object',
+  stat: true,
+  arity: 2,
+  forced: Object.assign !== assign
+}, {
+  assign: assign
+});
+
+/***/ }),
+
+/***/ 6369:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+ * URI.js - Mutating URLs
+ * IPv6 Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{}
+})(this, function (root) {
+  'use strict';
+
+  /*
+  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
+  var _out = IPv6.best(_in);
+  var _expected = "fe80::204:61ff:fe9d:f156";
+   console.log(_in, _out, _expected, _out === _expected);
+  */
+
+  // save current IPv6 variable, if any
+  var _IPv6 = root && root.IPv6;
+  function bestPresentation(address) {
+    // based on:
+    // Javascript to test an IPv6 address for proper format, and to
+    // present the "best text representation" according to IETF Draft RFC at
+    // http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04
+    // 8 Feb 2010 Rich Brown, Dartware, LLC
+    // Please feel free to use this code as long as you provide a link to
+    // http://www.intermapper.com
+    // http://intermapper.com/support/tools/IPV6-Validator.aspx
+    // http://download.dartware.com/thirdparty/ipv6validator.js
+
+    var _address = address.toLowerCase();
+    var segments = _address.split(':');
+    var length = segments.length;
+    var total = 8;
+
+    // trim colons (:: or ::a:b:c… or …a:b:c::)
+    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
+      // must have been ::
+      // remove first two items
+      segments.shift();
+      segments.shift();
+    } else if (segments[0] === '' && segments[1] === '') {
+      // must have been ::xxxx
+      // remove the first item
+      segments.shift();
+    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
+      // must have been xxxx::
+      segments.pop();
+    }
+    length = segments.length;
+
+    // adjust total segments for IPv4 trailer
+    if (segments[length - 1].indexOf('.') !== -1) {
+      // found a "." which means IPv4
+      total = 7;
+    }
+
+    // fill empty segments them with "0000"
+    var pos;
+    for (pos = 0; pos < length; pos++) {
+      if (segments[pos] === '') {
+        break;
+      }
+    }
+    if (pos < total) {
+      segments.splice(pos, 1, '0000');
+      while (segments.length < total) {
+        segments.splice(pos, 0, '0000');
+      }
+    }
+
+    // strip leading zeros
+    var _segments;
+    for (var i = 0; i < total; i++) {
+      _segments = segments[i].split('');
+      for (var j = 0; j < 3; j++) {
+        if (_segments[0] === '0' && _segments.length > 1) {
+          _segments.splice(0, 1);
+        } else {
+          break;
+        }
+      }
+      segments[i] = _segments.join('');
+    }
+
+    // find longest sequence of zeroes and coalesce them into one segment
+    var best = -1;
+    var _best = 0;
+    var _current = 0;
+    var current = -1;
+    var inzeroes = false;
+    // i; already declared
+
+    for (i = 0; i < total; i++) {
+      if (inzeroes) {
+        if (segments[i] === '0') {
+          _current += 1;
+        } else {
+          inzeroes = false;
+          if (_current > _best) {
+            best = current;
+            _best = _current;
+          }
+        }
+      } else {
+        if (segments[i] === '0') {
+          inzeroes = true;
+          current = i;
+          _current = 1;
+        }
+      }
+    }
+    if (_current > _best) {
+      best = current;
+      _best = _current;
+    }
+    if (_best > 1) {
+      segments.splice(best, _best, '');
+    }
+    length = segments.length;
+
+    // assemble remaining segments
+    var result = '';
+    if (segments[0] === '') {
+      result = ':';
+    }
+    for (i = 0; i < length; i++) {
+      result += segments[i];
+      if (i === length - 1) {
+        break;
+      }
+      result += ':';
+    }
+    if (segments[length - 1] === '') {
+      result += ':';
+    }
+    return result;
+  }
+  function noConflict() {
+    /*jshint validthis: true */
+    if (root.IPv6 === this) {
+      root.IPv6 = _IPv6;
+    }
+    return this;
+  }
+  return {
+    best: bestPresentation,
+    noConflict: noConflict
+  };
+});
+
+/***/ }),
+
+/***/ 6390:
+/***/ (function(module) {
+
+"use strict";
+
+
+var $String = String;
+module.exports = function (argument) {
+  try {
+    return $String(argument);
+  } catch (error) {
+    return 'Object';
+  }
+};
+
+/***/ }),
+
+/***/ 6466:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+module.exports = uncurryThis({}.isPrototypeOf);
+
+/***/ }),
+
+/***/ 6514:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
@@ -18833,39 +16939,111 @@ module.exports = !DESCRIPTORS && !fails(function () {
 
 var uncurryThis = __webpack_require__(7889);
 var fails = __webpack_require__(3634);
-var classof = __webpack_require__(7953);
-var $Object = Object;
-var split = uncurryThis(''.split);
+var isCallable = __webpack_require__(5164);
+var hasOwn = __webpack_require__(2770);
+var DESCRIPTORS = __webpack_require__(4797);
+var CONFIGURABLE_FUNCTION_NAME = (__webpack_require__(9071).CONFIGURABLE);
+var inspectSource = __webpack_require__(9413);
+var InternalStateModule = __webpack_require__(6814);
+var enforceInternalState = InternalStateModule.enforce;
+var getInternalState = InternalStateModule.get;
+var $String = String;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+var stringSlice = uncurryThis(''.slice);
+var replace = uncurryThis(''.replace);
+var join = uncurryThis([].join);
+var CONFIGURABLE_LENGTH = DESCRIPTORS && !fails(function () {
+  return defineProperty(function () {/* empty */}, 'length', {
+    value: 8
+  }).length !== 8;
+});
+var TEMPLATE = String(String).split('String');
+var makeBuiltIn = module.exports = function (value, name, options) {
+  if (stringSlice($String(name), 0, 7) === 'Symbol(') {
+    name = '[' + replace($String(name), /^Symbol\(([^)]*)\).*$/, '$1') + ']';
+  }
+  if (options && options.getter) name = 'get ' + name;
+  if (options && options.setter) name = 'set ' + name;
+  if (!hasOwn(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+    if (DESCRIPTORS) defineProperty(value, 'name', {
+      value: name,
+      configurable: true
+    });else value.name = name;
+  }
+  if (CONFIGURABLE_LENGTH && options && hasOwn(options, 'arity') && value.length !== options.arity) {
+    defineProperty(value, 'length', {
+      value: options.arity
+    });
+  }
+  try {
+    if (options && hasOwn(options, 'constructor') && options.constructor) {
+      if (DESCRIPTORS) defineProperty(value, 'prototype', {
+        writable: false
+      });
+      // in V8 ~ Chrome 53, prototypes of some methods, like `Array.prototype.values`, are non-writable
+    } else if (value.prototype) value.prototype = undefined;
+  } catch (error) {/* empty */}
+  var state = enforceInternalState(value);
+  if (!hasOwn(state, 'source')) {
+    state.source = join(TEMPLATE, typeof name == 'string' ? name : '');
+  }
+  return value;
+};
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-module.exports = fails(function () {
-  // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
-  // eslint-disable-next-line no-prototype-builtins -- safe
-  return !$Object('z').propertyIsEnumerable(0);
-}) ? function (it) {
-  return classof(it) === 'String' ? split(it, '') : $Object(it);
-} : $Object;
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+// eslint-disable-next-line no-extend-native -- required
+Function.prototype.toString = makeBuiltIn(function toString() {
+  return isCallable(this) && getInternalState(this).source || inspectSource(this);
+}, 'toString');
 
 /***/ }),
 
-/***/ 9413:
+/***/ 6576:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var uncurryThis = __webpack_require__(7889);
-var isCallable = __webpack_require__(5164);
-var store = __webpack_require__(3094);
-var functionToString = uncurryThis(Function.toString);
+/* eslint-disable es/no-symbol -- required for testing */
+var V8_VERSION = __webpack_require__(2944);
+var fails = __webpack_require__(3634);
+var globalThis = __webpack_require__(8029);
+var $String = globalThis.String;
 
-// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
-if (!isCallable(store.inspectSource)) {
-  store.inspectSource = function (it) {
-    return functionToString(it);
-  };
-}
-module.exports = store.inspectSource;
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
+  var symbol = Symbol('symbol detection');
+  // Chrome 38 Symbol has incorrect toString conversion
+  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
+  // of course, fail.
+  return !$String(symbol) || !(Object(symbol) instanceof Symbol) ||
+  // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+  !Symbol.sham && V8_VERSION && V8_VERSION < 41;
+});
+
+/***/ }),
+
+/***/ 6608:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var getBuiltIn = __webpack_require__(148);
+var uncurryThis = __webpack_require__(7889);
+var getOwnPropertyNamesModule = __webpack_require__(125);
+var getOwnPropertySymbolsModule = __webpack_require__(7260);
+var anObject = __webpack_require__(5546);
+var concat = uncurryThis([].concat);
+
+// all object keys, includes non-enumerable and symbols
+module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
+  var keys = getOwnPropertyNamesModule.f(anObject(it));
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
+};
 
 /***/ }),
 
@@ -18944,209 +17122,398 @@ module.exports = {
 
 /***/ }),
 
-/***/ 5164:
+/***/ 7011:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+ * URI.js - Mutating URLs
+ * Second Level Domain (SLD) Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{}
+})(this, function (root) {
+  'use strict';
+
+  // save current SecondLevelDomains variable, if any
+  var _SecondLevelDomains = root && root.SecondLevelDomains;
+  var SLD = {
+    // list of known Second Level Domains
+    // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
+    // ----
+    // publicsuffix.org is more current and actually used by a couple of browsers internally.
+    // downside is it also contains domains like "dyndns.org" - which is fine for the security
+    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
+    // ----
+    list: {
+      'ac': ' com gov mil net org ',
+      'ae': ' ac co gov mil name net org pro sch ',
+      'af': ' com edu gov net org ',
+      'al': ' com edu gov mil net org ',
+      'ao': ' co ed gv it og pb ',
+      'ar': ' com edu gob gov int mil net org tur ',
+      'at': ' ac co gv or ',
+      'au': ' asn com csiro edu gov id net org ',
+      'ba': ' co com edu gov mil net org rs unbi unmo unsa untz unze ',
+      'bb': ' biz co com edu gov info net org store tv ',
+      'bh': ' biz cc com edu gov info net org ',
+      'bn': ' com edu gov net org ',
+      'bo': ' com edu gob gov int mil net org tv ',
+      'br': ' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
+      'bs': ' com edu gov net org ',
+      'bz': ' du et om ov rg ',
+      'ca': ' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
+      'ck': ' biz co edu gen gov info net org ',
+      'cn': ' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
+      'co': ' com edu gov mil net nom org ',
+      'cr': ' ac c co ed fi go or sa ',
+      'cy': ' ac biz com ekloges gov ltd name net org parliament press pro tm ',
+      'do': ' art com edu gob gov mil net org sld web ',
+      'dz': ' art asso com edu gov net org pol ',
+      'ec': ' com edu fin gov info med mil net org pro ',
+      'eg': ' com edu eun gov mil name net org sci ',
+      'er': ' com edu gov ind mil net org rochest w ',
+      'es': ' com edu gob nom org ',
+      'et': ' biz com edu gov info name net org ',
+      'fj': ' ac biz com info mil name net org pro ',
+      'fk': ' ac co gov net nom org ',
+      'fr': ' asso com f gouv nom prd presse tm ',
+      'gg': ' co net org ',
+      'gh': ' com edu gov mil org ',
+      'gn': ' ac com gov net org ',
+      'gr': ' com edu gov mil net org ',
+      'gt': ' com edu gob ind mil net org ',
+      'gu': ' com edu gov net org ',
+      'hk': ' com edu gov idv net org ',
+      'hu': ' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
+      'id': ' ac co go mil net or sch web ',
+      'il': ' ac co gov idf k12 muni net org ',
+      'in': ' ac co edu ernet firm gen gov i ind mil net nic org res ',
+      'iq': ' com edu gov i mil net org ',
+      'ir': ' ac co dnssec gov i id net org sch ',
+      'it': ' edu gov ',
+      'je': ' co net org ',
+      'jo': ' com edu gov mil name net org sch ',
+      'jp': ' ac ad co ed go gr lg ne or ',
+      'ke': ' ac co go info me mobi ne or sc ',
+      'kh': ' com edu gov mil net org per ',
+      'ki': ' biz com de edu gov info mob net org tel ',
+      'km': ' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
+      'kn': ' edu gov net org ',
+      'kr': ' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
+      'kw': ' com edu gov net org ',
+      'ky': ' com edu gov net org ',
+      'kz': ' com edu gov mil net org ',
+      'lb': ' com edu gov net org ',
+      'lk': ' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
+      'lr': ' com edu gov net org ',
+      'lv': ' asn com conf edu gov id mil net org ',
+      'ly': ' com edu gov id med net org plc sch ',
+      'ma': ' ac co gov m net org press ',
+      'mc': ' asso tm ',
+      'me': ' ac co edu gov its net org priv ',
+      'mg': ' com edu gov mil nom org prd tm ',
+      'mk': ' com edu gov inf name net org pro ',
+      'ml': ' com edu gov net org presse ',
+      'mn': ' edu gov org ',
+      'mo': ' com edu gov net org ',
+      'mt': ' com edu gov net org ',
+      'mv': ' aero biz com coop edu gov info int mil museum name net org pro ',
+      'mw': ' ac co com coop edu gov int museum net org ',
+      'mx': ' com edu gob net org ',
+      'my': ' com edu gov mil name net org sch ',
+      'nf': ' arts com firm info net other per rec store web ',
+      'ng': ' biz com edu gov mil mobi name net org sch ',
+      'ni': ' ac co com edu gob mil net nom org ',
+      'np': ' com edu gov mil net org ',
+      'nr': ' biz com edu gov info net org ',
+      'om': ' ac biz co com edu gov med mil museum net org pro sch ',
+      'pe': ' com edu gob mil net nom org sld ',
+      'ph': ' com edu gov i mil net ngo org ',
+      'pk': ' biz com edu fam gob gok gon gop gos gov net org web ',
+      'pl': ' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
+      'pr': ' ac biz com edu est gov info isla name net org pro prof ',
+      'ps': ' com edu gov net org plo sec ',
+      'pw': ' belau co ed go ne or ',
+      'ro': ' arts com firm info nom nt org rec store tm www ',
+      'rs': ' ac co edu gov in org ',
+      'sb': ' com edu gov net org ',
+      'sc': ' com edu gov net org ',
+      'sh': ' co com edu gov net nom org ',
+      'sl': ' com edu gov net org ',
+      'st': ' co com consulado edu embaixada gov mil net org principe saotome store ',
+      'sv': ' com edu gob org red ',
+      'sz': ' ac co org ',
+      'tr': ' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
+      'tt': ' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
+      'tw': ' club com ebiz edu game gov idv mil net org ',
+      'mu': ' ac co com gov net or org ',
+      'mz': ' ac co edu gov org ',
+      'na': ' co com ',
+      'nz': ' ac co cri geek gen govt health iwi maori mil net org parliament school ',
+      'pa': ' abo ac com edu gob ing med net nom org sld ',
+      'pt': ' com edu gov int net nome org publ ',
+      'py': ' com edu gov mil net org ',
+      'qa': ' com edu gov mil net org ',
+      're': ' asso com nom ',
+      'ru': ' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
+      'rw': ' ac co com edu gouv gov int mil net ',
+      'sa': ' com edu gov med net org pub sch ',
+      'sd': ' com edu gov info med net org tv ',
+      'se': ' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
+      'sg': ' com edu gov idn net org per ',
+      'sn': ' art com edu gouv org perso univ ',
+      'sy': ' com edu gov mil net news org ',
+      'th': ' ac co go in mi net or ',
+      'tj': ' ac biz co com edu go gov info int mil name net nic org test web ',
+      'tn': ' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
+      'tz': ' ac co go ne or ',
+      'ua': ' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
+      'ug': ' ac co go ne or org sc ',
+      'uk': ' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
+      'us': ' dni fed isa kids nsn ',
+      'uy': ' com edu gub mil net org ',
+      've': ' co com edu gob info mil net org web ',
+      'vi': ' co com k12 net org ',
+      'vn': ' ac biz com edu gov health info int name net org pro ',
+      'ye': ' co com gov ltd me net org plc ',
+      'yu': ' ac co edu gov org ',
+      'za': ' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
+      'zm': ' ac co com edu gov net org sch ',
+      // https://en.wikipedia.org/wiki/CentralNic#Second-level_domains
+      'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
+      'net': 'gb jp se uk ',
+      'org': 'ae',
+      'de': 'com '
+    },
+    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
+    // in both performance and memory footprint. No initialization required.
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
+    // Following methods use lastIndexOf() rather than array.split() in order
+    // to avoid any memory allocations.
+    has: function has(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') >= 0;
+    },
+    is: function is(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset >= 0) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
+    },
+    get: function get(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= domain.length - 1) {
+        return null;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= tldOffset - 1) {
+        return null;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return null;
+      }
+      if (sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') < 0) {
+        return null;
+      }
+      return domain.slice(sldOffset + 1);
+    },
+    noConflict: function noConflict() {
+      if (root.SecondLevelDomains === this) {
+        root.SecondLevelDomains = _SecondLevelDomains;
+      }
+      return this;
+    }
+  };
+  return SLD;
+});
+
+/***/ }),
+
+/***/ 7076:
 /***/ (function(module) {
 
 "use strict";
 
 
-// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var documentAll = (typeof document === "undefined" ? "undefined" : _typeof(document)) == 'object' && document.all;
-
-// `IsCallable` abstract operation
-// https://tc39.es/ecma262/#sec-iscallable
-// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
-module.exports = typeof documentAll == 'undefined' && documentAll !== undefined ? function (argument) {
-  return typeof argument == 'function' || argument === documentAll;
-} : function (argument) {
-  return typeof argument == 'function';
-};
+module.exports = {};
 
 /***/ }),
 
-/***/ 4857:
+/***/ 7260:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ }),
+
+/***/ 7520:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var fails = __webpack_require__(3634);
-var isCallable = __webpack_require__(5164);
-var replacement = /#|\.prototype\./;
-var isForced = function isForced(feature, detection) {
-  var value = data[normalize(feature)];
-  return value === POLYFILL ? true : value === NATIVE ? false : isCallable(detection) ? fails(detection) : !!detection;
-};
-var normalize = isForced.normalize = function (string) {
-  return String(string).replace(replacement, '.').toLowerCase();
-};
-var data = isForced.data = {};
-var NATIVE = isForced.NATIVE = 'N';
-var POLYFILL = isForced.POLYFILL = 'P';
-module.exports = isForced;
+var globalThis = __webpack_require__(8029);
+module.exports = globalThis;
 
 /***/ }),
 
-/***/ 4350:
-/***/ (function(module) {
-
-"use strict";
-
-
-// we can't use just `it == null` since of `document.all` special case
-// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
-module.exports = function (it) {
-  return it === null || it === undefined;
-};
-
-/***/ }),
-
-/***/ 5343:
+/***/ 7592:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var isCallable = __webpack_require__(5164);
-module.exports = function (it) {
-  return _typeof(it) == 'object' ? it !== null : isCallable(it);
+var DESCRIPTORS = __webpack_require__(4797);
+var definePropertyModule = __webpack_require__(754);
+var createPropertyDescriptor = __webpack_require__(19);
+module.exports = DESCRIPTORS ? function (object, key, value) {
+  return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
 };
 
 /***/ }),
 
-/***/ 2358:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = false;
-
-/***/ }),
-
-/***/ 5648:
+/***/ 7762:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var getBuiltIn = __webpack_require__(148);
-var isCallable = __webpack_require__(5164);
-var isPrototypeOf = __webpack_require__(6466);
-var USE_SYMBOL_AS_UID = __webpack_require__(2865);
-var $Object = Object;
-module.exports = USE_SYMBOL_AS_UID ? function (it) {
-  return _typeof(it) == 'symbol';
-} : function (it) {
-  var $Symbol = getBuiltIn('Symbol');
-  return isCallable($Symbol) && isPrototypeOf($Symbol.prototype, $Object(it));
+var call = __webpack_require__(3736);
+var isObject = __webpack_require__(5343);
+var isSymbol = __webpack_require__(5648);
+var getMethod = __webpack_require__(4897);
+var ordinaryToPrimitive = __webpack_require__(8367);
+var wellKnownSymbol = __webpack_require__(1642);
+var $TypeError = TypeError;
+var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+
+// `ToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-toprimitive
+module.exports = function (input, pref) {
+  if (!isObject(input) || isSymbol(input)) return input;
+  var exoticToPrim = getMethod(input, TO_PRIMITIVE);
+  var result;
+  if (exoticToPrim) {
+    if (pref === undefined) pref = 'default';
+    result = call(exoticToPrim, input, pref);
+    if (!isObject(result) || isSymbol(result)) return result;
+    throw new $TypeError("Can't convert object to primitive value");
+  }
+  if (pref === undefined) pref = 'number';
+  return ordinaryToPrimitive(input, pref);
 };
 
 /***/ }),
 
-/***/ 8765:
+/***/ 7889:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var toLength = __webpack_require__(1995);
-
-// `LengthOfArrayLike` abstract operation
-// https://tc39.es/ecma262/#sec-lengthofarraylike
-module.exports = function (obj) {
-  return toLength(obj.length);
+var NATIVE_BIND = __webpack_require__(8607);
+var FunctionPrototype = Function.prototype;
+var call = FunctionPrototype.call;
+// eslint-disable-next-line es/no-function-prototype-bind -- safe
+var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
+module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
+  return function () {
+    return call.apply(fn, arguments);
+  };
 };
 
 /***/ }),
 
-/***/ 6514:
+/***/ 7953:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
 var uncurryThis = __webpack_require__(7889);
-var fails = __webpack_require__(3634);
-var isCallable = __webpack_require__(5164);
-var hasOwn = __webpack_require__(2770);
-var DESCRIPTORS = __webpack_require__(4797);
-var CONFIGURABLE_FUNCTION_NAME = (__webpack_require__(9071).CONFIGURABLE);
-var inspectSource = __webpack_require__(9413);
-var InternalStateModule = __webpack_require__(6814);
-var enforceInternalState = InternalStateModule.enforce;
-var getInternalState = InternalStateModule.get;
-var $String = String;
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var defineProperty = Object.defineProperty;
+var toString = uncurryThis({}.toString);
 var stringSlice = uncurryThis(''.slice);
-var replace = uncurryThis(''.replace);
-var join = uncurryThis([].join);
-var CONFIGURABLE_LENGTH = DESCRIPTORS && !fails(function () {
-  return defineProperty(function () {/* empty */}, 'length', {
-    value: 8
-  }).length !== 8;
-});
-var TEMPLATE = String(String).split('String');
-var makeBuiltIn = module.exports = function (value, name, options) {
-  if (stringSlice($String(name), 0, 7) === 'Symbol(') {
-    name = '[' + replace($String(name), /^Symbol\(([^)]*)\).*$/, '$1') + ']';
-  }
-  if (options && options.getter) name = 'get ' + name;
-  if (options && options.setter) name = 'set ' + name;
-  if (!hasOwn(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
-    if (DESCRIPTORS) defineProperty(value, 'name', {
-      value: name,
-      configurable: true
-    });else value.name = name;
-  }
-  if (CONFIGURABLE_LENGTH && options && hasOwn(options, 'arity') && value.length !== options.arity) {
-    defineProperty(value, 'length', {
-      value: options.arity
-    });
-  }
-  try {
-    if (options && hasOwn(options, 'constructor') && options.constructor) {
-      if (DESCRIPTORS) defineProperty(value, 'prototype', {
-        writable: false
-      });
-      // in V8 ~ Chrome 53, prototypes of some methods, like `Array.prototype.values`, are non-writable
-    } else if (value.prototype) value.prototype = undefined;
-  } catch (error) {/* empty */}
-  var state = enforceInternalState(value);
-  if (!hasOwn(state, 'source')) {
-    state.source = join(TEMPLATE, typeof name == 'string' ? name : '');
-  }
-  return value;
+module.exports = function (it) {
+  return stringSlice(toString(it), 8, -1);
 };
-
-// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-// eslint-disable-next-line no-extend-native -- required
-Function.prototype.toString = makeBuiltIn(function toString() {
-  return isCallable(this) && getInternalState(this).source || inspectSource(this);
-}, 'toString');
 
 /***/ }),
 
-/***/ 4433:
-/***/ (function(module) {
+/***/ 8029:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var ceil = Math.ceil;
-var floor = Math.floor;
-
-// `Math.trunc` method
-// https://tc39.es/ecma262/#sec-math.trunc
-// eslint-disable-next-line es/no-math-trunc -- safe
-module.exports = Math.trunc || function trunc(x) {
-  var n = +x;
-  return (n > 0 ? floor : ceil)(n);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var check = function check(it) {
+  return it && it.Math === Math && it;
 };
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+module.exports =
+// eslint-disable-next-line es/no-global-this -- safe
+check((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) == 'object' && globalThis) || check((typeof window === "undefined" ? "undefined" : _typeof(window)) == 'object' && window) ||
+// eslint-disable-next-line no-restricted-globals -- safe
+check((typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self) || check((typeof __webpack_require__.g === "undefined" ? "undefined" : _typeof(__webpack_require__.g)) == 'object' && __webpack_require__.g) || check(_typeof(this) == 'object' && this) ||
+// eslint-disable-next-line no-new-func -- fallback
+function () {
+  return this;
+}() || Function('return this')();
 
 /***/ }),
 
@@ -19196,6 +17563,7 @@ module.exports = !$assign || fails(function () {
   var symbol = Symbol('assign detection');
   var alphabet = 'abcdefghijklmnopqrst';
   A[symbol] = 7;
+  // eslint-disable-next-line es/no-array-prototype-foreach -- safe
   alphabet.split('').forEach(function (chr) {
     B[chr] = chr;
   });
@@ -19223,199 +17591,6 @@ module.exports = !$assign || fails(function () {
 
 /***/ }),
 
-/***/ 754:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(4797);
-var IE8_DOM_DEFINE = __webpack_require__(6182);
-var V8_PROTOTYPE_DEFINE_BUG = __webpack_require__(1363);
-var anObject = __webpack_require__(5546);
-var toPropertyKey = __webpack_require__(8);
-var $TypeError = TypeError;
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var $defineProperty = Object.defineProperty;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var ENUMERABLE = 'enumerable';
-var CONFIGURABLE = 'configurable';
-var WRITABLE = 'writable';
-
-// `Object.defineProperty` method
-// https://tc39.es/ecma262/#sec-object.defineproperty
-exports.f = DESCRIPTORS ? V8_PROTOTYPE_DEFINE_BUG ? function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPropertyKey(P);
-  anObject(Attributes);
-  if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
-    var current = $getOwnPropertyDescriptor(O, P);
-    if (current && current[WRITABLE]) {
-      O[P] = Attributes.value;
-      Attributes = {
-        configurable: CONFIGURABLE in Attributes ? Attributes[CONFIGURABLE] : current[CONFIGURABLE],
-        enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
-        writable: false
-      };
-    }
-  }
-  return $defineProperty(O, P, Attributes);
-} : $defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPropertyKey(P);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return $defineProperty(O, P, Attributes);
-  } catch (error) {/* empty */}
-  if ('get' in Attributes || 'set' in Attributes) throw new $TypeError('Accessors not supported');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-/***/ }),
-
-/***/ 3880:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(4797);
-var call = __webpack_require__(3736);
-var propertyIsEnumerableModule = __webpack_require__(128);
-var createPropertyDescriptor = __webpack_require__(19);
-var toIndexedObject = __webpack_require__(1212);
-var toPropertyKey = __webpack_require__(8);
-var hasOwn = __webpack_require__(2770);
-var IE8_DOM_DEFINE = __webpack_require__(6182);
-
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-
-// `Object.getOwnPropertyDescriptor` method
-// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
-exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
-  O = toIndexedObject(O);
-  P = toPropertyKey(P);
-  if (IE8_DOM_DEFINE) try {
-    return $getOwnPropertyDescriptor(O, P);
-  } catch (error) {/* empty */}
-  if (hasOwn(O, P)) return createPropertyDescriptor(!call(propertyIsEnumerableModule.f, O, P), O[P]);
-};
-
-/***/ }),
-
-/***/ 125:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var internalObjectKeys = __webpack_require__(3763);
-var enumBugKeys = __webpack_require__(3690);
-var hiddenKeys = enumBugKeys.concat('length', 'prototype');
-
-// `Object.getOwnPropertyNames` method
-// https://tc39.es/ecma262/#sec-object.getownpropertynames
-// eslint-disable-next-line es/no-object-getownpropertynames -- safe
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-  return internalObjectKeys(O, hiddenKeys);
-};
-
-/***/ }),
-
-/***/ 7260:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
-exports.f = Object.getOwnPropertySymbols;
-
-/***/ }),
-
-/***/ 6466:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(7889);
-module.exports = uncurryThis({}.isPrototypeOf);
-
-/***/ }),
-
-/***/ 3763:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(7889);
-var hasOwn = __webpack_require__(2770);
-var toIndexedObject = __webpack_require__(1212);
-var indexOf = (__webpack_require__(5282).indexOf);
-var hiddenKeys = __webpack_require__(7076);
-var push = uncurryThis([].push);
-module.exports = function (object, names) {
-  var O = toIndexedObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) !hasOwn(hiddenKeys, key) && hasOwn(O, key) && push(result, key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (hasOwn(O, key = names[i++])) {
-    ~indexOf(result, key) || push(result, key);
-  }
-  return result;
-};
-
-/***/ }),
-
-/***/ 1185:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var internalObjectKeys = __webpack_require__(3763);
-var enumBugKeys = __webpack_require__(3690);
-
-// `Object.keys` method
-// https://tc39.es/ecma262/#sec-object.keys
-// eslint-disable-next-line es/no-object-keys -- safe
-module.exports = Object.keys || function keys(O) {
-  return internalObjectKeys(O, enumBugKeys);
-};
-
-/***/ }),
-
-/***/ 128:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-
-var $propertyIsEnumerable = {}.propertyIsEnumerable;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-
-// Nashorn ~ JDK8 bug
-var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({
-  1: 2
-}, 1);
-
-// `Object.prototype.propertyIsEnumerable` method implementation
-// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
-exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
-  var descriptor = getOwnPropertyDescriptor(this, V);
-  return !!descriptor && descriptor.enumerable;
-} : $propertyIsEnumerable;
-
-/***/ }),
-
 /***/ 8367:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -19439,129 +17614,2303 @@ module.exports = function (input, pref) {
 
 /***/ }),
 
-/***/ 6608:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+/***/ 8490:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getBuiltIn = __webpack_require__(148);
-var uncurryThis = __webpack_require__(7889);
-var getOwnPropertyNamesModule = __webpack_require__(125);
-var getOwnPropertySymbolsModule = __webpack_require__(7260);
-var anObject = __webpack_require__(5546);
-var concat = uncurryThis([].concat);
-
-// all object keys, includes non-enumerable and symbols
-module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
-  var keys = getOwnPropertyNamesModule.f(anObject(it));
-  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
-  return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
-};
+var wellKnownSymbol = __webpack_require__(1642);
+exports.f = wellKnownSymbol;
 
 /***/ }),
 
-/***/ 7520:
+/***/ 8607:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var globalThis = __webpack_require__(8029);
-module.exports = globalThis;
-
-/***/ }),
-
-/***/ 1365:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var isNullOrUndefined = __webpack_require__(4350);
-var $TypeError = TypeError;
-
-// `RequireObjectCoercible` abstract operation
-// https://tc39.es/ecma262/#sec-requireobjectcoercible
-module.exports = function (it) {
-  if (isNullOrUndefined(it)) throw new $TypeError("Can't call method on " + it);
-  return it;
-};
-
-/***/ }),
-
-/***/ 56:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var shared = __webpack_require__(1930);
-var uid = __webpack_require__(6177);
-var keys = shared('keys');
-module.exports = function (key) {
-  return keys[key] || (keys[key] = uid(key));
-};
-
-/***/ }),
-
-/***/ 3094:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var IS_PURE = __webpack_require__(2358);
-var globalThis = __webpack_require__(8029);
-var defineGlobalProperty = __webpack_require__(9998);
-var SHARED = '__core-js_shared__';
-var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
-(store.versions || (store.versions = [])).push({
-  version: '3.39.0',
-  mode: IS_PURE ? 'pure' : 'global',
-  copyright: '© 2014-2024 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.39.0/LICENSE',
-  source: 'https://github.com/zloirock/core-js'
-});
-
-/***/ }),
-
-/***/ 1930:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var store = __webpack_require__(3094);
-module.exports = function (key, value) {
-  return store[key] || (store[key] = value || {});
-};
-
-/***/ }),
-
-/***/ 6576:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-/* eslint-disable es/no-symbol -- required for testing */
-var V8_VERSION = __webpack_require__(2944);
 var fails = __webpack_require__(3634);
-var globalThis = __webpack_require__(8029);
-var $String = globalThis.String;
-
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
-module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
-  var symbol = Symbol('symbol detection');
-  // Chrome 38 Symbol has incorrect toString conversion
-  // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
-  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
-  // of course, fail.
-  return !$String(symbol) || !(Object(symbol) instanceof Symbol) ||
-  // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
-  !Symbol.sham && V8_VERSION && V8_VERSION < 41;
+module.exports = !fails(function () {
+  // eslint-disable-next-line es/no-function-prototype-bind -- safe
+  var test = function () {/* empty */}.bind();
+  // eslint-disable-next-line no-prototype-builtins -- safe
+  return typeof test != 'function' || test.hasOwnProperty('prototype');
 });
+
+/***/ }),
+
+/***/ 8765:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var toLength = __webpack_require__(1995);
+
+// `LengthOfArrayLike` abstract operation
+// https://tc39.es/ecma262/#sec-lengthofarraylike
+module.exports = function (obj) {
+  return toLength(obj.length);
+};
+
+/***/ }),
+
+/***/ 9005:
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{ var mod; }
+})(this, function (exports, module) {
+  'use strict';
+
+  var defaultOptions = {
+    timeout: 5000,
+    jsonpCallback: 'callback',
+    jsonpCallbackFunction: null
+  };
+  function generateCallbackFunction() {
+    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+  }
+  function clearFunction(functionName) {
+    // IE8 throws an exception when you try to delete a property on window
+    // http://stackoverflow.com/a/1824228/751089
+    try {
+      delete window[functionName];
+    } catch (e) {
+      window[functionName] = undefined;
+    }
+  }
+  function removeScript(scriptId) {
+    var script = document.getElementById(scriptId);
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
+  }
+  function fetchJsonp(_url) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    // to avoid param reassign
+    var url = _url;
+    var timeout = options.timeout || defaultOptions.timeout;
+    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+    var timeoutId = undefined;
+    return new Promise(function (resolve, reject) {
+      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+      var scriptId = jsonpCallback + '_' + callbackFunction;
+      window[callbackFunction] = function (response) {
+        resolve({
+          ok: true,
+          // keep consistent with fetch API
+          json: function json() {
+            return Promise.resolve(response);
+          }
+        });
+        if (timeoutId) clearTimeout(timeoutId);
+        removeScript(scriptId);
+        clearFunction(callbackFunction);
+      };
+
+      // Check if the user set their own params, and if not add a ? to start a list of params
+      url += url.indexOf('?') === -1 ? '?' : '&';
+      var jsonpScript = document.createElement('script');
+      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
+      jsonpScript.id = scriptId;
+      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+      timeoutId = setTimeout(function () {
+        reject(new Error('JSONP request to ' + _url + ' timed out'));
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
+      }, timeout);
+
+      // Caught if got 404/500
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    });
+  }
+
+  // export as global function
+  /*
+  let local;
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+  local.fetchJsonp = fetchJsonp;
+  */
+
+  module.exports = fetchJsonp;
+});
+
+/***/ }),
+
+/***/ 9071:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var DESCRIPTORS = __webpack_require__(4797);
+var hasOwn = __webpack_require__(2770);
+var FunctionPrototype = Function.prototype;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var getDescriptor = DESCRIPTORS && Object.getOwnPropertyDescriptor;
+var EXISTS = hasOwn(FunctionPrototype, 'name');
+// additional protection from minified / mangled / dropped function names
+var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
+var CONFIGURABLE = EXISTS && (!DESCRIPTORS || DESCRIPTORS && getDescriptor(FunctionPrototype, 'name').configurable);
+module.exports = {
+  EXISTS: EXISTS,
+  PROPER: PROPER,
+  CONFIGURABLE: CONFIGURABLE
+};
+
+/***/ }),
+
+/***/ 9216:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* module decorator */ module = __webpack_require__.nmd(module);
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+ * URI.js - Mutating URLs
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+(function (root, factory) {
+  'use strict';
+
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (( false ? 0 : _typeof(module)) === 'object' && module.exports) {
+    // Node
+    module.exports = factory(__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011));
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2323), __webpack_require__(6369), __webpack_require__(7011)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{}
+})(this, function (punycode, IPv6, SLD, root) {
+  'use strict';
+
+  /*global location, escape, unescape */
+  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+  /*jshint camelcase: false */
+
+  // save current URI variable, if any
+  var _URI = root && root.URI;
+  function URI(url, base) {
+    var _urlSupplied = arguments.length >= 1;
+    var _baseSupplied = arguments.length >= 2;
+
+    // Allow instantiation without the 'new' keyword
+    if (!(this instanceof URI)) {
+      if (_urlSupplied) {
+        if (_baseSupplied) {
+          return new URI(url, base);
+        }
+        return new URI(url);
+      }
+      return new URI();
+    }
+    if (url === undefined) {
+      if (_urlSupplied) {
+        throw new TypeError('undefined is not a valid argument for URI');
+      }
+      if (typeof location !== 'undefined') {
+        url = location.href + '';
+      } else {
+        url = '';
+      }
+    }
+    if (url === null) {
+      if (_urlSupplied) {
+        throw new TypeError('null is not a valid argument for URI');
+      }
+    }
+    this.href(url);
+
+    // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+    if (base !== undefined) {
+      return this.absoluteTo(base);
+    }
+    return this;
+  }
+  function isInteger(value) {
+    return /^[0-9]+$/.test(value);
+  }
+  URI.version = '1.19.11';
+  var p = URI.prototype;
+  var hasOwn = Object.prototype.hasOwnProperty;
+  function escapeRegEx(string) {
+    // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
+    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+  }
+  function getType(value) {
+    // IE8 doesn't return [Object Undefined] but [Object Object] for undefined value
+    if (value === undefined) {
+      return 'Undefined';
+    }
+    return String(Object.prototype.toString.call(value)).slice(8, -1);
+  }
+  function isArray(obj) {
+    return getType(obj) === 'Array';
+  }
+  function filterArrayValues(data, value) {
+    var lookup = {};
+    var i, length;
+    if (getType(value) === 'RegExp') {
+      lookup = null;
+    } else if (isArray(value)) {
+      for (i = 0, length = value.length; i < length; i++) {
+        lookup[value[i]] = true;
+      }
+    } else {
+      lookup[value] = true;
+    }
+    for (i = 0, length = data.length; i < length; i++) {
+      /*jshint laxbreak: true */
+      var _match = lookup && lookup[data[i]] !== undefined || !lookup && value.test(data[i]);
+      /*jshint laxbreak: false */
+      if (_match) {
+        data.splice(i, 1);
+        length--;
+        i--;
+      }
+    }
+    return data;
+  }
+  function arrayContains(list, value) {
+    var i, length;
+
+    // value may be string, number, array, regexp
+    if (isArray(value)) {
+      // Note: this can be optimized to O(n) (instead of current O(m * n))
+      for (i = 0, length = value.length; i < length; i++) {
+        if (!arrayContains(list, value[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    var _type = getType(value);
+    for (i = 0, length = list.length; i < length; i++) {
+      if (_type === 'RegExp') {
+        if (typeof list[i] === 'string' && list[i].match(value)) {
+          return true;
+        }
+      } else if (list[i] === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function arraysEqual(one, two) {
+    if (!isArray(one) || !isArray(two)) {
+      return false;
+    }
+
+    // arrays can't be equal if they have different amount of content
+    if (one.length !== two.length) {
+      return false;
+    }
+    one.sort();
+    two.sort();
+    for (var i = 0, l = one.length; i < l; i++) {
+      if (one[i] !== two[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  function trimSlashes(text) {
+    var trim_expression = /^\/+|\/+$/g;
+    return text.replace(trim_expression, '');
+  }
+  URI._parts = function () {
+    return {
+      protocol: null,
+      username: null,
+      password: null,
+      hostname: null,
+      urn: null,
+      port: null,
+      path: null,
+      query: null,
+      fragment: null,
+      // state
+      preventInvalidHostname: URI.preventInvalidHostname,
+      duplicateQueryParameters: URI.duplicateQueryParameters,
+      escapeQuerySpace: URI.escapeQuerySpace
+    };
+  };
+  // state: throw on invalid hostname
+  // see https://github.com/medialize/URI.js/pull/345
+  // and https://github.com/medialize/URI.js/issues/354
+  URI.preventInvalidHostname = false;
+  // state: allow duplicate query parameters (a=1&a=1)
+  URI.duplicateQueryParameters = false;
+  // state: replaces + with %20 (space in query strings)
+  URI.escapeQuerySpace = true;
+  // static properties
+  URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
+  URI.idn_expression = /[^a-z0-9\._-]/i;
+  URI.punycode_expression = /(xn--)/i;
+  // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
+  URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  // credits to Rich Brown
+  // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
+  // specification: http://www.ietf.org/rfc/rfc4291.txt
+  URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+  // expression used is "gruber revised" (@gruber v2) determined to be the
+  // best solution in a regex-golf we did a couple of ages ago at
+  // * http://mathiasbynens.be/demo/url-regex
+  // * http://rodneyrehm.de/t/url-regex.html
+  URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
+  URI.findUri = {
+    // valid "scheme://" or "www."
+    start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
+    // everything up to the next whitespace
+    end: /[\s\r\n]|$/,
+    // trim trailing punctuation captured by end RegExp
+    trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/,
+    // balanced parens inclusion (), [], {}, <>
+    parens: /(\([^\)]*\)|\[[^\]]*\]|\{[^}]*\}|<[^>]*>)/g
+  };
+  URI.leading_whitespace_expression = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
+  // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+  URI.ascii_tab_whitespace = /[\u0009\u000A\u000D]+/g;
+  // http://www.iana.org/assignments/uri-schemes.html
+  // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
+  URI.defaultPorts = {
+    http: '80',
+    https: '443',
+    ftp: '21',
+    gopher: '70',
+    ws: '80',
+    wss: '443'
+  };
+  // list of protocols which always require a hostname
+  URI.hostProtocols = ['http', 'https'];
+
+  // allowed hostname characters according to RFC 3986
+  // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
+  // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . - _
+  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.\-:_]/;
+  // map DOM Elements to their URI attribute
+  URI.domAttributes = {
+    'a': 'href',
+    'blockquote': 'cite',
+    'link': 'href',
+    'base': 'href',
+    'script': 'src',
+    'form': 'action',
+    'img': 'src',
+    'area': 'href',
+    'iframe': 'src',
+    'embed': 'src',
+    'source': 'src',
+    'track': 'src',
+    'input': 'src',
+    // but only if type="image"
+    'audio': 'src',
+    'video': 'src'
+  };
+  URI.getDomAttribute = function (node) {
+    if (!node || !node.nodeName) {
+      return undefined;
+    }
+    var nodeName = node.nodeName.toLowerCase();
+    // <input> should only expose src for type="image"
+    if (nodeName === 'input' && node.type !== 'image') {
+      return undefined;
+    }
+    return URI.domAttributes[nodeName];
+  };
+  function escapeForDumbFirefox36(value) {
+    // https://github.com/medialize/URI.js/issues/91
+    return escape(value);
+  }
+
+  // encoding / decoding according to RFC3986
+  function strictEncodeURIComponent(string) {
+    // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
+    return encodeURIComponent(string).replace(/[!'()*]/g, escapeForDumbFirefox36).replace(/\*/g, '%2A');
+  }
+  URI.encode = strictEncodeURIComponent;
+  URI.decode = decodeURIComponent;
+  URI.iso8859 = function () {
+    URI.encode = escape;
+    URI.decode = unescape;
+  };
+  URI.unicode = function () {
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = decodeURIComponent;
+  };
+  URI.characters = {
+    pathname: {
+      encode: {
+        // RFC3986 2.1: For consistency, URI producers and normalizers should
+        // use uppercase hexadecimal digits for all percent-encodings.
+        expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
+        map: {
+          // -._~!'()*
+          '%24': '$',
+          '%26': '&',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%3A': ':',
+          '%40': '@'
+        }
+      },
+      decode: {
+        expression: /[\/\?#]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23'
+        }
+      }
+    },
+    reserved: {
+      encode: {
+        // RFC3986 2.1: For consistency, URI producers and normalizers should
+        // use uppercase hexadecimal digits for all percent-encodings.
+        expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
+        map: {
+          // gen-delims
+          '%3A': ':',
+          '%2F': '/',
+          '%3F': '?',
+          '%23': '#',
+          '%5B': '[',
+          '%5D': ']',
+          '%40': '@',
+          // sub-delims
+          '%21': '!',
+          '%24': '$',
+          '%26': '&',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '='
+        }
+      }
+    },
+    urnpath: {
+      // The characters under `encode` are the characters called out by RFC 2141 as being acceptable
+      // for usage in a URN. RFC2141 also calls out "-", ".", and "_" as acceptable characters, but
+      // these aren't encoded by encodeURIComponent, so we don't have to call them out here. Also
+      // note that the colon character is not featured in the encoding map; this is because URI.js
+      // gives the colons in URNs semantic meaning as the delimiters of path segements, and so it
+      // should not appear unencoded in a segment itself.
+      // See also the note above about RFC3986 and capitalalized hex digits.
+      encode: {
+        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
+        map: {
+          '%21': '!',
+          '%24': '$',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%40': '@'
+        }
+      },
+      // These characters are the characters called out by RFC2141 as "reserved" characters that
+      // should never appear in a URN, plus the colon character (see note above).
+      decode: {
+        expression: /[\/\?#:]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23',
+          ':': '%3A'
+        }
+      }
+    }
+  };
+  URI.encodeQuery = function (string, escapeQuerySpace) {
+    var escaped = URI.encode(string + '');
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
+  };
+  URI.decodeQuery = function (string, escapeQuerySpace) {
+    string += '';
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    try {
+      return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
+    } catch (e) {
+      // we're not going to mess with weird encodings,
+      // give up and return the undecoded original string
+      // see https://github.com/medialize/URI.js/issues/87
+      // see https://github.com/medialize/URI.js/issues/92
+      return string;
+    }
+  };
+  // generate encode/decode path functions
+  var _parts = {
+    'encode': 'encode',
+    'decode': 'decode'
+  };
+  var _part;
+  var generateAccessor = function generateAccessor(_group, _part) {
+    return function (string) {
+      try {
+        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function (c) {
+          return URI.characters[_group][_part].map[c];
+        });
+      } catch (e) {
+        // we're not going to mess with weird encodings,
+        // give up and return the undecoded original string
+        // see https://github.com/medialize/URI.js/issues/87
+        // see https://github.com/medialize/URI.js/issues/92
+        return string;
+      }
+    };
+  };
+  for (_part in _parts) {
+    URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
+    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
+  }
+  var generateSegmentedPathFunction = function generateSegmentedPathFunction(_sep, _codingFuncName, _innerCodingFuncName) {
+    return function (string) {
+      // Why pass in names of functions, rather than the function objects themselves? The
+      // definitions of some functions (but in particular, URI.decode) will occasionally change due
+      // to URI.js having ISO8859 and Unicode modes. Passing in the name and getting it will ensure
+      // that the functions we use here are "fresh".
+      var actualCodingFunc;
+      if (!_innerCodingFuncName) {
+        actualCodingFunc = URI[_codingFuncName];
+      } else {
+        actualCodingFunc = function actualCodingFunc(string) {
+          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
+        };
+      }
+      var segments = (string + '').split(_sep);
+      for (var i = 0, length = segments.length; i < length; i++) {
+        segments[i] = actualCodingFunc(segments[i]);
+      }
+      return segments.join(_sep);
+    };
+  };
+
+  // This takes place outside the above loop because we don't want, e.g., encodeUrnPath functions.
+  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
+  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
+  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
+  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
+  URI.encodeReserved = generateAccessor('reserved', 'encode');
+  URI.parse = function (string, parts) {
+    var pos;
+    if (!parts) {
+      parts = {
+        preventInvalidHostname: URI.preventInvalidHostname
+      };
+    }
+    string = string.replace(URI.leading_whitespace_expression, '');
+    // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+    string = string.replace(URI.ascii_tab_whitespace, '');
+
+    // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
+
+    // extract fragment
+    pos = string.indexOf('#');
+    if (pos > -1) {
+      // escaping?
+      parts.fragment = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+
+    // extract query
+    pos = string.indexOf('?');
+    if (pos > -1) {
+      // escaping?
+      parts.query = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+
+    // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
+    string = string.replace(/^(https?|ftp|wss?)?:+[/\\]*/i, '$1://');
+    // slashes and backslashes have lost all meaning for scheme relative URLs
+    string = string.replace(/^[/\\]{2,}/i, '//');
+
+    // extract protocol
+    if (string.substring(0, 2) === '//') {
+      // relative-scheme
+      parts.protocol = null;
+      string = string.substring(2);
+      // extract "user:pass@host:port"
+      string = URI.parseAuthority(string, parts);
+    } else {
+      pos = string.indexOf(':');
+      if (pos > -1) {
+        parts.protocol = string.substring(0, pos) || null;
+        if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
+          // : may be within the path
+          parts.protocol = undefined;
+        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
+          string = string.substring(pos + 3);
+
+          // extract "user:pass@host:port"
+          string = URI.parseAuthority(string, parts);
+        } else {
+          string = string.substring(pos + 1);
+          parts.urn = true;
+        }
+      }
+    }
+
+    // what's left must be the path
+    parts.path = string;
+
+    // and we're done
+    return parts;
+  };
+  URI.parseHost = function (string, parts) {
+    if (!string) {
+      string = '';
+    }
+
+    // Copy chrome, IE, opera backslash-handling behavior.
+    // Back slashes before the query string get converted to forward slashes
+    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
+    // See: https://code.google.com/p/chromium/issues/detail?id=25916
+    // https://github.com/medialize/URI.js/pull/233
+    string = string.replace(/\\/g, '/');
+
+    // extract host:port
+    var pos = string.indexOf('/');
+    var bracketPos;
+    var t;
+    if (pos === -1) {
+      pos = string.length;
+    }
+    if (string.charAt(0) === '[') {
+      // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
+      // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
+      // IPv6+port in the format [2001:db8::1]:80 (for the time being)
+      bracketPos = string.indexOf(']');
+      parts.hostname = string.substring(1, bracketPos) || null;
+      parts.port = string.substring(bracketPos + 2, pos) || null;
+      if (parts.port === '/') {
+        parts.port = null;
+      }
+    } else {
+      var firstColon = string.indexOf(':');
+      var firstSlash = string.indexOf('/');
+      var nextColon = string.indexOf(':', firstColon + 1);
+      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
+        // IPv6 host contains multiple colons - but no port
+        // this notation is actually not allowed by RFC 3986, but we're a liberal parser
+        parts.hostname = string.substring(0, pos) || null;
+        parts.port = null;
+      } else {
+        t = string.substring(0, pos).split(':');
+        parts.hostname = t[0] || null;
+        parts.port = t[1] || null;
+      }
+    }
+    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
+      pos++;
+      string = '/' + string;
+    }
+    if (parts.preventInvalidHostname) {
+      URI.ensureValidHostname(parts.hostname, parts.protocol);
+    }
+    if (parts.port) {
+      URI.ensureValidPort(parts.port);
+    }
+    return string.substring(pos) || '/';
+  };
+  URI.parseAuthority = function (string, parts) {
+    string = URI.parseUserinfo(string, parts);
+    return URI.parseHost(string, parts);
+  };
+  URI.parseUserinfo = function (string, parts) {
+    // extract username:password
+    var _string = string;
+    var firstBackSlash = string.indexOf('\\');
+    if (firstBackSlash !== -1) {
+      string = string.replace(/\\/g, '/');
+    }
+    var firstSlash = string.indexOf('/');
+    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
+    var t;
+
+    // authority@ must come before /path or \path
+    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
+      t = string.substring(0, pos).split(':');
+      parts.username = t[0] ? URI.decode(t[0]) : null;
+      t.shift();
+      parts.password = t[0] ? URI.decode(t.join(':')) : null;
+      string = _string.substring(pos + 1);
+    } else {
+      parts.username = null;
+      parts.password = null;
+    }
+    return string;
+  };
+  URI.parseQuery = function (string, escapeQuerySpace) {
+    if (!string) {
+      return {};
+    }
+
+    // throw out the funky business - "?"[name"="value"&"]+
+    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
+    if (!string) {
+      return {};
+    }
+    var items = {};
+    var splits = string.split('&');
+    var length = splits.length;
+    var v, name, value;
+    for (var i = 0; i < length; i++) {
+      v = splits[i].split('=');
+      name = URI.decodeQuery(v.shift(), escapeQuerySpace);
+      // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
+      value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
+      if (name === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(items, name)) {
+        if (typeof items[name] === 'string' || items[name] === null) {
+          items[name] = [items[name]];
+        }
+        items[name].push(value);
+      } else {
+        items[name] = value;
+      }
+    }
+    return items;
+  };
+  URI.build = function (parts) {
+    var t = '';
+    var requireAbsolutePath = false;
+    if (parts.protocol) {
+      t += parts.protocol + ':';
+    }
+    if (!parts.urn && (t || parts.hostname)) {
+      t += '//';
+      requireAbsolutePath = true;
+    }
+    t += URI.buildAuthority(parts) || '';
+    if (typeof parts.path === 'string') {
+      if (parts.path.charAt(0) !== '/' && requireAbsolutePath) {
+        t += '/';
+      }
+      t += parts.path;
+    }
+    if (typeof parts.query === 'string' && parts.query) {
+      t += '?' + parts.query;
+    }
+    if (typeof parts.fragment === 'string' && parts.fragment) {
+      t += '#' + parts.fragment;
+    }
+    return t;
+  };
+  URI.buildHost = function (parts) {
+    var t = '';
+    if (!parts.hostname) {
+      return '';
+    } else if (URI.ip6_expression.test(parts.hostname)) {
+      t += '[' + parts.hostname + ']';
+    } else {
+      t += parts.hostname;
+    }
+    if (parts.port) {
+      t += ':' + parts.port;
+    }
+    return t;
+  };
+  URI.buildAuthority = function (parts) {
+    return URI.buildUserinfo(parts) + URI.buildHost(parts);
+  };
+  URI.buildUserinfo = function (parts) {
+    var t = '';
+    if (parts.username) {
+      t += URI.encode(parts.username);
+    }
+    if (parts.password) {
+      t += ':' + URI.encode(parts.password);
+    }
+    if (t) {
+      t += '@';
+    }
+    return t;
+  };
+  URI.buildQuery = function (data, duplicateQueryParameters, escapeQuerySpace) {
+    // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
+    // being »-._~!$&'()*+,;=:@/?« %HEX and alnum are allowed
+    // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
+    // URI.js treats the query string as being application/x-www-form-urlencoded
+    // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
+
+    var t = '';
+    var unique, key, i, length;
+    for (key in data) {
+      if (key === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(data, key)) {
+        if (isArray(data[key])) {
+          unique = {};
+          for (i = 0, length = data[key].length; i < length; i++) {
+            if (data[key][i] !== undefined && unique[data[key][i] + ''] === undefined) {
+              t += '&' + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
+              if (duplicateQueryParameters !== true) {
+                unique[data[key][i] + ''] = true;
+              }
+            }
+          }
+        } else if (data[key] !== undefined) {
+          t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
+        }
+      }
+    }
+    return t.substring(1);
+  };
+  URI.buildQueryParameter = function (name, value, escapeQuerySpace) {
+    // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded
+    // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
+    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
+  };
+  URI.addQuery = function (data, name, value) {
+    if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.addQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (data[name] === undefined) {
+        data[name] = value;
+        return;
+      } else if (typeof data[name] === 'string') {
+        data[name] = [data[name]];
+      }
+      if (!isArray(value)) {
+        value = [value];
+      }
+      data[name] = (data[name] || []).concat(value);
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+  };
+  URI.setQuery = function (data, name, value) {
+    if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.setQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      data[name] = value === undefined ? null : value;
+    } else {
+      throw new TypeError('URI.setQuery() accepts an object, string as the name parameter');
+    }
+  };
+  URI.removeQuery = function (data, name, value) {
+    var i, length, key;
+    if (isArray(name)) {
+      for (i = 0, length = name.length; i < length; i++) {
+        data[name[i]] = undefined;
+      }
+    } else if (getType(name) === 'RegExp') {
+      for (key in data) {
+        if (name.test(key)) {
+          data[key] = undefined;
+        }
+      }
+    } else if (_typeof(name) === 'object') {
+      for (key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.removeQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (value !== undefined) {
+        if (getType(value) === 'RegExp') {
+          if (!isArray(data[name]) && value.test(data[name])) {
+            data[name] = undefined;
+          } else {
+            data[name] = filterArrayValues(data[name], value);
+          }
+        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
+          data[name] = undefined;
+        } else if (isArray(data[name])) {
+          data[name] = filterArrayValues(data[name], value);
+        }
+      } else {
+        data[name] = undefined;
+      }
+    } else {
+      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
+    }
+  };
+  URI.hasQuery = function (data, name, value, withinArray) {
+    switch (getType(name)) {
+      case 'String':
+        // Nothing to do here
+        break;
+      case 'RegExp':
+        for (var key in data) {
+          if (hasOwn.call(data, key)) {
+            if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
+              return true;
+            }
+          }
+        }
+        return false;
+      case 'Object':
+        for (var _key in name) {
+          if (hasOwn.call(name, _key)) {
+            if (!URI.hasQuery(data, _key, name[_key])) {
+              return false;
+            }
+          }
+        }
+        return true;
+      default:
+        throw new TypeError('URI.hasQuery() accepts a string, regular expression or object as the name parameter');
+    }
+    switch (getType(value)) {
+      case 'Undefined':
+        // true if exists (but may be empty)
+        return name in data;
+      // data[name] !== undefined;
+
+      case 'Boolean':
+        // true if exists and non-empty
+        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
+        return value === _booly;
+      case 'Function':
+        // allow complex comparison
+        return !!value(data[name], name, data);
+      case 'Array':
+        if (!isArray(data[name])) {
+          return false;
+        }
+        var op = withinArray ? arrayContains : arraysEqual;
+        return op(data[name], value);
+      case 'RegExp':
+        if (!isArray(data[name])) {
+          return Boolean(data[name] && data[name].match(value));
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      case 'Number':
+        value = String(value);
+      /* falls through */
+      case 'String':
+        if (!isArray(data[name])) {
+          return data[name] === value;
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      default:
+        throw new TypeError('URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter');
+    }
+  };
+  URI.joinPaths = function () {
+    var input = [];
+    var segments = [];
+    var nonEmptySegments = 0;
+    for (var i = 0; i < arguments.length; i++) {
+      var url = new URI(arguments[i]);
+      input.push(url);
+      var _segments = url.segment();
+      for (var s = 0; s < _segments.length; s++) {
+        if (typeof _segments[s] === 'string') {
+          segments.push(_segments[s]);
+        }
+        if (_segments[s]) {
+          nonEmptySegments++;
+        }
+      }
+    }
+    if (!segments.length || !nonEmptySegments) {
+      return new URI('');
+    }
+    var uri = new URI('').segment(segments);
+    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
+      uri.path('/' + uri.path());
+    }
+    return uri.normalize();
+  };
+  URI.commonPath = function (one, two) {
+    var length = Math.min(one.length, two.length);
+    var pos;
+
+    // find first non-matching character
+    for (pos = 0; pos < length; pos++) {
+      if (one.charAt(pos) !== two.charAt(pos)) {
+        pos--;
+        break;
+      }
+    }
+    if (pos < 1) {
+      return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
+    }
+
+    // revert to last /
+    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
+      pos = one.substring(0, pos).lastIndexOf('/');
+    }
+    return one.substring(0, pos + 1);
+  };
+  URI.withinString = function (string, callback, options) {
+    options || (options = {});
+    var _start = options.start || URI.findUri.start;
+    var _end = options.end || URI.findUri.end;
+    var _trim = options.trim || URI.findUri.trim;
+    var _parens = options.parens || URI.findUri.parens;
+    var _attributeOpen = /[a-z0-9-]=["']?$/i;
+    _start.lastIndex = 0;
+    while (true) {
+      var match = _start.exec(string);
+      if (!match) {
+        break;
+      }
+      var start = match.index;
+      if (options.ignoreHtml) {
+        // attribut(e=["']?$)
+        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
+        if (attributeOpen && _attributeOpen.test(attributeOpen)) {
+          continue;
+        }
+      }
+      var end = start + string.slice(start).search(_end);
+      var slice = string.slice(start, end);
+      // make sure we include well balanced parens
+      var parensEnd = -1;
+      while (true) {
+        var parensMatch = _parens.exec(slice);
+        if (!parensMatch) {
+          break;
+        }
+        var parensMatchEnd = parensMatch.index + parensMatch[0].length;
+        parensEnd = Math.max(parensEnd, parensMatchEnd);
+      }
+      if (parensEnd > -1) {
+        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd).replace(_trim, '');
+      } else {
+        slice = slice.replace(_trim, '');
+      }
+      if (slice.length <= match[0].length) {
+        // the extract only contains the starting marker of a URI,
+        // e.g. "www" or "http://"
+        continue;
+      }
+      if (options.ignore && options.ignore.test(slice)) {
+        continue;
+      }
+      end = start + slice.length;
+      var result = callback(slice, start, end, string);
+      if (result === undefined) {
+        _start.lastIndex = end;
+        continue;
+      }
+      result = String(result);
+      string = string.slice(0, start) + result + string.slice(end);
+      _start.lastIndex = start + result.length;
+    }
+    _start.lastIndex = 0;
+    return string;
+  };
+  URI.ensureValidHostname = function (v, protocol) {
+    // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
+    // they are not part of DNS and therefore ignored by URI.js
+
+    var hasHostname = !!v; // not null and not an empty string
+    var hasProtocol = !!protocol;
+    var rejectEmptyHostname = false;
+    if (hasProtocol) {
+      rejectEmptyHostname = arrayContains(URI.hostProtocols, protocol);
+    }
+    if (rejectEmptyHostname && !hasHostname) {
+      throw new TypeError('Hostname cannot be empty, if protocol is ' + protocol);
+    } else if (v && v.match(URI.invalid_hostname_characters)) {
+      // test punycode
+      if (!punycode) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_] and Punycode.js is not available');
+      }
+      if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-:_]');
+      }
+    }
+  };
+  URI.ensureValidPort = function (v) {
+    if (!v) {
+      return;
+    }
+    var port = Number(v);
+    if (isInteger(port) && port > 0 && port < 65536) {
+      return;
+    }
+    throw new TypeError('Port "' + v + '" is not a valid port');
+  };
+
+  // noConflict
+  URI.noConflict = function (removeAll) {
+    if (removeAll) {
+      var unconflicted = {
+        URI: this.noConflict()
+      };
+      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
+        unconflicted.URITemplate = root.URITemplate.noConflict();
+      }
+      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
+        unconflicted.IPv6 = root.IPv6.noConflict();
+      }
+      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
+        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
+      }
+      return unconflicted;
+    } else if (root.URI === this) {
+      root.URI = _URI;
+    }
+    return this;
+  };
+  p.build = function (deferBuild) {
+    if (deferBuild === true) {
+      this._deferred_build = true;
+    } else if (deferBuild === undefined || this._deferred_build) {
+      this._string = URI.build(this._parts);
+      this._deferred_build = false;
+    }
+    return this;
+  };
+  p.clone = function () {
+    return new URI(this);
+  };
+  p.valueOf = p.toString = function () {
+    return this.build(false)._string;
+  };
+  function generateSimpleAccessor(_part) {
+    return function (v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        this._parts[_part] = v || null;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  function generatePrefixAccessor(_part, _key) {
+    return function (v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        if (v !== null) {
+          v = v + '';
+          if (v.charAt(0) === _key) {
+            v = v.substring(1);
+          }
+        }
+        this._parts[_part] = v;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  p.protocol = generateSimpleAccessor('protocol');
+  p.username = generateSimpleAccessor('username');
+  p.password = generateSimpleAccessor('password');
+  p.hostname = generateSimpleAccessor('hostname');
+  p.port = generateSimpleAccessor('port');
+  p.query = generatePrefixAccessor('query', '?');
+  p.fragment = generatePrefixAccessor('fragment', '#');
+  p.search = function (v, build) {
+    var t = this.query(v, build);
+    return typeof t === 'string' && t.length ? '?' + t : t;
+  };
+  p.hash = function (v, build) {
+    var t = this.fragment(v, build);
+    return typeof t === 'string' && t.length ? '#' + t : t;
+  };
+  p.pathname = function (v, build) {
+    if (v === undefined || v === true) {
+      var res = this._parts.path || (this._parts.hostname ? '/' : '');
+      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
+    } else {
+      if (this._parts.urn) {
+        this._parts.path = v ? URI.recodeUrnPath(v) : '';
+      } else {
+        this._parts.path = v ? URI.recodePath(v) : '/';
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.path = p.pathname;
+  p.href = function (href, build) {
+    var key;
+    if (href === undefined) {
+      return this.toString();
+    }
+    this._string = '';
+    this._parts = URI._parts();
+    var _URI = href instanceof URI;
+    var _object = _typeof(href) === 'object' && (href.hostname || href.path || href.pathname);
+    if (href.nodeName) {
+      var attribute = URI.getDomAttribute(href);
+      href = href[attribute] || '';
+      _object = false;
+    }
+
+    // window.location is reported to be an object, but it's not the sort
+    // of object we're looking for:
+    // * location.protocol ends with a colon
+    // * location.query != object.search
+    // * location.hash != object.fragment
+    // simply serializing the unknown object should do the trick
+    // (for location, not for everything...)
+    if (!_URI && _object && href.pathname !== undefined) {
+      href = href.toString();
+    }
+    if (typeof href === 'string' || href instanceof String) {
+      this._parts = URI.parse(String(href), this._parts);
+    } else if (_URI || _object) {
+      var src = _URI ? href._parts : href;
+      for (key in src) {
+        if (key === 'query') {
+          continue;
+        }
+        if (hasOwn.call(this._parts, key)) {
+          this._parts[key] = src[key];
+        }
+      }
+      if (src.query) {
+        this.query(src.query, false);
+      }
+    } else {
+      throw new TypeError('invalid input');
+    }
+    this.build(!build);
+    return this;
+  };
+
+  // identification accessors
+  p.is = function (what) {
+    var ip = false;
+    var ip4 = false;
+    var ip6 = false;
+    var name = false;
+    var sld = false;
+    var idn = false;
+    var punycode = false;
+    var relative = !this._parts.urn;
+    if (this._parts.hostname) {
+      relative = false;
+      ip4 = URI.ip4_expression.test(this._parts.hostname);
+      ip6 = URI.ip6_expression.test(this._parts.hostname);
+      ip = ip4 || ip6;
+      name = !ip;
+      sld = name && SLD && SLD.has(this._parts.hostname);
+      idn = name && URI.idn_expression.test(this._parts.hostname);
+      punycode = name && URI.punycode_expression.test(this._parts.hostname);
+    }
+    switch (what.toLowerCase()) {
+      case 'relative':
+        return relative;
+      case 'absolute':
+        return !relative;
+
+      // hostname identification
+      case 'domain':
+      case 'name':
+        return name;
+      case 'sld':
+        return sld;
+      case 'ip':
+        return ip;
+      case 'ip4':
+      case 'ipv4':
+      case 'inet4':
+        return ip4;
+      case 'ip6':
+      case 'ipv6':
+      case 'inet6':
+        return ip6;
+      case 'idn':
+        return idn;
+      case 'url':
+        return !this._parts.urn;
+      case 'urn':
+        return !!this._parts.urn;
+      case 'punycode':
+        return punycode;
+    }
+    return null;
+  };
+
+  // component specific input validation
+  var _protocol = p.protocol;
+  var _port = p.port;
+  var _hostname = p.hostname;
+  p.protocol = function (v, build) {
+    if (v) {
+      // accept trailing ://
+      v = v.replace(/:(\/\/)?$/, '');
+      if (!v.match(URI.protocol_expression)) {
+        throw new TypeError('Protocol "' + v + '" contains characters other than [A-Z0-9.+-] or doesn\'t start with [A-Z]');
+      }
+    }
+    return _protocol.call(this, v, build);
+  };
+  p.scheme = p.protocol;
+  p.port = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      if (v === 0) {
+        v = null;
+      }
+      if (v) {
+        v += '';
+        if (v.charAt(0) === ':') {
+          v = v.substring(1);
+        }
+        URI.ensureValidPort(v);
+      }
+    }
+    return _port.call(this, v, build);
+  };
+  p.hostname = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      var x = {
+        preventInvalidHostname: this._parts.preventInvalidHostname
+      };
+      var res = URI.parseHost(v, x);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      v = x.hostname;
+      if (this._parts.preventInvalidHostname) {
+        URI.ensureValidHostname(v, this._parts.protocol);
+      }
+    }
+    return _hostname.call(this, v, build);
+  };
+
+  // compound accessors
+  p.origin = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var protocol = this.protocol();
+      var authority = this.authority();
+      if (!authority) {
+        return '';
+      }
+      return (protocol ? protocol + '://' : '') + this.authority();
+    } else {
+      var origin = URI(v);
+      this.protocol(origin.protocol()).authority(origin.authority()).build(!build);
+      return this;
+    }
+  };
+  p.host = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildHost(this._parts) : '';
+    } else {
+      var res = URI.parseHost(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.authority = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
+    } else {
+      var res = URI.parseAuthority(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.userinfo = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var t = URI.buildUserinfo(this._parts);
+      return t ? t.substring(0, t.length - 1) : t;
+    } else {
+      if (v[v.length - 1] !== '@') {
+        v += '@';
+      }
+      URI.parseUserinfo(v, this._parts);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.resource = function (v, build) {
+    var parts;
+    if (v === undefined) {
+      return this.path() + this.search() + this.hash();
+    }
+    parts = URI.parse(v);
+    this._parts.path = parts.path;
+    this._parts.query = parts.query;
+    this._parts.fragment = parts.fragment;
+    this.build(!build);
+    return this;
+  };
+
+  // fraction accessors
+  p.subdomain = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+
+    // convenience, return "www" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+
+      // grab domain and add another segment
+      var end = this._parts.hostname.length - this.domain().length - 1;
+      return this._parts.hostname.substring(0, end) || '';
+    } else {
+      var e = this._parts.hostname.length - this.domain().length;
+      var sub = this._parts.hostname.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(sub));
+      if (v && v.charAt(v.length - 1) !== '.') {
+        v += '.';
+      }
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
+      }
+      if (v) {
+        URI.ensureValidHostname(v, this._parts.protocol);
+      }
+      this._parts.hostname = this._parts.hostname.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.domain = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+
+    // convenience, return "example.org" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+
+      // if hostname consists of 1 or 2 segments, it must be the domain
+      var t = this._parts.hostname.match(/\./g);
+      if (t && t.length < 2) {
+        return this._parts.hostname;
+      }
+
+      // grab tld and add another segment
+      var end = this._parts.hostname.length - this.tld(build).length - 1;
+      end = this._parts.hostname.lastIndexOf('.', end - 1) + 1;
+      return this._parts.hostname.substring(end) || '';
+    } else {
+      if (!v) {
+        throw new TypeError('cannot set domain empty');
+      }
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
+      }
+      URI.ensureValidHostname(v, this._parts.protocol);
+      if (!this._parts.hostname || this.is('IP')) {
+        this._parts.hostname = v;
+      } else {
+        var replace = new RegExp(escapeRegEx(this.domain()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.tld = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+
+    // return "org" from "www.example.org"
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+      var pos = this._parts.hostname.lastIndexOf('.');
+      var tld = this._parts.hostname.substring(pos + 1);
+      if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
+        return SLD.get(this._parts.hostname) || tld;
+      }
+      return tld;
+    } else {
+      var replace;
+      if (!v) {
+        throw new TypeError('cannot set TLD empty');
+      } else if (v.match(/[^a-zA-Z0-9-]/)) {
+        if (SLD && SLD.is(v)) {
+          replace = new RegExp(escapeRegEx(this.tld()) + '$');
+          this._parts.hostname = this._parts.hostname.replace(replace, v);
+        } else {
+          throw new TypeError('TLD "' + v + '" contains characters other than [A-Z0-9]');
+        }
+      } else if (!this._parts.hostname || this.is('IP')) {
+        throw new ReferenceError('cannot set TLD on non-domain host');
+      } else {
+        replace = new RegExp(escapeRegEx(this.tld()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.directory = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path && !this._parts.hostname) {
+        return '';
+      }
+      if (this._parts.path === '/') {
+        return '/';
+      }
+      var end = this._parts.path.length - this.filename().length - 1;
+      var res = this._parts.path.substring(0, end) || (this._parts.hostname ? '/' : '');
+      return v ? URI.decodePath(res) : res;
+    } else {
+      var e = this._parts.path.length - this.filename().length;
+      var directory = this._parts.path.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(directory));
+
+      // fully qualifier directories begin with a slash
+      if (!this.is('relative')) {
+        if (!v) {
+          v = '/';
+        }
+        if (v.charAt(0) !== '/') {
+          v = '/' + v;
+        }
+      }
+
+      // directories always end with a slash
+      if (v && v.charAt(v.length - 1) !== '/') {
+        v += '/';
+      }
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.filename = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v !== 'string') {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var pos = this._parts.path.lastIndexOf('/');
+      var res = this._parts.path.substring(pos + 1);
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      var mutatedDirectory = false;
+      if (v.charAt(0) === '/') {
+        v = v.substring(1);
+      }
+      if (v.match(/\.?\//)) {
+        mutatedDirectory = true;
+      }
+      var replace = new RegExp(escapeRegEx(this.filename()) + '$');
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      if (mutatedDirectory) {
+        this.normalizePath(build);
+      } else {
+        this.build(!build);
+      }
+      return this;
+    }
+  };
+  p.suffix = function (v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var filename = this.filename();
+      var pos = filename.lastIndexOf('.');
+      var s, res;
+      if (pos === -1) {
+        return '';
+      }
+
+      // suffix may only contain alnum characters (yup, I made this up.)
+      s = filename.substring(pos + 1);
+      res = /^[a-z0-9%]+$/i.test(s) ? s : '';
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      if (v.charAt(0) === '.') {
+        v = v.substring(1);
+      }
+      var suffix = this.suffix();
+      var replace;
+      if (!suffix) {
+        if (!v) {
+          return this;
+        }
+        this._parts.path += '.' + URI.recodePath(v);
+      } else if (!v) {
+        replace = new RegExp(escapeRegEx('.' + suffix) + '$');
+      } else {
+        replace = new RegExp(escapeRegEx(suffix) + '$');
+      }
+      if (replace) {
+        v = URI.recodePath(v);
+        this._parts.path = this._parts.path.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.segment = function (segment, v, build) {
+    var separator = this._parts.urn ? ':' : '/';
+    var path = this.path();
+    var absolute = path.substring(0, 1) === '/';
+    var segments = path.split(separator);
+    if (segment !== undefined && typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (segment !== undefined && typeof segment !== 'number') {
+      throw new Error('Bad segment "' + segment + '", must be 0-based integer');
+    }
+    if (absolute) {
+      segments.shift();
+    }
+    if (segment < 0) {
+      // allow negative indexes to address from the end
+      segment = Math.max(segments.length + segment, 0);
+    }
+    if (v === undefined) {
+      /*jshint laxbreak: true */
+      return segment === undefined ? segments : segments[segment];
+      /*jshint laxbreak: false */
+    } else if (segment === null || segments[segment] === undefined) {
+      if (isArray(v)) {
+        segments = [];
+        // collapse empty elements within array
+        for (var i = 0, l = v.length; i < l; i++) {
+          if (!v[i].length && (!segments.length || !segments[segments.length - 1].length)) {
+            continue;
+          }
+          if (segments.length && !segments[segments.length - 1].length) {
+            segments.pop();
+          }
+          segments.push(trimSlashes(v[i]));
+        }
+      } else if (v || typeof v === 'string') {
+        v = trimSlashes(v);
+        if (segments[segments.length - 1] === '') {
+          // empty trailing elements have to be overwritten
+          // to prevent results such as /foo//bar
+          segments[segments.length - 1] = v;
+        } else {
+          segments.push(v);
+        }
+      }
+    } else {
+      if (v) {
+        segments[segment] = trimSlashes(v);
+      } else {
+        segments.splice(segment, 1);
+      }
+    }
+    if (absolute) {
+      segments.unshift('');
+    }
+    return this.path(segments.join(separator), build);
+  };
+  p.segmentCoded = function (segment, v, build) {
+    var segments, i, l;
+    if (typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (v === undefined) {
+      segments = this.segment(segment, v, build);
+      if (!isArray(segments)) {
+        segments = segments !== undefined ? URI.decode(segments) : undefined;
+      } else {
+        for (i = 0, l = segments.length; i < l; i++) {
+          segments[i] = URI.decode(segments[i]);
+        }
+      }
+      return segments;
+    }
+    if (!isArray(v)) {
+      v = typeof v === 'string' || v instanceof String ? URI.encode(v) : v;
+    } else {
+      for (i = 0, l = v.length; i < l; i++) {
+        v[i] = URI.encode(v[i]);
+      }
+    }
+    return this.segment(segment, v, build);
+  };
+
+  // mutating query string
+  var q = p.query;
+  p.query = function (v, build) {
+    if (v === true) {
+      return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    } else if (typeof v === 'function') {
+      var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+      var result = v.call(this, data);
+      this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else if (v !== undefined && typeof v !== 'string') {
+      this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else {
+      return q.call(this, v, build);
+    }
+  };
+  p.setQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    if (typeof name === 'string' || name instanceof String) {
+      data[name] = value !== undefined ? value : null;
+    } else if (_typeof(name) === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          data[key] = name[key];
+        }
+      }
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.addQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.addQuery(data, name, value === undefined ? null : value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.removeQuery = function (name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.removeQuery(data, name, value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.hasQuery = function (name, value, withinArray) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    return URI.hasQuery(data, name, value, withinArray);
+  };
+  p.setSearch = p.setQuery;
+  p.addSearch = p.addQuery;
+  p.removeSearch = p.removeQuery;
+  p.hasSearch = p.hasQuery;
+
+  // sanitizing URLs
+  p.normalize = function () {
+    if (this._parts.urn) {
+      return this.normalizeProtocol(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+    }
+    return this.normalizeProtocol(false).normalizeHostname(false).normalizePort(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+  };
+  p.normalizeProtocol = function (build) {
+    if (typeof this._parts.protocol === 'string') {
+      this._parts.protocol = this._parts.protocol.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeHostname = function (build) {
+    if (this._parts.hostname) {
+      if (this.is('IDN') && punycode) {
+        this._parts.hostname = punycode.toASCII(this._parts.hostname);
+      } else if (this.is('IPv6') && IPv6) {
+        this._parts.hostname = IPv6.best(this._parts.hostname);
+      }
+      this._parts.hostname = this._parts.hostname.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePort = function (build) {
+    // remove port of it's the protocol's default
+    if (typeof this._parts.protocol === 'string' && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
+      this._parts.port = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePath = function (build) {
+    var _path = this._parts.path;
+    if (!_path) {
+      return this;
+    }
+    if (this._parts.urn) {
+      this._parts.path = URI.recodeUrnPath(this._parts.path);
+      this.build(!build);
+      return this;
+    }
+    if (this._parts.path === '/') {
+      return this;
+    }
+    _path = URI.recodePath(_path);
+    var _was_relative;
+    var _leadingParents = '';
+    var _parent, _pos;
+
+    // handle relative paths
+    if (_path.charAt(0) !== '/') {
+      _was_relative = true;
+      _path = '/' + _path;
+    }
+
+    // handle relative files (as opposed to directories)
+    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
+      _path += '/';
+    }
+
+    // resolve simples
+    _path = _path.replace(/(\/(\.\/)+)|(\/\.$)/g, '/').replace(/\/{2,}/g, '/');
+
+    // remember leading parents
+    if (_was_relative) {
+      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+      if (_leadingParents) {
+        _leadingParents = _leadingParents[0];
+      }
+    }
+
+    // resolve parents
+    while (true) {
+      _parent = _path.search(/\/\.\.(\/|$)/);
+      if (_parent === -1) {
+        // no more ../ to resolve
+        break;
+      } else if (_parent === 0) {
+        // top level cannot be relative, skip it
+        _path = _path.substring(3);
+        continue;
+      }
+      _pos = _path.substring(0, _parent).lastIndexOf('/');
+      if (_pos === -1) {
+        _pos = _parent;
+      }
+      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+    }
+
+    // revert to relative
+    if (_was_relative && this.is('relative')) {
+      _path = _leadingParents + _path.substring(1);
+    }
+    this._parts.path = _path;
+    this.build(!build);
+    return this;
+  };
+  p.normalizePathname = p.normalizePath;
+  p.normalizeQuery = function (build) {
+    if (typeof this._parts.query === 'string') {
+      if (!this._parts.query.length) {
+        this._parts.query = null;
+      } else {
+        this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
+      }
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeFragment = function (build) {
+    if (!this._parts.fragment) {
+      this._parts.fragment = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeSearch = p.normalizeQuery;
+  p.normalizeHash = p.normalizeFragment;
+  p.iso8859 = function () {
+    // expect unicode input, iso8859 output
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = escape;
+    URI.decode = decodeURIComponent;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.unicode = function () {
+    // expect iso8859 input, unicode output
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = unescape;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.readable = function () {
+    var uri = this.clone();
+    // removing username, password, because they shouldn't be displayed according to RFC 3986
+    uri.username('').password('').normalize();
+    var t = '';
+    if (uri._parts.protocol) {
+      t += uri._parts.protocol + '://';
+    }
+    if (uri._parts.hostname) {
+      if (uri.is('punycode') && punycode) {
+        t += punycode.toUnicode(uri._parts.hostname);
+        if (uri._parts.port) {
+          t += ':' + uri._parts.port;
+        }
+      } else {
+        t += uri.host();
+      }
+    }
+    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
+      t += '/';
+    }
+    t += uri.path(true);
+    if (uri._parts.query) {
+      var q = '';
+      for (var i = 0, qp = uri._parts.query.split('&'), l = qp.length; i < l; i++) {
+        var kv = (qp[i] || '').split('=');
+        q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        if (kv[1] !== undefined) {
+          q += '=' + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        }
+      }
+      t += '?' + q.substring(1);
+    }
+    t += URI.decodeQuery(uri.hash(), true);
+    return t;
+  };
+
+  // resolving relative and absolute URLs
+  p.absoluteTo = function (base) {
+    var resolved = this.clone();
+    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+    var basedir, i, p;
+    if (this._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    if (!(base instanceof URI)) {
+      base = new URI(base);
+    }
+    if (resolved._parts.protocol) {
+      // Directly returns even if this._parts.hostname is empty.
+      return resolved;
+    } else {
+      resolved._parts.protocol = base._parts.protocol;
+    }
+    if (this._parts.hostname) {
+      return resolved;
+    }
+    for (i = 0; p = properties[i]; i++) {
+      resolved._parts[p] = base._parts[p];
+    }
+    if (!resolved._parts.path) {
+      resolved._parts.path = base._parts.path;
+      if (!resolved._parts.query) {
+        resolved._parts.query = base._parts.query;
+      }
+    } else {
+      if (resolved._parts.path.substring(-2) === '..') {
+        resolved._parts.path += '/';
+      }
+      if (resolved.path().charAt(0) !== '/') {
+        basedir = base.directory();
+        basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
+        resolved._parts.path = (basedir ? basedir + '/' : '') + resolved._parts.path;
+        resolved.normalizePath();
+      }
+    }
+    resolved.build();
+    return resolved;
+  };
+  p.relativeTo = function (base) {
+    var relative = this.clone().normalize();
+    var relativeParts, baseParts, common, relativePath, basePath;
+    if (relative._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    base = new URI(base).normalize();
+    relativeParts = relative._parts;
+    baseParts = base._parts;
+    relativePath = relative.path();
+    basePath = base.path();
+    if (relativePath.charAt(0) !== '/') {
+      throw new Error('URI is already relative');
+    }
+    if (basePath.charAt(0) !== '/') {
+      throw new Error('Cannot calculate a URI relative to another relative URI');
+    }
+    if (relativeParts.protocol === baseParts.protocol) {
+      relativeParts.protocol = null;
+    }
+    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
+      return relative.build();
+    }
+    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
+      return relative.build();
+    }
+    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
+      relativeParts.hostname = null;
+      relativeParts.port = null;
+    } else {
+      return relative.build();
+    }
+    if (relativePath === basePath) {
+      relativeParts.path = '';
+      return relative.build();
+    }
+
+    // determine common sub path
+    common = URI.commonPath(relativePath, basePath);
+
+    // If the paths have nothing in common, return a relative URL with the absolute path.
+    if (!common) {
+      return relative.build();
+    }
+    var parents = baseParts.path.substring(common.length).replace(/[^\/]*$/, '').replace(/.*?\//g, '../');
+    relativeParts.path = parents + relativeParts.path.substring(common.length) || './';
+    return relative.build();
+  };
+
+  // comparing URIs
+  p.equals = function (uri) {
+    var one = this.clone();
+    var two = new URI(uri);
+    var one_map = {};
+    var two_map = {};
+    var checked = {};
+    var one_query, two_query, key;
+    one.normalize();
+    two.normalize();
+
+    // exact match
+    if (one.toString() === two.toString()) {
+      return true;
+    }
+
+    // extract query string
+    one_query = one.query();
+    two_query = two.query();
+    one.query('');
+    two.query('');
+
+    // definitely not equal if not even non-query parts match
+    if (one.toString() !== two.toString()) {
+      return false;
+    }
+
+    // query parameters have the same length, even if they're permuted
+    if (one_query.length !== two_query.length) {
+      return false;
+    }
+    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
+    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
+    for (key in one_map) {
+      if (hasOwn.call(one_map, key)) {
+        if (!isArray(one_map[key])) {
+          if (one_map[key] !== two_map[key]) {
+            return false;
+          }
+        } else if (!arraysEqual(one_map[key], two_map[key])) {
+          return false;
+        }
+        checked[key] = true;
+      }
+    }
+    for (key in two_map) {
+      if (hasOwn.call(two_map, key)) {
+        if (!checked[key]) {
+          // two contains a parameter not present in one
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  // state
+  p.preventInvalidHostname = function (v) {
+    this._parts.preventInvalidHostname = !!v;
+    return this;
+  };
+  p.duplicateQueryParameters = function (v) {
+    this._parts.duplicateQueryParameters = !!v;
+    return this;
+  };
+  p.escapeQuerySpace = function (v) {
+    this._parts.escapeQuerySpace = !!v;
+    return this;
+  };
+  return URI;
+});
+
+/***/ }),
+
+/***/ 9319:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var defineWellKnownSymbol = __webpack_require__(2860);
+
+// `Symbol.asyncIterator` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.asynciterator
+defineWellKnownSymbol('asyncIterator');
+
+/***/ }),
+
+/***/ 9413:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var uncurryThis = __webpack_require__(7889);
+var isCallable = __webpack_require__(5164);
+var store = __webpack_require__(3094);
+var functionToString = uncurryThis(Function.toString);
+
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+if (!isCallable(store.inspectSource)) {
+  store.inspectSource = function (it) {
+    return functionToString(it);
+  };
+}
+module.exports = store.inspectSource;
+
+/***/ }),
+
+/***/ 9452:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+var requireObjectCoercible = __webpack_require__(1365);
+var $Object = Object;
+
+// `ToObject` abstract operation
+// https://tc39.es/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return $Object(requireObjectCoercible(argument));
+};
 
 /***/ }),
 
@@ -19585,315 +19934,45 @@ module.exports = function (index, length) {
 
 /***/ }),
 
-/***/ 1212:
+/***/ 9750:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-// toObject with fallback for non-array-like ES3 strings
-var IndexedObject = __webpack_require__(4384);
-var requireObjectCoercible = __webpack_require__(1365);
-module.exports = function (it) {
-  return IndexedObject(requireObjectCoercible(it));
-};
-
-/***/ }),
-
-/***/ 3784:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var trunc = __webpack_require__(4433);
-
-// `ToIntegerOrInfinity` abstract operation
-// https://tc39.es/ecma262/#sec-tointegerorinfinity
-module.exports = function (argument) {
-  var number = +argument;
-  // eslint-disable-next-line no-self-compare -- NaN check
-  return number !== number || number === 0 ? 0 : trunc(number);
-};
-
-/***/ }),
-
-/***/ 1995:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var toIntegerOrInfinity = __webpack_require__(3784);
-var min = Math.min;
-
-// `ToLength` abstract operation
-// https://tc39.es/ecma262/#sec-tolength
-module.exports = function (argument) {
-  var len = toIntegerOrInfinity(argument);
-  return len > 0 ? min(len, 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
-};
-
-/***/ }),
-
-/***/ 9452:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var requireObjectCoercible = __webpack_require__(1365);
-var $Object = Object;
-
-// `ToObject` abstract operation
-// https://tc39.es/ecma262/#sec-toobject
-module.exports = function (argument) {
-  return $Object(requireObjectCoercible(argument));
-};
-
-/***/ }),
-
-/***/ 7762:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var call = __webpack_require__(3736);
+var globalThis = __webpack_require__(8029);
 var isObject = __webpack_require__(5343);
-var isSymbol = __webpack_require__(5648);
-var getMethod = __webpack_require__(4897);
-var ordinaryToPrimitive = __webpack_require__(8367);
-var wellKnownSymbol = __webpack_require__(1642);
-var $TypeError = TypeError;
-var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
-
-// `ToPrimitive` abstract operation
-// https://tc39.es/ecma262/#sec-toprimitive
-module.exports = function (input, pref) {
-  if (!isObject(input) || isSymbol(input)) return input;
-  var exoticToPrim = getMethod(input, TO_PRIMITIVE);
-  var result;
-  if (exoticToPrim) {
-    if (pref === undefined) pref = 'default';
-    result = call(exoticToPrim, input, pref);
-    if (!isObject(result) || isSymbol(result)) return result;
-    throw new $TypeError("Can't convert object to primitive value");
-  }
-  if (pref === undefined) pref = 'number';
-  return ordinaryToPrimitive(input, pref);
+var document = globalThis.document;
+// typeof document.createElement is 'object' in old IE
+var EXISTS = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
+  return EXISTS ? document.createElement(it) : {};
 };
 
 /***/ }),
 
-/***/ 8:
+/***/ 9998:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var toPrimitive = __webpack_require__(7762);
-var isSymbol = __webpack_require__(5648);
+var globalThis = __webpack_require__(8029);
 
-// `ToPropertyKey` abstract operation
-// https://tc39.es/ecma262/#sec-topropertykey
-module.exports = function (argument) {
-  var key = toPrimitive(argument, 'string');
-  return isSymbol(key) ? key : key + '';
-};
-
-/***/ }),
-
-/***/ 6390:
-/***/ (function(module) {
-
-"use strict";
-
-
-var $String = String;
-module.exports = function (argument) {
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var defineProperty = Object.defineProperty;
+module.exports = function (key, value) {
   try {
-    return $String(argument);
+    defineProperty(globalThis, key, {
+      value: value,
+      configurable: true,
+      writable: true
+    });
   } catch (error) {
-    return 'Object';
+    globalThis[key] = value;
   }
+  return value;
 };
-
-/***/ }),
-
-/***/ 6177:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var uncurryThis = __webpack_require__(7889);
-var id = 0;
-var postfix = Math.random();
-var toString = uncurryThis(1.0.toString);
-module.exports = function (key) {
-  return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
-};
-
-/***/ }),
-
-/***/ 2865:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-/* eslint-disable es/no-symbol -- required for testing */
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var NATIVE_SYMBOL = __webpack_require__(6576);
-module.exports = NATIVE_SYMBOL && !Symbol.sham && _typeof(Symbol.iterator) == 'symbol';
-
-/***/ }),
-
-/***/ 1363:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var DESCRIPTORS = __webpack_require__(4797);
-var fails = __webpack_require__(3634);
-
-// V8 ~ Chrome 36-
-// https://bugs.chromium.org/p/v8/issues/detail?id=3334
-module.exports = DESCRIPTORS && fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  return Object.defineProperty(function () {/* empty */}, 'prototype', {
-    value: 42,
-    writable: false
-  }).prototype !== 42;
-});
-
-/***/ }),
-
-/***/ 6185:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var globalThis = __webpack_require__(8029);
-var isCallable = __webpack_require__(5164);
-var WeakMap = globalThis.WeakMap;
-module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
-
-/***/ }),
-
-/***/ 2860:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var path = __webpack_require__(7520);
-var hasOwn = __webpack_require__(2770);
-var wrappedWellKnownSymbolModule = __webpack_require__(8490);
-var defineProperty = (__webpack_require__(754).f);
-module.exports = function (NAME) {
-  var _Symbol = path.Symbol || (path.Symbol = {});
-  if (!hasOwn(_Symbol, NAME)) defineProperty(_Symbol, NAME, {
-    value: wrappedWellKnownSymbolModule.f(NAME)
-  });
-};
-
-/***/ }),
-
-/***/ 8490:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var wellKnownSymbol = __webpack_require__(1642);
-exports.f = wellKnownSymbol;
-
-/***/ }),
-
-/***/ 1642:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var globalThis = __webpack_require__(8029);
-var shared = __webpack_require__(1930);
-var hasOwn = __webpack_require__(2770);
-var uid = __webpack_require__(6177);
-var NATIVE_SYMBOL = __webpack_require__(6576);
-var USE_SYMBOL_AS_UID = __webpack_require__(2865);
-var _Symbol = globalThis.Symbol;
-var WellKnownSymbolsStore = shared('wks');
-var createWellKnownSymbol = USE_SYMBOL_AS_UID ? _Symbol['for'] || _Symbol : _Symbol && _Symbol.withoutSetter || uid;
-module.exports = function (name) {
-  if (!hasOwn(WellKnownSymbolsStore, name)) {
-    WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(_Symbol, name) ? _Symbol[name] : createWellKnownSymbol('Symbol.' + name);
-  }
-  return WellKnownSymbolsStore[name];
-};
-
-/***/ }),
-
-/***/ 6186:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var $ = __webpack_require__(3485);
-var assign = __webpack_require__(8192);
-
-// `Object.assign` method
-// https://tc39.es/ecma262/#sec-object.assign
-// eslint-disable-next-line es/no-object-assign -- required for testing
-$({
-  target: 'Object',
-  stat: true,
-  arity: 2,
-  forced: Object.assign !== assign
-}, {
-  assign: assign
-});
-
-/***/ }),
-
-/***/ 9319:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var defineWellKnownSymbol = __webpack_require__(2860);
-
-// `Symbol.asyncIterator` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.asynciterator
-defineWellKnownSymbol('asyncIterator');
-
-/***/ }),
-
-/***/ 3725:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(1606);
-module.exports = parent;
-
-/***/ }),
-
-/***/ 756:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-var parent = __webpack_require__(379);
-module.exports = parent;
 
 /***/ })
 

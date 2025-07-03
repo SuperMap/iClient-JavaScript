@@ -1,3 +1,54 @@
+# 12.0.0-r #
+
+## 新特性
+
+### iClient for MapboxGL 支持对接无人机拍摄视频
+  - 新增 mapboxgl.supermap.VideoLayer 接口，支持加载 SuperMap iServer 发布的含有配准后无人机拍摄视频文件的数据服务，在 Web 地图中显示无人机拍摄的定点或非定点视频
+
+## API changes
+
+### for Leaflet
+ - 新增可设置全局自定义请求头的方法 [`L.supermap.setRequestHeaders`](https://iclient.supermap.io/docs/leaflet/global.html#setRequestHeaders)，用于传递自定义信息
+ - [`L.supermap.tiledMapLayer`](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 支持通过设置 `overflowTiles` 控制额外渲染的瓦片圈数，确保地图边缘的符号能够正常显示
+
+
+### for OpenLayers
+ - 新增可设置全局自定义请求头的方法 [`ol.supermap.setRequestHeaders`](https://iclient.supermap.io/docs/openlayers/global.html#setRequestHeaders)，用于传递自定义信息
+ - [`ol.supermap.webmap`](https://iclient.supermap.io/docs/openlayers/WebMap.html) 支持加载数据来源为 ArcGIS VectorTile 服务的图层 
+
+
+ - 新增  [`mapboxgl.supermap.VideoLayer`](https://iclient.supermap.io/docs/mapboxgl/VideoLayer.html) 支持接入 SuperMap iServer 发布的含有配准后无人机拍摄视频文件的 REST 数据服务
+ - 新增可设置全局自定义请求头的方法 [`mapboxgl.supermap.setRequestHeaders`](https://iclient.supermap.io/docs/mapboxgl/global.html#setRequestHeaders)，用于传递自定义信息
+ - [`mapboxgl.supermap.WebMap`](https://iclient.supermap.io/docs/mapboxgl/WebMap.html) 支持加载数据来源为 ArcGIS VectorTile 服务的图层
+ - MapboxGL raster source 支持通过设置 `overflowTiles` 控制额外渲染的瓦片圈数，确保地图边缘的符号能够正常显示（需使用 mapbox-gl-enhance）
+ 
+
+### for MaplibreGL
+ - 新增可设置全局自定义请求头的方法 [`maplibregl.supermap.setRequestHeaders`](https://iclient.supermap.io/docs/maplibregl/global.html#setRequestHeaders)，用于传递自定义信息 
+ - [`maplibregl.supermap.webmap`](https://iclient.supermap.io/docs/maplibregl/WebMap.html) 支持加载数据来源为 ArcGIS VectorTile 服务的图层
+
+## Fixed
+
+### for Leaflet
+ - 优化 [`L.supermap.FGBLayer`](https://iclient.supermap.io/docs/leaflet/FGBLayer.html) 的渲染性能
+
+### for OpenLayers
+ - 优化 [`ol.source.FGB`](https://iclient.supermap.io/docs/openlayers/FGB.html) 的渲染性能
+ - 修复当 [`ol.source.VectorTileSuperMapRest`](https://iclient.supermap.io/docs/openlayers/VectorTileSuperMapRest.html) 同时传入 `indexbounds` 的 `options.style` 和 `options.tilegrid`  时，应该优先使用`options.tilegrid`
+ - 修复 [`ol.sueprmap.webmap`](https://iclient.supermap.io/docs/openlayers/WebMap.html) 打开按行政区划上图制作的地图，不显示行政区划图层的问题
+
+### for MapboxGL
+ - 修复 [`mapboxgl.supermap.WebMap`](https://iclient.supermap.io/docs/mapboxgl/WebMap.html) 加载 WMS130 服务时可能出现的瓦片错乱问题
+ - 修复 [`mapboxgl.supermap.initmap`](https://iclient.supermap.io/docs/mapboxgl/global.html#initMap) 加载地图服务矢量瓦片或者矢量瓦片服务时初始级别不正确的问题
+ - 修复 [`mapboxgl.sueprmap.webmap`](https://iclient.supermap.io/docs/mapboxgl/WebMap.html) 打开数据上图中采用 SVG 图片制作的图层时无法显示符号的问题
+ - 修复 [`mapboxgl.supermap.initmap`](https://iclient.supermap.io/docs/mapboxgl/global.html#initMap) 加载地图时未正确使用 [`mapboxgl.supermap.SecurityManager`](https://iclient.supermap.io/docs/mapboxgl/SecurityManager.html) 注册的 token 的问题
+
+### for MaplibreGL
+ - 修复 [`maplibregl.supermap.webmap`](https://iclient.supermap.io/docs/maplibregl/WebMap.html) 加载 WMS130 服务时可能出现的瓦片错乱问题
+
+
+
+
 # 11.3.0 #
 
 ## API changes
