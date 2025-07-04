@@ -114,9 +114,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         this._handleLayerInfo(mapInfo, _taskID);
       } else {
         setTimeout(() => {
-          this._createMap(mapInfo);
-          this.map.on('load', () => {
-            this._handleLayerInfo(mapInfo, _taskID);
+          this._createMap(mapInfo).then(() => {
+            this.map.on('load', () => {
+              this._handleLayerInfo(mapInfo, _taskID);
+            });
           });
         }, 0);
       }
@@ -236,7 +237,78 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       return true;
     }
 
-    _createMap(mapInfo) {
+    async _getScales(mapInfo) {
+      const baseLayerInfo = mapInfo.baseLayer;
+      const scales = [];
+      let coordUnit = baseLayerInfo.coordUnit || baseLayerInfo.units || mapRepo.CRS.get(this.baseProjection).unit;
+      if (!coordUnit) {
+        coordUnit = this.baseProjection == 'EPSG:3857' ? 'm' : 'degree';
+      }
+      let visibleScales = null;
+      if (baseLayerInfo.layerType === 'TILE') {
+        try {
+          const reqOptions = {
+            withoutFormatSuffix: true,
+            withCredentials: this.webMapService.handleWithCredentials('', baseLayerInfo.url, false)
+          };
+          const res = await this.getBounds(`${baseLayerInfo.url}.json`, reqOptions)
+          if (res && res.visibleScales) {
+            visibleScales = res.visibleScales;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      if (visibleScales && visibleScales.length > 0) {
+        //底部设置过固定比例尺，则使用设置的
+        visibleScales.forEach((scale) => {
+          const value = 1 / scale;
+          scales.push(`1:${value}`);
+        });
+      } else if (baseLayerInfo.layerType === 'WMTS') {
+        try {
+          const result = await this.webMapService.getWmtsInfo(baseLayerInfo, this.baseProjection);
+          result.scales.forEach((scale) => {
+            scales.push(`1:${scale}`);
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      } else if (baseLayerInfo.layerType === 'ZXY_TILE') {
+        const { resolutions: visibleResolution } = baseLayerInfo;
+        visibleResolution.forEach((result) => {
+          const currentScale = '1:' + Util.getScaleFromResolution(result, coordUnit);
+          scales.push(currentScale);
+        });
+      } else {
+        const extent = baseLayerInfo.layerType === 'MAPBOXSTYLE' ? mapRepo.CRS.get(this.baseProjection).extent : mapInfo.extent;
+        const resolutions = this._getResolutionsByExtent({
+          extent: this._transExtentToBounds(extent),
+          tileSize: 512
+        });
+        for (const res of resolutions) {
+          const scale = '1:' + Util.getScaleFromResolution(res, coordUnit);
+          if (scales.indexOf(scale) === -1) {
+            scales.push(scale);
+          }
+        }
+      }
+      return scales;
+    }
+
+    _transExtentToBounds(extent) {
+      if (extent instanceof Array) {
+        return extent;
+      }
+      return [
+        extent.leftBottom.x,
+        extent.leftBottom.y,
+        extent.rightTop.x,
+        extent.rightTop.y
+      ];
+    }
+
+    async _createMap(mapInfo) {
       // 获取字体样式
       const fontFamilys = this._getLabelFontFamily(mapInfo);
       const center = this._getMapCenter(mapInfo);
@@ -247,10 +319,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       const interactive = this.mapOptions.interactive;
       const tileSize = mapInfo.baseLayer.tileSize;
 
-      if (mapInfo.baseLayer.layerType === 'ZXY_TILE') {
-        const {leftBottom, rightTop} = mapInfo.extent;
-        mapInfo.visibleExtent = [leftBottom.x, leftBottom.y, rightTop.x, rightTop.y];
-      }
       if (isNaN(minZoom)) {
         minZoom = mapInfo.minScale
           ? this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection), tileSize)
@@ -272,8 +340,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       }
       if (!bounds) {
         if (mapInfo.minScale && mapInfo.maxScale) {
+          const scales = await this._getScales(mapInfo);
           zoomBase = Math.min(
-            this._transformScaleToZoom(mapInfo.minScale, mapRepo.CRS.get(this.baseProjection), tileSize),
+            this._transformScaleToZoom(scales[0] || mapInfo.minScale, mapRepo.CRS.get(this.baseProjection), tileSize),
             this._transformScaleToZoom(mapInfo.maxScale, mapRepo.CRS.get(this.baseProjection), tileSize)
           );
         } else {
@@ -294,7 +363,6 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         maxZoom,
         bearing: this.bearing || 0,
         pitch: this.pitch || 0,
-        bounds,
         interactive: interactive === void 0 ? true : interactive,
         style: {
           version: 8,
@@ -3127,7 +3195,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
 
     _getVisibility(visible) {
-      const visibility = visible === true || visible === 'visible' ? 'visible' : 'none';
+      const visibility = visible === false || visible === 'none' ? 'none' : 'visible';
       return visibility;
     }
 

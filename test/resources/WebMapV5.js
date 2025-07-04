@@ -4072,8 +4072,8 @@ var dynamicProjectionMapInfo = {
       y: 20037508.34258019
     }
   },
-  maxScale: '1:144447.9275',
-  level: 12,
+  maxScale: '1:144447.92746805',
+  level: 6,
   center: {
     x: 12654327.874745157,
     y: 248497.88596388634
@@ -4099,8 +4099,68 @@ var dynamicProjectionMapInfo = {
   ],
   description: '',
   projection: 'EPSG:3857',
-  minScale: '1:591658710.91',
+  minScale: '1:73957338.8636414',
   title: '动态投影',
   version: '2.4.3',
   rootUrl: 'http://localhost:8190/iportal/'
+};
+
+var baseLayerIsZXY_TILEMapInfo = {
+  extent: {
+    leftBottom: {
+      x: 795233.5770899998,
+      y: 794267.8361200001
+    },
+    rightTop: {
+      x: 872991.5360700004,
+      y: 853188.3580900002
+    }
+  },
+  maxScale: '1:564.249716499433',
+  level: 10,
+  center: {
+    x: 834112.5574142822,
+    y: 823728.096774991
+  },
+  baseLayer: {
+    layerType: 'ZXY_TILE',
+    subdomains: [],
+    visible: true,
+    mapBounds: [795233.5770899998, 794267.8361200001, 872991.5360700004, 853188.3580900002],
+    maxZoom: 24,
+    origin: [-4786700, 8353100],
+    tileSize: 256,
+    name: 'HK',
+    minZoom: 10,
+    resolutions: [
+      156543.03392800014, 78271.51696399994, 39135.75848200009, 19567.87924099992, 9783.93962049996, 4891.96981024998,
+      2445.98490512499, 1222.992452562495, 611.4962262813797, 305.74811314055756, 152.87405657041106, 76.43702828507324,
+      38.21851414253662, 19.10925707126831, 9.554628535634155, 4.77731426794937, 2.388657133974685, 1.1943285668550503,
+      0.5971642835598172, 0.29858214164761665, 0.14929107082380833
+    ],
+    url: 'https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/HK80/{z}/{x}/{y}.png'
+  },
+  layers: [
+    {
+      layerType: 'ZXY_TILE',
+      subdomains: [],
+      visible: true,
+      maxZoom: 24,
+      origin: [-4786700, 8353100],
+      tileSize: 256,
+      name: 'hk-叠加-0-bounds',
+      minZoom: 0,
+      resolutions: [
+        156543.03392800014, 78271.51696399994, 0.5971642835598172, 0.29858214164761665, 0.14929107082380833
+      ],
+      url: 'https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/HK80/{z}/{x}/{y}.png'
+    }
+  ],
+  description: '',
+  projection:
+    'PROJCS["Hong Kong 1980 Grid System", \r\n  GEOGCS["Hong Kong 1980", \r\n    DATUM["Hong Kong 1980", \r\n      SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]], \r\n      TOWGS84[-162.619, -276.959, -161.764, 0.067753, -2.243649, -1.158827, -1.094246], \r\n      AUTHORITY["EPSG","6611"]], \r\n    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], \r\n    UNIT["degree", 0.017453292519943295], \r\n    AXIS["lat", NORTH], \r\n    AXIS["lon", EAST], \r\n    AUTHORITY["EPSG","4611"]], \r\n  PROJECTION["Transverse_Mercator", AUTHORITY["EPSG","9807"]], \r\n  PARAMETER["central_meridian", 114.17855555555556], \r\n  PARAMETER["latitude_of_origin", 22.312133333333335], \r\n  PARAMETER["scale_factor", 1.0], \r\n  PARAMETER["false_easting", 836694.05], \r\n  PARAMETER["false_northing", 819069.8], \r\n  UNIT["m", 1.0], \r\n  AXIS["Northing", NORTH], \r\n  AXIS["Easting", EAST], \r\n  AUTHORITY["EPSG","2326"]]',
+  minScale: '1:591658710.9089769',
+  title: 'hk-叠加-0-无bounds',
+  version: '2.4.3',
+  rootUrl: 'http://172.16.14.44:8190/iportal/'
 };

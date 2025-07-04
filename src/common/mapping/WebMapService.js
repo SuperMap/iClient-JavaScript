@@ -225,6 +225,7 @@ export class WebMapService {
       let bounds;
       let restResourceURL = '';
       let kvpResourceUrl = '';
+      const scales = [];
       const proxy = this.handleProxy();
       let serviceUrl = Util.urlAppend(layerInfo.url, 'REQUEST=GetCapabilities&SERVICE=WMTS&VERSION=1.0.0');
       serviceUrl = this.handleParentRes(serviceUrl);
@@ -297,6 +298,7 @@ export class WebMapService {
                   const tileMatrix = tileMatrixSet[i].TileMatrix[j];
                   const identifier = tileMatrix['ows:Identifier'];
                   const topLeftCorner = [...tileMatrix['TopLeftCorner'].split(' ')];
+                  scales.push(tileMatrix['ScaleDenominator']);
                   if (
                     (!this.numberEqual(topLeftCorner[0], defaultCRSTopLeftCorner[0]) ||
                       !this.numberEqual(topLeftCorner[1], defaultCRSTopLeftCorner[1])) &&
@@ -365,7 +367,7 @@ export class WebMapService {
               restResourceURL = resourceUrl['@_template'];
             }
           }
-          resolve({ isMatched, matchMaxZoom, matchMinZoom, style, bounds, restResourceURL, kvpResourceUrl });
+          resolve({ isMatched, matchMaxZoom, matchMinZoom, style, bounds, restResourceURL, kvpResourceUrl, scales });
         })
         .catch(error => {
           reject(error);

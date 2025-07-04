@@ -3791,4 +3791,313 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     });
   });
+
+  it('baselayer is TILE, calc zoomBase with visibleScales', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({
+          ...dynamicProjectionMapInfo,
+          layers: []
+        })));
+      }
+      if (url.indexOf(`China_Dark.json`) > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: -1 },
+              bounds: {
+                top: 20037508.342789087,
+                left: -20037508.342789248,
+                bottom: -25819498.513543323,
+                leftBottom: {
+                  x: -20037508.342789248,
+                  y: -25819498.513543323
+                },
+                right: 20037508.342789244,
+                rightTop: {
+                  x: 20037508.342789244,
+                  y: 20037508.342789087
+                }
+              },
+              visibleScales:[
+                1.6901635716001733e-9,
+                3.3803271432574796e-9,
+                6.760654286286427e-9,
+                1.3521308573486984e-8,
+                2.7042617146973967e-8,
+                5.408523427932187e-8,
+                1.0817046855864374e-7,
+                2.163409371172875e-7,
+                4.32681874234575e-7,
+                8.6536374846915e-7,
+                0.0000017307274969383,
+                0.0000034614549938766,
+                0.0000069229099877532
+              ]
+            })
+          )
+        );
+      }
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map.getZoom()).toBe(dynamicProjectionMapInfo.level - 1);
+      done();
+    });
+  });
+
+  it('baselayer is ZXY_TILE, calc zoomBase with resolutions, minScale 0', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(baseLayerIsZXY_TILEMapInfo)));
+      }
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map.getZoom()).toBe(baseLayerIsZXY_TILEMapInfo.level);
+      done();
+    });
+  });
+
+  it('baselayer is ZXY_TILE, calc zoomBase with resolutions, minScale 10', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify({
+          ...baseLayerIsZXY_TILEMapInfo,
+          minScale: "1:577791.7098724197"
+        })));
+      }
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map.getZoom()).toBe(baseLayerIsZXY_TILEMapInfo.level);
+      done();
+    });
+  });
+  
+  it('baseLayer is WMTS, calc zoomBase with scales', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map-china400/wmts100') > -1) {
+        return Promise.resolve(new Response(wmtsCapabilitiesText));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap(baseLayers['WMTS'], { ...commonOption });
+    const callback = function ({ map }) {
+      expect(map.getZoom()).toBe(baseLayers['WMTS'].level);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
+  it('baselayer is jinjing mvt, calc zoomBase with resolutions', (done) => {
+    const mapInfo = {
+      ...webmap_MAPBOXSTYLE_Tile,
+      layers: [],
+      maxScale: "1:70.45225847627215",
+      minScale: "1:1154289.802875243"
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({
+        visibleScales: [
+          1.6901635716026555e-9,
+          3.3803271432053056e-9,
+          6.760654286410611e-9,
+          1.3521308572821242e-8,
+          2.7042617145642484e-8,
+          5.408523429128511e-8,
+          1.0817046858256998e-7,
+          2.1634093716513974e-7,
+          4.3268187433028044e-7,
+          8.653637486605571e-7,
+          0.0000017307274973211203,
+          0.0000034614549946422405,
+          0.0000069229099892844565
+        ]
+      })));
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map.getZoom()).toBe(webmap_MAPBOXSTYLE_Tile.level);
+      const { layers } = map.getStyle();
+      expect(layers[0].layout.visibility).toBe('visible');
+      done();
+    });
+  });
+
+  it('baselayer is jinjing TILE, calc zoomBase with resolutions', (done) => {
+    const mapInfo = {
+      ...webmap_MAPBOXSTYLE_Tile,
+      baseLayer: {
+        layerType: 'TILE',
+        name: '京津地区地图',
+        url: 'http://localhost:8090/iserver/services/map-jingjin/rest/maps/%E4%BA%AC%E6%B4%A5%E5%9C%B0%E5%8C%BA%E5%9C%B0%E5%9B%BE'
+      },
+      layers: [],
+      level: 4,
+      maxScale: '1:0.96376561276023',
+      minScale: '1:4042325.9646626837',
+      extent: {
+        leftBottom: {
+          x: 114.58902605452259,
+          y: 37.76434929128856
+        },
+        rightTop: {
+          x: 119.51371730073062,
+          y: 42.31307532235788
+        }
+      }
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({
+        visibleScales: []
+      })));
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map.getZoom()).toBeCloseTo(10.19);
+      done();
+    });
+  });
+  
+  it('baseLayer is others, calc zoomBase with resolutions', (done) => {
+    const metaInfo = {
+      resourceSets: [
+        {
+          resources: [
+            {
+              __type: 'ImageryMetadata:http://schemas.microsoft.com/search/local/ws/rest/v1',
+              imageHeight: 256,
+              imageUrl:
+                'https://{subdomain}.ssl.ak.dynamic.tiles.virtualearth.net/comp/ch/{quadkey}?mkt=zh-CN&it=G,L&shading=hill&og=2505&n=z',
+              imageUrlSubdomains: ['t0', 't1', 't2', 't3'],
+              imageWidth: 256
+            }
+          ]
+        }
+      ],
+      statusCode: 200,
+      statusDescription: 'OK'
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('Imagery/Metadata/RoadOnDemand') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(metaInfo)));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = baseLayers['BING'];
+    const callback = function ({ map }) {
+      expect(map.getZoom()).toBe(mapInfo.level);
+      done();
+    };
+    datavizWebmap = new WebMap(mapInfo, {
+      bingMapsKey: 'AhOVlIlR89XkNyDsXBAb7TjabrEokPoqhjk4ncLm9cQkJ5ae_JyhgV1wMcWnVrko'
+    });
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
+  it('test MAPBOXSTYLE layers visibility', (done) => {
+    const mapInfo = {
+      ...webmap_MAPBOXSTYLE_Tile,
+      layers: [{
+        layerType: 'MAPBOXSTYLE',
+        name: 'China',
+        dataSource: {
+          type: 'EXTERNAL',
+          url: 'https://fakeiportal.supermap.io/iserver/services/map-china400/restjsr/v1/vectortile/maps/China'
+        },
+        visible: false
+      }]
+    }
+    const china4326StyleJSON = JSON.parse(styleJson);
+    const chinaStyleJSON = {
+      ...china4326StyleJSON,
+      sources: {
+        "china_source": china4326StyleJSON.sources["ChinaqxAlberts_4548@fl-new"]
+      },
+      layers: [{
+        ...china4326StyleJSON.layers[1],
+        id: "china_layer",
+        "source-layer": "china_source_layer",
+        source: "china_source"
+      }]
+    }
+    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      if (url.indexOf('maps/China_4326/style.json') > -1) {
+        return Promise.resolve(new Response(styleJson));
+      }
+      if (url.indexOf('maps/China/style.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chinaStyleJSON)));
+      }
+      return Promise.resolve();
+    });
+    datavizWebmap = new WebMap(id, {
+      server: server
+    });
+    datavizWebmap.on('mapcreatesucceeded', (data) => {
+      expect(data.map.addStyle).toHaveBeenCalledTimes(2);
+      const hideLayer = datavizWebmap.getLayers().find(layer => layer.id === "china_source_layer");
+      expect(hideLayer).not.toBeUndefined();
+      expect(hideLayer.visible).toBeFalsy();
+      const layersOnMap = data.map.getStyle().layers;
+      expect(layersOnMap.filter(item => item.layout.visibility === "visible").length).toBe(2);
+      const matchHideLayerOnMap = layersOnMap.find(layer => layer.id === "china_layer");
+      expect(matchHideLayerOnMap).not.toBeUndefined();
+      expect(matchHideLayerOnMap.layout.visibility).toBe("none");
+      done();
+    });
+  });
 });
