@@ -98,7 +98,7 @@
     "es3ify-loader": "^0.2.0",
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-webpack-plugin": "^2.1.0",
+    "eslint-webpack-plugin": "^5.0.2",
     "express": "^4.17.1",
     "fs-extra": "^11.1.1",
     "get-pixels": "^3.3.2",
