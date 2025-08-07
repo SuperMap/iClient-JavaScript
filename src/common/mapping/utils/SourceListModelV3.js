@@ -190,6 +190,9 @@ export class SourceListModelV3 extends AppreciableLayerBase {
   _generateBaseLayerInfo(layerCatalog, layers) {
     const nextLayerCatalog = layerCatalog.slice();
     const originBaseLayerCatalog = nextLayerCatalog.pop();
+    if (!originBaseLayerCatalog) {
+      return;
+    }
     const renderLayers = this._getBaseLayerRenderLayers(originBaseLayerCatalog, layers);
     const baseLayersOnMap = renderLayers.map((layer) => {
       const nextLayer = { ...layer };
