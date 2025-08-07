@@ -47,6 +47,21 @@ export class SourceListModelV2 extends AppreciableLayerBase {
     return this.concatExpectLayers(selfLayers, selfLayerIds, nextLayers);
   }
 
+  setBaseLayer(layerItem) {
+    const nextLayers = this.layers.slice(1);
+    const firstLayer = layerItem.layers[0] || {};
+    const defaultId = firstLayer.id || '';
+    const baseLayer = {
+      id: layerItem.id || defaultId,
+      visible: true,
+      name: layerItem.title || defaultId,
+      title: layerItem.title || defaultId,
+      renderLayers: layerItem.layers.map(item => item.id)
+    }
+    nextLayers.unshift(baseLayer);
+    this.setLayers(nextLayers);
+  }
+
   _isBelongToMapJSON(layerFromMapJSON, layerOnMap) {
     return (
       layerFromMapJSON.renderLayers && layerFromMapJSON.renderLayers.some((subLayerId) => subLayerId === layerOnMap.id)

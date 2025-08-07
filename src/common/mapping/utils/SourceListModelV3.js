@@ -1,4 +1,3 @@
-
 import { AppreciableLayerBase } from './AppreciableLayerBase';
 import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog } from './util';
 
@@ -6,15 +5,21 @@ export class SourceListModelV3 extends AppreciableLayerBase {
   constructor(options = {}) {
     super(options);
     this._mapInfo = options.mapInfo;
-    this._layerCatalog = options.mapInfo.metadata.layerCatalog;
     this._mapResourceInfo = options.mapResourceInfo;
     this._l7LayerUtil = options.l7LayerUtil;
     this._legendList = options.legendList;
     // chart 统计图表 point-extrusion 柱状图
     this._immutableTopOrderLayers = ['chart', 'point-extrusion'];
+    const layerCatalogs = options.mapInfo.metadata.layerCatalog;
+    this.setLayerCatalog(layerCatalogs);
     const layers = this._generateLayers();
     this.setLayers(layers);
+    this.setDefaultBaseLayerInfo(this._generateBaseLayerInfo(layerCatalogs, layers));
     this.initDatas();
+  }
+
+  setLayerCatalog(catalogs) {
+    this._layerCatalog = catalogs;
   }
 
   createLayerCatalogs() {
@@ -47,6 +52,47 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     return this.concatExpectLayers(selfLayers, selfLayerIds, nextLayers);
   }
 
+  setBaseLayer(layerItem) {
+    const nextLayers = this.layers.slice();
+    const nextLayerCatalog = this._layerCatalog.slice();
+    const originBaseLayerCatalog = nextLayerCatalog.pop();
+    this._removeBaseLayerRenderLayers(originBaseLayerCatalog, nextLayers);
+    const baseLayers = layerItem.layers.map((layer) => {
+      return {
+        ...layer,
+        layerInfo: {
+          id: layer.id,
+          title: layer.id,
+          renderLayers: [layer.id]
+        }
+      };
+    });
+    nextLayers.unshift(...baseLayers);
+    const firstLayer = layerItem.layers[0] || {};
+    const defaultId = firstLayer.id || '';
+    const baseLayerCatalog = {
+      id: defaultId,
+      title: layerItem.title || defaultId,
+      type: 'basic',
+      visible: true
+    };
+    if (layerItem.layers.length > 1) {
+      baseLayerCatalog.id = layerItem.id || defaultId;
+      baseLayerCatalog.type = 'group';
+      baseLayerCatalog.children = layerItem.layers.map((layer) => {
+        return {
+          id: layer.id,
+          title: layer.id,
+          type: 'basic',
+          visible: true
+        };
+      });
+    }
+    nextLayerCatalog.push(baseLayerCatalog);
+    this.setLayerCatalog(nextLayerCatalog);
+    this.setLayers(nextLayers);
+  }
+
   _createSourceCatalogs(catalogs, appreciableLayers) {
     const formatCatalogs = catalogs.map((catalog) => {
       let formatItem;
@@ -60,7 +106,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
           visible
         };
       } else {
-        const renderLayers = getLayerCatalogRenderLayers(parts, id, this._mapInfo.layers);
+        const renderLayers = getLayerCatalogRenderLayers(parts, id, this.layers);
         const matchLayer = appreciableLayers.find((layer) => layer.id === renderLayers[0]);
         this.removeLayerExtralFields([matchLayer]);
         formatItem = Object.assign({}, matchLayer);
@@ -75,10 +121,15 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     const projectCataglogs = getLayerInfosFromCatalogs(catalogs, 'catalogType');
     const metadataCatalogs = getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
     const l7MarkerLayers = this._l7LayerUtil.getL7MarkerLayers();
-    const layerDatas = metadataCatalogs.map(layerCatalog => {
+    const layerDatas = metadataCatalogs.map((layerCatalog) => {
       const renderLayers = getLayerCatalogRenderLayers(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
       const layer = getMainLayerFromCatalog(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
-      const layerInfo = { id: layer.id, title: layerCatalog.title, renderLayers, reused: layer.metadata && layer.metadata.reused };
+      const layerInfo = {
+        id: layer.id,
+        title: layerCatalog.title,
+        renderLayers,
+        reused: layer.metadata && layer.metadata.reused
+      };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
       const { msDatasetId } = matchProjectCatalog;
       let dataSource = {};
@@ -89,7 +140,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
             dataSource = {
               serverId: matchData.datasetId,
               type: data.sourceType
-            }
+            };
             if (data.sourceType === 'REST_DATA') {
               const [serverUrl, datasourceName] = data.url.split('/rest/data/datasources/');
               dataSource.url = `${serverUrl}/rest/data`;
@@ -127,12 +178,75 @@ export class SourceListModelV3 extends AppreciableLayerBase {
       if (validThemeFields.length > 0) {
         layerInfo.themeSetting = { themeField: validThemeFields };
       }
-      if (this._immutableTopOrderLayers.some(type => type === layer.type)) {
+      if (this._immutableTopOrderLayers.some((type) => type === layer.type)) {
         layerInfo.metadata = Object.assign({}, layer.metadata, { SM_Layer_Order: 'top' });
       }
       return Object.assign({}, layer, { layerInfo });
     });
     layerDatas.reverse();
     return layerDatas;
+  }
+
+  _generateBaseLayerInfo(layerCatalog, layers) {
+    const nextLayerCatalog = layerCatalog.slice();
+    const originBaseLayerCatalog = nextLayerCatalog.pop();
+    const renderLayers = this._getBaseLayerRenderLayers(originBaseLayerCatalog, layers);
+    const baseLayersOnMap = renderLayers.map((layer) => {
+      const nextLayer = { ...layer };
+      delete nextLayer.layerInfo;
+      const layerIndex = layers.findIndex((item) => item.id === layer.id);
+      const nextLayerIndex = layerIndex + 1;
+      if (layers[nextLayerIndex]) {
+        nextLayer.beforeId = layers[nextLayerIndex].id;
+      }
+      return nextLayer;
+    });
+    const sourcesMap = this.map.getStyle().sources;
+    return {
+      id: `__default__${originBaseLayerCatalog.id}`,
+      title: originBaseLayerCatalog.title,
+      layers: baseLayersOnMap,
+      sources: baseLayersOnMap.reduce((sources, layer) => {
+        const sourceId = layer.source;
+        if (sourceId && !sources[sourceId]) {
+          sources[sourceId] = sourcesMap[sourceId];
+        }
+        return sources;
+      }, {})
+    };
+  }
+
+  _getBaseLayerRenderLayers(layerCatalog, layersOnMap) {
+    const uniqueSet = new Set();
+    const collectIds = (node) => {
+      if (node.children) {
+        node.children.forEach((child) => collectIds(child));
+      }
+      const parts = node.parts || [node.id];
+      parts.forEach(part => uniqueSet.add(part));
+    };
+    collectIds(layerCatalog);
+
+    return layersOnMap.filter(layer => uniqueSet.has(layer.id));
+  }
+
+  _removeBaseLayerRenderLayers(layerCatalog, layersOnMap) {
+    const deleteSet = new Set();
+    const collectIds = (node) => {
+      if (node.children) {
+        node.children.forEach((child) => collectIds(child));
+      }
+      const parts = node.parts || [node.id];
+      parts.forEach(part => deleteSet.add(part));
+    };
+    collectIds(layerCatalog);
+
+    let writeIndex = 0;
+    for (let i = 0; i < layersOnMap.length; i++) {
+      if (!deleteSet.has(layersOnMap[i].id)) {
+        layersOnMap[writeIndex++] = layersOnMap[i];
+      }
+    }
+    layersOnMap.length = writeIndex;
   }
 }
