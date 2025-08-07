@@ -172,7 +172,7 @@
     "proj4": "2.17.0",
     "promise-polyfill": "8.2.3",
     "rbush": "^2.0.2",
-    "three": "0.150.1",
+    "three": "0.177.0",
     "urijs": "^1.19.11",
     "video.js": "^7.10.2",
     "videojs-flvjs-es6": "^1.0.1",
