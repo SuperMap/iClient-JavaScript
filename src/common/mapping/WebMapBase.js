@@ -499,6 +499,22 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
       this._cacheCleanLayers = [];
       this.clean(false);
     }
+    
+    /**
+     * @version 11.3.0
+     * @function WebMapBase.prototype.changeBaseLayer
+     * @description 切换底图
+     * @param {BaseLayerConfig} layer - 图层配置对象
+     * @typedef {Object} BaseLayerConfig
+     * @property {string} id - 唯一标识
+     * @property {string} title - 显示名称
+     * @property {Array<Object>} layers - 上图的图层
+     * @property {Object} sources - 图层对应的source
+     * @returns {Object} 当前底图信息
+     */
+    changeBaseLayer() {
+      return this._handler && this._handler.changeBaseLayer(...arguments);
+    }
 
     _initWebMap(clean = true) {
       clean && this.clean();

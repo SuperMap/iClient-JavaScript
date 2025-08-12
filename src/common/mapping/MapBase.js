@@ -57,6 +57,10 @@ export function createMapClassExtending(SuperClass = class {}) {
       return exsitLayers;
     }
 
+    changeBaseLayer() {
+      this._sourceListModel && this._sourceListModel.changeBaseLayer(...arguments);
+    }
+
     echartsLayerResize() {}
 
     updateOverlayLayer() {}
