@@ -1,9 +1,140 @@
 import { SourceListModelV3 } from '../../../../src/common/mapping/utils/SourceListModelV3';
 import { isL7Layer } from '../../../../src/common/mapping/utils/L7LayerUtil';
 import '../../../resources/WebMapV3.js';
+import cloneDeep from 'lodash.clonedeep';
 
 describe('SourceListV3', () => {
-  let map, layers, mockEvents;
+  let map, layers, sources, mockEvents, overlayLayersManager;
+  const baseLayerInfo = {
+    id: 'wmts100',
+    title: 'wmts100',
+    layers: [
+      {
+        id: 'wmts100',
+        type: 'raster',
+        source: 'wmts100',
+        minzoom: 0,
+        maxzoom: 12
+      }
+    ],
+    sources: {
+      wmts100: {
+        type: 'raster',
+        tiles: [
+          'http:/localhost:8195/portalproxy/97d2edb85b0cb5d4/iserver/services/map-China100-2/wmts100?service=WMTS&request=GetTile&version=1.0.0&style=default&layer=China&tilematrixSet=Custom_China&format=image%2Fpng&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        maxzoom: 12,
+        tileSize: 256,
+        bounds: [-180, -85.05112877980652, 180, 85.05112877980648],
+        minzoom: 0
+      }
+    }
+  };
+  const changeBaseLayerMapInfo = {
+    metadata: {
+      layerCatalog: [
+        {
+          visible: true,
+          parts: ['北京市住宅小区'],
+          id: 'layer_北京市住宅小区_1754359974753_24',
+          title: '北京市住宅小区',
+          type: 'composite'
+        },
+        {
+          visible: true,
+          children: [
+            {
+              visible: true,
+              id: 'ms_TIANDITU_IMG_3857_label',
+              title: 'ms_TIANDITU_IMG_3857_label',
+              type: 'basic'
+            },
+            {
+              visible: true,
+              id: 'TIANDITU_IMG_3857',
+              title: 'TIANDITU_IMG_3857',
+              type: 'basic'
+            }
+          ],
+          id: 'group_tianditu_img_3857_1754377584218_382',
+          title: 'tianditu_img_3857',
+          type: 'group'
+        }
+      ]
+    },
+    sources: {
+      ms_TIANDITU_IMG_3857_label: {
+        tiles: [
+          'https://t0.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=50599c913367188e6c94e872032f4cf1&host=172.16.14.44:8190'
+        ],
+        tileSize: 256,
+        attribution: '',
+        bounds: [-180, -90, 180, 90],
+        type: 'raster'
+      },
+      ms_1750973565_1754359974753_23: {
+        tiles: [
+          'http://localhost:8190/iportal/web/datas/1750973565/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%E5%B0%8F%E5%8C%BA%E5%90%8D%22%2C%22SmGeometrySize%22%2C%22%E5%B9%B4%E4%BB%A3%22%2C%22%E5%8D%95%E4%BB%B7%22%2C%22%E6%A5%BC%E5%B1%82%22%2C%22SmID%22%2C%22%E6%80%BB%E4%BB%B7%22%2C%22SmUserID%22%2C%22%E6%88%B7%E5%9E%8B%22%2C%22%E6%9C%9D%E5%90%91%22%2C%22%E5%9C%B0%E5%9D%80%22%2C%22SmY%22%2C%22SmX%22%2C%22SmLibTileID%22%2C%22%E9%9D%A2%E7%A7%AF%22%5D&geometryFieldName=geometry'
+        ],
+        bounds: [115.89763001613301, 39.40606, 117.48732001635402, 40.6500100064203],
+        type: 'vector'
+      },
+      TIANDITU_IMG_3857: {
+        tiles: [
+          'https://t0.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=50599c913367188e6c94e872032f4cf1&host=172.16.14.44:8190'
+        ],
+        tileSize: 256,
+        attribution: '',
+        bounds: [-180, -90, 180, 90],
+        type: 'raster'
+      }
+    },
+    crs: 'EPSG:3857',
+    center: [116.22715983919534, 39.878220196575874],
+    zoom: 8.79189646012174,
+    glyphs: {},
+    version: '3.3.2',
+    maxzoom: 19,
+    name: '无标题地图-tianditu',
+    layers: [
+      {
+        maxzoom: 19,
+        id: 'TIANDITU_IMG_3857',
+        source: 'TIANDITU_IMG_3857',
+        type: 'raster',
+        minzoom: 0
+      },
+      {
+        layout: {
+          visibility: 'visible'
+        },
+        maxzoom: 19,
+        id: 'ms_TIANDITU_IMG_3857_label',
+        source: 'ms_TIANDITU_IMG_3857_label',
+        type: 'raster',
+        minzoom: 0
+      },
+      {
+        metadata: {},
+        maxzoom: 24,
+        paint: {
+          'circle-color': '#EE4D5A',
+          'circle-opacity': 0.9,
+          'circle-translate-anchor': 'map',
+          'circle-radius': 4,
+          'circle-translate': [0, 0]
+        },
+        id: '北京市住宅小区',
+        source: 'ms_1750973565_1754359974753_23',
+        'source-layer': '1750973565$geometry',
+        type: 'circle',
+        minzoom: 0
+      }
+    ],
+    sprite: 'http://localhost:8190/iportal/web/maps/1874751978/sprites/sprite',
+    pitch: 0,
+    minzoom: 0
+  };
 
   beforeEach(() => {
     mockEvents = {};
@@ -111,7 +242,7 @@ describe('SourceListV3', () => {
           'line-opacity': 0.8
         }
       },
-  
+
       {
         id: 'mapbox-gl-draw',
         type: 'line',
@@ -172,34 +303,104 @@ describe('SourceListV3', () => {
         }
       }
     ];
+    sources = {
+      CHINA_DARK: {
+        type: 'raster',
+        tiles: []
+      },
+      'test-source': {
+        type: 'raster',
+        tiles: []
+      },
+      'tracklayer-1-line': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      graticuleLayer_1_line: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      'tdt-search-line': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      'tdt-route-line': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      smmeasure: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      'mapbox-gl-draw': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      graticuleLayer_1723443238046_line: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      }
+    };
+    overlayLayersManager = {
+      graticuleLayer_1723443238046: {
+        id: 'graticuleLayer_1723443238046',
+        overlay: true,
+        renderingMode: '3d',
+        type: 'custom',
+        visible: true,
+        sourceId: 'graticuleLayer_1723443238046_line'
+      }
+    };
     map = {
+      addLayer: function (layer) {
+        layers.push(layer);
+      },
+      addSource(sourceId, source) {
+        sources[sourceId] = source;
+      },
       getStyle() {
         return {
-          layers
+          layers,
+          sources
         };
       },
-      getSource() {
-        return {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: []
-          }
-        };
+      getSource(id) {
+        return sources[id];
       },
       getLayer(id) {
         return layers.find((layer) => layer.id === id);
       },
-      overlayLayersManager: {
-        graticuleLayer_1723443238046: {
-          id: 'graticuleLayer_1723443238046',
-          overlay: true,
-          renderingMode: '3d',
-          type: 'custom',
-          visible: true,
-          sourceId: 'graticuleLayer_1723443238046_line'
-        }
+      removeLayer(id) {
+        return layers.splice(
+          layers.findIndex((layer) => layer.id === id),
+          1
+        );
       },
+      removeSource(id) {
+        delete sources[id];
+      },
+      overlayLayersManager,
       on(type, callback) {
         mockEvents[type] = callback;
       },
@@ -298,9 +499,9 @@ describe('SourceListV3', () => {
     });
     const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
-    const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
-    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
-    expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
+    const selfIds = mapInfo.metadata.layerCatalog.map((item) => item.id);
+    const selfLayerCatalogs = layerList.filter((layer) => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some((layer) => !layer.renderLayers.includes(layer.id))).toBe(false);
     done();
   });
 
@@ -318,9 +519,9 @@ describe('SourceListV3', () => {
     });
     const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 2);
-    const selfIds = mapInfo.metadata.layerCatalog.map(item => item.id);
-    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
-    expect(selfLayerCatalogs.some(layer => !layer.renderLayers.includes(layer.id))).toBe(false);
+    const selfIds = mapInfo.metadata.layerCatalog.map((item) => item.id);
+    const selfLayerCatalogs = layerList.filter((layer) => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some((layer) => !layer.renderLayers.includes(layer.id))).toBe(false);
     done();
   });
 
@@ -338,9 +539,9 @@ describe('SourceListV3', () => {
     });
     const layerList = sourceListModel.getLayerCatalog();
     expect(layerList.length).toBe(mapInfo.metadata.layerCatalog.length + 3);
-    const selfIds = mapInfo.metadata.layerCatalog.filter(item => item.parts).map(item => item.id);
-    const selfLayerCatalogs = layerList.filter(layer => selfIds.includes(layer.id));
-    expect(selfLayerCatalogs.some(layer => layer.renderLayers.includes(layer.id))).toBe(false);
+    const selfIds = mapInfo.metadata.layerCatalog.filter((item) => item.parts).map((item) => item.id);
+    const selfLayerCatalogs = layerList.filter((layer) => selfIds.includes(layer.id));
+    expect(selfLayerCatalogs.some((layer) => layer.renderLayers.includes(layer.id))).toBe(false);
     done();
   });
 
@@ -367,9 +568,9 @@ describe('SourceListV3', () => {
     const markerList = {
       ['中国金牌个人获奖者(1)']: {
         show: jasmine.createSpy('show').and.callFake(() => {}),
-        hide: jasmine.createSpy('hide').and.callFake(() => {}),
+        hide: jasmine.createSpy('hide').and.callFake(() => {})
       }
-    }
+    };
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -401,9 +602,9 @@ describe('SourceListV3', () => {
     const markerList = {
       ['中国金牌个人获奖者(1)']: {
         show: jasmine.createSpy('show').and.callFake(() => {}),
-        hide: jasmine.createSpy('hide').and.callFake(() => {}),
+        hide: jasmine.createSpy('hide').and.callFake(() => {})
       }
-    }
+    };
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -435,9 +636,9 @@ describe('SourceListV3', () => {
     const markerList = {
       ['中国金牌个人获奖者(1)']: {
         show: jasmine.createSpy('show').and.callFake(() => {}),
-        hide: jasmine.createSpy('hide').and.callFake(() => {}),
+        hide: jasmine.createSpy('hide').and.callFake(() => {})
       }
-    }
+    };
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -486,5 +687,112 @@ describe('SourceListV3', () => {
     sourceListModel.setLayersVisible([layerList[4]], 'none');
     expect(mockEvents.styledata).not.toBeUndefined();
     mockEvents.styledata();
+  });
+
+  it('changeBaseLayer not complicit', (done) => {
+    const nextBaseLayerMapInfo = cloneDeep(changeBaseLayerMapInfo);
+    layers = nextBaseLayerMapInfo.layers;
+    sources = nextBaseLayerMapInfo.sources;
+
+    overlayLayersManager = {};
+
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo: cloneDeep(nextBaseLayerMapInfo),
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => []
+      }
+    });
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeTruthy();
+    const layerList = sourceListModel.getLayerCatalog();
+    const appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(2);
+    expect(appreciableLayers.length).toBe(3);
+    const nextBaseLayerInfo = sourceListModel.changeBaseLayer(baseLayerInfo);
+    expect(nextBaseLayerInfo).toBeTruthy();
+    expect(nextBaseLayerInfo.layers.length).toBe(1);
+    expect(nextBaseLayerInfo.layers).toEqual(baseLayerInfo.layers);
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeFalsy();
+    done();
+  });
+
+  it('changeBaseLayer complicit', (done) => {
+    let nextBaseLayerMapInfo = cloneDeep(changeBaseLayerMapInfo);
+    layers = [
+      ...baseLayerInfo.layers,
+      ...nextBaseLayerMapInfo.layers
+    ];
+    sources = {
+      ...nextBaseLayerMapInfo.sources,
+      ...baseLayerInfo.sources
+    };
+    const copyMapInfo = cloneDeep(changeBaseLayerMapInfo);
+    nextBaseLayerMapInfo = {
+      ...copyMapInfo,
+      layers: cloneDeep(layers),
+      sources: cloneDeep(sources),
+      metadata: {
+        layerCatalog: copyMapInfo.metadata.layerCatalog.concat(baseLayerInfo.layers.map(item => ({
+          id: item.id,
+          title: item.id,
+          type: 'basic',
+          visible: true
+        })))
+      }
+    }
+    overlayLayersManager = {};
+
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo: nextBaseLayerMapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => []
+      }
+    });
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeTruthy();
+    expect(map.getStyle().layers.some((item) => ['wmts100'].includes(item.id))).toBeTruthy();
+    let layerList = sourceListModel.getLayerCatalog();
+    let appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(3);
+    expect(layerList[layerList.length - 1].id).toBe('wmts100');
+    expect(appreciableLayers.length).toBe(4);
+    expect(appreciableLayers[0].id).toBe('wmts100');
+    const sameBaseLayer = {
+      id: 'sameBaseLayer',
+      layers: layers.slice(1, 3).map((item) => {
+        const nextItem = Object.assign({}, item);
+        nextItem.metadata = { SM_Layer_Id: 'sameBaseLayer' };
+        return nextItem;
+      }),
+      sources: {
+        TIANDITU_IMG_3857: sources['TIANDITU_IMG_3857'],
+        'ms_TIANDITU_IMG_3857_label': sources['ms_TIANDITU_IMG_3857_label']
+      }
+    };
+    const nextBaseLayerInfo = sourceListModel.changeBaseLayer(sameBaseLayer);
+    expect(nextBaseLayerInfo).toBeTruthy();
+    expect(nextBaseLayerInfo.layers.length).toBe(2);
+    expect(nextBaseLayerInfo.layers).not.toEqual(sameBaseLayer.layers);
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeTruthy();
+    expect(
+      map
+        .getStyle()
+        .layers.some((item) => [/TIANDITU_IMG_3857_\d+$/, /ms_TIANDITU_IMG_3857_label_\d+$/].some((reg) => reg.test(item.id)))
+    ).toBeTruthy();
+    expect(map.getStyle().layers.some((item) => ['wmts100'].includes(item.id))).toBeFalsy();
+    layerList = sourceListModel.getLayerCatalog();
+    appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(3);
+    expect(layerList[layerList.length - 1].id).toBe('sameBaseLayer');
+    expect(appreciableLayers.length).toBe(5);
+    expect(appreciableLayers[0].id.match(/TIANDITU_IMG_3857_TIANDITU_IMG_3857_\d+$/)).toBeTruthy();
+    expect(appreciableLayers[1].id.match(/ms_TIANDITU_IMG_3857_label_ms_TIANDITU_IMG_3857_label_\d+$/)).toBeTruthy();
+    done();
   });
 });

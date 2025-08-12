@@ -1,12 +1,12 @@
 import { Events } from '../../commontypes';
 import SourceModel from './SourceModel';
 import { createAppreciableLayerId, getLayerInfosFromCatalogs } from './util';
+import cloneDeep from 'lodash.clonedeep';
 
 export class AppreciableLayerBase extends Events {
   constructor(options = {}) {
     super();
     this.map = options.map;
-    this.layers = options.layers || [];
     this.appendLayers = options.appendLayers || false;
     this.unexpectedSourceNames = [
       'tdt-search-',
@@ -21,10 +21,21 @@ export class AppreciableLayerBase extends Events {
     this.layersVisibleMap = new Map();
     this.eventTypes = ['layerupdatechanged'];
     this._styleDataUpdatedHandler = this._styleDataUpdatedHandler.bind(this);
+    this.baseLayerInfoOnMap = null;
+    this.setLayers(options.layers);
+    this._initBaseLayerInfo(options.layers);
   }
 
-  setLayers(layers) {
+  setLayers(layers = []) {
     this.layers = layers;
+  }
+
+  setDefaultBaseLayerInfo(baseLayerInfo) {
+    this.baseLayerInfoOnMap = baseLayerInfo;
+  }
+
+  setBaseLayer() {
+    throw new Error('setBaseLayer is not implemented');
   }
 
   createLayerCatalogs() {
@@ -37,6 +48,14 @@ export class AppreciableLayerBase extends Events {
 
   initLayers() {
     throw new Error('initLayers is not implemented');
+  }
+
+  changeBaseLayer(layer) {
+    if (this.map) {
+      this._removeBaseLayer();
+      this._addBaseLayer(layer);
+      return cloneDeep(this.baseLayerInfoOnMap);
+    }
   }
 
   createAppreciableLayers() {
@@ -334,5 +353,112 @@ export class AppreciableLayerBase extends Events {
       return bottomLayers.concat(autoLayers, topLayers);
     }
     return topLayers.concat(autoLayers, bottomLayers);
+  }
+
+  _addBaseLayer(layerItem) {
+    const { layers, sources } = layerItem;
+    const renderSources = {};
+    Object.keys(sources).forEach(sourceId => {
+      let nextSourceId = sourceId;
+      if (this.map.getSource(sourceId)) {
+        renderSources[sourceId] = `${sourceId}_${+new Date()}`;
+        nextSourceId = renderSources[sourceId];
+      }
+      this.map.addSource(nextSourceId, sources[sourceId]);
+    });
+    const layersToAdd = [];
+    layers.forEach(layer => {
+      let { beforeId } = layer;
+      if (!beforeId) {
+        const styles = this.map.getStyle();
+        beforeId = styles.layers[0] && styles.layers[0].id;
+      }
+      const layerToAdd = Object.assign({}, layer);
+      delete layerToAdd.beforeId;
+      const sourceId = layerToAdd.source;
+      if (renderSources[sourceId]) {
+        layerToAdd.source = renderSources[sourceId];
+      }
+      if (this.map.getLayer(layerToAdd.id)) {
+        const nextLayerId = `${layerToAdd.id}_${layerToAdd.source || +new Date()}`;
+        layerToAdd.id = nextLayerId;
+      }
+      layersToAdd.push({
+        layer: layerToAdd,
+        beforeId
+      });
+    });
+    this.baseLayerInfoOnMap = {
+      ...layerItem,
+      layers: layersToAdd.map(item => Object.assign({}, item.layer)),
+      sources: Object.keys(layerItem.sources).reduce((sources, sourceId) => {
+        let source = sourceId;
+        if (renderSources[source]) {
+          source = renderSources[source];
+        }
+        sources[source] = renderSources[sourceId];
+        return sources;
+      }, {})
+    };
+    this.setBaseLayer({ ...this.baseLayerInfoOnMap });
+    layersToAdd.forEach(({ layer, beforeId }) => {
+      this.map.addLayer(layer, beforeId);
+    })
+  }
+  
+  _removeBaseLayer() {
+    if (this.baseLayerInfoOnMap) {
+      const { layers, sources } = this.baseLayerInfoOnMap;
+      const layersIds = layers.map(item => item.id);
+      const sourceIds = Object.keys(sources);
+      layersIds.forEach(layerId => {
+        if (this.map.getLayer(layerId)) {
+          this.map.removeLayer(layerId);
+        }
+      });
+      sourceIds.forEach(sourceId => {
+        if (this.map.getSource(sourceId)) {
+          this.map.removeSource(sourceId);
+        }
+      });
+    }
+  }
+
+  _initBaseLayerInfo(layers) {
+    if (layers && layers.length && !this.baseLayerInfoOnMap) {
+      const firstLayer = this.layers[0];
+      const baseLayer = firstLayer;
+      const layerList = this.map.getStyle().layers;
+      const baseLayersOnMap = baseLayer.renderLayers.map((layerId) => {
+        const nextLayer = layerList.find(item => item.id === layerId);
+        if (nextLayer) {
+          const layerIndex = layerList.findIndex(item => item.id === layerId);
+          const nextLayerIndex = layerIndex + 1;
+          if (layerList[nextLayerIndex]) {
+            nextLayer.beforeId = layerList[nextLayerIndex].id;
+          }
+          if (!nextLayer.metadata || !nextLayer.metadata.SM_Layer_Title) {
+            nextLayer.metadata = {
+              ...nextLayer.metadata,
+              SM_Layer_Title: baseLayer.title
+            };
+          }
+        }
+        return nextLayer;
+      }).filter(Boolean);
+      const sourcesMap = this.map.getStyle().sources;
+      this.setDefaultBaseLayerInfo({
+        id: `__default__${baseLayer.id}`,
+        title: baseLayer.title,
+        layers: baseLayersOnMap,
+        sources: baseLayersOnMap.reduce((sources, layer) => {
+          const sourceId = layer.source;
+          if (sourceId && !sources[sourceId]) {
+            sources[sourceId] = sourcesMap[sourceId];
+          }
+          return sources;
+        }, {})
+      });
+    }
   }
 }

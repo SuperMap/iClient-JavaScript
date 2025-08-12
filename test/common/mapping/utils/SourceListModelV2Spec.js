@@ -1,7 +1,32 @@
 import { SourceListModelV2 } from '../../../../src/common/mapping/utils/SourceListModelV2';
 
 describe('SourceListV2', () => {
-  let layers, map, mockEvents;
+  let layers, sources, map, mockEvents, overlayLayersManager;
+  const baseLayerInfo = {
+    id: 'wmts100',
+    title: 'wmts100',
+    layers: [
+      {
+        id: 'wmts100',
+        type: 'raster',
+        source: 'wmts100',
+        minzoom: 0,
+        maxzoom: 12
+      }
+    ],
+    sources: {
+      wmts100: {
+        type: 'raster',
+        tiles: [
+          'http:/localhost:8195/portalproxy/97d2edb85b0cb5d4/iserver/services/map-China100-2/wmts100?service=WMTS&request=GetTile&version=1.0.0&style=default&layer=China&tilematrixSet=Custom_China&format=image%2Fpng&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        maxzoom: 12,
+        tileSize: 256,
+        bounds: [-180, -85.05112877980652, 180, 85.05112877980648],
+        minzoom: 0
+      }
+    }
+  };
 
   beforeEach(() => {
     mockEvents = {};
@@ -170,34 +195,51 @@ describe('SourceListV2', () => {
         }
       }
     ];
+    sources = {
+      graticuleLayer_1723443238046_line: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      }
+    };
+    overlayLayersManager = {
+      graticuleLayer_1723443238046: {
+        id: 'graticuleLayer_1723443238046',
+        overlay: true,
+        renderingMode: '3d',
+        type: 'custom',
+        visible: true,
+        sourceId: 'graticuleLayer_1723443238046_line'
+      }
+    };
     map = {
+      addLayer: function (layer) {
+        layers.push(layer);
+      },
+      addSource(sourceId, source) {
+        sources[sourceId] = source;
+      },
       getStyle() {
         return {
-          layers
+          layers,
+          sources
         };
       },
-      getSource() {
-        return {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: []
-          }
-        };
+      getSource(id) {
+        return sources[id];
       },
       getLayer(id) {
         return layers.find((layer) => layer.id === id);
       },
-      overlayLayersManager: {
-        graticuleLayer_1723443238046: {
-          id: 'graticuleLayer_1723443238046',
-          overlay: true,
-          renderingMode: '3d',
-          type: 'custom',
-          visible: true,
-          sourceId: 'graticuleLayer_1723443238046_line'
-        }
+      removeLayer(id) {
+        return layers.splice(layers.findIndex((layer) => layer.id === id), 1);
       },
+      removeSource(id) {
+        delete sources[id];
+      },
+      overlayLayersManager,
       on(type, callback) {
         mockEvents[type] = callback;
       },
@@ -560,5 +602,399 @@ describe('SourceListV2', () => {
     sourceListModel.setLayersVisible([layerList[1]], 'none');
     expect(mockEvents.styledata).not.toBeUndefined();
     mockEvents.styledata();
+  });
+
+  it('changeBaseLayer not complicit', (done) => {
+    const layersInfo = [
+      {
+        layerType: 'TIANDITU_IMG_3857',
+        labelLayerVisible: true,
+        tk: '50599c913367188e6c94e872032f4cf1',
+        name: '天地图影像',
+        title: '天地图影像',
+        renderLayers: ['天地图影像', '天地图影像-tdt-label'],
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        id: '天地图影像',
+        visible: true,
+        reused: false
+      },
+      {
+        layerType: 'UNIQUE',
+        visible: true,
+        themeSetting: {
+          themeField: 'parent',
+          customSettings: {
+            '{"adcode":110000}': {
+              strokeWidth: 1,
+              fillColor: '#D53E4F',
+              fillOpacity: 0.9,
+              lineDash: 'solid',
+              strokeColor: '#ffffff',
+              type: 'POLYGON',
+              strokeOpacity: 1
+            }
+          },
+          colors: ['#D53E4F', '#FC8D59', '#FEE08B', '#FFFFBF', '#E6F598', '#99D594', '#3288BD']
+        },
+        name: '北京市(3)',
+        featureType: 'POLYGON',
+        style: {
+          strokeWidth: 1,
+          fillColor: '#D53E4F',
+          fillOpacity: 0.9,
+          lineDash: 'solid',
+          strokeColor: '#ffffff',
+          type: 'POLYGON',
+          strokeOpacity: 1
+        },
+        projection: 'EPSG:4326',
+        enableFields: [
+          'parent',
+          'adcode',
+          'level',
+          'childrenNum',
+          'smpid',
+          'centroid',
+          'center',
+          'subFeatureIndex',
+          'name',
+          'acroutes'
+        ],
+        dataSource: {
+          accessType: 'DIRECT',
+          type: 'PORTAL_DATA',
+          serverId: '1371715657'
+        },
+        layerID: '北京市(3)',
+        renderLayers: ['北京市(3)', '北京市(3)-strokeLine'],
+        metadata: {
+          SM_Layer_Id: '北京市(3)'
+        },
+        id: '北京市(3)',
+        reused: false
+      }
+    ];
+    layers = [
+      {
+        id: '天地图影像',
+        type: 'raster',
+        source: '天地图影像',
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'visible'
+        }
+      },
+      {
+        id: '天地图影像-tdt-label',
+        type: 'raster',
+        source: '天地图影像-tdt-label',
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'visible'
+        }
+      },
+      {
+        id: '北京市(3)',
+        type: 'fill',
+        source: '北京市(3)',
+        metadata: {
+          SM_Layer_Id: '北京市(3)'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'visible'
+        },
+        paint: {
+          'fill-color': '#D53E4F',
+          'fill-opacity': 0.9
+        }
+      },
+      {
+        id: '北京市(3)-strokeLine',
+        type: 'line',
+        source: '北京市(3)',
+        metadata: {
+          SM_Layer_Id: '北京市(3)'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        filter: ['all'],
+        layout: {
+          visibility: 'visible'
+        },
+        paint: {
+          'line-width': 1,
+          'line-color': '#ffffff',
+          'line-opacity': 1
+        }
+      }
+    ];
+    sources = {
+      '北京市(3)': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      '天地图影像': {
+        type: 'raster',
+        tiles: [
+          'https://t0.tianditu.gov.cn/img_w/wmts?tk=50599c913367188e6c94e872032f4cf1&service=WMTS&request=GetTile&style=default&version=1.0.0&layer=img&tilematrixSet=w&format=tiles&width=256&height=256&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        minzoom: 0,
+        maxzoom: 22,
+        tileSize: 256,
+        rasterSource: '',
+        prjCoordSys: '',
+        proxy: null,
+        bounds: [-180, -90, 180, 90]
+      },
+      '天地图影像-tdt-label': {
+        type: 'raster',
+        tiles: [
+          'https://t0.tianditu.gov.cn/cia_w/wmts?tk=50599c913367188e6c94e872032f4cf1&service=WMTS&request=GetTile&style=default&version=1.0.0&layer=cia&tilematrixSet=w&format=tiles&width=256&height=256&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        minzoom: 0,
+        maxzoom: 22,
+        tileSize: 256,
+        rasterSource: '',
+        prjCoordSys: '',
+        proxy: null,
+        bounds: [-180, -90, 180, 90]
+      }
+    };
+    overlayLayersManager = {};
+
+    const sourceListModel = new SourceListModelV2({ map, layers: layersInfo });
+    expect(map.getStyle().layers.some(item => ['天地图影像', '天地图影像-tdt-label'].includes(item.id))).toBeTruthy();
+    const layerList = sourceListModel.getLayerCatalog();
+    const appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(2);
+    expect(appreciableLayers.length).toBe(2);
+    const nextBaseLayerInfo = sourceListModel.changeBaseLayer(baseLayerInfo);
+    expect(nextBaseLayerInfo).toBeTruthy();
+    expect(nextBaseLayerInfo.layers.length).toBe(1);
+    expect(nextBaseLayerInfo.layers).toEqual(baseLayerInfo.layers);
+    expect(map.getStyle().layers.some(item => ['天地图影像', '天地图影像-tdt-label'].includes(item.id))).toBeFalsy();
+    done();
+  });
+
+  it('changeBaseLayer complicit', (done) => {
+    const layersInfo = [
+      {
+        layerType: 'raster',
+        name: 'wmts100',
+        title: 'wmts100',
+        renderLayers: ['wmts100'],
+        metadata: {
+          SM_Layer_Id: 'wmts100'
+        },
+        id: 'wmts100',
+        visible: true,
+        reused: false
+      },
+      {
+        layerType: 'TIANDITU_IMG_3857',
+        labelLayerVisible: true,
+        tk: '50599c913367188e6c94e872032f4cf1',
+        name: '天地图影像',
+        title: '天地图影像',
+        renderLayers: ['天地图影像', '天地图影像-tdt-label'],
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        id: '天地图影像',
+        visible: true,
+        reused: false
+      },
+      {
+        layerType: 'UNIQUE',
+        visible: true,
+        themeSetting: {
+          themeField: 'parent',
+          customSettings: {
+            '{"adcode":110000}': {
+              strokeWidth: 1,
+              fillColor: '#D53E4F',
+              fillOpacity: 0.9,
+              lineDash: 'solid',
+              strokeColor: '#ffffff',
+              type: 'POLYGON',
+              strokeOpacity: 1
+            }
+          },
+          colors: ['#D53E4F', '#FC8D59', '#FEE08B', '#FFFFBF', '#E6F598', '#99D594', '#3288BD']
+        },
+        name: '北京市(3)',
+        featureType: 'POLYGON',
+        style: {
+          strokeWidth: 1,
+          fillColor: '#D53E4F',
+          fillOpacity: 0.9,
+          lineDash: 'solid',
+          strokeColor: '#ffffff',
+          type: 'POLYGON',
+          strokeOpacity: 1
+        },
+        projection: 'EPSG:4326',
+        enableFields: [
+          'parent',
+          'adcode',
+          'level',
+          'childrenNum',
+          'smpid',
+          'centroid',
+          'center',
+          'subFeatureIndex',
+          'name',
+          'acroutes'
+        ],
+        dataSource: {
+          accessType: 'DIRECT',
+          type: 'PORTAL_DATA',
+          serverId: '1371715657'
+        },
+        layerID: '北京市(3)',
+        renderLayers: ['北京市(3)', '北京市(3)-strokeLine'],
+        metadata: {
+          SM_Layer_Id: '北京市(3)'
+        },
+        id: '北京市(3)',
+        reused: false
+      }
+    ];
+    layers = [
+      ...baseLayerInfo.layers,
+      {
+        id: '天地图影像',
+        type: 'raster',
+        source: '天地图影像',
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'visible'
+        }
+      },
+      {
+        id: '天地图影像-tdt-label',
+        type: 'raster',
+        source: '天地图影像-tdt-label',
+        metadata: {
+          SM_Layer_Id: '天地图影像'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'visible'
+        }
+      },
+      {
+        id: '北京市(3)-strokeLine',
+        type: 'line',
+        source: '北京市(3)',
+        metadata: {
+          SM_Layer_Id: '北京市(3)'
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        filter: ['all'],
+        layout: {
+          visibility: 'visible'
+        },
+        paint: {
+          'line-width': 1,
+          'line-color': '#ffffff',
+          'line-opacity': 1
+        }
+      }
+    ];
+    sources = {
+      '北京市(3)': {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      },
+      '天地图影像': {
+        type: 'raster',
+        tiles: [
+          'https://t0.tianditu.gov.cn/img_w/wmts?tk=50599c913367188e6c94e872032f4cf1&service=WMTS&request=GetTile&style=default&version=1.0.0&layer=img&tilematrixSet=w&format=tiles&width=256&height=256&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        minzoom: 0,
+        maxzoom: 22,
+        tileSize: 256,
+        rasterSource: '',
+        prjCoordSys: '',
+        proxy: null,
+        bounds: [-180, -90, 180, 90]
+      },
+      '天地图影像-tdt-label': {
+        type: 'raster',
+        tiles: [
+          'https://t0.tianditu.gov.cn/cia_w/wmts?tk=50599c913367188e6c94e872032f4cf1&service=WMTS&request=GetTile&style=default&version=1.0.0&layer=cia&tilematrixSet=w&format=tiles&width=256&height=256&tilematrix={z}&tilerow={y}&tilecol={x}'
+        ],
+        minzoom: 0,
+        maxzoom: 22,
+        tileSize: 256,
+        rasterSource: '',
+        prjCoordSys: '',
+        proxy: null,
+        bounds: [-180, -90, 180, 90]
+      },
+      ...baseLayerInfo.sources
+    };
+    overlayLayersManager = {};
+
+    const sourceListModel = new SourceListModelV2({ map, layers: layersInfo });
+    expect(map.getStyle().layers.some(item => ['天地图影像', '天地图影像-tdt-label'].includes(item.id))).toBeTruthy();
+    expect(map.getStyle().layers.some(item => ['wmts100'].includes(item.id))).toBeTruthy();
+    let layerList = sourceListModel.getLayerCatalog();
+    let appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(3);
+    expect(layerList[layerList.length - 1].id).toBe('wmts100');
+    expect(appreciableLayers.length).toBe(3);
+    expect(appreciableLayers[0].id).toBe('wmts100');
+    const sameBaseLayer = {
+      id: 'sameBaseLayer',
+      layers: layers.slice(1, 3).map(item => {
+        const nextItem = Object.assign({}, item);
+        nextItem.metadata = { SM_Layer_Id: 'sameBaseLayer' };
+        return nextItem;
+      }),
+      sources: {
+        '天地图影像': sources['天地图影像'],
+        '天地图影像-tdt-label': sources['天地图影像-tdt-label']
+      }
+    }
+    const nextBaseLayerInfo = sourceListModel.changeBaseLayer(sameBaseLayer);
+    expect(nextBaseLayerInfo).toBeTruthy();
+    expect(nextBaseLayerInfo.layers.length).toBe(2);
+    expect(nextBaseLayerInfo.layers).not.toEqual(sameBaseLayer.layers);
+    expect(map.getStyle().layers.some(item => ['天地图影像', '天地图影像-tdt-label'].includes(item.id))).toBeTruthy();
+    expect(map.getStyle().layers.some(item => [/天地图影像_\d+$/, /天地图影像-tdt-label_\d+$/].some(reg => reg.test(item.id)))).toBeTruthy();
+    expect(map.getStyle().layers.some(item => ['wmts100'].includes(item.id))).toBeFalsy();
+    layerList = sourceListModel.getLayerCatalog();
+    appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(3);
+    expect(layerList[layerList.length - 1].id).toBe('sameBaseLayer');
+    expect(appreciableLayers.length).toBe(3);
+    expect(appreciableLayers[0].id).toBe('sameBaseLayer');
+    done();
   });
 });
