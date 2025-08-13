@@ -1,6 +1,5 @@
 import maplibregl from 'maplibre-gl';
 import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
-var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl_GraticuleLayer', () => {
     var originalTimeout;
@@ -18,22 +17,8 @@ describe('maplibregl_GraticuleLayer', () => {
             container: 'map',
             style: {
                 version: 8,
-                sources: {
-                    'raster-tiles': {
-                        type: 'raster',
-                        tiles: [url],
-                        tileSize: 256
-                    }
-                },
-                layers: [
-                    {
-                        id: 'simple-tiles',
-                        type: 'raster',
-                        source: 'raster-tiles',
-                        minzoom: 0,
-                        maxzoom: 22
-                    }
-                ]
+                sources: {},
+                layers: []
             },
             center: [112, 37.94],
             zoom: 3
