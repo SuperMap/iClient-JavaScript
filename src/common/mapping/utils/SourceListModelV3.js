@@ -58,11 +58,12 @@ export class SourceListModelV3 extends AppreciableLayerBase {
     const originBaseLayerCatalog = nextLayerCatalog.pop();
     this._removeBaseLayerRenderLayers(originBaseLayerCatalog, nextLayers);
     const baseLayers = layerItem.layers.map((layer) => {
+      const title = layer.metadata && layer.metadata.title;
       return {
         ...layer,
         layerInfo: {
           id: layer.id,
-          title: layer.id,
+          title: title || layer.id,
           renderLayers: [layer.id]
         }
       };
@@ -80,9 +81,10 @@ export class SourceListModelV3 extends AppreciableLayerBase {
       baseLayerCatalog.id = layerItem.id || defaultId;
       baseLayerCatalog.type = 'group';
       baseLayerCatalog.children = layerItem.layers.map((layer) => {
+        const title = layer.metadata && layer.metadata.title;
         return {
           id: layer.id,
-          title: layer.id,
+          title: title || layer.id,
           type: 'basic',
           visible: true
         };
