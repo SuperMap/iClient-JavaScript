@@ -767,7 +767,7 @@ describe('SourceListV3', () => {
       id: 'sameBaseLayer',
       layers: layers.slice(1, 3).map((item) => {
         const nextItem = Object.assign({}, item);
-        nextItem.metadata = { SM_Layer_Id: 'sameBaseLayer' };
+        nextItem.metadata = { SM_Layer_Id: 'sameBaseLayer', title: `custom_${item.id}` };
         return nextItem;
       }),
       sources: {
@@ -790,9 +790,52 @@ describe('SourceListV3', () => {
     appreciableLayers = sourceListModel.getLayers();
     expect(layerList.length).toBe(3);
     expect(layerList[layerList.length - 1].id).toBe('sameBaseLayer');
+    expect(layerList[layerList.length - 1].children[0].title.match(/custom_TIANDITU_IMG_3857$/)).toBeTruthy();
+    expect(layerList[layerList.length - 1].children[1].title.match(/custom_ms_TIANDITU_IMG_3857_label$/)).toBeTruthy();
     expect(appreciableLayers.length).toBe(5);
     expect(appreciableLayers[0].id.match(/TIANDITU_IMG_3857_TIANDITU_IMG_3857_\d+$/)).toBeTruthy();
     expect(appreciableLayers[1].id.match(/ms_TIANDITU_IMG_3857_label_ms_TIANDITU_IMG_3857_label_\d+$/)).toBeTruthy();
+    expect(appreciableLayers[0].title.match(/custom_TIANDITU_IMG_3857/)).toBeTruthy();
+    expect(appreciableLayers[1].title.match(/custom_ms_TIANDITU_IMG_3857_label/)).toBeTruthy();
+    done();
+  });
+
+  it('changeBaseLayer show title', (done) => {
+    const nextBaseLayerMapInfo = cloneDeep(changeBaseLayerMapInfo);
+    layers = nextBaseLayerMapInfo.layers;
+    sources = nextBaseLayerMapInfo.sources;
+
+    overlayLayersManager = {};
+
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo: cloneDeep(nextBaseLayerMapInfo),
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => []
+      }
+    });
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeTruthy();
+    const layerList = sourceListModel.getLayerCatalog();
+    const appreciableLayers = sourceListModel.getLayers();
+    expect(layerList.length).toBe(2);
+    expect(appreciableLayers.length).toBe(3);
+    const baseLayerInfoCopy = {
+      ...baseLayerInfo,
+      layers: baseLayerInfo.layers.map((item) => ({
+        ...item,
+        metadata: { title: `custom_${item.id}`}
+      }))
+    };
+    const nextBaseLayerInfo = sourceListModel.changeBaseLayer(baseLayerInfoCopy);
+    expect(nextBaseLayerInfo).toBeTruthy();
+    expect(nextBaseLayerInfo.layers.length).toBe(1);
+    expect(nextBaseLayerInfo.layers).toEqual(baseLayerInfoCopy.layers);
+    expect(map.getStyle().layers.some((item) => ['TIANDITU_IMG_3857', 'ms_TIANDITU_IMG_3857_label'].includes(item.id))).toBeFalsy();
+    const nextAppreciableLayers = sourceListModel.getLayers();
+    expect(nextAppreciableLayers.some(item => item.title === baseLayerInfoCopy.layers[0].metadata.title)).toBeTruthy();
     done();
   });
 });
