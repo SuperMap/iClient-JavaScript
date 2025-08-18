@@ -39,7 +39,7 @@ export function createMapStyleExtending(SuperClass, { MapManager, crsManager }) 
           }
           return {
             url: proxy ? `${proxy}${encodeURIComponent(url)}` : url,
-            credentials: this.webMapService.handleWithCredentials(proxy, url, this.options.withCredentials || false)
+            credentials: this.webMapService.handleWithCredentials(proxy, url, false)
               ? 'include'
               : undefined,
             ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
