@@ -111,9 +111,9 @@
       inputScript(libsurl + '/ant-design-vue/1.7.8/antd.min.js');
     }
     if (inArray(includes, 'antd')) {
-      inputCSS(libsurl + '/antd/3.25.3/antd.min.css');
+      inputCSS(libsurl + '/antd/3.26.20/antd.min.css');
       inputScript(libsurl + '/moment/2.29.4/moment.min.js');
-      inputScript(libsurl + '/antd/3.25.3/antd.min.js');
+      inputScript(libsurl + '/antd/3.26.20/antd.min.js');
     }
     if (inArray(includes, 'deck')) {
       inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
