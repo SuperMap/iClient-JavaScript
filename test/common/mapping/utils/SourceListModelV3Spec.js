@@ -451,6 +451,146 @@ describe('SourceListV3', () => {
     done();
   });
 
+  it('getLayers - wfs', (done) => {
+    const mapInfo = {
+      "metadata": {
+        "layerCatalog": [{
+            "visible": true,
+            "children": [{
+              "visible": true,
+              "parts": [
+                "ProvinceCapital_P@Population#1_0.8"
+              ],
+              "id": "layer_ProvinceCapital_P@Population#1_1755679838482_95",
+              "title": "ProvinceCapital_P@Population#1",
+              "type": "composite"
+            }],
+            "id": "group_PopulationDistribution_wms111_1755679838482_96",
+            "title": "PopulationDistribution_wms111",
+            "type": "group"
+          },
+          {
+            "visible": true,
+            "children": [{
+              "visible": true,
+              "parts": [
+                "Province_L@Population_0.3"
+              ],
+              "id": "layer_Province_L@Population_1755679795075_67",
+              "title": "Province_L@Population",
+              "type": "composite"
+            }],
+            "id": "group_PopulationDistribution_wms111_1755679795075_68",
+            "title": "PopulationDistribution_wms111",
+            "type": "group"
+          },
+          {
+            "visible": true,
+            "id": "CHINA_DARK",
+            "title": "中国暗色地图",
+            "type": "basic"
+          }
+        ]
+      },
+      "sources": {
+        "CHINA_DARK": {
+          "tiles": [
+            "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true"
+          ],
+          "tileSize": 256,
+          "attribution": "",
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "type": "raster"
+        },
+        "ms_wms_1755679795073_58": {
+          "tiles": [
+            "http://172.16.14.77:8090/iserver/services/map-Population/wms111/PopulationDistribution?service=WMS&request=GetMap&layers=0.3&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG:3857&bbox={bbox-epsg-3857}"
+          ],
+          "tileSize": 256,
+          "bounds": [
+            79.00794462500004,
+            20.0992050343981,
+            131.29906509500006,
+            53.333658559101075
+          ],
+          "type": "raster"
+        },
+        "ms_wms_1755679838481_90": {
+          "tiles": [
+            "http://172.16.14.77:8090/iserver/services/map-Population/wms111/PopulationDistribution?service=WMS&request=GetMap&layers=0.8&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG:3857&bbox={bbox-epsg-3857}"
+          ],
+          "tileSize": 256,
+          "bounds": [
+            87.61425523000014,
+            19.997037504400623,
+            126.53037681500007,
+            45.803316189065896
+          ],
+          "type": "raster"
+        }
+      },
+      "crs": "EPSG:3857",
+      "center": [
+        99.85865648224853,
+        31.86438306758635
+      ],
+      "zoom": 3.826097678440538,
+      "glyphs": {},
+      "version": "3.3.0",
+      "rootUrl": "http://172.16.15.206:8190/iportal/",
+      "maxzoom": 12,
+      "name": "无标题地图",
+      "viewExtent": [
+        68.52728177830532,
+        12.16261318538571,
+        131.1900311861916,
+        48.1198896120401
+      ],
+      "layers": [{
+          "maxzoom": 12,
+          "id": "CHINA_DARK",
+          "source": "CHINA_DARK",
+          "type": "raster",
+          "minzoom": 0
+        },
+        {
+          "metadata": {},
+          "id": "Province_L@Population_0.3",
+          "source": "ms_wms_1755679795073_58",
+          "type": "raster"
+        },
+        {
+          "metadata": {},
+          "id": "ProvinceCapital_P@Population#1_0.8",
+          "source": "ms_wms_1755679838481_90",
+          "type": "raster"
+        }
+      ],
+      "pitch": 0,
+      "minzoom": 0
+    };
+    const projInfo = {"catalogs":[{"visible":true,"catalogType":"group","children":[{"catalogType":"layer","relationMsDatasetId":"ms_Population:ProvinceCapital_P_1755679835391_71","serviceLayerId":"0.8","id":"layer_ProvinceCapital_P@Population#1_1755679838482_95","popupInfo":{"elements":[{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"Name","type":"FIELD"}],"title":"ProvinceCapital_P@Population#1"},"title":"ProvinceCapital_P@Population#1","layerSourceType":"WMSService","zoomRange":[0,24],"layersContent":["ProvinceCapital_P@Population#1_0.8"]}],"name":"PopulationDistribution_wms111","id":"group_PopulationDistribution_wms111_1755679838482_96"},{"visible":true,"catalogType":"group","children":[{"catalogType":"layer","relationMsDatasetId":"ms_Population:Province_L_1755679787206_46","serviceLayerId":"0.3","id":"layer_Province_L@Population_1755679795075_67","popupInfo":{"elements":[{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmLength","type":"FIELD"},{"fieldName":"SmSdriW","type":"FIELD"},{"fieldName":"SmSdriN","type":"FIELD"},{"fieldName":"SmSdriE","type":"FIELD"},{"fieldName":"SmSdriS","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"SmTopoError","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"GB","type":"FIELD"}],"title":"Province_L@Population"},"title":"Province_L@Population","layerSourceType":"WMSService","zoomRange":[0,24],"layersContent":["Province_L@Population_0.3"]}],"name":"PopulationDistribution_wms111","id":"group_PopulationDistribution_wms111_1755679795075_68"}],"datas":[{"sourceType":"WFS","datasets":[{"datasetTitle":"Country_R","msDatasetId":"ms_Population:Country_R_1755679787206_42","datasetName":"Population:Country_R"},{"datasetTitle":"HeiHeTengChong_P","msDatasetId":"ms_Population:HeiHeTengChong_P_1755679787206_43","datasetName":"Population:HeiHeTengChong_P"},{"datasetTitle":"ProvinceCapital_P","msDatasetId":"ms_Population:ProvinceCapital_P_1755679787206_44","datasetName":"Population:ProvinceCapital_P"},{"datasetTitle":"BorderTest_L","msDatasetId":"ms_Population:BorderTest_L_1755679787206_45","datasetName":"Population:BorderTest_L"},{"datasetTitle":"Province_L","msDatasetId":"ms_Population:Province_L_1755679787206_46","datasetName":"Population:Province_L"},{"datasetTitle":"Island_R","msDatasetId":"ms_Population:Island_R_1755679787206_47","datasetName":"Population:Island_R"},{"datasetTitle":"PopDensity_R","msDatasetId":"ms_Population:PopDensity_R_1755679787206_48","datasetName":"Population:PopDensity_R"},{"datasetTitle":"Coastline_L","msDatasetId":"ms_Population:Coastline_L_1755679787206_49","datasetName":"Population:Coastline_L"},{"datasetTitle":"Buffer20000","msDatasetId":"ms_Population:Buffer20000_1755679787206_50","datasetName":"Population:Buffer20000"},{"datasetTitle":"Buffer35000","msDatasetId":"ms_Population:Buffer35000_1755679787206_51","datasetName":"Population:Buffer35000"},{"datasetTitle":"County_R","msDatasetId":"ms_Population:County_R_1755679787206_52","datasetName":"Population:County_R"},{"datasetTitle":"County_P","msDatasetId":"ms_Population:County_P_1755679787206_53","datasetName":"Population:County_P"}],"title":"示例 WFS 服务","url":"http://172.16.14.77:8090/iserver/services/data-Population-2/wfs200/gb18030"},{"sourceType":"WFS","datasets":[{"datasetTitle":"Country_R","msDatasetId":"ms_Population:Country_R_1755679835391_69","datasetName":"Population:Country_R"},{"datasetTitle":"HeiHeTengChong_P","msDatasetId":"ms_Population:HeiHeTengChong_P_1755679835391_70","datasetName":"Population:HeiHeTengChong_P"},{"datasetTitle":"ProvinceCapital_P","msDatasetId":"ms_Population:ProvinceCapital_P_1755679835391_71","datasetName":"Population:ProvinceCapital_P"},{"datasetTitle":"BorderTest_L","msDatasetId":"ms_Population:BorderTest_L_1755679835391_72","datasetName":"Population:BorderTest_L"},{"datasetTitle":"Province_L","msDatasetId":"ms_Population:Province_L_1755679835391_73","datasetName":"Population:Province_L"},{"datasetTitle":"Island_R","msDatasetId":"ms_Population:Island_R_1755679835391_74","datasetName":"Population:Island_R"},{"datasetTitle":"PopDensity_R","msDatasetId":"ms_Population:PopDensity_R_1755679835391_75","datasetName":"Population:PopDensity_R"},{"datasetTitle":"Coastline_L","msDatasetId":"ms_Population:Coastline_L_1755679835391_76","datasetName":"Population:Coastline_L"},{"datasetTitle":"Buffer20000","msDatasetId":"ms_Population:Buffer20000_1755679835391_77","datasetName":"Population:Buffer20000"},{"datasetTitle":"Buffer35000","msDatasetId":"ms_Population:Buffer35000_1755679835391_78","datasetName":"Population:Buffer35000"},{"datasetTitle":"County_R","msDatasetId":"ms_Population:County_R_1755679835391_79","datasetName":"Population:County_R"},{"datasetTitle":"County_P","msDatasetId":"ms_Population:County_P_1755679835391_80","datasetName":"Population:County_P"}],"title":"示例 WFS 服务","url":"http://172.16.14.77:8090/iserver/services/data-Population-2/wfs200/gb18030"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.1.2"};
+    
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: projInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const appreciableLayers = sourceListModel.getLayers();
+    expect(appreciableLayers.find(l=>l.dataSource.type === 'WFS')).toBeTruthy();
+    done();
+  });
+
   it('getLayerCatalog without group', (done) => {
     const mapInfo = JSON.parse(apstudioWebMap_layerData);
     const sourceListModel = new SourceListModelV3({
