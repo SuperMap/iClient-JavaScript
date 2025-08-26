@@ -157,11 +157,18 @@ export class SourceListModelV3 extends AppreciableLayerBase {
         const currentData = datas.find(data => data.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId));
         const sourceType = currentData && currentData.sourceType;
         if (sourceType === 'WFS') {
+          const withCredential = currentData.withCredential;
+          const { key, value } = withCredential ?? {};
+          let url = currentData.url;
+          if (key && value) {
+            const separator = url.includes('?') ? '&' : '?';
+            url = `${url}${separator}${key}=${value}`
+          }
           const dataset = currentData.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId);
           Object.assign(dataSource, {
             type: 'WFS',
             datasetName: dataset.datasetName,
-            url: currentData.url
+            url
           });
         }
       }
