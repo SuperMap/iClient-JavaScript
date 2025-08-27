@@ -158,11 +158,10 @@ export class SourceListModelV3 extends AppreciableLayerBase {
         const sourceType = currentData && currentData.sourceType;
         if (sourceType === 'WFS') {
           const withCredential = currentData.withCredential;
-          const { key, value } = withCredential ?? {};
           let url = currentData.url;
-          if (key && value) {
+          if (withCredential && withCredential.key && withCredential.value) {
             const separator = url.includes('?') ? '&' : '?';
-            url = `${url}${separator}${key}=${value}`
+            url = `${url}${separator}${withCredential.key}=${withCredential.value}`
           }
           const dataset = currentData.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId);
           Object.assign(dataSource, {
