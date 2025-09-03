@@ -202,7 +202,11 @@ describe('mapboxgl_WebMapV2', () => {
       getZoom: () => {
         return 2;
       },
+      getMaxZoom: () => {
+        return 22;
+      },
       setZoom: jasmine.createSpy('setZoom').and.callFake(() => {}),
+      setMaxZoom: jasmine.createSpy('setZoom').and.callFake(() => {}),
       setCRS: jasmine.createSpy('setCRS').and.callFake(() => {}),
       getCenter: () => {
         return {
