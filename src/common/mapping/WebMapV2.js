@@ -513,7 +513,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
             const { minScale, maxScale } = layer.visibleScale;
             const crs = this.map.getCRS();
             layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs, layer.tileSize), 0);
-            layer.maxzoom = Math.min(24, this._transformScaleToZoom(maxScale, crs, layer.tileSize) + 0.0000001);
+            layer.maxzoom = Math.min(this.map.getMaxZoom()+1, this._transformScaleToZoom(maxScale, crs, layer.tileSize) + 0.0000001);
           }
 
           if (type === 'tile') {
@@ -820,7 +820,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       return resolutions.every((item, i) => this.numberEqual(item, conversion * mapResolutions[i]));
     }
     _getMapResolutions() {
-      return this._getResolutionsByExtent({extent: this.map.getCRS().getExtent(), tileSize: 512})
+      return this._getResolutionsByExtent({extent: this.map.getCRS().getExtent(), maxZoom: this.map.getMaxZoom() + 1, tileSize: 512})
     }
     _getResolutionsByExtent({ extent, maxZoom = 24, tileSize }) {
       const width = extent[2] - extent[0];
@@ -1443,7 +1443,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           },
           layout,
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || 22
+          maxzoom: maxzoom || this.map.getMaxZoom() + 1
         },
         layerInfo.layerID
       );
@@ -1495,7 +1495,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || 22
+        maxzoom: maxzoom || this.map.getMaxZoom() + 1
       };
       if (filter) {
         layerOptions.filter = filter;
@@ -1550,7 +1550,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                 'icon-rotate': iconRotateExpression || ((layerInfo.style.rotation || 0) * 180) / Math.PI
               },
               minzoom: minzoom || 0,
-              maxzoom: maxzoom || 22
+              maxzoom: maxzoom || this.map.getMaxZoom() + 1
             };
             if (filter) {
               layerOptions.filter = filter;
@@ -1602,7 +1602,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                     'icon-color': style.fillColor
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || 22
+                  maxzoom: maxzoom || this.map.getMaxZoom() + 1
                 };
                 if (filter) {
                   layerOptions.filter = filter;
@@ -1906,7 +1906,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
               visibility: visible
             },
             minzoom: minzoom || 0,
-            maxzoom: maxzoom || 22
+            maxzoom: maxzoom || this.map.getMaxZoom() + 1
           };
           if (filterExpression.length > 1) {
             layerOptions.filter = filterExpression;
@@ -2024,7 +2024,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                     'icon-rotate': symbolStyle.rotation || 0
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || 22,
+                  maxzoom: maxzoom || this.map.getMaxZoom() + 1,
                   filter: imagefilterExpression
                 },
                 layerID
@@ -2059,7 +2059,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                     'icon-color': symbolStyle.fillColor
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || 22,
+                  maxzoom: maxzoom || this.map.getMaxZoom() + 1,
                   filter: svgfilterExpression
                 },
                 layerID
@@ -2230,7 +2230,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                   paint: this._transformStyleToMapBoxGl(defaultStyle, geomType),
                   layout: {},
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || 22
+                  maxzoom: maxzoom || this.map.getMaxZoom() + 1
                 },
                 markerLayerID
               );
@@ -2248,7 +2248,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
                   visibility: layerInfo.visible
                 },
                 minzoom: minzoom || 0,
-                maxzoom: maxzoom || 22
+                maxzoom: maxzoom || this.map.getMaxZoom() + 1
               },
               markerLayerID
             );
@@ -2352,7 +2352,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || 22
+        maxzoom: maxzoom || this.map.getMaxZoom() + 1
       });
       if (addToMap) {
         this._addLayerSucceeded({ layerInfo, features });
@@ -2559,7 +2559,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           paint: layerStyle.style,
           layout: layerStyle.layout || {},
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || 22
+          maxzoom: maxzoom || this.map.getMaxZoom() + 1
         };
         if (filter) {
           style.filter = filter;
@@ -2574,7 +2574,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       parentLayerId,
       visibility = true,
       minzoom = 0,
-      maxzoom = 22,
+      maxzoom,
       isIserver = false,
       tileSize = 256,
       bounds
@@ -2583,7 +2583,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         type: 'raster',
         tiles: url,
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || 22,
+        maxzoom: maxzoom || this.map.getMaxZoom() + 1,
         tileSize: isIserver ? this.rasterTileSize : tileSize,
         rasterSource: isIserver ? 'iserver' : '',
         prjCoordSys:
@@ -2606,7 +2606,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           type: 'raster',
           source: sourceId,
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || 22,
+          maxzoom: maxzoom || this.map.getMaxZoom() + 1,
           layout: {
             visibility: this._getVisibility(visibility)
           }
@@ -2781,7 +2781,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           visibility: layerInfo.visible ? 'visible' : 'none'
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || 22
+        maxzoom: maxzoom || this.map.getMaxZoom() + 1
       });
       this._addLayerSucceeded();
     }
