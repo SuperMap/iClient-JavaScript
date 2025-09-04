@@ -35,6 +35,7 @@ const Map = function (options) {
   this.zoom = this.options.zoom || 0;
   this._container = this.options.container || 'map';
   this._layers = {};
+  this.maxZoom = 22;
   this._layersList = [];
   this.getContainer = function () {
     return this._container;
@@ -107,7 +108,7 @@ const Map = function (options) {
     // Settings
     'setMaxBounds',
     'setMinZoom',
-    'setMaxZoom',
+    // 'setMaxZoom',
     // Layer properties
     'setLayoutProperty',
     'setPaintProperty'
@@ -292,7 +293,10 @@ const Map = function (options) {
     return 0;
   };
   this.getMaxZoom = function () {
-    return 22;
+    return this.maxZoom || 22;
+  };
+   this.setMaxZoom = function (maxZoom) {
+    this.maxZoom = maxZoom;
   };
   this.doubleClickZoom = {
     disable: function () {},
