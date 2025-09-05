@@ -133,7 +133,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
         reused: layer.metadata && layer.metadata.reused
       };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
-      const { msDatasetId } = matchProjectCatalog;
+      const { msDatasetId, relationMsDatasetId } = matchProjectCatalog;
       let dataSource = {};
       if (msDatasetId) {
         for (const data of datas) {
@@ -151,6 +151,24 @@ export class SourceListModelV3 extends AppreciableLayerBase {
             }
             break;
           }
+        }
+      }
+      if (relationMsDatasetId) {
+        const currentData = datas.find(data => data.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId));
+        const sourceType = currentData && currentData.sourceType;
+        if (sourceType === 'WFS') {
+          const withCredential = currentData.withCredential;
+          let url = currentData.url;
+          if (withCredential && withCredential.key && withCredential.value) {
+            const separator = url.includes('?') ? '&' : '?';
+            url = `${url}${separator}${withCredential.key}=${withCredential.value}`
+          }
+          const dataset = currentData.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId);
+          Object.assign(dataSource, {
+            type: 'WFS',
+            datasetName: dataset.datasetName,
+            url
+          });
         }
       }
       const sourceOnMap = this.map.getSource(layer.source);
