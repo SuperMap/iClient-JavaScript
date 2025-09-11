@@ -18,7 +18,7 @@
   * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
   *      <p style="color: #ce4844">Notice</p>
   *      <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
-  *      <a src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-6/olms.js">https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-6/olms.js</a>
+  *      <a src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-7/olms.js">https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-7/olms.js</a>
   * </div>
   * @modulecategory Overlay
   * @category  Visualization VectorTile
@@ -32,7 +32,7 @@
   * 当配置 'source' 的 key 值时，source 为该值的 layer 会被加载；
   * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
   * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
-  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
+  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式以及Background图层，若没有面填充样式或Background图层可不填。
   * @param {ol.StyleFunction} [options.selectedStyle] -选中样式 Function。
   * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
   * @param {Object} [options.headers] - 请求头。
@@ -252,6 +252,7 @@
      _loadStyle(style) {
          if (Object.prototype.toString.call(style) == '[object Object]') {
              this._handleRelativeUrl(style, this.baseUrl);
+             this._suggest(style);
              this._mbStyle = style;
              setTimeout(() => {
                  this._resolve();
@@ -262,6 +263,7 @@
                  .then(response => response.json())
                  .then(mbStyle => {
                      this._handleRelativeUrl(mbStyle, url);
+                     this._suggest(mbStyle);
                      this._mbStyle = mbStyle;
                      this._resolve();
                  });
@@ -429,6 +431,15 @@
               })
           }
       })
+    }
+
+    _suggest(style){
+        const needEnhance = style.layers.some(layer => {
+            return layer.layout && (layer.layout['text-keep-upright-alignment'] === 'viewport' || layer.layout['text-writing-mode'] === 'line');
+        });
+        if(needEnhance){
+            console.warn('Your mapbox style contains the SuperMap extension parameters text-keep-upright-alignment or text-writing-mode, please use ol-enhance.js instead of ol.js,https://iclient.supermap.io/web/libs/ol-enhance/7.5.2-1/ol-enhance.js')
+        }
     }
  }
  
