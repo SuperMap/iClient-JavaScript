@@ -4,7 +4,7 @@
 <!--********************************************************************
 * 该示例需要引入
 * mapbox-gl-leaflet (https://github.com/mapbox/mapbox-gl-leaflet)
-* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-11/mapbox-gl-enhance.js)
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-10/mapbox-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
 
         <script type="text/javascript">
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-            var url = host + '/iserver/services/map-china400/rest/maps/China_4326';
+            var url = host + '/iserver/services/map-china/rest/maps/China_4326';
             
             // 为与mapboxgl的级别相匹配，leaflet的分辨率应设置为第0级为全球范围宽度除以瓦片宽度256.
             // 常见坐标系第0级分辨率   WebMercator(3857):2*6378137*Math.PI/256    WGS84(4326):360.0/256    China2000(4490):360.0/256    Beijing54(4214):360.0/256     Xian80(4610):360.0/256

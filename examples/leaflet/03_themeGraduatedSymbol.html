@@ -14,7 +14,7 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, themeService, themeGraduatedSymbol, themeParameters, themeLayer,
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
     map = L.map('map', {
         center: [39, 100],
         maxZoom: 18,
@@ -26,7 +26,7 @@
     function createTheme() {
         themeService = new L.supermap.ThemeService(url);
         themeGraduatedSymbol = new L.supermap.ThemeGraduatedSymbol({
-            expression: "SMAREA",
+            expression: "SmArea",
             baseValue: 3000000000000,
             graduatedMode: L.supermap.GraduatedMode.CONSTANT,
             style: new L.supermap.ThemeGraduatedSymbolStyle({
@@ -40,7 +40,7 @@
         });
         themeParameters = new L.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
-            datasetNames: ["China_Province_pg"],
+            datasetNames: ["Province_R"],
             dataSourceNames: ["China"]
         });
         themeService.getThemeInfo(themeParameters).then(function (serviceResult) {

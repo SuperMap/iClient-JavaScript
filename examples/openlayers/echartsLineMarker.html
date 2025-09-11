@@ -178,13 +178,13 @@
 
         function query() {
             clearLayer();
-            var queryService = new ol.supermap.QueryService(host + "/iserver/services/map-china400/rest/maps/China");
+            var queryService = new ol.supermap.QueryService(host + "/iserver/services/map-china/rest/maps/China");
             var param = new ol.supermap.QueryBySQLParameters({
                 queryParams: [{
-                    name: "China_ProCenCity_pt@China",
+                    name: "ProvinceCapital_P@China",
                     attributeFilter: "NAME = '广州市' or NAME = '上海市'"
                 }, {
-                    name: "China_Capital_pt@China",
+                    name: "Capital_P@China",
                     attributeFilter: "NAME = '北京市'"
                 }]
             });

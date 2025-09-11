@@ -35,7 +35,7 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, resultLayer, geo,
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
     map = L.map('map', {
         preferCanvas: true,
         center: [39, 100],
@@ -56,7 +56,7 @@
         //服务端数据坐标系为 3857，因此将查询数据转为与服务端对应坐标系：
         var geometry = L.supermap.Util.transform(geo, L.CRS.EPSG4326, L.CRS.EPSG3857);
         var param = new L.supermap.QueryByGeometryParameters({
-            queryParams: {name: "China_Province_pl@China"},
+            queryParams: {name: "Province_R@China"},
             geometry: geometry
         });
         widgets.loader.showLoader();

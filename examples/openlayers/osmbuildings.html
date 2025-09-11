@@ -91,7 +91,7 @@
         }),
         overlays: [overlay]
     });
-    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China";
+    var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china/rest/maps/China";
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,

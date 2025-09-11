@@ -4,7 +4,7 @@
 <!--********************************************************************
 * 该示例需要引入 
 * ant-design (https://github.com/ant-design/ant-design)
-* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-11/mapbox-gl-enhance.js)
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-10/mapbox-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -45,7 +45,7 @@
             'raster-tiles': {
               attribution: attribution,
               type: 'raster',
-              tiles: [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tiles: [host + '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
               tileSize: 256
             }
           },
@@ -60,7 +60,7 @@
           ]
         },
         center: [120.143, 30.236],
-        zoom: 0
+        zoom: 2
       };
       var serviceUrl = 'wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow';
       var layerStyle = {

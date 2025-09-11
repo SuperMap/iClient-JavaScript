@@ -16,7 +16,7 @@
 
     var res = [];
     for (var i = 0; i < 22; i++) {
-        res.push(165664.43905455674 / (Math.pow(2, i)));
+        res.push(19567.879240041664 / (Math.pow(2, i)));
     }
     var map = L.map('map', {
         center: [0, 0],
@@ -29,11 +29,11 @@
                 bounds: L.bounds([-2.0037508342789244E7, -2.0037508342789244E7], [2.0037508342789244E7, 2.0037508342789244E7])
             })
     });
-    new L.supermap.WMTSLayer(host + "/iserver/services/map-china400/wmts100",
+    new L.supermap.WMTSLayer(host + "/iserver/services/map-china/wmts100",
         {
             layer: "China",
             style: "default",
-            tilematrixSet: "Custom_China",
+            tilematrixSet: "CUSTOM_China",
             format: "image/png",
             requestEncoding: 'REST',
             attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>"

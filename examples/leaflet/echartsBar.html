@@ -19,7 +19,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, resultLayer,
         url = host + "/iserver/services/map-world/rest/maps/世界地图_Gray";
-    var url2 = host + "/iserver/services/map-china400/rest/maps/China";
+    var url2 = host + "/iserver/services/map-china/rest/maps/China";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -82,10 +82,10 @@
         clearLayer();
         var param = new L.supermap.QueryBySQLParameters({
             queryParams: [{
-                name: "China_ProCenCity_pt@China",
+                name: "ProvinceCapital_P@China",
                 attributeFilter: "1 = 1"
             }, {
-                name: "China_Capital_pt@China",
+                name: "Capital_P@China",
                 attributeFilter: "1 = 1"
             }]
         });

@@ -50,10 +50,10 @@
 <script type="text/javascript">
     var map, layer, wms1, wms2, wms3, wms4, newHtml, projectionSelect, versionSelect, lastLayer, mapDiv,
         host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var url1 = host + "/iserver/services/map-china400/wms130/China";
-    var url2 = host + "/iserver/services/map-china400/wms130/China_4326";
-    var url3 = host + "/iserver/services/map-china400/wms111/China";
-    var url4 = host + "/iserver/services/map-china400/wms111/China_4326";
+    var url1 = host + "/iserver/services/map-china/wms130/China";
+    var url2 = host + "/iserver/services/map-china/wms130/China_4326";
+    var url3 = host + "/iserver/services/map-china/wms111/China";
+    var url4 = host + "/iserver/services/map-china/wms111/China_4326";
     map = new SuperMap.Map('map', {
         controls: [new SuperMap.Control.Zoom(),
             new SuperMap.Control.Navigation(),

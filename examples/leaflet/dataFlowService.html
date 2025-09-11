@@ -16,15 +16,15 @@
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map,
-            urlMap = host + "/iserver/services/map-china400/rest/maps/China",
-            urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
+            urlMap = host + "/iserver/services/map-china/rest/maps/China",
+            urlQuery = host + "/iserver/services/map-china/rest/maps/China_4326",
             urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow";
         map = L.map('map', {
             preferCanvas: true,
             crs: L.CRS.EPSG3857,
-            center: [39.88, 116.42],
+            center: [39.323798688605166,117.26359642356829],
             maxZoom: 18,
-            zoom: 12
+            zoom: 10
         });
         new L.supermap.TiledMapLayer(urlMap).addTo(map);
 
@@ -57,7 +57,7 @@
         })
         dataFlowLayer.addTo(map);
 
-        
+
         //模拟实时数据  start
         //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
         query();
@@ -66,8 +66,8 @@
         function query() {
             var param = new L.supermap.QueryBySQLParameters({
                 queryParams: {
-                    name: "Main_Road_L@China#1",
-                    attributeFilter: "SMID = 1755"
+                    name: "ProvincialRd_L@China#1",
+                    attributeFilter: "SMID = 2504"
                 }
             });
             new L.supermap

@@ -30,7 +30,7 @@
 <script>
     var map, infowin, layer, utfgrid, control,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
 
     init();
 
@@ -60,7 +60,7 @@
         //4.isUseCache设置是否使用缓存，使用缓存能够提高性能；
         utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
             {
-                layerName: "China_Province_pl@China",
+                layerName: "Province_R@China",
                 utfTileSize: 256,
                 pixcell: 8,
                 isUseCache: true

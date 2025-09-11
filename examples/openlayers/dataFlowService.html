@@ -64,13 +64,13 @@
                 }
             });
             var resultLayer,
-                urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326";
+                urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china/rest/maps/China_4326";
             var urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow";
             var timer, featureResult, dataFlowBroadcast, source;
             new ol.supermap.MapService(urlQuery).getMapInfo(function(serviceResult) {
                 var mapJSONObj = serviceResult.result;
                 //初始化地图
-                var map = new ol.Map({
+                var map = window.map = new ol.Map({
                     target: "map",
                     // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
                     controls: ol.control.defaults.defaults({
@@ -80,8 +80,8 @@
                         })
                         .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                     view: new ol.View({
-                        center: [116.443571, 39.887549],
-                        zoom: 12,
+                        center: [117.26359642356829, 39.323798688605166],
+                        zoom: 10,
                         projection: "EPSG:4326",
                         multiWorld: true
                     }),
@@ -122,8 +122,8 @@
                 function query() {
                     var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
-                            name: "Main_Road_L@China#1",
-                            attributeFilter: "SMID = 1755"
+                            name: "ProvincialRd_L@China#1",
+                            attributeFilter: "SMID = 2504"
                         }
                     });
                     new ol.supermap.QueryService(urlQuery).queryBySQL(param).then(function(serviceResult) {

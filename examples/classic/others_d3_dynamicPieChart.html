@@ -20,7 +20,7 @@
 <script type="text/javascript">
     var map, layer, utfgrid, control, d3Layer,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
     var pieChartDom;
     var elementsDiv;
     var isMapMoving = false;
@@ -99,7 +99,7 @@
         //创建 UTFGrid 图层，用于更新饼图数据
         utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
             {
-                layerName: "China_Province_pl@China",
+                layerName: "Province_R@China",
                 utfTileSize: 256,
                 pixcell: 8,
                 isUseCache: true
@@ -209,7 +209,7 @@
     function addLayer() {
         var center = new SuperMap.LonLat(9733502.481499, 4614406.969325);
         map.addLayers([layer, d3Layer, utfgrid]);
-        map.setCenter(center, 4);
+        map.setCenter(center, 1);
     }
 </script>
 </body>

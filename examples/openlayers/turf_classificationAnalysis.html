@@ -105,8 +105,8 @@
 <script type="text/javascript" include="turf" src="../../dist/ol/include-ol.js"></script>
 <script>
     var host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        nearestDataUrl = host + "/iserver/services/map-china400/rest/maps/China_4326",
-        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        nearestDataUrl = host + "/iserver/services/map-china/rest/maps/China_4326",
+        mapUrl = host + "/iserver/services/map-china/rest/maps/ChinaDark",
         turfLayer, nearestQueryResultLayer,
 
         map = new ol.Map({
@@ -268,7 +268,7 @@
 
             var airportsParam = new ol.supermap.QueryBySQLParameters({
                 queryParams: {
-                    name: "Airport_pt@China.1",
+                    name: "ProvinceCapital_P@China#1",
                 }
             });
 

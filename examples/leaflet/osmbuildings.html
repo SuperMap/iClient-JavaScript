@@ -21,7 +21,7 @@
         zoom: 16
     });
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var url = host + "/iserver/services/map-china400/rest/maps/China";
+    var url = host + "/iserver/services/map-china/rest/maps/China";
     new L.supermap.TiledMapLayer(url).addTo(map);
 
     loadData();

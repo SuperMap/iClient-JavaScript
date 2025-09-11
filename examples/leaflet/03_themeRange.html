@@ -14,7 +14,7 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, themeService, themeRange, themeParameters, themeLayer,
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
     map = L.map('map', {
         center: [30, 84],
         maxZoom: 18,
@@ -58,7 +58,7 @@
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
         themeParameters = new L.supermap.ThemeParameters({
-            datasetNames: ["China_Province_pg"],
+            datasetNames: ["Province_R"],
             dataSourceNames: ["China"],
             joinItems: null,
             themes: [themeRange]

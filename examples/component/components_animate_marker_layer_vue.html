@@ -4,7 +4,7 @@
 <!--********************************************************************
 * 该示例需要引入 
 * vue-iclient (https://github.com/SuperMap/vue-iclient)
-* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-11/mapbox-gl-enhance.js)
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-10/mapbox-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -68,11 +68,11 @@
         </div>
         <script>
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-            var url = host + '/iserver/services/map-china400/rest/maps/China';
+            var url = host + '/iserver/services/map-china/rest/maps/China';
             var param = new SuperMap.QueryBySQLParameters({
                 queryParams: {
-                    name: 'China_provincename_A_txt@China',
-                    attributeFilter: 'SMID > 0'
+                    name: 'ProvinceCapital_P@China',
+                    attributeFilter: 'SmID > 0'
                 }
             });
 
@@ -81,12 +81,12 @@
                 var features = recordsets && recordsets[0] && recordsets[0].features;
                 features.features.forEach(function(feature){
                     feature.geometry.coordinates = _unproject(feature.geometry.coordinates);
-                    feature.properties.name = feature.properties.texts[0];
+                    feature.properties.name = feature.properties.NAME;
                 });
                 new Vue({
                     el: '#main',
                     data() {
-                        var mapUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+                        var mapUrl = host + '/iserver/services/map-china/rest/maps/ChinaDark';
                         var attribution =
                             "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
                             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +

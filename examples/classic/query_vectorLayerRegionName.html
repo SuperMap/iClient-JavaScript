@@ -67,7 +67,7 @@
             name: "captial"
         }, transformControl,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url1 = host + "/iserver/services/map-china400/rest/maps/China";
+        url1 = host + "/iserver/services/map-china/rest/maps/China";
     init();
 
     function init() {
@@ -97,7 +97,7 @@
         });
         map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
         //初始化图层
-        layer = new SuperMap.Layer.TiledDynamicRESTLayer("China400", url1, {
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url1, {
             transparent: true,
             cacheEnabled: true
         }, {maxResolution: "auto"});
@@ -274,7 +274,7 @@
     //添加图层
     function addLayer() {
         map.addLayers([layer, vectorLayer]);
-        map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 4);
+        map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 1);
         map.addControl(new SuperMap.Control.MousePosition());
     }
 
@@ -288,7 +288,7 @@
         var queryParam, queryBySQLParams, queryBySQLService;
         // 初始化查询参数
         queryParam = new SuperMap.REST.FilterParameter({
-            name: "China_Rural_pt@China",
+            name: "Township_P@China",
             attributeFilter: "SmID < 10000"
         }),
             // 初始化sql查询参数
@@ -305,7 +305,7 @@
         var queryParamCity, queryBySQLParamsCity, queryBySQLServiceCity;
         // 初始化查询参数
         queryParamCity = new SuperMap.REST.FilterParameter({
-            name: "District_pt@China",
+            name: "County_P@China",
             attributeFilter: "SmID > 0"
         }),
             // 初始化sql查询参数
@@ -322,7 +322,7 @@
         var queryParamCapital, queryBySQLParamsCapital, queryBySQLServiceCapital;
         //初始化查询参数
         queryParamCapital = new SuperMap.REST.FilterParameter({
-            name: "China_ProCenCity_pt@China",
+            name: "ProvinceCapital_P@China",
             attributeFilter: "SmID > 0"
         }),
             //初始化sql查询参数

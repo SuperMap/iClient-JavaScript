@@ -19,7 +19,7 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map,
-        baseUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        baseUrl = host + "/iserver/services/map-china/rest/maps/ChinaDark",
         url = host + "/iserver/services/data-es/rest/data";
     var liveRenderer,
         timeControl,
@@ -31,7 +31,7 @@
         center: [33.75, 0],
         maxZoom: 15,
         minZoom: 1,
-        zoom: 2,
+        zoom: 3,
         crs: L.CRS.EPSG3857
     });
     new L.supermap.TiledMapLayer(baseUrl).addTo(map);

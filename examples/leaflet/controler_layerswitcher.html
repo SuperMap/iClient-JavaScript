@@ -21,12 +21,12 @@
     var BJ = L.marker([39.830660058696104, 116.92866163503169]).bindPopup(resources ? resources.text_beijingCity : '北京市'),
         CD = L.marker([30.40, 104.04]).bindPopup(resources ? resources.text_chengdu : '成都市');
     var cities = L.layerGroup([BJ, CD]);
-    var China = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china400/rest/maps/China', {noWrap: true});
-    var ChinaDark = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china400/rest/maps/ChinaDark', {noWrap: true});
+    var China = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china/rest/maps/China', {noWrap: true});
+    var ChinaDark = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china/rest/maps/ChinaDark', {noWrap: true});
     var map = L.map('map', {
         center: {lon: 0, lat: 0},
         maxZoom: 18,
-        zoom: 2,
+        zoom: 3,
         zoomControl: false,
         layers: [China, cities]
     });
