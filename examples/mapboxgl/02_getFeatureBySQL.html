@@ -54,7 +54,7 @@
         "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-        var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
+        var baseUrl = host + '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
         var dataUrl = host + "/iserver/services/data-world/rest/data";
 
     var map = new mapboxgl.Map({

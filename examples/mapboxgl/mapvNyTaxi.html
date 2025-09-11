@@ -38,7 +38,7 @@
         "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span> " + resources.text_dataSources +
         " <a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/' target='_blank'>NYCTaxi(" + resources.text_NYTaxiCarPoint + ")</a>  © 2018 " + resources.title_3baidu + " MapV";
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+    var tileURL = host + "/iserver/services/map-china/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var layer,
         map = new mapboxgl.Map({
             container: 'map',

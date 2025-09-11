@@ -22,7 +22,7 @@
     <script>
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map,
-            mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
+            mapUrl = host + "/iserver/services/map-china/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
             attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             "Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
@@ -49,7 +49,7 @@
                 }]
             },
             center: [0, 0],
-            zoom: 1,
+            zoom: 1.5,
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 

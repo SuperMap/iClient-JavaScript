@@ -35,7 +35,7 @@
 
       // 方式一：1.调用 mapboxgl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
       mapboxgl.supermap
-        .initMap(host + '/iserver/services/map-china400/rest/maps/China')
+        .initMap(host + '/iserver/services/map-china/rest/maps/China')
         .then(function (result) {
           var map = result.map;
           map.addControl(new mapboxgl.NavigationControl(), 'top-left');
@@ -50,7 +50,7 @@
       //             "raster-tiles": {
       //                 "attribution": attribution,
       //                 "type": "raster",
-      //                 "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+      //                 "tiles": [host + '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
       //                 "tileSize": 256
       //             }
       //         },

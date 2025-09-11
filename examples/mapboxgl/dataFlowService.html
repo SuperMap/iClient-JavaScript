@@ -25,8 +25,8 @@
   <script>
     var host = (window.isLocal ? window.server : "https://iserver.supermap.io"),
       tileUrl = host +
-        '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}',
-      urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
+        '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}',
+      urlQuery = host + "/iserver/services/map-china/rest/maps/China_4326";
 
     var urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
@@ -53,9 +53,9 @@
           "maxzoom": 18
         }],
       },
-      center: [116.443571, 39.887549],
+      center: [117.443571, 38.987549],
       maxZoom: 18,
-      zoom: 10
+      zoom: 7
     });
     map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
@@ -86,8 +86,8 @@
     function query() {
       var param = new mapboxgl.supermap.QueryBySQLParameters({
         queryParams: {
-          name: "Main_Road_L@China#1",
-          attributeFilter: "SMID = 1755"
+          name: "ProvincialRd_L@China#1",
+          attributeFilter: "SMID = 2504"
         }
       });
       queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {

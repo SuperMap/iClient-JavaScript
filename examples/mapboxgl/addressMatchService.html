@@ -128,7 +128,7 @@
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
-        url = host + "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
+        url = host + "/iserver/services/map-china/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
         addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
 
         map = new mapboxgl.Map({
@@ -152,7 +152,7 @@
                 }]
             },
             center: [116.383572, 39.914714],
-            zoom: 11
+            zoom: 10
         });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');

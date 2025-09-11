@@ -45,9 +45,9 @@
         </div>
         <script type="text/javascript">
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
-                chinaUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
+                chinaUrl = host + '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
                 chinaDarkUrl =
-                    host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
+                    host + '/iserver/services/map-china/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
                 attribution =
                     "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
                     " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -75,7 +75,7 @@
                     ]
                 },
                 center: [0, 0],
-                zoom: 0
+                zoom: 1.5
             });
 
             beforeMap.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
@@ -102,7 +102,7 @@
                     ]
                 },
                 center: [0, 0],
-                zoom: 0
+                zoom: 1.5
             });
 
             //mapbox 卷帘（对比）控件, mapbox-gl-compare v0.3.0版本，新增container属性
