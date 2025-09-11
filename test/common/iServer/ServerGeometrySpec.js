@@ -86,6 +86,25 @@ describe('ServerGeometry', () => {
         serverGeometry.destroy();
     });
 
+     it('toGeoPoint_M', () => {
+        var options = {
+            id: 1,
+            parts: [1],
+            points: [{ y: -4377.027184298267, x: 4020.0045221720466, m:30 }],
+            type: GeometryType.POINT
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var toGeoPoint = serverGeometry.toGeoPoint();
+        expect(toGeoPoint).not.toBeNull();
+        expect(toGeoPoint.CLASS_NAME).toBe('SuperMap.Geometry.Point');
+        expect(toGeoPoint.id).toContain('SuperMap.Geometry_');
+        expect(toGeoPoint.x).toEqual(4020.0045221720466);
+        expect(toGeoPoint.y).toEqual(-4377.027184298267);
+        expect(toGeoPoint.m).toEqual(30);
+        expect(toGeoPoint.z).toBeNull();
+        serverGeometry.destroy();
+    });
+
     it('toGeoPoint_MultiPoint', () => {
         var options = {
             id: 1,
@@ -111,6 +130,34 @@ describe('ServerGeometry', () => {
         expect(components[1].id).toContain('SuperMap.Geometry_');
         expect(components[1].x).toEqual(4057.0600591960642);
         expect(components[1].y).toEqual(-4381.569363260499);
+        serverGeometry.destroy();
+    });
+     it('toGeoPoint_MultiPoint_M', () => {
+        var options = {
+            id: 1,
+            parts: [1, 1],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466, m:30 },
+                { y: -4381.569363260499, x: 4057.0600591960642, z:10, m:40 }
+            ],
+            type: GeometryType.POINT
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var toGeoPointMulti = serverGeometry.toGeoPoint();
+        var components = toGeoPointMulti.components;
+        expect(components.length).toEqual(2);
+        expect(components[0].id).toContain('SuperMap.Geometry_');
+        expect(components[0].x).toEqual(4020.0045221720466);
+        expect(components[0].y).toEqual(-4377.027184298267);
+        expect(components[0].m).toEqual(30);
+        expect(components[0].z).toBeNull();
+        expect(components[1].CLASS_NAME).toBe('SuperMap.Geometry.Point');
+        expect(components[1].id).toContain('SuperMap.Geometry_');
+        expect(components[1].x).toEqual(4057.0600591960642);
+        expect(components[1].y).toEqual(-4381.569363260499);
+        expect(components[1].m).toEqual(40);
+        expect(components[1].z).toEqual(10);
+        expect(components[1].tag).toEqual(10);
         serverGeometry.destroy();
     });
 
@@ -155,6 +202,32 @@ describe('ServerGeometry', () => {
         serverGeometry.destroy();
     });
 
+    it('toGeoLine_LineRing_M', () => {
+        var options = {
+            id: 1,
+            parts: [4],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466, m:30 },
+                { y: -4381.569363260499, x: 4057.0600591960642, m:20 },
+                { y: -4382.60877717323, x: 4064.595810063362, m:10 },
+                { y: -4377.027184298267, x: 4020.0045221720466, m:30 }
+            ],
+            type: GeometryType.LINE
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var geoLine_LineRing = serverGeometry.toGeoLine();
+        var components = geoLine_LineRing.components;
+        expect(components[0].m).toEqual(30);
+        expect(components[0].z).toBeNull();
+        expect(components[1].m).toEqual(20);
+        expect(components[1].z).toBeNull();
+        expect(components[2].m).toEqual(10);
+        expect(components[2].z).toBeNull();
+        expect(components[3].m).toEqual(30);
+        expect(components[3].z).toBeNull();
+        serverGeometry.destroy();
+    });
+
     it('toGeoLine_LineString', () => {
         var options = {
             id: 1,
@@ -189,6 +262,32 @@ describe('ServerGeometry', () => {
         serverGeometry.destroy();
     });
 
+     it('toGeoLine_LineString_M', () => {
+        var options = {
+            id: 1,
+            parts: [4],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466, m:30 },
+                { y: -4381.569363260499, x: 4057.0600591960642, m:20 },
+                { y: -4382.60877717323, x: 4064.595810063362 , m:10},
+                { y: -4382.939424428795, x: 4076.2655245045335, m:30 }
+            ],
+            type: GeometryType.LINE
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var geoLine_LineString = serverGeometry.toGeoLine();
+        var components = geoLine_LineString.components;
+        expect(components[0].m).toEqual(30);
+        expect(components[0].z).toBeNull();
+        expect(components[1].m).toEqual(20);
+        expect(components[1].z).toBeNull();
+        expect(components[2].m).toEqual(10);
+        expect(components[2].z).toBeNull();
+        expect(components[3].m).toEqual(30);
+        expect(components[3].z).toBeNull();
+        serverGeometry.destroy();
+    });
+
     it('toGeoLine_MultiLineString', () => {
         var options = {
             id: 1,
@@ -219,6 +318,34 @@ describe('ServerGeometry', () => {
             for (var j = 0; j < components1[i].components.length; j++) {
                 expect(components1[i].components[j].CLASS_NAME).toBe('SuperMap.Geometry.Point');
                 expect(components1[i].components[j].id).toContain('SuperMap.Geometry_');
+            }
+        }
+        serverGeometry.destroy();
+    });
+    it('toGeoLine_MultiLineString_M', () => {
+        var options = {
+            id: 1,
+            parts: [4, 4],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466 , m:30 },
+                { y: -4381.569363260499, x: 4057.0600591960642 , m:30 },
+                { y: -4382.60877717323, x: 4064.595810063362 , m:30 },
+                { y: -4382.939424428795, x: 4076.2655245045335 , m:30 },
+                { y: -4382.333381109672, x: 4215.049444583775 , m:30 },
+                { y: -4382.389670274902, x: 4247.756955878764, m:30  },
+                { y: -4382.285032149534, x: 4428.153084011883 , m:30 },
+                { y: -4383.017499027105, x: 4647.579232906979, m:30  }
+            ],
+            type: GeometryType.LINE
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var geoLine_MultiLineString = serverGeometry.toGeoLine();
+        var components1 = geoLine_MultiLineString.components;
+        for (var i = 0; i < components1.length; i++) {
+            expect(components1[i].components.length).toEqual(4);
+            for (var j = 0; j < components1[i].components.length; j++) {
+                expect(components1[i].components[j].m).toEqual(30);
+                expect(components1[i].components[j].z).toBeNull();
             }
         }
         serverGeometry.destroy();
@@ -290,6 +417,29 @@ describe('ServerGeometry', () => {
             expect(components[i].parent.CLASS_NAME).toEqual('SuperMap.Geometry.LineString');
             expect(components[i].x).not.toBeNaN();
             expect(components[i].y).not.toBeNaN();
+        }
+        serverGeometry.destroy();
+    });
+
+    it('toGeoLineEPS_LineString_M', () => {
+        var options = {
+            id: 1,
+            parts: [4],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466  , m:30},
+                { y: -4381.569363260499, x: 4057.0600591960642  , m:30},
+                { y: -4382.60877717323, x: 4064.595810063362  , m:30},
+                { y: -4382.939424428795, x: 4076.2655245045335  , m:30}
+            ],
+            type: GeometryType.LINE
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var geoLine_LineString = serverGeometry.toGeoLineEPS();
+        var components = geoLine_LineString.components;
+        expect(components.length).toEqual(4);
+        for (var i = 0; i < components.length; i++) {
+            expect(components[i].m).toEqual(30);
+            expect(components[i].z).toBeNull();
         }
         serverGeometry.destroy();
     });
@@ -382,6 +532,37 @@ describe('ServerGeometry', () => {
                 expect(components[j].type).toEqual('Point');
                 expect(components[j].x).not.toBeNaN();
                 expect(components[j].y).not.toBeNaN();
+            }
+        }
+        serverGeometry.destroy();
+    });
+
+    it('toGeoRegion_M', () => {
+        var options = {
+            id: 'test',
+            parts: [4, 4],
+            points: [
+                { y: -4377.027184298267, x: 4020.0045221720466, m:30 },
+                { y: -4381.569363260499, x: 4057.0600591960642, m:30  },
+                { y: -4382.60877717323, x: 4064.595810063362, m:30  },
+                { y: -4382.939424428795, x: 4076.2655245045335, m:30  },
+                { y: -4382.333381109672, x: 4215.049444583775, m:30  },
+                { y: -4382.389670274902, x: 4247.756955878764, m:30  },
+                { y: -4382.285032149534, x: 4428.153084011883, m:30  },
+                { y: -4383.017499027105, x: 4647.579232906979, m:30  }
+            ],
+            type: GeometryType.LINE
+        };
+        var serverGeometry = new ServerGeometry(options);
+        var geoRegion = serverGeometry.toGeoRegion();
+        expect(geoRegion.components.length).toEqual(2);
+        for (var i = 0; i < geoRegion.components.length; i++) {
+            var components = geoRegion.components[i].components[0].components;
+            expect(components.length).toEqual(5);
+            for (var j = 0; j < components.length; j++) {
+                expect(components[j].type).toEqual('Point');
+                expect(components[i].m).toEqual(30);
+                expect(components[i].z).toBeNull();
             }
         }
         serverGeometry.destroy();

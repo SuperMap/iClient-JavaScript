@@ -86,6 +86,52 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         });
     });
 
+     it('successEvent:getFeaturesBySQL_returnContent=true_M', done => {
+        var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
+            returnContent: true,
+            queryParameter: {
+                name: 'Countries@World',
+                attributeFilter: 'SMID =247'
+            },
+            datasetNames: ['World:Countries']
+        });
+        var getFeaturesBySQLService = featureService(dataServiceURL, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
+            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+            expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+            expect(paramsObj.getFeatureMode).toBe('SQL');
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson_M)));
+        });
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, result => {
+            serviceResult = result;
+            try {
+                expect(serviceResult.type).toBe('processCompleted');
+                expect(serviceResult.result.features.type).toBe('FeatureCollection');
+                expect(serviceResult.result.features.features.length).toEqual(1);
+                expect(serviceResult.result.features.features[0].type).toBe('Feature');
+                expect(serviceResult.result.features.features[0].geometry.type).toBe('MultiPolygon');
+                expect(serviceResult.result.features.features[0].geometry.coordinates.length).toEqual(2);
+                expect(serviceResult.result.features.features[0].geometry.coordinates[0][0][0].length).toEqual(4);
+                expect(serviceResult.result.features.features[0].geometry.coordinates[0][0][0][3]).toEqual(30);
+                getFeaturesBySQLService.destroy();
+                done();
+            } catch (exception) {
+                console.log(
+                    "leafletGetFeaturesBySQLService_'successEvent:returnContent=true'案例失败：" +
+                        exception.name +
+                        ':' +
+                        exception.message
+                );
+                getFeaturesBySQLService.destroy();
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
     it('successEvent:getFeaturesBySQL_returnContent=false', done => {
         var getFeaturesBySQLParams = new GetFeaturesBySQLParameters({
             returnContent: false,

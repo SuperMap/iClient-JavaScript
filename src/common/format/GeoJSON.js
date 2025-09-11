@@ -67,7 +67,7 @@ export class GeoJSON extends JSONFormat {
          * @member {boolean} [GeoJSONFormat.prototype.ignoreExtraDims=true]
          * @description 忽略维度超过 2 的几何要素。
          */
-        this.ignoreExtraDims = true;
+        this.ignoreExtraDims = false;
 
         this.CLASS_NAME = "SuperMap.Format.GeoJSON";
         /**
@@ -83,11 +83,10 @@ export class GeoJSON extends JSONFormat {
              * @returns {Geometry} 一个几何对象。
              */
             "point": function (array) {
-                if (this.ignoreExtraDims === false &&
-                    array.length != 2) {
-                    throw "Only 2D points are supported: " + array;
+                if (this.ignoreExtraDims){
+                   return new Point(array[0], array[1]);
                 }
-                return new Point(array[0], array[1]);
+                return new Point(array);  
             },
 
             /**
@@ -296,8 +295,17 @@ export class GeoJSON extends JSONFormat {
              */
             'point': function (point) {
                 var p = [point.x, point.y];
+                if (point.z != null) {
+                    p.push(point.z);
+                }
+                if (point.m != null) {
+                    if(p.length === 2){
+                      p.push(null);
+                    }
+                    p.push(point.m);
+                }
                 for (var name in point) {
-                    if (name !== "x" && name !== "y" && point[name] !== null && !isNaN(point[name])) {
+                    if (['x', 'y', 'z', 'm'].indexOf(name) < 0 &&  point[name] !== null && !isNaN(point[name])) {
                         p.push(point[name]);
                     }
                 }
