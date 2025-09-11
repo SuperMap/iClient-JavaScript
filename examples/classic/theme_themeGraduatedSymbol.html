@@ -39,7 +39,7 @@
 <script type="text/javascript">
     var map, baseLayer, themeLayer,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url = host + "/iserver/services/map-china400/rest/maps/China";
+        url = host + "/iserver/services/map-china/rest/maps/China";
 
     map = new SuperMap.Map("map", {
         controls: [
@@ -52,7 +52,7 @@
                 }
             })]
     });
-    baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China400", url, {
+    baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
         transparent: true,
         cacheEnabled: true
     }, {maxResolution: "auto"});
@@ -60,7 +60,7 @@
 
     function addLayer() {
         map.addLayer(baseLayer);
-        map.setCenter(new SuperMap.LonLat(10080677, 4591416), 4);
+        map.setCenter(new SuperMap.LonLat(11580677, 4591416), 1);
         map.allOverlays = true;
     }
     function addThemeGraduatedSymbol() {
@@ -86,7 +86,7 @@
             }),
             themeParameters = new SuperMap.REST.ThemeParameters({
                 themes: [themeGraduatedSymbol],
-                datasetNames: ["China_Province_pg"],
+                datasetNames: ["Province_R"],
                 dataSourceNames: ["China"],
                 types: ['REGION']
             });
