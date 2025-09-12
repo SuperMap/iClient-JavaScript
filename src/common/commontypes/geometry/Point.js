@@ -29,31 +29,31 @@ export class Point extends Geometry {
          * @member {number} GeometryPoint.prototype.x
          * @description 横坐标。
          */
-        this.x;
+        this.x = null;
 
         /**
          * @member {number} GeometryPoint.prototype.y
          * @description 纵坐标。
          */
-        this.y;
+        this.y = null;
 
         /**
          * @member {number} GeometryPoint.prototype.z
          * @description Z 值。
          */
-        this.z;
+        this.z = null;
 
         /**
          * @member {number} GeometryPoint.prototype.m
          * @description M 值。
          */
-        this.m;
+        this.m = null;
 
         /**
          * @member {string} GeometryPoint.prototype.type
          * @description  用来存储点的类型。
          */
-        this.type;
+        this.type = "Point";
         if(Array.isArray(xOrCoordinates)){
             const [x,y,z,m] = xOrCoordinates;
             this.x = parseFloat(x);
