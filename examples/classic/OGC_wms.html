@@ -116,8 +116,8 @@
 
     function switchLayer(wms) {
         map.addLayers([wms]);
-        var center = new SuperMap.LonLat(0, 0);
-        map.setCenter(center, 1);
+        var center = new SuperMap.LonLat(9.755859375, 0.87890625);
+        map.setCenter(center, 3);
         lastLayer = wms;
         mapDiv.focus();
         newHtml = resources.text_currentInfo+"<br>" + resources.text_mapProjection + wms.projection + "<br>"+resources.text_currentVersion + wms.params.VERSION;
