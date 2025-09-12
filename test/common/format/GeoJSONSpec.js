@@ -33,6 +33,31 @@ describe('GeoJSON', () => {
     expect(geojson.geometry.coordinates[0]).toEqual(4020.0045221720466);
     expect(geojson.geometry.coordinates[1]).toEqual(-4377.027184298267);
   });
+  it('toGeoPoint_M', () => {
+    var obj = {
+      id: 1,
+      parts: [1],
+      points: [
+        {
+          y: -4377.027184298267,
+          x: 4020.0045221720466,
+          m: 30
+        }
+      ],
+      type: GeometryType.POINT
+    };
+
+    var geojson = new GeoJSON().toGeoJSON(obj);
+    expect(geojson).not.toBeNull();
+    expect(geojson.type).toEqual('Feature');
+    expect(geojson.geometry).not.toBeNull();
+    expect(geojson.geometry.type).toEqual('Point');
+    expect(geojson.geometry.coordinates).not.toBeNull();
+    expect(geojson.geometry.coordinates[0]).toEqual(4020.0045221720466);
+    expect(geojson.geometry.coordinates[1]).toEqual(-4377.027184298267);
+    expect(geojson.geometry.coordinates[2]).toBeNull;
+    expect(geojson.geometry.coordinates[3]).toEqual(30);
+  });
 
   it('toGeoPoint_MultiPoint', () => {
     var obj = {
@@ -130,6 +155,51 @@ describe('GeoJSON', () => {
     expect(geoLine_LineString.geometry.coordinates.length).toEqual(4);
     expect(geoLine_LineString.geometry.coordinates[1][0]).toEqual(4057.0600591960642);
     expect(geoLine_LineString.geometry.coordinates[1][1]).toEqual(-4381.569363260499);
+  });
+
+  it('toGeoLine_LineString_M', () => {
+    var obj = {
+      id: 1,
+      parts: [4],
+      points: [
+        {
+          y: -4377.027184298267,
+          x: 4020.0045221720466,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4381.569363260499,
+          x: 4057.0600591960642,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.60877717323,
+          x: 4064.595810063362,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.939424428795,
+          x: 4076.2655245045335,
+          z: 10,
+          m: 30
+        }
+      ],
+      type: GeometryType.LINE
+    };
+    var geoLine_LineString = new GeoJSON().toGeoJSON(obj);
+    expect(geoLine_LineString).not.toBeNull();
+    expect(geoLine_LineString.type).toEqual('Feature');
+    expect(geoLine_LineString.geometry).not.toBeNull();
+    expect(geoLine_LineString.geometry.type).toEqual('LineString');
+    expect(geoLine_LineString.geometry.coordinates).not.toBeNull();
+    expect(geoLine_LineString.geometry.coordinates.length).toEqual(4);
+    expect(geoLine_LineString.geometry.coordinates[1][0]).toEqual(4057.0600591960642);
+    expect(geoLine_LineString.geometry.coordinates[1][1]).toEqual(-4381.569363260499);
+    expect(geoLine_LineString.geometry.coordinates[1][2]).toEqual(10);
+    expect(geoLine_LineString.geometry.coordinates[1][3]).toEqual(30);
   });
 
   it('toGeoLine_MultiLineString', () => {
@@ -394,6 +464,78 @@ describe('GeoJSON', () => {
     expect(geoRegion.geometry.coordinates[1][0][1][0]).toEqual(4057.0600591960642);
     expect(geoRegion.geometry.coordinates[1][0][1][1]).toEqual(-4381.569363260499);
   });
+
+   it('toGeoRegion_M', () => {
+    var obj = {
+      id: 'test',
+      parts: [4, 4],
+      points: [
+        {
+          y: -4377.027184298267,
+          x: 4020.0045221720466,
+          z: 10,
+          m: 30
+          
+        },
+        {
+          y: -4381.569363260499,
+          x: 4057.0600591960642,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.60877717323,
+          x: 4064.595810063362,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.939424428795,
+          x: 4076.2655245045335,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.333381109672,
+          x: 4215.049444583775,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.389670274902,
+          x: 4247.756955878764,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4382.285032149534,
+          x: 4428.153084011883,
+          z: 10,
+          m: 30
+        },
+        {
+          y: -4383.017499027105,
+          x: 4647.579232906979,
+          z: 10,
+          m: 30
+        }
+      ],
+      type: GeometryType.REGION
+    };
+    var geoRegion = new GeoJSON().toGeoJSON(obj);
+    expect(geoRegion).not.toBeNull();
+    expect(geoRegion.type).toEqual('Feature');
+    expect(geoRegion.geometry).not.toBeNull();
+    expect(geoRegion.geometry.type).toEqual('MultiPolygon');
+    expect(geoRegion.geometry.coordinates).not.toBeNull();
+    expect(geoRegion.geometry.coordinates.length).toEqual(2);
+    //转换时经过排序面积排序 所以第一个要素的第2个坐标变成了第二的要素的第2个坐标
+    expect(geoRegion.geometry.coordinates[1][0][1][0]).toEqual(4057.0600591960642);
+    expect(geoRegion.geometry.coordinates[1][0][1][1]).toEqual(-4381.569363260499);
+    expect(geoRegion.geometry.coordinates[1][0][1][2]).toEqual(10);
+    expect(geoRegion.geometry.coordinates[1][0][1][3]).toEqual(30);
+  });
+
   it('toCollection', () => {
     var obj = {
       id: 'test',
@@ -559,6 +701,39 @@ describe('GeoJSON', () => {
     expect(geoRegionEPS.geometry.points[0].y).toEqual(-4382.33338110967);
   });
 
+  it('fromGeoJson_MultiPolygon_M', () => {
+    var json = {
+      type: 'Feature',
+      properties: { SMID: '1' },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [
+          [
+            [
+              [4215.04944458377, -4382.33338110967,11,31],
+              [4247.75695587876, -4382.3896702749,10,30],
+              [4428.15308401188, -4382.28503214953,10,30],
+              [4647.57923290698, -4383.01749902711,10,30],
+              [4215.04944458377, -4382.33338110967,10,30],
+              [-4382.389670274902, 4247.756955878764,10,30],
+              [-4382.285032149534, 4428.153084011883,10,30],
+              [-4383.017499027105, 4647.579232906979,10,30]
+            ]
+          ]
+        ]
+      }
+    };
+    var geoRegionEPS = new GeoJSON().fromGeoJSON(json, 'Feature', new (function () {})());
+    expect(geoRegionEPS).not.toBeNull();
+    expect(geoRegionEPS.fieldNames[0]).toEqual('SMID');
+    expect(geoRegionEPS.fieldValues[0]).toEqual('1');
+    expect(geoRegionEPS.geometry.type).toEqual('REGION');
+    expect(geoRegionEPS.geometry.points[0].x).toEqual(4215.04944458377);
+    expect(geoRegionEPS.geometry.points[0].y).toEqual(-4382.33338110967);
+    expect(geoRegionEPS.geometry.points[0].z).toEqual(11);
+    expect(geoRegionEPS.geometry.points[0].m).toEqual(31);
+  });
+
   it('fromGeoJson_FeatureCollection_Attribute', () => {
     var features = {
       type: 'FeatureCollection',
@@ -670,6 +845,30 @@ describe('GeoJSON', () => {
     var obj = new GeoJSON().fromGeoJSON(features)[0];
     expect(obj.geometry.points[0].x).toBe(10);
     expect(obj.geometry.points[0].y).toBe(10);
+  });
+
+  it('fromGeometry MultiPoint M', () => {
+    var features = {
+      features: [
+        {
+          geometry: {
+            type: 'MultiPoint',
+            coordinates: [
+              [10, 10, 11, 31],
+              [20, 20, 10, 30]
+            ]
+          },
+          properties: {},
+          type: 'Feature'
+        }
+      ],
+      type: 'FeatureCollection'
+    };
+    var obj = new GeoJSON().fromGeoJSON(features)[0];
+    expect(obj.geometry.points[0].x).toBe(10);
+    expect(obj.geometry.points[0].y).toBe(10);
+    expect(obj.geometry.points[0].z).toBe(11);
+    expect(obj.geometry.points[0].m).toBe(31);
   });
 
   it('fromGeometry MultiLineString', () => {

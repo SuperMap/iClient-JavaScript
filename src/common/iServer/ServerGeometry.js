@@ -143,11 +143,13 @@ export class ServerGeometry {
             len = geoParts.length;
         if (len > 0) {
             if (len === 1) {
-                return new Point(geoPoints[0].x, geoPoints[0].y);
+                const {x, y, z, m} = geoPoints[0];
+                return new Point([x, y, z, m]);
             } else {
                 var pointList = [];
                 for (let i = 0; i < len; i++) {
-                    pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
+                    const {x, y, z, m} = geoPoints[i];
+                    pointList.push(new Point([x, y, z, m]));
                 }
                 return new MultiPoint(pointList);
             }
@@ -170,7 +172,8 @@ export class ServerGeometry {
             if (len === 1) {
                 let pointList = [];
                 for (let i = 0; i < geoParts[0]; i++) {
-                    pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
+                    const {x, y, z, m} = geoPoints[i];
+                    pointList.push(new Point([x, y, z, m]));
                 }
                 //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
                 if (pointList[0].equals(pointList[geoParts[0] - 1])) {
@@ -183,7 +186,8 @@ export class ServerGeometry {
                 for (let i = 0; i < len; i++) {
                     let pointList = [];
                     for (let j = 0; j < geoParts[i]; j++) {
-                        pointList.push(new Point(geoPoints[j].x, geoPoints[j].y));
+                        const {x, y, z, m} = geoPoints[j];
+                        pointList.push(new Point([x, y, z, m]));
                     }
                     lineList.push(new LineString(pointList));
                     geoPoints.splice(0, geoParts[i]);
@@ -213,7 +217,9 @@ export class ServerGeometry {
         if (len > 0) {
             if (len === 1) {
                 for (i = 0, pointList = []; i < geoParts[0]; i++) {
-                    pointList.push(new Point(geoPoints[i].x, geoPoints[i].y, geoPoints[i].type));
+                    const {x, y, z, m, type} = geoPoints[i];
+                    const p = new Point([x, y, z, m], type);
+                    pointList.push(p);
                 }
                 //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
                 if (pointList[0].equals(pointList[geoParts[0] - 1])) {
@@ -226,7 +232,8 @@ export class ServerGeometry {
             } else {
                 for (i = 0, lineList = []; i < len; i++) {
                     for (j = 0, pointList = []; j < geoParts[i]; j++) {
-                        pointList.push(new Point(geoPoints[j].x, geoPoints[j].y));
+                        const {x, y, z, m} = geoPoints[j];
+                        pointList.push(new Point([x, y, z, m]));
                     }
                     lineEPS = LineString.createLineEPS(pointList);
                     lineList.push(new LineString(lineEPS));
@@ -267,7 +274,8 @@ export class ServerGeometry {
         var pointList = [];
         if (len == 1) {
             for (let i = 0; i < geoPoints.length; i++) {
-                pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
+                const {x, y, z, m} = geoPoints[i];
+                pointList.push(new Point([x, y, z, m]));
             }
             polygonArray.push(new Polygon([new LinearRing(pointList)]));
             return new MultiPolygon(polygonArray);
@@ -281,7 +289,8 @@ export class ServerGeometry {
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
             for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
+                const {x, y, z, m} = geoPoints[pointIndex + j];
+                pointList.push(new Point([x, y, z, m]));
             }
             pointIndex += geoParts[i];
             var polygon = new Polygon([new LinearRing(pointList)]);
@@ -374,7 +383,8 @@ export class ServerGeometry {
         var lineEPS;
         if (len == 1) {
             for (var i = 0; i < geoPoints.length; i++) {
-                pointList.push(new Point(geoPoints[i].x, geoPoints[i].y));
+                const {x, y, z, m} = geoPoints[i];
+                pointList.push(new Point([x, y, z, m]));
             }
 
             lineEPS = LineString.createLineEPS(pointList);
@@ -390,7 +400,8 @@ export class ServerGeometry {
         var CCWIdent = [];
         for (let i = 0, pointIndex = 0; i < len; i++) {
             for (let j = 0; j < geoParts[i]; j++) {
-                pointList.push(new Point(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
+                const {x, y, z, m} = geoPoints[pointIndex + j];
+                pointList.push(new Point([x, y, z, m]));
             }
             pointIndex += geoParts[i];
 
@@ -536,7 +547,8 @@ export class ServerGeometry {
                 let partPointsCount = vertices.length;
                 parts.push(partPointsCount);
                 for (let j = 0; j < partPointsCount; j++) {
-                    points.push(new Point(vertices[j].x, vertices[j].y));
+                    const {x, y, z, m} = vertices[j];
+                    points.push(new Point([x, y, z, m]));
                 }
             }
             //这里className不是多点就全部是算线
@@ -552,11 +564,11 @@ export class ServerGeometry {
                     const partPointsCount = vertices.length + 1;
                     parts.push(partPointsCount);
                     for (let k = 0; k < partPointsCount - 1; k++) {
-                        points.push(new Point(vertices[k].x, vertices[k].y));
+                        const {x, y, z, m} = vertices[k];
+                        points.push(new Point([x, y, z, m]));
                     }
-                    points.push(
-                        new Point(vertices[0].x, vertices[0].y)
-                    );
+                    const {x, y, z, m} = vertices[0];
+                    points.push(new Point([x, y, z, m]));
                 }
             }
             type = GeometryType.REGION;
@@ -567,19 +579,23 @@ export class ServerGeometry {
                 let partPointsCount = vertices.length + 1;
                 parts.push(partPointsCount);
                 for (let j = 0; j < partPointsCount - 1; j++) {
-                  points.push(new Point(vertices[j].x, vertices[j].y));
+                  const {x, y, z, m} = vertices[j];
+                  points.push(new Point([x, y, z, m]));
                 }
-                points.push(new Point(vertices[0].x, vertices[0].y));
+                const {x, y, z, m} = vertices[0];
+                points.push(new Point([x, y, z, m]));
             }
             type = GeometryType.REGION;
         } else {
             const vertices = geometry.getVertices();
             let geometryVerticesCount = vertices.length;
             for (let j = 0; j < geometryVerticesCount; j++) {
-                points.push(new Point(vertices[j].x, vertices[j].y));
+                const {x, y, z, m} = vertices[j];
+                points.push(new Point([x, y, z, m]));
             }
             if (geometry instanceof LinearRing) {
-                points.push(new Point(vertices[0].x, vertices[0].y));
+                const {x, y, z, m} = vertices[0];
+                points.push(new Point([x, y, z, m]));
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);

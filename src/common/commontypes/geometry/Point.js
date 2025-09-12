@@ -23,31 +23,58 @@ import {Util} from '../Util';
 export class Point extends Geometry {
 
 
-    constructor(x, y, type, tag) {
-        super(x, y, type, tag);
+    constructor(xOrCoordinates, yOrType, type, tag) {
+        super();
         /**
          * @member {number} GeometryPoint.prototype.x
          * @description 横坐标。
          */
-        this.x = parseFloat(x);
+        this.x;
 
         /**
          * @member {number} GeometryPoint.prototype.y
          * @description 纵坐标。
          */
-        this.y = parseFloat(y);
+        this.y;
 
         /**
-         * @member {string} GeometryPoint.prototype.tag
-         * @description  用来存储额外的属性，比如插值分析中的 Z 值。
+         * @member {number} GeometryPoint.prototype.z
+         * @description Z 值。
          */
-        this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
+        this.z;
+
+        /**
+         * @member {number} GeometryPoint.prototype.m
+         * @description M 值。
+         */
+        this.m;
 
         /**
          * @member {string} GeometryPoint.prototype.type
          * @description  用来存储点的类型。
          */
-        this.type = type || "Point";
+        this.type;
+        if(Array.isArray(xOrCoordinates)){
+            const [x,y,z,m] = xOrCoordinates;
+            this.x = parseFloat(x);
+            this.y = parseFloat(y);
+            this.z = (z || z == 0) ? parseFloat(z) : null;
+            this.m = (m || m == 0) ? parseFloat(m) : null;
+            this.type = yOrType || "Point";
+        }else{
+            this.x = parseFloat(xOrCoordinates); 
+            this.y = parseFloat(yOrType);
+            this.z = (tag || tag == 0) ? parseFloat(tag) : null;
+            this.m = null;
+            this.type = type || "Point";
+        }
+         /**
+         * @member {string} GeometryPoint.prototype.tag
+         * @deprecated
+         * @description  用来存储额外的属性，比如插值分析中的 Z 值。
+         */
+        this.tag = this.z;
+
         this.CLASS_NAME = "SuperMap.Geometry.Point";
         this.geometryType = "Point";
     }
@@ -59,7 +86,7 @@ export class Point extends Geometry {
      */
     clone(obj) {
         if (obj == null) {
-            obj = new Point(this.x, this.y);
+            obj = new Point([this.x, this.y, this.z, this.m]);
         }
 
         // catch any randomly tagged-on properties
@@ -90,7 +117,7 @@ export class Point extends Geometry {
     equals(geom) {
         var equals = false;
         if (geom != null) {
-            equals = ((this.x === geom.x && this.y === geom.y) ||
+            equals = ((this.x === geom.x && this.y === geom.y && this.z === geom.z && this.m === geom.m) ||
                 (isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y)));
         }
         return equals;
@@ -115,7 +142,14 @@ export class Point extends Geometry {
      * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
      */
     toShortString() {
-        return (this.x + ", " + this.y);
+        const arr = [this.x, this.y];
+        if(this.z || this.z == 0){
+           arr.push(this.z);
+        }
+        if(this.m || this.m == 0){
+           arr.push(this.m);
+        }
+        return arr.join(", ");
     }
 
     /**
@@ -126,6 +160,8 @@ export class Point extends Geometry {
         this.x = null;
         this.y = null;
         this.tag = null;
+        this.z = null;
+        this.m = null;
         super.destroy();
     }
 
@@ -136,7 +172,5 @@ export class Point extends Geometry {
      */
     getVertices() {
         return [this];
-    }
-
-
+    } 
 }

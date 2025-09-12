@@ -1105,36 +1105,6 @@ var exampleConfig = {
         name_en: "Vector tile layer",
         content: [
           {
-            name: "默认风格",
-            name_en: "normal style",
-            thumbnail: "l_tileVectorLayer_normal.png",
-            fileName: "vectorTileLayerNormal"
-          }, {
-            name: "月夜风格",
-            name_en: "night style",
-            thumbnail: "l_tileVectorLayer_night.png",
-            fileName: "vectorTileLayerNight"
-          }, {
-            name: "强边界风格",
-            name_en: "boundray style",
-            thumbnail: "l_tileVectorLayer_boundray.png",
-            fileName: "vectorTileLayerBoundary"
-          }, {
-            name: "深夜蓝黑风格",
-            name_en: "dark-blue style",
-            thumbnail: "l_tileVectorLayer_darkBlue.png",
-            fileName: "vectorTileLayerDarkBlue"
-          }, {
-            name: "HelloKitty风格",
-            name_en: "hellokitty style",
-            thumbnail: "l_tileVectorLayer_helloKitty.png",
-            fileName: "vectorTileLayerHelloKitty"
-          }, {
-            name: "淡雅绿风格",
-            name_en: "natural style",
-            thumbnail: "l_tileVectorLayer_natural.png",
-            fileName: "vectorTileLayerNatural"
-          }, {
             name: "MVT (叠加 MapboxGL)",
             name_en: "MVT (via MapboxGL)",
             version: '10.1.1',
