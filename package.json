@@ -86,6 +86,7 @@
     "browserify-css": "^0.15.0",
     "browserify-imgify": "^0.0.1",
     "browserify-versionify": "^1.0.6",
+    "browserslist": "4.25.4",
     "chalk": "^3.0.0",
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
