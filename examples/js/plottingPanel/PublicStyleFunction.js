@@ -1,5 +1,5 @@
 
-var group = [resources.option_symbol, resources.text_cancleLocked, resources.text_objectVisible, resources.text_commonUsePoint, resources.text_mainLine, resources.text_surroundLine, resources.text_fill, resources.text_textContent, resources.text_subSymbol, resources.text_symbolAnnotations];
+var group = [resources.option_symbol, resources.text_cancleLocked, resources.text_objectVisible, resources.text_commonUsePoint, resources.text_mainLine, resources.text_surroundLine, resources.text_fill, resources.text_textContent, resources.text_subSymbol, resources.text_symbolAnnotations, resources.text_middleLineTextContent, resources.text_innerTextContent];
 var displayName = [resources.text_locked, resources.text_visible, resources.text_libID, resources.text_symbolCode];
 var displayLineStyleName = [resources.text_line_width, resources.text_signLineColor, resources.text_symbolLineType, resources.text_signLineOpacity];
 var displaySurroundLineName = [resources.text_surroundLindType, resources.text_surroundLindWidth, resources.text_surroundLindColor, resources.text_surroundLindOpacity];
@@ -7,7 +7,9 @@ var displayFillStyleName = [resources.text_fill, resources.text_fillColor, resou
 var displayNameDot = [resources.text_rotateAngle, resources.text_followMapSize, resources.text_mirrorImage, resources.text_symbolRanke, resources.text_locationOffset, resources.text_offsetLineType, resources.text_sizeLocked, resources.text_symbolWidth, resources.text_symbolHeight];
 var displayTextContentName = [resources.text_symbolTextContent, resources.text_textContentLocation, resources.text_textContentSize, resources.text_textContentColor, resources.text_textContentFont, resources.text_textContentDis,
 resources.text_textContentSpace, resources.text_fontSizePercent, resources.text_fontBorder, resources.text_fontBorderColor, resources.text_fontBorderWidth,
-resources.text_fontBack, resources.text_fontBackColor, resources.text_fontShadow, resources.text_fontShadowColor, resources.text_shadowOffsetX, resources.text_shadowOffsetY];
+resources.text_fontBack, resources.text_fontBackColor, resources.text_fontShadow, resources.text_fontShadowColor, resources.text_shadowOffsetX, resources.text_shadowOffsetY,resources.text_sizeFixed];
+var displayMiddleLineTextContent = [resources.text_symbolTextContent, resources.text_textContentColor, resources.text_textContentFont];
+var displayInnerTextContent = [resources.text_symbolTextContent, resources.text_textContentColor, resources.text_textContentFont];
 var groupNew = [resources.text_groupType, resources.text_arrowType, resources.text_alongLineType, resources.text_borderAttributr, resources.text_radius, resources.text_orbitSet, resources.text_nodeSet, resources.text_associatedLineType, resources.text_foldLineSet];
 var displayNameNew = [resources.text_arrowHead, resources.text_arrowBody, resources.text_arrowTail,
 resources.text_start, resources.text_end,
@@ -18,7 +20,8 @@ resources.text_satelliteOrbit,
 resources.text_nodeType, resources.text_nodeRotateAngle,
 resources.text_objectLines,
 resources.text_showFoldLine,
-resources.text_textAlignType];
+resources.text_textAlignType,
+resources.text_curveBody];
 function collectionPropertyGridRows(featuresParameter) {
     var features = [];
     var styles = [];
@@ -209,8 +212,8 @@ function getAnnotationRows(geometry) {
     annotations.push({ "value": "5", "text": resources.text_bottom });
     annotations.push({ "value": "6", "text": resources.text_left });
     annotations.push({ "value": "7", "text": resources.text_right });
-    if (geometry.symbolData && geometry.symbolData.middleMarkExist)
-        annotations.push({ "value": "8", "text": resources.text_middlePosition });
+    // if (geometry.symbolData && geometry.symbolData.middleMarkExist)
+    //     annotations.push({ "value": "8", "text": resources.text_middlePosition });
     return annotations;
 }
 function annotationToString(annotation) {
@@ -257,6 +260,34 @@ function symbolRankToString(symbolRank) {
         return resources.text_LianRank;
     else if (symbolRank == 9)
         return resources.text_PRank;
+    else if(symbolRank == 301)
+        return resources.text_Rank_MJ_301;
+    else if(symbolRank == 302)
+        return resources.text_Rank_MJ_302;
+    else if(symbolRank == 303)
+        return resources.text_Rank_MJ_303;
+    else if(symbolRank == 304)
+        return resources.text_Rank_MJ_304;
+    else if(symbolRank == 305)
+        return resources.text_Rank_MJ_305;
+    else if(symbolRank == 306)
+        return resources.text_Rank_MJ_306;
+    else if(symbolRank == 307)
+        return resources.text_Rank_MJ_307;
+    else if(symbolRank == 308)
+        return resources.text_Rank_MJ_308;
+    else if(symbolRank == 309)
+        return resources.text_Rank_MJ_309;
+    else if(symbolRank == 310)
+        return resources.text_Rank_MJ_310;
+    else if(symbolRank == 311)
+        return resources.text_Rank_MJ_311;
+    else if(symbolRank == 312)
+        return resources.text_Rank_MJ_312;
+    else if(symbolRank == 313)
+        return resources.text_Rank_MJ_313;
+    else if(symbolRank == 314)
+        return resources.text_Rank_MJ_314;
 }
 function getSymbolRankRows(geometry) {
     var symbolRanks = [];
@@ -284,6 +315,34 @@ function getSymbolRankRows(geometry) {
             rows.push({ "value": "8", "text": resources.text_LianRank });
         else if (symbolRanks[i] == 9)
             rows.push({ "value": "9", "text": resources.text_PRank });
+            else if(symbolRanks[i] == 301)
+            rows.push({ "value": "301", "text": resources.text_Rank_MJ_301 });
+        else if(symbolRanks[i] == 302)
+            rows.push({ "value": "302", "text": resources.text_Rank_MJ_302 });
+        else if(symbolRanks[i] == 303)
+            rows.push({ "value": "303", "text": resources.text_Rank_MJ_303 });
+        else if(symbolRanks[i] == 304)
+            rows.push({ "value": "304", "text": resources.text_Rank_MJ_304 });
+        else if(symbolRanks[i] == 305)
+            rows.push({ "value": "305", "text": resources.text_Rank_MJ_305 });
+        else if(symbolRanks[i] == 306)
+            rows.push({ "value": "306", "text": resources.text_Rank_MJ_306 });
+        else if(symbolRanks[i] == 307)
+            rows.push({ "value": "307", "text": resources.text_Rank_MJ_307 });
+        else if(symbolRanks[i] == 308)
+            rows.push({ "value": "308", "text": resources.text_Rank_MJ_308 });
+        else if(symbolRanks[i] == 309)
+            rows.push({ "value": "309", "text": resources.text_Rank_MJ_309 });
+        else if(symbolRanks[i] == 310)
+            rows.push({ "value": "310", "text": resources.text_Rank_MJ_310 });
+        else if(symbolRanks[i] == 311)
+            rows.push({ "value": "311", "text": resources.text_Rank_MJ_311 });
+        else if(symbolRanks[i] == 312)
+            rows.push({ "value": "312", "text": resources.text_Rank_MJ_312 });
+        else if(symbolRanks[i] == 313)
+            rows.push({ "value": "313", "text": resources.text_Rank_MJ_313 });
+        else if(symbolRanks[i] == 314)
+            rows.push({ "value": "314", "text": resources.text_Rank_MJ_314 });
     }
     return rows;
 }
@@ -520,12 +579,22 @@ function arrowTypeToString(arrowType) {
         return resources.text_solidTriangle;
     else if (arrowType == 2)
         return resources.text_noArrow;
+    else if (arrowType == 3)
+        return resources.text_dovetailArrow;
+    else if (arrowType == 4)
+        return resources.text_rhombus;
+    else if (arrowType == 5)
+        return resources.text_circle;
+        
 }
 function getArrowTypeRows() {
     var rows = [];
     rows.push({ "value": "0", "text": resources.text_doubleLineArrow });
     rows.push({ "value": "1", "text": resources.text_solidTriangle });
     rows.push({ "value": "2", "text": resources.text_noArrow });
+    rows.push({ "value": "3", "text": resources.text_dovetailArrow });
+    rows.push({ "value": "4", "text": resources.text_rhombus });
+    rows.push({ "value": "5", "text": resources.text_circle });
     return rows;
 }
 /**
@@ -587,9 +656,9 @@ function getLineMarkingTypeRows() {
 function getArrowHeadTypeRows() {
     var rows = [];
     rows.push({ "value": "0", "text": resources.text_doubleLineArrow });
-    rows.push({ "value": "2", "text": resources.text_dovetailArroe });
+    rows.push({ "value": "2", "text": resources.text_dovetailArrow });
     rows.push({ "value": "3", "text": resources.text_solidTriangle });
-    rows.push({ "value": "6", "text": resources.text_newDovetailArroe });
+    rows.push({ "value": "6", "text": resources.text_newDovetailArrow });
     rows.push({ "value": "-1", "text": resources.text_noArrow });
     return rows;
 }
@@ -597,11 +666,11 @@ function arrowHeadTypeToString(arrowHeadType) {
     if (arrowHeadType == 0)
         return resources.text_doubleLineArrow;
     else if (arrowHeadType == 2)
-        return resources.text_dovetailArroe;
+        return resources.text_dovetailArrow;
     else if (arrowHeadType == 3)
         return resources.text_solidTriangle;
     else if (arrowHeadType == 6)
-        return resources.text_newDovetailArroe;
+        return resources.text_newDovetailArrow;
     else if (arrowHeadType == -1)
         return resources.text_noArrow;
 }
@@ -693,6 +762,8 @@ function subSymbolsTypeString(subSymbolsLength, geometry, index) {
                 return resources.text_navy2;
             } else if (geometry.getSubSymbols()[index].code === 300) {
                 return resources.text_airForce;
+            }else{
+                return geometry.getSubSymbols()[index].code.toString();
             }
         } else if (geometry.libID === 123) {
             if (geometry.getSubSymbols()[index].code === 10101) {
@@ -865,8 +936,8 @@ function isCanAddText(selectfeature) {
         selectfeature.symbolType === SuperMap.Plot.SymbolType.PATHTEXT ||//沿线注记
         selectfeature.symbolType === SuperMap.Plot.SymbolType.POLYGONREGION ||//多边形区域
         selectfeature.symbolType === SuperMap.Plot.SymbolType.ARCREGION ||//扇形区域
-        selectfeature.symbolType === SuperMap.Plot.SymbolType.LINEMARKING //线型标注
-    ) {
+        selectfeature.symbolType === SuperMap.Plot.SymbolType.LINEMARKING ||  //线型标注
+        (SuperMapAlgoPlot.MJAlgoSymbolFactory && !SuperMapAlgoPlot.MJAlgoSymbolFactory.isAccessServer(selectfeature.libID, selectfeature.code))){
         return true;
     }
 }
@@ -1149,7 +1220,6 @@ function symbolPropertyObject(selectfeature, styleObject) {
     fontShadowOffsetYObj.editor = "text";
     fontShadowOffsetYObj.value = styleObject.fontShadowOffsetY;
 
-
     var rows = [];
     //线形
     var lineRows = [];
@@ -1198,10 +1268,16 @@ function symbolPropertyObject(selectfeature, styleObject) {
 
     //文字
     var textRows = [];
-    textRows.push(textContentObj);
-    textRows.push(fontColorObj);
-    textRows.push(fontFamilyObj);
-    textRows.push(fontSizeObj);
+    if (!SuperMapAlgoPlot.MJAlgoSymbolFactory.isAccessServer(selectfeature.libID, selectfeature.code) && 
+    !SuperMapAlgoPlot.MJAlgoSymbolFactory.isSupportTextContent(selectfeature.libID, selectfeature.code)) {
+        textRows.push(fontFamilyObj);
+        textRows.push(fontSizeObj);
+    }else{
+        textRows.push(textContentObj);
+        textRows.push(fontColorObj);
+        textRows.push(fontFamilyObj);
+        textRows.push(fontSizeObj);
+    }
     if (selectfeature.symbolType === SuperMap.Plot.SymbolType.PATHTEXT ||
         selectfeature.symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL) {
         textRows.push(markPosObj);
@@ -1230,8 +1306,6 @@ function symbolPropertyObject(selectfeature, styleObject) {
             textRows.push(fontShadowOffsetYObj);
         }
     }
-
-
 
     //图元文本
     if (selectfeature.symbolType === SuperMap.Plot.SymbolType.TEXTSYMBOL) {
@@ -1336,24 +1410,44 @@ function symbolPropertyObject(selectfeature, styleObject) {
         dotSymbolRows = dotSymbolRows.concat(surroundLineRows);
         dotSymbolRows = dotSymbolRows.concat(fillRows);
         dotSymbolRows = dotSymbolRows.concat(textRows);
+
+        if (selectfeature.canSetInnerText()) {
+            //内部注记
+            var innerTextContentObj = new Object();
+            innerTextContentObj.group = group[11];
+            innerTextContentObj.name = displayInnerTextContent[0];
+            innerTextContentObj.editor = "text";
+            innerTextContentObj.value = selectfeature.innerTextContent;
+
+            //内部注记颜色
+            var innerFontColorObj = new Object();
+            innerFontColorObj.group = group[11];
+            innerFontColorObj.name = displayInnerTextContent[1];
+            innerFontColorObj.editor = "colorpicker";
+            innerFontColorObj.value = selectfeature.innerTextStyle.fontColor;
+
+            //内部注记字体
+            var innerTextFontObj = new Object();
+            innerTextFontObj.group = group[11];
+            innerTextFontObj.name = displayInnerTextContent[2];
+            innerTextFontObj.editor = "text";
+            innerTextFontObj.value = selectfeature.innerTextStyle.fontFamily;
+
+            var innerTextRows = [];
+            innerTextRows.push(innerTextContentObj);
+            innerTextRows.push(innerFontColorObj);
+            innerTextRows.push(innerTextFontObj);
+
+            dotSymbolRows = dotSymbolRows.concat(innerTextRows);
+        }
         rows = rows.concat(dotSymbolRows);
     }
 
     if (selectfeature.symbolType !== SuperMap.Plot.SymbolType.DOTSYMBOL && checkSymbolType(selectfeature) === true) {
         var algoSymbolRows = [];
         //线面标号子标号
-
-        if ((selectfeature.libID === 0 && selectfeature.code === 1025) ||
-            (selectfeature.libID === 100 && selectfeature.code === 25200) ||
-            (selectfeature.libID === 100 && selectfeature.code === 3020901) ||
-            (selectfeature.libID === 100 && selectfeature.code === 23400) ||
-            (selectfeature.libID === 100 && selectfeature.code === 30800) ||
-            (selectfeature.libID === 100 && selectfeature.code === 26400) ||
-            (selectfeature.libID === 100 && selectfeature.code === 30001) || 
-            (selectfeature.libID === 123 && selectfeature.code === 90213) ||
-            (selectfeature.libID === 123 && selectfeature.code === 90217)
-        ) {
-            var count = selectfeature.getMaxSubSymbols();
+        var count = selectfeature.getMaxSubSymbols();
+        if (count > 0) {      
             for (let i = 0; i < count; i++) {
                 var objectSubCode1 = new Object();
                 objectSubCode1.group = group[8];
@@ -1402,31 +1496,6 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 algoSymbolRows.push(subSymbolLineColor);
             }
         }
-        // if(selectfeature.code === 1025 && selectfeature.getSubSymbols().length > 0){
-        //     for(let i = 0 ;i<selectfeature.getSubSymbols().length;i++){
-        //     var objectLibID = new Object();
-        //     objectLibID.group = group[8];
-        //     objectLibID.name = displayName[2];
-        //     objectLibID.editor = "text";
-        //     objectLibID.value = libIDToString(selectfeature.getSubSymbols()[i].libID);
-        //     algoSymbolRows.push(objectLibID);
-        //     var subSymbolLineWidth = new Object();
-        //     subSymbolLineWidth.group = group[8];
-        //     subSymbolLineWidth.name = "子标号线宽";
-        //     subSymbolLineWidth.editor = "text";
-        //     subSymbolLineWidth.index = i;
-        //     subSymbolLineWidth.value =  selectfeature.getSubSymbols()[i].weight;
-        //     algoSymbolRows.push(subSymbolLineWidth);
-        //     var subSymbolLineColor = new Object();
-        //     subSymbolLineColor.group = group[8];
-        //     subSymbolLineColor.name = "子标号线色";
-        //     subSymbolLineColor.editor = "colorpicker";
-        //     subSymbolLineColor.index = i;
-        //     subSymbolLineColor.value =  selectfeature.getSubSymbols()[i].color;
-        //     algoSymbolRows.push(subSymbolLineColor);
-        //     }
-
-        // }
 
         //四个点以上含4个点可以设置成折线显示
         if ((selectfeature.getLatLngs().length > 3) && (typeof selectfeature.canPolylineConnectLocationPoint !== "undefined" && selectfeature.canPolylineConnectLocationPoint() === true)) {
@@ -1441,6 +1510,14 @@ function symbolPropertyObject(selectfeature, styleObject) {
         algoSymbolRows = algoSymbolRows.concat(surroundLineRows);
         algoSymbolRows = algoSymbolRows.concat(fillRows);
         if (isCanAddText(selectfeature) === true) {
+            //注记：注记是否固定大小
+            var sizeFixedObj = new Object();
+            sizeFixedObj.group = group[7];
+            sizeFixedObj.name = displayTextContentName[17];
+            sizeFixedObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };;
+            sizeFixedObj.value = checkboxValueToString(selectfeature.getTextSizeFixed());
+            textRows.push(sizeFixedObj);
+
             algoSymbolRows = algoSymbolRows.concat(textRows);
         }
 
@@ -1451,8 +1528,8 @@ function symbolPropertyObject(selectfeature, styleObject) {
             let symbolAnnotationRows = [];
             let offset = { x: 0, y: 0 };
             if (annotation) {
-                offset.x = annotation.offsetX;
-                offset.y = annotation.offsetY;
+                offset.x = parseInt(annotation.getPixelOffset().x);
+                offset.y = parseInt(annotation.getPixelOffset().y);
                 symbolAnnotationRows = getSymbolAnnotationRow(annotation.textContent, annotation.textPosition, annotation.style, offset, group[9] + (index + 1));
             } else {
 
@@ -1462,7 +1539,35 @@ function symbolPropertyObject(selectfeature, styleObject) {
             rows = rows.concat(symbolAnnotationRows);
         }
 
+        if (selectfeature.canSetInnerText && selectfeature.canSetInnerText()) {
+            //中间横线注记
+            var middleTextContentObj = new Object();
+            middleTextContentObj.group = group[10];
+            middleTextContentObj.name = displayMiddleLineTextContent[0];
+            middleTextContentObj.editor = "text";
+            middleTextContentObj.value = selectfeature.textContent;
 
+            //中间横线注记颜色
+            var middleFontColorObj = new Object();
+            middleFontColorObj.group = group[10];
+            middleFontColorObj.name = displayMiddleLineTextContent[1];
+            middleFontColorObj.editor = "colorpicker";
+            middleFontColorObj.value = selectfeature.style.fontColor;
+
+            //中间横线注记字体
+            var middleTextFontObj = new Object();
+            middleTextFontObj.group = group[10];
+            middleTextFontObj.name = displayMiddleLineTextContent[2];
+            middleTextFontObj.editor = "text";
+            middleTextFontObj.value = selectfeature.style.fontFamily;
+
+            var middleLineTextRows = [];
+            middleLineTextRows.push(middleTextContentObj);
+            middleLineTextRows.push(middleFontColorObj);
+            middleLineTextRows.push(middleTextFontObj);
+
+            algoSymbolRows = algoSymbolRows.concat(middleLineTextRows);
+        }
 
         rows = rows.concat(algoSymbolRows);
     }
@@ -1528,8 +1633,14 @@ function symbolPropertyObject(selectfeature, styleObject) {
         arrowTypeEndObj.name = displayNameNew[4];
         arrowTypeEndObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getArrowTypeRows(selectfeature) } };
         arrowTypeEndObj.value = arrowTypeToString(selectfeature.getEndArrowType());
+        var isCurveObj = new Object();
+        isCurveObj.group = groupNew[1];
+        isCurveObj.name = displayNameNew[22];
+        isCurveObj.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
+        isCurveObj.value = checkboxValueToString(selectfeature.getArrowLineIsCurve());
         rows.push(arrowTypeStartObj);
         rows.push(arrowTypeEndObj);
+        rows.push(isCurveObj);
     }
 
     if (selectfeature.libID == 123) {

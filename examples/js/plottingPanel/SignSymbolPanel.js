@@ -1138,9 +1138,9 @@ function positionValueToString(value) {
 function getFontRows() {
     var rows = [];
     rows.push({ "value": resources.text_song, "text": resources.text_song });
-    rows.push({ "value": resources.text_li, "text": resources.text_li });
+    rows.push({ "value": resources.text_hei, "text": resources.text_hei });
     rows.push({ "value": resources.text_kai, "text": resources.text_kai });
-    rows.push({ "value": "Helvetica", "text": "Helvetica" });
+    rows.push({ "value": "微软雅黑", "text": "微软雅黑" });
     rows.push({ "value": "Times New Roman", "text": "Times New Roman" });
     return rows;
 }
@@ -1150,8 +1150,8 @@ function fontValueToStrin(value) {
         case resources.text_song:
             result = resources.text_song;
             break;
-        case resources.text_li:
-            result = resources.text_li;
+        case resources.text_hei:
+            result = resources.text_hei;
             break;
         case resources.text_kai:
             result = resources.text_kai;

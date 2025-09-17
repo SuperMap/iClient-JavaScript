@@ -22,6 +22,10 @@ var communicationLinkStyleName = [resources.text_line_width, resources.text_comm
 var radarStyleGroup = [resources.text_scanRadarName, resources.text_innerCircleStyle, resources.text_outterCircleStyle, resources.text_scanStyle];
 var radarStyleName = [resources.text_innerCircleFillColor, resources.text_innerCircleFillOpacity, resources.text_innerBorderColor, resources.text_innerBorderOpacity, resources.text_outerCircleFillColor, resources.text_outerCircleFillOpacity, resources.text_outerCircleBorderColor, resources.text_outerCircleBorderOpacity, resources.text_scanFillColor, resources.text_scanFillOpacity]
 
+var monitoringRadarStyleGroup = [resources.text_monitoringRadarName, resources.text_monitoringRadarStyle, resources.text_targetLineStyle];
+var monitoringRadarStyleName = [resources.text_innerMonitoringColor, resources.text_innerMonitoringOpacity, resources.text_outerMonitoringColor, resources.text_outerMonitoringOpacity, resources.text_monitoringRadius,resources.text_monitoringRatio];
+var monitoringRadarTargetLine = [resources.text_monitoringRadarLineType, resources.text_monitoringRadarFlowType];
+
 var sectorStyleGroup = [resources.text_sectorDetectionRange, resources.text_scanRadarSectorStyle, resources.text_scanRadarScanStyle]
 var sectorDetectionStyleName = [resources.text_scanRadarSectorFillColor, resources.text_scanRadarSectorFillOpacity, resources.text_scanRadarSectorBorderColor, resources.text_scanRadarSectorBorderOpacity, resources.text_scanRadarScanFillColor, resources.text_scanRadarScanFillOpacity, resources.text_scanRadarScanBorderColor,resources.text_scanRadarScanBorderOpacity ];
 
@@ -48,7 +52,9 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
         case SuperMap.Plot.SpecialEffectType.SCANRADAR:
             latlngBelongToGroup = radarStyleGroup[0];
             break;
-
+        case SuperMap.Plot.SpecialEffectType.MONITORINGRADAR:
+            latlngBelongToGroup = monitoringRadarStyleGroup[0];
+            break;
         default:
             break;
     }
@@ -447,10 +453,152 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
             rows.push(scanSectorFillOpacity);
 
             break;
+        case SuperMap.Plot.SpecialEffectType.MONITORINGRADAR:
+            var monitoringRadius = new Object();
+            monitoringRadius.group = monitoringRadarStyleGroup[0];
+            monitoringRadius.name = monitoringRadarStyleName[4];
+            monitoringRadius.editor = "text";
+            monitoringRadius.value = specialEffect._radius;
+            rows.push(monitoringRadius);
 
+            var monitoringInnerColor = new Object();
+            monitoringInnerColor.group = monitoringRadarStyleGroup[1];
+            monitoringInnerColor.name = monitoringRadarStyleName[0];
+            monitoringInnerColor.editor = "colorpicker";
+            monitoringInnerColor.value = specialEffect.getRadarStyle().innerColor;
+            rows.push(monitoringInnerColor);
+
+            var monitoringInnerOpacity= new Object();
+            monitoringInnerOpacity.group = monitoringRadarStyleGroup[1];
+            monitoringInnerOpacity.name = monitoringRadarStyleName[1];
+            monitoringInnerOpacity.editor = "text";
+            monitoringInnerOpacity.value = specialEffect.getRadarStyle().innerOpacity;
+            rows.push(monitoringInnerOpacity);
+
+            var monitoringOuterColor = new Object();
+            monitoringOuterColor.group = monitoringRadarStyleGroup[1];
+            monitoringOuterColor.name = monitoringRadarStyleName[2];
+            monitoringOuterColor.editor ="colorpicker";
+            monitoringOuterColor.value = specialEffect.getRadarStyle().outerColor;
+            rows.push(monitoringOuterColor);
+
+            var monitoringOuterOpacity = new Object();
+            monitoringOuterOpacity.group = monitoringRadarStyleGroup[1];
+            monitoringOuterOpacity.name = monitoringRadarStyleName[3];
+            monitoringOuterOpacity.editor = "text";
+            monitoringOuterOpacity.value = specialEffect.getRadarStyle().outerOpacity;
+            rows.push(monitoringOuterOpacity);
+
+            var monitoringOuterRatio = new Object();
+            monitoringOuterRatio.group = monitoringRadarStyleGroup[1];
+            monitoringOuterRatio.name = monitoringRadarStyleName[5];
+            monitoringOuterRatio.editor = "text";
+            monitoringOuterRatio.value = specialEffect.getRadarStyle().ratioRadius;
+            rows.push(monitoringOuterRatio);
+
+            //目标跟踪线线形：线型
+            var monitoringRadarLineStyle = new Object();
+            monitoringRadarLineStyle.group = monitoringRadarStyleGroup[2];
+            monitoringRadarLineStyle.name = monitoringRadarTargetLine[0];
+            if (monitoringRadarLineStyle.lineSymbolID !== undefined) {
+                monitoringRadarLineStyle.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getTargetLineTypeRows() } };
+                monitoringRadarLineStyle.value = targetLineTypeToString(specialEffect.lineSymbolID);
+            } else {
+                monitoringRadarLineStyle.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getTargetLineTypeRows() } };
+                monitoringRadarLineStyle.value = specialEffect.strokeDashstyle;
+            }
+
+            var monitoringRadarLineFlowType = new Object();
+            monitoringRadarLineFlowType.group = monitoringRadarStyleGroup[2];
+            monitoringRadarLineFlowType.name = monitoringRadarTargetLine[1];
+            if (monitoringRadarLineFlowType.lineSymbolID !== undefined) {
+                monitoringRadarLineFlowType.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getTargetLineFlowTypeRows() } };
+                monitoringRadarLineFlowType.value = targetLineFlowTypeToString(specialEffect.lineSymbolID);
+            } else {
+                monitoringRadarLineFlowType.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getTargetLineFlowTypeRows() } };
+                monitoringRadarLineFlowType.value = specialEffect.strokeDashstyle;
+            }
+            // var monitoringTargetLine = new Object();
+            // monitoringInnerColor.group = monitoringRadarStyleGroup[1];
+            // monitoringInnerColor.name = monitoringRadarStyleName[0];
+            // monitoringInnerColor.editor = "text";
+            // monitoringInnerColor.value = specialEffect.style.monitoringStyle.fillOpacity;
+            // rows.push(monitoringInnerColor);
+
+            // var monitoringInnerOpacity= new Object();
+            // monitoringInnerOpacity.group = monitoringRadarStyleGroup[1];
+            // monitoringInnerOpacity.name = monitoringRadarStyleName[1];
+            // monitoringInnerOpacity.editor = "text";
+            // monitoringInnerOpacity.value = specialEffect.style.monitoringStyle.fillOpacity;
+            // rows.push(monitoringInnerOpacity);
+
+            // var monitoringOuterColor = new Object();
+            // monitoringOuterColor.group = monitoringRadarStyleGroup[1];
+            // monitoringOuterColor.name = monitoringRadarStyleName[2];
+            // monitoringOuterColor.editor = "text";
+            // monitoringOuterColor.value = specialEffect.style.monitoringStyle.fillOpacity;
+            // rows.push(monitoringOuterColor);
+
+            // var monitoringOuterOpacity = new Object();
+            // monitoringOuterOpacity.group = monitoringRadarStyleGroup[1];
+            // monitoringOuterOpacity.name = monitoringRadarStyleName[3];
+            // monitoringOuterOpacity.editor = "text";
+            // monitoringOuterOpacity.value = specialEffect.style.monitoringStyle.fillOpacity;
+            // rows.push(monitoringOuterOpacity);
+
+            // var monitoringOuterRatio = new Object();
+            // monitoringOuterRatio.group = monitoringRadarStyleGroup[1];
+            // monitoringOuterRatio.name = monitoringRadarStyleName[5];
+            // monitoringOuterRatio.editor = "text";
+            // monitoringOuterRatio.value = specialEffect.style.monitoringStyle.fillOpacity;
+            // rows.push(monitoringOuterRatio);
+            break;
         default:
             break;
     }
+    return rows;
+}
+
+/**
+ * 跟踪线型
+ */
+ function targetLineTypeToString(lineType) {
+    if (lineType == 0){
+        return resources.text_monitoringRadarLineCone;
+    }else{
+        return resources.text_monitoringRadarLineLine;
+    }
+        
+}
+
+function getTargetLineTypeRows() {
+    var rows = [];
+    rows.push({ "value": "0", "text": resources.text_monitoringRadarLineCone });//锥形
+    rows.push({ "value": "1", "text": resources.text_monitoringRadarLineLine });//管形
+    return rows;
+}
+
+/**
+ * 跟踪线流动类型
+ */
+ function targetLineFlowTypeToString(lineFlowType) {
+    if (lineFlowType == 0){
+        return resources.option_monitoringFlow1;
+    }else if(lineFlowType == 1){
+        return resources.option_monitoringFlow2;
+    }else if(lineFlowType == 2){
+        return resources.option_monitoringFlow3;
+    }else if(lineFlowType == 3){
+        return resources.option_monitoringFlow4;
+    }
+}
+
+function getTargetLineFlowTypeRows() {
+    var rows = [];
+    rows.push({ "value": "0", "text": resources.option_monitoringFlow1 });
+    rows.push({ "value": "1", "text": resources.option_monitoringFlow2 });
+    rows.push({ "value": "2", "text": resources.option_monitoringFlow3 });
+    rows.push({ "value": "3", "text": resources.option_monitoringFlow4 });
     return rows;
 }
 

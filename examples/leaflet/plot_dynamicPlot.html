@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
@@ -554,13 +554,13 @@
         function undo() {
             editControl.avoidEdit(false);
             plotting.getTransManager().undo();
-            editControl.fire(SuperMap.Plot.Event.featuresmodified, {features: editControl.selectedFeatures});//刷新属性面板
+            editControl.fire(SuperMap.Plot.Event.featuresmodified, { features: editControl.selectedFeatures });//刷新属性面板
         }
 
         function redo() {
             editControl.avoidEdit(false);
             plotting.getTransManager().redo();
-            editControl.fire(SuperMap.Plot.Event.featuresmodified, {features: editControl.selectedFeatures});//刷新属性面板
+            editControl.fire(SuperMap.Plot.Event.featuresmodified, { features: editControl.selectedFeatures });//刷新属性面板
         }
 
         //等大

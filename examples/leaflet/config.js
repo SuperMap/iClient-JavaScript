@@ -1342,12 +1342,6 @@ var exampleConfig = {
           thumbnail: "plot_signSymbol.png",
           fileName: "plot_signSymbol"
         }, {
-          name: "特效示例",
-          name_en: "specialEffect example",
-          version: "11.2.0",
-          thumbnail: "plot_drawSpecialEffect.png",
-          fileName: "plot_drawSpecialEffect"
-        }, {
           name: "标号聚合",
           name_en: "symbolGroup example",
           version: "11.2.0",

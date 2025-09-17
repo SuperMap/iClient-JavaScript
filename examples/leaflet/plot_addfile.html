@@ -1,14 +1,16 @@
 <!--********************************************************************
-* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
 * iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <x-Frame-options value="ALLOW-FROM"></x-Frame-options>
     <title data-i18n="resources.title_addfile"></title>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -32,7 +34,7 @@
 <script type="text/javascript" include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var url = host + "/iserver/services/map-china/rest/maps/China_4326";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
     var map;
     map = L.map('map', {

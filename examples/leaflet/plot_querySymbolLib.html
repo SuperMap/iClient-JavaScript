@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
@@ -129,9 +129,14 @@
                     //设置标号的字体居中显示
                     drawNode.style.color = "#000";
                     //设置标号画上的id属性
-                    drawNode.id = queryResult[i].libID + "_" + queryResult[i].symbolCode;
+                    if(queryResult[i].strSymbolCode != ""){
+                        drawNode.id = queryResult[i].libID + "_" + queryResult[i].strSymbolCode;
+                        drawNode.symbolCode = queryResult[i].strSymbolCode;
+                    }else{
+                        drawNode.id = queryResult[i].libID + "_" + queryResult[i].symbolCode;
+                        drawNode.symbolCode = queryResult[i].symbolCode;
+                    }
                     drawNode.libID = queryResult[i].libID;
-                    drawNode.symbolCode = queryResult[i].symbolCode;
                     drawNode.serverUrl = serverUrl;
                     var img = document.createElement("img");
                     //查询symbol的title

@@ -376,6 +376,47 @@ function updateSelectSpecialEffect(updated, specialEffect) {
             transInfo.redoParams = [parseFloat(updated.value)];
             specialEffect.setStyle({ scanStyle: { fillOpacity: parseFloat(updated.value) } });
             break;
+        case monitoringRadarStyleName[0]:
+            transInfo.functionName = "setRadarStyle";
+            transInfo.undoParams = [specialEffect.getRadarStyle().innerColor];
+            transInfo.redoParams =  [updated.value];
+            specialEffect.getRadarStyle().innerColor = updated.value;
+            specialEffect.setRadarStyle(specialEffect.getRadarStyle());
+            break;
+        case monitoringRadarStyleName[1]:
+            transInfo.functionName = "setRadarStyle";
+            transInfo.undoParams = [specialEffect.getRadarStyle().innerOpacity];
+            transInfo.redoParams =  [parseFloat(updated.value)];
+            specialEffect.getRadarStyle().innerOpacity = parseFloat(updated.value);
+            specialEffect.setRadarStyle(specialEffect.getRadarStyle());
+            break;
+        case monitoringRadarStyleName[2]:
+            transInfo.functionName = "setRadarStyle";
+            transInfo.undoParams = [specialEffect.getRadarStyle().outerColor];
+            transInfo.redoParams =  [updated.value];
+            specialEffect.getRadarStyle().outerColor = updated.value;
+            specialEffect.setRadarStyle(specialEffect.getRadarStyle());
+            break;
+        case monitoringRadarStyleName[3]:
+            transInfo.functionName = "setRadarStyle";
+            transInfo.undoParams = [specialEffect.getRadarStyle().outerOpacity];
+            transInfo.redoParams =  [parseFloat(updated.value)];
+            specialEffect.getRadarStyle().outerOpacity = parseFloat(updated.value);
+            specialEffect.setRadarStyle(specialEffect.getRadarStyle());
+            break;
+        case monitoringRadarStyleName[4]:
+            transInfo.functionName = "setRadius";
+            transInfo.undoParams = [specialEffect._radius];
+            transInfo.redoParams =  [parseFloat(updated.value)];
+            specialEffect.setRadius(parseFloat(updated.value));
+            break;
+        case monitoringRadarStyleName[5]:
+            transInfo.functionName = "setRadarStyle";
+            transInfo.undoParams = [specialEffect.getRadarStyle().ratioRadius];
+            transInfo.redoParams =  [parseFloat(updated.value)];
+            specialEffect.getRadarStyle().ratioRadius = parseFloat(updated.value);
+            specialEffect.setRadarStyle(specialEffect.getRadarStyle());
+            break;
         default:
             break;
     }

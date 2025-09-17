@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 var selectFeatures = [];
 //var groupIndex = 0;
 L.supermap.plotting.initStylePanel = function (div, serverUrl, editControl) {
@@ -131,9 +131,11 @@ function updateSelectFeature(updated, selectfeatures) {
                     annotation = new SuperMap.Plot.SymbolAnnotation(updated.value, 0, undefined, undefined);
                     selectfeatures[i].addSymbolAnnotations([annotation]);
                 } else {
-                    if (updated.value == "") {//清空内容视为删除注记
+                    if (updated.value == "" && updated.name == "注记内容") {//清空内容视为删除注记
                         selectfeatures[i].removeSymbolAnnotation(annotationIndex - 1);
                         continue;
+                    }else if(updated.value == ""){
+                        return;
                     }
                     annotation = selectfeatures[i].getSymbolAnnotation(annotationIndex - 1);
                 }
@@ -233,70 +235,171 @@ function updateSelectFeature(updated, selectfeatures) {
                         break;
                     case resources.text_XOffset:
                         transInfo.propertyName = "offsetX";
-                        transInfo.undoValue = annotation.offsetX;
+                        transInfo.undoValue = parseInt(annotation.getPixelOffset().x);
                         transInfo.redoValue = parseInt(updated.value);
-                        annotation.offsetX = parseInt(updated.value);
+                        annotation.setPixelOffset(selectFeatures[i],parseInt(updated.value),annotation.getPixelOffset().y);
                         break;
                     case resources.text_YOffset:
                         transInfo.propertyName = "offsetY";
-                        transInfo.undoValue = annotation.offsetY;
+                        transInfo.undoValue = parseInt(annotation.getPixelOffset().y);
                         transInfo.redoValue = parseInt(updated.value);
-                        annotation.offsetY = parseInt(updated.value);
+                        annotation.setPixelOffset(selectFeatures[i],annotation.getPixelOffset().x,parseInt(updated.value));
                         break;
 
                 }
                 selectFeatures[i].redraw();
             } else if (updated.group == group[8]) {
                 //子标号
-                if (updated.name == displayName[2]) {
-                    if (updated.value !== null) {
-                        transInfo.propertyName = "libID";
-                        transInfo.undoValue = selectfeatures[i].getSubSymbols()[updated.index].libID;
-                        transInfo.redoValue = parseInt(updated.value);
-                        selectfeatures[i].subSymbols[0].libID = parseInt(updated.value);
+                if(selectFeatures[i].symbolType === SuperMap.Plot.SymbolType.ALGOSYMBOL){
+                    if (updated.name == displayName[2]) {
+                        if (updated.value !== null) {
+                            transInfo.propertyName = "libID";
+                            transInfo.undoValue = selectfeatures[i].getSubSymbols()[updated.index].libID;
+                            transInfo.redoValue = parseInt(updated.value);
+                            selectfeatures[i].subSymbols[0].libID = parseInt(updated.value);
+                        }
                     }
-                }
-                if (updated.name == displayName[3]) {
-                    var code = parseInt(updated.value);
-                    if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.NODECHAIN && code != null) {
-                        var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
-                        var subCode = symbolLibManager.findSymbolByCode(code);
-                        if (subCode.length !== 0 && subCode[0].symbolType === "SYMBOL_DOT") {
+                    if (updated.name == displayName[3]) {
+                        var code = parseInt(updated.value);
+                        if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.NODECHAIN && code != null) {
+                            var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                            var subCode = symbolLibManager.findSymbolByCode(code);
+                            if (subCode.length !== 0 && subCode[0].symbolType === "SYMBOL_DOT") {
+                                transInfo.functionName = "setSubSymbol";
+                                if (selectfeatures[i].getSubSymbols()[updated.index]) {
+                                    transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, subCode[0].libID];
+                                } else {
+                                    transInfo.undoParams = [-1, updated.index];
+                                }
+                                transInfo.redoParams = [code, updated.index, subCode[0].libID];
+                                selectfeatures[i].setSubSymbol(code, updated.index, subCode[0].libID);
+                            }
+                        }
+                        else if (code !== null) {
+    
                             transInfo.functionName = "setSubSymbol";
                             if (selectfeatures[i].getSubSymbols()[updated.index]) {
-                                transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, subCode[0].libID];
+                                transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, selectfeatures[i].getSubSymbols()[updated.index].libID];
                             } else {
                                 transInfo.undoParams = [-1, updated.index];
                             }
-                            transInfo.redoParams = [code, updated.index, subCode[0].libID];
-                            selectfeatures[i].setSubSymbol(code, updated.index, subCode[0].libID);
+                            transInfo.redoParams = [code, updated.index];
+                            selectfeatures[i].setSubSymbol(code, updated.index, selectfeatures[i].libID);
                         }
                     }
-                    else if (code !== null) {
-
-                        transInfo.functionName = "setSubSymbol";
-                        if (selectfeatures[i].getSubSymbols()[updated.index]) {
-                            transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, selectfeatures[i].getSubSymbols()[updated.index].libID];
-                        } else {
-                            transInfo.undoParams = [-1, updated.index];
+                    if (updated.name == resources.text_subSymbolLineWidth) {
+                        let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
+                        if (subSymbol) {
+                            selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subSymbol.libID, subSymbol.lineColor, parseFloat(updated.value));
                         }
-                        transInfo.redoParams = [code, updated.index];
-                        selectfeatures[i].setSubSymbol(code, updated.index, selectfeatures[i].libID);
+                    }
+                    if (updated.name == resources.text_subSymbolLineColor) {
+                        let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
+                        if (subSymbol) {
+                            selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subSymbol.libID, updated.value, subSymbol.width2D);
+                        }
+                    }
+                }else if(selectFeatures[i].symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL){
+                    if (updated.name == displayName[2]) {
+                        if (updated.value !== null) {
+                            transInfo.propertyName = "libID";
+                            transInfo.undoValue = selectFeatures[i].getSubSymbols()[updated.index].libID;
+                            transInfo.redoValue = parseInt(updated.value);
+                            selectFeatures[i].subSymbols[0].libID = parseInt(updated.value);
+                        }
+                    }
+                    if (updated.name == displayName[3]) {
+                        var code = parseInt(updated.value);
+                        if (selectFeatures[i].symbolType === SuperMap.Plot.SymbolType.NODECHAIN && code != null) {
+                            var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                            var subCode = symbolLibManager.findSymbolByCode(code);
+                            if (subCode.length !== 0 && subCode[0].symbolType === "SYMBOL_DOT") {
+                                transInfo.functionName = "setDotSubSymbol";
+                                if (selectFeatures[i].getSubSymbols()[0]) {
+                                    transInfo.undoParams = [selectFeatures[i].getSubSymbols()[0].code, 0, subCode[0].libID];
+                                } else {
+                                    transInfo.undoParams = [-1, 0];
+                                }
+                                transInfo.redoParams = [code, 0, subCode[0].libID];
+                                selectFeatures[i].setDotSubSymbol(subCode[0].libID, code);
+                            }
+                        }
+                        else if (code !== null) {
+    
+                            transInfo.functionName = "setDotSubSymbol";
+                            if (selectFeatures[i].getSubSymbols()[0]) {
+                                transInfo.undoParams = [selectFeatures[i].getSubSymbols()[0].code, 0, selectFeatures[i].getSubSymbols()[0].libID];
+                            } else {
+                                transInfo.undoParams = [-1, 0];
+                            }
+                            transInfo.redoParams = [code, 0];
+                            selectFeatures[i].setDotSubSymbol(selectFeatures[i].libID, code);
+                        }
+                    }
+                    if (updated.name == resources.text_subSymbolLineWidth) {
+                        let subSymbol = selectFeatures[i].getSubSymbols()[0];
+                        if (subSymbol) {
+                            selectFeatures[i].setDotSubSymbol(subSymbol.libID, subSymbol.code, subSymbol.lineColor, parseFloat(updated.value));
+                        }
+                    }
+                    if (updated.name == resources.text_subSymbolLineColor) {
+                        let subSymbol = selectFeatures[i].getSubSymbols()[0];
+                        if (subSymbol) {
+                            selectFeatures[i].setDotSubSymbol(subSymbol.libID, subSymbol.code, updated.value, subSymbol.width2D);
+                        }
                     }
                 }
-                if (updated.name == resources.text_subSymbolLineWidth) {
-                    let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
-                    if (subSymbol) {
-                        selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subSymbol.libID, subSymbol.lineColor, parseFloat(updated.value));
-                    }
+                
+            } else if(updated.group == group[10]){
+                switch (updated.name) {
+                    case displayMiddleLineTextContent[0]:
+                        transInfo.functionName = "setMiddleTextCont";
+                        transInfo.undoParams = [selectfeatures[i].textContent];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setTextContent(updated.value);
+                    break;
+                    case displayMiddleLineTextContent[1]:
+                        transInfo.functionName = "setMiddleFontColor";
+                        transInfo.undoParams = [selectfeatures[i].style.fontColor];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setStyle({fontColor:updated.value});
+                    break;
+                    case displayMiddleLineTextContent[2]:
+                        transInfo.functionName = "setMiddleFontFamily";
+                        transInfo.undoParams = [selectfeatures[i].style.fontFamily];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setStyle({fontFamily: updated.value});
+                    break;
+                
+                    default:
+                        break;
                 }
-                if (updated.name == resources.text_subSymbolLineColor) {
-                    let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
-                    if (subSymbol) {
-                        selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subSymbol.libID, updated.value, subSymbol.width2D);
-                    }
+            }else if(updated.group == group[11]){
+                switch (updated.name) {
+                    case displayInnerTextContent[0]:
+                        transInfo.functionName = "setInnerTextCont";
+                        transInfo.undoParams = [selectfeatures[i].innerTextContent];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setInnerTextContent(updated.value);
+                    break;
+                    case displayInnerTextContent[1]:
+                        transInfo.functionName = "setInnerFontColor";
+                        transInfo.undoParams = [selectfeatures[i].innerTextStyle.fontColor];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setInnerTextStyle({fontColor:updated.value});
+                    break;
+                    case displayInnerTextContent[2]:
+                        transInfo.functionName = "setInnerFontFamily";
+                        transInfo.undoParams = [selectfeatures[i].innerTextStyle.fontFamily];
+                        transInfo.redoParams = [updated.value];
+                        selectfeatures[i].setInnerTextStyle({fontFamily: updated.value});
+                    break;
+                
+                    default:
+                        break;
                 }
-            } else {
+            }
+            else {
                 //其他属性
                 switch (updated.name) {
                     case resources.text_content:
@@ -549,23 +652,27 @@ function updateSelectFeature(updated, selectfeatures) {
                         selectfeatures[i].setWidthHeightLimit(fromCheckboxValue(updated.value));
                         break;
                     case displayNameDot[7]:
-                        if (selectfeatures[i].symbolType != 20 || selectfeatures[i].symbolType != 21) {
+                        if (selectfeatures[i].symbolType != 20 && selectfeatures[i].symbolType != 21) {
                             transInfo.functionName = "setSymbolSize";
                             transInfo.undoParams = [selectfeatures[i].getSymbolSize().w];
                             transInfo.redoParams = [parseFloat(updated.value), selectfeatures[i].getSymbolSize().h];
                             selectfeatures[i].setSymbolSize(updated.value, selectfeatures[i].getSymbolSize().h);
                         } else {
                             //
+                            selectfeatures[i].style.graphicWidth = parseFloat(updated.value);
+                            selectfeatures[i].setStyle(selectfeatures[i].style);
                         }
                         break;
                     case displayNameDot[8]:
-                        if (selectfeatures[i].symbolType != 20 || selectfeatures[i].symbolType != 21) {
+                        if (selectfeatures[i].symbolType != 20 && selectfeatures[i].symbolType != 21) {
                             transInfo.functionName = "setSymbolSize";
                             transInfo.undoParams = [selectfeatures[i].getSymbolSize().h];
                             transInfo.redoParams = [selectfeatures[i].getSymbolSize().w, parseFloat(updated.value)];
                             selectfeatures[i].setSymbolSize(selectfeatures[i].getSymbolSize().w, updated.value);
                         } else {
                             //
+                            selectfeatures[i].style.graphicHeight = parseFloat(updated.value);
+                            selectfeatures[i].setStyle(selectfeatures[i].style);
                         }
                         break;
                     case displayTextContentName[0]:
@@ -843,6 +950,18 @@ function updateSelectFeature(updated, selectfeatures) {
                         transInfo.undoParams = [selectfeatures[i].style.labelAlign];
                         transInfo.redoParams = [fontAlignTypeValue(updated.value)];
                         selectfeatures[i].setFontAlign(fontAlignTypeValue(updated.value));
+                        break;
+                    case displayNameNew[22]:
+                        transInfo.functionName = "setArrowLineIsCurve";
+                        transInfo.undoParams = [selectfeatures[i].getArrowLineIsCurve()];
+                        transInfo.redoParams = [fromCheckboxValue(updated.value)];
+                        selectfeatures[i].setArrowLineIsCurve(fromCheckboxValue(updated.value));
+                        break;
+                    case displayTextContentName[17]:
+                        transInfo.functionName = "setTextSizeFixed";
+                        transInfo.undoParams = [selectfeatures[i].style.sizeFixed];
+                        transInfo.redoParams = [fontAlignTypeValue(updated.value)];
+                        selectfeatures[i].setTextSizeFixed(fromCheckboxValue(updated.value));
                         break;
                 }
             }

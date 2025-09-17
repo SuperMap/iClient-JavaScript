@@ -1,5 +1,5 @@
 
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initPlotPanel = function (div, serverUrl, drawControl) {
     var plotPanel = document.getElementById(div);
 
@@ -32,13 +32,14 @@ L.supermap.plotting.initPlotPanel = function (div, serverUrl, drawControl) {
 
     function beforeClickTreeNode(treeId, treeNode) {
         var tree = $.fn.zTree.getZTreeObj(treeId);
-        if (treeNode.isParent) {
-            tree.expandNode(treeNode);
-            return false;
-        } else {
+        if (treeNode.drawData && treeNode.drawData.length > 0) {
             var iconNode = document.getElementById("icon");
             iconNode.innerHTML = "";
             createDrawNodes(treeNode, iconNode, drawControl, serverUrl);
+        }
+        if (treeNode.isParent) {
+            tree.expandNode(treeNode);
+            return false;
         }
     }
 
@@ -109,7 +110,7 @@ function createDrawNodes(treeNode, iconNode, drawControl, serverUrl) {
             drawControl.handler.libID = this.libID;
             drawControl.handler.code = this.symbolCode;
             drawControl.handler.serverUrl = this.serverUrl;
-
+            drawControl.handler.path="../img/plottingPanel/BasicCell/20.png";
             drawControl.handler.disable();
             drawControl.handler.enable();
         }
@@ -169,12 +170,15 @@ function addBasicCellTreeNodes(treeData) {
     var symbolCode = [24, 28, 29, 31, 34, 410, 32, 590, 360, 390, 400, 350, 26, 370, 380, 44, 3701, 3801, 4401, 48, 320
         , 1019, 1022, 1024, 321, 1023, 1025
         , 1013, 1014, 1016, 1017, 1026
-        , 1001, 1003, 1004, 1028, 1029, 3000];
+        , 1001, 1003, 1004, 1029, 20
+        , 5001, 5003, 5005, 5007, 5008, 5009, 5012, 5013, 5014, 5015, 5016, 5017, 5022 ];
     var symbolName = [resources.text_foldLine, resources.text_parallelogram, resources.btn_circle, resources.text_elliptical, resources.text_textContent, resources.text_regularPolygon, resources.btn_polygon, resources.text_bezierCurves, resources.text_closeBezierCurves
         , resources.text_rallyGround, resources.text_braces, resources.text_trapezium, resources.text_input_value_drawRectangle, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_parallel, resources.text_textNodeBox
         , resources.text_concentricCircle, resources.text_combinedCircle, resources.text_textbox, resources.text_mutilAngleTextbox, resources.text_freeLine, resources.text_nodeChain
         , resources.text_runway, resources.text_eight, resources.text_arrowLine, resources.text_textAlongLine, resources.text_linearText
-        , resources.text_objectLines, resources.text_polygonArea, resources.text_sectorArea, resources.text_barbedWire, resources.text_straightLineArrow, resources.option_picture];
+        , resources.text_objectLines, resources.text_polygonArea, resources.text_sectorArea, resources.text_straightLineArrow, resources.option_picture
+        , resources.text_parallelHorizontalEarsArrow,  resources.text_trapeziumHorizonalEarsArrow, resources.text_baseBezierarrow, resources.text_polylineTriangleArrow, resources.text_bezierSwallowTailedArrow, resources.text_basePolylineArrow, resources.text_baseBezierArrowNoScaleByMap, resources.text_polylineTriangleArrowNoScaleByMap, resources.text_bezierSwallowTailedArrowNoScaleByMap, resources.text_basePolylineArrowNoScaleByMap, resources.text_combinationArrow, resources.text_parallelBatLikeEarsArrow, resources.text_bidirectionalPathArrow    
+    ];
     var cellId = cellRootNode.id + 1;
     for (var i = 0; i < symbolCode.length; i++) {
         var drawCellNode = {
@@ -234,10 +238,16 @@ function innerAnalysisSymbolTree(childSymbolInfos, treeData, parentNode, rootSym
             var drawNode = new Object();
             drawNode.id = treeNodeId++;
             drawNode.pId = parentNode.id;
-            drawNode.icon = rootSymbolIconUrl + parentNode.fullName + childSymbolInfos[i].symbolCode + ".png";
             drawNode.symbolCode = childSymbolInfos[i].symbolCode;
+            if (childSymbolInfos[i].strSymbolCode && childSymbolInfos[i].strSymbolCode !== "") {
+                drawNode.symbolCode = childSymbolInfos[i].strSymbolCode;
+                drawNode.icon = rootSymbolIconUrl + parentNode.fullName + childSymbolInfos[i].strSymbolCode + ".png";
+                drawNode.symbolName = childSymbolInfos[i].symbolName + "_" + childSymbolInfos[i].strSymbolCode;
+            }else{
+                drawNode.icon = rootSymbolIconUrl + parentNode.fullName + childSymbolInfos[i].symbolCode + ".png";
+                drawNode.symbolName = childSymbolInfos[i].symbolName + "_" + childSymbolInfos[i].symbolCode;
+            }
             drawNode.libID = childSymbolInfos[i].libID;
-            drawNode.symbolName = childSymbolInfos[i].symbolName + "_" + childSymbolInfos[i].symbolCode;
             drawData.push(drawNode);
         }
     }
