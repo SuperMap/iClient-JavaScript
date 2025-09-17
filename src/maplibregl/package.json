@@ -1,7 +1,7 @@
 {
   "name": "@supermapgis/iclient-maplibregl",
   "description": "",
-  "version": "12.0.1-dev",
+  "version": "12.0.1-r",
   "keywords": [
     "SuperMap",
     "maplibregl"
@@ -17,7 +17,7 @@
   "dependencies": {
     "@maplibre/maplibre-gl-style-spec": "^23.3.0",
     "maplibre-gl": "5.6.0",
-    "@supermapgis/iclient-common": "12.0.1-dev",
+    "@supermapgis/iclient-common": "12.0.1-r",
     "lodash.clonedeep": "^4.5.0",
     "proj4": "2.17.0"
   }
