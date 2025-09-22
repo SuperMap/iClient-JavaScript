@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
 // import {ChildPlotLayer} from "../../../plugins/plotting/leaflet/mapping";
 
 L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
