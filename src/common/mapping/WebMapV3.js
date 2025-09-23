@@ -314,15 +314,15 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       return this.mapOptions.transformRequest;
     }
     return (url, resourceType) => {
-      if (resourceType === 'Tile') {
-        const withCredentials = this.options.iportalServiceProxyUrlPrefix && url.indexOf(this.options.iportalServiceProxyUrlPrefix) >= 0;
+      const withCredentials = this.options.iportalServiceProxyUrlPrefix && url.indexOf(this.options.iportalServiceProxyUrlPrefix) >= 0 ? 'include' : undefined;
+      if (resourceType === 'Tile' || resourceType === 'Image') {
         return {
           url: url,
-          credentials: withCredentials ? 'include' : undefined,
+          credentials: withCredentials,
           ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
         };
       }
-      return { url };
+      return { url, credentials: withCredentials};
     }
   }
 

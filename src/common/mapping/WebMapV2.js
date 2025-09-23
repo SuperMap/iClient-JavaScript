@@ -373,6 +373,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         localIdeographFontFamily: fontFamilys || '',
         renderWorldCopies: this.renderWorldCopies || false,
         transformRequest: (url, resourceType) => {
+          const proxy = this.webMapService.handleProxy();
+          const withCredentials = this.webMapService.handleWithCredentials(proxy, url, false) ? 'include' : undefined;
           if (resourceType === 'Tile') {
             if (this.isSuperMapOnline && url.indexOf('http://') === 0) {
               url = `https://www.supermapol.com/apps/viewer/getUrlResource.png?url=${encodeURIComponent(url)}`;
@@ -380,14 +382,13 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
             if (this.webMapService.isIportalResourceUrl(url)) {
               url = this.webMapService.handleParentRes(url);
             }
-            const proxy = this.webMapService.handleProxy('image');
             return {
               url: url,
-              credentials: this.webMapService.handleWithCredentials(proxy, url, false) ? 'include' : undefined,
+              credentials: withCredentials,
               ...(this._tileTransformRequest && this._tileTransformRequest(url))
             };
           }
-          return { url };
+          return { url, credentials: withCredentials};
         },
         fadeDuration: 0
       });
