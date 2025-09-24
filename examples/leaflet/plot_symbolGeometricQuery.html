@@ -45,6 +45,8 @@
     queryPlottingLayer.addTo(map);
     var drawControl = L.supermap.plotting.drawControl(queryPlottingLayer);
     drawControl.addTo(map);
+    var editControl = L.supermap.plotting.editControl();
+    editControl.addTo(map);
     var plotting = L.supermap.plotting.getControl(map, serverUrl);
     function loadSymbolLib() {
         var symbolLibManager = plotting.getSymbolLibManager();

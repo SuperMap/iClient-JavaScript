@@ -1268,7 +1268,7 @@ function symbolPropertyObject(selectfeature, styleObject) {
 
     //文字
     var textRows = [];
-    if (!SuperMapAlgoPlot.MJAlgoSymbolFactory.isAccessServer(selectfeature.libID, selectfeature.code) && 
+    if (SuperMapAlgoPlot.MJAlgoSymbolFactory && !SuperMapAlgoPlot.MJAlgoSymbolFactory.isAccessServer(selectfeature.libID, selectfeature.code) && 
     !SuperMapAlgoPlot.MJAlgoSymbolFactory.isSupportTextContent(selectfeature.libID, selectfeature.code)) {
         textRows.push(fontFamilyObj);
         textRows.push(fontSizeObj);
