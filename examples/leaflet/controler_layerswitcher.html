@@ -24,9 +24,9 @@
     var China = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china/rest/maps/China', {noWrap: true});
     var ChinaDark = new L.supermap.TiledMapLayer(host + '/iserver/services/map-china/rest/maps/ChinaDark', {noWrap: true});
     var map = L.map('map', {
-        center: {lon: 0, lat: 0},
+        center: {lon: 105, lat: 39},
         maxZoom: 18,
-        zoom: 3,
+        zoom: 5,
         zoomControl: false,
         layers: [China, cities]
     });

@@ -28,10 +28,10 @@
         layerOptions = getGridOptions();
 
     map = L.map('map', {
-        center: [33.75, 0],
+        center: [33.75, 105],
         maxZoom: 15,
         minZoom: 1,
-        zoom: 3,
+        zoom: 5,
         crs: L.CRS.EPSG3857
     });
     new L.supermap.TiledMapLayer(baseUrl).addTo(map);

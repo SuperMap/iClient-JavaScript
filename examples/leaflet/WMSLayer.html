@@ -14,9 +14,9 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map = L.map('map', {
-        center: [0, 0],
+        center: [39, 105],
         maxZoom: 18,
-        zoom: 1
+        zoom: 5
     });
     new L.TileLayer.WMS(host + "/iserver/services/map-china/wms111/China", {
         layers: 'China',
