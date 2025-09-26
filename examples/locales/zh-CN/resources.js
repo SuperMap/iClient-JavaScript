@@ -693,7 +693,7 @@ window.examplesResources = {
         "title_fgb_all": "FGB 全量加载",
         "title_fgb_extent": "FGB 按需加载",
         "title_websymbol_DLG_I49": "数字线划地图",
-        "title_websymbol_2019ChinaGDP": "2019年中国各省GDP",
+        "title_websymbol_ChinaProvinceCapitals": "中国省会地理位置",
         "title_websymbol_editor": "Web符号编辑器",
         "title_websymbol_gallery": "Web符号库",
         "title_websymbol_YangtzeRiverdelta": "长江三角洲",

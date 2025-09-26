@@ -1210,11 +1210,11 @@ var exampleConfig = {
           thumbnail: 'websymbol_landuseOfJingjin.png',
           fileName: 'websymbol_landuseOfJingjin'
         },{
-          name: '2019年中国各省GDP',
-          name_en: "2019 China's GDP by Province",
+          name: '中国省会地理位置',
+          name_en: "China Provincial Capitals Locations",
           version: '11.1.0',
-          thumbnail: 'websymbol_2019ChinaGDP.png',
-          fileName: 'websymbol_2019ChinaGDP'
+          thumbnail: 'websymbol_ChinaProvinceCapitals.png',
+          fileName: 'websymbol_ChinaProvinceCapitals'
         }
         ]
       },

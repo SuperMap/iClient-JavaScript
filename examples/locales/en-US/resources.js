@@ -727,7 +727,7 @@ window.examplesResources = {
         "title_fgb_all": "FGB Full Load",
         "title_fgb_extent": "FGB Extent Load",
         "title_websymbol_DLG_I49": "DLG_I49",
-        "title_websymbol_2019ChinaGDP": "2019 China's GDP by Province",
+        "title_websymbol_ChinaProvinceCapitals": "China Provincial Capitals Locations",
         "title_websymbol_editor": "WebSymbol Editor",
         "title_websymbol_gallery": "WebSymbol Gallery",
         "title_websymbol_YangtzeRiverdelta": "Yangtze River Delta",

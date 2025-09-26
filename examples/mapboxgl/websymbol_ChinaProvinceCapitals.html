@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-  <title data-i18n="resources.title_websymbol_2019ChinaGDP"></title>
+  <title data-i18n="resources.title_websymbol_ChinaProvinceCapitals"></title>
   <style>
     body {
       margin: 0;
@@ -50,7 +50,7 @@
             "type": "raster"
           }
         },
-        "name": "2019年中国各省GDP",
+        "name": "中国省会地理位置",
         "layers": [{
           "id": "simple-tiles",
           "type": "raster",
@@ -58,28 +58,20 @@
         }],
         "version": 8
       },
-      zoom: 4.5,
-      center: [102.85, 37.20],
+      zoom: 5.5,
+      center: [108, 35],
     });
 
 
     var createConsumptionLevel = function (symbolId) {
       map.addLayer({
-        "id": "China_Province_pg@China#point",
+        "id": "ProvinceCapital_P@China#point",
         "source": "china",
-        "source-layer": "China_Province_pg@China",
+        "source-layer": "ProvinceCapital_P@China",
         "type": "symbol",
         "symbol": symbolId,
         "layout": {
-          "icon-size": [
-            "interpolate",
-            ["linear"],
-            ["get", "GDP_2009"],
-            1,
-            0.3,
-            40000,
-            2
-          ]
+          "icon-size": 0.8
         }
       });
     };
@@ -87,7 +79,7 @@
     map.on("load", function () {
       // 配置基础路径
       new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      var symbolId = "point-311";
+      var symbolId = "point-909063";
       map.loadSymbol(symbolId, function (error, symbol) {
         if (error) {
           widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
