@@ -322,10 +322,10 @@
         var param = new L.supermap.QueryBySQLParameters({
             queryParams: [{
                 name: "ProvinceCapital_P@China",
-                attributeFilter: "NAME = '广州市' or NAME = '上海市'"
+                attributeFilter: "NAME = '广州市' or NAME = '上海市' or NAME = '北京市'"
             }, {
                 name: "Capital_P@China",
-                attributeFilter: "NAME = '北京市'"
+                attributeFilter: "Name = '北京市'"
             }]
         });
 
@@ -340,7 +340,7 @@
                             return latlng;
                         },
                     }).on('click', function (e) {
-                        var city = e.layer.feature.properties.NAME;
+                      var city = e.layer.feature.properties.NAME || e.layer.feature.properties.Name;
                         chart.setOption({
                             color: [
                                 colorMap[city]

@@ -364,7 +364,7 @@
                 attributeFilter: "NAME = '广州市' or NAME = '上海市'"
             }, {
                 name: "Capital_P@China",
-                attributeFilter: "NAME = '北京市'"
+                attributeFilter: "Name = '北京市'"
             }]
         });
 
@@ -401,7 +401,7 @@
                     .setDOMContent(div) // sets a popup on this marker
                     .addTo(map);
 
-                var city = e.features[0].properties.NAME;
+                var city = e.features[0].properties.NAME || e.features[0].properties.Name;
                 chart.setOption({
                     color: [
                         colorMap[city]
