@@ -149,7 +149,7 @@
 
     function addLayers() {
         map.addLayers([layer, markerlayer]);
-        map.setCenter(new SuperMap.LonLat(116.383572, 39.914714), 10);
+        map.setCenter(new SuperMap.LonLat(116.383572, 39.914714), 7);
     }
 
     $("#geocode").click(function () {
@@ -211,7 +211,7 @@
                 "scope": marker
             });
             markerlayer.addMarker(marker);
-            map.setCenter(new SuperMap.LonLat(116.383572, 39.914714), 8);
+            map.setCenter(new SuperMap.LonLat(116.383572, 39.914714), 7);
 
             function openInfoWin() {
                 closeInfoWin();
