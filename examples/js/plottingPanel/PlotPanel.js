@@ -81,7 +81,7 @@ L.supermap.plotting.initPlotPanel = function (div, serverUrl, drawControl) {
 function analysisSymbolTree(symbolLibManager) {
     var treeData = [];
     var idIndex = addBasicCellTreeNodes(treeData);
-    var idIndex = addRouteTreeNodes(treeData);
+    //var idIndex = addRouteTreeNodes(treeData);
 
     for (var i = 0; i < symbolLibManager.getSymbolLibNumber(); i++) {
         var symbolLib = symbolLibManager.getSymbolLibByIndex(i);
