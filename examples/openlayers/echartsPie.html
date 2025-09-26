@@ -235,7 +235,7 @@
                     attributeFilter: "NAME = '广州市' or NAME = '上海市'"
                 }, {
                     name: "Capital_P@China",
-                    attributeFilter: "NAME = '北京市'"
+                    attributeFilter: "Name = '北京市'"
                 }]
             });
             queryService.queryBySQL(param, function (serviceResult) {
@@ -244,6 +244,9 @@
                     var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
                         dataProjection: 'EPSG:3857',
                         featureProjection: 'EPSG:4326'
+                    });
+                    temp.forEach(function(feature, idx) {
+                      feature.setId('feature_' + i + '_' + idx);
                     });
                     features = features.concat(temp);
                 }
@@ -258,7 +261,8 @@
                 map.addInteraction(select);
                 select.on('select', function (e) {
                     if (this.getFeatures().getLength() > 0) {
-                        var city = this.getFeatures().item(0).getProperties().NAME;
+                        const props = this.getFeatures().item(0).getProperties();
+                        var city = props.NAME || props.Name;
                         var data1 = [];
                         var data2 = [];
                         for (var i = 0; i < 7; i++) {
