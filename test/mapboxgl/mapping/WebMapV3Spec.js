@@ -318,6 +318,8 @@ describe('mapboxgl-webmap3.0', () => {
     existedMap.on('load', function () {
       mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
+    const isSameCrs = extendOptions.crsManager.isSameProjection(existedMap, 'EPSG:4326');
+    expect(isSameCrs).toBe(true);
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
       expect(map).toEqual(existedMap);
