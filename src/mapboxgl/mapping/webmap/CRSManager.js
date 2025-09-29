@@ -1,5 +1,11 @@
 import mapboxgl from 'mapbox-gl';
 
+const equivalenceMap = {
+  'EPSG:4490': 'EPSG:4326',
+  'EPSG:4326': 'EPSG:4490',
+  'EPSG:3857': 'EPSG:900913',
+  'EPSG:900913': 'EPSG:3857'
+};
 export class CRSManager {
   constructor(proj4) {
     this.proj4 = proj4;
@@ -7,7 +13,9 @@ export class CRSManager {
   }
 
   isSameProjection(map, epsgCode) {
-    return map.getCRS().epsgCode === epsgCode;
+    const mapEpsgCode = map.getCRS().epsgCode;
+    return mapEpsgCode === epsgCode || 
+          (equivalenceMap[mapEpsgCode] === epsgCode && equivalenceMap[epsgCode] === mapEpsgCode);
   }
 
   getProj4() {
