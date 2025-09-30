@@ -52,7 +52,7 @@
 <script type="text/javascript">
     var map, layer, polygonLayer, drawPolygon, osm, featureID = 0,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url = host + "/iserver/services/map-china/rest/maps/China";
+        url = host + "/iserver/services/map-china400/rest/maps/China";
 
     //检测浏览器是否支持canves，Buildings 需要Canvas绘制
     if (!document.createElement('canvas').getContext) {
@@ -87,7 +87,7 @@
     //异步加载图层
     function addLayer() {
         map.addLayers([layer, polygonLayer]);
-        map.setCenter(new SuperMap.LonLat(12957186.36784, 4852711.53595), 7);
+        map.setCenter(new SuperMap.LonLat(12957186.36784, 4852711.53595), 12);
         //激活多边形绘制
         drawPolygon.activate();
     }
