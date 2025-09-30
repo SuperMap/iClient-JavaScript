@@ -32,10 +32,11 @@
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
     // 方式一：1.调用 maplibregl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
-    maplibregl.supermap.initMap(host + '/iserver/services/map-china/rest/maps/China').then(function (result) {
-      var map = result.map;
-      map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    })
+    maplibregl.supermap.initMap(host + '/iserver/services/map-china/rest/maps/China', { mapOptions: { zoom: 4 } })
+            .then(function (result) {
+                var map = result.map;
+                map.addControl(new maplibregl.NavigationControl(), 'top-left');
+            })
 
     // 方法二： 直接用 maplibregl.Map 初始化
     // var map = new maplibregl.Map({
