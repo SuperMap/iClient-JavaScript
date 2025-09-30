@@ -53,7 +53,7 @@
         });
         var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
-            datasetNames: ["China_Province_pg"],
+            datasetNames: ["Province_R"],
             dataSourceNames: ["China"]
         });
         new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {

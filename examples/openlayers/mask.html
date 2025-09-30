@@ -90,8 +90,8 @@
                     widgets.loader.showLoader(resources.text_add_sicahun_plygon);
                     var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
-                            name: 'China_Province_pl@China',
-                            attributeFilter: 'SMID =14'
+                            name: 'Province_R@China',
+                            attributeFilter: 'SMID = 22'
                         }
                     });
                     new ol.supermap.QueryService(baseUrl).queryBySQL(param, function (serviceResult) {
