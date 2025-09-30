@@ -12,20 +12,14 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var resolutions = new Array(17);
-    var matrixIds = new Array(17);
-    for (var z = 0; z < 17; ++z) {
-        resolutions[z] = 156543.033928041 / Math.pow(2, z);
-        matrixIds[z] = z;
-    }
     var map = new ol.Map({
         target: 'map',
         // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
         controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
-            center: [0, 0],
-            zoom: 0,
+            center: [12782862.935188107, 4544498.746315297],
+            zoom: 5,
             multiWorld: true
         }),
         layers: [new ol.layer.Tile({
