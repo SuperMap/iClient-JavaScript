@@ -953,10 +953,10 @@ var defineGlobalProperty = __webpack_require__(9998);
 var SHARED = '__core-js_shared__';
 var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
 (store.versions || (store.versions = [])).push({
-  version: '3.43.0',
+  version: '3.45.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2025 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.43.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.45.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
