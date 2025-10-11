@@ -728,6 +728,40 @@ describe('mapboxgl_WebMap', () => {
     });
   });
 
+  it('createThemeLayer_SUPERMAPREST_DATA preferServer', (done) => {
+    let options = {
+      server: server,
+      preferServer: true
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = datavizWebMap_RestData;
+        return Promise.resolve(new Response(mapJson));
+      }
+      return Promise.resolve();
+    });
+    spyOn(FetchRequest, 'post').and.callFake((url) => {
+      expect(url).toBe('http://fakeiserver/iserver/services/data-jingjin/rest/data/featureResults.geojson?returnContent=true');
+      return Promise.resolve(new Response(JSON.stringify(JSON.parse(markerData2.content))));
+    });
+    var datavizWebmap = new WebMap(id, options);
+
+    datavizWebmap.on('mapcreatesucceeded', function () {
+      expect(datavizWebmap.credentialKey).toBeUndefined();
+      expect(datavizWebmap.credentialValue).toBeUndefined();
+
+      var map = datavizWebmap.map;
+      expect(map.getZoom()).toBeCloseTo(9, 0.001);
+      expect(map.getCenter()).toEqual(new mapboxgl.LngLat(116.8995771532053, 39.700527641334965));
+      expect(datavizWebmap.mapParams.title).toBe('RestData');
+      expect(datavizWebmap.mapParams.description).toBe('');
+      done();
+    });
+  });
+
   it('WMS', (done) => {
     let options = {
       server: server

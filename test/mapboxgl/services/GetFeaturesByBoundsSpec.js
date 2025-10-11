@@ -63,26 +63,40 @@ describe('mapboxgl_FeatureService_getFeaturesByBounds', () => {
             done();
         });
     });
-    it('GetFeaturesByBoundsParameters:targetEpsgCode', done => {
-        var sw = new mapboxgl.LngLat(-20, -20);
-        var ne = new mapboxgl.LngLat(20, 20);
-        var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
-        var boundsParam = new GetFeaturesByBoundsParameters({
-            datasetNames: ['World:Capitals'],
-            bounds: lngLatBounds,
-            targetEpsgCode: 4326
-        });
-        var service = new FeatureService(url);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            var paramsObj = JSON.parse(params.replace(/'/g, '"'));
-            expect(paramsObj.targetEpsgCode).toEqual(4326);
-            return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
-        });
-        service.getFeaturesByBounds(boundsParam, result => {
-            serviceResult = result;
-            boundsParam.destroy();
-            done();
-        });
+    it('getFeaturesByBounds preferServer', done => {
+      var sw = new mapboxgl.LngLat(-20, -20);
+      var ne = new mapboxgl.LngLat(20, 20);
+      var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
+      var boundsParam = new GetFeaturesByBoundsParameters({
+          datasetNames: ['World:Capitals'],
+          bounds: lngLatBounds,
+          fromIndex: 1,
+          toIndex: 3
+      });
+      var service = new FeatureService(url, { preferServer: true });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(url + '/featureResults.geojson?fromIndex=1&toIndex=3&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+          expect(paramsObj.getFeatureMode).toBe('BOUNDS');
+          expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
+          expect(options).not.toBeNull();
+          expect(options.withoutFormatSuffix).toBe(true);
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQLService.result.features)));
+      });
+      service.getFeaturesByBounds(boundsParam, testResult => {
+          serviceResult = testResult;
+          expect(service).not.toBeNull();
+          expect(serviceResult.type).toBe('processCompleted');
+          expect(serviceResult.object.format).toBe('GEOJSON');
+          var result = serviceResult.result;
+          expect(result.succeed).toBe(true);
+          expect(result.features.type).toEqual('FeatureCollection');
+          expect(serviceResult.object.preferServer).toBe(true);
+          boundsParam.destroy();
+          done();
+      });
     });
     it('GetFeaturesByBoundsParameters:targetPrj', done => {
         var sw = new mapboxgl.LngLat(-20, -20);

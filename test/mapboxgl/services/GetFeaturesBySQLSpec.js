@@ -26,7 +26,87 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         expect(getFeaturesBySQLService.options.headers).not.toBeNull();
     });
 
-    //数据集SQL查询服务
+    it('getFeaturesBySQL geojson preferServer true', done => {
+      var sqlParam = new GetFeaturesBySQLParameters({
+          queryParameter: {
+              name: 'Countries@World',
+              attributeFilter: 'SMID = 247'
+          },
+          datasetNames: ['World:Countries']
+      });
+      var service = new FeatureService(url, { preferServer: true });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(url + '/featureResults.geojson?fromIndex=0&toIndex=19&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+          expect(paramsObj.getFeatureMode).toBe('SQL');
+          expect(options).not.toBeNull();
+          expect(options.withoutFormatSuffix).toBe(true);
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQLService.result.features)));
+      });
+      service.getFeaturesBySQL(sqlParam, result => {
+          serviceResult = result;
+
+          try {
+              expect(service).not.toBeNull();
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.type).toBe('processCompleted');
+              expect(serviceResult.result.succeed).toBe(true);
+              expect(serviceResult.object.preferServer).toBe(true);
+              expect(serviceResult.result.features.type).toBe('FeatureCollection');
+              expect(serviceResult.options.data).toContain('Countries@World');
+              expect(serviceResult.options.data).toContain('SMID = 247');
+              done();
+          } catch (e) {
+              console.log("'getFeaturesBySQL prefreServer'案例失败" + e.name + ':' + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+    });
+
+    it('getFeaturesBySQL iserver preferServer true', done => {
+      var sqlParam = new GetFeaturesBySQLParameters({
+          queryParameter: {
+              name: 'Countries@World',
+              attributeFilter: 'SMID = 247'
+          },
+          datasetNames: ['World:Countries']
+      });
+      var service = new FeatureService(url, { preferServer: true });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(url + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+          expect(paramsObj.getFeatureMode).toBe('SQL');
+          expect(options).not.toBeNull();
+          expect(options.withoutFormatSuffix).toBe(false);
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
+      });
+      service.getFeaturesBySQL(sqlParam, result => {
+        serviceResult = result;
+        try {
+            expect(service).not.toBeNull();
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe('processCompleted');
+            expect(serviceResult.result.succeed).toBe(true);
+            expect(serviceResult.object.preferServer).toBe(true);
+            expect(serviceResult.result.features).not.toBeNull();
+            expect(serviceResult.options.data).toContain('Countries@World');
+            expect(serviceResult.options.data).toContain('SMID = 247');
+            expect(serviceResult.result.featureCount).toEqual(1);
+            expect(serviceResult.result.totalCount).toEqual(1);
+            done();
+        } catch (e) {
+            console.log("'getFeaturesBySQL prefreServer'案例失败" + e.name + ':' + e.message);
+            expect(false).toBeTruthy();
+            done();
+        }
+      }, 'ISERVER');
+    });
+
     it('getFeaturesBySQL', done => {
         var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {

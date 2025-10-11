@@ -17,7 +17,7 @@ const FEATURE_SERVICE_MAP = {
   bounds: GetFeaturesByBoundsService,
   buffer: GetFeaturesByBufferService,
   geometry: GetFeaturesByGeometryService
-}
+};
 
 /**
  * @class FeatureService
@@ -34,11 +34,11 @@ const FEATURE_SERVICE_MAP = {
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {boolean} [options.preferServer=false] - 当resultFormat=DataFormat.GEOJSON时，使用服务器直接返回geojson。
  * @extends {ServiceBase}
  * @usage
  */
 export class FeatureService {
-
   constructor(url, options) {
     this.url = url;
     this.options = options || {};
@@ -59,7 +59,8 @@ export class FeatureService {
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
       headers: me.options.headers,
-      format: resultFormat
+      format: resultFormat,
+      preferServer: me.options.preferServer
     });
     return getFeaturesByIDsService.processAsync(params, callback);
   }
@@ -79,7 +80,8 @@ export class FeatureService {
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
       headers: me.options.headers,
-      format: me._processFormat(resultFormat)
+      format: me._processFormat(resultFormat),
+      preferServer: me.options.preferServer
     });
     return getFeaturesByBoundsService.processAsync(params, callback);
   }
@@ -99,7 +101,8 @@ export class FeatureService {
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
       headers: me.options.headers,
-      format: me._processFormat(resultFormat)
+      format: me._processFormat(resultFormat),
+      preferServer: me.options.preferServer
     });
     return getFeatureService.processAsync(params, callback);
   }
@@ -119,7 +122,8 @@ export class FeatureService {
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
       headers: me.options.headers,
-      format: me._processFormat(resultFormat)
+      format: me._processFormat(resultFormat),
+      preferServer: me.options.preferServer
     });
     return getFeatureBySQLService.processAsync(params, callback);
   }
@@ -139,7 +143,8 @@ export class FeatureService {
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
       headers: me.options.headers,
-      format: me._processFormat(resultFormat)
+      format: me._processFormat(resultFormat),
+      preferServer: me.options.preferServer
     });
     return getFeaturesByGeometryService.processAsync(params, callback);
   }
@@ -159,7 +164,7 @@ export class FeatureService {
       url = me.url,
       dataSourceName = params.dataSourceName,
       dataSetName = params.dataSetName;
-    url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+    url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
 
     var editFeatureService = new EditFeaturesService(url, {
       proxy: me.options.proxy,
@@ -182,7 +187,7 @@ export class FeatureService {
       url = me.url,
       dataSourceName = params.dataSourceName,
       dataSetName = params.dataSetName;
-    url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+    url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
     var editFeatureService = new EditFeaturesService(url, {
       proxy: me.options.proxy,
       withCredentials: me.options.withCredentials,
@@ -207,7 +212,7 @@ export class FeatureService {
       url = me.url,
       dataSourceName = params.dataSourceName,
       dataSetName = params.dataSetName;
-    url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+    url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
     var featureAttachmentsService = new FeatureAttachmentsService(url, {
       proxy: me.options.proxy,
       withCredentials: me.options.withCredentials,
@@ -233,7 +238,7 @@ export class FeatureService {
       url = me.url,
       dataSourceName = params.dataSourceName,
       dataSetName = params.dataSetName;
-    url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+    url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
     var featureAttachmentsService = new FeatureAttachmentsService(url, {
       proxy: me.options.proxy,
       withCredentials: me.options.withCredentials,

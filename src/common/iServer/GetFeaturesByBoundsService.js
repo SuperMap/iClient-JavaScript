@@ -17,6 +17,7 @@ import {GetFeaturesByBoundsParameters} from './GetFeaturesByBoundsParameters';
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {boolean} [options.preferServer=false] - 当options.format=DataFormat.GEOJSON时，使用服务器直接返回geojson。
  * @example
  * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url);
  * @usage

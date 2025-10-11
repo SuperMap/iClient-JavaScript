@@ -72,6 +72,51 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
             done();
         });
     });
+    it('getFeaturesByBuffer_geometry preferServer', done => {
+      var queryBufferGeometry = {
+          type: 'Polygon',
+          coordinates: [
+              [
+                  [-20, 20],
+                  [-20, -20],
+                  [20, -20],
+                  [20, 20],
+                  [-20, 20]
+              ]
+          ]
+      };
+      var bufferParam = new GetFeaturesByBufferParameters({
+          datasetNames: ['World:Capitals'],
+          bufferDistance: 10,
+          geometry: queryBufferGeometry,
+          fromIndex: 1,
+          toIndex: 3
+      });
+      var service = new FeatureService(url, { preferServer: true });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(url + '/featureResults.geojson?fromIndex=1&toIndex=3&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+          expect(paramsObj.bufferDistance).toEqual(10);
+          expect(paramsObj.getFeatureMode).toBe('BUFFER');
+          expect(options.withoutFormatSuffix).toBe(true);
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQLService.result.features)));
+      });
+      service.getFeaturesByBuffer(bufferParam, testResult => {
+          serviceResult = testResult;
+          expect(service).not.toBeNull();
+          expect(serviceResult.type).toBe('processCompleted');
+          expect(serviceResult.object.format).toBe('GEOJSON');
+          var result = serviceResult.result;
+          expect(result.succeed).toBe(true);
+          expect(serviceResult.result.features.type).toEqual('FeatureCollection');
+          expect(serviceResult.object.preferServer).toBe(true);
+          bufferParam.destroy();
+          done();
+      });
+    });
     it('GetFeaturesByBufferParameters:targetEpsgCode', done => {
         var queryBufferGeometry = {
             type: 'Polygon',

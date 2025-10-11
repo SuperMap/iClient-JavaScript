@@ -27,6 +27,7 @@ import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-com
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {boolean} [options.preferServer] - 当resultFormat=DataFormat.GEOJSON时，使用服务器直接返回geojson。
  * @usage
  */
 export class FeatureService extends ServiceBase {
