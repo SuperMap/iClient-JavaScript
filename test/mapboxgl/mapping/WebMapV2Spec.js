@@ -490,6 +490,29 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
+  it('vectorlayer should have legends', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(vectorLayer_line)));
+      } else if (url.indexOf('1788054202/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('13136933/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      } else if (url.indexOf('web/datas/1920557079/content.json') > -1) {
+        return Promise.resolve(new Response(layerData_CSV));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap(id, { ...commonOption, map: commonMap }, { ...commonMapOptions });
+    const callback = function (data) {
+      expect(datavizWebmap.getLegends().length).toBe(1);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+  });
+
   it('add heatLayer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1920557079/content.json') > -1) {

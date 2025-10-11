@@ -722,6 +722,16 @@ export function createWebMapV2BaseExtending(SuperClass = Events, fireField = 'tr
   
       return styleGroup;
     }
+
+    getVectorStyleGroup(layerInfo) {
+      const color = layerInfo.style.fillColor || layerInfo.style.strokeColor;
+      const styleGroup = [{ 
+        color: color,
+        style: layerInfo.style,
+        value: layerInfo.name
+      }]
+      return styleGroup;
+    }
   
     transformFeatures(features) {
       features &&
