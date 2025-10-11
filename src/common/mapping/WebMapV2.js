@@ -575,6 +575,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       features = this.handleLayerFeatures(features, layerInfo);
 
       if (layerType === 'VECTOR') {
+        const styleGroups = this.getVectorStyleGroup(layerInfo);
+        this._initLegendConfigInfo(layerInfo, styleGroups);
         if (featureType === 'POINT') {
           if (style.type === 'SYMBOL_POINT') {
             this._createSymbolLayer(layerInfo, features);
@@ -2633,11 +2635,18 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       this._addOverlayToMap({ type: 'LINE', source, layerID, parentLayerId, layerStyle: lineStyle, minzoom, maxzoom });
     }
 
+    _getThemeField(layerInfo) {
+      if (layerInfo.layerType === 'VECTOR') {
+        return ''
+      }
+      return layerInfo.layerType === 'HEAT' ? layerInfo.themeSetting.weight : layerInfo.themeSetting.themeField
+    }
+
     _initLegendConfigInfo(layerInfo, style) {
       const legendItem = {
         layerId: layerInfo.layerID,
         layerTitle: layerInfo.layerID,
-        themeField: layerInfo.layerType === 'HEAT' ? layerInfo.themeSetting.weight : layerInfo.themeSetting.themeField,
+        themeField: this._getThemeField(layerInfo),
         styleGroup: style
       };
 
@@ -2654,6 +2663,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
 
       switch (layerInfo.layerType) {
         case 'UNIQUE':
+        case 'VECTOR':
           legendItem.styleGroup = legendItem.styleGroup.map((styleGroup) => {
             return {
               fieldValue: styleGroup.value,
