@@ -1,7 +1,7 @@
 {
   "name": "@supermapgis/iclient-ol",
   "description": "",
-  "version": "12.0.1-r",
+  "version": "12.1.0-dev",
   "keywords": [
     "SuperMap",
     "OpenLayers"
@@ -15,7 +15,7 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "@supermapgis/iclient-common": "12.0.1-r",
+    "@supermapgis/iclient-common": "12.1.0-dev",
     "@supermapgis/tile-decryptor": "^1.0.0",
     "@turf/turf": "7.2.0",
     "mapv": "2.0.62",
