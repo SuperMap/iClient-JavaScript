@@ -28,6 +28,7 @@ const WORLD_WIDTH = 360;
  * @param {boolean} [options.isSuperMapOnline] - 是否是 SuperMap Online 地图。
  * @param {string} [options.iportalServiceProxyUrlPrefix] - iportal的代理服务地址前缀。
  * @param {string|boolean} [options.proxy] - HTTP 请求代理地址 。布尔值表示使用 iPortal 默认代理地址。
+ * @param {boolean} [options.preferServer=false] - iServer rest/data服务, 使用服务器直接返回geojson。
  * @param {Object} mapOptions - 地图参数。
  * @param {Array} [mapOptions.center] - 中心点。
  * @param {number} [mapOptions.zoom] - 缩放级别。
