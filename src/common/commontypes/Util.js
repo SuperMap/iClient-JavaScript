@@ -435,6 +435,18 @@ const Util = {
     return paramsArray.join('&');
   },
 
+  handleUrlSuffix(url, suffix = '.json') {
+    if (url.indexOf('?') < 0) {
+      url += suffix;
+    } else {
+        var urlArrays = url.split('?');
+        if (urlArrays.length === 2) {
+            url = urlArrays[0] + suffix + '?' + urlArrays[1];
+        }
+    }
+    return url
+  },
+
   /**
    * @memberOf CommonUtil
    * @description 给 URL 追加查询参数。

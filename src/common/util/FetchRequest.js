@@ -514,14 +514,7 @@ export var FetchRequest = {
         }
 
         if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf('?') < 0) {
-                url += '.json';
-            } else {
-                var urlArrays = url.split('?');
-                if (urlArrays.length === 2) {
-                    url = urlArrays[0] + '.json?' + urlArrays[1];
-                }
-            }
+           url = Util.handleUrlSuffix(url);
         }
         if (options && options.proxy) {
             if (typeof options.proxy === 'function') {

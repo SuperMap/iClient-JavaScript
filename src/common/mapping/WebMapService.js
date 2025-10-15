@@ -42,6 +42,7 @@ export class WebMapService {
     this.excludePortalProxyUrl = options.excludePortalProxyUrl;
     this.iportalServiceProxyUrl = options.iportalServiceProxyUrlPrefix;
     this.proxy = options.proxy;
+    this.preferServer = options.preferServer || false;
     this.proxyOptions = {
         data: 'apps/viewer/getUrlResource.json?url=',
         image: 'apps/viewer/getUrlResource.png?url='
@@ -1224,6 +1225,7 @@ export class WebMapService {
     let options = {
       proxy,
       withCredentials: this.handleWithCredentials(proxy, url, false),
+      preferServer: this.preferServer,
       eventListeners: {
         processCompleted: getFeaturesEventArgs => {
           let result = getFeaturesEventArgs.result;

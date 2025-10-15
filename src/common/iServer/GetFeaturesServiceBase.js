@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Util} from '../commontypes/Util';
-import {DataFormat} from '../REST';
-import {CommonServiceBase} from './CommonServiceBase';
-import {GeoJSON} from '../format/GeoJSON';
+import { Util } from '../commontypes/Util';
+import { DataFormat } from '../REST';
+import { CommonServiceBase } from './CommonServiceBase';
+import { GeoJSON } from '../format/GeoJSON';
 
 /**
  * @class GetFeaturesServiceBase
@@ -19,65 +19,65 @@ import {GeoJSON} from '../format/GeoJSON';
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {boolean} [options.preferServer=false] - 当options.format=DataFormat.GEOJSON时，使用服务器直接返回geojson。
  * @example
  * var myService = new GetFeaturesServiceBase(url);
  * @usage
  */
 export class GetFeaturesServiceBase extends CommonServiceBase {
-
     constructor(url, options) {
-        super(url, options);
-        options = options || {};
+      super(url, options);
+      options = options || {};
 
-        /**
-         * @member {boolean} [GetFeaturesServiceBase.prototype.returnContent=true]
-         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
-         * 如果为 true，则直接返回新创建资源，即查询结果的表述。
-         * 如果为 false，则返回的是查询结果资源的 URI。
-         */
-        this.returnContent = true;
+      /**
+       * @member {boolean} [GetFeaturesServiceBase.prototype.returnContent=true]
+       * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+       * 如果为 true，则直接返回新创建资源，即查询结果的表述。
+       * 如果为 false，则返回的是查询结果资源的 URI。
+       */
+      this.returnContent = true;
 
-        /**
-         * @member {boolean} [GetFeaturesServiceBase.prototype.returnFeaturesOnly=false]
-         * @description 是否仅返回要素信息。
-         */
-        this.returnFeaturesOnly = false;
+      /**
+       * @member {boolean} [GetFeaturesServiceBase.prototype.returnFeaturesOnly=false]
+       * @description 是否仅返回要素信息。
+       */
+      this.returnFeaturesOnly = false;
 
-        /**
-         * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
-         * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
-         */
-        this.fromIndex = 0;
+      /**
+       * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
+       * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+       */
+      this.fromIndex = 0;
 
-        /**
-         * @member {number} [GetFeaturesServiceBase.prototype.toIndex=19]
-         * @description 查询结果的最大索引号。
-         * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
-         */
-        this.toIndex = 19;
+      /**
+       * @member {number} [GetFeaturesServiceBase.prototype.toIndex=19]
+       * @description 查询结果的最大索引号。
+       * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+       */
+      this.toIndex = 19;
 
-         /**
-         * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含 Geometry。
-         */
-        this.hasGeometry = true;
+      /**
+       * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
+       * @description 返回结果是否包含 Geometry。
+       */
+      this.hasGeometry = true;
 
-        /**
-         * @member {number} [GetFeaturesServiceBase.prototype.maxFeatures=1000]
-         * @description 进行 SQL 查询时，用于设置服务端返回查询结果条目数量。
-         */
-        this.maxFeatures = null;
+      /**
+       * @member {number} [GetFeaturesServiceBase.prototype.maxFeatures=1000]
+       * @description 进行 SQL 查询时，用于设置服务端返回查询结果条目数量。
+       */
+      this.maxFeatures = null;
 
-        /**
-         * @member {string} [GetFeaturesServiceBase.prototype.format=DataFormat.GEOJSON]
-         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。
-         * 参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
-         */
-        this.format = DataFormat.GEOJSON;
+      /**
+       * @member {string} [GetFeaturesServiceBase.prototype.format=DataFormat.GEOJSON]
+       * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。
+       * 参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
+       */
+      this.format = DataFormat.GEOJSON;
 
-        Util.extend(this, options);
-        this.url = Util.urlPathAppend(this.url, 'featureResults');
-        this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
+      Util.extend(this, options);
+      this.url = Util.urlPathAppend(this.url, 'featureResults');
+      this.CLASS_NAME = 'SuperMap.GetFeaturesServiceBase';
     }
 
     /**
@@ -85,14 +85,14 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        super.destroy();
-        var me = this;
-        me.returnContent = null;
-        me.fromIndex = null;
-        me.toIndex = null;
-        me.maxFeatures = null;
-        me.format = null;
-        me.hasGeometry = null;
+      super.destroy();
+      var me = this;
+      me.returnContent = null;
+      me.fromIndex = null;
+      me.toIndex = null;
+      me.maxFeatures = null;
+      me.format = null;
+      me.hasGeometry = null;
     }
 
     /**
@@ -103,52 +103,57 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
-        if (!params) {
-            return;
+      if (!params) {
+        return;
+      }
+      var me = this,
+        jsonParameters = null,
+        firstPara = true;
+      me.returnContent = params.returnContent;
+      me.returnFeaturesOnly = params.returnFeaturesOnly;
+      me.fromIndex = params.fromIndex;
+      me.toIndex = params.toIndex;
+      me.maxFeatures = params.maxFeatures;
+      me.hasGeometry = params.hasGeometry;
+      if (me.returnContent) {
+        firstPara = false;
+      }
+      var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
+      if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
+        me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
+      }
+
+      if (me.returnContent) {
+        if (!params.returnCountOnly && !params.returnDatasetInfoOnly && !params.returnFeaturesOnly) {
+          console.warn(
+            'recommend set returnFeaturesOnly config to true to imporve performance. if need get Total amount and Dataset information. FeatureService provide getFeaturesCount and getFeaturesDatasetInfo method'
+          );
         }
-        var me = this,
-            jsonParameters = null,
-            firstPara = true;
-
-        me.returnContent = params.returnContent;
-        me.returnFeaturesOnly = params.returnFeaturesOnly;
-        me.fromIndex = params.fromIndex;
-        me.toIndex = params.toIndex;
-        me.maxFeatures = params.maxFeatures;
-        me.hasGeometry = params.hasGeometry;
-        if (me.returnContent) {
-          firstPara = false;
-        }
-        var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
-        if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
-            me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
+        if (params.returnCountOnly) {
+          me.url = Util.urlAppend(me.url, 'returnCountOnly=' + params.returnCountOnly);
         }
 
-       if (me.returnContent) {
-          if (!params.returnCountOnly && !params.returnDatasetInfoOnly && !params.returnFeaturesOnly) {
-            console.warn('recommend set returnFeaturesOnly config to true to imporve performance. if need get Total amount and Dataset information. FeatureService provide getFeaturesCount and getFeaturesDatasetInfo method');
-          }
-          if (params.returnCountOnly) {
-            me.url = Util.urlAppend(me.url, "returnCountOnly=" + params.returnCountOnly)
-         }
+        if (params.returnDatasetInfoOnly) {
+          me.url = Util.urlAppend(me.url, 'returnDatasetInfoOnly=' + params.returnDatasetInfoOnly);
+        }
+        if (params.returnFeaturesOnly) {
+          me.url = Util.urlAppend(me.url, 'returnFeaturesOnly=' + params.returnFeaturesOnly);
+        }
+      }
 
-          if (params.returnDatasetInfoOnly) {
-            me.url = Util.urlAppend(me.url, "returnDatasetInfoOnly=" + params.returnDatasetInfoOnly)
-          }
-          
-          if (params.returnFeaturesOnly) {
-            me.url = Util.urlAppend(me.url, "returnFeaturesOnly=" + params.returnFeaturesOnly)
-          }
-       }
+      if (me.preferServer && me.format === DataFormat.GEOJSON) {
+        me.url = Util.handleUrlSuffix(me.url, '.geojson');
+        me.withoutFormatSuffix = true;
+      }
 
-        jsonParameters = me.getJsonParameters(params);
-        return me.request({
-            method: "POST",
-            data: jsonParameters,
-            scope: me,
-            success: callback,
-            failure: callback
-        });
+      jsonParameters = me.getJsonParameters(params);
+      return me.request({
+        method: 'POST',
+        data: jsonParameters,
+        scope: me,
+        success: callback,
+        failure: callback
+      });
     }
 
     /**
@@ -159,25 +164,29 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @return {Object} 转换结果。
      */
     transformResult(result, options) {
-        var me = this;
-        result = Util.transformResult(result);
-        var geoJSONFormat = new GeoJSON();
-        if (me.format === DataFormat.GEOJSON && result.features) { 
-            result.features = geoJSONFormat.toGeoJSON(result.features);
-        }
-        if (me.returnFeaturesOnly && Array.isArray(result)) {
-          let succeed = result.succeed;
-          let features = geoJSONFormat.toGeoJSON(result);
-          result = {
-            succeed,
-            features
-          };
-        }
-       return { result, options };
+      var me = this;
+      result = Util.transformResult(result);
+      var geoJSONFormat = new GeoJSON();
+      if (me.preferServer && me.format === DataFormat.GEOJSON) {
+        const succeed = result.succeed;
+        delete result.succeed;
+        return { result: { succeed, features: result }, options };
+      }
+      if (me.format === DataFormat.GEOJSON && result.features) {
+        result.features = geoJSONFormat.toGeoJSON(result.features);
+      }
+      if (me.returnFeaturesOnly && Array.isArray(result)) {
+        let succeed = result.succeed;
+        let features = geoJSONFormat.toGeoJSON(result);
+        result = {
+          succeed,
+          features
+        };
+      }
+      return { result, options };
     }
 
     dataFormat() {
       return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
-
 }
