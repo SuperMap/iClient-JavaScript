@@ -150,6 +150,7 @@ export class CommonServiceBase {
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
+        options.preferServer = options.preferServer || me.preferServer;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 

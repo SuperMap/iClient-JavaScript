@@ -73,6 +73,52 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', () => {
             }
         });
     });
+    it('getFeaturesByGeometry preferServer', done => {
+      var queryPolygonGeometry = {
+          type: 'Polygon',
+          coordinates: [
+              [
+                  [0, 0],
+                  [-10, 30],
+                  [-30, 0],
+                  [0, 0]
+              ]
+          ]
+      };
+      var geometryParam = new GetFeaturesByGeometryParameters({
+          datasetNames: ['World:Countries'],
+          geometry: queryPolygonGeometry,
+          spatialQueryMode: 'INTERSECT'
+      });
+      var service = new FeatureService(url, { preferServer: true });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(url + '/featureResults.geojson?fromIndex=0&toIndex=19&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+          expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
+          expect(options.withoutFormatSuffix).toBe(true);
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify(getFeaturesBySQLService.result.features)));
+      });
+      service.getFeaturesByGeometry(geometryParam, result => {
+          serviceResult = result;
+          try {
+              expect(service).not.toBeNull();
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.type).toBe('processCompleted');
+              expect(serviceResult.result.succeed).toBe(true);
+              expect(serviceResult.options.data).toContain('World:Countries');
+              expect(serviceResult.object.preferServer).toBe(true);
+              expect(serviceResult.result.features.type).toBe('FeatureCollection');
+              done();
+          } catch (e) {
+              console.log("'getFeaturesByGeometry preferServer'案例失败" + e.name + ':' + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+    });
     it('GetFeaturesByGeometryParameters:targetEpsgCode', done => {
         var queryPolygonGeometry = {
             type: 'Polygon',
