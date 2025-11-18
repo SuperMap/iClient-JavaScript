@@ -169,7 +169,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
     prjCoordSys: { epsgCode },
     bounds,
     center,
-    dpi,
+    dpi = 96,
     coordUnit,
     scale
   } = resetServiceInfo;
@@ -197,6 +197,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
     crs = defineCRSByWKT(baseProjection, wkt, extent);
     if (sourceType === 'raster') {
       enhanceExtraInfo.rasterSource = 'iserver';
+      enhanceExtraInfo.dpi = dpi;
     }
     if (vectorTileInfo && vectorTileInfo.center) {
       mapCenter = vectorTileInfo.center;

@@ -293,6 +293,7 @@ describe('mapboxgl_InitMap', () => {
     };
     initMap(tilesetServeRequest).then(({ map }) => {
       expect(map).not.toBeNull();
+      expect(Object.values(map.options.style.sources)[0].dpi).toBe(96);
       delete mapboxgl.CRS;
       delete mapboxgl.proj4;
       done();
@@ -414,6 +415,51 @@ describe('mapboxgl_InitMap', () => {
     expect(map).not.toBeUndefined();
     expect(map.options.crs.code).toBe(mapServiceInfo.prjCoordSys.epsgCode);
     expect(map.options.style).toBe(vectorStyleUrl);
+    delete mapboxgl.CRS;
+    delete mapboxgl.proj4;
+  });
+
+  it('initMap 3857, dpi 90.7', async () => {
+    const url = 'http:/fake:8090/iserver/iserver/services/map-china400/rest/maps/China';
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 3857
+      },
+      dpi:90.7,
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+      center: {
+        x: -7.450580596923828e-9,
+        y: -2.60770320892334e-8
+      }
+    };
+    spyOn(FetchRequest, 'get').and.callFake(() => {
+      return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+    });
+     mapboxgl.CRS = function () {
+      return {
+        code: mapServiceInfo.prjCoordSys.epsgCode
+      };
+    };
+    mapboxgl.proj4 = function () {
+      return [0, 0];
+    };
+    const resData = await initMap(url);
+    const map = resData.map;
+    expect(Object.values(map.options.style.sources)[0].dpi).toBe(90.7);
     delete mapboxgl.CRS;
     delete mapboxgl.proj4;
   });
