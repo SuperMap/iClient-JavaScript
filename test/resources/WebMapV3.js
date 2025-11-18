@@ -193,135 +193,116 @@ var mapstudioAppInfo = JSON.stringify({
 
 const mapstudioWebMap_raster_append = JSON.parse(mapstudioWebMap_raster);
 mapstudioWebMap_raster_append.layers.push({
-  "metadata": {},
-  "maxzoom": 24,
-  "paint": {
-    "circle-color": "rgba(189,16,224,1)",
-    "circle-opacity": 0.9,
-    "circle-translate-anchor": "map",
-    "circle-radius": 9,
-    "circle-translate": [
-      0,
-      0
-    ]
+  metadata: {},
+  maxzoom: 24,
+  paint: {
+    'circle-color': 'rgba(189,16,224,1)',
+    'circle-opacity': 0.9,
+    'circle-translate-anchor': 'map',
+    'circle-radius': 9,
+    'circle-translate': [0, 0]
   },
-  "id": "未命名数据",
-  "source": "ms_424149619_1725240548192_22",
-  "source-layer": "424149619$geometry",
-  "type": "circle",
-  "minzoom": 0
+  id: '未命名数据',
+  source: 'ms_424149619_1725240548192_22',
+  'source-layer': '424149619$geometry',
+  type: 'circle',
+  minzoom: 0
 });
 mapstudioWebMap_raster_append.sources['ms_424149619_1725240548192_22'] = {
-  "tiles": [
-    "http://localhost:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry"
+  tiles: [
+    'http://localhost:8190/iportal/web/datas/424149619/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4269&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry'
   ],
-  "bounds": [
-    97.89133489467912,
-    30.977794120474215,
-    103.94874956817955,
-    35.60055795025026
-  ],
-  "type": "vector"
-}
+  bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026],
+  type: 'vector'
+};
 mapstudioWebMap_raster_append.metadata.layerCatalog.unshift({
-  "visible": true,
-  "id": "未命名数据",
-  "title": "未命名数据-点",
-  "type": "basic"
-})
+  visible: true,
+  id: '未命名数据',
+  title: '未命名数据-点',
+  type: 'basic'
+});
 
 var msProjectINfo_raster_append = JSON.parse(mapstudioAppInfo);
 
 const rasterAppendProjInfo = JSON.parse(msProjectINfo_raster_append.projectInfo);
 
 rasterAppendProjInfo.catalogs.push({
-  "visualization": {
-      "renderer": [
-          {
-              "symbolsContent": {
-                  "type": "simple",
-                  "value": {
-                      "symbolId": "circle",
-                      "style": {
-                          "layout": {
-                              "icon-image": "circle"
-                          }
-                      }
-                  }
-              },
-              "size": {
-                  "type": "simple",
-                  "value": 18
-              },
-              "color": {
-                  "type": "simple",
-                  "value": "rgba(189,16,224,1)"
-              },
-              "translateAnchor": {
-                  "type": "simple",
-                  "value": "map"
-              },
-              "opacity": {
-                  "type": "simple",
-                  "value": 0.9
-              },
-              "translate": {
-                  "type": "simple",
-                  "value": [
-                      0,
-                      0
-                  ]
-              },
-              "styleRenderMode": "mapboxgl"
+  visualization: {
+    renderer: [
+      {
+        symbolsContent: {
+          type: 'simple',
+          value: {
+            symbolId: 'circle',
+            style: {
+              layout: {
+                'icon-image': 'circle'
+              }
+            }
           }
-      ]
+        },
+        size: {
+          type: 'simple',
+          value: 18
+        },
+        color: {
+          type: 'simple',
+          value: 'rgba(189,16,224,1)'
+        },
+        translateAnchor: {
+          type: 'simple',
+          value: 'map'
+        },
+        opacity: {
+          type: 'simple',
+          value: 0.9
+        },
+        translate: {
+          type: 'simple',
+          value: [0, 0]
+        },
+        styleRenderMode: 'mapboxgl'
+      }
+    ]
   },
-  "visible": true,
-  "catalogType": "layer",
-  "msDatasetId": "ms_datasetId_1725240537606_18",
-  "bounds": [
-      97.89133489467912,
-      30.977794120474215,
-      103.94874956817955,
-      35.60055795025026
-  ],
-  "id": "未命名数据",
-  "popupInfo": {
-      "elements": [
-          {
-              "fieldName": "smpid",
-              "type": "FIELD"
-          },
-          {
-              "fieldName": "新建字段",
-              "type": "FIELD"
-          },
-          {
-              "fieldName": "geometry",
-              "type": "FIELD"
-          }
-      ],
-      "title": "未命名数据"
+  visible: true,
+  catalogType: 'layer',
+  msDatasetId: 'ms_datasetId_1725240537606_18',
+  bounds: [97.89133489467912, 30.977794120474215, 103.94874956817955, 35.60055795025026],
+  id: '未命名数据',
+  popupInfo: {
+    elements: [
+      {
+        fieldName: 'smpid',
+        type: 'FIELD'
+      },
+      {
+        fieldName: '新建字段',
+        type: 'FIELD'
+      },
+      {
+        fieldName: 'geometry',
+        type: 'FIELD'
+      }
+    ],
+    title: '未命名数据'
   },
-  "title": "未命名数据-点",
-  "layerSourceType": "Data",
-  "zoomRange": [
-      0,
-      24
-  ]
+  title: '未命名数据-点',
+  layerSourceType: 'Data',
+  zoomRange: [0, 24]
 });
 
 rasterAppendProjInfo.datas.push({
-  "sourceType": "STRUCTURE_DATA",
-  "datasets": [
-      {
-          "datasetTitle": "未命名数据",
-          "msDatasetId": "ms_datasetId_1725240537606_18",
-          "datasetId": "424149619",
-          "geometryField": "geometry"
-      }
+  sourceType: 'STRUCTURE_DATA',
+  datasets: [
+    {
+      datasetTitle: '未命名数据',
+      msDatasetId: 'ms_datasetId_1725240537606_18',
+      datasetId: '424149619',
+      geometryField: 'geometry'
+    }
   ],
-  "title": "未命名数据"
+  title: '未命名数据'
 });
 
 msProjectINfo_raster_append.projectInfo = JSON.stringify(rasterAppendProjInfo);
@@ -2699,7 +2680,8 @@ var apstudioWebMap_layerData = JSON.stringify({
   center: [116.39560889343761, 39.939177386003514],
   zoom: 9.789811175067591,
   glyphs: {
-    "ms_M_3857_1719917169016_4": "http://localhost:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
+    ms_M_3857_1719917169016_4:
+      'http://localhost:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf'
   },
   version: '3.2.1',
   rootUrl: 'http://localhost:8190/iportal/',
@@ -2843,536 +2825,398 @@ var msProjectINfo_layerData = JSON.stringify({
   favoriteCount: 0
 });
 
-var msProjectINfo_labelLegend= JSON.stringify({
+var msProjectINfo_labelLegend = JSON.stringify({
   extent: {
-      top: 30.581626133861924, 
-      left: 119.50387266758831, 
-      bottom: 33.47830971105678, 
-      leftBottom: {
-          x: 119.50387266758831, 
-          y: 33.47830971105678
-      }, 
-      right: 123.44840733243328, 
-      rightTop: {
-          x: 123.44840733243328, 
-          y: 30.581626133861924
-      }
-  }, 
-  controls: null, 
-  extentString: "{\"top\":30.581626133861924,\"left\":119.50387266758831,\"bottom\":33.47830971105678,\"leftBottom\":{\"x\":119.50387266758831,\"y\":33.47830971105678},\"right\":123.44840733243328,\"rightTop\":{\"x\":123.44840733243328,\"y\":30.581626133861924}}", 
-  description: "", 
-  verifyReason: null, 
-  units: null, 
-  title: "无标题地图-text-legend", 
-  resolution: 0, 
-  checkStatus: "SUCCESSFUL", 
-  projectInfo: '{"images":"http://localhost:9876/base/resources/data/sprite","catalogs":[{"visualization":{"renderer":[{"symbolsContent":{"type":"simple","value":{"symbolId":"polygon-0","style":{"layout":{"visibility":"visible"},"paint":{"fill-outline-color":"#FFFFFF","fill-color":"#826DBA","fill-opacity":0.9}}}},"color":{"type":"simple","value":"#826DBA"},"antialias":{"type":"simple","value":true},"outlineColor":{"type":"simple","value":"#FFFFFF"},"opacity":{"type":"simple","value":0.9}}],"label":{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{name}"},"textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"","style":{"layout":{"icon-image":""}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":3}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1721356340588_82","bounds":[101.06785732906204,29.800258509171595,104.27317208155472,31.478587256555958],"showLegend":true,"labelsContent":["ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218"],"id":"ms_未命名数据(8)_1721356340655_87","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"name","type":"FIELD"},{"fieldName":"index","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(8)"},"title":"未命名数据(8)","layerSourceType":"Data","zoomRange":[0,24]},{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"layout":{"visibility":"visible","line-miter-limit":2,"line-round-limit":1.05,"line-join":"miter","line-cap":"butt"},"paint":{"line-translate-anchor":"map","line-width":2,"line-gap-width":0,"line-offset":0,"line-opacity":1,"line-dasharray":[1,0],"line-translate":[0,0],"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}],"label":{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{smpid}"},"textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"circle","style":{"layout":{"icon-image":"circle"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":3}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":["ms_label_未命名数据(6)_1721356417065_271"],"title":"未命名数据(6)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721299204449_245","bounds":[99.9531563324067,28.059225801622308,106.40158916912902,32.57195517306453],"id":"未命名数据(6)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(6)"}},{"visualization":{"renderer":[{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{学习中心（点）名称}"},"styleRenderMode":"mapboxgl","textHaloBlur":{"type":"simple","value":0},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"circle","style":{"layout":{"icon-image":"circle"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"type":"simple","value":"#FFFFFF"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":0},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}]},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":[],"title":"上海市可校外学习中心(1)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721274351187_3693","bounds":[121.12147,30.71292682,121.83081,31.68730001],"id":"上海市可校外学习中心(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"﻿序号","type":"FIELD"},{"fieldName":"试点高校","type":"FIELD"},{"fieldName":"依托单位","type":"FIELD"},{"fieldName":"学习中心（点）名称","type":"FIELD"},{"fieldName":"地址","type":"FIELD"},{"fieldName":"经度","type":"FIELD"},{"fieldName":"纬度","type":"FIELD"},{"fieldName":"msgeometry","type":"FIELD"}],"title":"上海市可校外学习中心(1)"}},{"visualization":{"renderer":[{"fillExtrusionTranslateAnchor":{"type":"simple","value":"map"},"fillExtrusionVerticalGradient":{"type":"simple","value":true},"fillExtrusionHeightMultiple":{"type":"simple","value":1},"symbolsContent":{"type":"simple","value":{"symbolId":"polygon-0","style":{"layout":{"visibility":"visible"},"paint":{"fill-outline-color":"#FFFFFF","fill-color":"#826DBA","fill-opacity":0.9}}}},"color":{"type":"simple","value":"#826DBA"},"fillExtrusionBase":{"type":"simple","value":1000},"fillExtrusionTranslate":{"type":"simple","value":[0,0]},"fillExtrusionBaseMultiple":{"type":"simple","value":1},"opacity":{"type":"simple","value":0.9},"type":"fillExtrusion","fillExtrusionHeight":{"type":"simple","value":30000},"styleRenderMode":"mapboxgl"}],"label":{"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"textSize":{"field":["smpid"],"defaultValue":16,"values":[{"value":8,"key":1},{"value":50,"key":3}],"interpolateInfo":{"type":"linear"},"type":"unique"},"textZOffset":{"type":"simple","value":200000},"textHaloColor":{"type":"simple","value":"#242424"},"textAnchor":{"type":"simple","value":"center"},"textColor":{"type":"simple","value":"#FFFFFF"},"textField":{"type":"simple","value":"{smpid}"},"styleRenderMode":"antvL7","textHaloBlur":{"type":"simple","value":2},"textOpacity":{"type":"simple","value":0.9},"textHaloWidth":{"type":"simple","value":1},"textFont":{"type":"simple"},"textAllowOverlap":{"type":"simple","value":true}}},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":["ms_label_未命名数据(8)_1721355394193_51"],"title":"未命名数据(8)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721185747321_438","bounds":[101.06785732906204,29.800258509171595,104.27317208155472,31.478587256555958],"id":"未命名数据(8)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"name","type":"FIELD"},{"fieldName":"index","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(8)"}}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(2)","msDatasetId":"ms_datasetId_1721093667551_4","datasetId":"1442585533","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通站点(13)(2)(2)","msDatasetId":"ms_datasetId_1721097420598_230","datasetId":"540737853","geometryField":"geometry"}],"title":"北京市轨道交通站点(13)(2)(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"县级行政区划","msDatasetId":"ms_datasetId_1721097693397_915","datasetId":"932916417","geometryField":"geometry"}],"title":"县级行政区划"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721183007022_44","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721185747321_438","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"上海市可校外学习中心(1)","msDatasetId":"ms_datasetId_1721274351187_3693","datasetId":"166003414","geometryField":"msgeometry"}],"title":"上海市可校外学习中心(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(6)","msDatasetId":"ms_datasetId_1721299204449_245","datasetId":"347730291","geometryField":"geometry"}],"title":"未命名数据(6)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721356340588_82","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
-  visitCount: 110, 
-  centerString: "{\"x\":121.47614000000556,\"y\":31.201367876214704}", 
-  epsgCode: 3857, 
-  nickname: "admin_123", 
-  layers: null, 
-  id: 587670427, 
-  searchSetting: null, 
-  thumbnail: "http://172.16.15.52:8080/iportal/resources/thumbnail/map/map587670427.png", 
-  level: 9, 
+    top: 30.581626133861924,
+    left: 119.50387266758831,
+    bottom: 33.47830971105678,
+    leftBottom: {
+      x: 119.50387266758831,
+      y: 33.47830971105678
+    },
+    right: 123.44840733243328,
+    rightTop: {
+      x: 123.44840733243328,
+      y: 30.581626133861924
+    }
+  },
+  controls: null,
+  extentString:
+    '{"top":30.581626133861924,"left":119.50387266758831,"bottom":33.47830971105678,"leftBottom":{"x":119.50387266758831,"y":33.47830971105678},"right":123.44840733243328,"rightTop":{"x":123.44840733243328,"y":30.581626133861924}}',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: '无标题地图-text-legend',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo:
+    '{"images":"http://localhost:9876/base/resources/data/sprite","catalogs":[{"visualization":{"renderer":[{"symbolsContent":{"type":"simple","value":{"symbolId":"polygon-0","style":{"layout":{"visibility":"visible"},"paint":{"fill-outline-color":"#FFFFFF","fill-color":"#826DBA","fill-opacity":0.9}}}},"color":{"type":"simple","value":"#826DBA"},"antialias":{"type":"simple","value":true},"outlineColor":{"type":"simple","value":"#FFFFFF"},"opacity":{"type":"simple","value":0.9}}],"label":{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{name}"},"textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"","style":{"layout":{"icon-image":""}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":3}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1721356340588_82","bounds":[101.06785732906204,29.800258509171595,104.27317208155472,31.478587256555958],"showLegend":true,"labelsContent":["ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218"],"id":"ms_未命名数据(8)_1721356340655_87","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"name","type":"FIELD"},{"fieldName":"index","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(8)"},"title":"未命名数据(8)","layerSourceType":"Data","zoomRange":[0,24]},{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"layout":{"visibility":"visible","line-miter-limit":2,"line-round-limit":1.05,"line-join":"miter","line-cap":"butt"},"paint":{"line-translate-anchor":"map","line-width":2,"line-gap-width":0,"line-offset":0,"line-opacity":1,"line-dasharray":[1,0],"line-translate":[0,0],"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}],"label":{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{smpid}"},"textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"circle","style":{"layout":{"icon-image":"circle"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":3}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":["ms_label_未命名数据(6)_1721356417065_271"],"title":"未命名数据(6)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721299204449_245","bounds":[99.9531563324067,28.059225801622308,106.40158916912902,32.57195517306453],"id":"未命名数据(6)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(6)"}},{"visualization":{"renderer":[{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"type":"simple","value":"#EE4D5A"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":"{学习中心（点）名称}"},"styleRenderMode":"mapboxgl","textHaloBlur":{"type":"simple","value":0},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"circle","style":{"layout":{"icon-image":"circle"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"type":"simple","value":"#FFFFFF"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":0},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}]},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":[],"title":"上海市可校外学习中心(1)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721274351187_3693","bounds":[121.12147,30.71292682,121.83081,31.68730001],"id":"上海市可校外学习中心(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"﻿序号","type":"FIELD"},{"fieldName":"试点高校","type":"FIELD"},{"fieldName":"依托单位","type":"FIELD"},{"fieldName":"学习中心（点）名称","type":"FIELD"},{"fieldName":"地址","type":"FIELD"},{"fieldName":"经度","type":"FIELD"},{"fieldName":"纬度","type":"FIELD"},{"fieldName":"msgeometry","type":"FIELD"}],"title":"上海市可校外学习中心(1)"}},{"visualization":{"renderer":[{"fillExtrusionTranslateAnchor":{"type":"simple","value":"map"},"fillExtrusionVerticalGradient":{"type":"simple","value":true},"fillExtrusionHeightMultiple":{"type":"simple","value":1},"symbolsContent":{"type":"simple","value":{"symbolId":"polygon-0","style":{"layout":{"visibility":"visible"},"paint":{"fill-outline-color":"#FFFFFF","fill-color":"#826DBA","fill-opacity":0.9}}}},"color":{"type":"simple","value":"#826DBA"},"fillExtrusionBase":{"type":"simple","value":1000},"fillExtrusionTranslate":{"type":"simple","value":[0,0]},"fillExtrusionBaseMultiple":{"type":"simple","value":1},"opacity":{"type":"simple","value":0.9},"type":"fillExtrusion","fillExtrusionHeight":{"type":"simple","value":30000},"styleRenderMode":"mapboxgl"}],"label":{"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"textSize":{"field":["smpid"],"defaultValue":16,"values":[{"value":8,"key":1},{"value":50,"key":3}],"interpolateInfo":{"type":"linear"},"type":"unique"},"textZOffset":{"type":"simple","value":200000},"textHaloColor":{"type":"simple","value":"#242424"},"textAnchor":{"type":"simple","value":"center"},"textColor":{"type":"simple","value":"#FFFFFF"},"textField":{"type":"simple","value":"{smpid}"},"styleRenderMode":"antvL7","textHaloBlur":{"type":"simple","value":2},"textOpacity":{"type":"simple","value":0.9},"textHaloWidth":{"type":"simple","value":1},"textFont":{"type":"simple"},"textAllowOverlap":{"type":"simple","value":true}}},"visible":true,"catalogType":"layer","showLegend":true,"labelsContent":["ms_label_未命名数据(8)_1721355394193_51"],"title":"未命名数据(8)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[],"msDatasetId":"ms_datasetId_1721185747321_438","bounds":[101.06785732906204,29.800258509171595,104.27317208155472,31.478587256555958],"id":"未命名数据(8)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"name","type":"FIELD"},{"fieldName":"index","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"未命名数据(8)"}}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(2)","msDatasetId":"ms_datasetId_1721093667551_4","datasetId":"1442585533","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通站点(13)(2)(2)","msDatasetId":"ms_datasetId_1721097420598_230","datasetId":"540737853","geometryField":"geometry"}],"title":"北京市轨道交通站点(13)(2)(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"县级行政区划","msDatasetId":"ms_datasetId_1721097693397_915","datasetId":"932916417","geometryField":"geometry"}],"title":"县级行政区划"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721183007022_44","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721185747321_438","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"上海市可校外学习中心(1)","msDatasetId":"ms_datasetId_1721274351187_3693","datasetId":"166003414","geometryField":"msgeometry"}],"title":"上海市可校外学习中心(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(6)","msDatasetId":"ms_datasetId_1721299204449_245","datasetId":"347730291","geometryField":"geometry"}],"title":"未命名数据(6)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"未命名数据(8)","msDatasetId":"ms_datasetId_1721356340588_82","datasetId":"40654641","geometryField":"geometry"}],"title":"未命名数据(8)"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
+  visitCount: 110,
+  centerString: '{"x":121.47614000000556,"y":31.201367876214704}',
+  epsgCode: 3857,
+  nickname: 'admin_123',
+  layers: null,
+  id: 587670427,
+  searchSetting: null,
+  thumbnail: 'http://172.16.15.52:8080/iportal/resources/thumbnail/map/map587670427.png',
+  level: 9,
   center: {
-      x: 121.47614000000556, 
-      y: 31.201367876214704
-  }, 
+    x: 121.47614000000556,
+    y: 31.201367876214704
+  },
   authorizeSetting: [
-      {
-          permissionType: "DELETE", 
-          aliasName: "admin_123", 
-          entityRoles: [
-              "ADMIN", 
-              "SYSTEM"
-          ], 
-          entityType: "USER", 
-          entityName: "admin_123", 
-          entityId: null
-      }
-  ], 
-  updateTime: 1721283134814, 
-  userName: "admin_123", 
-  tags: [ ], 
-  checkUser: null, 
-  checkUserNick: null, 
-  checkTime: null, 
-  sourceType: "MAPSTUDIO", 
-  createTime: 1721093824271, 
-  controlsString: "", 
-  isDefaultBottomMap: false, 
-  status: null, 
+    {
+      permissionType: 'DELETE',
+      aliasName: 'admin_123',
+      entityRoles: ['ADMIN', 'SYSTEM'],
+      entityType: 'USER',
+      entityName: 'admin_123',
+      entityId: null
+    }
+  ],
+  updateTime: 1721283134814,
+  userName: 'admin_123',
+  tags: [],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1721093824271,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
   favoriteCount: 0
-})
+});
 
 var mapstudioWebMap_labelLegend = JSON.stringify({
   metadata: {
-      "layerCatalog": [
-          {
-              "visible": true,
-              "parts": [
-                  "ms_未命名数据(8)_1721356340655_87",
-                  "ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218"
-              ],
-              "id": "ms_未命名数据(8)_1721356340655_87",
-              "title": "未命名数据(8)",
-              "type": "composite"
-          },
-          {
-              "visible": true,
-              "parts": [
-                  "未命名数据(6)",
-                  "ms_label_未命名数据(6)_1721356417065_271"
-              ],
-              "id": "未命名数据(6)",
-              "title": "未命名数据(6)",
-              "type": "composite"
-          },
-          {
-              "visible": true,
-              "id": "上海市可校外学习中心(1)",
-              "title": "上海市可校外学习中心(1)",
-              "type": "basic"
-          },
-          {
-              "visible": true,
-              "parts": [
-                  "未命名数据(8)",
-                  "ms_label_未命名数据(8)_1721355394193_51"
-              ],
-              "id": "未命名数据(8)",
-              "title": "未命名数据(8)",
-              "type": "composite"
-          },
-          {
-              "visible": true,
-              "id": "CHINA_DARK",
-              "title": "中国暗色地图",
-              "type": "basic"
-          }
-      ]
+    layerCatalog: [
+      {
+        visible: true,
+        parts: ['ms_未命名数据(8)_1721356340655_87', 'ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218'],
+        id: 'ms_未命名数据(8)_1721356340655_87',
+        title: '未命名数据(8)',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['未命名数据(6)', 'ms_label_未命名数据(6)_1721356417065_271'],
+        id: '未命名数据(6)',
+        title: '未命名数据(6)',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: '上海市可校外学习中心(1)',
+        title: '上海市可校外学习中心(1)',
+        type: 'basic'
+      },
+      {
+        visible: true,
+        parts: ['未命名数据(8)', 'ms_label_未命名数据(8)_1721355394193_51'],
+        id: '未命名数据(8)',
+        title: '未命名数据(8)',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: '中国暗色地图',
+        type: 'basic'
+      }
+    ]
   },
   sources: {
-      "40654641": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/40654641/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              101.06785732906204,
-              29.800258509171595,
-              104.27317208155472,
-              31.478587256555958
-          ],
-          "type": "vector"
-      },
-      "166003414": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/166003414/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%EF%BB%BF%E5%BA%8F%E5%8F%B7%22%2C%22%E8%AF%95%E7%82%B9%E9%AB%98%E6%A0%A1%22%2C%22%E4%BE%9D%E6%89%98%E5%8D%95%E4%BD%8D%22%2C%22%E5%AD%A6%E4%B9%A0%E4%B8%AD%E5%BF%83%EF%BC%88%E7%82%B9%EF%BC%89%E5%90%8D%E7%A7%B0%22%2C%22%E5%9C%B0%E5%9D%80%22%2C%22%E7%BB%8F%E5%BA%A6%22%2C%22%E7%BA%AC%E5%BA%A6%22%5D&geometryFieldName=msgeometry"
-          ],
-          "bounds": [
-              121.12147,
-              30.71292682,
-              121.83081,
-              31.68730001
-          ],
-          "type": "vector"
-      },
-      "347730291": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/347730291/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              99.9531563324067,
-              28.059225801622308,
-              106.40158916912902,
-              32.57195517306453
-          ],
-          "type": "vector"
-      },
-      "label_40654641": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/services/../web/datas/40654641/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              101.06785732906204,
-              29.800258509171595,
-              104.27317208155472,
-              31.478587256555958
-          ],
-          "type": "vector"
-      },
-      "CHINA_DARK": {
-          "tiles": [
-              "base/resources/img/baiduTileTest.png"
-          ],
-          "tileSize": 256,
-          "attribution": "",
-          "bounds": [
-              -180,
-              -90,
-              180,
-              90
-          ],
-          "type": "raster"
-      },
-      "ms_label_未命名数据(8)_1721355394193_51_source": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/services/../web/datas/40654641/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              11250822.413438408,
-              3477900.689062408,
-              11607636.419518061,
-              3695060.0329264207
-          ],
-          "type": "vector"
-      },
-      "ms_40654641_1721356340655_88": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/40654641/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              101.06785732906204,
-              29.800258509171595,
-              104.27317208155472,
-              31.478587256555958
-          ],
-          "type": "vector"
-      }
+    40654641: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/40654641/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [101.06785732906204, 29.800258509171595, 104.27317208155472, 31.478587256555958],
+      type: 'vector'
+    },
+    166003414: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/166003414/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%EF%BB%BF%E5%BA%8F%E5%8F%B7%22%2C%22%E8%AF%95%E7%82%B9%E9%AB%98%E6%A0%A1%22%2C%22%E4%BE%9D%E6%89%98%E5%8D%95%E4%BD%8D%22%2C%22%E5%AD%A6%E4%B9%A0%E4%B8%AD%E5%BF%83%EF%BC%88%E7%82%B9%EF%BC%89%E5%90%8D%E7%A7%B0%22%2C%22%E5%9C%B0%E5%9D%80%22%2C%22%E7%BB%8F%E5%BA%A6%22%2C%22%E7%BA%AC%E5%BA%A6%22%5D&geometryFieldName=msgeometry'
+      ],
+      bounds: [121.12147, 30.71292682, 121.83081, 31.68730001],
+      type: 'vector'
+    },
+    347730291: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/347730291/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22%E6%96%B0%E5%BB%BA%E5%AD%97%E6%AE%B5%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [99.9531563324067, 28.059225801622308, 106.40158916912902, 32.57195517306453],
+      type: 'vector'
+    },
+    label_40654641: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/services/../web/datas/40654641/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [101.06785732906204, 29.800258509171595, 104.27317208155472, 31.478587256555958],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: ['base/resources/img/baiduTileTest.png'],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    },
+    'ms_label_未命名数据(8)_1721355394193_51_source': {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/services/../web/datas/40654641/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [11250822.413438408, 3477900.689062408, 11607636.419518061, 3695060.0329264207],
+      type: 'vector'
+    },
+    ms_40654641_1721356340655_88: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/40654641/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22index%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [101.06785732906204, 29.800258509171595, 104.27317208155472, 31.478587256555958],
+      type: 'vector'
+    }
   },
-  crs: "EPSG:3857",
-  center: [
-      102.67051470530828,
-      30.64306329279174
-  ],
+  crs: 'EPSG:3857',
+  center: [102.67051470530828, 30.64306329279174],
   zoom: 8.281022030055908,
   glyphs: {},
-  version: "3.2.2",
-  rootUrl: "http://127.0.0.1:8089/iportal/",
+  version: '3.2.2',
+  rootUrl: 'http://127.0.0.1:8089/iportal/',
   maxzoom: 12,
-  name: "无标题地图-text-legend",
-  viewExtent: [
-      99.29306203193539,
-      34.53068708094793,
-      106.04796737868641,
-      29.573208134867993
-  ],
+  name: '无标题地图-text-legend',
+  viewExtent: [99.29306203193539, 34.53068708094793, 106.04796737868641, 29.573208134867993],
   layers: [
-      {
-          "maxzoom": 12,
-          "id": "CHINA_DARK",
-          "source": "CHINA_DARK",
-          "type": "raster",
-          "minzoom": 0
+    {
+      maxzoom: 12,
+      id: 'CHINA_DARK',
+      source: 'CHINA_DARK',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible'
       },
-      {
-          "layout": {
-              "visibility": "visible"
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "fill-extrusion-height": [
-                  "*",
-                  30000,
-                  1
-              ],
-              "fill-extrusion-opacity": 0.9,
-              "fill-extrusion-base": [
-                  "*",
-                  1000,
-                  1
-              ],
-              "fill-extrusion-vertical-gradient": true,
-              "fill-extrusion-translate-anchor": "map",
-              "fill-extrusion-color": "#826DBA",
-              "fill-extrusion-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "未命名数据(8)",
-          "source": "40654641",
-          "source-layer": "40654641$geometry",
-          "type": "fill-extrusion",
-          "minzoom": 0
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-extrusion-height': ['*', 30000, 1],
+        'fill-extrusion-opacity': 0.9,
+        'fill-extrusion-base': ['*', 1000, 1],
+        'fill-extrusion-vertical-gradient': true,
+        'fill-extrusion-translate-anchor': 'map',
+        'fill-extrusion-color': '#826DBA',
+        'fill-extrusion-translate': [0, 0]
       },
-      {
-          "layout": {
-              "text-z-offset": 200000,
-              "text-letter-spacing": 0,
-              "visibility": "visible",
-              "text-field": "{smpid}",
-              "text-anchor": "center",
-              "text-size": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  8,
-                  3,
-                  50
-              ],
-              "text-allow-overlap": true
-          },
-          "metadata": {
-              "MapStudio": {
-                  "title": "ms_label_未命名数据(8)_1721355394193_51"
-              }
-          },
-          "maxzoom": 24,
-          "paint": {
-              "text-halo-color": "#242424",
-              "text-halo-blur": 2,
-              "text-color": "#FFFFFF",
-              "text-halo-width": 1,
-              "text-opacity": 0.9,
-              "text-translate": [
-                  0,
-                  0
-              ]
-          },
-          "source": "ms_label_未命名数据(8)_1721355394193_51_source",
-          "source-layer": "40654641$geometry",
-          "id": "ms_label_未命名数据(8)_1721355394193_51",
-          "type": "symbol",
-          "minzoom": 0
+      id: '未命名数据(8)',
+      source: '40654641',
+      'source-layer': '40654641$geometry',
+      type: 'fill-extrusion',
+      minzoom: 0
+    },
+    {
+      layout: {
+        'text-z-offset': 200000,
+        'text-letter-spacing': 0,
+        visibility: 'visible',
+        'text-field': '{smpid}',
+        'text-anchor': 'center',
+        'text-size': ['interpolate', ['linear'], ['get', 'smpid'], 1, 8, 3, 50],
+        'text-allow-overlap': true
       },
-      {
-          "layout": {
-              "icon-allow-overlap": true,
-              "text-line-height": 1.2,
-              "visibility": "visible",
-              "text-field": "{学习中心（点）名称}",
-              "text-size": 16,
-              "text-anchor": "center",
-              "text-allow-overlap": true,
-              "icon-size": 0.08,
-              "symbol-placement": "point",
-              "icon-image": "circle",
-              "icon-ignore-placement": false,
-              "text-font": [
-                  "Microsoft YaHei"
-              ],
-              "text-rotate": 0,
-              "text-transform": "none",
-              "text-max-width": 10,
-              "text-justify": "center",
-              "text-letter-spacing": 0,
-              "icon-anchor": "center",
-              "text-ignore-placement": false,
-              "icon-rotate": 0
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "icon-translate": [
-                  0,
-                  0
-              ],
-              "text-halo-color": "#242424",
-              "text-translate-anchor": "map",
-              "icon-color": "#EE4D5A",
-              "icon-translate-anchor": "map",
-              "text-halo-blur": 0,
-              "text-color": "#FFFFFF",
-              "icon-opacity": 0.9,
-              "text-halo-width": 13,
-              "text-opacity": 1,
-              "text-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "上海市可校外学习中心(1)",
-          "source": "166003414",
-          "source-layer": "166003414$msgeometry",
-          "type": "symbol",
-          "minzoom": 0
+      metadata: {
+        MapStudio: {
+          title: 'ms_label_未命名数据(8)_1721355394193_51'
+        }
       },
-      {
-          "layout": {
-              "visibility": "visible",
-              "line-miter-limit": 2,
-              "line-round-limit": 1.05,
-              "line-join": "miter",
-              "line-cap": "butt"
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "line-translate-anchor": "map",
-              "line-width": 2,
-              "line-gap-width": 0,
-              "line-offset": 0,
-              "line-opacity": 1,
-              "line-dasharray": [
-                  1,
-                  0
-              ],
-              "line-translate": [
-                  0,
-                  0
-              ],
-              "line-color": "#4CC8A3"
-          },
-          "id": "未命名数据(6)",
-          "source": "347730291",
-          "source-layer": "347730291$geometry",
-          "type": "line",
-          "minzoom": 0
+      maxzoom: 24,
+      paint: {
+        'text-halo-color': '#242424',
+        'text-halo-blur': 2,
+        'text-color': '#FFFFFF',
+        'text-halo-width': 1,
+        'text-opacity': 0.9,
+        'text-translate': [0, 0]
       },
-      {
-          "layout": {
-              "icon-allow-overlap": true,
-              "text-line-height": 1.2,
-              "visibility": "visible",
-              "text-field": "{smpid}",
-              "text-anchor": "center",
-              "text-size": 16,
-              "text-allow-overlap": true,
-              "icon-size": 0.08,
-              "symbol-placement": "point",
-              "icon-image": "circle",
-              "icon-ignore-placement": false,
-              "text-font": [
-                  "Microsoft YaHei"
-              ],
-              "text-rotate": 0,
-              "text-transform": "none",
-              "text-justify": "center",
-              "text-letter-spacing": 0,
-              "text-max-width": 10,
-              "icon-anchor": "center",
-              "text-ignore-placement": false,
-              "icon-rotate": 0
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "icon-translate": [
-                  0,
-                  0
-              ],
-              "text-halo-color": "#242424",
-              "text-translate-anchor": "map",
-              "icon-color": "#EE4D5A",
-              "text-halo-blur": 2,
-              "text-color": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  "#d53e4f",
-                  3,
-                  "#3288bd"
-              ],
-              "text-halo-width": 1,
-              "icon-opacity": 0.9,
-              "text-opacity": 1,
-              "text-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "ms_label_未命名数据(6)_1721356417065_271",
-          "source": "347730291",
-          "source-layer": "347730291$geometry",
-          "type": "symbol",
-          "minzoom": 0
+      source: 'ms_label_未命名数据(8)_1721355394193_51_source',
+      'source-layer': '40654641$geometry',
+      id: 'ms_label_未命名数据(8)_1721355394193_51',
+      type: 'symbol',
+      minzoom: 0
+    },
+    {
+      layout: {
+        'icon-allow-overlap': true,
+        'text-line-height': 1.2,
+        visibility: 'visible',
+        'text-field': '{学习中心（点）名称}',
+        'text-size': 16,
+        'text-anchor': 'center',
+        'text-allow-overlap': true,
+        'icon-size': 0.08,
+        'symbol-placement': 'point',
+        'icon-image': 'circle',
+        'icon-ignore-placement': false,
+        'text-font': ['Microsoft YaHei'],
+        'text-rotate': 0,
+        'text-transform': 'none',
+        'text-max-width': 10,
+        'text-justify': 'center',
+        'text-letter-spacing': 0,
+        'icon-anchor': 'center',
+        'text-ignore-placement': false,
+        'icon-rotate': 0
       },
-      {
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "fill-outline-color": "#FFFFFF",
-              "fill-color": "#826DBA",
-              "fill-opacity": 0.9
-          },
-          "id": "ms_未命名数据(8)_1721356340655_87",
-          "source": "ms_40654641_1721356340655_88",
-          "source-layer": "40654641$geometry",
-          "type": "fill",
-          "minzoom": 0
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'icon-translate': [0, 0],
+        'text-halo-color': '#242424',
+        'text-translate-anchor': 'map',
+        'icon-color': '#EE4D5A',
+        'icon-translate-anchor': 'map',
+        'text-halo-blur': 0,
+        'text-color': '#FFFFFF',
+        'icon-opacity': 0.9,
+        'text-halo-width': 13,
+        'text-opacity': 1,
+        'text-translate': [0, 0]
       },
-      {
-          "layout": {
-              "icon-allow-overlap": true,
-              "text-line-height": 1.2,
-              "visibility": "visible",
-              "text-field": "{name}",
-              "text-anchor": "center",
-              "text-size": 16,
-              "text-allow-overlap": true,
-              "icon-size": 0.08,
-              "symbol-placement": "point",
-              "icon-image": "",
-              "icon-ignore-placement": false,
-              "text-font": [
-                  "Microsoft YaHei"
-              ],
-              "text-rotate": 0,
-              "text-transform": "none",
-              "text-justify": "center",
-              "text-letter-spacing": 0,
-              "text-max-width": 10,
-              "icon-anchor": "center",
-              "text-ignore-placement": false,
-              "icon-rotate": 0
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "icon-translate": [
-                  0,
-                  0
-              ],
-              "text-halo-color": "#242424",
-              "text-translate-anchor": "map",
-              "icon-color": "#EE4D5A",
-              "text-halo-blur": 2,
-              "text-color": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  "#d53e4f",
-                  3,
-                  "#3288bd"
-              ],
-              "text-halo-width": 1,
-              "icon-opacity": 0.9,
-              "text-opacity": 1,
-              "text-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218",
-          "source": "label_40654641",
-          "source-layer": "40654641$geometry",
-          "type": "symbol",
-          "minzoom": 0
-      }
+      id: '上海市可校外学习中心(1)',
+      source: '166003414',
+      'source-layer': '166003414$msgeometry',
+      type: 'symbol',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'line-miter-limit': 2,
+        'line-round-limit': 1.05,
+        'line-join': 'miter',
+        'line-cap': 'butt'
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'line-translate-anchor': 'map',
+        'line-width': 2,
+        'line-gap-width': 0,
+        'line-offset': 0,
+        'line-opacity': 1,
+        'line-dasharray': [1, 0],
+        'line-translate': [0, 0],
+        'line-color': '#4CC8A3'
+      },
+      id: '未命名数据(6)',
+      source: '347730291',
+      'source-layer': '347730291$geometry',
+      type: 'line',
+      minzoom: 0
+    },
+    {
+      layout: {
+        'icon-allow-overlap': true,
+        'text-line-height': 1.2,
+        visibility: 'visible',
+        'text-field': '{smpid}',
+        'text-anchor': 'center',
+        'text-size': 16,
+        'text-allow-overlap': true,
+        'icon-size': 0.08,
+        'symbol-placement': 'point',
+        'icon-image': 'circle',
+        'icon-ignore-placement': false,
+        'text-font': ['Microsoft YaHei'],
+        'text-rotate': 0,
+        'text-transform': 'none',
+        'text-justify': 'center',
+        'text-letter-spacing': 0,
+        'text-max-width': 10,
+        'icon-anchor': 'center',
+        'text-ignore-placement': false,
+        'icon-rotate': 0
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'icon-translate': [0, 0],
+        'text-halo-color': '#242424',
+        'text-translate-anchor': 'map',
+        'icon-color': '#EE4D5A',
+        'text-halo-blur': 2,
+        'text-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 3, '#3288bd'],
+        'text-halo-width': 1,
+        'icon-opacity': 0.9,
+        'text-opacity': 1,
+        'text-translate': [0, 0]
+      },
+      id: 'ms_label_未命名数据(6)_1721356417065_271',
+      source: '347730291',
+      'source-layer': '347730291$geometry',
+      type: 'symbol',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: 'ms_未命名数据(8)_1721356340655_87',
+      source: 'ms_40654641_1721356340655_88',
+      'source-layer': '40654641$geometry',
+      type: 'fill',
+      minzoom: 0
+    },
+    {
+      layout: {
+        'icon-allow-overlap': true,
+        'text-line-height': 1.2,
+        visibility: 'visible',
+        'text-field': '{name}',
+        'text-anchor': 'center',
+        'text-size': 16,
+        'text-allow-overlap': true,
+        'icon-size': 0.08,
+        'symbol-placement': 'point',
+        'icon-image': '',
+        'icon-ignore-placement': false,
+        'text-font': ['Microsoft YaHei'],
+        'text-rotate': 0,
+        'text-transform': 'none',
+        'text-justify': 'center',
+        'text-letter-spacing': 0,
+        'text-max-width': 10,
+        'icon-anchor': 'center',
+        'text-ignore-placement': false,
+        'icon-rotate': 0
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'icon-translate': [0, 0],
+        'text-halo-color': '#242424',
+        'text-translate-anchor': 'map',
+        'icon-color': '#EE4D5A',
+        'text-halo-blur': 2,
+        'text-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 3, '#3288bd'],
+        'text-halo-width': 1,
+        'icon-opacity': 0.9,
+        'text-opacity': 1,
+        'text-translate': [0, 0]
+      },
+      id: 'ms_label_ms_未命名数据(8)_1721356340655_87_1721356397778_218',
+      source: 'label_40654641',
+      'source-layer': '40654641$geometry',
+      type: 'symbol',
+      minzoom: 0
+    }
   ],
-  sprite: "http://localhost:9876/base/resources/data/sprite",
+  sprite: 'http://localhost:9876/base/resources/data/sprite',
   pitch: 60,
   minzoom: 0
 });
@@ -3617,78 +3461,75 @@ var mapstudioWebMap_chart = JSON.stringify({
 });
 
 var msProjectINfo_chart = JSON.stringify({
-  "extent": {
-      "top": 85.05112877980656,
-      "left": -16.213704077664914,
-      "bottom": 4.747006432155186,
-      "leftBottom": {
-          "x": -16.213704077664914,
-          "y": 4.747006432155186
-      },
-      "right": 244.5570663933873,
-      "rightTop": {
-          "x": 244.5570663933873,
-          "y": 85.05112877980656
-      }
+  extent: {
+    top: 85.05112877980656,
+    left: -16.213704077664914,
+    bottom: 4.747006432155186,
+    leftBottom: {
+      x: -16.213704077664914,
+      y: 4.747006432155186
+    },
+    right: 244.5570663933873,
+    rightTop: {
+      x: 244.5570663933873,
+      y: 85.05112877980656
+    }
   },
-  "controls": null,
-  "extentString": "{\"top\":85.05112877980656,\"left\":-16.213704077664914,\"bottom\":4.747006432155186,\"leftBottom\":{\"x\":-16.213704077664914,\"y\":4.747006432155186},\"right\":244.5570663933873,\"rightTop\":{\"x\":244.5570663933873,\"y\":85.05112877980656}}",
-  "description": "",
-  "verifyReason": null,
-  "units": null,
-  "title": "热力图_ms_副本_副本",
-  "resolution": 0,
-  "checkStatus": "SUCCESSFUL",
-  "projectInfo": "{\"catalogs\":[{\"visualization\":{\"renderer\":[{\"yAxis\":{\"type\":\"simple\",\"value\":{\"grid\":false,\"line\":true,\"label\":true}},\"xAxis\":{\"type\":\"simple\",\"value\":{\"grid\":false,\"line\":true,\"label\":true}},\"background\":{\"type\":\"simple\",\"value\":\"\"},\"colorGroup\":{\"type\":\"simple\",\"value\":[\"#008080\",\"#70a494\",\"#b4c8a8\",\"#f6edbd\",\"#edbb8a\",\"#de8a5a\",\"#ca562c\"]},\"width\":{\"type\":\"simple\",\"value\":100},\"fields\":{\"type\":\"simple\",\"value\":{\"金牌\":\"#008080\"}},\"type\":\"barChartPoint\",\"height\":{\"type\":\"simple\",\"value\":50},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1725355972321_25\",\"bounds\":[102.94558694500006,13.242680169595069,122.3133808125001,45.369677724101784],\"labelsContent\":[],\"id\":\"中国金牌个人获奖者(1)\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"省份\",\"type\":\"FIELD\"},{\"fieldName\":\"金牌\",\"type\":\"FIELD\"},{\"fieldName\":\"详情\",\"type\":\"FIELD\"},{\"fieldName\":\"geometry\",\"type\":\"FIELD\"}],\"title\":\"中国金牌个人获奖者(1)\"},\"title\":\"中国金牌个人获奖者(1)\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]},{\"visualization\":{\"renderer\":[{\"heightMultiple\":{\"type\":\"simple\",\"value\":10},\"targetColor\":{\"type\":\"simple\",\"value\":\"rgba(126,211,33,1)\"},\"shape\":{\"type\":\"simple\",\"value\":\"cylinder\"},\"color\":{\"type\":\"simple\",\"value\":\"#EE4D5A\"},\"size\":{\"type\":\"simple\",\"value\":12},\"opacity\":{\"type\":\"simple\",\"value\":1},\"type\":\"column\",\"height\":{\"type\":\"simple\",\"value\":20},\"sourceColor\":{\"type\":\"simple\",\"value\":\"rgba(74,144,226,1)\"},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1722479400680_17\",\"bounds\":[115.7011413574,39.67036946821771,116.68625288435837,40.20693349910422],\"labelsContent\":[],\"id\":\"北京市轨道交通站点(13)(2)(2)\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"1111标准名称\",\"type\":\"FIELD\"},{\"fieldName\":\"SmID\",\"type\":\"FIELD\"},{\"fieldName\":\"SmGeometrySize\",\"type\":\"FIELD\"},{\"fieldName\":\"1111SmUserID\",\"type\":\"FIELD\"},{\"fieldName\":\"SmY\",\"type\":\"FIELD\"},{\"fieldName\":\"SmGeoPosition\",\"type\":\"FIELD\"},{\"fieldName\":\"SmX\",\"type\":\"FIELD\"},{\"fieldName\":\"SmLibTileID\",\"type\":\"FIELD\"},{\"fieldName\":\"geometry\",\"type\":\"FIELD\"}],\"title\":\"北京市轨道交通站点(13)(2)(2)\"},\"title\":\"北京市轨道交通站点(13)(2)(2)\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]},{\"visualization\":{\"renderer\":[{\"size\":{\"type\":\"simple\",\"value\":60},\"color\":{\"type\":\"simple\",\"value\":\"rgba(248,231,28,1)\"},\"opacity\":{\"type\":\"simple\",\"value\":0.9},\"type\":\"radarPoint\",\"speed\":{\"type\":\"simple\",\"value\":3},\"styleRenderMode\":\"antvL7\"}]},\"visible\":true,\"catalogType\":\"layer\",\"msDatasetId\":\"ms_datasetId_1722479600922_14\",\"bounds\":[121.12147,30.71292682,121.83081,31.68730001],\"labelsContent\":[],\"id\":\"上海市可校外学习中心\",\"popupInfo\":{\"elements\":[{\"fieldName\":\"smpid\",\"type\":\"FIELD\"},{\"fieldName\":\"﻿序号\",\"type\":\"FIELD\"},{\"fieldName\":\"试点高校\",\"type\":\"FIELD\"},{\"fieldName\":\"依托单位\",\"type\":\"FIELD\"},{\"fieldName\":\"学习中心（点）名称\",\"type\":\"FIELD\"},{\"fieldName\":\"地址\",\"type\":\"FIELD\"},{\"fieldName\":\"经度\",\"type\":\"FIELD\"},{\"fieldName\":\"纬度\",\"type\":\"FIELD\"},{\"fieldName\":\"msgeometry\",\"type\":\"FIELD\"}],\"title\":\"上海市可校外学习中心\"},\"title\":\"上海市可校外学习中心\",\"layerSourceType\":\"Data\",\"zoomRange\":[0,24],\"layersContent\":[]}],\"datas\":[{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"北京市轨道交通站点(13)(2)(2)\",\"msDatasetId\":\"ms_datasetId_1722479400680_17\",\"datasetId\":\"540737853\",\"geometryField\":\"geometry\"}],\"title\":\"北京市轨道交通站点(13)(2)(2)\"},{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"上海市可校外学习中心\",\"msDatasetId\":\"ms_datasetId_1722479600922_14\",\"datasetId\":\"166109479\",\"geometryField\":\"msgeometry\"}],\"title\":\"上海市可校外学习中心\"},{\"sourceType\":\"STRUCTURE_DATA\",\"datasets\":[{\"datasetTitle\":\"中国金牌个人获奖者(1)\",\"msDatasetId\":\"ms_datasetId_1725355972321_25\",\"datasetId\":\"888034348\",\"geometryField\":\"geometry\"}],\"title\":\"中国金牌个人获奖者(1)\"}],\"baseLayer\":{\"internetMapName\":\"CHINA_DARK\",\"type\":\"INTERNET_MAP\"},\"version\":\"3.0.4\"}",
-  "visitCount": 0,
-  "centerString": "{\"x\":114.17168115786558,\"y\":40.011878247221134}",
-  "epsgCode": 3857,
-  "nickname": "admin_123",
-  "layers": null,
-  "id": 411950022,
-  "searchSetting": null,
-  "thumbnail": "http://localhost:8190/iportal/web/static/portal/img/map/defaultThumbnail.png",
-  "level": 3,
-  "center": {
-      "x": 114.17168115786558,
-      "y": 40.011878247221134
+  controls: null,
+  extentString:
+    '{"top":85.05112877980656,"left":-16.213704077664914,"bottom":4.747006432155186,"leftBottom":{"x":-16.213704077664914,"y":4.747006432155186},"right":244.5570663933873,"rightTop":{"x":244.5570663933873,"y":85.05112877980656}}',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: '热力图_ms_副本_副本',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo:
+    '{"catalogs":[{"visualization":{"renderer":[{"yAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"xAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"background":{"type":"simple","value":""},"colorGroup":{"type":"simple","value":["#008080","#70a494","#b4c8a8","#f6edbd","#edbb8a","#de8a5a","#ca562c"]},"width":{"type":"simple","value":100},"fields":{"type":"simple","value":{"金牌":"#008080"}},"type":"barChartPoint","height":{"type":"simple","value":50},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1725355972321_25","bounds":[102.94558694500006,13.242680169595069,122.3133808125001,45.369677724101784],"labelsContent":[],"id":"中国金牌个人获奖者(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"省份","type":"FIELD"},{"fieldName":"金牌","type":"FIELD"},{"fieldName":"详情","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"中国金牌个人获奖者(1)"},"title":"中国金牌个人获奖者(1)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":10},"targetColor":{"type":"simple","value":"rgba(126,211,33,1)"},"shape":{"type":"simple","value":"cylinder"},"color":{"type":"simple","value":"#EE4D5A"},"size":{"type":"simple","value":12},"opacity":{"type":"simple","value":1},"type":"column","height":{"type":"simple","value":20},"sourceColor":{"type":"simple","value":"rgba(74,144,226,1)"},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1722479400680_17","bounds":[115.7011413574,39.67036946821771,116.68625288435837,40.20693349910422],"labelsContent":[],"id":"北京市轨道交通站点(13)(2)(2)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通站点(13)(2)(2)"},"title":"北京市轨道交通站点(13)(2)(2)","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[]},{"visualization":{"renderer":[{"size":{"type":"simple","value":60},"color":{"type":"simple","value":"rgba(248,231,28,1)"},"opacity":{"type":"simple","value":0.9},"type":"radarPoint","speed":{"type":"simple","value":3},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1722479600922_14","bounds":[121.12147,30.71292682,121.83081,31.68730001],"labelsContent":[],"id":"上海市可校外学习中心","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"﻿序号","type":"FIELD"},{"fieldName":"试点高校","type":"FIELD"},{"fieldName":"依托单位","type":"FIELD"},{"fieldName":"学习中心（点）名称","type":"FIELD"},{"fieldName":"地址","type":"FIELD"},{"fieldName":"经度","type":"FIELD"},{"fieldName":"纬度","type":"FIELD"},{"fieldName":"msgeometry","type":"FIELD"}],"title":"上海市可校外学习中心"},"title":"上海市可校外学习中心","layerSourceType":"Data","zoomRange":[0,24],"layersContent":[]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通站点(13)(2)(2)","msDatasetId":"ms_datasetId_1722479400680_17","datasetId":"540737853","geometryField":"geometry"}],"title":"北京市轨道交通站点(13)(2)(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"上海市可校外学习中心","msDatasetId":"ms_datasetId_1722479600922_14","datasetId":"166109479","geometryField":"msgeometry"}],"title":"上海市可校外学习中心"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"中国金牌个人获奖者(1)","msDatasetId":"ms_datasetId_1725355972321_25","datasetId":"888034348","geometryField":"geometry"}],"title":"中国金牌个人获奖者(1)"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
+  visitCount: 0,
+  centerString: '{"x":114.17168115786558,"y":40.011878247221134}',
+  epsgCode: 3857,
+  nickname: 'admin_123',
+  layers: null,
+  id: 411950022,
+  searchSetting: null,
+  thumbnail: 'http://localhost:8190/iportal/web/static/portal/img/map/defaultThumbnail.png',
+  level: 3,
+  center: {
+    x: 114.17168115786558,
+    y: 40.011878247221134
   },
-  "authorizeSetting": [
-      {
-          "permissionType": "DELETE",
-          "aliasName": "admin_123",
-          "entityRoles": [
-              "ADMIN",
-              "SYSTEM"
-          ],
-          "entityType": "USER",
-          "entityName": "admin_123",
-          "entityId": null
-      },
-      {
-          "permissionType": "READ",
-          "aliasName": "GUEST",
-          "entityRoles": [],
-          "entityType": "USER",
-          "entityName": "GUEST",
-          "entityId": null
-      }
+  authorizeSetting: [
+    {
+      permissionType: 'DELETE',
+      aliasName: 'admin_123',
+      entityRoles: ['ADMIN', 'SYSTEM'],
+      entityType: 'USER',
+      entityName: 'admin_123',
+      entityId: null
+    },
+    {
+      permissionType: 'READ',
+      aliasName: 'GUEST',
+      entityRoles: [],
+      entityType: 'USER',
+      entityName: 'GUEST',
+      entityId: null
+    }
   ],
-  "updateTime": 1726304785664,
-  "userName": "admin_123",
-  "tags": [
-      "2.0测试"
-  ],
-  "checkUser": null,
-  "checkUserNick": null,
-  "checkTime": null,
-  "sourceType": "MAPSTUDIO",
-  "createTime": 1726304784922,
-  "controlsString": "",
-  "isDefaultBottomMap": false,
-  "status": null,
-  "favoriteCount": 0
-})
+  updateTime: 1726304785664,
+  userName: 'admin_123',
+  tags: ['2.0测试'],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1726304784922,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
+  favoriteCount: 0
+});
 
 var mapstudioWebMap_separate_layerCatalogId = JSON.stringify({
   metadata: {
@@ -3848,6 +3689,273 @@ var msProjectINfo_separate_layerCatalogId = JSON.stringify({
   checkTime: null,
   sourceType: 'MAPSTUDIO',
   createTime: 1731394506912,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
+  favoriteCount: 0
+});
+const msPopupInfo = JSON.stringify({
+  extent: {
+    top: 31.632108900689214,
+    left: 102.62340682672561,
+    bottom: 29.58439805731813,
+    leftBottom: {
+      x: 102.62340682672561,
+      y: 29.58439805731813,
+      m: null
+    },
+    right: 105.60836654973976,
+    rightTop: {
+      x: 105.60836654973976,
+      y: 31.632108900689214,
+      m: null
+    }
+  },
+  controls: null,
+  extentString: '',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: 'ms-弹窗-复杂',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo: JSON.stringify({
+    images: 'http://fake:8190/iportal/web/maps/1171931401/sprites/sprite',
+    catalogs: [
+      {
+        visualization: {
+          renderer: [
+            {
+              symbolsContent: {
+                type: 'simple',
+                value: {
+                  symbolId: 'circle',
+                  style: {
+                    layout: {
+                      'icon-image': 'circle'
+                    }
+                  }
+                }
+              },
+              size: {
+                type: 'simple',
+                value: 20
+              },
+              color: {
+                type: 'simple',
+                value: '#EE4D5A'
+              },
+              translateAnchor: {
+                type: 'simple',
+                value: 'map'
+              },
+              opacity: {
+                type: 'simple',
+                value: 0.9
+              },
+              translate: {
+                type: 'simple',
+                value: [0, 0]
+              },
+              styleRenderMode: 'mapboxgl'
+            }
+          ]
+        },
+        visible: true,
+        catalogType: 'layer',
+        msDatasetId: 'ms_datasetId_1763102159620_163',
+        bounds: [103.46143, 30.194359, 104.550339, 30.99114],
+        id: 'layer_A点_1763102159640_174',
+        popupInfo: {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value:
+                'https://pic1.arkoo.com/56D0B40F99F841DF8A2425762AE2565D/picture/o_1i4qop009177v1tgf14db15he1iaj1is.jpg'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: '这是一段文本信息\n'
+                }
+              ]
+            }
+          ],
+          title: 'A点'
+        },
+        title: 'A点',
+        layerSourceType: 'Data',
+        zoomRange: [0, 24],
+        layersContent: ['A点']
+      },
+      {
+        visualization: {
+          renderer: [
+            {
+              symbolsContent: {
+                type: 'simple',
+                value: {
+                  symbolId: 'polygon-0',
+                  style: {
+                    layout: {
+                      visibility: 'visible'
+                    },
+                    paint: {
+                      'fill-outline-color': '#FFFFFF',
+                      'fill-color': '#826DBA',
+                      'fill-opacity': 0.9
+                    }
+                  }
+                }
+              },
+              color: {
+                type: 'simple',
+                value: '#826DBA'
+              },
+              antialias: {
+                type: 'simple',
+                value: true
+              },
+              outlineColor: {
+                type: 'simple',
+                value: '#FFFFFF'
+              },
+              opacity: {
+                type: 'simple',
+                value: 0.9
+              },
+              styleRenderMode: 'mapboxgl'
+            }
+          ]
+        },
+        visible: true,
+        catalogType: 'layer',
+        msDatasetId: 'ms_datasetId_1763102129825_23',
+        bounds: [102.992886, 30.089615, 104.89738, 31.435321],
+        id: 'layer_A面_1763102129836_26',
+        popupInfo: {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', '这是一段文本信息', ['get', 'smpid'], '\n']
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题', ['get', 'adcode'], '-图片'],
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'VIDEO',
+              title: '无标题-视频',
+              value: 'https://www.runoob.com/try/demo_source/mov_bbb.mp4'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题图片', ['get', 'adcode']],
+              value: ['concat', ['get', 'name'], ['get', 'smpid']]
+            }
+          ],
+          title: 'A面'
+        },
+        title: 'A面',
+        layerSourceType: 'Data',
+        zoomRange: [0, 24],
+        layersContent: ['A面']
+      }
+    ],
+    datas: [
+      {
+        sourceType: 'STRUCTURE_DATA',
+        datasets: [
+          {
+            datasetTitle: 'A面',
+            msDatasetId: 'ms_datasetId_1763102129825_23',
+            datasetId: '1578304463',
+            geometryField: 'geometry',
+            fieldsCaptions: {
+              smpid: 'smpidxxxxx'
+            }
+          }
+        ],
+        title: 'A面'
+      },
+      {
+        sourceType: 'STRUCTURE_DATA',
+        datasets: [
+          {
+            datasetTitle: 'A点',
+            msDatasetId: 'ms_datasetId_1763102159620_163',
+            datasetId: '2105298173',
+            geometryField: 'geometry'
+          }
+        ],
+        title: 'A点'
+      }
+    ],
+    baseLayer: {
+      internetMapName: 'OSM',
+      type: 'INTERNET_MAP',
+      labelVisible: true
+    },
+    version: '3.1.2'
+  }),
+  visitCount: 65,
+  centerString: '{"x":104.11588668823242,"y":30.608253479003906,"m":null}',
+  epsgCode: 4326,
+  nickname: 'admin_123',
+  layers: null,
+  id: 1171931401,
+  searchSetting: null,
+  thumbnail: 'http://172.16.14.44:8190/iportal/resources/thumbnail/map/map1171931401.png',
+  level: 8,
+  center: {
+    x: 104.11588668823242,
+    y: 30.608253479003906,
+    m: null
+  },
+  authorizeSetting: [],
+  updateTime: 1763359863094,
+  userName: 'admin_123',
+  tags: [],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1763102527590,
   controlsString: '',
   isDefaultBottomMap: false,
   status: null,

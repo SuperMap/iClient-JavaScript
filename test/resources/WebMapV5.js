@@ -4164,3 +4164,338 @@ var baseLayerIsZXY_TILEMapInfo = {
   version: '2.4.3',
   rootUrl: 'http://172.16.14.44:8190/iportal/'
 };
+
+const Webmap2_popupInfo = {
+  extent: {
+    leftBottom: {
+      x: -180,
+      y: -90
+    },
+    rightTop: {
+      x: 180,
+      y: 90
+    }
+  },
+  maxScale: '1:563.6180678101772',
+  level: 7.352259089802374,
+  center: {
+    x: 117.04039037705856,
+    y: 40.54084473813931
+  },
+  baseLayer: {
+    layerType: 'TIANDITU_IMG_4326',
+    visible: true,
+    labelLayerVisible: true,
+    tk: '50599c913367188e6c94e872032f4cf1',
+    name: '天地图影像(经纬度)'
+  },
+  layers: [
+    {
+      layerType: 'VECTOR',
+      visible: true,
+      name: '北京市(3)',
+      featureType: 'POLYGON',
+      style: {
+        fillColor: '#826DBA',
+        strokeWidth: 1,
+        fillOpacity: 0.9,
+        lineDash: 'solid',
+        strokeColor: '#ffffff',
+        type: 'POLYGON',
+        strokeOpacity: 1
+      },
+      projection: 'EPSG:4326',
+      popupInfo: {
+        elements: [
+          {
+            fieldName: 'parent',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'adcode',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'level',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'childrenNum',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'smpid',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'centroid',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'center',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'subFeatureIndex',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'name',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'acroutes',
+            type: 'FIELD'
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'TEXT',
+            infos: [
+              {
+                insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
+                attributes: {
+                  size: 'small',
+                  color: '#4e35cc',
+                  underline: true,
+                  strike: true,
+                  bold: true,
+                  italic: true
+                }
+              },
+              {
+                insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
+                attributes: {
+                  size: 'small',
+                  color: '#e01b4b'
+                }
+              },
+              {
+                insert: '\n',
+                attributes: {
+                  align: 'center'
+                }
+              }
+            ]
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'IMAGE',
+            title: ['concat', ['get', 'adcode']],
+            value: ['concat', ['get', 'parent']]
+          },
+          {
+            type: 'IMAGE',
+            title: 'afdfd',
+            value: ['concat', ['get', 'level']]
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'VIDEO',
+            title: 'fdsfs',
+            value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'IMAGE',
+            title: ['concat', ['get', 'parent'], ['get', 'adcode']],
+            value: ['concat', ['get', 'adcode'], ['get', 'level']]
+          }
+        ],
+        title: '北京市(3)'
+      },
+      enableFields: [
+        'parent',
+        'adcode',
+        'level',
+        'childrenNum',
+        'smpid',
+        'centroid',
+        'center',
+        'subFeatureIndex',
+        'name',
+        'acroutes'
+      ],
+      dataSource: {
+        accessType: 'DIRECT',
+        type: 'PORTAL_DATA',
+        serverId: '1371715657'
+      },
+      captions: {
+        parent: 'parent3121'
+      }
+    },
+    {
+      layerType: 'VECTOR',
+      visible: true,
+      name: '北京市轨道交通线路-打印(3)',
+      featureType: 'LINE',
+      style: {
+        strokeWidth: 6,
+        lineDash: 'solid',
+        strokeColor: '#4CC8A3',
+        type: 'LINE',
+        strokeOpacity: 1
+      },
+      projection: 'EPSG:4326',
+      popupInfo: {
+        elements: [
+          {
+            fieldName: 'SmID',
+            type: 'FIELD'
+          },
+          {
+            fieldName: '标准名称',
+            type: 'FIELD'
+          }
+        ],
+        title: '北京市轨道交通线路-打印(3)'
+      },
+      enableFields: ['SmID', '标准名称'],
+      dataSource: {
+        accessType: 'DIRECT',
+        type: 'PORTAL_DATA',
+        serverId: '1168691327'
+      }
+    }
+  ],
+  description: '',
+  projection: 'EPSG:4326',
+  minScale: '1:295498189.5360622',
+  title: '弹窗-dv',
+  version: '2.4.3',
+  rootUrl: 'http://fake:8190/iportal/'
+};
+const msPopupInfoMap = JSON.stringify({
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        parts: ['A线'],
+        id: 'layer_A线_1763102180987_240',
+        title: 'A线',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['A点'],
+        id: 'layer_A点_1763102159640_174',
+        title: 'A点',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        parts: ['A面'],
+        id: 'layer_A面_1763102129836_26',
+        title: 'A面',
+        type: 'composite'
+      },
+      {
+        visible: true,
+        id: 'OSM',
+        title: 'OpenStreetMap',
+        type: 'basic'
+      }
+    ]
+  },
+  sources: {
+    ms_1578304463_1763102129836_25: {
+      tiles: [
+        'http://fake:8190/iportal/web/datas/1578304463/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4326&returnedFieldNames=%5B%22smpid%22%2C%22adcode%22%2C%22name%22%2C%22level%22%2C%22parent%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [102.992886, 30.089615, 104.89738, 31.435321],
+      type: 'vector'
+    },
+    OSM: {
+      tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    },
+    ms_813334134_1763102180987_239: {
+      tiles: [
+        'http://fake:8190/iportal/web/datas/813334134/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4326&returnedFieldNames=%5B%22smpid%22%2C%22adcode%22%2C%22name%22%2C%22level%22%2C%22parent%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [102.992886, 30.089615, 104.89738, 31.435321],
+      type: 'vector'
+    },
+    ms_2105298173_1763102159640_173: {
+      tiles: [
+        'http://fake:8190/iportal/web/datas/2105298173/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=4326&returnedFieldNames=%5B%22smpid%22%2C%22name%22%2C%22adcode%22%2C%22parent%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [103.46143, 30.194359, 104.550339, 30.99114],
+      type: 'vector'
+    }
+  },
+  crs: 'EPSG:4326',
+  center: [104.11588668823242, 30.608253479003906],
+  zoom: 8.211057838318613,
+  glyphs: {},
+  version: '3.3.3',
+  rootUrl: 'http://fake:8190/iportal/',
+  maxzoom: 19,
+  name: 'ms-弹窗-复杂',
+  viewExtent: [102.62340682672841, 29.544060763763426, 105.6083665497426, 31.672446194243026],
+  layers: [
+    {
+      maxzoom: 19,
+      id: 'OSM',
+      source: 'OSM',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: 'A面',
+      source: 'ms_1578304463_1763102129836_25',
+      'source-layer': '1578304463$geometry',
+      type: 'fill',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'circle-color': '#EE4D5A',
+        'circle-opacity': 0.9,
+        'circle-translate-anchor': 'map',
+        'circle-radius': 10,
+        'circle-translate': [0, 0]
+      },
+      id: 'A点',
+      source: 'ms_2105298173_1763102159640_173',
+      'source-layer': '2105298173$geometry',
+      type: 'circle',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'line-width': 2,
+        'line-color': '#4CC8A3'
+      },
+      id: 'A线',
+      source: 'ms_813334134_1763102180987_239',
+      'source-layer': '813334134$geometry',
+      type: 'line',
+      minzoom: 0
+    }
+  ],
+  pitch: 0,
+  minzoom: 0
+});

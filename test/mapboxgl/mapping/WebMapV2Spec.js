@@ -3825,10 +3825,14 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       if (url.indexOf('123/map.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify({
-          ...dynamicProjectionMapInfo,
-          layers: []
-        })));
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              ...dynamicProjectionMapInfo,
+              layers: []
+            })
+          )
+        );
       }
       if (url.indexOf(`China_Dark.json`) > -1) {
         return Promise.resolve(
@@ -3849,19 +3853,10 @@ describe('mapboxgl_WebMapV2', () => {
                   y: 20037508.342789087
                 }
               },
-              visibleScales:[
-                1.6901635716001733e-9,
-                3.3803271432574796e-9,
-                6.760654286286427e-9,
-                1.3521308573486984e-8,
-                2.7042617146973967e-8,
-                5.408523427932187e-8,
-                1.0817046855864374e-7,
-                2.163409371172875e-7,
-                4.32681874234575e-7,
-                8.6536374846915e-7,
-                0.0000017307274969383,
-                0.0000034614549938766,
+              visibleScales: [
+                1.6901635716001733e-9, 3.3803271432574796e-9, 6.760654286286427e-9, 1.3521308573486984e-8,
+                2.7042617146973967e-8, 5.408523427932187e-8, 1.0817046855864374e-7, 2.163409371172875e-7,
+                4.32681874234575e-7, 8.6536374846915e-7, 0.0000017307274969383, 0.0000034614549938766,
                 0.0000069229099877532
               ]
             })
@@ -3906,10 +3901,14 @@ describe('mapboxgl_WebMapV2', () => {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       if (url.indexOf('123/map.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify({
-          ...baseLayerIsZXY_TILEMapInfo,
-          minScale: "1:577791.7098724197"
-        })));
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              ...baseLayerIsZXY_TILEMapInfo,
+              minScale: '1:577791.7098724197'
+            })
+          )
+        );
       }
     });
     datavizWebmap = new WebMap('123', {
@@ -3922,7 +3921,7 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     });
   });
-  
+
   it('baseLayer is WMTS, calc zoomBase with scales', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map-china400/wmts100') > -1) {
@@ -3942,8 +3941,8 @@ describe('mapboxgl_WebMapV2', () => {
     const mapInfo = {
       ...webmap_MAPBOXSTYLE_Tile,
       layers: [],
-      maxScale: "1:70.45225847627215",
-      minScale: "1:1154289.802875243"
+      maxScale: '1:70.45225847627215',
+      minScale: '1:1154289.802875243'
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -3955,23 +3954,18 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('/style.json')) {
         return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
       }
-      return Promise.resolve(new Response(JSON.stringify({
-        visibleScales: [
-          1.6901635716026555e-9,
-          3.3803271432053056e-9,
-          6.760654286410611e-9,
-          1.3521308572821242e-8,
-          2.7042617145642484e-8,
-          5.408523429128511e-8,
-          1.0817046858256998e-7,
-          2.1634093716513974e-7,
-          4.3268187433028044e-7,
-          8.653637486605571e-7,
-          0.0000017307274973211203,
-          0.0000034614549946422405,
-          0.0000069229099892844565
-        ]
-      })));
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            visibleScales: [
+              1.6901635716026555e-9, 3.3803271432053056e-9, 6.760654286410611e-9, 1.3521308572821242e-8,
+              2.7042617145642484e-8, 5.408523429128511e-8, 1.0817046858256998e-7, 2.1634093716513974e-7,
+              4.3268187433028044e-7, 8.653637486605571e-7, 0.0000017307274973211203, 0.0000034614549946422405,
+              0.0000069229099892844565
+            ]
+          })
+        )
+      );
     });
     datavizWebmap = new WebMap('123', {
       target: 'map',
@@ -4019,9 +4013,13 @@ describe('mapboxgl_WebMapV2', () => {
       if (url.indexOf('/style.json')) {
         return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
       }
-      return Promise.resolve(new Response(JSON.stringify({
-        visibleScales: []
-      })));
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            visibleScales: []
+          })
+        )
+      );
     });
     datavizWebmap = new WebMap('123', {
       target: 'map',
@@ -4033,7 +4031,7 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     });
   });
-  
+
   it('baseLayer is others, calc zoomBase with resolutions', (done) => {
     const metaInfo = {
       resourceSets: [
@@ -4073,29 +4071,33 @@ describe('mapboxgl_WebMapV2', () => {
   it('test MAPBOXSTYLE layers visibility', (done) => {
     const mapInfo = {
       ...webmap_MAPBOXSTYLE_Tile,
-      layers: [{
-        layerType: 'MAPBOXSTYLE',
-        name: 'China',
-        dataSource: {
-          type: 'EXTERNAL',
-          url: 'https://fakeiportal.supermap.io/iserver/services/map-china400/restjsr/v1/vectortile/maps/China'
-        },
-        visible: false
-      }]
-    }
+      layers: [
+        {
+          layerType: 'MAPBOXSTYLE',
+          name: 'China',
+          dataSource: {
+            type: 'EXTERNAL',
+            url: 'https://fakeiportal.supermap.io/iserver/services/map-china400/restjsr/v1/vectortile/maps/China'
+          },
+          visible: false
+        }
+      ]
+    };
     const china4326StyleJSON = JSON.parse(styleJson);
     const chinaStyleJSON = {
       ...china4326StyleJSON,
       sources: {
-        "china_source": china4326StyleJSON.sources["ChinaqxAlberts_4548@fl-new"]
+        china_source: china4326StyleJSON.sources['ChinaqxAlberts_4548@fl-new']
       },
-      layers: [{
-        ...china4326StyleJSON.layers[1],
-        id: "china_layer",
-        "source-layer": "china_source_layer",
-        source: "china_source"
-      }]
-    }
+      layers: [
+        {
+          ...china4326StyleJSON.layers[1],
+          id: 'china_layer',
+          'source-layer': 'china_source_layer',
+          source: 'china_source'
+        }
+      ]
+    };
     spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -4116,15 +4118,173 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap.on('mapcreatesucceeded', (data) => {
       expect(data.map.addStyle).toHaveBeenCalledTimes(2);
-      const hideLayer = datavizWebmap.getLayers().find(layer => layer.id === "china_source_layer");
+      const hideLayer = datavizWebmap.getLayers().find((layer) => layer.id === 'china_source_layer');
       expect(hideLayer).not.toBeUndefined();
       expect(hideLayer.visible).toBeFalsy();
       const layersOnMap = data.map.getStyle().layers;
-      expect(layersOnMap.filter(item => item.layout.visibility === "visible").length).toBe(2);
-      const matchHideLayerOnMap = layersOnMap.find(layer => layer.id === "china_layer");
+      expect(layersOnMap.filter((item) => item.layout.visibility === 'visible').length).toBe(2);
+      const matchHideLayerOnMap = layersOnMap.find((layer) => layer.id === 'china_layer');
       expect(matchHideLayerOnMap).not.toBeUndefined();
-      expect(matchHideLayerOnMap.layout.visibility).toBe("none");
+      expect(matchHideLayerOnMap.layout.visibility).toBe('none');
       done();
     });
+  });
+  it('webmap2.0 popupinfo', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      console.log(datavizWebmap);
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              fieldName: 'parent',
+              type: 'FIELD',
+              fieldCaption: 'parent3121'
+            },
+            {
+              fieldName: 'adcode',
+              type: 'FIELD',
+              fieldCaption: 'adcode'
+            },
+            {
+              fieldName: 'level',
+              type: 'FIELD',
+              fieldCaption: 'level'
+            },
+            {
+              fieldName: 'childrenNum',
+              type: 'FIELD',
+              fieldCaption: 'childrenNum'
+            },
+            {
+              fieldName: 'smpid',
+              type: 'FIELD',
+              fieldCaption: 'smpid'
+            },
+            {
+              fieldName: 'centroid',
+              type: 'FIELD',
+              fieldCaption: 'centroid'
+            },
+            {
+              fieldName: 'center',
+              type: 'FIELD',
+              fieldCaption: 'center'
+            },
+            {
+              fieldName: 'subFeatureIndex',
+              type: 'FIELD',
+              fieldCaption: 'subFeatureIndex'
+            },
+            {
+              fieldName: 'name',
+              type: 'FIELD',
+              fieldCaption: 'name'
+            },
+            {
+              fieldName: 'acroutes',
+              type: 'FIELD',
+              fieldCaption: 'acroutes'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
+                  attributes: {
+                    size: 'small',
+                    color: '#4e35cc',
+                    underline: true,
+                    strike: true,
+                    bold: true,
+                    italic: true
+                  }
+                },
+                {
+                  insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
+                  attributes: {
+                    size: 'small',
+                    color: '#e01b4b'
+                  }
+                },
+                {
+                  insert: '\n',
+                  attributes: {
+                    align: 'center'
+                  }
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'adcode']],
+              value: ['concat', ['get', 'parent']]
+            },
+            {
+              type: 'IMAGE',
+              title: 'afdfd',
+              value: ['concat', ['get', 'level']]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'VIDEO',
+              title: 'fdsfs',
+              value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'parent'], ['get', 'adcode']],
+              value: ['concat', ['get', 'adcode'], ['get', 'level']]
+            }
+          ],
+          title: '北京市(3)',
+          id: '北京市(3)'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          id: '北京市轨道交通线路-打印(3)'
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
   });
 });

@@ -335,6 +335,37 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     return epsgCode;
   }
+  _getFieldCaption(msDatasetId) {
+    const { datas = [] } = this._mapResourceInfo;
+    let fieldCaptions = null;
+    datas.forEach(data => {
+      const index = data.datasets?.findIndex(dataset => dataset.msDatasetId === msDatasetId);
+      if (index !== -1) {
+        fieldCaptions = data.datasets[index].fieldsCaptions;
+      }
+    });
+    return fieldCaptions;
+  }
+  _getPopupInfos() {
+    const { catalogs = [] } = this._mapResourceInfo;
+    return catalogs?.map((item) => {
+      const {id, popupInfo, msDatasetId} = item;
+      if (popupInfo) {
+        const fieldCaptions = this._getFieldCaption(msDatasetId);
+        if (fieldCaptions) {
+          popupInfo.elements = popupInfo.elements?.map(item=>{
+            if (item.type === 'FIELD') {
+              item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
+            }
+            return item;
+          });
+        }
+        popupInfo.id = id;
+        return popupInfo
+      }
+      return null
+    })?.filter(item => item !== null);
+  }
 
   /**
    * @private

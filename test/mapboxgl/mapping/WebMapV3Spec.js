@@ -226,7 +226,8 @@ describe('mapboxgl-webmap3.0', () => {
       target: 'map'
     });
     mapstudioWebmap.on('mapcreatefailed', ({ error }) => {
-      const throwError = 'WebMap needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362';
+      const throwError =
+        'WebMap needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362';
       expect(mapstudioWebmap.map).toBeUndefined();
       expect(error).toBe(throwError);
       done();
@@ -618,7 +619,7 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
-    
+
     const existedMap = new mapboxgl.Map({
       container: testDiv,
       style: {
@@ -736,7 +737,7 @@ describe('mapboxgl-webmap3.0', () => {
     const spyTest = spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_raster);
     const iportalServiceProxyUrlPrefix = 'http://localhost:8195/portalproxy';
-    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+    const tileCustomRequestHeaders = { Authorization: 'test token' };
     mapstudioWebmap = new WebMap(mapInfo, {
       server: server,
       target: 'map',
@@ -1118,12 +1119,12 @@ describe('mapboxgl-webmap3.0', () => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
       expect(webMapV3.getLegends().length).toBe(9);
-      const testLegend= webMapV3.getLegends().filter((item) => {
-        return item.layerId === "上海市可校外学习中心(1)";
-      })
+      const testLegend = webMapV3.getLegends().filter((item) => {
+        return item.layerId === '上海市可校外学习中心(1)';
+      });
       expect(testLegend.length).toBe(2);
-      expect(testLegend[0].styleGroup[0].fieldValue).toBe("上海市可校外学习中心(1)");
-      expect(testLegend[1].styleGroup[0].fieldValue).toBe("学习中心（点）名称");
+      expect(testLegend[0].styleGroup[0].fieldValue).toBe('上海市可校外学习中心(1)');
+      expect(testLegend[1].styleGroup[0].fieldValue).toBe('学习中心（点）名称');
       mbglmap.prototype.getL7Scene = undefined;
       spyTest.calls.reset();
       done();
@@ -1357,7 +1358,7 @@ describe('mapboxgl-webmap3.0', () => {
         webMap1.cleanLayers();
         expect(mapSpy).not.toHaveBeenCalled();
         expect(sceneSpy).not.toHaveBeenCalled();
-        const webMap2 = new WebMap(411950022, { server, map: firstMap});
+        const webMap2 = new WebMap(411950022, { server, map: firstMap });
         webMap2.once('mapcreatesucceeded', ({ layers }) => {
           expect(layers.length).toBe(4);
           expect(layers[3].type).toBe('chart');
@@ -1495,7 +1496,8 @@ describe('mapboxgl-webmap3.0', () => {
 
   it('when uncommon crs was defined, dont set repeat', (done) => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
-    const wkt_4221 = 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4221"]]';
+    const wkt_4221 =
+      'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4221"]]';
     const epsgCode = 'EPSG:4221';
     const nextMapInfo = {
       ...mapInfo,
@@ -1607,14 +1609,14 @@ describe('mapboxgl-webmap3.0', () => {
       spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
       spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
       spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
-      mapstudioWebmap.map.addStyle = function({ sprite }) {
+      mapstudioWebmap.map.addStyle = function ({ sprite }) {
         expect(sprite).toEqual(nextMapInfo.sprite);
-      }
+      };
       mapboxgl.Map.prototype.getCRS = function () {
         return { epsgCode: nextMapInfo.crs.name, getExtent: () => {} };
       };
-      mapstudioWebmap.options.relatedInfo = JSON.parse(msProjectINfo_L7Layers)
-      mapstudioWebmap.setStyle(nextMapInfo, true)
+      mapstudioWebmap.options.relatedInfo = JSON.parse(msProjectINfo_L7Layers);
+      mapstudioWebmap.setStyle(nextMapInfo, true);
       expect(cleanLayersSpy).toHaveBeenCalled();
       expect(mapstudioWebmap.webMapInfo).toEqual(nextMapInfo);
       expect(mapstudioWebmap.mapId).toBeFalsy();
@@ -1637,6 +1639,112 @@ describe('mapboxgl-webmap3.0', () => {
         delete mapboxgl.Map.prototype.getCRS;
         done();
       });
+    });
+  });
+  it('webmap3.0 projectinfo popupInfo', (done) => {
+    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('web/config/portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = msPopupInfoMap;
+        return Promise.resolve(new Response(mapJson));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        var appInfo = msPopupInfo;
+        return Promise.resolve(new Response(appInfo));
+      }
+      return Promise.resolve();
+    });
+
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.on('mapcreatesucceeded', () => {
+      const popupInfo = mapstudioWebmap.getPopupInfos();
+      const Data = [
+        {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value:
+                'https://pic1.arkoo.com/56D0B40F99F841DF8A2425762AE2565D/picture/o_1i4qop009177v1tgf14db15he1iaj1is.jpg'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: '这是一段文本信息\n'
+                }
+              ]
+            }
+          ],
+          title: 'A点',
+          id: 'A点'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD',
+              fieldCaption: 'geometry'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', '这是一段文本信息', ['get', 'smpid'], '\n']
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题', ['get', 'adcode'], '-图片'],
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'VIDEO',
+              title: '无标题-视频',
+              value: 'https://www.runoob.com/try/demo_source/mov_bbb.mp4'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题图片', ['get', 'adcode']],
+              value: ['concat', ['get', 'name'], ['get', 'smpid']]
+            }
+          ],
+          title: 'A面',
+          id: 'A面'
+        }
+      ];
+      expect(popupInfo).toEqual(Data);
+      done();
     });
   });
 });

@@ -359,6 +359,16 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
     }
 
     /**
+     * @version 12.0.2
+     * @function WebMapBase.prototype.getPopupInfos
+     * @description 获取地图上所有图层的弹窗信息。
+     * @returns {Array} 弹窗信息数组。
+     */
+    getPopupInfos() {
+      return this._handler._getPopupInfos() || [];
+    }
+
+    /**
      * @version 11.2.1
      * @function WebMapBase.prototype.getLayers
      * @description 获取图层。
