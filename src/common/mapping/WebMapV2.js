@@ -184,14 +184,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     _getPopupInfos() {
       const { layers = [] } = this._mapInfo;
-      return layers?.map((layer) => {
+      return layers.map((layer) => {
         const { popupInfo, enableFields, name, layerID: id, captions: fieldCaptions } = layer;
         if (popupInfo){ 
           let elements = popupInfo.elements || [];
           if (fieldCaptions) {
             elements = popupInfo.elements?.map(item=>{
               if (item.type === 'FIELD') {
-                item.fieldCaption = fieldCaptions?.[item.fieldName] || item.fieldName;
+                item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
               }
               return item;
             });
@@ -202,7 +202,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           const elements = enableFields.map((fieldName) => ({
             type: 'FIELD',
             fieldName,
-            fieldCaption: fieldCaptions?.[fieldName] || fieldName
+            fieldCaption: fieldCaptions[fieldName] || fieldName
           }));
           return { elements, id, title: name };
         }

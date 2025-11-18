@@ -348,7 +348,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   }
   _getPopupInfos() {
     const { catalogs = [] } = this._mapResourceInfo;
-    return catalogs?.map((item) => {
+    return catalogs.map((item) => {
       const {id, popupInfo, msDatasetId} = item;
       if (popupInfo) {
         const fieldCaptions = this._getFieldCaption(msDatasetId);
@@ -364,7 +364,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         return popupInfo
       }
       return null
-    })?.filter(item => item !== null);
+    }).filter(item => item !== null);
   }
 
   /**
