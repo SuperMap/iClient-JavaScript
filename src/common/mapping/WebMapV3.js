@@ -339,9 +339,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     const { datas = [] } = this._mapResourceInfo;
     let fieldCaptions = null;
     datas.forEach(data => {
-      const index = data.datasets?.findIndex(dataset => dataset.msDatasetId === msDatasetId);
-      if (index !== -1) {
-        fieldCaptions = data.datasets[index].fieldsCaptions;
+      if (data.datasets) {
+        const index = data.datasets.findIndex(dataset => dataset.msDatasetId === msDatasetId);
+        if (index !== -1) {
+          fieldCaptions = data.datasets[index].fieldsCaptions;
+        }
       }
     });
     return fieldCaptions;
@@ -353,12 +355,12 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       if (popupInfo) {
         const fieldCaptions = this._getFieldCaption(msDatasetId);
         if (fieldCaptions) {
-          popupInfo.elements = popupInfo.elements?.map(item=>{
+          popupInfo.elements = popupInfo.elements ? popupInfo.elements.map(item => {
             if (item.type === 'FIELD') {
               item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
             }
             return item;
-          });
+          }) : [];
         }
         popupInfo.id = id;
         return popupInfo

@@ -189,7 +189,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         if (popupInfo){ 
           let elements = popupInfo.elements || [];
           if (fieldCaptions) {
-            elements = popupInfo.elements?.map(item=>{
+            elements = (popupInfo.elements || []).map(item => {
               if (item.type === 'FIELD') {
                 item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
               }
