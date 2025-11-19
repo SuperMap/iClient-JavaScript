@@ -1692,7 +1692,7 @@ describe('mapboxgl-webmap3.0', () => {
             }
           ],
           title: 'A点',
-          id: 'A点'
+          layerId: 'A点'
         },
         {
           elements: [
@@ -1740,7 +1740,7 @@ describe('mapboxgl-webmap3.0', () => {
             }
           ],
           title: 'A面',
-          id: 'A面'
+          layerId: 'A面'
         }
       ];
       expect(popupInfo).toEqual(Data);

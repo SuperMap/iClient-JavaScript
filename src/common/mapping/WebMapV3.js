@@ -362,7 +362,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
             return item;
           }) : [];
         }
-        popupInfo.id = id;
+        popupInfo.layerId = id;
         return popupInfo
       }
       return null

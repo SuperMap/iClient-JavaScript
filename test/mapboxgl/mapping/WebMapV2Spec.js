@@ -4146,7 +4146,6 @@ describe('mapboxgl_WebMapV2', () => {
       server: server
     });
     const callback = function () {
-      console.log(datavizWebmap);
       const popupInfo = datavizWebmap.getPopupInfos();
       const data = [
         {
@@ -4264,7 +4263,7 @@ describe('mapboxgl_WebMapV2', () => {
             }
           ],
           title: '北京市(3)',
-          id: '北京市(3)'
+          layerId: '北京市(3)'
         },
         {
           elements: [
@@ -4278,7 +4277,103 @@ describe('mapboxgl_WebMapV2', () => {
             }
           ],
           title: '北京市轨道交通线路-打印(3)',
-          id: '北京市轨道交通线路-打印(3)'
+          layerId: '北京市轨道交通线路-打印(3)'
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
+  });
+  it('webmap2.0 popupinfo 没有配置弹窗', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo_no)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              type: 'FIELD',
+              fieldName: 'parent',
+              fieldCaption: 'parent3121'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'adcode',
+              fieldCaption: 'adcode'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'level',
+              fieldCaption: 'level'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'childrenNum',
+              fieldCaption: 'childrenNum'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'smpid',
+              fieldCaption: 'smpid'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'centroid',
+              fieldCaption: 'centroid'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'center',
+              fieldCaption: 'center'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'subFeatureIndex',
+              fieldCaption: 'subFeatureIndex'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'name',
+              fieldCaption: 'name'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'acroutes',
+              fieldCaption: 'acroutes'
+            }
+          ],
+          layerId: '北京市(3)',
+          title: '北京市(3)'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          layerId: '北京市轨道交通线路-打印(3)'
         }
       ];
       expect(popupInfo).toEqual(data);
