@@ -4373,6 +4373,211 @@ const Webmap2_popupInfo = {
   version: '2.4.3',
   rootUrl: 'http://fake:8190/iportal/'
 };
+const Webmap2_popupInfo_no_captions = {
+  extent: {
+    leftBottom: {
+      x: -180,
+      y: -90
+    },
+    rightTop: {
+      x: 180,
+      y: 90
+    }
+  },
+  maxScale: '1:563.6180678101772',
+  level: 7.352259089802374,
+  center: {
+    x: 117.04039037705856,
+    y: 40.54084473813931
+  },
+  baseLayer: {
+    layerType: 'TIANDITU_IMG_4326',
+    visible: true,
+    labelLayerVisible: true,
+    tk: '50599c913367188e6c94e872032f4cf1',
+    name: '天地图影像(经纬度)'
+  },
+  layers: [
+    {
+      layerType: 'VECTOR',
+      visible: true,
+      name: '北京市(3)',
+      featureType: 'POLYGON',
+      style: {
+        fillColor: '#826DBA',
+        strokeWidth: 1,
+        fillOpacity: 0.9,
+        lineDash: 'solid',
+        strokeColor: '#ffffff',
+        type: 'POLYGON',
+        strokeOpacity: 1
+      },
+      projection: 'EPSG:4326',
+      popupInfo: {
+        elements: [
+          {
+            fieldName: 'parent',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'adcode',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'level',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'childrenNum',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'smpid',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'centroid',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'center',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'subFeatureIndex',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'name',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'acroutes',
+            type: 'FIELD'
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'TEXT',
+            infos: [
+              {
+                insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
+                attributes: {
+                  size: 'small',
+                  color: '#4e35cc',
+                  underline: true,
+                  strike: true,
+                  bold: true,
+                  italic: true
+                }
+              },
+              {
+                insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
+                attributes: {
+                  size: 'small',
+                  color: '#e01b4b'
+                }
+              },
+              {
+                insert: '\n',
+                attributes: {
+                  align: 'center'
+                }
+              }
+            ]
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'IMAGE',
+            title: ['concat', ['get', 'adcode']],
+            value: ['concat', ['get', 'parent']]
+          },
+          {
+            type: 'IMAGE',
+            title: 'afdfd',
+            value: ['concat', ['get', 'level']]
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'VIDEO',
+            title: 'fdsfs',
+            value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
+          },
+          {
+            type: 'DIVIDER'
+          },
+          {
+            type: 'IMAGE',
+            title: ['concat', ['get', 'parent'], ['get', 'adcode']],
+            value: ['concat', ['get', 'adcode'], ['get', 'level']]
+          }
+        ],
+        title: '北京市(3)'
+      },
+      enableFields: [
+        'parent',
+        'adcode',
+        'level',
+        'childrenNum',
+        'smpid',
+        'centroid',
+        'center',
+        'subFeatureIndex',
+        'name',
+        'acroutes'
+      ],
+      dataSource: {
+        accessType: 'DIRECT',
+        type: 'PORTAL_DATA',
+        serverId: '1371715657'
+      }
+    },
+    {
+      layerType: 'VECTOR',
+      visible: true,
+      name: '北京市轨道交通线路-打印(3)',
+      featureType: 'LINE',
+      style: {
+        strokeWidth: 6,
+        lineDash: 'solid',
+        strokeColor: '#4CC8A3',
+        type: 'LINE',
+        strokeOpacity: 1
+      },
+      projection: 'EPSG:4326',
+      popupInfo: {
+        elements: [
+          {
+            fieldName: 'SmID',
+            type: 'FIELD'
+          },
+          {
+            fieldName: '标准名称',
+            type: 'FIELD'
+          }
+        ],
+        title: '北京市轨道交通线路-打印(3)'
+      },
+      enableFields: ['SmID', '标准名称'],
+      dataSource: {
+        accessType: 'DIRECT',
+        type: 'PORTAL_DATA',
+        serverId: '1168691327'
+      }
+    }
+  ],
+  description: '',
+  projection: 'EPSG:4326',
+  minScale: '1:295498189.5360622',
+  title: '弹窗-dv',
+  version: '2.4.3',
+  rootUrl: 'http://fake:8190/iportal/'
+};
 const Webmap2_popupInfo_no = {
   extent: {
     leftBottom: {

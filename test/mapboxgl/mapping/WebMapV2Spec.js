@@ -4286,6 +4286,163 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
     datavizWebmap.on('map');
   });
+  it('webmap2.0 popupinfo no captions', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo_no_captions)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              fieldName: 'parent',
+              type: 'FIELD',
+              fieldCaption: 'parent'
+            },
+            {
+              fieldName: 'adcode',
+              type: 'FIELD',
+              fieldCaption: 'adcode'
+            },
+            {
+              fieldName: 'level',
+              type: 'FIELD',
+              fieldCaption: 'level'
+            },
+            {
+              fieldName: 'childrenNum',
+              type: 'FIELD',
+              fieldCaption: 'childrenNum'
+            },
+            {
+              fieldName: 'smpid',
+              type: 'FIELD',
+              fieldCaption: 'smpid'
+            },
+            {
+              fieldName: 'centroid',
+              type: 'FIELD',
+              fieldCaption: 'centroid'
+            },
+            {
+              fieldName: 'center',
+              type: 'FIELD',
+              fieldCaption: 'center'
+            },
+            {
+              fieldName: 'subFeatureIndex',
+              type: 'FIELD',
+              fieldCaption: 'subFeatureIndex'
+            },
+            {
+              fieldName: 'name',
+              type: 'FIELD',
+              fieldCaption: 'name'
+            },
+            {
+              fieldName: 'acroutes',
+              type: 'FIELD',
+              fieldCaption: 'acroutes'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
+                  attributes: {
+                    size: 'small',
+                    color: '#4e35cc',
+                    underline: true,
+                    strike: true,
+                    bold: true,
+                    italic: true
+                  }
+                },
+                {
+                  insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
+                  attributes: {
+                    size: 'small',
+                    color: '#e01b4b'
+                  }
+                },
+                {
+                  insert: '\n',
+                  attributes: {
+                    align: 'center'
+                  }
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'adcode']],
+              value: ['concat', ['get', 'parent']]
+            },
+            {
+              type: 'IMAGE',
+              title: 'afdfd',
+              value: ['concat', ['get', 'level']]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'VIDEO',
+              title: 'fdsfs',
+              value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'parent'], ['get', 'adcode']],
+              value: ['concat', ['get', 'adcode'], ['get', 'level']]
+            }
+          ],
+          title: '北京市(3)',
+          layerId: '北京市(3)'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          layerId: '北京市轨道交通线路-打印(3)'
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
+  });
   it('webmap2.0 popupinfo 没有配置弹窗', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
