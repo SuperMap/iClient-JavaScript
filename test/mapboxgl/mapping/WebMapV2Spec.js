@@ -4308,127 +4308,12 @@ describe('mapboxgl_WebMapV2', () => {
         {
           elements: [
             {
-              fieldName: 'parent',
-              type: 'FIELD',
-              fieldCaption: 'parent'
-            },
-            {
-              fieldName: 'adcode',
-              type: 'FIELD',
-              fieldCaption: 'adcode'
-            },
-            {
-              fieldName: 'level',
-              type: 'FIELD',
-              fieldCaption: 'level'
-            },
-            {
-              fieldName: 'childrenNum',
-              type: 'FIELD',
-              fieldCaption: 'childrenNum'
-            },
-            {
-              fieldName: 'smpid',
-              type: 'FIELD',
-              fieldCaption: 'smpid'
-            },
-            {
-              fieldName: 'centroid',
-              type: 'FIELD',
-              fieldCaption: 'centroid'
-            },
-            {
-              fieldName: 'center',
-              type: 'FIELD',
-              fieldCaption: 'center'
-            },
-            {
-              fieldName: 'subFeatureIndex',
-              type: 'FIELD',
-              fieldCaption: 'subFeatureIndex'
-            },
-            {
-              fieldName: 'name',
-              type: 'FIELD',
-              fieldCaption: 'name'
-            },
-            {
-              fieldName: 'acroutes',
-              type: 'FIELD',
-              fieldCaption: 'acroutes'
-            },
-            {
-              type: 'DIVIDER'
-            },
-            {
-              type: 'TEXT',
-              infos: [
-                {
-                  insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
-                  attributes: {
-                    size: 'small',
-                    color: '#4e35cc',
-                    underline: true,
-                    strike: true,
-                    bold: true,
-                    italic: true
-                  }
-                },
-                {
-                  insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
-                  attributes: {
-                    size: 'small',
-                    color: '#e01b4b'
-                  }
-                },
-                {
-                  insert: '\n',
-                  attributes: {
-                    align: 'center'
-                  }
-                }
-              ]
-            },
-            {
-              type: 'DIVIDER'
-            },
-            {
-              type: 'IMAGE',
-              title: ['concat', ['get', 'adcode']],
-              value: ['concat', ['get', 'parent']]
-            },
-            {
-              type: 'IMAGE',
-              title: 'afdfd',
-              value: ['concat', ['get', 'level']]
-            },
-            {
-              type: 'DIVIDER'
-            },
-            {
-              type: 'VIDEO',
-              title: 'fdsfs',
-              value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
-            },
-            {
-              type: 'DIVIDER'
-            },
-            {
-              type: 'IMAGE',
-              title: ['concat', ['get', 'parent'], ['get', 'adcode']],
-              value: ['concat', ['get', 'adcode'], ['get', 'level']]
-            }
-          ],
-          title: '北京市(3)',
-          layerId: '北京市(3)'
-        },
-        {
-          elements: [
-            {
+              fieldCaption: "SmID",
               fieldName: 'SmID',
               type: 'FIELD'
             },
             {
+              fieldCaption: '标准名称',
               fieldName: '标准名称',
               type: 'FIELD'
             }

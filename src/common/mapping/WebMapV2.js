@@ -202,7 +202,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           const elements = enableFields.map((fieldName) => ({
             type: 'FIELD',
             fieldName,
-            fieldCaption: fieldCaptions ? fieldCaptions[fieldName] : fieldName
+            fieldCaption: fieldCaptions ? (fieldCaptions[fieldName] || fieldName) : fieldName
           }));
           return { elements, layerId, title: name };
         }
