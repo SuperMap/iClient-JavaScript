@@ -3894,7 +3894,7 @@ const msPopupInfo = JSON.stringify({
         title: 'A面',
         layerSourceType: 'Data',
         zoomRange: [0, 24],
-        layersContent: ['A面']
+        layersContent: ['A面', 'A面1']
       }
     ],
     datas: [

@@ -1741,6 +1741,54 @@ describe('mapboxgl-webmap3.0', () => {
           ],
           title: 'A面',
           layerId: 'A面'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD',
+              fieldCaption: 'geometry'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', '这是一段文本信息', ['get', 'smpid'], '\n']
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题', ['get', 'adcode'], '-图片'],
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'VIDEO',
+              title: '无标题-视频',
+              value: 'https://www.runoob.com/try/demo_source/mov_bbb.mp4'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题图片', ['get', 'adcode']],
+              value: ['concat', ['get', 'name'], ['get', 'smpid']]
+            }
+          ],
+          title: 'A面',
+          layerId: 'A面1'
         }
       ];
       expect(popupInfo).toEqual(Data);

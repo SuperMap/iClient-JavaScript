@@ -4,6 +4,7 @@
 import { FetchRequest } from '../util/FetchRequest';
 import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
+import cloneDeep from 'lodash.clonedeep';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -348,25 +349,36 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     });
     return fieldCaptions;
   }
+  _getPopupInfoContent(data, msDatasetId) {
+    const popupInfo = cloneDeep(data);
+    const fieldCaptions = this._getFieldCaption(msDatasetId);
+    if (fieldCaptions) {
+      popupInfo.elements = popupInfo.elements ? popupInfo.elements.map(item => {
+        if (item.type === 'FIELD') {
+          item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
+        }
+        return item;
+      }) : [];
+    }
+    return popupInfo;
+  }
   _getPopupInfos() {
     const { catalogs = [] } = this._mapResourceInfo;
-    return catalogs.map((item) => {
-      const {id, popupInfo, msDatasetId} = item;
+    const res = [];
+    catalogs.forEach((item) => {
+      const {popupInfo, msDatasetId, layersContent=[]} = item;
       if (popupInfo) {
-        const fieldCaptions = this._getFieldCaption(msDatasetId);
-        if (fieldCaptions) {
-          popupInfo.elements = popupInfo.elements ? popupInfo.elements.map(item => {
-            if (item.type === 'FIELD') {
-              item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
-            }
-            return item;
-          }) : [];
-        }
-        popupInfo.layerId = id;
-        return popupInfo
+        const popupInfoVal = this._getPopupInfoContent(popupInfo, msDatasetId);
+        const infos = layersContent.map(layerId => {
+          return {
+            layerId,
+            ...cloneDeep(popupInfoVal)
+          }
+        })
+        res.push(...infos);
       }
-      return null
-    }).filter(item => item !== null);
+    })
+    return res;
   }
 
   /**
