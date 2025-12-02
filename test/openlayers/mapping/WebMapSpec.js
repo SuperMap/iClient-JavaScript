@@ -1649,12 +1649,12 @@ describe('openlayers_WebMap', () => {
     
     var datavizWebmap = new WebMap(id, { server: defaultServer });
     // Mock map.getView() to return fixed resolution values for zoom levels
-    spyOn(datavizWebmap.map, 'getView').and.returnValue({
-      getResolutionForZoom: function(zoom) {
-        // Return decreasing resolution values for zoom levels 0-3
-        return [1000, 500, 250, 100][zoom];
-      }
-    });
+    // spyOn(datavizWebmap.map, 'getView').and.returnValue({
+    //   getResolutionForZoom: function(zoom) {
+    //     // Return decreasing resolution values for zoom levels 0-3
+    //     return [1000, 500, 250, 100][zoom];
+    //   }
+    // });
     
     var layerInfo = {
       minZoom: 0,
