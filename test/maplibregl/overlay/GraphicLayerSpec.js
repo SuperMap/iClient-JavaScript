@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { GraphicLayer } from '../../../src/maplibregl/overlay/GraphicLayer';
-import { Graphic } from '../../../src/maplibregl/overlay/Graphic';
+import { Graphic } from '../../../src/maplibregl/overlay/graphic';
 
 maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('maplibregl_GraphicLayer', () => {

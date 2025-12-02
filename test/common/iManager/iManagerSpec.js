@@ -1,4 +1,4 @@
-import { IManager } from '../../../src/common/IManager/IManager';
+import { IManager } from '../../../src/common/iManager/iManager';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { SecurityManager } from '../../../src/common/security/SecurityManager';
 

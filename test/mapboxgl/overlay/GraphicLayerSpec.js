@@ -1,7 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { GraphicLayer } from '../../../src/mapboxgl/overlay/GraphicLayer';
-import { Graphic } from '../../../src/mapboxgl/overlay/Graphic';
+import { Graphic } from '../../../src/mapboxgl/overlay/graphic';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('mapboxgl_GraphicLayer', () => {
