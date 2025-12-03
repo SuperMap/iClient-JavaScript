@@ -1196,7 +1196,7 @@ describe('openlayers_WebMap', () => {
       version: '2.0',
       title: 'spec_layer_test',
       description: '',
-      projection: 'EPSG:3857',
+      projection: 'EPSG:0',
       center: { x: 0, y: 0 },
       level: 1,
       extent: {
@@ -1214,39 +1214,58 @@ describe('openlayers_WebMap', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(mapJson)));
-      } else if (url.indexOf('/rest/maps/test') > -1) {
+      } else if (url.indexOf('test.json') > -1) {
         var tileData = {
           tileSize: 256,
-          extent: {
-            leftBottom: { x: -20037508.3427892, y: -20037508.3427892 },
-            rightTop: { x: 20037508.3427892, y: 20037508.3427892 }
+          bounds: {
+            top: 5956378.419384226,
+            left: -3351272.4427074995,
+            bottom: 819239.9879898131,
+            leftBottom: {
+              x: -3351272.4427074995,
+              y: 819239.9879898131
+            },
+            right: 1835992.3214813927,
+            rightTop: {
+              x: 1835992.3214813927,
+              y: 5956378.419384226
+            }
           },
-          scales: [2.958293554170548E-9, 1.7749761325023288E-8],
-          projection: 'EPSG:3857',
+          scales: [2.958293554170548e-9, 1.7749761325023288e-8],
+          projection: 'EPSG:0',
           units: 'Meter',
           dpi: 95.99999999999994,
           coordUnit: 'Meter'
         };
         return Promise.resolve(new Response(JSON.stringify(tileData)));
       }
+      console.log('FetchRequestFaild', url);
       return Promise.resolve(new Response(JSON.stringify({})));
     });
 
     const successCallback = () => {
       expect(datavizWebmap.server).toBe(defaultServer);
       expect(datavizWebmap.map.getView()).toBeDefined();
-      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:3857');
-      
+      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:0');
+
       // Check if base layer is added
       const layers = datavizWebmap.map.getLayers().getArray();
       expect(layers.length).toBeGreaterThan(0);
-      
+
       done();
     };
-
+    const errorCallback = (error, type) => {
+      console.log(error);
+      expect(type).toBe('getMapFaild');
+      expect(error.type).toBe('Not support CS');
+      expect(error.errorMsg).toBe('Not support CS: UNSUPPORTED_TYPE');
+      // 给一些时间让异步操作完成
+      setTimeout(done, 100);
+    };
     var datavizWebmap = new WebMap(id, {
       server: defaultServer,
-      successCallback
+      successCallback,
+      errorCallback
     });
   });
 
@@ -1255,7 +1274,7 @@ describe('openlayers_WebMap', () => {
       version: '2.0',
       title: 'spec_layer_wms_test',
       description: '',
-      projection: 'EPSG:3857',
+      projection: 'EPSG:0',
       center: { x: 0, y: 0 },
       level: 1,
       extent: {
@@ -1284,12 +1303,12 @@ describe('openlayers_WebMap', () => {
     const successCallback = () => {
       expect(datavizWebmap.server).toBe(defaultServer);
       expect(datavizWebmap.map.getView()).toBeDefined();
-      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:3857');
-      
+      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:0');
+
       // Check if base layer is added
       const layers = datavizWebmap.map.getLayers().getArray();
       expect(layers.length).toBeGreaterThan(0);
-      
+
       done();
     };
 
@@ -1304,7 +1323,7 @@ describe('openlayers_WebMap', () => {
       version: '2.0',
       title: 'spec_layer_wmts_test',
       description: '',
-      projection: 'EPSG:3857',
+      projection: 'EPSG:0',
       center: { x: 0, y: 0 },
       level: 1,
       extent: {
@@ -1313,7 +1332,11 @@ describe('openlayers_WebMap', () => {
       },
       baseLayer: {
         layerType: 'WMTS',
-        "scales": [559082264.0287178, 279541132.0143589, 139770566.00717944, 69885283.00358972, 34942641.50179486, 17471320.75089743, 8735660.375448715, 4367830.1877243575, 2183915.0938621787, 1091957.5469310894, 545978.7734655447],
+        scales: [
+          559082264.0287178, 279541132.0143589, 139770566.00717944, 69885283.00358972, 34942641.50179486,
+          17471320.75089743, 8735660.375448715, 4367830.1877243575, 2183915.0938621787, 1091957.5469310894,
+          545978.7734655447
+        ],
         name: 'test_wmts_layer',
         url: 'http://fake/iserver/services/map-test/wmts',
         tileMatrixSet: 'GoogleMapsCompatible',
@@ -1322,60 +1345,7 @@ describe('openlayers_WebMap', () => {
       layers: []
     };
 
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('map.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(mapJson)));
-      }
-      return Promise.resolve(new Response(JSON.stringify({})));
-    });
-
-    const successCallback = () => {
-      expect(datavizWebmap.server).toBe(defaultServer);
-      expect(datavizWebmap.map.getView()).toBeDefined();
-      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:3857');
-      
-      // Check if base layer is added
-      const layers = datavizWebmap.map.getLayers().getArray();
-      expect(layers.length).toBeGreaterThan(0);
-      
-      done();
-    };
-
-    var datavizWebmap = new WebMap(id, {
-      server: defaultServer,
-      successCallback
-    });
-  });
-
-  it('createSpecLayer_unsupported_type', (done) => {
-    var mapJson = {
-      version: '2.0',
-      title: 'spec_layer_unsupported_test',
-      description: '',
-      projection: 'EPSG:3857',
-      center: { x: 0, y: 0 },
-      level: 1,
-      extent: {
-        leftBottom: { x: -20037508.3427892, y: -20037508.3427892 },
-        rightTop: { x: 20037508.3427892, y: 20037508.3427892 }
-      },
-      baseLayer: {
-        layerType: 'UNSUPPORTED_TYPE',
-        name: 'test_unsupported_layer',
-        url: 'http://fake/iserver/services/map-test/rest/maps/test'
-      },
-      layers: []
-    };
-
-    const errorCallback = (error, type) => {
-      expect(type).toBe('getMapFaild');
-      expect(error.type).toBe('Not support CS');
-      expect(error.errorMsg).toBe('Not support CS: UNSUPPORTED_TYPE');
-      // 给一些时间让异步操作完成
-      setTimeout(done, 100);
-    };
-
-    var wmtsCapabilities = 
+        var wmtsCapabilities =
       '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" version="1.0.0">' +
       '<Contents>' +
       '<Layer>' +
@@ -1407,7 +1377,7 @@ describe('openlayers_WebMap', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(mapJson)));
-      } else if (url.indexOf('/wmts') > -1) {
+      } else if (url.indexOf('wmts') > -1) {
         return Promise.resolve(new Response(wmtsCapabilities));
       }
       return Promise.resolve(new Response(JSON.stringify({})));
@@ -1416,12 +1386,72 @@ describe('openlayers_WebMap', () => {
     const successCallback = () => {
       expect(datavizWebmap.server).toBe(defaultServer);
       expect(datavizWebmap.map.getView()).toBeDefined();
-      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:3857');
-      
+      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:0');
+
       // Check if base layer is added
       const layers = datavizWebmap.map.getLayers().getArray();
       expect(layers.length).toBeGreaterThan(0);
-      
+
+      done();
+    };
+    const errorCallback = (error, type) => {
+      console.log(error);
+      expect(type).toBe('getMapFaild');
+      expect(error.type).toBe('Not support CS');
+      expect(error.errorMsg).toBe('Not support CS: UNSUPPORTED_TYPE');
+      // 给一些时间让异步操作完成
+      setTimeout(done, 100);
+    };
+    var datavizWebmap = new WebMap(id, {
+      server: defaultServer,
+      successCallback,
+      errorCallback
+    });
+  });
+
+  it('createSpecLayer_unsupported_type', (done) => {
+    var mapJson = {
+      version: '2.0',
+      title: 'spec_layer_unsupported_test',
+      description: '',
+      projection: 'EPSG:0',
+      center: { x: 0, y: 0 },
+      level: 1,
+      extent: {
+        leftBottom: { x: -20037508.3427892, y: -20037508.3427892 },
+        rightTop: { x: 20037508.3427892, y: 20037508.3427892 }
+      },
+      baseLayer: {
+        layerType: 'UNSUPPORTED_TYPE',
+        name: 'test_unsupported_layer',
+        url: 'http://fake/iserver/services/map-test/rest/maps/test'
+      },
+      layers: []
+    };
+
+    const errorCallback = (error, type) => {
+      expect(type).toBe('getMapFaild');
+      expect(error.type).toBe('Not support CS');
+      expect(error.errorMsg).toBe('Not support CS: UNSUPPORTED_TYPE');
+      // 给一些时间让异步操作完成
+      setTimeout(done, 100);
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapJson)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    const successCallback = () => {
+      expect(datavizWebmap.server).toBe(defaultServer);
+      expect(datavizWebmap.map.getView()).toBeDefined();
+      expect(datavizWebmap.map.getView().getProjection().getCode()).toBe('EPSG:0');
+
+      // Check if base layer is added
+      const layers = datavizWebmap.map.getLayers().getArray();
+      expect(layers.length).toBeGreaterThan(0);
+
       done();
     };
 
@@ -1544,14 +1574,14 @@ describe('openlayers_WebMap', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
-    
+
     var datavizWebmap = new WebMap(id, { server: defaultServer });
     var layerInfo = {
       visibleScales: [10000, 50000, 100000],
       projection: 'EPSG:3857',
       coordUnit: 'METER'
     };
-    
+
     datavizWebmap.baseProjection = 'EPSG:3857';
     datavizWebmap.getScales(layerInfo);
 
@@ -1577,7 +1607,7 @@ describe('openlayers_WebMap', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
-    
+
     var datavizWebmap = new WebMap(id, { server: defaultServer });
     var layerInfo = {
       layerType: 'WMTS',
@@ -1585,7 +1615,7 @@ describe('openlayers_WebMap', () => {
       projection: 'EPSG:3857',
       coordUnit: 'METER'
     };
-    
+
     datavizWebmap.baseProjection = 'EPSG:3857';
     datavizWebmap.getScales(layerInfo);
 
@@ -1611,7 +1641,7 @@ describe('openlayers_WebMap', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
-    
+
     var datavizWebmap = new WebMap(id, { server: defaultServer });
     var layerInfo = {
       layerType: 'ZXY_TILE',
@@ -1619,7 +1649,7 @@ describe('openlayers_WebMap', () => {
       projection: 'EPSG:3857',
       coordUnit: 'METER'
     };
-    
+
     datavizWebmap.baseProjection = 'EPSG:3857';
     datavizWebmap.getScales(layerInfo);
 
@@ -1646,7 +1676,7 @@ describe('openlayers_WebMap', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
-    
+
     var datavizWebmap = new WebMap(id, { server: defaultServer });
     // Mock map.getView() to return fixed resolution values for zoom levels
     // spyOn(datavizWebmap.map, 'getView').and.returnValue({
@@ -1655,14 +1685,14 @@ describe('openlayers_WebMap', () => {
     //     return [1000, 500, 250, 100][zoom];
     //   }
     // });
-    
+
     var layerInfo = {
       minZoom: 0,
       maxZoom: 3,
       projection: 'EPSG:3857',
       coordUnit: 'METER'
     };
-    
+
     datavizWebmap.baseProjection = 'EPSG:3857';
     datavizWebmap.getScales(layerInfo);
 
@@ -1868,7 +1898,7 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
-  xit('getMapInfoSuccess BrowseMap', (done) => {
+  it('getMapInfoSuccess BrowseMap', (done) => {
     let options = {
       server: server,
       successCallback,
@@ -1904,7 +1934,7 @@ describe('openlayers_WebMap', () => {
     }
   });
 
-  xit('initialize_MVT', (done) => {
+  it('initialize_MVT', (done) => {
     window.olmsbak = window.olms;
     window.olms = {
       applyBackground: function () {},
@@ -2200,14 +2230,14 @@ describe('openlayers_WebMap', () => {
   });
   it('graticuleLayer', (done) => {
     window.geostats = class {
-        setSerie() {}
-        getClassEqInterval() {
-            return [];
-          }
+      setSerie() {}
+      getClassEqInterval() {
+        return [];
+      }
     };
     spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
-        return true;
-      });
+      return true;
+    });
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1171594968/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
@@ -2593,20 +2623,25 @@ describe('openlayers_WebMap', () => {
 
   it('datavizWebMap_isCredentail_isAddProxy', (done) => {
     const serviceProxy = {
-        "httpConnPoolInfo": null,
-        "enableAccessStatistics": true,
-        "scheme": null,
-        "enableBuiltinProxy": true,
-        "port": 8195,
-        "proxyServerRootUrl": "http://127.0.0.1:8195/portalproxy",
-        "rootUrlPostfix": "portalproxy",
-        "enable": true,
-        "httpsSetting": null,
-        "cacheConfig": null
+      httpConnPoolInfo: null,
+      enableAccessStatistics: true,
+      scheme: null,
+      enableBuiltinProxy: true,
+      port: 8195,
+      proxyServerRootUrl: 'http://127.0.0.1:8195/portalproxy',
+      rootUrlPostfix: 'portalproxy',
+      enable: true,
+      httpsSetting: null,
+      cacheConfig: null
     };
-    var datavizWebmap = new WebMap(id, { webMap: JSON.parse(datavizWebMap_BAIDU), successCallback, serviceProxy: serviceProxy });
+    var datavizWebmap = new WebMap(id, {
+      webMap: JSON.parse(datavizWebMap_BAIDU),
+      successCallback,
+      serviceProxy: serviceProxy
+    });
     function successCallback() {
-      const url = 'http://127.0.0.1:8195/portalproxy/11111/iserver/services/map-Population/rest/maps/PopulationDistribution/tileImage'
+      const url =
+        'http://127.0.0.1:8195/portalproxy/11111/iserver/services/map-Population/rest/maps/PopulationDistribution/tileImage';
       const withCredential = datavizWebmap.isCredentail(url, false);
       const isProxy = datavizWebmap.isAddProxy(url, false);
       expect(withCredential).toBeTruthy();

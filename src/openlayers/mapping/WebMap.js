@@ -600,7 +600,7 @@ export class WebMap extends Observable {
             tileGrid: TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid,
             tileLoadFunction: me.getCustomTileLoadFunction()
           };
-          if (url && this.isAddProxy(url)) {
+          if (url && me.isAddProxy(url)) {
             options.tileProxy = me.server + 'apps/viewer/getUrlResource.png?url=';
           }
           source = new TileSuperMapRest(options);
