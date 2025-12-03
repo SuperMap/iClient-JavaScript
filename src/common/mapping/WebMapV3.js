@@ -362,11 +362,15 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     return popupInfo;
   }
-  _getPopupInfos() {
-    const { catalogs = [] } = this._mapResourceInfo;
-    const res = [];
-    catalogs.forEach((item) => {
-      const {popupInfo, msDatasetId, layersContent=[]} = item;
+  _getPopupInfoByCatalog(catalog, res = []) {
+    const { catalogType, children } = catalog;
+    if(catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getPopupInfoByCatalog(child, res);
+      })
+    }
+    if (catalogType === 'layer') {
+      const { popupInfo, msDatasetId, layersContent = [] } = catalog;
       if (popupInfo) {
         const popupInfoVal = this._getPopupInfoContent(popupInfo, msDatasetId);
         const infos = layersContent.map(layerId => {
@@ -377,6 +381,13 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         })
         res.push(...infos);
       }
+    }
+  }
+  _getPopupInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getPopupInfoByCatalog(item, res);
     })
     return res;
   }

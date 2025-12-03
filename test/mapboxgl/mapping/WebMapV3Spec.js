@@ -1641,21 +1641,24 @@ describe('mapboxgl-webmap3.0', () => {
       });
     });
   });
-  xit('webmap3.0 projectinfo popupInfo', (done) => {
-    spyOn(MapManagerUtil, 'default').and.callFake(mbglmap);
+  it('webmap3.0 projectinfo popupInfo', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/config/portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
       if (url.indexOf('map.json') > -1) {
-        var mapJson = msPopupInfoMap;
-        return Promise.resolve(new Response(mapJson));
+        return Promise.resolve(new Response(msPopupInfoMap));
       }
       if (url.indexOf('617580084.json') > -1) {
-        var appInfo = msPopupInfo;
-        return Promise.resolve(new Response(appInfo));
+        return Promise.resolve(new Response(msPopupInfo));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
     });
 
     mapstudioWebmap = new WebMap(id, {
@@ -1792,6 +1795,6619 @@ describe('mapboxgl-webmap3.0', () => {
         }
       ];
       expect(popupInfo).toEqual(Data);
+
+      const popupInfo1 = mapstudioWebmap._handler._getPopupInfos({
+        catalogs: [
+          {
+            visible: true,
+            catalogType: 'group',
+            children: [
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    filter: ['all', ['==', '$type', 'Point'], ['has', 'NAME'], ['!=', 'NAME', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [3, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'NAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'marker_907936_6_A5A5A5',
+                              style: {
+                                layout: {
+                                  'icon-image': 'marker_907936_6_A5A5A5'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(115,106,79,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 6
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [3, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'NAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'marker_907936_6_A5A5A5',
+                              style: {
+                                layout: {
+                                  'icon-image': 'marker_907936_6_A5A5A5'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(115,106,79,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 6
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Town_P@Jingjin#1#1',
+                    id: 'Town_P@Jingjin#1#1(12_24)',
+                    serviceLayerGroupId: 'Level_5',
+                    title: 'Town_P@Jingjin#1',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [12, 24],
+                    layersContent: ['Town_P@Jingjin#1#1(12_24)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString'], ['has', 'name_1'], ['!=', 'name_1', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0.24
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'line'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_1'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 10.5
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(63,11,10,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0.24
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'line'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_1'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 10.5
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(63,11,10,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Road_L@Jingjin#8',
+                    id: 'Road_L@Jingjin#8(12_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'KD',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'KD_1',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'NAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'name_1',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'name_2_len',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'name_3_len',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'Road_L_街道'
+                    },
+                    serviceLayerGroupId: 'Level_5',
+                    title: 'Road_L_街道',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [12, 24],
+                    layersContent: ['Road_L@Jingjin#8(12_24)']
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,206,16,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 8.31,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,206,16,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 8.31
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#3',
+                        id: 'Road_L@Jingjin#3_range_1(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: 'min < X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#3_range_1(12_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(250,246,162,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 8.31,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(250,246,162,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 8.31
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#3',
+                        id: 'Road_L@Jingjin#3_range_2(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#3_range_2(12_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 6.8,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,255,255,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 6.8
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#3',
+                        id: 'Road_L@Jingjin#3_range_3(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#3_range_3(12_24)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin#3',
+                    id: 'group_Road_L@Jingjin#3_1764665757037_33'
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(172,107,0,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 9.83,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(172,107,0,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 9.83
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#2',
+                        id: 'Road_L@Jingjin#2_range_1(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: 'min < X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#2_range_1(12_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(195,183,147,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 9.83,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(195,183,147,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 9.83
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#2',
+                        id: 'Road_L@Jingjin#2_range_2(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#2_range_2(12_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(180,180,180,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 9.07,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(180,180,180,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 9.07
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#2',
+                        id: 'Road_L@Jingjin#2_range_3(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['Road_L@Jingjin#2_range_3(12_24)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin#2',
+                    id: 'group_Road_L@Jingjin#2_1764665757037_37'
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'polygon-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible'
+                                    },
+                                    paint: {
+                                      'fill-color': 'rgba(184,221,165,1.00)',
+                                      'fill-opacity': 1,
+                                      'fill-antialias': true
+                                    }
+                                  }
+                                }
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(184,221,165,1.00)'
+                              },
+                              antialias: {
+                                type: 'simple',
+                                value: true
+                              },
+                              outlineColor: {
+                                type: 'simple',
+                                value: '#FFFFFF'
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'GreenFeild_R@Jingjin#2#1',
+                        id: 'GreenFeild_R@Jingjin#2#1(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: 'GreenFeild_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['GreenFeild_R@Jingjin#2#1(12_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(184,221,165,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.38,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(184,221,165,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.38
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'GreenFeild_R@Jingjin#2#1',
+                        id: 'GreenFeild_R@Jingjin#2#1_outline(12_24)',
+                        serviceLayerGroupId: 'Level_5',
+                        title: 'GreenFeild_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [12, 24],
+                        layersContent: ['GreenFeild_R@Jingjin#2#1_outline(12_24)']
+                      }
+                    ],
+                    name: 'GreenFeild_R@Jingjin',
+                    id: 'group_GreenFeild_R@Jingjin#2#1_1764665757037_41'
+                  }
+                ],
+                name: 'Level_5',
+                id: 'group_Level_5_1764665757036_27'
+              },
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    filter: ['all', ['==', '$type', 'Point'], ['has', 'ADMINNAME'], ['!=', 'ADMINNAME', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_4489C9_9_{ADMINNAME_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_4489C9_9_{ADMINNAME_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 10.5
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_4489C9_9_{ADMINNAME_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_4489C9_9_{ADMINNAME_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 10.5
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'County_P@Jingjin#1',
+                    id: 'County_P@Jingjin#1(9_13)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'ADMINNAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'ADMINNAME_len',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'County_P@Jingjin#1'
+                    },
+                    serviceLayerGroupId: 'Level_3',
+                    title: 'County_P@Jingjin#1',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [9, 13],
+                    layersContent: ['County_P@Jingjin#1(9_13)']
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,165,56,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,165,56,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#10',
+                        id: 'Road_L@Jingjin#10_range_1(9_10)',
+                        serviceLayerGroupId: 'Level_3',
+                        title: 'min <= X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [9, 10],
+                        layersContent: ['Road_L@Jingjin#10_range_1(9_10)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(250,225,143,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(250,225,143,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#10',
+                        id: 'Road_L@Jingjin#10_range_2(9_10)',
+                        serviceLayerGroupId: 'Level_3',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [9, 10],
+                        layersContent: ['Road_L@Jingjin#10_range_2(9_10)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(235,232,152,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(235,232,152,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#10',
+                        id: 'Road_L@Jingjin#10_range_3(9_10)',
+                        serviceLayerGroupId: 'Level_3',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [9, 10],
+                        layersContent: ['Road_L@Jingjin#10_range_3(9_10)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin',
+                    id: 'group_Road_L@Jingjin#10_1764665757037_47'
+                  }
+                ],
+                name: 'Level_3',
+                id: 'group_Level_3_1764665757037_44'
+              },
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    filter: ['all', ['==', '$type', 'LineString'], ['has', 'name_2'], ['!=', 'name_2', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_2'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_6C9F41_8_{name_2_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_6C9F41_8_{name_2_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 8.4
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['MS PGothic Bold', 'MS PGothic']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_2'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_6C9F41_8_{name_2_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_6C9F41_8_{name_2_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 8.4
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['MS PGothic Bold', 'MS PGothic']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Road_L@Jingjin#7',
+                    id: 'Road_L@Jingjin#7(10_12)',
+                    serviceLayerGroupId: 'Level_4',
+                    title: 'Road_L_国道',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [10, 12],
+                    layersContent: ['Road_L@Jingjin#7(10_12)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString'], ['has', 'name_3'], ['!=', 'name_3', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_3'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_CC603F_8_{name_3_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_CC603F_8_{name_3_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 8.4
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['MS PGothic Bold', 'MS PGothic']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'name_3'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'BGRR_CC603F_8_{name_3_len}',
+                              style: {
+                                layout: {
+                                  'icon-image': 'BGRR_CC603F_8_{name_3_len}'
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 8.4
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['MS PGothic Bold', 'MS PGothic']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Road_L@Jingjin#6',
+                    id: 'Road_L@Jingjin#6(10_12)',
+                    serviceLayerGroupId: 'Level_4',
+                    title: 'Road_L_省道',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [10, 12],
+                    layersContent: ['Road_L@Jingjin#6(10_12)']
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString']],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(181,181,181,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-cap': 'square',
+                                      'line-join': 'miter'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 3.4,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(181,181,181,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'square'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 3.4
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Railway_L@Jingjin',
+                        id: 'Railway_L@Jingjin_0(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'Railway_L@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Railway_L@Jingjin_0(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString']],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [10, 10]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-cap': 'square',
+                                      'line-join': 'miter'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 1.51,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-dasharray': [10, 10],
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,255,255,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'square'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 1.51
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Railway_L@Jingjin',
+                        id: 'Railway_L@Jingjin_1(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'Railway_L@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Railway_L@Jingjin_1(10_12)']
+                      }
+                    ],
+                    name: 'Railway_L@Jingjin',
+                    id: 'group_Railway_L@Jingjin_1764665757037_58'
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,206,16,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 1.51,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,206,16,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 1.51
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#5',
+                        id: 'Road_L@Jingjin#5_range_1(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'min < X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#5_range_1(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(250,246,162,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 1.51,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(250,246,162,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 1.51
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#5',
+                        id: 'Road_L@Jingjin#5_range_2(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#5_range_2(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 1.51,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,255,255,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 1.51
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#5',
+                        id: 'Road_L@Jingjin#5_range_3(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#5_range_3(10_12)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin#5',
+                    id: 'group_Road_L@Jingjin#5_1764665757037_61'
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(172,107,0,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 3.02,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(172,107,0,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 3.02
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#4',
+                        id: 'Road_L@Jingjin#4_range_1(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'min < X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#4_range_1(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(195,183,147,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 3.02,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(195,183,147,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 3.02
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#4',
+                        id: 'Road_L@Jingjin#4_range_2(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#4_range_2(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(180,180,180,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 3.02,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(180,180,180,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 3.02
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#4',
+                        id: 'Road_L@Jingjin#4_range_3(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['Road_L@Jingjin#4_range_3(10_12)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin#4',
+                    id: 'group_Road_L@Jingjin#4_1764665757038_65'
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'polygon-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible'
+                                    },
+                                    paint: {
+                                      'fill-color': 'rgba(184,221,165,1.00)',
+                                      'fill-opacity': 1,
+                                      'fill-antialias': true
+                                    }
+                                  }
+                                }
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(184,221,165,1.00)'
+                              },
+                              antialias: {
+                                type: 'simple',
+                                value: true
+                              },
+                              outlineColor: {
+                                type: 'simple',
+                                value: '#FFFFFF'
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'GreenFeild_R@Jingjin#2#2',
+                        id: 'GreenFeild_R@Jingjin#2#2(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'GreenFeild_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['GreenFeild_R@Jingjin#2#2(10_12)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(184,221,165,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.38,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(184,221,165,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.38
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'GreenFeild_R@Jingjin#2#2',
+                        id: 'GreenFeild_R@Jingjin#2#2_outline(10_12)',
+                        serviceLayerGroupId: 'Level_4',
+                        title: 'GreenFeild_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [10, 12],
+                        layersContent: ['GreenFeild_R@Jingjin#2#2_outline(10_12)']
+                      }
+                    ],
+                    name: 'GreenFeild_R@Jingjin',
+                    id: 'group_GreenFeild_R@Jingjin#2#2_1764665757038_69'
+                  }
+                ],
+                name: 'Level_4',
+                id: 'group_Level_4_1764665757037_53'
+              },
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    filter: ['all', ['==', '$type', 'Point'], ['has', 'ADMINNAME'], ['!=', 'ADMINNAME', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(164,0,91,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(164,0,91,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'County_P@Jingjin#2',
+                    id: 'County_P@Jingjin#2(8_9)',
+                    serviceLayerGroupId: 'Level_2',
+                    title: '行政区划名称',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [8, 9],
+                    layersContent: ['County_P@Jingjin#2(8_9)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'Point'], ['has', 'ADMINNAME'], ['!=', 'ADMINNAME', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'bottom'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 12.6
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(192,0,0,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'bottom'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'ADMINNAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 12.6
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(255,255,255,1.00)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(192,0,0,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Captital_P@Jingjin#2#1',
+                    id: 'Captital_P@Jingjin#2#1(8_8)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'ADMINCODE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'ADMINNAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'Captital_P@Jingjin#2'
+                    },
+                    serviceLayerGroupId: 'Level_2',
+                    title: 'Captital_P@Jingjin#2',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [8, 8],
+                    layersContent: ['Captital_P@Jingjin#2#1(8_8)']
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['<', 'KD_1', 3]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(255,165,56,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(255,165,56,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#1#1',
+                        id: 'Road_L@Jingjin#1#1_range_1(8_9)',
+                        serviceLayerGroupId: 'Level_2',
+                        title: 'min <= X < 3',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [8, 9],
+                        layersContent: ['Road_L@Jingjin#1#1_range_1(8_9)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 3], ['<', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(250,225,143,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(250,225,143,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#1#1',
+                        id: 'Road_L@Jingjin#1#1_range_2(8_9)',
+                        serviceLayerGroupId: 'Level_2',
+                        title: '3 <= X < 4',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [8, 9],
+                        layersContent: ['Road_L@Jingjin#1#1_range_2(8_9)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'LineString'], ['>=', 'KD_1', 4]],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(235,232,152,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.76,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(235,232,152,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.76
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Road_L@Jingjin#1#1',
+                        id: 'Road_L@Jingjin#1#1_range_3(8_9)',
+                        serviceLayerGroupId: 'Level_2',
+                        title: '4 <= X < max',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [8, 9],
+                        layersContent: ['Road_L@Jingjin#1#1_range_3(8_9)']
+                      }
+                    ],
+                    name: 'Road_L@Jingjin#1',
+                    id: 'group_Road_L@Jingjin#1#1_1764665757038_77'
+                  }
+                ],
+                name: 'Level_2',
+                id: 'group_Level_2_1764665757038_72'
+              },
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: [
+                          'all',
+                          ['==', '$type', 'Point'],
+                          ['==', 'ADMINNAME', '北京'],
+                          ['has', 'ADMINNAME'],
+                          ['!=', 'ADMINNAME', '']
+                        ],
+                        visualization: {
+                          renderer: [
+                            {
+                              rotate: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textLetterSpacing: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textTranslate: {
+                                type: 'simple',
+                                value: [0, -7]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: '#000000'
+                              },
+                              symbolPlacement: {
+                                type: 'simple',
+                                value: 'point'
+                              },
+                              textAnchor: {
+                                type: 'simple',
+                                value: 'bottom'
+                              },
+                              translate: {
+                                type: 'simple',
+                                value: [0, 1]
+                              },
+                              textRotate: {
+                                type: 'simple',
+                                value: 360
+                              },
+                              textField: {
+                                type: 'simple',
+                                value: 'ADMINNAME'
+                              },
+                              textHaloBlur: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              transform: {
+                                type: 'simple',
+                                value: 'none'
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'marker_75_3_FF0000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_75_3_FF0000'
+                                    }
+                                  }
+                                }
+                              },
+                              textTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              justify: {
+                                type: 'simple',
+                                value: 'left'
+                              },
+                              ignorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              textAllowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              maxWidth: {
+                                type: 'simple',
+                                value: 10
+                              },
+                              textSize: {
+                                type: 'simple',
+                                value: 12.6
+                              },
+                              textHaloColor: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              textColor: {
+                                type: 'simple',
+                                value: 'rgba(192,0,0,1.00)'
+                              },
+                              size: {
+                                type: 'simple',
+                                value: 14
+                              },
+                              allowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              translateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              anchor: {
+                                type: 'simple',
+                                value: 'center'
+                              },
+                              textOpacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              textHaloWidth: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              lineHeight: {
+                                type: 'simple',
+                                value: 1.2
+                              },
+                              textFont: {
+                                type: 'simple',
+                                value: ['Microsoft YaHei']
+                              },
+                              textIgnorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            },
+                            {
+                              rotate: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textLetterSpacing: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textTranslate: {
+                                type: 'simple',
+                                value: [0, -7]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: '#000000'
+                              },
+                              symbolPlacement: {
+                                type: 'simple',
+                                value: 'point'
+                              },
+                              textAnchor: {
+                                type: 'simple',
+                                value: 'bottom'
+                              },
+                              translate: {
+                                type: 'simple',
+                                value: [0, 1]
+                              },
+                              textRotate: {
+                                type: 'simple',
+                                value: 360
+                              },
+                              textField: {
+                                type: 'simple',
+                                value: 'ADMINNAME'
+                              },
+                              textHaloBlur: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              transform: {
+                                type: 'simple',
+                                value: 'none'
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'marker_75_3_FF0000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_75_3_FF0000'
+                                    }
+                                  }
+                                }
+                              },
+                              textTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              justify: {
+                                type: 'simple',
+                                value: 'left'
+                              },
+                              ignorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              textAllowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              maxWidth: {
+                                type: 'simple',
+                                value: 10
+                              },
+                              textSize: {
+                                type: 'simple',
+                                value: 12.6
+                              },
+                              textHaloColor: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              textColor: {
+                                type: 'simple',
+                                value: 'rgba(192,0,0,1.00)'
+                              },
+                              size: {
+                                type: 'simple',
+                                value: 14
+                              },
+                              allowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              translateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              anchor: {
+                                type: 'simple',
+                                value: 'center'
+                              },
+                              textOpacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              textHaloWidth: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              lineHeight: {
+                                type: 'simple',
+                                value: 1.2
+                              },
+                              textFont: {
+                                type: 'simple',
+                                value: ['Microsoft YaHei']
+                              },
+                              textIgnorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              type: 'text'
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Captital_P@Jingjin#2#2',
+                        id: 'Captital_P@Jingjin#1_uniqueandlabel_北京(0_8)',
+                        serviceLayerGroupId: 'Level_1',
+                        title: 'Captital_P@Jingjin#2',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [0, 8],
+                        layersContent: ['Captital_P@Jingjin#1_uniqueandlabel_北京(0_8)']
+                      },
+                      {
+                        filter: [
+                          'all',
+                          ['==', '$type', 'Point'],
+                          ['==', 'ADMINNAME', '天津'],
+                          ['has', 'ADMINNAME'],
+                          ['!=', 'ADMINNAME', '']
+                        ],
+                        visualization: {
+                          renderer: [
+                            {
+                              rotate: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textLetterSpacing: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textTranslate: {
+                                type: 'simple',
+                                value: [0, -2]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: '#000000'
+                              },
+                              symbolPlacement: {
+                                type: 'simple',
+                                value: 'point'
+                              },
+                              textAnchor: {
+                                type: 'simple',
+                                value: 'bottom'
+                              },
+                              translate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              textRotate: {
+                                type: 'simple',
+                                value: 360
+                              },
+                              textField: {
+                                type: 'simple',
+                                value: 'ADMINNAME'
+                              },
+                              textHaloBlur: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              transform: {
+                                type: 'simple',
+                                value: 'none'
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'marker_0_2_C00000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_0_2_C00000'
+                                    }
+                                  }
+                                }
+                              },
+                              textTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              justify: {
+                                type: 'simple',
+                                value: 'left'
+                              },
+                              ignorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              textAllowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              maxWidth: {
+                                type: 'simple',
+                                value: 10
+                              },
+                              textSize: {
+                                type: 'simple',
+                                value: 12.6
+                              },
+                              textHaloColor: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              textColor: {
+                                type: 'simple',
+                                value: 'rgba(192,0,0,1.00)'
+                              },
+                              size: {
+                                type: 'simple',
+                                value: 5
+                              },
+                              allowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              translateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              anchor: {
+                                type: 'simple',
+                                value: 'center'
+                              },
+                              textOpacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              textHaloWidth: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              lineHeight: {
+                                type: 'simple',
+                                value: 1.2
+                              },
+                              textFont: {
+                                type: 'simple',
+                                value: ['Microsoft YaHei']
+                              },
+                              textIgnorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            },
+                            {
+                              rotate: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textLetterSpacing: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              textTranslate: {
+                                type: 'simple',
+                                value: [0, -2]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: '#000000'
+                              },
+                              symbolPlacement: {
+                                type: 'simple',
+                                value: 'point'
+                              },
+                              textAnchor: {
+                                type: 'simple',
+                                value: 'bottom'
+                              },
+                              translate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              textRotate: {
+                                type: 'simple',
+                                value: 360
+                              },
+                              textField: {
+                                type: 'simple',
+                                value: 'ADMINNAME'
+                              },
+                              textHaloBlur: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              transform: {
+                                type: 'simple',
+                                value: 'none'
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'marker_0_2_C00000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_0_2_C00000'
+                                    }
+                                  }
+                                }
+                              },
+                              textTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              justify: {
+                                type: 'simple',
+                                value: 'left'
+                              },
+                              ignorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              textAllowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              maxWidth: {
+                                type: 'simple',
+                                value: 10
+                              },
+                              textSize: {
+                                type: 'simple',
+                                value: 12.6
+                              },
+                              textHaloColor: {
+                                type: 'simple',
+                                value: 'rgba(255,255,255,1.00)'
+                              },
+                              textColor: {
+                                type: 'simple',
+                                value: 'rgba(192,0,0,1.00)'
+                              },
+                              size: {
+                                type: 'simple',
+                                value: 5
+                              },
+                              allowOverlap: {
+                                type: 'simple',
+                                value: false
+                              },
+                              translateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              anchor: {
+                                type: 'simple',
+                                value: 'center'
+                              },
+                              textOpacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              textHaloWidth: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              lineHeight: {
+                                type: 'simple',
+                                value: 1.2
+                              },
+                              textFont: {
+                                type: 'simple',
+                                value: ['Microsoft YaHei']
+                              },
+                              textIgnorePlacement: {
+                                type: 'simple',
+                                value: false
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              },
+                              type: 'text'
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Captital_P@Jingjin#2#2',
+                        id: 'Captital_P@Jingjin#1_uniqueandlabel_天津(0_8)',
+                        serviceLayerGroupId: 'Level_1',
+                        title: 'Captital_P@Jingjin#2',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [0, 8],
+                        layersContent: ['Captital_P@Jingjin#1_uniqueandlabel_天津(0_8)']
+                      }
+                    ],
+                    name: 'Captital_P@Jingjin#2',
+                    id: 'group_Captital_P@Jingjin#2#2_1764665757038_82'
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'Point']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: ''
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            field: ['ADMINNAME'],
+                            defaultValue: {
+                              symbolId: 'marker_0_2_000000',
+                              style: {
+                                layout: {
+                                  'icon-image': 'marker_0_2_000000'
+                                }
+                              }
+                            },
+                            values: [
+                              {
+                                value: {
+                                  symbolId: 'marker_75_3_FF0000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_75_3_FF0000'
+                                    }
+                                  }
+                                },
+                                key: '北京'
+                              },
+                              {
+                                value: {
+                                  symbolId: 'marker_0_2_C00000',
+                                  style: {
+                                    layout: {
+                                      'icon-image': 'marker_0_2_C00000'
+                                    }
+                                  }
+                                },
+                                key: '天津'
+                              }
+                            ],
+                            type: 'unique'
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 16
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: true
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Open Sans Regular', 'Arial Unicode MS Regular']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Captital_P@Jingjin#1',
+                    id: 'Captital_P@Jingjin#1_unique_(8_8)',
+                    serviceLayerGroupId: 'Level_1',
+                    title: 'Captital_P@Jingjin#1',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [8, 8],
+                    layersContent: ['Captital_P@Jingjin#1_unique_(8_8)']
+                  }
+                ],
+                name: 'Level_1',
+                id: 'group_Level_1_1764665757038_81'
+              },
+              {
+                visible: true,
+                catalogType: 'group',
+                children: [
+                  {
+                    filter: ['all', ['==', '$type', 'Point'], ['has', 'NAME'], ['!=', 'NAME', '']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [7.56, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'NAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(115,106,79,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [7.56, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 360
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'NAME'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 11.55
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(115,106,79,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Microsoft YaHei']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Neighbor_P@Jingjin#1',
+                    id: 'Neighbor_P@Jingjin#1(7_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'ADCLASS',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'CODE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'NAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: '相邻行政区划名称'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: '相邻行政区划名称',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [7, 24],
+                    layersContent: ['Neighbor_P@Jingjin#1(7_24)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString']],
+                    visualization: {
+                      renderer: [
+                        {
+                          lineDasharray: {
+                            type: 'simple',
+                            value: [1, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(107,107,107,1.00)'
+                          },
+                          lineTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          lineMiterLimit: {
+                            type: 'simple',
+                            value: 2
+                          },
+                          lineOffset: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineJoin: {
+                            type: 'simple',
+                            value: 'miter'
+                          },
+                          lineRoundLimit: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          lineTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          lineGapWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'line-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible',
+                                  'line-miter-limit': 2,
+                                  'line-round-limit': 1.05,
+                                  'line-join': 'miter',
+                                  'line-cap': 'butt'
+                                },
+                                paint: {
+                                  'line-translate-anchor': 'map',
+                                  'line-width': 1.13,
+                                  'line-gap-width': 0,
+                                  'line-offset': 0,
+                                  'line-opacity': 1,
+                                  'line-translate': [0, 0],
+                                  'line-color': 'rgba(107,107,107,1.00)'
+                                }
+                              }
+                            }
+                          },
+                          lineCap: {
+                            type: 'simple',
+                            value: 'butt'
+                          },
+                          width: {
+                            type: 'simple',
+                            value: 1.13
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'County_L@Jingjin#1',
+                    id: 'County_L@Jingjin#1(0_10)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'County_L@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'County_L@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 10],
+                    layersContent: ['County_L@Jingjin#1(0_10)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString']],
+                    visualization: {
+                      renderer: [
+                        {
+                          lineDasharray: {
+                            type: 'simple',
+                            value: [1, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(0,170,231,1.00)'
+                          },
+                          lineTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          lineMiterLimit: {
+                            type: 'simple',
+                            value: 2
+                          },
+                          lineOffset: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineJoin: {
+                            type: 'simple',
+                            value: 'miter'
+                          },
+                          lineRoundLimit: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          lineTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          lineGapWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'line-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible',
+                                  'line-miter-limit': 2,
+                                  'line-round-limit': 1.05,
+                                  'line-join': 'miter',
+                                  'line-cap': 'butt'
+                                },
+                                paint: {
+                                  'line-translate-anchor': 'map',
+                                  'line-width': 1.13,
+                                  'line-gap-width': 0,
+                                  'line-offset': 0,
+                                  'line-opacity': 1,
+                                  'line-translate': [0, 0],
+                                  'line-color': 'rgba(0,170,231,1.00)'
+                                }
+                              }
+                            }
+                          },
+                          lineCap: {
+                            type: 'simple',
+                            value: 'butt'
+                          },
+                          width: {
+                            type: 'simple',
+                            value: 1.13
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Coastline_L@Jingjin#1',
+                    id: 'Coastline_L@Jingjin#1(0_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'Coastline_L@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'Coastline_L@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['Coastline_L@Jingjin#1(0_24)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString']],
+                    visualization: {
+                      renderer: [
+                        {
+                          lineDasharray: {
+                            type: 'simple',
+                            value: [1, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(170,170,170,1.00)'
+                          },
+                          lineTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          lineMiterLimit: {
+                            type: 'simple',
+                            value: 2
+                          },
+                          lineOffset: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineJoin: {
+                            type: 'simple',
+                            value: 'miter'
+                          },
+                          lineRoundLimit: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          lineTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          lineGapWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'line-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible',
+                                  'line-miter-limit': 2,
+                                  'line-round-limit': 1.05,
+                                  'line-join': 'miter',
+                                  'line-cap': 'butt'
+                                },
+                                paint: {
+                                  'line-translate-anchor': 'map',
+                                  'line-width': 0.76,
+                                  'line-gap-width': 0,
+                                  'line-offset': 0,
+                                  'line-opacity': 1,
+                                  'line-translate': [0, 0],
+                                  'line-color': 'rgba(170,170,170,1.00)'
+                                }
+                              }
+                            }
+                          },
+                          lineCap: {
+                            type: 'simple',
+                            value: 'butt'
+                          },
+                          width: {
+                            type: 'simple',
+                            value: 0.76
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Province_L@Jingjin',
+                    id: 'Province_L@Jingjin(0_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'Province_L@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'Province_L@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['Province_L@Jingjin(0_24)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString']],
+                    visualization: {
+                      renderer: [
+                        {
+                          lineDasharray: {
+                            type: 'simple',
+                            value: [20, 10]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(107,105,107,1.00)'
+                          },
+                          lineTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          lineMiterLimit: {
+                            type: 'simple',
+                            value: 2
+                          },
+                          lineOffset: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineJoin: {
+                            type: 'simple',
+                            value: 'miter'
+                          },
+                          lineRoundLimit: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          lineTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          lineGapWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'line-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible',
+                                  'line-miter-limit': 2,
+                                  'line-round-limit': 1.05,
+                                  'line-cap': 'round',
+                                  'line-join': 'miter'
+                                },
+                                paint: {
+                                  'line-translate-anchor': 'map',
+                                  'line-width': 0.38,
+                                  'line-gap-width': 0,
+                                  'line-offset': 0,
+                                  'line-opacity': 1,
+                                  'line-dasharray': [20, 10],
+                                  'line-translate': [0, 0],
+                                  'line-color': 'rgba(107,105,107,1.00)'
+                                }
+                              }
+                            }
+                          },
+                          lineCap: {
+                            type: 'simple',
+                            value: 'round'
+                          },
+                          width: {
+                            type: 'simple',
+                            value: 0.38
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'MapDivision_L@Jingjin#1',
+                    id: 'MapDivision_L@Jingjin#1_0(0_9)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'LATITUDE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LATITUDESIMPLE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'MapDivision_L@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'MapDivision_L@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 9],
+                    layersContent: ['MapDivision_L@Jingjin#1_0(0_9)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'Point']],
+                    visualization: {
+                      renderer: [
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'top-left'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'TEXT_VALUE'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(0,0,0,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Times New Roman']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        },
+                        {
+                          rotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textLetterSpacing: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          symbolPlacement: {
+                            type: 'simple',
+                            value: 'point'
+                          },
+                          textAnchor: {
+                            type: 'simple',
+                            value: 'top-left'
+                          },
+                          translate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          textRotate: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          textField: {
+                            type: 'simple',
+                            value: 'TEXT_VALUE'
+                          },
+                          textHaloBlur: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          transform: {
+                            type: 'simple',
+                            value: 'none'
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: '',
+                              style: {
+                                layout: {
+                                  'icon-image': ''
+                                }
+                              }
+                            }
+                          },
+                          textTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          justify: {
+                            type: 'simple',
+                            value: 'left'
+                          },
+                          ignorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          textAllowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          maxWidth: {
+                            type: 'simple',
+                            value: 10
+                          },
+                          textSize: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          textHaloColor: {
+                            type: 'simple',
+                            value: 'rgba(0, 0, 0, 0)'
+                          },
+                          textColor: {
+                            type: 'simple',
+                            value: 'rgba(0,0,0,1.00)'
+                          },
+                          size: {
+                            type: 'simple',
+                            value: 100
+                          },
+                          allowOverlap: {
+                            type: 'simple',
+                            value: false
+                          },
+                          translateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          anchor: {
+                            type: 'simple',
+                            value: 'center'
+                          },
+                          textOpacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          textHaloWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineHeight: {
+                            type: 'simple',
+                            value: 1.2
+                          },
+                          textFont: {
+                            type: 'simple',
+                            value: ['Times New Roman']
+                          },
+                          textIgnorePlacement: {
+                            type: 'simple',
+                            value: false
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          },
+                          type: 'text'
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'CoordsysLabel@Jingjin',
+                    id: 'CoordsysLabel@Jingjin',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_ALIGN',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_ANGLE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_COLOR',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_FONTNAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_HEIGHT',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_VALUE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TEXT_WIDTH',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'CoordsysLabel@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'CoordsysLabel@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['CoordsysLabel@Jingjin']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'LineString']],
+                    visualization: {
+                      renderer: [
+                        {
+                          lineDasharray: {
+                            type: 'simple',
+                            value: [1, 0]
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(126,206,245,1.00)'
+                          },
+                          lineTranslateAnchor: {
+                            type: 'simple',
+                            value: 'map'
+                          },
+                          lineMiterLimit: {
+                            type: 'simple',
+                            value: 2
+                          },
+                          lineOffset: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          lineJoin: {
+                            type: 'simple',
+                            value: 'miter'
+                          },
+                          lineRoundLimit: {
+                            type: 'simple',
+                            value: 1.05
+                          },
+                          lineTranslate: {
+                            type: 'simple',
+                            value: [0, 0]
+                          },
+                          lineGapWidth: {
+                            type: 'simple',
+                            value: 0
+                          },
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'line-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible',
+                                  'line-miter-limit': 2,
+                                  'line-round-limit': 1.05,
+                                  'line-join': 'miter',
+                                  'line-cap': 'butt'
+                                },
+                                paint: {
+                                  'line-translate-anchor': 'map',
+                                  'line-width': 1.51,
+                                  'line-gap-width': 0,
+                                  'line-offset': 0,
+                                  'line-opacity': 1,
+                                  'line-translate': [0, 0],
+                                  'line-color': 'rgba(126,206,245,1.00)'
+                                }
+                              }
+                            }
+                          },
+                          lineCap: {
+                            type: 'simple',
+                            value: 'butt'
+                          },
+                          width: {
+                            type: 'simple',
+                            value: 1.51
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'River_L@Jingjin',
+                    id: 'River_L@Jingjin(0_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'FNODE_',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'GS',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'HL',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'JB',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LENGTH',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LPOLY_',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LY1',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LY2',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LY3',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'LY4',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'NAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'RIVER_',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'RIVER_ID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'RPOLY_',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmLength',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmTopoError',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'TNODE_',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'River_L@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'River_L@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['River_L@Jingjin(0_24)']
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'Polygon']],
+                    visualization: {
+                      renderer: [
+                        {
+                          symbolsContent: {
+                            type: 'simple',
+                            value: {
+                              symbolId: 'polygon-0',
+                              style: {
+                                layout: {
+                                  visibility: 'visible'
+                                },
+                                paint: {
+                                  'fill-color': 'rgba(126,206,245,1.00)',
+                                  'fill-opacity': 1,
+                                  'fill-antialias': true
+                                }
+                              }
+                            }
+                          },
+                          color: {
+                            type: 'simple',
+                            value: 'rgba(126,206,245,1.00)'
+                          },
+                          antialias: {
+                            type: 'simple',
+                            value: true
+                          },
+                          outlineColor: {
+                            type: 'simple',
+                            value: '#FFFFFF'
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'Lake_R@Jingjin',
+                    id: 'Lake_R@Jingjin(0_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'CODE',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmArea',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmPerimeter',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'Lake_R@Jingjin'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'Lake_R@Jingjin',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['Lake_R@Jingjin(0_24)']
+                  },
+                  {
+                    visible: true,
+                    catalogType: 'group',
+                    children: [
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'polygon-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible'
+                                    },
+                                    paint: {
+                                      'fill-color': 'rgba(250,250,250,1.00)',
+                                      'fill-opacity': 1,
+                                      'fill-antialias': true
+                                    }
+                                  }
+                                }
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(250,250,250,1.00)'
+                              },
+                              antialias: {
+                                type: 'simple',
+                                value: true
+                              },
+                              outlineColor: {
+                                type: 'simple',
+                                value: '#FFFFFF'
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Neighbor_R@Jingjin#1',
+                        id: 'Neighbor_R@Jingjin#1(0_24)',
+                        popupInfo: {
+                          elements: [
+                            {
+                              fieldName: 'ADMI',
+                              type: 'FIELD'
+                            },
+                            {
+                              fieldName: 'SmArea',
+                              type: 'FIELD'
+                            },
+                            {
+                              fieldName: 'SmID',
+                              type: 'FIELD'
+                            },
+                            {
+                              fieldName: 'SmPerimeter',
+                              type: 'FIELD'
+                            },
+                            {
+                              fieldName: 'SmUserID',
+                              type: 'FIELD'
+                            }
+                          ],
+                          title: 'Neighbor_R@Jingjin'
+                        },
+                        serviceLayerGroupId: 'Level_0',
+                        title: 'Neighbor_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [0, 24],
+                        layersContent: ['Neighbor_R@Jingjin#1(0_24)']
+                      },
+                      {
+                        filter: ['all', ['==', '$type', 'Polygon']],
+                        visualization: {
+                          renderer: [
+                            {
+                              lineDasharray: {
+                                type: 'simple',
+                                value: [1, 0]
+                              },
+                              color: {
+                                type: 'simple',
+                                value: 'rgba(180,180,180,1.00)'
+                              },
+                              lineTranslateAnchor: {
+                                type: 'simple',
+                                value: 'map'
+                              },
+                              lineMiterLimit: {
+                                type: 'simple',
+                                value: 2
+                              },
+                              lineOffset: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              lineJoin: {
+                                type: 'simple',
+                                value: 'miter'
+                              },
+                              lineRoundLimit: {
+                                type: 'simple',
+                                value: 1.05
+                              },
+                              lineTranslate: {
+                                type: 'simple',
+                                value: [0, 0]
+                              },
+                              lineGapWidth: {
+                                type: 'simple',
+                                value: 0
+                              },
+                              symbolsContent: {
+                                type: 'simple',
+                                value: {
+                                  symbolId: 'line-0',
+                                  style: {
+                                    layout: {
+                                      visibility: 'visible',
+                                      'line-miter-limit': 2,
+                                      'line-round-limit': 1.05,
+                                      'line-join': 'miter',
+                                      'line-cap': 'butt'
+                                    },
+                                    paint: {
+                                      'line-translate-anchor': 'map',
+                                      'line-width': 0.38,
+                                      'line-gap-width': 0,
+                                      'line-offset': 0,
+                                      'line-opacity': 1,
+                                      'line-translate': [0, 0],
+                                      'line-color': 'rgba(180,180,180,1.00)'
+                                    }
+                                  }
+                                }
+                              },
+                              lineCap: {
+                                type: 'simple',
+                                value: 'butt'
+                              },
+                              width: {
+                                type: 'simple',
+                                value: 0.38
+                              },
+                              opacity: {
+                                type: 'simple',
+                                value: 1
+                              }
+                            }
+                          ]
+                        },
+                        catalogType: 'layer',
+                        serviceLayerId: 'Neighbor_R@Jingjin#1',
+                        id: 'Neighbor_R@Jingjin#1_outline(0_24)',
+                        serviceLayerGroupId: 'Level_0',
+                        title: 'Neighbor_R@Jingjin',
+                        layerSourceType: 'VectorTileService',
+                        zoomRange: [0, 24],
+                        layersContent: ['Neighbor_R@Jingjin#1_outline(0_24)']
+                      }
+                    ],
+                    name: 'Neighbor_R@Jingjin',
+                    id: 'group_Neighbor_R@Jingjin#1_1764665757038_105'
+                  },
+                  {
+                    filter: ['all', ['==', '$type', 'Polygon']],
+                    visualization: {
+                      renderer: [
+                        {
+                          symbolsContent: {
+                            field: ['City'],
+                            defaultValue: {
+                              symbolId: 'fill_0_BDEBFFFF_FFFFFFFF_100',
+                              style: {
+                                paint: {
+                                  'fill-pattern': 'fill_0_BDEBFFFF_FFFFFFFF_100'
+                                }
+                              }
+                            },
+                            values: [
+                              {
+                                value: {
+                                  symbolId: 'fill_0_F4F3F0FF_FFFFFFFF_100',
+                                  style: {
+                                    paint: {
+                                      'fill-pattern': 'fill_0_F4F3F0FF_FFFFFFFF_100'
+                                    }
+                                  }
+                                },
+                                key: '北京市'
+                              },
+                              {
+                                value: {
+                                  symbolId: 'fill_0_FAF3F3FF_FFFFFFFF_100',
+                                  style: {
+                                    paint: {
+                                      'fill-pattern': 'fill_0_FAF3F3FF_FFFFFFFF_100'
+                                    }
+                                  }
+                                },
+                                key: '天津市'
+                              }
+                            ],
+                            type: 'unique'
+                          },
+                          color: {
+                            type: 'simple',
+                            value: '#000000'
+                          },
+                          antialias: {
+                            type: 'simple',
+                            value: true
+                          },
+                          outlineColor: {
+                            type: 'simple',
+                            value: '#FFFFFF'
+                          },
+                          opacity: {
+                            type: 'simple',
+                            value: 1
+                          }
+                        }
+                      ]
+                    },
+                    catalogType: 'layer',
+                    serviceLayerId: 'BaseMap_R@Jingjin#1',
+                    id: 'BaseMap_R@Jingjin#1_unique_(0_24)',
+                    popupInfo: {
+                      elements: [
+                        {
+                          fieldName: 'ADMI',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'City',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'NAME',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'NEWA',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_1992',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_1995',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_1999',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_DENSITY99',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_RATE95',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'POP_RATE99',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'RURAL',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmArea',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmPerimeter',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'SmUserID',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'URBAN',
+                          type: 'FIELD'
+                        },
+                        {
+                          fieldName: 'URBANRURAL',
+                          type: 'FIELD'
+                        }
+                      ],
+                      title: 'BaseMap_R@Jingjin#1'
+                    },
+                    serviceLayerGroupId: 'Level_0',
+                    title: 'BaseMap_R@Jingjin#1',
+                    layerSourceType: 'VectorTileService',
+                    zoomRange: [0, 24],
+                    layersContent: ['BaseMap_R@Jingjin#1_unique_(0_24)']
+                  }
+                ],
+                name: 'Level_0',
+                id: 'group_Level_0_1764665757038_88'
+              }
+            ],
+            name: '京津地区地图',
+            id: 'group_京津地区地图_1764665757038_112'
+          },
+          {
+            visible: false,
+            catalogType: 'layer',
+            id: '京津地区地图',
+            title: '京津地区地图',
+            layerSourceType: 'TileService',
+            zoomRange: [0, 24],
+            layersContent: ['京津地区地图']
+          }
+        ]
+      });
+      const Data1 = {
+        layerId: 'Road_L@Jingjin#8(12_24)',
+        elements: [
+          {
+            fieldName: 'KD',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'KD_1',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'NAME',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'SmID',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'SmLength',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'SmTopoError',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'SmUserID',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'name_1',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'name_2_len',
+            type: 'FIELD'
+          },
+          {
+            fieldName: 'name_3_len',
+            type: 'FIELD'
+          }
+        ],
+        title: 'Road_L_街道'
+      };
+      expect(popupInfo1.length).toEqual(13);
+      expect(popupInfo1[0]).toEqual(Data1);
+      done();
+    });
+    mapstudioWebmap.on('mapcreatefailed', (e) => {
+      console.log('mapcreatedfailed', e);
       done();
     });
   });

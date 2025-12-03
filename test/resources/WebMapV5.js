@@ -4533,13 +4533,6 @@ const msPopupInfoMap = JSON.stringify({
     layerCatalog: [
       {
         visible: true,
-        parts: ['A线'],
-        id: 'layer_A线_1763102180987_240',
-        title: 'A线',
-        type: 'composite'
-      },
-      {
-        visible: true,
         parts: ['A点'],
         id: 'layer_A点_1763102159640_174',
         title: 'A点',
@@ -4554,9 +4547,10 @@ const msPopupInfoMap = JSON.stringify({
       },
       {
         visible: true,
-        id: 'OSM',
-        title: 'OpenStreetMap',
-        type: 'basic'
+        parts: ['A面1'],
+        id: 'layer_A面_1763102129836_27',
+        title: 'A面1',
+        type: 'composite'
       }
     ]
   },
@@ -4601,10 +4595,17 @@ const msPopupInfoMap = JSON.stringify({
   viewExtent: [102.62340682672841, 29.544060763763426, 105.6083665497426, 31.672446194243026],
   layers: [
     {
-      maxzoom: 19,
-      id: 'OSM',
-      source: 'OSM',
-      type: 'raster',
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: 'A面',
+      source: 'ms_1578304463_1763102129836_25',
+      'source-layer': '1578304463$geometry',
+      type: 'fill',
       minzoom: 0
     },
     {
@@ -4615,7 +4616,7 @@ const msPopupInfoMap = JSON.stringify({
         'fill-color': '#826DBA',
         'fill-opacity': 0.9
       },
-      id: 'A面',
+      id: 'A面1',
       source: 'ms_1578304463_1763102129836_25',
       'source-layer': '1578304463$geometry',
       type: 'fill',
@@ -4635,19 +4636,6 @@ const msPopupInfoMap = JSON.stringify({
       source: 'ms_2105298173_1763102159640_173',
       'source-layer': '2105298173$geometry',
       type: 'circle',
-      minzoom: 0
-    },
-    {
-      metadata: {},
-      maxzoom: 24,
-      paint: {
-        'line-width': 2,
-        'line-color': '#4CC8A3'
-      },
-      id: 'A线',
-      source: 'ms_813334134_1763102180987_239',
-      'source-layer': '813334134$geometry',
-      type: 'line',
       minzoom: 0
     }
   ],
