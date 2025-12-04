@@ -5,6 +5,7 @@ import './openlayers/control/ScaleLineSpec';
 /*openlayers -- core*/
 import './openlayers/core/MapExtendSpec.js';
 import './openlayers/core/StyleUtilsSpec.js';
+import './openlayers/core/StyleUtils2Spec.js';
 import './openlayers/core/UtilSpec.js';
 
 // /*openlayers -- mapping*/
