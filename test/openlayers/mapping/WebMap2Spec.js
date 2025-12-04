@@ -32,10 +32,13 @@ describe('openlayers_WebMap', () => {
       },
       set() {}
     });
-      // 重置navigator
+    // 重置navigator
     Object.defineProperty(window, 'navigator', {
       value: originalNavigator,
       writable: true
+    });
+    spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+      return true;
     });
   });
 
@@ -54,9 +57,6 @@ describe('openlayers_WebMap', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    
-  
-    
   });
   afterEach(() => {
     webMap = null;
@@ -66,8 +66,8 @@ describe('openlayers_WebMap', () => {
 
   it('getCookie', () => {
     cookieValue = 'testKey=testValue;language=zh-CN;another=value';
-    
-     spyOn(FetchRequest, 'get').and.callFake((url) => {
+
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         var mapJson = datavizWebmap_ZXYTILE;
         return Promise.resolve(new Response(mapJson));
@@ -85,7 +85,7 @@ describe('openlayers_WebMap', () => {
 
   it('formatCookieLang', () => {
     const webmap = new WebMap(id, { server: server });
-    
+
     // 测试各种语言代码映射
     expect(webmap.formatCookieLang('zh')).toBe('zh-CN');
     expect(webmap.formatCookieLang('ar')).toBe('ar-EG');
@@ -124,7 +124,7 @@ describe('openlayers_WebMap', () => {
     expect(webmap.formatCookieLang('uk')).toBe('uk-UA');
     expect(webmap.formatCookieLang('vi')).toBe('vi-VN');
     expect(webmap.formatCookieLang('en')).toBe('en-US');
-    
+
     // 测试未知语言代码
     expect(webmap.formatCookieLang('unknown')).toBe('en-US');
   });
@@ -134,7 +134,7 @@ describe('openlayers_WebMap', () => {
     const webmap = new WebMap(id, { server: server });
     spyOn(webmap, 'formatCookieLang').and.returnValue('zh-CN');
     spyOn(navigator, 'language').and.returnValue('en-US');
-    
+
     const lang = webmap.getLang();
     expect(lang).toBe('zh-CN');
     expect(webmap.formatCookieLang).toHaveBeenCalledWith('zh');
@@ -151,7 +151,7 @@ describe('openlayers_WebMap', () => {
       },
       writable: true
     });
-    
+
     const lang = webmap.getLang();
     expect(lang).toBe('fr-FR');
   });
@@ -167,7 +167,7 @@ describe('openlayers_WebMap', () => {
       },
       writable: true
     });
-    
+
     const lang = webmap.getLang();
     expect(lang).toBe('de-DE');
   });
@@ -178,14 +178,14 @@ describe('openlayers_WebMap', () => {
     spyOn(webmap, 'isFirefox').and.returnValue(false);
     spyOn(webmap, 'isChrome').and.returnValue(false);
     spyOn(FetchRequest, 'get').and.returnValue(Promise.resolve(new Response('', { status: 200 })));
-    
+
     const url = 'http://fakeurl';
     const token = null;
     const proxy = false;
-    
+
     const promise = webmap.isSupportWebp(url, token, proxy);
     expect(Promise.resolve(promise)).toBe(promise); // 检查返回值是否为Promise
-    
+
     promise.then((result) => {
       expect(result).toBe(true);
       expect(FetchRequest.get).toHaveBeenCalled();
@@ -196,11 +196,11 @@ describe('openlayers_WebMap', () => {
   it('isSupportWebp_IE_not_support', () => {
     const webmap = new WebMap(id, { server: server });
     spyOn(webmap, 'isIE').and.returnValue(true);
-    
+
     const url = 'http://fakeurl';
     const token = null;
     const proxy = false;
-    
+
     const result = webmap.isSupportWebp(url, token, proxy);
     expect(result).toBe(false);
   });
@@ -210,11 +210,11 @@ describe('openlayers_WebMap', () => {
     spyOn(webmap, 'isIE').and.returnValue(false);
     spyOn(webmap, 'isFirefox').and.returnValue(true);
     spyOn(webmap, 'getFirefoxVersion').and.returnValue(60);
-    
+
     const url = 'http://fakeurl';
     const token = null;
     const proxy = false;
-    
+
     const result = webmap.isSupportWebp(url, token, proxy);
     expect(result).toBe(false);
   });
@@ -225,11 +225,11 @@ describe('openlayers_WebMap', () => {
     spyOn(webmap, 'isFirefox').and.returnValue(false);
     spyOn(webmap, 'isChrome').and.returnValue(true);
     spyOn(webmap, 'getChromeVersion').and.returnValue(25);
-    
+
     const url = 'http://fakeurl';
     const token = null;
     const proxy = false;
-    
+
     const result = webmap.isSupportWebp(url, token, proxy);
     expect(result).toBe(false);
   });
@@ -240,14 +240,14 @@ describe('openlayers_WebMap', () => {
     spyOn(webmap, 'isFirefox').and.returnValue(false);
     spyOn(webmap, 'isChrome').and.returnValue(false);
     spyOn(FetchRequest, 'get').and.returnValue(Promise.reject(new Error('Network error')));
-    
+
     const url = 'http://fakeurl';
     const token = null;
     const proxy = false;
-    
+
     const promise = webmap.isSupportWebp(url, token, proxy);
     expect(Promise.resolve(promise)).toBe(promise); // 检查返回值是否为Promise
-    
+
     promise.then((result) => {
       expect(result).toBe(false);
       done();
@@ -256,49 +256,171 @@ describe('openlayers_WebMap', () => {
 
   it('renameLayerId_no_duplicate', () => {
     const webmap = new WebMap(id, { server: server });
-    
+
     const layers = [{ id: 'layer1' }, { id: 'layer2' }];
     const curLayer = { id: 'layer3' };
-    
+
     webmap.renameLayerId(layers, curLayer);
-    
+
     // 没有重复应该保持不变
     expect(curLayer.id).toBe('layer3');
   });
 
   it('renameLayerId_with_duplicate', () => {
     const webmap = new WebMap(id, { server: server });
-    
+
     const layers = [{ id: 'layer1' }, { id: 'layer2' }];
     const curLayer = { id: 'layer1' };
-    
+
     webmap.renameLayerId(layers, curLayer);
-    
+
     // 有重复应该添加(1)后缀
     expect(curLayer.id).toBe('layer1(1)');
   });
 
   it('renameLayerId_with_duplicate_and_existing_suffix', () => {
     const webmap = new WebMap(id, { server: server });
-    
+
     const layers = [{ id: 'layer1' }, { id: 'layer1(1)' }];
     const curLayer = { id: 'layer1' };
-    
+
     webmap.renameLayerId(layers, curLayer);
-    
+
     // 如果已经存在带后缀的图层，应该递增
     expect(curLayer.id).toBe('layer1(2)');
   });
 
   it('renameLayerId_recursive_rename_if_still_duplicate', () => {
     const webmap = new WebMap(id, { server: server });
-    
+
     const layers = [{ id: 'layer1' }, { id: 'layer1(1)' }];
     const curLayer = { id: 'layer1' };
-    
+
     webmap.renameLayerId(layers, curLayer);
-    
+
     // 如果重命名后仍然重复，应该再次递增
     expect(curLayer.id).toBe('layer1(2)');
+  });
+  it('webmap_relationRestData', (done) => {
+    let options = {
+      server: server,
+      successCallback,
+      errorCallback: function () {}
+    };
+    const datsets = [
+      {
+        name: 'test',
+        type: 'POINT'
+      }
+    ];
+    const result1 = {
+      fileId: 'test',
+      datasetName: 'test',
+      dataItemServices: [
+        {
+          serviceType: 'RESTMAP',
+          accessCount: 0,
+          address: 'http://fack:8090/iserver/services/map_sichuan-7-/rest',
+          dataID: 1386367586,
+          createTime: null,
+          serviceStatus: 'PUBLISHED',
+          editable: false,
+          updateTime: null,
+          serviceNode: '2e7t6p3r',
+          serviceID: 'map_sichuan-7-',
+          serviceName: 'map_sichuan-7-'
+        },
+        {
+          serviceType: 'RESTDATA',
+          accessCount: 0,
+          address: 'http://fack:8090/iserver/services/data_sichuan-7-/rest',
+          dataID: 1386367586,
+          createTime: null,
+          serviceStatus: 'PUBLISHED',
+          editable: true,
+          updateTime: null,
+          serviceNode: '2e7t6p3r',
+          serviceID: 'data_sichuan-7-',
+          serviceName: 'data_sichuan-7-'
+        }
+      ]
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(accessTypeRestData));
+      }
+      if (url.indexOf('675746998/datasets.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(datsets)));
+      }
+      if (url.indexOf('675746998.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(result1)));
+      }
+      if (url.indexOf('data_sichuan-7-/rest/data/datasources.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              datasourceNames: ['supermap1_pg'],
+              childUriList: [
+                'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/datasources/name/supermap1_pg'
+              ],
+              datasourceCount: 1
+            })
+          )
+        );
+      }
+      if (url.indexOf('data_sichuan-7-/rest/data/datasources/supermap1_pg/datasets') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              datasetCount: 1,
+              datasetNames: ['dataGeoJson_2529638'],
+              childUriList: [
+                'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/datasources/supermap1_pg/datasets/dataGeoJson_2529638'
+              ]
+            })
+          )
+        );
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    spyOn(FetchRequest, 'post').and.callFake((url) => {
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            features: [
+              {
+                stringID: null,
+                fieldNames: ['SmID', 'SORIND'],
+                geometry: {
+                  center: {
+                    x: -93.716546,
+                    y: 29.668007
+                  },
+                  parts: [1],
+                  style: null,
+                  prjCoordSys: null,
+                  id: 222,
+                  type: 'POINT',
+                  partTopo: null,
+                  points: [
+                    {
+                      x: -93.716546,
+                      y: 29.668007
+                    }
+                  ]
+                },
+                fieldValues: ['222', 'US,US,reprt,USCG OPFAC'],
+                ID: 222
+              }
+            ]
+          })
+        )
+      );
+    });
+    var datavizWebmap = new WebMap(id, options);
+
+    async function successCallback() {
+      done();
+    }
   });
 });

@@ -4642,3 +4642,139 @@ const msPopupInfoMap = JSON.stringify({
   pitch: 0,
   minzoom: 0
 });
+const accessTypeRestData =JSON.stringify({
+    "extent": {
+        "leftBottom": {
+            "x": -2.003750834E7,
+            "y": -2.003750834E7
+        },
+        "rightTop": {
+            "x": 2.003750834E7,
+            "y": 2.003750834E7
+        }
+    },
+    "level": 5,
+    "center": {
+        "x": 1.1979253055398555E7,
+        "y": 4034138.0095457886
+    },
+    "baseLayer": {
+        "layerType": "OSM",
+        "visible": true,
+        "name": "OpenStreetMap"
+    },
+    "layers": [
+        {
+            "layerType": "VECTOR",
+            "visible": true,
+            "name": "空气质量站点经纬度数据",
+            "featureType": "POINT",
+            "xyField": {
+                "xField": "经度",
+                "yField": "纬度"
+            },
+            "style": {
+                "fillColor": "#ff0000",
+                "strokeWidth": 1,
+                "fillOpacity": 0.9,
+                "type": "BASIC_POINT",
+                "radius": 6,
+                "strokeColor": "#ffffff",
+                "strokeOpacity": 1
+            },
+            "projection": "EPSG:4326",
+            "dataSource": {
+                "type": "PORTAL_DATA",
+                "serverId": "675746998",
+                "accessType": "REST_DATA"
+            },
+            "legendSetting": {
+                "isShow": true,
+                "isFold": false
+            },
+            "searchSetting": [
+                {
+                    "name": "搜索县名",
+                    "attributes": [
+                        "field1",
+                        "field2"
+                    ]
+                }
+            ]
+        }
+    ],
+    "description": "",
+    "projection": "EPSG:3857",
+    "title": "BasicPoint",
+    "version": "1.0",
+    "minScale": "1:500000000",
+    "maxScale": "1:5000"
+});
+const accessTypeRestMap =JSON.stringify({
+    "extent": {
+        "leftBottom": {
+            "x": -2.003750834E7,
+            "y": -2.003750834E7
+        },
+        "rightTop": {
+            "x": 2.003750834E7,
+            "y": 2.003750834E7
+        }
+    },
+    "level": 5,
+    "center": {
+        "x": 1.1979253055398555E7,
+        "y": 4034138.0095457886
+    },
+    "baseLayer": {
+        "layerType": "OSM",
+        "visible": true,
+        "name": "OpenStreetMap"
+    },
+    "layers": [
+        {
+            "layerType": "HOSTED_TILE",
+            "visible": true,
+            "name": "空气质量站点经纬度数据",
+            "featureType": "POINT",
+            "xyField": {
+                "xField": "经度",
+                "yField": "纬度"
+            },
+            "style": {
+                "fillColor": "#ff0000",
+                "strokeWidth": 1,
+                "fillOpacity": 0.9,
+                "type": "BASIC_POINT",
+                "radius": 6,
+                "strokeColor": "#ffffff",
+                "strokeOpacity": 1
+            },
+            "projection": "EPSG:4326",
+            "dataSource": {
+                "type": "PORTAL_DATA",
+                "serverId": "675746998",
+                "accessType": "REST_MAP"
+            },
+            "legendSetting": {
+                "isShow": true,
+                "isFold": false
+            },
+            "searchSetting": [
+                {
+                    "name": "搜索县名",
+                    "attributes": [
+                        "field1",
+                        "field2"
+                    ]
+                }
+            ]
+        }
+    ],
+    "description": "",
+    "projection": "EPSG:3857",
+    "title": "BasicPoint",
+    "version": "1.0",
+    "minScale": "1:500000000",
+    "maxScale": "1:5000"
+});
