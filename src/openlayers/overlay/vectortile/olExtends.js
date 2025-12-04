@@ -24,14 +24,6 @@
                  units: ol.proj.Units.TILE_PIXELS
              });
          };
-         //解决 new ol.format.MVT({featureClass: ol.Feature})时，非3857显示异常的问题。ol即将发布的5.0版本已解决。
-         // eslint-disable-next-line no-unused-vars
-         ol.format.MVT.prototype.readProjection = function(source) {
-             return new ol.proj.Projection({
-                 code: '',
-                 units: ol.proj.Units.TILE_PIXELS
-             });
-         };
          //解决面填充时不能整版填充的问题。ol即将发布的5.0版本已解决。
          // eslint-disable-next-line no-unused-vars
          ol.render.canvas.Replay.prototype.applyFill = function(state, geometry) {

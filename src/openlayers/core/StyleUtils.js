@@ -989,15 +989,6 @@ export class StyleUtils {
   }
 
   /**
-   * @function StyleUtils.stopCanvg
-   * @description 调用Canvg实例的stop();
-   */
-  static stopCanvg() {
-    this.canvgsV.forEach(v => v.stop());
-    this.canvgsV = [];
-  }
-
-  /**
    * @function StyleUtils.getMarkerDefaultStyle 获取默认标注图层feature的样式
    * @param {string} featureType feature的类型
    * @param {string} server 当前地图前缀
