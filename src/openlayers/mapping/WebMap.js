@@ -1138,7 +1138,7 @@ export class WebMap extends Observable {
         }
         break;
       case 'OSM':
-        baseLayerInfo.url = 'http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        baseLayerInfo.url = 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         baseLayerInfo.epsgCode = 'EPSG:3857';
         baseLayerInfo.minZoom = 1;
         baseLayerInfo.maxZoom = 19;
