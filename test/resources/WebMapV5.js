@@ -1197,7 +1197,7 @@ const migrationLayer = `{
             "labelSetting": {
                 "fontFamily": "黑体",
                 "color": "#62AD16",
-                "show": false
+                "show": true
             },
             "visible": true,
             "name": "民航数据",

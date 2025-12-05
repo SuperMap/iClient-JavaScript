@@ -2041,45 +2041,6 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
-  it('createLayer_migration', (done) => {
-    let add = false;
-    class ol3Echarts extends obj {
-      appendTo() {
-        add = true;
-        return true;
-      }
-    }
-    window.ol3Echarts = ol3Echarts;
-    let options = {
-      server: server,
-      successCallback,
-      errorCallback: function () {}
-    };
-    spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
-      return true;
-    });
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('map.json') > -1) {
-        var mapJson = migrationLayer;
-        return Promise.resolve(new Response(mapJson));
-      } else if (url.indexOf('1184572358') > -1) {
-        return Promise.resolve(new Response(csvData_migration));
-      }
-      return Promise.resolve(new Response(JSON.stringify({})));
-    });
-
-    var datavizWebmap = new WebMap(id, options);
-
-    function successCallback() {
-      expect(datavizWebmap.server).toBe(server);
-      expect(datavizWebmap.errorCallback).toBeDefined();
-      expect(datavizWebmap.credentialKey).toBeUndefined();
-      expect(datavizWebmap.credentialValue).toBeUndefined();
-      expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('中国暗色地图');
-      expect(add).toBeTrue();
-      done();
-    }
-  });
 
   it('createBaseLayer-SUPERMAP_REST-token', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {

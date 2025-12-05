@@ -103,20 +103,18 @@ describe('openlayers_WebMap', () => {
     },
     coordUnit: 'DEGREE'
   };
-  const dataSourceInfo ={
-              datasourceNames: ['supermap1_pg'],
-              childUriList: [
-                'http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/name/supermap1_pg'
-              ],
-              datasourceCount: 1
-            }
-            const datasetsInfo = {
-              datasetCount: 1,
-              datasetNames: ['dataGeoJson_2529638'],
-              childUriList: [
-                'http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/supermap1_pg/datasets/dataGeoJson_2529638'
-              ]
-            }
+  const dataSourceInfo = {
+    datasourceNames: ['supermap1_pg'],
+    childUriList: ['http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/name/supermap1_pg'],
+    datasourceCount: 1
+  };
+  const datasetsInfo = {
+    datasetCount: 1,
+    datasetNames: ['dataGeoJson_2529638'],
+    childUriList: [
+      'http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/supermap1_pg/datasets/dataGeoJson_2529638'
+    ]
+  };
   beforeAll(() => {
     Object.defineProperty(document, 'cookie', {
       get() {
@@ -410,18 +408,10 @@ describe('openlayers_WebMap', () => {
         return Promise.resolve(new Response(JSON.stringify(result1)));
       }
       if (url.indexOf('data_sichuan-7-/rest/data/datasources.json') > -1) {
-        return Promise.resolve(
-          new Response(
-            JSON.stringify(dataSourceInfo)
-          )
-        );
+        return Promise.resolve(new Response(JSON.stringify(dataSourceInfo)));
       }
       if (url.indexOf('data_sichuan-7-/rest/data/datasources/supermap1_pg/datasets') > -1) {
-        return Promise.resolve(
-          new Response(
-            JSON.stringify(datasetsInfo)
-          )
-        );
+        return Promise.resolve(new Response(JSON.stringify(datasetsInfo)));
       }
       return Promise.resolve(new Response(JSON.stringify({})));
     });
@@ -465,12 +455,12 @@ describe('openlayers_WebMap', () => {
       setTimeout(() => {
         expect(datavizWebmap.map.getLayers().getLength()).toBe(2);
         expect(datavizWebmap.layers[0].autoUpdateInterval).not.toBeNull();
-        clearInterval(datavizWebmap.layers[0].autoUpdateInterval); 
+        clearInterval(datavizWebmap.layers[0].autoUpdateInterval);
         done();
       }, 30);
-      
     }
   });
+
   it('webmap_relationRestMap', (done) => {
     let options = {
       server: server,
@@ -489,18 +479,10 @@ describe('openlayers_WebMap', () => {
         return Promise.resolve(new Response(JSON.stringify(result1)));
       }
       if (url.indexOf('data_sichuan-7-/rest/data/datasources.json') > -1) {
-        return Promise.resolve(
-          new Response(
-            JSON.stringify(dataSourceInfo)
-          )
-        );
+        return Promise.resolve(new Response(JSON.stringify(dataSourceInfo)));
       }
       if (url.indexOf('data_sichuan-7-/rest/data/datasources/supermap1_pg/datasets') > -1) {
-        return Promise.resolve(
-          new Response(
-            JSON.stringify(datasetsInfo)
-          )
-        );
+        return Promise.resolve(new Response(JSON.stringify(datasetsInfo)));
       }
       if (url.indexOf('/map_sichuan-7-/rest/maps.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(mapsInfo)));
@@ -513,12 +495,94 @@ describe('openlayers_WebMap', () => {
     var datavizWebmap = new WebMap(id, options);
 
     async function successCallback() {
-        setTimeout(() => {
+      setTimeout(() => {
         expect(datavizWebmap.map.getLayers().getLength()).toBe(2);
         expect(datavizWebmap.layers[0].autoUpdateInterval).not.toBeNull();
         clearInterval(datavizWebmap.layers[0].autoUpdateInterval);
         done();
       }, 30);
     }
+  });
+  it('createLayer_migration', (done) => {
+    let add = false;
+    let elayer = null;
+    class ol3Echarts extends obj {
+      appendTo() {
+        elayer = this;
+        add = true;
+        return true;
+      }
+      getChartOptions() {
+        return {};
+      }
+      clear() {
+        return true;
+      }
+      setChartOptions() {
+        return true;
+      }
+      unset() {
+        return true;
+      }
+    }
+    window.ol3Echarts = ol3Echarts;
+    let options = {
+      server: server,
+      successCallback,
+      errorCallback: function () {}
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = migrationLayer;
+        return Promise.resolve(new Response(mapJson));
+      } else if (url.indexOf('1184572358') > -1) {
+        return Promise.resolve(new Response(csvData_migration));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    var datavizWebmap = new WebMap(id, options);
+
+    function successCallback() {
+      expect(datavizWebmap.server).toBe(server);
+      expect(datavizWebmap.errorCallback).toBeDefined();
+      expect(datavizWebmap.credentialKey).toBeUndefined();
+      expect(datavizWebmap.credentialValue).toBeUndefined();
+      expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('中国暗色地图');
+      expect(add).toBeTrue();
+      expect(elayer).not.toBeNull();
+      expect(elayer.type).toBe('ECHARTS');
+      elayer.setVisible(false);
+      elayer.setVisible(true);
+      done();
+    }
+  });
+  it('createLayer_mvt', (done) => {
+    function successCallback() {
+      const layerInfo = {
+        url: 'https://fack:8090/iserver/services/map-mvt-test/rest/maps/test',
+        projection: 'EPSG:3857',
+        featureType: 'LINE' // REGION
+      };
+      const layer = datavizWebmap.addVectorTileLayer(layerInfo, 1, 'RESTDATA').then((layer) => {
+        expect(layerInfo.layerID).not.toBeNull();
+        debugger;
+        done();
+      });
+    }
+    let options = {
+      server: server,
+      successCallback,
+      errorCallback: function () {}
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        var mapJson = datavizWebmap_ZXYTILE;
+        return Promise.resolve(new Response(mapJson));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    var datavizWebmap = new WebMap(id, options);
   });
 });
