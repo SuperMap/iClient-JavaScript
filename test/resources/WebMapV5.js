@@ -4666,6 +4666,7 @@ const accessTypeRestData =JSON.stringify({
     "layers": [
         {
             "layerType": "VECTOR",
+            autoUpdateTime: 6,
             "visible": true,
             "name": "空气质量站点经纬度数据",
             "featureType": "POINT",
@@ -4735,6 +4736,7 @@ const accessTypeRestMap =JSON.stringify({
         {
             "layerType": "HOSTED_TILE",
             "visible": true,
+            autoUpdateTime: 6,
             "name": "空气质量站点经纬度数据",
             "featureType": "POINT",
             "xyField": {

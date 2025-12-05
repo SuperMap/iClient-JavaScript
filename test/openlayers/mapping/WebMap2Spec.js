@@ -25,6 +25,98 @@ describe('openlayers_WebMap', () => {
   const originalNavigator = window.navigator;
   var id = 1788054202;
   let cookieValue;
+  const datsets = [
+    {
+      name: 'test',
+      type: 'POINT'
+    }
+  ];
+  const result1 = {
+    fileId: 'test',
+    datasetName: 'test',
+    dataItemServices: [
+      {
+        serviceType: 'RESTMAP',
+        accessCount: 0,
+        address: 'http://fack:8090/iserver/services/map_sichuan-7-/rest',
+        dataID: 1386367586,
+        createTime: null,
+        serviceStatus: 'PUBLISHED',
+        editable: false,
+        updateTime: null,
+        serviceNode: '2e7t6p3r',
+        serviceID: 'map_sichuan-7-',
+        serviceName: 'map_sichuan-7-'
+      },
+      {
+        serviceType: 'RESTDATA',
+        accessCount: 0,
+        address: 'http://fack:8090/iserver/services/data_sichuan-7-/rest',
+        dataID: 1386367586,
+        createTime: null,
+        serviceStatus: 'PUBLISHED',
+        editable: true,
+        updateTime: null,
+        serviceNode: '2e7t6p3r',
+        serviceID: 'data_sichuan-7-',
+        serviceName: 'data_sichuan-7-'
+      }
+    ]
+  };
+  const mapsInfo = [
+    {
+      resourceConfigID: 'map',
+      supportedMediaTypes: ['application/json'],
+      path: 'http://fack:8090/iserver/services/map_sichuan-7-/rest/maps/test',
+      name: 'test',
+      resourceType: 'StaticResource'
+    }
+  ];
+  const mapInfo = {
+    prjCoordSys: {
+      distanceUnit: 'METER',
+      epsgCode: 4326,
+      coordUnit: 'DEGREE',
+      type: 'PCS_EARTH_LONGITUDE_LATITUDE'
+    },
+    visibleScales: [],
+    dpi: 96,
+    scale: 5.080888406217531e-7,
+    maxScale: 1.000000000000032e12,
+    center: {
+      x: 116.84538255155,
+      y: 39.7881922283
+    },
+    bounds: {
+      top: 42.31307532235788,
+      left: 114.58902605452259,
+      bottom: 37.76434929128856,
+      leftBottom: {
+        x: 114.58902605452259,
+        y: 37.76434929128856
+      },
+      right: 119.51371730073062,
+      rightTop: {
+        x: 119.51371730073062,
+        y: 42.31307532235788
+      }
+    },
+    coordUnit: 'DEGREE'
+  };
+  const dataSourceInfo ={
+              datasourceNames: ['supermap1_pg'],
+              childUriList: [
+                'http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/name/supermap1_pg'
+              ],
+              datasourceCount: 1
+            }
+            const datasetsInfo = {
+              datasetCount: 1,
+              datasetNames: ['dataGeoJson_2529638'],
+              childUriList: [
+                'http://fack:8090/iserver/services/data_sichuan-3-/rest/data/datasources/supermap1_pg/datasets/dataGeoJson_2529638'
+              ]
+            }
   beforeAll(() => {
     Object.defineProperty(document, 'cookie', {
       get() {
@@ -307,44 +399,6 @@ describe('openlayers_WebMap', () => {
       successCallback,
       errorCallback: function () {}
     };
-    const datsets = [
-      {
-        name: 'test',
-        type: 'POINT'
-      }
-    ];
-    const result1 = {
-      fileId: 'test',
-      datasetName: 'test',
-      dataItemServices: [
-        {
-          serviceType: 'RESTMAP',
-          accessCount: 0,
-          address: 'http://fack:8090/iserver/services/map_sichuan-7-/rest',
-          dataID: 1386367586,
-          createTime: null,
-          serviceStatus: 'PUBLISHED',
-          editable: false,
-          updateTime: null,
-          serviceNode: '2e7t6p3r',
-          serviceID: 'map_sichuan-7-',
-          serviceName: 'map_sichuan-7-'
-        },
-        {
-          serviceType: 'RESTDATA',
-          accessCount: 0,
-          address: 'http://fack:8090/iserver/services/data_sichuan-7-/rest',
-          dataID: 1386367586,
-          createTime: null,
-          serviceStatus: 'PUBLISHED',
-          editable: true,
-          updateTime: null,
-          serviceNode: '2e7t6p3r',
-          serviceID: 'data_sichuan-7-',
-          serviceName: 'data_sichuan-7-'
-        }
-      ]
-    };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(accessTypeRestData));
@@ -358,26 +412,14 @@ describe('openlayers_WebMap', () => {
       if (url.indexOf('data_sichuan-7-/rest/data/datasources.json') > -1) {
         return Promise.resolve(
           new Response(
-            JSON.stringify({
-              datasourceNames: ['supermap1_pg'],
-              childUriList: [
-                'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/datasources/name/supermap1_pg'
-              ],
-              datasourceCount: 1
-            })
+            JSON.stringify(dataSourceInfo)
           )
         );
       }
       if (url.indexOf('data_sichuan-7-/rest/data/datasources/supermap1_pg/datasets') > -1) {
         return Promise.resolve(
           new Response(
-            JSON.stringify({
-              datasetCount: 1,
-              datasetNames: ['dataGeoJson_2529638'],
-              childUriList: [
-                'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/datasources/supermap1_pg/datasets/dataGeoJson_2529638'
-              ]
-            })
+            JSON.stringify(datasetsInfo)
           )
         );
       }
@@ -420,7 +462,63 @@ describe('openlayers_WebMap', () => {
     var datavizWebmap = new WebMap(id, options);
 
     async function successCallback() {
-      done();
+      setTimeout(() => {
+        expect(datavizWebmap.map.getLayers().getLength()).toBe(2);
+        expect(datavizWebmap.layers[0].autoUpdateInterval).not.toBeNull();
+        clearInterval(datavizWebmap.layers[0].autoUpdateInterval); 
+        done();
+      }, 30);
+      
+    }
+  });
+  it('webmap_relationRestMap', (done) => {
+    let options = {
+      server: server,
+      successCallback,
+      errorCallback: function () {}
+    };
+
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(accessTypeRestMap));
+      }
+      if (url.indexOf('675746998/datasets.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(datsets)));
+      }
+      if (url.indexOf('675746998.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(result1)));
+      }
+      if (url.indexOf('data_sichuan-7-/rest/data/datasources.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify(dataSourceInfo)
+          )
+        );
+      }
+      if (url.indexOf('data_sichuan-7-/rest/data/datasources/supermap1_pg/datasets') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify(datasetsInfo)
+          )
+        );
+      }
+      if (url.indexOf('/map_sichuan-7-/rest/maps.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapsInfo)));
+      }
+      if (url.indexOf('/map_sichuan-7-/rest/maps/test.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    var datavizWebmap = new WebMap(id, options);
+
+    async function successCallback() {
+        setTimeout(() => {
+        expect(datavizWebmap.map.getLayers().getLength()).toBe(2);
+        expect(datavizWebmap.layers[0].autoUpdateInterval).not.toBeNull();
+        clearInterval(datavizWebmap.layers[0].autoUpdateInterval);
+        done();
+      }, 30);
     }
   });
 });
