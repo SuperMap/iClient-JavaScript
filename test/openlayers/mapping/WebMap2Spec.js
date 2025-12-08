@@ -566,7 +566,6 @@ describe('openlayers_WebMap', () => {
       };
       const layer = datavizWebmap.addVectorTileLayer(layerInfo, 1, 'RESTDATA').then((layer) => {
         expect(layerInfo.layerID).not.toBeNull();
-        debugger;
         done();
       });
     }
