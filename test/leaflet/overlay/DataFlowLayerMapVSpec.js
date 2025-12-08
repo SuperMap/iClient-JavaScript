@@ -9,9 +9,10 @@ describe('leaflet_DataFlowLayerMapV', () => {
   var originalTimeout;
   var testDiv, map;
   var layer, service;
-  var mockServer = new Server(urlDataFlow);
+  var mockServer;
   var originmapv = window.mapv;
   beforeAll(() => {
+    mockServer = new Server(urlDataFlow);
     window.mapv = mapv;
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
@@ -69,6 +70,7 @@ describe('leaflet_DataFlowLayerMapV', () => {
   afterAll(() => {
     window.mapv = originmapv;
     mockServer.stop();
+    mockServer.close();
     mockServer = null;
     map = null;
     window.document.body.removeChild(testDiv);

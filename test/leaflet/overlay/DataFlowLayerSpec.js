@@ -7,8 +7,9 @@ describe('leaflet_DataFlowLayer', () => {
     var originalTimeout;
     var testDiv, map;
     var layer, service;
-    var mockServer = new Server(urlDataFlow);
+    var mockServer;
     beforeAll(() => {
+        mockServer = new Server(urlDataFlow);
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -65,6 +66,7 @@ describe('leaflet_DataFlowLayer', () => {
     });
     afterAll(() => {
         mockServer.stop();
+        mockServer.close();
         mockServer=null;
         map = null;
         window.document.body.removeChild(testDiv);
