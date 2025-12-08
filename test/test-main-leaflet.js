@@ -98,4 +98,5 @@ import './leaflet/components/clientcomputation/ClientComputationViewSpec.js';
 import './leaflet/components/search/SearchViewSpec.js';
 import './leaflet/components/dataflow/DataFlowViewSpec.js';
 import './leaflet/overlay/DataFlowLayerSpec.js';
+import './leaflet/overlay/DataFlowLayerMapVSpec.js';
 
