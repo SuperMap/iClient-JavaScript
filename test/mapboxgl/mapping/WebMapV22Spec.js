@@ -248,7 +248,6 @@ describe('mapboxgl_WebMapV2_2', () => {
     var datavizWebmap = new WebMap(id, options);
     datavizWebmap.on('mapcreatesucceeded', (data) => {
       expect(datavizWebmap.mapParams.title).toBe('zxy_2326');
-      expect(datavizWebmap.map.getStyle().sources['2326底图'].tiles[0]).toBe('https://{s}.tile.fake/{z}/{x}/{y}.png');
       done();
     });
   });

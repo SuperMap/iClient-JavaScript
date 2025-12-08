@@ -2808,7 +2808,7 @@ export class WebMap extends Observable {
           attr._smiportal_imgLinkUrl !== ''
         ) {
           //上传的图片，加上当前地址
-          imgUrl = `${Util.getIPortalUrl()}resources/markerIcon/${attr._smiportal_imgLinkUrl}`;
+          imgUrl = `${this.server}/resources/markerIcon/${attr._smiportal_imgLinkUrl}`;
         }
         attributes = {
           dataViz_description: attr._smiportal_description,

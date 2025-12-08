@@ -24,7 +24,7 @@ describe('openlayers_WebMap', () => {
   const originCookie = window.document.cookie;
   const originalNavigator = window.navigator;
   var id = 1788054202;
-  let cookieValue;
+  let cookieValue = '';
   const datsets = [
     {
       name: 'test',
@@ -583,5 +583,68 @@ describe('openlayers_WebMap', () => {
     });
 
     var datavizWebmap = new WebMap(id, options);
+  });
+  it('getInternetMapInfo', () => {
+    const webmap = new WebMap(id, { server: server });
+    const infoTencent = { layerType: 'tencent' };
+    webmap.getInternetMapInfo(infoTencent);
+    expect(infoTencent.epsgCode).toBe('EPSG:3857');
+
+    const infoTIANDITU_TER_3857 = { layerType: 'TIANDITU_TER_3857' };
+    webmap.getInternetMapInfo(infoTIANDITU_TER_3857);
+    expect(infoTIANDITU_TER_3857.epsgCode).toBe('EPSG:3857');
+    expect(infoTIANDITU_TER_3857.maxZoom).toBe(14);
+
+    const infoGOOGLE = { layerType: 'GOOGLE' };
+    webmap.getInternetMapInfo(infoGOOGLE);
+    expect(infoGOOGLE.iserverUrl).toBe('https://www.google.cn/maps');
+
+    const infoJAPAN_STD = { layerType: 'JAPAN_STD' };
+    webmap.getInternetMapInfo(infoJAPAN_STD);
+    expect(infoJAPAN_STD.url).toBe('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png');
+
+    expect(infoJAPAN_STD.minZoom).toBe(1);
+    const infoJAPAN_PALE = { layerType: 'JAPAN_PALE' };
+    webmap.getInternetMapInfo(infoJAPAN_PALE);
+    expect(infoJAPAN_PALE.minZoom).toBe(2);
+    const infoJAPAN_RELIEF = { layerType: 'JAPAN_RELIEF' };
+    webmap.getInternetMapInfo(infoJAPAN_RELIEF);
+    expect(infoJAPAN_RELIEF.minZoom).toBe(5);
+
+    const infoJAPAN_ORT = { layerType: 'JAPAN_ORT' };
+    webmap.getInternetMapInfo(infoJAPAN_ORT);
+    expect(infoJAPAN_ORT.level).toBe(2);
+  });
+  it('geojsonToFeature', () => {
+    const webmap = new WebMap(id, { server: server });
+    const geojsonData = {
+      type: 'FeatureCollection',
+      features: [
+        
+        {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [116, 34] },
+          properties: { title: '1', _smiportal_imgLinkUrl: 'http://fack:8190/test.png' }
+        },
+        {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [116, 34] },
+          properties: { title: '12', _smiportal_imgLinkUrl: './test.png' }
+        }
+      ]
+    };
+    const featureStyles = { featureStyles: [{ style: '{}' },{ style: '{}' }] };
+    const result = webmap.geojsonToFeature(geojsonData, featureStyles);
+    expect(result[0].getProperties().useStyle.anchor[0] ).toEqual(0.5);
+  });
+  it('setVisibleScales', () => {
+    const webmap = new WebMap(id, { server: server });
+    const layer = {setMinResolution:function(){},setMaxResolution:function(){}};
+    const setVisibleScalesFn = spyOn(layer, 'setMaxResolution').and.callThrough();
+    const setMinResolutionFn = spyOn(layer, 'setMinResolution').and.callThrough();
+    webmap.resolutions = [1.4,0.7]
+    webmap.setVisibleScales(layer, {minScale:0, maxScale:1});
+    expect(setVisibleScalesFn).toHaveBeenCalledWith(2);
+    expect(setMinResolutionFn).toHaveBeenCalledWith(0.7);
   });
 });
