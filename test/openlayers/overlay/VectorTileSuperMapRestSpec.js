@@ -1,5 +1,6 @@
 import { VectorTileSuperMapRest } from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 import { EncryptRequest } from '@supermapgis/iclient-common/util/EncryptRequest';
 import { MapService } from '../../../src/openlayers/services/MapService';
 import Map from 'ol/Map';

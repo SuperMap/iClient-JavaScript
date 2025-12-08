@@ -1,7 +1,8 @@
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {DatasetMinDistanceAnalystParameters} from '../../../src/common/iServer/DatasetMinDistanceAnalystParameters';
 import {GeometryMinDistanceAnalystParameters} from '../../../src/common/iServer/GeometryMinDistanceAnalystParameters';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {

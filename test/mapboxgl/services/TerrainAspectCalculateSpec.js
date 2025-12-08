@@ -1,6 +1,7 @@
 import {SpatialAnalystService} from '../../../src/mapboxgl/services/SpatialAnalystService';
 import {TerrainAspectCalculationParameters} from '../../../src/common/iServer/TerrainAspectCalculationParameters';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 
 var url = GlobeParameter.spatialAnalystURL;

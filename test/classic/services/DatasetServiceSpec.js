@@ -1,7 +1,8 @@
 import {DatasetService} from '../../../src/classic/services/DatasetService';
 import {CreateDatasetParameters} from '@supermapgis/iclient-common/iServer/CreateDatasetParameters';
 import {UpdateDatasetParameters} from '@supermapgis/iclient-common/iServer/UpdateDatasetParameters';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 var url = GlobeParameter.dataServiceURL;
 var options = {

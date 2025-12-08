@@ -76,3 +76,5 @@ import './maplibregl/mapping/WebMapSpec.js';
 import './maplibregl/mapping/WebMapV2Spec.js';
 import './maplibregl/mapping/WebMapV3Spec.js';
 import './maplibregl/mapping/InitMapSpec.js';
+
+import './maplibregl/control/LogoSpec.js'

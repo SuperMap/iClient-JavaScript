@@ -3,7 +3,8 @@ import { NetworkAnalyst3DService } from '../../../src/maplibregl/services/Networ
 import { FacilityAnalystSources3DParameters } from '@supermapgis/iclient-common/iServer/FacilityAnalystSources3DParameters';
 import { FacilityAnalystSinks3DParameters } from '@supermapgis/iclient-common/iServer/FacilityAnalystSinks3DParameters';
 import { FacilityAnalystTraceup3DParameters } from '@supermapgis/iclient-common/iServer/FacilityAnalystTraceup3DParameters';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 import { FacilityAnalystTracedown3DParameters, FacilityAnalystUpstream3DParameters } from '@supermapgis/iclient-common';
 
 var url = GlobeParameter.networkAnalyst3DURL;

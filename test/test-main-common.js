@@ -1,5 +1,7 @@
 /**common -- iServer**/
 import './common/iServer/KnowledgeGraphServiceSpec.js';
+import './common/iServer/KnowledgeGraphEdgeParameterSpec.js';
+import './common/iServer/KnowledgeGraphNodeParameterSpec.js';
 import './common/iServer/AddressMatchServiceSpec.js';
 import './common/iServer/AggregationParameterSpec.js';
 import './common/iServer/BucketAggParameterSpec.js';
@@ -128,7 +130,7 @@ import './common/format/JSONSpec.js';
 import './common/format/WKTSpec.js';
 
 /**common -- style**/
-import './common/style/CartoCSSSpec.js';
+// import './common/style/CartoCSSSpec.js';
 
 /**common -- security**/
 import './common/security/KeyServiceParameterSpec.js';
@@ -146,6 +148,7 @@ import './common/commontypes/geometry/CollectionSpec.js';
 import './common/commontypes/geometry/GeoTextSpec.js';
 import './common/commontypes/geometry/LineStringSpec.js';
 import './common/commontypes/geometry/LinearRingSpec.js';
+import './common/commontypes/Geometry3DSpec.js';
 
 /**common -- overlay**/
 import './common/overlay/feature/ShapeFactorySpec.js';

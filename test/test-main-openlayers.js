@@ -1,6 +1,7 @@
 /*openlayers -- control*/
 import './openlayers/control/ChangeTileVersionSpec.js';
 import './openlayers/control/ScaleLineSpec';
+import './openlayers/control/LogoSpec';
 
 /*openlayers -- core*/
 import './openlayers/core/MapExtendSpec.js';

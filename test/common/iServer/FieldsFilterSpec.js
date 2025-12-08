@@ -1,5 +1,5 @@
 
-import { FieldsFilter } from '@supermapgis/iclient-common/iServer';
+import { FieldsFilter } from '../../../src/common/iServer/FieldsFilter';
 
 var option = {
   "include": ['f1'],

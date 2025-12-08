@@ -1,4 +1,5 @@
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 import { GeoprocessingService } from '@supermapgis/iclient-common/iServer/GeoprocessingService';
 
 const serverUrl = `http://localhost:8090/iserver/services/geoprocessing/restjsr/gp/v2`;

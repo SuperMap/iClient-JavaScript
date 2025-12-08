@@ -1,6 +1,7 @@
 import {DatasourceService} from '../../../src/maplibregl/services/DatasourceService';
 import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 var url = GlobeParameter.dataServiceURL;
 var options = {

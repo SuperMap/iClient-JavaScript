@@ -1,5 +1,6 @@
 import { tiledVectorLayer } from '../../../src/leaflet/overlay/TiledVectorLayer';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 
 describe('leaflet_TiledVectorLayer', () => {
   var originalTimeout;

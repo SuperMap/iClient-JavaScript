@@ -1,5 +1,6 @@
 import { ChartService } from '../../../src/openlayers/services/ChartService';
-import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+
 import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermapgis/iclient-common';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 
