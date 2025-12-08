@@ -1,4 +1,4 @@
-import { ImageRenderingRule } from '../../../src/common/iServer/ImageRenderingRule';
+import ImageRenderingRule from '../../../src/common/iServer/ImageRenderingRule';
 import ImageCollectionService from '../../../src/common/iServer/ImageCollectionService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
