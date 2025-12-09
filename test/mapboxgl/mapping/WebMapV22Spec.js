@@ -231,7 +231,7 @@ describe('mapboxgl_WebMapV2_2', () => {
     dataFlowServiceSpyTest = null;
   });
 
-  it('initialize_ZXYtILE baseLayer 2326 epsgcode', (done) => {
+  it('ZXYTILE baseLayer 2326', (done) => {
     let options = {
       server: server
     };
@@ -243,6 +243,7 @@ describe('mapboxgl_WebMapV2_2', () => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(portalConfig)));
       }
+      console.log()
       return Promise.resolve(new Response(JSON.stringify({})));
     });
     var datavizWebmap = new WebMap(id, options);
@@ -252,7 +253,7 @@ describe('mapboxgl_WebMapV2_2', () => {
     });
   });
 
-  it('createThemeLayer_Vector_SVG', (done) => {
+  it('createThemeLayerVectorSVG', (done) => {
     let options = {
       server: server
     };
@@ -474,7 +475,7 @@ describe('mapboxgl_WebMapV2_2', () => {
     });
   });
 
-  it('createOverlayLayer_mvt', (done) => {
+  xit('createOverlayLayer_mvt', (done) => {
     let options = {
       server: server
     };

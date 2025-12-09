@@ -185,6 +185,7 @@ import './common/overlay/levelRenderer/VectorSpec.js';
 import './common/overlay/levelRenderer/HandlerSpec.js';
 import './common/overlay/GraphSpec';
 import './common/overlay/KnowledgeGraphSpec.js'
+import './common/overlay/ThemeVectorSpec.js';
 
 /**common -- online**/
 import './common/online/OnlineDataSpec.js';
