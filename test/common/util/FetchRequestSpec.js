@@ -13,11 +13,11 @@ describe('FetchRequest', () => {
         var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
         var params;
         var options;
-        // spyOn(RequestJSONPPromise, 'send').and.callFake(() => {});
+        spyOn(RequestJSONPPromise, 'send').and.callFake(() => {});
         setCORS(false);
         setRequestTimeout(1000)
         FetchRequest.get(url, params, options);
-        // expect(RequestJSONPPromise.send).toHaveBeenCalled();
+        expect(RequestJSONPPromise.send).toHaveBeenCalled();
         var paramsde = {
             completeLineSymbolDisplayed: false,
             visible: true
@@ -26,15 +26,15 @@ describe('FetchRequest', () => {
         var deleteUri =
             'http://test/GUID=PCdd8b1ab00896b3a7a&app=ydrive&cl=desktop?leftBottom%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D,%22rightTo';
         FetchRequest.delete(deleteUri, paramsde, options);
-        // expect(RequestJSONPPromise.send.calls.count()).toBe(2);
+        expect(RequestJSONPPromise.send.calls.count()).toBe(1);
 
         FetchRequest.post(deleteUri, paramsde, options);
-        // expect(RequestJSONPPromise.send.calls.count()).toBe(3);
+        expect(RequestJSONPPromise.send.calls.count()).toBe(1);
 
         RequestJSONPPromise.limitLength = 180;
 
         FetchRequest.put(deleteUri, paramsde, options);
-        // expect(RequestJSONPPromise.send.calls.count()).toBe(4);
+        expect(RequestJSONPPromise.send.calls.count()).toBe(2);
         setCORS(defaltCors);
         setRequestTimeout(defaltTimeout)
     });
