@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS }from '../../tool/mock_mapboxgl_map';
 import { initMap } from '../../../src/mapboxgl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { SecurityManager } from '../../../src/common/security/SecurityManager';
@@ -23,6 +23,7 @@ describe('mapboxgl_InitMap', () => {
   });
 
   afterEach(() => {
+    revertCRS();
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });

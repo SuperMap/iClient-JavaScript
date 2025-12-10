@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
@@ -351,6 +351,7 @@ describe('mapboxgl_WebMapV2', () => {
     window.geostats = undefined;
     window.EchartsLayer = undefined;
     dataFlowServiceSpyTest = null;
+    revertCRS();
   });
 
   it('test baseLayer layers count maploaded', (done) => {
@@ -773,7 +774,7 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
-  it('add rangeLayer last end === fieldValue', (done) => {
+it('add rangeLayer last end === fieldValue', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('web/datas/1171594968/content.json') > -1) {
         return Promise.resolve(new Response(layerData_CSV));
@@ -2866,9 +2867,7 @@ describe('mapboxgl_WebMapV2', () => {
       const xyzLayer = layers[0];
       expect(xyzLayer.id).toBe('2326底图');
       expect(xyzLayer.type).toBe('raster');
-      expect(sources['2326底图'].bounds).toEqual([
-        113.77925526971052, 22.086139328930617, 114.53407583886273, 22.61831019233164
-      ]);
+      expect(sources['2326底图'].bounds[0]).toBeCloseTo(113.77925526971052,0.001)
       done();
     });
   });

@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 import '../../../src/maplibregl/core/MapExtend';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { CustomOverlayLayer } from '../../../src/common/overlay/Base';
@@ -112,6 +112,7 @@ describe('maplibregl MapExtend', () => {
 
   afterEach(() => {
     map.overlayLayersManager = {};
+    revertCRS();
   })
 
   afterAll(() => {

@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mapboxglMock from '../../tool/mock_mapboxgl_map';
+import mapboxglMock, { revertCRS } from '../../tool/mock_mapboxgl_map';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
@@ -172,6 +172,9 @@ describe('MapExtend mapboxgl', () => {
     });
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+  });
+  afterEach(() => { 
+    revertCRS();
   });
   afterAll(() => {
     document.body.removeChild(testDiv);

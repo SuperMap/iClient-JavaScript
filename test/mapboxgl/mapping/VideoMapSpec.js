@@ -1,6 +1,6 @@
 import { VideoMap } from '../../../src/mapboxgl/mapping/VideoMap';
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 var videoUrl = 'base/resources/data/test.mp4';
 describe('mapboxgl_videoMap', () => {
   var originalTimeout;
@@ -45,6 +45,7 @@ describe('mapboxgl_videoMap', () => {
     };
   });
   afterEach(() => {
+    revertCRS();
     document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });

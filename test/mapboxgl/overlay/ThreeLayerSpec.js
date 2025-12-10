@@ -1,7 +1,7 @@
 import {MeshPhongMaterial, Mesh, PointLight, BoxBufferGeometry} from 'three';
 import {ThreeLayer} from '../../../src/mapboxgl/overlay/ThreeLayer';
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
@@ -55,6 +55,7 @@ describe('mapboxgl_ThreeLayer', () => {
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        revertCRS();
     });
     afterAll(() => {
         document.body.removeChild(testDiv);

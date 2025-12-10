@@ -1,6 +1,6 @@
 import { HeatMapLayer } from '../../../src/mapboxgl/overlay/HeatMapLayer';
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 import { truncate } from '@turf/turf';
 
 var url = GlobeParameter.worldMapURL;
@@ -73,12 +73,12 @@ describe('mapboxgl_HeatMapLayer', () => {
         
     });
     beforeEach(() => {
-        
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        revertCRS();
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);

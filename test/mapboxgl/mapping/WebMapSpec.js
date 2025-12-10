@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -40,6 +40,7 @@ describe('mapboxgl_WebMap', () => {
     mapboxgl.CRS = undefined;
     mapboxgl.proj4 = undefined;
     window.jsonsql = undefined;
+    revertCRS();
   });
   it('initialize_TIANDITU_VEC', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {

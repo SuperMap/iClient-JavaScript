@@ -24,7 +24,7 @@ const Map = function (options) {
   const evented = new mapboxgl.Evented();
   this.on = evented.on;
   this.once = evented.once;
-  this._update = ()=>{};
+  this._update = () => {};
   this.fire = evented.fire;
   this.listens = evented.listens;
 
@@ -56,17 +56,17 @@ const Map = function (options) {
     ...options.style,
     addGlyphs: jasmine.createSpy('addGlyphs').and.callFake(() => {}),
     addSprite: jasmine.createSpy('addSprite').and.callFake(() => {}),
-    _layers: this._layers,
+    _layers: this._layers
   };
   this.setStyle = function (style, options) {
     if (style.layers) {
-      style.layers.forEach(layer => {
+      style.layers.forEach((layer) => {
         this._layers[layer.id] = layer;
-        if (layer.source instanceof Object){
-          this.addSource(layer.id, Object.assign({}, layer.source))
+        if (layer.source instanceof Object) {
+          this.addSource(layer.id, Object.assign({}, layer.source));
           this._layers[layer.id].source = layer.id;
         }
-        if (!this._layersList.find(item => item.id === layer.id)) {
+        if (!this._layersList.find((item) => item.id === layer.id)) {
           this._layersList.push(layer);
         }
         if (layer.onAdd) {
@@ -77,7 +77,7 @@ const Map = function (options) {
         }
         this.fire('styledata');
         return this;
-      })
+      });
     }
     this.sources = style.sources;
   };
@@ -123,7 +123,7 @@ const Map = function (options) {
       this._layers[layerId].layout = this._layers[layerId].layout || {};
       this._layers[layerId].layout[attr] = value;
     }
-    const matchLayer = this._layersList.find(item => item.id === layerId);
+    const matchLayer = this._layersList.find((item) => item.id === layerId);
     if (matchLayer) {
       matchLayer.layout = matchLayer.layout || {};
       matchLayer.layout[attr] = value;
@@ -147,7 +147,7 @@ const Map = function (options) {
     return this.maxZoom;
   };
   this.setMaxZoom = function (zoom) {
-    this.maxZoom = zoom ;
+    this.maxZoom = zoom;
   };
 
   this.getContainer = function () {
@@ -181,7 +181,7 @@ const Map = function (options) {
       return {
         ...sourceInfo,
         setData: jasmine.createSpy('setData').and.callFake(() => {}),
-        _data: this._sources[name].data,
+        _data: this._sources[name].data
       };
     }
     return sourceInfo;
@@ -209,11 +209,11 @@ const Map = function (options) {
   this.off = function () {};
   this.addLayer = function (layer, before) {
     this._layers[layer.id] = layer;
-    if (layer.source instanceof Object){
-      this.addSource(layer.id, Object.assign({}, layer.source))
+    if (layer.source instanceof Object) {
+      this.addSource(layer.id, Object.assign({}, layer.source));
       this._layers[layer.id].source = layer.id;
     }
-    if (!this._layersList.find(item => item.id === layer.id)) {
+    if (!this._layersList.find((item) => item.id === layer.id)) {
       this._layersList.push(layer);
     }
     if (layer.onAdd) {
@@ -232,7 +232,7 @@ const Map = function (options) {
       }
     }
     if (style.layers) {
-      style.layers.forEach(layer => {
+      style.layers.forEach((layer) => {
         if (layer.type !== 'background') {
           this.addLayer(layer);
         }
@@ -243,17 +243,17 @@ const Map = function (options) {
 
   this.removeLayer = function (layerId) {
     delete this._layers[layerId];
-    const matchIndex = this._layersList.findIndex(item => item.id === layerId);
+    const matchIndex = this._layersList.findIndex((item) => item.id === layerId);
     if (matchIndex > -1) {
       this._layersList.splice(matchIndex, 1);
     }
   };
   this.moveLayer = function (layerId, beforeId) {
-    const matchLayerIndex = this._layersList.findIndex(item => item.id === layerId);
+    const matchLayerIndex = this._layersList.findIndex((item) => item.id === layerId);
     if (matchLayerIndex === -1) {
       return;
     }
-    const beforeIndex = this._layersList.findIndex(item => item.id === beforeId);
+    const beforeIndex = this._layersList.findIndex((item) => item.id === beforeId);
     const layer = this._layersList[matchLayerIndex];
     if (beforeIndex > -1) {
       const insertIndex = beforeIndex < matchLayerIndex ? beforeIndex : beforeIndex - 1;
@@ -337,9 +337,9 @@ const Map = function (options) {
     if (latlng) {
       return {
         x: Math.floor(Math.random() * 800),
-        y: Math.floor(Math.random() * 600),
-      }
-    };
+        y: Math.floor(Math.random() * 600)
+      };
+    }
     return {
       x: 500,
       y: 300
@@ -423,86 +423,98 @@ const Map = function (options) {
     this.fire('load');
   }, 0);
 };
-
+let keyCache = [];
 class CRS {
   constructor(epsgCode, WKT, extent) {
     this.epsgCode = epsgCode;
     this.extent = extent;
     if (Array.isArray(WKT)) {
-        this.extent = WKT;
-        WKT = null;
+      this.extent = WKT;
+      WKT = null;
     }
-    if(this.extent[0] === -180 && this.extent[2] === 180 && this.extent[3] === 90) {
-        this.extent[1] = Math.max(this.extent[1], -90);
+    if (this.extent[0] === -180 && this.extent[2] === 180 && this.extent[3] === 90) {
+      this.extent[1] = Math.max(this.extent[1], -90);
     }
     this.WKT = WKT || CRS.defaultWKTs[epsgCode];
     if (this.WKT) {
-        proj4.defs(epsgCode, this.WKT);
+      proj4.defs(epsgCode, this.WKT);
     }
     const defs = proj4.defs(epsgCode);
     if (!defs) {
-        throw new Error(`${epsgCode} was not defined,make sure the WKT param was not null`);
+      throw new Error(`${epsgCode} was not defined,make sure the WKT param was not null`);
     }
     this.unit = defs.units || 'degree';
     CRS.set(this);
   }
 
   getExtent() {
-      if (!this._rectifyExtent) {
-          const width = this.extent[2] - this.extent[0];
-          const height = this.extent[3] - this.extent[1];
-          if (width === height) {
-              this._rectifyExtent = [this.extent[0], this.extent[1], this.extent[2], this.extent[3]];
-          } else {
-              const a = Math.max(width, height);
-              this._rectifyExtent = [this.extent[0], this.extent[3] - a, this.extent[0] + a, this.extent[3]]
-          }
+    if (!this._rectifyExtent) {
+      const width = this.extent[2] - this.extent[0];
+      const height = this.extent[3] - this.extent[1];
+      if (width === height) {
+        this._rectifyExtent = [this.extent[0], this.extent[1], this.extent[2], this.extent[3]];
+      } else {
+        const a = Math.max(width, height);
+        this._rectifyExtent = [this.extent[0], this.extent[3] - a, this.extent[0] + a, this.extent[3]];
       }
-      return this._rectifyExtent;
+    }
+    return this._rectifyExtent;
   }
 
   getEpsgCode() {
-      return this.epsgCode;
+    return this.epsgCode;
   }
 
   getUnit() {
-      return this.unit;
+    return this.unit;
   }
 
   getWKT() {
-      return this.WKT;
+    return this.WKT;
   }
 
   getOrigin() {
-      return [this.extent[0], this.extent[3]];
+    return [this.extent[0], this.extent[3]];
   }
 
   static get(codeSpec) {
     for (const key in CRS) {
-        if (CRS.hasOwnProperty(key)) {
-            if (CRS[key].getEpsgCode && CRS[key].getEpsgCode() === codeSpec) {
-                return CRS[key];
-            }
+      if (CRS.hasOwnProperty(key)) {
+        if (CRS[key].getEpsgCode && CRS[key].getEpsgCode() === codeSpec) {
+          return CRS[key];
         }
+      }
     }
     return null;
   }
 
-  
   static set(crs) {
-    const key = crs.getEpsgCode().replace(":", "").toUpperCase();
+    const key = crs.getEpsgCode().replace(':', '').toUpperCase();
+    keyCache.push(key);
     CRS[key] = crs;
   }
 }
 CRS.defaultWKTs = {
-  'EPSG:4490': 'GEOGCS["China Geodetic Coordinate System 2000",DATUM["China_2000",SPHEROID["CGCS2000",6378137,298.257222101,AUTHORITY["EPSG","1024"]],AUTHORITY["EPSG","1043"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4490"]]',
-  'EPSG:4214': 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4214"]]',
-  'EPSG:4610': 'GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]]'
+  'EPSG:4490':
+    'GEOGCS["China Geodetic Coordinate System 2000",DATUM["China_2000",SPHEROID["CGCS2000",6378137,298.257222101,AUTHORITY["EPSG","1024"]],AUTHORITY["EPSG","1043"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4490"]]',
+  'EPSG:4214':
+    'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4214"]]',
+  'EPSG:4610':
+    'GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]]'
 };
 CRS.EPSG3857 = new CRS('EPSG:3857', [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
 CRS.EPSG4326 = new CRS('EPSG:4326', [-180, -90, 180, 90]);
 
-
+function revertCRS() {
+  keyCache.forEach((key) => {
+    if (['EPSG4490', 'EPSG4214', 'EPSG4610', 'EPSG3857', 'EPSG4326'].indexOf(key) === -1) {
+      if (CRS.hasOwnProperty(key)) {
+        delete CRS[key];
+      }
+    }
+  });
+  keyCache = [];
+}
 export default Map;
 var mapboxglMock = { Map };
-export { mapboxglMock, CRS, proj4 };
+export { mapboxglMock, CRS, proj4, revertCRS };

@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map.js';
+import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map.js';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap.js';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager.js';
 import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic.js';
@@ -229,6 +229,7 @@ describe('mapboxgl_WebMapV2_2', () => {
     window.geostats = undefined;
     window.EchartsLayer = undefined;
     dataFlowServiceSpyTest = null;
+    revertCRS();
   });
 
   it('ZXYTILE baseLayer 2326', (done) => {
@@ -475,7 +476,7 @@ describe('mapboxgl_WebMapV2_2', () => {
     });
   });
 
-  xit('createOverlayLayer_mvt', (done) => {
+  it('createOverlayLayer_mvt', (done) => {
     let options = {
       server: server
     };

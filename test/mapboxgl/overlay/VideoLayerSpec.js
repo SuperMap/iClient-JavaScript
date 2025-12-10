@@ -1,6 +1,6 @@
 import { VideoLayer } from '../../../src/mapboxgl/overlay/VideoLayer';
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 var videoUrl = 'base/resources/data/test.mp4';
 describe('mapboxgl_VideoLayer', () => {
@@ -118,6 +118,7 @@ describe('mapboxgl_VideoLayer', () => {
   afterEach(() => {
     map = null;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    revertCRS();
   });
 
   afterAll(() => {

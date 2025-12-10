@@ -10,7 +10,7 @@ import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
 import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 import { L7, L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 import * as mockL7 from '../../tool/mock_l7';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_mapboxgl_map';
+import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map';
 import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
 
@@ -54,6 +54,7 @@ describe('mapboxgl-webmap3.0', () => {
     mbglmap.prototype.getL7Scene = undefined;
     mapboxgl.CRS = undefined;
     mapboxgl.proj4 = undefined;
+    revertCRS();
   });
 
   it('initialize_background', (done) => {

@@ -1,7 +1,7 @@
 import {MapvLayer} from '../../../src/mapboxgl/overlay/MapvLayer';
 import mapboxgl from 'mapbox-gl';
 import {utilCityCenter, DataSet} from 'mapv';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
@@ -89,6 +89,7 @@ describe('mapboxgl_MapVLayer', () => {
         }
         dataSet = null;
         data = [];
+        revertCRS();
     });
     afterAll(() => {
         document.body.removeChild(testDiv);

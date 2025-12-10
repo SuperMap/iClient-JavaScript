@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
+import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
 import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';
 import * as mockL7 from '../../tool/mock_l7';
 import { L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
@@ -80,6 +80,7 @@ describe('mapboxgl_L7Layer', () => {
 
   afterEach(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    revertCRS();
   });
 
   afterAll(() => {
