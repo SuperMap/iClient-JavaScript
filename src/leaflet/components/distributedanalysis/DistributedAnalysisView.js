@@ -274,7 +274,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         let analysisingBtn = L.DomUtil.create('div', 'component-analysis__analysisbtn--analysising', analysingContainer);
         analysisingBtn.style.width = '200px';
         let svgContainer = L.DomUtil.create('div', 'component-analysis__svg-container', analysisingBtn);
-        svgContainer.innerHTML = `<svg class="component-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="https://www.w3.org/2000/svg">
+        svgContainer.innerHTML = `<svg class="component-analysis__svg-rotate" width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path id="ring" fill="#FFF" transform="translate(8,8)" d="M 0 0 v -8 A 8 8 0 1 1 -8.00 0 z"></path>
             <circle cx="8" cy="8" r="6" fill="#38ADF5"></circle>
             <rect class="svg-top" x="8" y="0" rx="2" ry="2" width="2" height="2" style="fill: rgb(255, 255, 255); stroke-width: 0;"></rect>
