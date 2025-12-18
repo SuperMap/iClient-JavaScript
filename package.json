@@ -118,7 +118,7 @@
     "mini-css-extract-plugin": "^2.6.1",
     "minimist": "^1.2.8",
     "mock-socket": "^9.0.3",
-    "nightwatch": "^2.3.0",
+    "nightwatch": "^3.13.0",
     "open": "^8.4.0",
     "pngjs": "^6.0.0",
     "pre-commit": "^1.2.2",
