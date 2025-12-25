@@ -68,8 +68,9 @@ const LEGEND_CSS_DEFAULT = {
     opacity: 1,
     backgroundColor: '#FFFFFF',
     marginLeft: '1px',
-    outline: '1px solid transparent',
-    outlineColor: '#FFFFFF'
+    outlineStyle: 'none',
+    outlineColor: '#FFFFFF',
+    outlineWidth: '0.5px'
   },
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: {
     width: '20px',
@@ -109,7 +110,7 @@ const LEGEND_STYLE_KEYS = {
   [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
-  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias', 'outlineColor', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias' ,'outline', 'outlineColor', 'outlineWidth', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.ANIMATEPOINT]: ['color', 'opacity', 'size', 'speed', 'rings'],
   [LEGEND_RENDER_TYPE.ANIMATELINE]: ['color', 'opacity', 'width', 'textureBlend', 'symbolsContent', 'iconStep'],
@@ -813,9 +814,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     if (keys) {
       const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
       simpleKeys.forEach((k) => {
-        if (k === 'outlineColor' && !(styleSetting['antialias'] || {}).value) {
-          return;
-        }
+      const isOutlineKey = k === 'outlineColor' || k === 'outlineWidth';
+      const hasOutline =
+        styleSetting?.outline?.value === true ||
+        styleSetting?.antialias?.value === true;
+
+      if (isOutlineKey && !hasOutline) {
+        return;
+      }
         simpleStyle[k] = (styleSetting[k] || {}).value;
       });
     }
@@ -1289,9 +1295,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
             cssStyle[key] = defaultStyle[key];
           }
         });
-        if (cssStyle.outlineColor) {
-          Object.assign(cssStyle, { outline: defaultStyle.outline, marginLeft: '1px' });
-        }
+        Object.assign(cssStyle, { outlineStyle: (customValue.antialias || customValue.outline) ? 'solid' : 'none'});
         if (this._spriteDatas[symbolId]) {
           return this._getSpriteStyle(symbolId, { ...cssStyle, backgroundColor: 'transparent' });
         }
