@@ -816,9 +816,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       simpleKeys.forEach((k) => {
       const isOutlineKey = k === 'outlineColor' || k === 'outlineWidth';
       const hasOutline =
-        styleSetting?.outline?.value === true ||
-        styleSetting?.antialias?.value === true;
-
+        styleSetting &&
+        (
+          (styleSetting.outline && styleSetting.outline.value === true) ||
+          (styleSetting.antialias && styleSetting.antialias.value === true)
+        );
       if (isOutlineKey && !hasOutline) {
         return;
       }
