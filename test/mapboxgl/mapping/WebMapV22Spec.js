@@ -595,12 +595,10 @@ describe('mapboxgl_WebMapV2_2', () => {
     datavizWebmap.on('mapcreatesucceeded', (data) => {
       try {
         expect(datavizWebmap.map.getStyle().layers.length).toBe(2);
-        debugger;
         const originLayerInfo = datavizWebmap._handler._mapInfo.layers.find((layer) => {
           return layer.layerID === 'China';
         });
         originLayerInfo.layerType = 'mvt';
-        debugger;
         datavizWebmap.updateOverlayLayer(
           { id: 'China' },
           {
