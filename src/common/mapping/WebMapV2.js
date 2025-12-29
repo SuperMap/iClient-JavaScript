@@ -124,7 +124,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
 
     async _registerMapCRS(mapInfo) {
-      const { projection, extent, baseLayer = {} } = mapInfo;
+      const { projection, extent = { leftBottom: {}, rightTop: {} }, baseLayer = {} } = mapInfo;
       const epsgCode = toEpsgCode(projection);
       let crs = {
         name: epsgCode,
@@ -136,7 +136,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           case 'MAPBOXSTYLE': {
             let url = baseLayer.dataSource.url;
             if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
-              url += '/style.json';
+              url = Util.urlPathAppend(url, '/style.json');
             }
             const res = await this.webMapService.getMapBoxStyle(url);
             if (res && res.metadata && res.metadata.indexbounds) {
@@ -147,7 +147,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           case 'TILE': {
             // 获取地图的wkt
             if (!crs.wkt) {
-              crs.wkt = await this.getEpsgCodeWKT(`${baseLayer.url}/prjCoordSys.wkt`, {
+              crs.wkt = await this.getEpsgCodeWKT(Util.urlPathAppend(baseLayer.url, '/prjCoordSys.wkt'), {
                 withoutFormatSuffix: true,
                 withCredentials: this.webMapService.handleWithCredentials('', baseLayer.url, false)
               });
@@ -398,7 +398,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
     _createMVTBaseLayer(layerInfo, addedCallback) {
       let url = layerInfo.dataSource.url;
       if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
-        url += '/style.json';
+        url = Util.urlPathAppend(url, '/style.json');
       }
       const withoutFormatSuffix = url.indexOf('/restjsr/') === -1;
       this.webMapService
@@ -853,11 +853,17 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       const url = layerInfo.url;
       const layerId = layerInfo.layerID || layerInfo.name;
       const { minzoom, maxzoom } = layerInfo;
+      let requestUrl = url;
+      if (layerInfo.credential && layerInfo.credential.token) {
+        const token = layerInfo.credential.token;
+        requestUrl = Util.urlAppend(requestUrl, `token=${token}`);
+      }
       const reqOptions = {
         withoutFormatSuffix: true,
-        withCredentials: this.webMapService.handleWithCredentials('', url, false)
+        withCredentials: this.webMapService.handleWithCredentials('', requestUrl, false)
       };
-      let res = await this.getBounds(`${url}.json`, reqOptions)
+      const boundsRequestUrl = Util.handleUrlSuffix(requestUrl, '.json');
+      let res = await this.getBounds(boundsRequestUrl, reqOptions)
       let bounds = null;
       if (res && res.bounds) {
         bounds = this._getBoundList(res);
@@ -877,13 +883,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
               top
             ];
           } else {
-            res = await this.getBounds(`${url}.json?prjCoordSys=${JSON.stringify({ epsgCode: 4326 })}`, reqOptions)
+            const nextBoundsRequestUrl = Util.urlAppend(boundsRequestUrl, `prjCoordSys=${JSON.stringify({ epsgCode: 4326 })}`)
+            res = await this.getBounds(nextBoundsRequestUrl, reqOptions)
             bounds = this._getBoundList(res);
           }
         }
       }
       this._addBaselayer({
-        url: [url],
+        url: [requestUrl],
         layerID: layerId,
         visibility: layerInfo.visible,
         minzoom,
@@ -2890,7 +2897,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         height: 256
       };
 
-      url += this._getParamString(options, url) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
+      url = Util.urlAppend(url, this._getParamString(options, url) + '&tilematrix={z}&tilerow={y}&tilecol={x}')
 
       const tiandituUrl = url.replace('{layer}', layerType).replace('{proj}', tilematrixSet);
       const tiandituUrlArr = [];
@@ -2904,7 +2911,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       if (isLabel) {
         const labelLayer = layerLabelMap[layerType];
         options.layer = labelLayer;
-        labelUrl += this._getParamString(options, labelUrl) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
+        labelUrl = Util.urlAppend(labelUrl, this._getParamString(options, labelUrl) + '&tilematrix={z}&tilerow={y}&tilecol={x}');
         labelUrl = labelUrl.replace('{layer}', labelLayer).replace('{proj}', tilematrixSet);
         const labelUrlArr = [];
         for (let i = 0; i < 8; i++) {

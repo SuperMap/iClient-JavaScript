@@ -3880,6 +3880,157 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
+  it('overlay is TILE which carried credential token', (done) => {
+    const wkt4496 = `PROJCS["GK Zone 18      (CGCS2000)",GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]],PROJECTION["Transverse_Mercator",AUTHORITY["EPSG","9807"]],PARAMETER["False_Easting",1.85E7],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",105.0],PARAMETER["Latitude_Of_Origin",0.0],PARAMETER["Scale_Factor",1.0],UNIT["METER",1.0],AUTHORITY["EPSG","4496"]]`;
+    const nextMapInfo = {
+      ...dynamicProjectionMapInfo,
+      layers: dynamicProjectionMapInfo.layers.map(item => {
+        return {
+          ...item,
+          credential: {
+              "token": "pBRw08Vs3-vfgqDi76tpvOYKCnLYFZ35exKFMMFV5vQ-3CWn80_xIZ_rweYxOe9t3ot0ahD2Y5Uymh50-YeyzzQkel0Ong.."
+          }
+        }
+      })
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(nextMapInfo)));
+      }
+      if (url.indexOf(`prjCoordSys=${JSON.stringify({ epsgCode: 4326 })}`) > -1) {
+        expect(url).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 4326 },
+              bounds: {
+                top: 2.3755571276430945,
+                left: 113.5091647206238,
+                bottom: 2.087888705520514,
+                leftBottom: {
+                  x: 113.5091647206238,
+                  y: 2.087888705520514
+                },
+                right: 113.84235808224173,
+                rightTop: {
+                  x: 113.84235808224173,
+                  y: 2.3755571276430945
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf(`test.json`) > -1) {
+        expect(url).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 4496 },
+              bounds: {
+                top: 262679.13362826034,
+                left: 25493.744181281887,
+                bottom: 230878.98887457885,
+                leftBottom: {
+                  x: 25493.744181281887,
+                  y: 230878.98887457885
+                },
+                right: 62548.98751319852,
+                rightTop: {
+                  x: 62548.98751319852,
+                  y: 262679.13362826034
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf(`China_Dark.json`) > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: -1 },
+              bounds: {
+                top: 20037508.342789087,
+                left: -20037508.342789248,
+                bottom: -25819498.513543323,
+                leftBottom: {
+                  x: -20037508.342789248,
+                  y: -25819498.513543323
+                },
+                right: 20037508.342789244,
+                rightTop: {
+                  x: 20037508.342789244,
+                  y: 20037508.342789087
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf(`china.json`) > -1) {
+        expect(url).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              prjCoordSys: { epsgCode: 3857 },
+              bounds: {
+                top: 5127400.782113583,
+                left: 10607760.850223977,
+                bottom: 2755785.4693220854,
+                leftBottom: {
+                  x: 10607760.850223977,
+                  y: 2755785.4693220854
+                },
+                right: 12979376.163015474,
+                rightTop: {
+                  x: 12979376.163015474,
+                  y: 5127400.782113583
+                }
+              }
+            })
+          )
+        );
+      }
+      if (url.indexOf('prjCoordSys.wkt')) {
+        return Promise.resolve(new Response(wkt4496));
+      }
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      const style = map.getStyle();
+      expect(map.getStyle().layers.length).toBe(3);
+      const expectedBaselayerBounds = [-180.00000000000006, -88, 180.00000000000003, 85.05112877980648];
+      const actualBaselayerBounds = style.sources['中国暗色地图'].bounds;
+      expect(actualBaselayerBounds.length).toBe(expectedBaselayerBounds.length);
+      actualBaselayerBounds.forEach((val, i) => {
+        expect(val).toBeCloseTo(expectedBaselayerBounds[i], 6);
+      });
+      const expectedOverlayer1Bounds = [95.29113702040888, 24.019508369205386, 116.5957198557339, 41.77544139596302];
+      const actualOverlayer1Bounds = style.sources.china.bounds;
+      expect(actualOverlayer1Bounds.length).toBe(expectedOverlayer1Bounds.length);
+      actualOverlayer1Bounds.forEach((val, i) => {
+        expect(val).toBeCloseTo(expectedOverlayer1Bounds[i], 6);
+      });
+      expect(style.sources.china.tiles[0]).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
+      const expectedOverlayer2Bounds = [113.5091647206238, 2.087888705520514, 113.84235808224173, 2.3755571276430945];
+      const actualOverlayer2Bounds = style.sources.test.bounds;
+      expect(actualOverlayer2Bounds.length).toBe(expectedOverlayer2Bounds.length);
+      actualOverlayer2Bounds.forEach((val, i) => {
+        expect(val).toBeCloseTo(expectedOverlayer2Bounds[i], 6);
+      });
+      expect(style.sources.test.tiles[0]).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
+      done();
+    });
+  });
+
   it('baselayer is ZXY_TILE, calc zoomBase with resolutions, minScale 0', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -4124,6 +4275,49 @@ describe('mapboxgl_WebMapV2', () => {
       const matchHideLayerOnMap = layersOnMap.find(layer => layer.id === "china_layer");
       expect(matchHideLayerOnMap).not.toBeUndefined();
       expect(matchHideLayerOnMap.layout.visibility).toBe("none");
+      done();
+    });
+  });
+
+  it('baselayer is MAPBOXSTYLE when mapInfo has no extent', (done) => {
+    const mapInfo = {
+      "maxScale": "1:144447.92746805",
+      "baseLayer": {
+          "layerType": "MAPBOXSTYLE",
+          "name": "Capital@World33font",
+          "dataSource": {
+              "type": "EXTERNAL",
+              "url": "http://localhost:8195/portalproxy/ad4c697aec15c20c/iserver/services/map-mvt-CapitalWorld33font/restjsr/v1/vectortile/maps/Capital%40World33font"
+          }
+      },
+      "projection": "EPSG:4326",
+      "minScale": "1:591658710.909131",
+      "title": "Capital@World33font",
+      "version": "2.3.0",
+    }
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify(mapInfo)
+          )
+        );
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
       done();
     });
   });
