@@ -3916,3 +3916,47 @@ var RET_MAP_INFO_4490 = JSON.stringify({
     }
   }
 });
+
+var dynamicProjectionMapInfo = {
+  extent: {
+    leftBottom: {
+      x: -20037508.342789244,
+      y: -25819498.513543323
+    },
+    rightTop: {
+      x: 20037508.342789244,
+      y: 20037508.34258019
+    }
+  },
+  maxScale: '1:144447.92746805',
+  level: 6,
+  center: {
+    x: 12654327.874745157,
+    y: 248497.88596388634
+  },
+  baseLayer: {
+    layerType: 'TILE',
+    name: '中国暗色地图',
+    url: 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'
+  },
+  layers: [
+    {
+      layerType: 'TILE',
+      visible: true,
+      name: 'test',
+      url: 'http://localhost:8090/iserver/services/map-shp/rest/maps/test'
+    },
+    {
+      layerType: 'TILE',
+      visible: true,
+      name: 'china',
+      url: 'http://localhost:8090/iserver/services/china/rest/maps/china'
+    }
+  ],
+  description: '',
+  projection: 'EPSG:3857',
+  minScale: '1:73957338.8636414',
+  title: '动态投影',
+  version: '2.4.3',
+  rootUrl: 'http://localhost:8190/iportal/'
+};

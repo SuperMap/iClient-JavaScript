@@ -434,7 +434,7 @@ describe('WebMapServiceSpec.js', () => {
       if (url.includes('/web/datas/123')) {
         return Promise.resolve(new Response(JSON.stringify(result1)));
       }
-      if (url.includes('/data/datasources/captial/datasets/test?parentResType=MAP&parentResId=123/tilefeature.mvt')) {
+      if (url.includes('/data/datasources/captial/datasets/test/tilefeature.mvt?parentResType=MAP&parentResId=123')) {
         return Promise.resolve(new Response(JSON.stringify(result2)));
       }
       if (url.includes('/data/datasources/captial/datasets/test?parentResType=MAP&parentResId=123')) {

@@ -803,7 +803,7 @@ export class WebMapService {
     return this._getDatasetsInfo(serviceUrl, datasetName).then(info => {
       // 判断是否和底图坐标系一直
       if (info.epsgCode == baseProjection.split('EPSG:')[1]) {
-        return FetchRequest.get(`${info.url}/tilefeature.mvt`)
+        return FetchRequest.get(Util.urlPathAppend(info.url, '/tilefeature.mvt'))
           .then(function (response) {
             return response.json();
           })
@@ -881,7 +881,7 @@ export class WebMapService {
   _getDatasetsInfo(serviceUrl, datasetName) {
     return this._getDatasources(serviceUrl).then(datasourceName => {
       // 判断mvt服务是否可用
-      let url = `${serviceUrl}/data/datasources/${datasourceName}/datasets/${datasetName}`;
+      let url = Util.urlPathAppend(serviceUrl, `/data/datasources/${datasourceName}/datasets/${datasetName}`);
       const proxy = this.handleProxy();
       url = this.handleParentRes(url);
       return FetchRequest.get(url, null, {
@@ -905,7 +905,7 @@ export class WebMapService {
 
   _getDatasources(url) {
     const proxy = this.handleProxy();
-    let serviceUrl = `${url}/data/datasources.json`;
+    let serviceUrl = Util.urlPathAppend(url, '/data/datasources.json');
     serviceUrl = this.handleParentRes(serviceUrl);
     return FetchRequest.get(serviceUrl, null, {
       withCredentials: this.handleWithCredentials(proxy, serviceUrl, false),
@@ -1154,7 +1154,7 @@ export class WebMapService {
   _getTileLayerInfo(url, baseProjection) {
     const proxy = this.handleProxy();
     let epsgCode = baseProjection.split('EPSG:')[1];
-    let serviceUrl = `${url}/maps.json`;
+    let serviceUrl = Util.urlPathAppend(url, '/maps.json');
     serviceUrl = this.handleParentRes(serviceUrl);
     return FetchRequest.get(serviceUrl, null, {
       withCredentials: this.handleWithCredentials(proxy, serviceUrl, this.withCredentials),
@@ -1168,7 +1168,7 @@ export class WebMapService {
         if (mapInfo) {
           mapInfo.forEach(info => {
             let promise = FetchRequest.get(
-              `${info.path}.json?prjCoordSys=${JSON.stringify({ epsgCode: epsgCode })}`,
+              Util.urlAppend(Util.handleUrlSuffix(info.path, '.json'), `prjCoordSys=${JSON.stringify({ epsgCode: epsgCode })}`),
               null,
               {
                 withCredentials: this.withCredentials,

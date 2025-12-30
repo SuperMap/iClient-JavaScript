@@ -137,7 +137,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
         if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'MAPBOXSTYLE') {
           let url = mapInfo.baseLayer.dataSource.url;
           if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
-            url += '/style.json';
+            url = Util.urlPathAppend(url, '/style.json');
           }
           this.webMapService.getMapBoxStyle(url).then((res) => {
             if (res && res.metadata && res.metadata.indexbounds) {
@@ -156,14 +156,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
           });
         } else if (mapInfo.baseLayer && mapInfo.baseLayer.layerType === 'TILE') {
           // 获取地图的wkt
-          this.getEpsgCodeWKT(`${mapInfo.baseLayer.url}/prjCoordSys.wkt`, {
+          this.getEpsgCodeWKT(Util.urlPathAppend(mapInfo.baseLayer.url, '/prjCoordSys.wkt'), {
             withoutFormatSuffix: true,
             withCredentials: this.webMapService.handleWithCredentials('', mapInfo.baseLayer.url, false)
           }).then((res) => {
             if (!wkt) {
               wkt = res;
             }
-            this.getBounds(`${mapInfo.baseLayer.url}.json`, {
+            this.getBounds(Util.handleUrlSuffix(mapInfo.baseLayer.url, '.json'), {
               withoutFormatSuffix: true,
               withCredentials: this.webMapService.handleWithCredentials('', mapInfo.baseLayer.url, false)
             }).then((res) => {
@@ -347,7 +347,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
     _createMVTBaseLayer(layerInfo, addedCallback) {
       let url = layerInfo.dataSource.url;
       if (url.indexOf('/restjsr/') > -1 && !/\/style\.json$/.test(url)) {
-        url += '/style.json';
+        url = Util.urlPathAppend(url, '/style.json');
       }
       const withoutFormatSuffix = url.indexOf('/restjsr/') === -1;
       this.webMapService
@@ -743,9 +743,15 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       const url = layerInfo.url;
       const layerId = layerInfo.layerID || layerInfo.name;
       const { minzoom, maxzoom } = layerInfo;
-      this.getBounds(`${url}.json`, {
+      let requestUrl = url;
+      if (layerInfo.credential && layerInfo.credential.token) {
+        const token = layerInfo.credential.token;
+        requestUrl = Util.urlAppend(requestUrl, `token=${token}`);
+      }
+      const boundsRequestUrl = Util.handleUrlSuffix(requestUrl, '.json');
+      this.getBounds(boundsRequestUrl, {
         withoutFormatSuffix: true,
-        withCredentials: this.webMapService.handleWithCredentials('', url, false)
+        withCredentials: this.webMapService.handleWithCredentials('', requestUrl, false)
       }).then((res) => {
         let bounds = null;
         if (res && res.bounds) {
@@ -772,7 +778,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
           }
         }
         this._addBaselayer({
-          url: [url],
+          url: [requestUrl],
           layerID: layerId,
           visibility: layerInfo.visible,
           minzoom,
@@ -2779,7 +2785,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
         height: 256
       };
 
-      url += this._getParamString(options, url) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
+      url = Util.urlAppend(url, this._getParamString(options, url) + '&tilematrix={z}&tilerow={y}&tilecol={x}')
 
       const tiandituUrl = url.replace('{layer}', layerType).replace('{proj}', tilematrixSet);
       const tiandituUrlArr = [];
@@ -2793,7 +2799,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       if (isLabel) {
         const labelLayer = layerLabelMap[layerType];
         options.layer = labelLayer;
-        labelUrl += this._getParamString(options, labelUrl) + '&tilematrix={z}&tilerow={y}&tilecol={x}';
+        labelUrl = Util.urlAppend(labelUrl, this._getParamString(options, labelUrl) + '&tilematrix={z}&tilerow={y}&tilecol={x}');
         labelUrl = labelUrl.replace('{layer}', labelLayer).replace('{proj}', tilematrixSet);
         const labelUrlArr = [];
         for (let i = 0; i < 8; i++) {
