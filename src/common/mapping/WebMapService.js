@@ -276,10 +276,11 @@ export class WebMapService {
             }
           }
           let tileMatrixSet = content.TileMatrixSet;
+          const IDENTIFIER = 'ows:Identifier';
           for (let i = 0; i < tileMatrixSet.length; i++) {
             if (
-              tileMatrixSet[i]['ows:Identifier'] &&
-              (tileMatrixSet[i]['ows:Identifier'] + '') === layerInfo.tileMatrixSet
+              tileMatrixSet[i][IDENTIFIER] &&
+              (tileMatrixSet[i][IDENTIFIER] + '') === layerInfo.tileMatrixSet
             ) {
               if (
                 tileMatrixSet[i]['WellKnownScaleSet'] &&
@@ -297,7 +298,7 @@ export class WebMapService {
                   mapCRS === 'EPSG:3857' ? [-2.0037508342789248e7, 2.0037508342789087e7] : [-180, 90];
                 for (let j = 0; j < tileMatrixSet[i].TileMatrix.length; j++) {
                   const tileMatrix = tileMatrixSet[i].TileMatrix[j];
-                  const identifier = tileMatrix['ows:Identifier'];
+                  const identifier = tileMatrix[IDENTIFIER];
                   const topLeftCorner = [...tileMatrix['TopLeftCorner'].split(' ')];
                   scales.push(tileMatrix['ScaleDenominator']);
                   if (
@@ -338,14 +339,14 @@ export class WebMapService {
             }
           }
           const layer = content.Layer && content.Layer.find(item => {
-            return item['ows:Identifier'] === layerInfo.layer;
+            return item[IDENTIFIER] === layerInfo.layer;
           });
           if (layer) {
             let styles = layer.Style;
             if (Array.isArray(layer.Style)) {
-              style = styles[0]['ows:Identifier'] ? styles[0]['ows:Identifier'] : '';
+              style = styles[0][IDENTIFIER] ? styles[0][IDENTIFIER] : '';
             } else {
-              style = styles['ows:Identifier'] ? styles['ows:Identifier'] : '';
+              style = styles[IDENTIFIER] ? styles[IDENTIFIER] : '';
             }
             if (layer['ows:WGS84BoundingBox']) {
               const lowerCorner = layer['ows:WGS84BoundingBox']['ows:LowerCorner'].split(' ');
