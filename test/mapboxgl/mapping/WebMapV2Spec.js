@@ -3457,4 +3457,47 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     });
   });
+  
+  it('baselayer is MAPBOXSTYLE when mapInfo has no extent', (done) => {
+    const mapInfo = {
+      "maxScale": "1:144447.92746805",
+      "baseLayer": {
+          "layerType": "MAPBOXSTYLE",
+          "name": "Capital@World33font",
+          "dataSource": {
+              "type": "EXTERNAL",
+              "url": "http://localhost:8195/portalproxy/ad4c697aec15c20c/iserver/services/map-mvt-CapitalWorld33font/restjsr/v1/vectortile/maps/Capital%40World33font"
+          }
+      },
+      "projection": "EPSG:4326",
+      "minScale": "1:591658710.909131",
+      "title": "Capital@World33font",
+      "version": "2.3.0",
+    }
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify(mapInfo)
+          )
+        );
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      done();
+    });
+  });
 });

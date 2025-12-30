@@ -123,7 +123,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
 
     _getMapInfo(mapInfo, _taskID) {
       this._mapInfo = mapInfo;
-      const { projection } = mapInfo;
+      const { projection, extent } = mapInfo;
+      if (!extent) {
+        mapInfo.extent = { leftBottom: {}, rightTop: {} };
+      }
       let bounds, wkt;
       if (projection.indexOf('EPSG') === 0) {
         this.baseProjection = projection;
