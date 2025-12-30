@@ -89,7 +89,7 @@ export class VectorTileStyles extends Observable {
                                 cartoCss = cartoCss.replace(/\\#/gi, "___");
                                 //替换一些关键符号
                                 var cachedLayer = {};
-                                Object.keys(layersInfo).sort((a, b) => a.localeCompare(b))).forEach(function (attr) {
+                                layersInfo && Object.keys(layersInfo).sort((a, b) => a.localeCompare(b)).forEach(function (attr) {
                                     var newAttr = attr.replace(/[@#\s]/gi, "___");
                                     var to = attr;
                                     var keys = Object.keys(cachedLayer);
