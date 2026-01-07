@@ -839,7 +839,10 @@ export class WebMap extends Observable {
               layerType: 'VECTOR_TILE'
             });
           }
-          layerInfo.visibleScale && this.setVisibleScales(layer, layerInfo.visibleScale);
+          // 后续逻辑非需要visibleScales  否则修改很复杂
+          layerInfo.visibleScales = layer.getSource().getTileGrid().getResolutions().map((res) => {
+            return Util.resolutionToScale(res, 96, layerInfo.coordUnit || 'm');
+          });
           //否则没有ID，对不上号
           layerInfo.layer = layer;
           layerInfo.layerID = layerID;
@@ -5178,17 +5181,17 @@ export class WebMap extends Observable {
   createVisibleResolution(visibleScales, indexbounds, bounds, coordUnit) {
     let visibleResolution = [];
     // 1 设置了地图visibleScales的情况
-    if (visibleScales && visibleScales.length > 0) {
-      visibleResolution = visibleScales.map((scale) => {
-        let value = 1 / scale;
-        let res = this.getResFromScale(value, coordUnit);
-        return res;
-      });
-    } else {
+    // if (visibleScales && visibleScales.length > 0) {
+    //   visibleResolution = visibleScales.map((scale) => {
+    //     let value = 1 / scale;
+    //     let res = this.getResFromScale(value, coordUnit);
+    //     return res;
+    //   });
+    // } else {
       // 2 地图的bounds
       let envelope = this.getEnvelope(indexbounds, bounds);
       visibleResolution = this.getStyleResolutions(envelope);
-    }
+    // }
     return visibleResolution;
   }
 
@@ -5229,7 +5232,7 @@ export class WebMap extends Observable {
     );
     const envelope = this.getEnvelope(indexbounds, layerInfo.bounds);
     const styleResolutions = this.getStyleResolutions(envelope);
-    // const origin = [envelope.left, envelope.top];
+    const origin = [envelope.left, envelope.top];
     let baseUrl = layerInfo.url;
     let paramUrl = baseUrl.split('?')[1];
     if (layerInfo.dataSource.type === 'ARCGIS_VECTORTILE') {
@@ -5273,6 +5276,11 @@ export class WebMap extends Observable {
             style: styles,
             withCredentials,
             projection: layerInfo.projection,
+            tileGrid: new TileGrid({
+              resolutions: styleResolutions,
+              origin,
+              tileSize: 512
+            }),
             format: new MVT({
               featureClass: olRenderFeature
             }),

@@ -1033,6 +1033,85 @@ var vectorTile_style = {
   zoom: 0,
   version: 8
 };
+var vectorTile_style_3857 = {
+  "metadata": {
+    "mapcenter": [
+      11523496.17829781,
+      3735091.5117932605
+    ],
+    "indexbounds": [
+      -20037508.342789244,
+      -20037508.342789244,
+      20037508.342789244,
+      20037508.342789244
+    ],
+    "mapscale": 2.455671966265e-8,
+    "epsgcode": 0,
+    "topscale": 3.3803271432053097e-9,
+    "mapbounds": [
+      8009146.115071949,
+      382872.01868254057,
+      15037846.241523674,
+      7087311.00490398
+    ]
+  },
+  "sources": {
+    "PopulationDistribution": {
+      "tiles": [
+        "http://172.16.14.44:8090/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&z={z}"
+      ],
+      "bounds": [
+        -180,
+        -90,
+        180,
+        90
+      ],
+      "type": "vector"
+    }
+  },
+  "center": [
+    103.51732743457816,
+    31.784770965138264
+  ],
+  "name": "PopulationDistribution",
+  "layers": [
+    {
+      "paint": {
+        "background-color": "rgba(255,255,255,1.00)"
+      },
+      "id": "background",
+      "type": "background"
+    },
+    {
+      "layout": {
+        "visibility": "visible"
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          "$type",
+          "Polygon"
+        ]
+      ],
+      "metadata": {
+        "layer:caption": "Country_R@Population",
+        "layer:name": "Country_R@Population#1"
+      },
+      "maxzoom": 24,
+      "paint": {
+        "fill-color": 'red',
+      },
+      "id": "Country_R@Population#1_unique_(0_24)",
+      "source": "PopulationDistribution",
+      "source-layer": "Country_R@Population",
+      "type": "fill",
+      "minzoom": 0
+    },
+  ],
+  "zoom": 2.8,
+  "version": 8
+};
 
 var vectorTile_style_relative = {
   layers: [

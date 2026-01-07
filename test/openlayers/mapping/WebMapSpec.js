@@ -1955,7 +1955,7 @@ describe('openlayers_WebMap', () => {
         return Promise.resolve(new Response(JSON.stringify(datavizWebMap_MVT)));
       }
       if (url.indexOf('vectorstyles.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style_3857)));
       }
       if (url.indexOf('http://fake/iserver/services/map-China100/rest/maps/China.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(mapInfo2)));
@@ -1969,6 +1969,7 @@ describe('openlayers_WebMap', () => {
       expect(datavizWebmap.server).toBe(server);
       expect(datavizWebmap.errorCallback).toBeDefined();
       expect(datavizWebmap.map.getLayers().getArray()[0] instanceof olLayer.VectorTile).toBeTrue();
+      expect(datavizWebmap.map.getView().getResolutionForZoom(datavizWebmap.map.getView().getZoom())).toBeCloseTo(9783.93962050256,0.1);
       done();
     }
   });
