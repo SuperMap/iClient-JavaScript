@@ -388,14 +388,16 @@ describe('Util', () => {
 
     it('createUniqueID', () => {
         let id = Util.createUniqueID();
-        expect(id).toBe('id_0');
-        expect(Util.lastSeqID).toBe(0);
+        let lastSeqId = Util.lastSeqID;
+        expect(id).toContain('id_');
+        expect(id).toBe(`id_${lastSeqId}`);
         id = Util.createUniqueID('custom_');
-        expect(id).toBe('custom_1');
-        expect(Util.lastSeqID).toBe(1);
+        expect(id).toContain('custom_');
+        expect(id).toBe(`custom_${lastSeqId + 1}`);
         id = Util.createUniqueID();
-        expect(id).toBe('id_2');
-        expect(Util.lastSeqID).toBe(2);
+        expect(id).toContain('id_');
+        expect(id).toBe(`id_${lastSeqId + 2}`);
+        expect(lastSeqId + 2).toBe(Util.lastSeqID);
     })
 
 });
