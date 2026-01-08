@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
 // import {Vector} from './Vector';
-import {Util} from './Util';
+import { CircularUtil } from './CircularUtil';
 
 /**
  * @class Geometry
@@ -22,7 +22,7 @@ export class Geometry {
          * @description  几何对象的唯一标识符。
          *
          */
-        this.id = Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = CircularUtil.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {Geometry} Geometry.prototype.parent

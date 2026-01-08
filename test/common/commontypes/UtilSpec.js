@@ -386,4 +386,16 @@ describe('Util', () => {
         expect(result.textHeight).toEqual(18);
     });
 
+    it('createUniqueID', () => {
+        let id = Util.createUniqueID();
+        expect(id).toBe('id_0');
+        expect(Util.lastSeqID).toBe(0);
+        id = Util.createUniqueID('custom_');
+        expect(id).toBe('custom_1');
+        expect(Util.lastSeqID).toBe(1);
+        id = Util.createUniqueID();
+        expect(id).toBe('id_2');
+        expect(Util.lastSeqID).toBe(2);
+    })
+
 });

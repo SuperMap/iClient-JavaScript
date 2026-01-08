@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import {Util} from './Util';
+ import { CircularUtil } from './CircularUtil';
 
 /**
  * @function inherit
@@ -21,7 +21,7 @@ export var inheritExt = function (C, P) {
         if (typeof o === "function") {
             o = o.prototype;
         }
-        Util.extend(C.prototype, o);
+        CircularUtil.extend(C.prototype, o);
     }
 };
 

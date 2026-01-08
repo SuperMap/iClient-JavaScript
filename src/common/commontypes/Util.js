@@ -4,6 +4,7 @@
 import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
 import URI from 'urijs';
+import { CircularUtil } from './CircularUtil';
 
 /**
  * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：<br>
@@ -168,36 +169,7 @@ const Util = {
    * @returns {Object} 目标对象。
    */
 
-  extend: function (destination, source) {
-    destination = destination || {};
-    if (source) {
-      for (var property in source) {
-        var value = source[property];
-        if (value !== undefined) {
-          destination[property] = value;
-        }
-      }
-
-      /**
-       * IE doesn't include the toString property when iterating over an object's
-       * properties with the for(property in object) syntax.  Explicitly check if
-       * the source has its own toString property.
-       */
-
-      /*
-       * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
-       * prototype object" when calling hawOwnProperty if the source object
-       * is an instance of window.Event.
-       */
-
-      var sourceIsEvt = typeof window.Event === 'function' && source instanceof window.Event;
-
-      if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty('toString')) {
-        destination.toString = source.toString;
-      }
-    }
-    return destination;
-  },
+  extend: CircularUtil.extend,
   /**
    * @memberOf CommonUtil
    * @description 对象拷贝。
@@ -583,7 +555,7 @@ const Util = {
    * @type {number}
    * @default 0
    */
-  lastSeqID: 0,
+  lastSeqID: CircularUtil.lastSeqID,
 
   /**
    * @memberOf CommonUtil
@@ -591,13 +563,7 @@ const Util = {
    * @param {string} [prefix] - 前缀。
    * @returns {string} 唯一的 ID 值。
    */
-  createUniqueID: function (prefix) {
-    if (prefix == null) {
-      prefix = 'id_';
-    }
-    Util.lastSeqID += 1;
-    return prefix + Util.lastSeqID;
-  },
+  createUniqueID: CircularUtil.createUniqueID,
 
   /**
    * @memberOf CommonUtil
