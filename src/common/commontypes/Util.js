@@ -555,7 +555,7 @@ const Util = {
    * @type {number}
    * @default 0
    */
-  lastSeqID: CircularUtil.lastSeqID,
+  lastSeqID: 0,
 
   /**
    * @memberOf CommonUtil
@@ -1254,5 +1254,7 @@ function canBeJsonified(str) {
     return false;
   }
 }
+
+CircularUtil.setRelativeParentUtil(Util);
 
 export { Util, Browser, INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO };

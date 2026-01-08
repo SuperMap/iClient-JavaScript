@@ -1,4 +1,5 @@
 import { Util } from '../../../src/common/commontypes/Util';
+import { CircularUtil } from '../../../src/common/commontypes/CircularUtil';
 import { Pixel } from '../../../src/common/commontypes/Pixel';
 import { Size } from '../../../src/common/commontypes/Size';
 import { Bounds } from '../../../src/common/commontypes/Bounds';
@@ -398,6 +399,23 @@ describe('Util', () => {
         expect(id).toContain('id_');
         expect(id).toBe(`id_${lastSeqId + 2}`);
         expect(lastSeqId + 2).toBe(Util.lastSeqID);
+    })
+
+    it('createUniqueID no parentUtil', () => {
+        CircularUtil.setRelativeParentUtil(null);
+        expect(CircularUtil.lastSeqID).toBe(0);
+        let id = CircularUtil.createUniqueID();
+        let lastSeqId = CircularUtil.lastSeqID;
+        expect(id).toContain('id_1');
+        expect(id).toBe(`id_${lastSeqId}`);
+        id = CircularUtil.createUniqueID('custom_');
+        expect(id).toContain('custom_');
+        expect(id).toBe(`custom_${lastSeqId + 1}`);
+        id = CircularUtil.createUniqueID();
+        expect(id).toContain('id_');
+        expect(id).toBe(`id_${lastSeqId + 2}`);
+        expect(lastSeqId + 2).toBe(CircularUtil.lastSeqID);
+        CircularUtil.setRelativeParentUtil(Util);
     })
 
 });

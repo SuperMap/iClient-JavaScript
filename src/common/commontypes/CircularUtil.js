@@ -1,11 +1,11 @@
 const CircularUtil = {
   lastSeqID: 0,
+  parentUtil: null,
+  setRelativeParentUtil: function (util) {
+    CircularUtil.parentUtil = util;
+  },
   createUniqueID: function (prefix) {
-    if (prefix == null) {
-      prefix = 'id_';
-    }
-    CircularUtil.lastSeqID += 1;
-    return prefix + CircularUtil.lastSeqID;
+    return createUniqueID(prefix, CircularUtil.parentUtil || CircularUtil);
   },
   extend: function (destination, source) {
     destination = destination || {};
@@ -38,5 +38,13 @@ const CircularUtil = {
     return destination;
   }
 };
+
+function createUniqueID(prefix, util) {
+  if (prefix == null) {
+    prefix = 'id_';
+  }
+  util.lastSeqID += 1;
+  return prefix + util.lastSeqID;
+}
 
 export { CircularUtil };
