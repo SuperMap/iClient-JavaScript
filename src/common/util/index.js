@@ -22,6 +22,7 @@ import { Polygon } from "../commontypes/geometry/Polygon";
 import { LinearRing } from "../commontypes/geometry/LinearRing";
 import { GeoJSON as GeoJSONFormat } from "../format/GeoJSON";
 import { GeometryAnalysis } from './GeometryAnalysis';
+import { mapboxFilterToQueryFilter } from './FilterCondition';
 
 function toSuperMapGeometry(geoJSON) {
     if (geoJSON && geoJSON.type) {
@@ -83,5 +84,6 @@ export {
   getWrapNum,
   conversionDegree,
   extend,
-  GeometryAnalysis
+  GeometryAnalysis,
+  mapboxFilterToQueryFilter
 };

@@ -338,7 +338,8 @@ import {
     conversionDegree,
     EncryptRequest,
     getServiceKey,
-    GeometryAnalysis
+    GeometryAnalysis,
+    mapboxFilterToQueryFilter
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -511,7 +512,8 @@ export {
     getMeterPerMapUnit,
     getWrapNum,
     conversionDegree,
-    GeometryAnalysis
+    GeometryAnalysis,
+    mapboxFilterToQueryFilter
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {
