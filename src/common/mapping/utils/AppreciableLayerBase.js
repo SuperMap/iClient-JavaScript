@@ -260,7 +260,8 @@ export class AppreciableLayerBase extends Events {
       CLASS_NAME,
       CLASS_INSTANCE,
       reused,
-      metadata = layer.metadata || {}
+      metadata = layer.metadata || {},
+      filter
     } = layerInfo;
     const sourceOnMap = this.map.getSource(layer.source);
     const fields = {
@@ -279,7 +280,8 @@ export class AppreciableLayerBase extends Events {
       themeSetting,
       metadata,
       // top bottom auto
-      layerOrder: metadata.SM_Layer_Order || 'auto'
+      layerOrder: metadata.SM_Layer_Order || 'auto',
+      filter
     };
     if (layer.sourceLayer) {
       fields.renderSource.sourceLayer = layer.sourceLayer;
