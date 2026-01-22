@@ -133,7 +133,8 @@ export class SourceListModelV3 extends AppreciableLayerBase {
         reused: layer.metadata && layer.metadata.reused
       };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
-      const { msDatasetId, relationMsDatasetId } = matchProjectCatalog;
+      const { msDatasetId, relationMsDatasetId, filter, serviceLayerId } = matchProjectCatalog;
+      filter && (layerInfo.filter = filter);
       let dataSource = {};
       if (msDatasetId) {
         for (const data of datas) {
@@ -181,6 +182,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
           dataSource.url = `${serverUrl}/rest/maps`;
           dataSource.mapName = mapName;
           dataSource.type = 'REST_MAP';
+          dataSource.layerName = serviceLayerId;
         }
       }
       layerInfo.dataSource = dataSource;

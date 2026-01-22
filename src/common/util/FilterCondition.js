@@ -119,7 +119,7 @@ function mapboxFilterToCqlFilter(filter) {
             if (isNullvalue(value)) {
                 return `${field} IS NULL`;
             }
-            return `${field} == ${formatValue(value)}`;
+            return `${field} = ${formatValue(value)}`;
         }
         case '!=': {
             value = operands[1];

@@ -7,7 +7,7 @@ describe('FilterCondition', () => {
     it('== 普通等值', () => {
       const filter = ['==', 'name', 'Tom'];
       const result = mapboxFilterToQueryFilter(filter, 'SQL');
-      expect(result).toBe("name == 'Tom'");
+      expect(result).toBe("name = 'Tom'");
     });
 
     it('== null 转 IS NULL', () => {
@@ -25,7 +25,7 @@ describe('FilterCondition', () => {
     it('字符串单引号转义', () => {
       const filter = ['==', 'publisher', "O'Reilly"];
       const result = mapboxFilterToQueryFilter(filter, 'SQL');
-      expect(result).toBe("publisher == 'O''Reilly'");
+      expect(result).toBe("publisher = 'O''Reilly'");
     });
 
     it('数值比较 >', () => {
@@ -53,7 +53,7 @@ describe('FilterCondition', () => {
         ['==', 'gender', 'M']
       ];
       const result = mapboxFilterToQueryFilter(filter, 'SQL');
-      expect(result).toBe("age > 18 AND gender == 'M'");
+      expect(result).toBe("age > 18 AND gender = 'M'");
     });
 
     it('any (OR)', () => {
@@ -63,7 +63,7 @@ describe('FilterCondition', () => {
         ['==', 'type', 'B']
       ];
       const result = mapboxFilterToQueryFilter(filter, 'SQL');
-      expect(result).toBe("(type == 'A') OR (type == 'B')");
+      expect(result).toBe("(type = 'A') OR (type = 'B')");
     });
 
     it('none (NOT AND)', () => {
@@ -73,7 +73,7 @@ describe('FilterCondition', () => {
         ['<', 'age', 10]
       ];
       const result = mapboxFilterToQueryFilter(filter, 'SQL');
-      expect(result).toBe("NOT (status == 'disabled') AND NOT (age < 10)");
+      expect(result).toBe("NOT (status = 'disabled') AND NOT (age < 10)");
     });
 
     it('非法 filter 返回空字符串', () => {
