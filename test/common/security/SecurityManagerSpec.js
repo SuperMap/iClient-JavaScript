@@ -165,4 +165,32 @@ describe('SecurityManager', () => {
         expect(newUrl).toBe(url);
         SecurityManager.destroyAllCredentials();
     });
+    it('getCredentialTokenKey', () => {
+        var url = 'http://localhost:8091/iportal';
+        var token = '_Ro_';
+        var key = '_Ro_K';
+        SecurityManager.registerToken(url, token);
+        SecurityManager.registerKey(url, key);
+        url = 'http://localhost:8091/iportal/web/services/32';
+        var obj = SecurityManager.getCredential(url);
+        expect(obj.name).toBe('token');
+        expect(obj.value).toBe(token);
+        SecurityManager.destroyAllCredentials();
+    });
+     it('getCredentialKey', () => {
+        var url = 'http://localhost:8091/iportal';
+        var token = '_Ro_';
+        var key = '_Ro_K';
+        SecurityManager.registerKey(url, key);
+        var obj = SecurityManager.getCredential(url);
+        expect(obj.name).toBe('key');
+        expect(obj.value).toBe(key);
+        SecurityManager.destroyAllCredentials();
+    });
+     it('getCredentialNull', () => {
+        var url = 'http://localhost:8091/iportal/web/services/32';
+        var obj = SecurityManager.getCredential(url);
+        expect(obj).toBeNull();
+        SecurityManager.destroyAllCredentials();
+    });
 });

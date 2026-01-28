@@ -21,6 +21,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Array.<string>} options.urls - 服务地址数组,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -41,175 +42,222 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  */
 export class TileSuperMapRest extends TileImage {
     constructor(options) {
-        options = options || {};
-        options.attributions =
-            options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
+      options = options || {};
+      options.attributions =
+        options.attributions || 'Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>';
 
-        options.format = options.format ? options.format : 'png';
+      options.format = options.format ? options.format : 'png';
 
-        super({ 
-            attributions: options.attributions,
-            cacheSize: options.cacheSize,
-            crossOrigin: options.crossOrigin,
-            logo: Util.getOlVersion() === '4' ? options.logo : null,
-            opaque: options.opaque,
-            projection: options.projection,
-            reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-            state: options.state,
-            tileClass: options.tileClass,
-            tileGrid: options.tileGrid,
-            tileLoadFunction: options.tileLoadFunction,
-            tilePixelRatio: options.tilePixelRatio,
-            tileUrlFunction: tileUrlFunction,
-            wrapX: options.wrapX !== undefined ? options.wrapX : false,
-            cacheEnabled: options.cacheEnabled,
-            layersID: options.layersID
-        });
-        if (options.tileProxy) {
-            this.tileProxy = options.tileProxy;
+      super({
+        attributions: options.attributions,
+        cacheSize: options.cacheSize,
+        crossOrigin: options.crossOrigin,
+        logo: Util.getOlVersion() === '4' ? options.logo : null,
+        opaque: options.opaque,
+        projection: options.projection,
+        reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+        state: options.state,
+        tileClass: options.tileClass,
+        tileGrid: options.tileGrid,
+        tileLoadFunction: options.tileLoadFunction,
+        tilePixelRatio: options.tilePixelRatio,
+        tileUrlFunction: options.tileUrlFunction || tileUrlFunction,
+        wrapX: options.wrapX !== undefined ? options.wrapX : false,
+        cacheEnabled: options.cacheEnabled,
+        layersID: options.layersID
+      });
+      if (options.tileProxy) {
+        this.tileProxy = options.tileProxy;
+      }
+      this.options = options;
+      //当前切片在切片集中的index
+      this.tileSetsIndex = -1;
+      this.tempIndex = -1;
+      this.dpi = this.options.dpi || 96;
+      if (options.url) {
+        this._urls = expandUrl(options.url);
+        if (this._urls.length === 1) {
+          this._tileImageUrl = CommonUtil.urlPathAppend(this._urls[0], 'tileImage.' + options.format);
         }
-        this.options = options;
-        this._url = options.url;
-        //当前切片在切片集中的index
-        this.tileSetsIndex = -1;
-        this.tempIndex = -1;
-        this.dpi = this.options.dpi || 96;
-        var me = this;
-        var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
+      } else {
+        this._urls = options.urls;
+      }
+      var me = this;
 
-        /**
-         * @function TileSuperMapRest.prototype.getAllRequestParams
-         * @description 获取全部请求参数。
-         */
-        function getAllRequestParams() {
-            var me = this,
-                params = {};
+      /**
+       * @function TileSuperMapRest.prototype.getAllRequestParams
+       * @description 获取全部请求参数。
+       */
+      function getAllRequestParams(layerUrlPrefix) {
+        var me = this,
+          params = {};
 
-            params['redirect'] = options.redirect !== undefined ? options.redirect : false;
-            //切片是否透明
-            params['transparent'] = options.transparent !== undefined ? options.transparent : true;
-            params['cacheEnabled'] = !(options.cacheEnabled === false);
-            //存储一个cacheEnabled参数
-            me.cacheEnabled = params['cacheEnabled'];
-            params['_cache'] = params['cacheEnabled'];
+        params['redirect'] = options.redirect !== undefined ? options.redirect : false;
+        //切片是否透明
+        params['transparent'] = options.transparent !== undefined ? options.transparent : true;
+        params['cacheEnabled'] = !(options.cacheEnabled === false);
+        //存储一个cacheEnabled参数
+        me.cacheEnabled = params['cacheEnabled'];
+        params['_cache'] = params['cacheEnabled'];
 
-            //设置切片原点
-            if (this.origin) {
-                params['origin'] = JSON.stringify({
-                    x: this.origin[0],
-                    y: this.origin[1]
-                });
-            }
-
-            if (options.prjCoordSys) {
-                params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
-            }
-
-            if (options.layersID) {
-                params['layersID'] = options.layersID.toString();
-            }
-
-            if (options.clipRegion instanceof Geometry) {
-                options.clipRegionEnabled = true;
-                options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
-                options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
-                params['clipRegionEnabled'] = options.clipRegionEnabled;
-                params['clipRegion'] = JSON.stringify(options.clipRegion);
-            }
-
-            if (!options.overlapDisplayed) {
-                params['overlapDisplayed'] = false;
-                if (options.overlapDisplayedOptions) {
-                    params['overlapDisplayedOptions'] = me.overlapDisplayedOptions.toString();
-                }
-            } else {
-                params['overlapDisplayed'] = true;
-            }
-
-            if (params.cacheEnabled && options.tileversion) {
-                params['tileversion'] = options.tileversion.toString();
-            }
-            if (options.rasterfunction) {
-                params['rasterfunction'] = JSON.stringify(options.rasterfunction);
-            }
-            if (options.chartSetting) {
-                params["chartSetting"] = JSON.stringify(options.chartSetting);
-            }
-
-            return params;
+        //设置切片原点
+        if (this.origin) {
+          params['origin'] = JSON.stringify({
+            x: this.origin[0],
+            y: this.origin[1]
+          });
         }
 
-        /**
-         * @function TileSuperMapRest.prototype.getFullRequestUrl
-         * @description 获取完整的请求地址。
-         */
-        function getFullRequestUrl() {
-            if (this._paramsChanged) {
-                this._layerUrl = createLayerUrl.call(this);
-                this._paramsChanged = false;
-            }
-            return this._layerUrl || createLayerUrl.call(this);
+        if (options.prjCoordSys) {
+          params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
         }
 
-        /**
-         * @function TileSuperMapRest.prototype.createLayerUrl
-         * @description 获取新建图层地址。
-         */
-        function createLayerUrl() {
-            this.requestParams = this.requestParams || getAllRequestParams.call(this);
-            this._layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
-            //为url添加安全认证信息片段
-            this._layerUrl = SecurityManager.appendCredential(this._layerUrl);
-            return this._layerUrl;
+        if (options.layersID) {
+          params['layersID'] = options.layersID.toString();
         }
 
-        function tileUrlFunction(tileCoord, pixelRatio, projection) {
-            if (!me.tileGrid) {
-                if (options.extent) {
-                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
-                    if (me.resolutions) {
-                        me.tileGrid.resolutions = me.resolutions;
-                    }
-                } else {
-                    if (projection.getCode() === 'EPSG:3857') {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([
-                            -20037508.3427892,
-                            -20037508.3427892,
-                            20037508.3427892,
-                            20037508.3427892
-                        ]);
-                        me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
-                    }
-                    if (projection.getCode() === 'EPSG:4326') {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
-                        me.extent = [-180, -90, 180, 90];
-                    }
-                }
-            }
-            me.origin = me.tileGrid.getOrigin(0);
-            var z = tileCoord[0];
-            var x = tileCoord[1];
-            var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
-            var resolution = me.tileGrid.getResolution(z);
-            var dpi = me.dpi || 96;
-            var unit = projection.getUnits() || Unit.DEGREE;
-            var scale = Util.resolutionToScale(resolution, dpi, unit);
-            var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
-            var layerUrl = getFullRequestUrl.call(me);
-            var url =
-                layerUrl +
-                encodeURI(
-                    '&x=' + x + '&y=' + y + '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&scale=' + scale
-                );
-            //支持代理
-            if (me.tileProxy) {
-                url = me.tileProxy + encodeURIComponent(url);
-            }
-            if (!me.cacheEnabled) {
-                url += '&_t=' + new Date().getTime();
-            }
-            return url;
+        if (options.clipRegion instanceof Geometry) {
+          options.clipRegionEnabled = true;
+          options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
+          options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+          params['clipRegionEnabled'] = options.clipRegionEnabled;
+          params['clipRegion'] = JSON.stringify(options.clipRegion);
         }
+
+        if (!options.overlapDisplayed) {
+          params['overlapDisplayed'] = false;
+          if (options.overlapDisplayedOptions) {
+            params['overlapDisplayedOptions'] = me.overlapDisplayedOptions.toString();
+          }
+        } else {
+          params['overlapDisplayed'] = true;
+        }
+
+        if (params.cacheEnabled && options.tileversion) {
+          params['tileversion'] = options.tileversion.toString();
+        }
+        if (options.rasterfunction) {
+          params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+        }
+        if (options.chartSetting) {
+          params['chartSetting'] = JSON.stringify(options.chartSetting);
+        }
+        const credential = SecurityManager.getCredential(layerUrlPrefix);
+        if (credential) {
+          params[credential.name] = credential.value;
+        }
+        return params;
+      }
+
+      /**
+       * @function TileSuperMapRest.prototype.getFullRequestUrl
+       * @description 获取完整的请求地址。
+       */
+      function getFullRequestUrl(tileCoord) {
+        //非urls的情况，尽可能复用url，减少拼接字符串
+        if (this._tileImageUrl) {
+          if (this._paramsChanged) {
+            this._tileImageWithParamsUrl = createLayerUrl.call(this, this._tileImageUrl);
+            this._paramsChanged = false;
+          }
+          return this._tileImageWithParamsUrl || createLayerUrl.call(this, this._tileImageUrl);
+        }
+
+        const layerUrlPrefix = CommonUtil.urlPathAppend(
+          random(tileCoord, this._urls),
+          `tileImage.${this.options.format}`
+        );
+        if (this._paramsChanged) {
+          this._paramsChanged = false;
+        }
+        return createLayerUrl.call(this, layerUrlPrefix);
+      }
+
+      /**
+       * @function TileSuperMapRest.prototype.createLayerUrl
+       * @description 获取新建图层地址。
+       */
+      function createLayerUrl(layerUrlPrefix) {
+        this.requestParams = this.requestParams || getAllRequestParams.call(this, layerUrlPrefix);
+        return CommonUtil.urlAppend(layerUrlPrefix, CommonUtil.getParameterString(this.requestParams));
+      }
+      /**
+       * Copyright 2005-present, OpenLayers Contributors
+       */
+      function expandUrl(url) {
+        const urls = [];
+        let match = /\{([a-z])-([a-z])\}/.exec(url);
+        if (match) {
+          // char range
+          const startCharCode = match[1].charCodeAt(0);
+          const stopCharCode = match[2].charCodeAt(0);
+          let charCode;
+          for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
+            urls.push(url.replace(match[0], String.fromCharCode(charCode)));
+          }
+          return urls;
+        }
+        match = /\{(\d+)-(\d+)\}/.exec(url);
+        if (match) {
+          // number range
+          const stop = parseInt(match[2], 10);
+          for (let i = parseInt(match[1], 10); i <= stop; i++) {
+            urls.push(url.replace(match[0], i.toString()));
+          }
+          return urls;
+        }
+        urls.push(url);
+        return urls;
+      }
+      function random(tileCoord, urls) {
+        const a = (tileCoord[1] << tileCoord[0]) + tileCoord[2];
+        const b = urls.length;
+        const r = a % b;
+        return urls[r * b < 0 ? r + b : r];
+      }
+
+      function tileUrlFunction(tileCoord, pixelRatio, projection) {
+        if (!me.tileGrid) {
+          if (options.extent) {
+            me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
+            if (me.resolutions) {
+              me.tileGrid.resolutions = me.resolutions;
+            }
+          } else {
+            if (projection.getCode() === 'EPSG:3857') {
+              me.tileGrid = TileSuperMapRest.createTileGrid([
+                -20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892
+              ]);
+              me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+            }
+            if (projection.getCode() === 'EPSG:4326') {
+              me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+              me.extent = [-180, -90, 180, 90];
+            }
+          }
+        }
+        me.origin = me.tileGrid.getOrigin(0);
+        var z = tileCoord[0];
+        var x = tileCoord[1];
+        var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
+        var resolution = me.tileGrid.getResolution(z);
+        var dpi = me.dpi || 96;
+        var unit = projection.getUnits() || Unit.DEGREE;
+        var scale = Util.resolutionToScale(resolution, dpi, unit);
+        var tileSize = olSize.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
+        var layerUrl = getFullRequestUrl.call(me, tileCoord);
+        var url =
+          layerUrl +
+          encodeURI('&x=' + x + '&y=' + y + '&width=' + tileSize[0] + '&height=' + tileSize[1] + '&scale=' + scale);
+        //支持代理
+        if (me.tileProxy) {
+          url = me.tileProxy + encodeURIComponent(url);
+        }
+        if (!me.cacheEnabled) {
+          url += '&_t=' + new Date().getTime();
+        }
+        return url;
+      }
     }
 
     /**

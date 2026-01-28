@@ -332,6 +332,25 @@ export class SecurityManager {
         }
         return newUrl;
     }
+     /**
+     * @description 获取授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
+     * @version 12.1.0
+     * @function SecurityManager.getCredential
+     * @param {string} url - 服务URL。
+     * @returns {Object} 返回授权信息 - 包含 name 和 value 的对象。
+     */
+    static getCredential(url) {
+        var value = this.getToken(url);
+        var credential = value ? new Credential(value, 'token') : null;
+		if (!credential) {
+            value = this.getKey(url);
+            credential = value ? new Credential(value, 'key') : null;
+          }
+        if (credential) {
+           return {name: credential.name, value: credential.value};
+        }
+        return null;
+    }
 
     static _open(url, newTab) {
         newTab = newTab != null ? newTab : true;

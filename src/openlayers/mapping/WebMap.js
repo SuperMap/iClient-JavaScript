@@ -5178,7 +5178,7 @@ export class WebMap extends Observable {
    * @param {string} coordUnit
    * @returns {Array} visibleResolution
    */
-  createVisibleResolution(visibleScales, indexbounds, bounds, coordUnit) {
+  createVisibleResolution(visibleScales, indexbounds, bounds) {
     let visibleResolution = [];
     // 1 设置了地图visibleScales的情况
     // if (visibleScales && visibleScales.length > 0) {

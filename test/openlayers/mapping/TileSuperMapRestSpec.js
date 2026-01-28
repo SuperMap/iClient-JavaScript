@@ -29,6 +29,55 @@ describe('openlayers_TileSuperMapRest', () => {
         expect(tileSource.options).not.toBeNull();
     });
 
+    it('tileUrlFunction_url_{a-f}', () => {
+        var tempOptions = {
+            url: 'http://localhost:9876/iserver{a-f}/services/map-world/rest/maps/世界地图_Day',
+            extent: [0, 0, 90, 90],
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        };
+        var tileSourcetile = new TileSuperMapRest(tempOptions);
+        var pixelRatio = '245';
+        var coords = [5,3,2];
+        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+        expect(tileUrl).not.toBeNull();
+        expect(tileUrl).toContain('iserverc');
+    });
+    it('tileUrlFunction_url_{0-8}', () => {
+        var tempOptions = {
+            url: 'http://localhost:9876/iserver{0-8}/services/map-world/rest/maps/世界地图_Day',
+            extent: [0, 0, 90, 90],
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        };
+        var tileSourcetile = new TileSuperMapRest(tempOptions);
+        var pixelRatio = '245';
+        var coords = [5,4,2];
+        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+        expect(tileUrl).not.toBeNull();
+        expect(tileUrl).toContain('iserver4');
+        var coords = [6,4,2];
+        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+        expect(tileUrl).not.toBeNull();
+        expect(tileUrl).toContain('iserver6');
+    });
+    it('tileUrlFunction_urls', () => {
+        var tempOptions = {
+            urls: ['http://localhost:9876/iserver/services/map-world1','http://localhost:9876/iserver/services/map-world2'],
+            extent: [0, 0, 90, 90],
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        };
+        var tileSourcetile = new TileSuperMapRest(tempOptions);
+        var pixelRatio = '245';
+        var coords = [5,4,2];
+        var tileUrl = tileSourcetile.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+        expect(tileUrl).not.toBeNull();
+        expect(tileUrl).toContain('map-world1');
+    });
     it('tileUrlFunction', () => {
         var tempOptions = {
             url: url,
