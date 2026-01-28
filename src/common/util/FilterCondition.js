@@ -99,12 +99,12 @@ function isNullvalue(value) {
     return [null, '', undefined].includes(value);
 }
 
-function mapboxFilterToCqlFilter(filter) {
+function mapboxFilterToCqlFilter(filter, dataType) {
     if (!isSimpleComparison(filter)) {
         return '';
     }
     const [operator, ...operands] = filter;
-    const field = operands[0];
+    const field = dataType === 'STRUCTURE_DATA' ? `"${operands[0]}"` : operands[0];
     let value;
     switch (operator) {
         case '>':
@@ -147,21 +147,21 @@ function mapboxFilterToCqlFilter(filter) {
         // }
         case 'all': {
             return operands
-                .map((item) => mapboxFilterToCqlFilter(item))
+                .map((item) => mapboxFilterToCqlFilter(item, dataType))
                 .filter(Boolean)
                 .map((item) => `${item}`)
                 .join(' AND ');
         }
         case 'any': {
             return operands
-                .map((item) => mapboxFilterToCqlFilter(item))
+                .map((item) => mapboxFilterToCqlFilter(item, dataType))
                 .filter(Boolean)
                 .map((item) => `(${item})`)
                 .join(' OR ');
         }
         case 'none': {
             return operands
-                .map((item) => mapboxFilterToCqlFilter(item))
+                .map((item) => mapboxFilterToCqlFilter(item, dataType))
                 .filter(Boolean)
                 .map((item) => `NOT (${item})`)
                 .join(' AND ');
@@ -170,7 +170,7 @@ function mapboxFilterToCqlFilter(filter) {
             return '';
     }
 }
-
+// 暂时不考虑WFS
 // none的情况下，全部用Not一个一个包裹，会报错（应该是接口问题），反转即可
 function negateComparison(filter) {
     const op = filter[0];
@@ -335,9 +335,9 @@ function mapboxFilterToWfsFilter(filter) {
 </fes:Filter>`;
 }
 
-function mapboxFilterToQueryFilter(filter, type = 'SQL') {
+function mapboxFilterToQueryFilter(filter, dataType, type = 'SQL') {
     if (type === 'SQL') {
-        return mapboxFilterToCqlFilter(filter);
+        return mapboxFilterToCqlFilter(filter, dataType);
     }
     if (type === 'XML') {
         return mapboxFilterToWfsFilter(filter);
