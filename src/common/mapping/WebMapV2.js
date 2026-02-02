@@ -1030,8 +1030,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
         height: 256
       };
       options.bbox = '{bbox}';
-      options.crs = this.baseProjection;
       if (version === '1.3.0' ) {
+        options.crs = this.baseProjection;
         if (this.baseProjection === 'EPSG:4326') {
           options.bbox = '{bbox-wms-1.3.0}';
         } else {
@@ -1040,6 +1040,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
             options.bbox = '{bbox-wms-1.3.0}';
           } 
         }
+      } else {
+        options.srs = this.baseProjection;
       }
       return Util.urlAppend(url, this._getParamString(options, url));
     }
