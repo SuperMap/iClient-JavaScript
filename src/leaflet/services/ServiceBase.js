@@ -25,7 +25,7 @@ export var ServiceBase = L.Evented.extend({
 
         proxy: null,
 
-        withCredentials: false,
+        withCredentials: null,
         crossOrigin: null
     },
 
