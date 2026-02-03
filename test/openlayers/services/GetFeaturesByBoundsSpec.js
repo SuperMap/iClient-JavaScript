@@ -49,6 +49,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
             expect(paramsObj.getFeatureMode).toBe('BOUNDS');
             expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByBoundsService.getFeaturesByBounds(boundsParam, testResult => {

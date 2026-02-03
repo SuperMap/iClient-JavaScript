@@ -44,9 +44,10 @@ describe('mapboxgl_NetworkAnalystService', () => {
             isUncertainDirectionValid: false
         });
         var service = new NetworkAnalystService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/burstAnalyse");
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(burstPipelineAnalyst)));
         });
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, (result) => {

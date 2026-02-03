@@ -28,7 +28,7 @@ import proj4 from 'proj4';
  * @param {L.MapOptions} [options.mapOptions] - 地图参数，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
  * @param {Object} [options.layerOptions] - 图层参数，参考 <a href="TiledMapLayer.html">TiledMapLayer</a> 的参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @returns {Promise} Promise 对象，返回 { map, layer }。

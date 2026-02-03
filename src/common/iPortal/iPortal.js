@@ -18,7 +18,7 @@ import { IPortalShareParam } from "./iPortalShareParam";
  * @extends {IPortalServiceBase}
  * @param {string} iportalUrl - 服务地址。
  * @param {Object} options - 可选参数。
- * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @usage
  */
 export class IPortal extends IPortalServiceBase {
@@ -26,7 +26,7 @@ export class IPortal extends IPortalServiceBase {
         super(iportalUrl, options);
         this.iportalUrl = iportalUrl;
         options = options || {};
-        this.withCredentials = options.withCredentials || false;
+        this.withCredentials = options.withCredentials;
     }
 
     /**

@@ -26,6 +26,7 @@ describe('mapboxgl_DatasourceService', () => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url+"/datasources");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             var getDatasourceEscapedJson = `{"childUriList":["https://iserver.supermap.io/iserver/services/data-world/rest/data/datasources/name/World/datasets"],"datasourceInfo":{"coordUnit": "DEGREE","description": distanceUnit": "METER","engineType": "UDB","name": "World"}}`;
             return Promise.resolve(new Response(getDatasourceEscapedJson));
         });

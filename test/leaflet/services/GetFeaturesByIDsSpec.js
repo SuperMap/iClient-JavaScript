@@ -34,6 +34,7 @@ describe('leaflet_FeatureService_getFeaturesByIDs', () => {
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, result => {

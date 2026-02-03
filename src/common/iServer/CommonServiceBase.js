@@ -17,7 +17,7 @@ import { FunctionExt } from '../commontypes/BaseTypes';
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -48,7 +48,7 @@ export class CommonServiceBase {
 
         this.isInTheSameDomain = null;
 
-        this.withCredentials = false;
+        this.withCredentials =  null;
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -121,7 +121,7 @@ export class CommonServiceBase {
      * @param {function} options.failure - 请求失败后的回调函数。
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
-     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+     * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
      * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
      * @param {Object} [options.headers] - 请求头。
      */

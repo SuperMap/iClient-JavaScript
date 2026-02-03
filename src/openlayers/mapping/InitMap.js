@@ -23,7 +23,7 @@ window.proj4 = proj4;
  * @param {Object} [options.layerOptions] - 图层配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_layer_Tile-TileLayer.html} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
  * @param {Object} [options.sourceOptions] - 数据源配置，参数设置参考 {@link TileSuperMapRest} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @returns {Object} 实例对象，对象包括地图实例，图层实例，数据源实例。

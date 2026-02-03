@@ -15,7 +15,7 @@ import proj4 from 'proj4';
  * @param {Object} [options.type] - 地图类型。可选值 'raster' | 'vector-tile'。默认 'raster'。
  * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://docs.mapbox.com/mapbox-gl-js/api/map/}。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @returns {Object} 实例对象。对象包括地图实例。

@@ -34,6 +34,7 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj[0].geometry.type).toBe("POINT");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(`[92]`));
         });
         addFeaturesService.editFeatures(addFeaturesParams, (addFeatureResult_POINT) => {

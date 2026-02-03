@@ -87,6 +87,7 @@ describe('mapboxgl_SpatialAnalystService_geometryBatchAnalysis', () => {
             expect(paramsObj[1].analystName).toBe("overlay");
             expect(paramsObj[1].param.operation).toBe("CLIP");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(geometryBatchAnalystEscapedJson)));
         });
         new SpatialAnalystService(serviceUrl).geometrybatchAnalysis(parameters, function (result) {

@@ -47,6 +47,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
             expect(paramsObj.bufferDistance).toEqual(10);
             expect(paramsObj.getFeatureMode).toBe('BUFFER');
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
         });
         service.getFeaturesByBuffer(bufferParam, testResult => {

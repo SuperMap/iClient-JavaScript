@@ -34,6 +34,7 @@ describe('maplibregl_QueryService', () => {
             expect(params).toContain("'queryMode':'BoundsQuery'");
             expect(params).toContain("'bounds': {'rightTop':{'y':39,'x':60},'leftBottom':{'y':0,'x':0}}");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryByBounds(param, (result) => {

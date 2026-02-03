@@ -38,6 +38,7 @@ describe('openlayers_QueryService', () => {
             expect(paramsObj.queryMode).toBe("BoundsQuery");
             expect(paramsObj.queryParameters.queryParams[0].name).toBe("Capitals@World");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryService.queryByBounds(param, (result) => {

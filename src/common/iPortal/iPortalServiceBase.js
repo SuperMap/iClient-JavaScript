@@ -12,7 +12,7 @@ import { FetchRequest } from '../util/FetchRequest';
  * @category iPortal/Online Core
  * @param {string} url - 服务地址。
  * @param {Object} options - 可选参数。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage

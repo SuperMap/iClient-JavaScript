@@ -84,7 +84,7 @@ const dpiConfig = {
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
  * @param {string} [options.credentialKey] - 凭证密钥。例如为 "key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填。
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey 和 credentialValue 必须一起使用。
- * @deprecated {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @deprecated {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @deprecated {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
  * @param {Object} [options.serviceProxy] - SuperMap iPortal 内置代理信息，仅矢量瓦片图层上图才会使用。
  * @param {string} [options.tiandituKey] - 天地图的 key。

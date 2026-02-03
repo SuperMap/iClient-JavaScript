@@ -35,6 +35,7 @@ describe('maplibregl_GetFeatureAttachments', () => {
             expect(method).toEqual('GET');
             expect(params).toBeUndefined();
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             expect(url).toEqual('http://localhost:9876/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/features/1/attachments');
             return Promise.resolve(new Response(JSON.stringify(resInfo)));
         })

@@ -17,7 +17,7 @@ import { transformExpandCollapseHiddenData } from '@supermapgis/iclient-common/o
  * @param {Object} [options] - 参数。
  * @param {KnowledgeGraph.Config} [options.config] - KnowledgeGraph 的配置项。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @fires GraphMap#loaded
@@ -56,7 +56,7 @@ export class GraphMap extends L.Evented {
    * @param {string} graphMapName - 图谱名称。
    * @param {Object} options - 配置项。
    * @param {string} [options.proxy] - 服务代理地址。
-   * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+   * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
    * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
    * @param {Object} [options.headers] - 请求头。
    * @param {KnowledgeGraph.Config} [options.config] - knowledgegraph 配置项。
@@ -84,7 +84,7 @@ export class GraphMap extends L.Evented {
    * @param {string} serverUrl - GraphMap 服务地址，例如：http://{iserver}/services/knowledgeGraph-test/restjsr/graph
    * @param {Object} options - 参数。
    * @param {string} [options.proxy] - 服务代理地址。
-   * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+   * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
    * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
    * @param {Object} [options.headers] - 请求头。
    */

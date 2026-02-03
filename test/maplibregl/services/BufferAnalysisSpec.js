@@ -45,6 +45,7 @@ describe('maplibregl_SpatialAnalystService_bufferAnalysis', () => {
             expect(testUrl).toBe(url + "/datasets/Road_L@Jingjin/buffer?returnContent=true");
             expect(params).toContain("bufferAnalystParameter");
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byDatasetResultJson)));
         });
         service.bufferAnalysis(bufferAnalystParameters, (result) => {

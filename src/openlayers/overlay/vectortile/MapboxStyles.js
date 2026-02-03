@@ -34,7 +34,7 @@
   * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
   * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式以及Background图层，若没有面填充样式或Background图层可不填。
   * @param {ol.StyleFunction} [options.selectedStyle] -选中样式 Function。
-  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
   * @param {Object} [options.headers] - 请求头。
   * @example
   *  var mbStyle = new MapboxStyles({

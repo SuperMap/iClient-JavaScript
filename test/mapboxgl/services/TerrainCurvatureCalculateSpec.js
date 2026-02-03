@@ -36,6 +36,7 @@ describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate', () => {
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.zFactor).toBe(1);
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_mapboxglTest@Jingjin"}}`));
         });
         service.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, (result) => {

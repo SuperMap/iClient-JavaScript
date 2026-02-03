@@ -37,6 +37,7 @@ describe('leaflet_QueryService_queryByGeometry', () => {
             expect(paramsObj.queryMode).toBe("SpatialQuery");
             expect(paramsObj.queryParameters.startRecord).toBe(1);
             expect(options).not.toBeNull();
+            expect(options.withCredentials).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
         queryByGeometryService.queryByGeometry(queryByGeometryParams, (serviceResult) => {
