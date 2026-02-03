@@ -116,7 +116,7 @@ describe('openlayers_NetworkAnalystService', () => {
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl,options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/weightmatrix");
-            expect(options.withCredentials).toBeNull();
+            expect(options.withCredentials).toBeUndefined();
             return Promise.resolve(new Response(`[[0,42],[42,0]]`));
         });
         service.computeWeightMatrix(computeWeightMatrixParameters, (result) => {

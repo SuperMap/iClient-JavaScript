@@ -22,7 +22,7 @@ describe('mapboxgl_DatasourceService', () => {
     //获取数据源集服务
     it('success:getDatasources', (done) => {
         var service = new DatasourceService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, undefined, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url+"/datasources");
             expect(options).not.toBeNull();
@@ -50,7 +50,7 @@ describe('mapboxgl_DatasourceService', () => {
     //数据源信息查询服务成功事件
     it('success:getDatasource', (done) => {
         var service = new DatasourceService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, undefined, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url+"/datasources/name/World");
             expect(options).not.toBeNull();
@@ -79,7 +79,7 @@ describe('mapboxgl_DatasourceService', () => {
     //数据源信息查询服务失败事件
     it('fail:getDatasource', (done) => {
         var service = new DatasourceService(url, options);
-        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, undefined, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url+"/datasources/name/World1");
             expect(options).not.toBeNull();
