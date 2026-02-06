@@ -19,10 +19,16 @@ import '../core/Base';
  */
 export class ServiceBase extends mapboxgl.Evented {
 
-    constructor(url, options) {
+    constructor(url, dataUrl, options) {
         super();
-        this.options = options || {};
         this.url = url;
+
+        if (typeof dataUrl === 'object') {
+          this.options = dataUrl || {};
+        } else {
+          this.dataUrl = dataUrl;
+          this.options = options || {};
+        }
         /**
          * @event ServiceBase#initialized
          * @description 构造函数构造成功之后触发。

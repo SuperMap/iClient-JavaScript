@@ -17,10 +17,16 @@ import Observable from 'ol/Observable';
  * @usage
  */
 export class ServiceBase extends Observable {
-    constructor(url, options) {
-        super(url, options);
-        this.options = options || {};
+    constructor(url, dataUrl, options) {
+        super(url, dataUrl, options);
         this.url = url;
+
+        if (typeof dataUrl === 'object') {
+          this.options = dataUrl || {};
+        } else {
+          this.dataUrl = dataUrl;
+          this.options = options || {};
+        }
         this.dispatchEvent({type: 'initialized', value: this});
     }
 }

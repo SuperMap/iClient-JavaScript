@@ -24,6 +24,7 @@ import fieldNames from './types'
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
+ * @param {function} [options.parseProperties] - 是否对查询返回的要素属性进行反序列化。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -137,10 +138,10 @@ export class ChartQueryService extends CommonServiceBase {
       });
     }
 
-    _transformFeatures(featuresParent, fieldNameFormatter, format) {
+    _transformFeatures(featuresParent, fieldNameFormatter, parseProperties, format) {
       this._tranformFeatureField(featuresParent.features, fieldNameFormatter);
       if(format === DataFormat.GEOJSON) {
-        featuresParent.features = new GeoJSON().toGeoJSON(featuresParent.features);
+        featuresParent.features = new GeoJSON().toGeoJSON(featuresParent.features, { parseProperties, extraKeys: true });
       }
     }
 
@@ -155,16 +156,17 @@ export class ChartQueryService extends CommonServiceBase {
         var me = this;
         result = Util.transformResult(result);
         var fieldNameFormatter = me.fieldNameFormatter;
+        var parseProperties = me.parseProperties;
         if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 // 属性查询和范围查询的返回结果
                 if (recordsets[i].features) {
-                    this._transformFeatures(recordsets[i], fieldNameFormatter, me.format)
+                    this._transformFeatures(recordsets[i], fieldNameFormatter, parseProperties, me.format)
                 }
                 // 点选查询的返回结果
                 if(recordsets[i].chartRecordsets) {
                     recordsets[i].chartRecordsets.forEach(chartFeatureRecordset => {
-                      this._transformFeatures(chartFeatureRecordset, fieldNameFormatter, me.format)
+                      this._transformFeatures(chartFeatureRecordset, fieldNameFormatter, parseProperties, me.format)
                     });
                 }
             }

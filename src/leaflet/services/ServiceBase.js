@@ -29,13 +29,19 @@ export var ServiceBase = L.Evented.extend({
         crossOrigin: null
     },
 
-    initialize: function (url, options) {
+    initialize: function (url, dataUrl, options) {
         if (url) {
             url = (url.indexOf("/") !== url.length - 1) ?
                 url : url.substr(0, url.length - 1);
         }
         this.url = url;
-        L.setOptions(this, options);
+        if (typeof dataUrl === 'object') {
+          L.setOptions(this, options);
+        } else {
+          this.dataUrl = dataUrl;
+          L.setOptions(this, options);
+        }
+        
         /**
          * @event ServiceBase#initialized
          * @description 构造函数构造成功后触发。

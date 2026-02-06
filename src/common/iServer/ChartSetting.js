@@ -40,6 +40,10 @@
   * @param {boolean} [options.displayLowAccurateMarker=true] - 是否显示低精度符号。
   * @param {number} [options.displayScaleFactor] - 比例尺缩放。
   * @param {object} [options.displayableAcronymClassify] - 物标分组是否可显示的对应关系。
+  * @param {boolean} [options.wlaEnable] - 设置是否开启WLA(Water Level Adjustment)，既使用地图中的S104分组中的数据集设置给S102数据更正水深显示。
+  * @param {boolean} [options.wlaDatetime] - 设置WLA(Water Level Adjustment)显示的时刻。时间格式为：yyyymmddThhmmssZ, 如20240224T000000Z，如果不符合格式则内部不解析
+  * @param {boolean} [options.s98InteroperableEnable] - 是否开启S98互操作。
+  * @param {number} [options.interoperabilityLevel=0] - 互操作级别，支持0，1。
   * @usage
   */
  export class ChartSetting {
@@ -212,6 +216,30 @@
           * @description 物标分组是否可显示的对应关系。
           */
          this.displayableAcronymClassify = null;
+
+         /**
+          * @member {boolean} [options.wlaEnable]
+          * @description 是否开启WLA(Water Level Adjustment)，既使用地图中的S104分组中的数据集设置给S102数据更正水深显示。
+          */
+         this.wlaEnable = false;
+
+         /**
+          * @member {string} [options.wlaDatetime]
+          * @description 设置WLA(Water Level Adjustment)显示的时刻。时间格式为：yyyymmddThhmmssZ, 如20240224T000000Z，如果不符合格式则内部不解析。
+          */
+         this.wlaDatetime = null;
+
+         /**
+          * @member {boolean} [options.s98InteroperableEnable]
+          * @description 是否开启S98互操作。
+          */
+         this.s98InteroperableEnable = false;
+
+         /**
+          * @member {number} [options.interoperabilityLevel]
+          * @description 互操作等级。
+          */
+         this.interoperabilityLevel = null;
  
          if (options) {
              Util.extend(this, options);
@@ -253,6 +281,10 @@
       this.displayLowAccurateMarker = null;
       this.displayScaleFactor = null;
       this.displayableAcronymClassify = null;
+      this.s98InteroperableEnable = null;
+      this.interoperabilityLevel = null;
+      this.wlaEnable = null;
+      this.wlaDatetime = null;
      }
  }
  

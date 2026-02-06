@@ -6,6 +6,12 @@
  import { ChartQueryService } from './ChartQueryService';
  import { ChartFeatureInfoSpecsService } from './ChartFeatureInfoSpecsService';
  import { ChartAcronymClassifyService } from './ChartAcronymClassifyService';
+ import { LayerInfoService } from './LayerInfoService';
+ import { GetGridCellInfosService } from './GetGridCellInfosService';
+ import { FeatureService } from './FeatureService';
+ import { GetFeaturesBySQLParameters } from './GetFeaturesBySQLParameters';
+ import { GetGridCellInfosParameters } from './GetGridCellInfosParameters';
+ import { GetFeaturesByBoundsParameters } from './GetFeaturesByBoundsParameters';
  
  /**
   * @class ChartService
@@ -28,13 +34,19 @@
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
   * @param {Object} [options.headers] - 请求头。
   * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
+  * @param {function} [options.parseProperties] - 是否对查询返回的要素属性进行反序列化。
   * @usage
   */
  export class ChartService {
  
-     constructor(url, options) {
+     constructor(url, dataUrl, options) {
       this.url = url;
-      this.options = options || {};
+      if (typeof dataUrl === 'object') {
+        this.options = dataUrl || {};
+      } else {
+        this.dataUrl = dataUrl;
+        this.options = options || {};
+      }
      }
  
      /**
@@ -55,7 +67,8 @@
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
              format: format,
-             fieldNameFormatter: me.options.fieldNameFormatter
+             fieldNameFormatter: me.options.fieldNameFormatter,
+             parseProperties: me.options.parseProperties
          });
  
          return chartQueryService.processAsync(param, callback);
@@ -96,9 +109,204 @@
          });
          return chartAcronymClassifyService.processAsync(callback);
      }
- 
-     _processFormat(resultFormat) {
-         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
-     }
+
+      /**
+      * @function ChartService.prototype.getChartWaterDepth
+      * @version 12.1.0
+      * @description 获取海图水深信息。
+      * @param {ChartWaterDepthParameter} params - 海图水深查询所需参数类。
+      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
+      */
+      getChartWaterDepth(params, callback) {
+        var me = this;
+        if (typeof me.dataUrl !== 'string') {
+          console.error('dataUrl is required');
+          return null;
+        }
+        var { dataSource, X, Y } = params;
+        var queryPromises = [];
+        return new LayerInfoService(me.url).getLayersInfo().then(function (serviceResult) {
+          var datasetNames = [];
+          serviceResult.result.subLayers.layers.forEach(function (layer) {
+            if (layer.datasetInfo && layer.datasetInfo.type === 'GRID') {
+              datasetNames.push(layer.datasetInfo.name)
+            }
+          });
+          datasetNames.forEach(function (datasetName) {
+            // 栅格查询
+            var getGridCellInfosParam = new GetGridCellInfosParameters({
+              dataSourceName: dataSource,
+              datasetName: datasetName,
+              X: X,
+              Y: Y
+            });
+            var gridCellInfosService = new GetGridCellInfosService(me.dataUrl, {
+              proxy: me.options.proxy,
+              withCredentials: me.options.withCredentials,
+              crossOrigin: me.options.crossOrigin,
+              headers: me.options.headers
+            });
+            var query = gridCellInfosService.processAsync(getGridCellInfosParam, callback);
+            queryPromises.push(query);
+           
+          });
+          return Promise.all(queryPromises).then(function (res) {
+            var datasetMap = {};
+            var topDatasetQuery = null;
+            // 找到所有成功的查询
+            res.forEach(function (queryRes) {
+              if (queryRes.result) {
+                var datasetName = queryRes.options.scope.datasetName;
+                datasetMap[datasetName] = queryRes;
+              }
+            });
+            // 如果某一处有多个图层，从datasetNames找到第一个，代表最顶层的
+            for (var j = 0; j < datasetNames.length; j++) {
+              if (datasetMap.hasOwnProperty(datasetNames[j])) {
+                var topDataset = datasetNames[j];
+                topDatasetQuery = datasetMap[topDataset]
+                break;
+              }
+            }
+            return topDatasetQuery;
+          }).catch(function (err) {
+            throw err;
+          });
+        })
+      }
+    
+      /**
+       * @function ChartService.prototype.getWaterLevel
+       * @version 12.1.0
+       * @description 获取S104海图水位和时间信息。
+       * @param {ChartWaterLevelParameter} params - S104海图水位和时间查询所需参数类。
+       * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+       * @returns {Promise} Promise 对象。
+       */
+      getWaterLevel(params, callback) {
+        var me = this;
+        if (typeof me.dataUrl !== 'string') {
+          console.error('dataUrl is required');
+          return null;
+        }
+        var featureService = new FeatureService(me.dataUrl, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+        });
+        var { dataSource, dataset, waterLevelDataset, timeDataset, bounds, timeIdKey } = params;
+        // 查询水位点
+        var boundsParam = new GetFeaturesByBoundsParameters({
+          ...params,
+          datasetNames: [dataSource + ':' + dataset],
+          bounds: bounds
+        });
+        return featureService.getFeaturesByBounds(boundsParam, callback).then(function (boundsResult) {
+          var stationFeature = boundsResult.result.features.features[0];
+          if(!stationFeature) {
+            return null;
+          }
+          var stationId = stationFeature.properties.STATIONID;
+          var cellId = stationFeature.properties.CELLID;
+          // 查询水位
+          var waterLevelSqlParam = new GetFeaturesBySQLParameters({
+            ...params,
+            queryParameter: {
+              name: waterLevelDataset + '@' + dataSource,
+              attributeFilter: `STATIONID = '${stationId}'  and CELLID = '${cellId}'`
+            },
+            datasetNames: [dataSource + ':' + waterLevelDataset]
+          });
+          return featureService.getFeaturesBySQL(waterLevelSqlParam, callback).then(function (waterLevelResult) {
+            var features = waterLevelResult.result.features.features;
+            // 查询时间
+            var timeSqlParam = new GetFeaturesBySQLParameters({
+              ...params,
+              queryParameter: {
+                name: timeDataset + '@' + dataSource,
+                attributeFilter: `CELLID = '${cellId}'`
+              },
+              datasetNames: [dataSource + ':' + timeDataset]
+            });
+            return featureService.getFeaturesBySQL(timeSqlParam, callback).then(function (timeResult) {
+              var features1 = timeResult.result.features.features;
+              var timeIDMap = {};
+              features1.forEach(function (feature) {
+                timeIDMap[feature.properties[timeIdKey]] = feature.properties.TIMEPOINT;
+              });
+      
+              features.forEach(function (feature) { 
+                var timeID = feature.properties[timeIdKey];
+                if (timeIDMap[timeID]) {
+                  feature.properties.TIMEPOINT = timeIDMap[timeID];
+                } else {
+                  console.error(`timeID ${timeID} , TIMEPOINT not found'`);
+                  feature.properties.TIMEPOINT = null;
+                }
+              });
+              return { features: waterLevelResult.result.features, stationFeature };
+            });
+          });
+        });
+      }
+
+      /**
+       * @function ChartService.prototype.getWLTimeRange
+       * @version 12.1.0
+       * @description 获取S104海图时间范围。
+       * @param {ChartWLTimeRangeParameter} params - S104海图时间范围查询所需参数类。
+       * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+       * @returns {Promise} Promise 对象。
+       */
+      getWLTimeRange(params, callback) {
+        var me = this;
+        if (typeof me.dataUrl !== 'string') {
+          console.error('dataUrl is required');
+          return null;
+        }
+        var featureService = new FeatureService(me.dataUrl, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+        });
+        var { dataset, dataSource, timeDataset, idKey } = params;
+        var sqlParam = new GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: dataset + '@' + dataSource
+          },
+          datasetNames: [dataSource + ':' + dataset],
+          returnFeaturesOnly: true,
+          fromIndex: 0,
+          toIndex: 1,
+          expectCount: -1
+        });
+        return featureService.getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var idKeyVal = serviceResult.result.features.features[0].properties[idKey];
+          var attributeFilter = idKey + " = " + "'" + idKeyVal + "'";
+          var timeSqlParam = new GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: timeDataset + '@' + dataSource,
+              attributeFilter: attributeFilter,
+              orderBy: "TIMEPOINT"
+            },
+            datasetNames: [dataSource + ':' + timeDataset],
+            toIndex: -1,
+            expectCount: -1
+            
+          });
+          return featureService.getFeaturesBySQL(timeSqlParam, callback).then(function (serviceResult1) {
+            return serviceResult1;
+          })
+        }).catch(function (err) {
+          throw err;
+        });
+      }
+
+      _processFormat(resultFormat) {
+          return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+      }
  }
  

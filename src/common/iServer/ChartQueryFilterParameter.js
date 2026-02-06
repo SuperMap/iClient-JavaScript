@@ -46,9 +46,15 @@ export class ChartQueryFilterParameter {
 
         /**
          * @member {number} ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode
-         * @description 查询的物标代号。
+         * @description 查询的物标代号(用于S-57)。
          */
         this.chartFeatureInfoSpecCode = null;
+
+        /**
+         * @member {number} ChartQueryFilterParameter.prototype.featureCode
+         * @description 查询的物标代号(用于S-101)。
+         */
+        this.featureCode = null;
 
         Util.extend(this, options);
 
@@ -79,6 +85,9 @@ export class ChartQueryFilterParameter {
         json += "\"isQueryRegion\":" + this.isQueryRegion + ",";
         if (this.attributeFilter) {
             json += "\"attributeFilter\": \"" + this.attributeFilter.replace(/"/g, "'") + "\",";
+        }
+        if(this.featureCode) {
+          json += "\"featureCode\": \"" + this.featureCode.replace(/"/g, "'") + "\",";
         }
         json += "\"chartFeatureInfoSpecCode\":" + this.chartFeatureInfoSpecCode;
         json = "{" + json + "}";

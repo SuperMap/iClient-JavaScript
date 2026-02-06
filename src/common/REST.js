@@ -84,6 +84,8 @@ var GeometryType = {
     LINEM: "LINEM",
     /** 点几何对象。 */
     POINT: "POINT",
+    /** 3D点几何对象。 */
+    POINT3D: "POINT3D",
     /** 面几何对象。 */
     REGION: "REGION",
     /** EPS 点几何对象。 */

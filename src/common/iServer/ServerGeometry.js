@@ -113,6 +113,7 @@ export class ServerGeometry {
             geoType = me.type;
         switch (geoType.toUpperCase()) {
             case GeometryType.POINT:
+            case GeometryType.POINT3D:
                 return me.toGeoPoint();
             case GeometryType.LINE:
                 return me.toGeoLine();

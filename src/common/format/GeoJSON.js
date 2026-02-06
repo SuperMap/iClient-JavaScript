@@ -223,11 +223,12 @@ export class GeoJSON extends JSONFormat {
              * @param {SuperMap.ServerFeature} feature - SuperMap iServer 要素对象。
              * @returns {Object} 一个表示点的对象。
              */
-            'feature': function (feature) {
+            'feature': function (feature, options) {
+                var { parseProperties, extraKeys } = options || {};
                 var geom = this.extract.geometry.apply(this, [feature.geometry]);
                 var json = {
                     "type": "Feature",
-                    "properties": this.createAttributes(feature),
+                    "properties": this.createAttributes(feature, parseProperties),
                     "geometry": geom
                 };
 
@@ -240,6 +241,19 @@ export class GeoJSON extends JSONFormat {
                 }
                 if (feature.ID) {
                     json.id = feature.ID;
+                }
+
+                var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
+                for (var key in feature) {
+                  if (exceptKeys.indexOf(key) > -1) {
+                      continue;
+                  }
+                  var value = this._transformValue(feature[key], parseProperties);
+                  if (extraKeys) {
+                    json[key] = value;
+                  } else {
+                    json.properties[key] = value;
+                  }
                 }
                 return json;
             },
@@ -268,6 +282,9 @@ export class GeoJSON extends JSONFormat {
                 }
                 if (geometryType === "LINEM") {
                     geometryType = "MultiLineString";
+                }
+                if (geometryType === "POINT3D") {
+                  geometryType = "Point";
                 }
                 data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
                 geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
@@ -525,9 +542,12 @@ export class GeoJSON extends JSONFormat {
      * @version 9.1.1
      * @description 将 SuperMap iServer Feature JSON 对象转换为 GeoJSON 对象。
      * @param {Object} obj - SuperMap iServer Feature JSON。
+     * @param {Object} [options] - 转换选项。
+     * @param {boolean} [options.parseProperties] - 是否对查询返回的要素属性进行反序列化。
+     * @param {boolean} [options.extraKeys] - true: 额外的属性和properties平级，false：额外的属性存入properties。
      * @returns {GeoJSONObject}  GeoJSON 对象。
      */
-    toGeoJSON(obj) {
+    toGeoJSON(obj, options) {
         var geojson = {
             "type": null
         };
@@ -540,17 +560,17 @@ export class GeoJSON extends JSONFormat {
                 if (isGeometry(element)) {
                     let feature = {};
                     feature.geometry = element;
-                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
+                    geojson.features[i] = this.extract.feature.apply(this, [feature, options]);
                 } else {
-                    geojson.features[i] = this.extract.feature.apply(this, [element]);
+                    geojson.features[i] = this.extract.feature.apply(this, [element, options]);
                 }
             }
         } else if (isGeometry(obj)) {
             let feature = {};
             feature.geometry = obj;
-            geojson = this.extract.feature.apply(this, [feature]);
+            geojson = this.extract.feature.apply(this, [feature, options]);
         } else {
-            geojson = this.extract.feature.apply(this, [obj]);
+            geojson = this.extract.feature.apply(this, [obj, options]);
         }
 
         function isGeometry(input) {
@@ -717,28 +737,33 @@ export class GeoJSON extends JSONFormat {
         newFeature.geometry.id = feature.fid;
         return newFeature;
     }
-    createAttributes(feature) {
+    _transformValue(value, parseProperties) {
+      if (parseProperties) {
+        try {
+          const jsonObject = JSON.parse(value);
+          return jsonObject;
+        } catch (e) {
+          return value;
+        }
+      }
+      return value;
+    }
+    createAttributes(feature, parseProperties) {
         if (!feature) {
             return null;
         }
+        var me = this;
         var attr = {};
-        processFieldsAttributes(feature, attr);
-        var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
-        for (var key in feature) {
-            if (exceptKeys.indexOf(key) > -1) {
-                continue;
-            }
-            attr[key] = feature[key];
-        }
+        processFieldsAttributes(feature, attr, parseProperties);
 
-        function processFieldsAttributes(feature, attributes) {
+        function processFieldsAttributes(feature, attributes, parseProperties) {
             if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
                 return;
             }
             var names = feature.fieldNames,
                 values = feature.fieldValues;
             for (var i in names) {
-                attributes[names[i]] = values[i];
+                attributes[names[i]] = me._transformValue(values[i], parseProperties);
             }
         }
 

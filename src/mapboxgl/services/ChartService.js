@@ -23,6 +23,7 @@ import { ChartService as CommonChartService } from '@supermapgis/iclient-common/
  *     //doSomething
  * })
  * @param {string} url - 服务地址。
+ * @param {string} dataUrl - 数据地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -32,9 +33,9 @@ import { ChartService as CommonChartService } from '@supermapgis/iclient-common/
  * @usage
  */
 export class ChartService extends ServiceBase {
-    constructor(url, options) {
-        super(url, options);
-        this._chartService = new CommonChartService(url, options);
+    constructor(url, dataUrl, options) {
+        super(url, dataUrl, options);
+        this._chartService = new CommonChartService(url, dataUrl, options);
     }
 
     /**
@@ -69,6 +70,44 @@ export class ChartService extends ServiceBase {
      */
     getChartAcronymClassify(callback) {
       return this._chartService.getChartAcronymClassify(callback);
+    }
+
+    /**
+    * @function ChartService.prototype.getChartWaterDepth
+    * @version 12.1.0
+    * @description 获取海图水深信息。
+    * @param {ChartWaterDepthParameter} params - 海图水深查询所需参数类。
+    * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+    * @returns {Promise} Promise 对象。
+    */
+    getChartWaterDepth(params, callback) {
+      return this._chartService.getChartWaterDepth(params, callback);
+    }
+
+    /**
+     * @function ChartService.prototype.getWaterLevel
+     * @version 12.1.0
+     * @description 获取S104海图水位和时间信息。
+     * @param {ChartWaterLevelParameter} params - S104海图水位和时间查询所需参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getWaterLevel(params, callback) {
+      params = this._processParams(params);
+      return this._chartService.getWaterLevel(params, callback);
+    }
+  
+    /**
+     * @function ChartService.prototype.getWLTimeRange
+     * @version 12.1.0
+     * @description 获取S104海图时间范围。
+     * @param {ChartWLTimeRangeParameter} params - S104海图时间范围查询所需参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getWLTimeRange(params, callback) {
+      params = this._processParams(params);
+      return this._chartService.getWLTimeRange(params, callback);
     }
 
     _processParams(params) {

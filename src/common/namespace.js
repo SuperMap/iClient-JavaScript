@@ -141,6 +141,9 @@ import {
   BurstPipelineAnalystParameters,
   ChartQueryFilterParameter,
   ChartQueryParameters,
+  ChartWaterLevelParameter,
+  ChartWLTimeRangeParameter,
+  ChartWaterDepthParameter,
   ChartSetting,
   ClipParameter,
   ColorDictionary,
@@ -593,6 +596,9 @@ SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
 SuperMap.ChartAcronymClassifyService = ChartAcronymClassifyService;
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
 SuperMap.ChartQueryParameters = ChartQueryParameters;
+SuperMap.ChartWaterLevelParameter = ChartWaterLevelParameter;
+SuperMap.ChartWLTimeRangeParameter = ChartWLTimeRangeParameter;
+SuperMap.ChartWaterDepthParameter = ChartWaterDepthParameter;
 SuperMap.ChartQueryService = ChartQueryService;
 SuperMap.ChartSetting = ChartSetting;
 SuperMap.ClipParameter = ClipParameter;

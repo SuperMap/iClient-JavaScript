@@ -219,6 +219,10 @@
         if (inArray(includes, 'jquery-twbsPagination')) {
           inputScript(libsurl + '/jquery.twbsPagination/1.4.2/jquery.twbsPagination.min.js');
         }
+        if (inArray(includes, 'jquery-treegrid')) {
+          inputScript(libsurl + '/jquery.treegrid/0.3.0/jquery.treegrid.min.js');
+          inputCSS(libsurl + '/jquery.treegrid/0.3.0/jquery.treegrid.css');
+        }
     }
 
     function datGuiI18N() {

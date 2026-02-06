@@ -31,7 +31,11 @@ describe('ChartSetting', () => {
           textClipRegionEnabled: false,
           displayLowAccurateMarker: true,
           displayScaleFactor: 1,
-          displayableAcronymClassify: {}
+          displayableAcronymClassify: {},
+          wlaEnable: true,
+          wlaDatetime: '2220251224T000000Z',
+          s98InteroperableEnable: true,
+          interoperabilityLevel: 1
         }
         var chartSetting = new ChartSetting(option);
         expect(chartSetting.displayModeChart).toEqual(DisplayModeChart.STANDARD);
@@ -62,6 +66,10 @@ describe('ChartSetting', () => {
         expect(chartSetting.displayLowAccurateMarker).toEqual(true);
         expect(chartSetting.displayScaleFactor).toEqual(1);
         expect(chartSetting.displayableAcronymClassify).not.toBeNull();
+        expect(chartSetting.wlaEnable).toEqual(true);
+        expect(chartSetting.wlaDatetime).toEqual('2220251224T000000Z');
+        expect(chartSetting.s98InteroperableEnable).toEqual(true);
+        expect(chartSetting.interoperabilityLevel).toEqual(1);
         chartSetting.destroy();
         expect(chartSetting.displayModeChart).toBeNull();
         expect(chartSetting.colourModeChart).toBeNull();
@@ -91,5 +99,9 @@ describe('ChartSetting', () => {
         expect(chartSetting.displayLowAccurateMarker).toBeNull();
         expect(chartSetting.displayScaleFactor).toBeNull();
         expect(chartSetting.displayableAcronymClassify).toBeNull();
+        expect(chartSetting.wlaEnable).toBeNull();
+        expect(chartSetting.wlaDatetime).toBeNull();
+        expect(chartSetting.s98InteroperableEnable).toBeNull();
+        expect(chartSetting.interoperabilityLevel).toBeNull();
     });
 });
