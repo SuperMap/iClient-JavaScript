@@ -36,7 +36,7 @@ export var ServiceBase = L.Evented.extend({
         }
         this.url = url;
         if (typeof dataUrl === 'object') {
-          L.setOptions(this, options);
+          L.setOptions(this, dataUrl);
         } else {
           this.dataUrl = dataUrl;
           L.setOptions(this, options);
