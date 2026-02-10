@@ -7,7 +7,6 @@ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/
 import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermapgis/iclient-common/iServer/SpatialAnalystService';
 import {ServiceBase} from './ServiceBase';
 import LineString from 'ol/geom/LineString';
-import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class SpatialAnalystService
@@ -457,10 +456,6 @@ export class SpatialAnalystService extends ServiceBase {
      */
 
     convertGeometry(ol3Geometry) {
-        //判断是否传入的是geojson 并作相应处理
-        if(["FeatureCollection", "Feature", "Geometry"].indexOf(ol3Geometry.type) != -1){
-            return Util.toSuperMapGeometry(ol3Geometry);
-        }
-        return Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(ol3Geometry)));
+        return Util.toSuperMapGeometry(ol3Geometry);
     }
 }

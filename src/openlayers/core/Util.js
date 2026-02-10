@@ -15,6 +15,7 @@
  import Feature from 'ol/Feature';
  import Projection from 'ol/proj/Projection';
  import { get } from 'ol/proj';
+ import GeoJSON from 'ol/format/GeoJSON';
 
  /**
   * @name Util
@@ -67,16 +68,26 @@
 
    /**
     * @function Util.toSuperMapGeometry
-    * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
-    * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
+    * @description 将 GeoJSON 对象 或 OpenaLayers 几何对象要素对象转为 SuperMap 几何对象。
+    * @param {GeoJSONObject|ModuleGeometry} obj - GeoJSON 对象 或 OpenaLayers 几何对象要素对象。
     * @private
     */
-   toSuperMapGeometry(geoJSON) {
-     if (!geoJSON || !geoJSON.type) {
+   toSuperMapGeometry(obj) {
+     if (!obj) {
        return null;
      }
-     const result = new GeoJSONFormat().read(geoJSON, 'FeatureCollection');
-     return result && result[0].geometry;
+     let result = obj;
+     if (obj instanceof Geometry) {
+       result = new GeoJSON().writeGeometryObject(obj);
+     }
+     if (obj instanceof Feature) {
+       result = new GeoJSON().writeFeatureObject(obj);
+     }
+     if (GeoJSONFormat.isGeoJSON(result)) {
+       const newFeatures = new GeoJSONFormat().read(result, 'FeatureCollection');
+       return newFeatures && newFeatures[0].geometry;
+     }
+     return null;
    },
 
    /**

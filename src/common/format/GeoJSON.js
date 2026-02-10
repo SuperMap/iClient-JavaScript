@@ -617,7 +617,58 @@ export class GeoJSON extends JSONFormat {
         }
         return valid;
     }
-
+    /** 
+     * @static
+     * @version 12.1.0
+     * @function GeoJSONFormat.isGeoJSON
+     * @description 判断一个对象是否是合法的 GeoJSON 对象。
+     * @param {Object} obj - 待判断的对象。
+     * @returns {boolean} 是否是合法的 GeoJSON 对象。    
+    */
+    static isGeoJSON(obj) {
+        if (typeof obj !== 'object' || obj === null){
+            return false;
+        } 
+        const validTypes = [
+            'Point', 'MultiPoint', 'LineString', 'MultiLineString',
+            'Polygon', 'MultiPolygon', 'GeometryCollection',
+            'Feature', 'FeatureCollection'
+        ];
+        return validTypes.includes(obj.type);
+    }
+    /** 
+     * @static
+     * @version 12.1.0
+     * @function GeoJSONFormat.getGeoJSONType
+     * @description 判断一个对象是否是合法的 GeoJSON 对象,如果不合法返回空，如果是合法的 GeoJSON 对象返回 FeatureCollection、Feature 或 Geometry。
+     * @param {Object} obj - 待判断的对象。
+     * @returns {string|null} 失败返回 null，成功返回 "FeatureCollection"、"Feature" 或 "Geometry"。
+    */
+    static getGeoJSONType(obj) {
+        if (typeof obj !== 'object' || obj === null) {
+            return null;
+        }
+        if (obj.type === 'FeatureCollection') {
+            return Util.isArray(obj.features) ? 'FeatureCollection' : null;
+        }
+        if (obj.type === 'Feature') {
+            if (!obj.hasOwnProperty('geometry')) {
+                return null;
+            }
+            return 'Feature';
+        }
+        const geometryTypes = [
+            'Point', 'MultiPoint', 'LineString', 'MultiLineString',
+            'Polygon', 'MultiPolygon', 'GeometryCollection'
+        ];
+        if (geometryTypes.indexOf(obj.type) === -1) {
+            return null;
+        }
+        if (obj.type === 'GeometryCollection') {
+            return Util.isArray(obj.geometries) ? 'Geometry' : null;
+        }
+        return Util.isArray(obj.coordinates) ? 'Geometry' : null;
+    }
     /**
      * @function GeoJSONFormat.prototype.parseFeature
      * @description 将一个 GeoJSON 中的 feature 转化成 {@link FeatureVector}> 对象。

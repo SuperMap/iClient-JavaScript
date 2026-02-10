@@ -7,7 +7,6 @@ import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import { QueryService as CommonQueryService } from '@supermapgis/iclient-common/iServer/QueryService';
 import Point from 'ol/geom/Point';
-import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class QueryService
@@ -108,7 +107,7 @@ export class QueryService extends ServiceBase {
             if (params.geometry instanceof Point) {
                 params.geometry = new GeometryPoint(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
             } else {
-                params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
+                params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
         }
         return params;

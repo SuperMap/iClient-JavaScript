@@ -4,6 +4,7 @@
  import L from 'leaflet';
  import './Base';
  import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+ import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
 
  const isArray = function(obj) {
   return Object.prototype.toString.call(obj) == '[object Array]';
@@ -22,15 +23,23 @@ export const CommontypesConversion = {
      * @returns {Bounds} SuperMap 的 bounds 对象。
      */
     toSuperMapBounds(bounds) {
-        if (bounds && ["FeatureCollection", "Feature"].indexOf(bounds.type) !== -1) {
+        if (!bounds) {
+            return new Bounds();
+        }
+        if (bounds instanceof Bounds) {
+            return bounds;
+        }
+        if (GeoJSONFormat.getGeoJSONType(bounds)) {
             bounds = L.geoJSON(bounds).getBounds();
         }
         if (bounds instanceof L.LatLngBounds) {
+            const southWest = bounds.getSouthWest();
+            const northEast = bounds.getNorthEast();
             return new Bounds(
-                bounds.getSouthWest().lng,
-                bounds.getSouthWest().lat,
-                bounds.getNorthEast().lng,
-                bounds.getNorthEast().lat
+                southWest.lng,
+                southWest.lat,
+                northEast.lng,
+                northEast.lat
             );
         }
         if (bounds instanceof L.Bounds) {
@@ -41,10 +50,7 @@ export const CommontypesConversion = {
                 bounds.max.y
             );
         }
-        if (bounds instanceof Bounds) {
-          return bounds;
-        }
-        if (isArray(bounds)) {
+        if (isArray(bounds) && bounds.length >= 4) {
             return new Bounds(
                 bounds[0],
                 bounds[1],

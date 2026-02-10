@@ -956,4 +956,26 @@ describe('GeoJSON', () => {
     var result = new GeoJSON().read(feature, feature.type);
     expect(result.geometry.id).toBe(3);
   });
+
+  it('isGeoJSON', () => {
+    expect(GeoJSON.isGeoJSON(null)).toBeFalsy();
+    expect(GeoJSON.isGeoJSON('Feature')).toBeFalsy();
+    expect(GeoJSON.isGeoJSON({ type: 'InvalidType' })).toBeFalsy();
+    expect(GeoJSON.isGeoJSON({ type: 'Feature' })).toBeTruthy();
+    expect(GeoJSON.isGeoJSON({ type: 'FeatureCollection' })).toBeTruthy();
+    expect(GeoJSON.isGeoJSON({ type: 'Point' })).toBeTruthy();
+  });
+
+  it('getGeoJSONType', () => {
+    expect(GeoJSON.getGeoJSONType(null)).toBeNull();
+    expect(GeoJSON.getGeoJSONType({ type: 'InvalidType' })).toBeNull();
+    expect(GeoJSON.getGeoJSONType({ type: 'FeatureCollection', features: [] })).toBe('FeatureCollection');
+    expect(GeoJSON.getGeoJSONType({ type: 'FeatureCollection', features: {} })).toBeNull();
+    expect(GeoJSON.getGeoJSONType({ type: 'Feature', geometry: null })).toBe('Feature');
+    expect(GeoJSON.getGeoJSONType({ type: 'Feature' })).toBeNull();
+    expect(GeoJSON.getGeoJSONType({ type: 'Point', coordinates: [10, 10] })).toBe('Geometry');
+    expect(GeoJSON.getGeoJSONType({ type: 'Point', coordinates: {} })).toBeNull();
+    expect(GeoJSON.getGeoJSONType({ type: 'GeometryCollection', geometries: [] })).toBe('Geometry');
+    expect(GeoJSON.getGeoJSONType({ type: 'GeometryCollection', geometries: {} })).toBeNull();
+  });
 });

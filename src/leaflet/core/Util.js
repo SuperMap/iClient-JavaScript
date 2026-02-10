@@ -57,7 +57,7 @@
  * @function toSuperMapGeometry
  * @category BaseTypes Util
  * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
- * @param {GeoJSONObject} geometry - GeoJSON 对象。
+ * @param {GeoJSONObject|ModuleGeometry} geometry - GeoJSON 对象。
  * @usage
  * ```
  * // 浏览器
@@ -79,8 +79,8 @@ export var toSuperMapGeometry = function(geometry) {
     }
     var result,
         format = new GeoJSONFormat();
-    if (['FeatureCollection', 'Feature', 'Geometry'].indexOf(geometry.type) != -1) {
-        result = format.read(geometry, geometry.type);
+    if (GeoJSONFormat.isGeoJSON(geometry)) {
+        result = format.read(geometry, GeoJSONFormat.getGeoJSONType(geometry));
     } else if (typeof geometry.toGeoJSON === 'function') {
         var geojson = geometry.toGeoJSON();
         result = geojson ? format.read(geojson, geojson.type) : geometry;

@@ -4,7 +4,6 @@
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-common/iServer/MeasureService';
-import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * @class MeasureService
@@ -70,7 +69,7 @@ export class MeasureService extends ServiceBase {
 
     _processParam(params) {
         if (params && params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
+            params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
         return params;
     }

@@ -566,3 +566,56 @@ export { WebPrintingJobParameters };
 export { WebPrintingService };
 export { KnowledgeGraphEdgeParameter, KnowledgeGraphNodeParameter, KnowledgeGraphService };
 export { VideoFeature };
+
+
+/**
+ * @typedef {Object} ModuleFeature
+ * @description 要素对象类型定义。<br>
+ * @modulecondition openlayers:ol.Feature|GeoJSONObject
+ * @modulecondition leaflet:GeoJSONObject
+ * @modulecondition mapboxgl:GeoJSONObject
+ * @modulecondition maplibregl:GeoJSONObject
+ */
+/**
+ * @typedef {Object} ModuleGeometry
+ * @description 几何对象类型定义。<br>
+ * @modulecondition openlayers:ol.geom.Point|ol.geom.LineString|ol.geom.Polygon|GeoJSONObject
+ * @modulecondition leaflet:L.Marker|L.CircleMarker|L.Circle|L.GeoJSON|L.Polyline|L.Polygon|GeoJSONObject
+ * @modulecondition mapboxgl:mapboxgl.Point|mapboxgl.LngLatBounds|GeoJSONObject
+ * @modulecondition maplibregl:maplibregl.Point|maplibregl.LngLatBounds|GeoJSONObject
+ */
+/**
+ * @typedef {Object} ModuleBounds
+ * @description 范围对象类型定义。<br>
+ * @modulecondition openlayers:ol.extent|GeoJSONObject
+ * @modulecondition leaflet:L.Bounds|L.LatLngBounds|GeoJSONObject
+ * @modulecondition mapboxgl:mapboxgl.LngLatBounds|GeoJSONObject
+ * @modulecondition maplibregl:maplibregl.LngLatBounds|GeoJSONObject
+ */
+
+/**
+ * @typedef {Object} ModulePolygon
+ * @description 面对象类型定义。<br>
+ * @modulecondition openlayers:ol.geom.Polygon|GeoJSONObject
+ * @modulecondition leaflet:L.Polygon|L.GeoJSON|GeoJSONObject
+ * @modulecondition mapboxgl:GeoJSONObject
+ * @modulecondition maplibregl:GeoJSONObject
+ */
+
+/**
+ * @typedef {Object} ModulePolygonAndBounds
+ * @description 范围和面对象类型定义。<br>
+ * @modulecondition openlayers:ol.extent|ol.geom.Polygon|GeoJSONObject
+ * @modulecondition leaflet:L.Bounds|L.LatLngBounds|L.Rectangle|L.Polygon|L.GeoJSON|GeoJSONObject
+ * @modulecondition mapboxgl:mapboxgl.LngLatBounds|GeoJSONObject
+ * @modulecondition maplibregl:maplibregl.LngLatBounds|GeoJSONObject
+ */
+
+/**
+ * @typedef {Object} ModulePolyline
+ * @description 线对象类型定义。<br>
+ * @modulecondition openlayers:ol.geom.LineString|GeoJSONObject
+ * @modulecondition leaflet:L.Polyline|GeoJSONObject
+ * @modulecondition mapboxgl:GeoJSONObject
+ * @modulecondition maplibregl:GeoJSONObject
+ */

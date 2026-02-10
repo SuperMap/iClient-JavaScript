@@ -8,7 +8,6 @@ import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeomet
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
-import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import * as olTilegrid from 'ol/tilegrid';
 import TileGrid from 'ol/tilegrid/TileGrid';
@@ -118,7 +117,7 @@ export class TileSuperMapRest extends TileImage {
 
         if (options.clipRegion instanceof Geometry) {
           options.clipRegionEnabled = true;
-          options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
+          options.clipRegion = Util.toSuperMapGeometry(options.clipRegion);
           options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
           params['clipRegionEnabled'] = options.clipRegionEnabled;
           params['clipRegion'] = JSON.stringify(options.clipRegion);

@@ -5,6 +5,7 @@ import { LinearRing } from '../../../src/common/commontypes/geometry/LinearRing'
 import { Point } from '../../../src/common/commontypes/geometry/Point';
 import { Bounds } from '../../../src/common/commontypes/Bounds';
 import olPolygon from 'ol/geom/Polygon';
+import Feature from 'ol/Feature';
 describe('openlayers_Util', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -144,6 +145,28 @@ describe('openlayers_Util', () => {
         };
         var result2 = Util.toSuperMapGeometry(geoJSON2);
         expect(result2).toBeNull();
+    });
+
+    it('toSuperMapGeometry with ol geometry or feature', () => {
+        const polygon = new olPolygon([
+            [
+                [0, 0],
+                [10, 0],
+                [10, 10],
+                [0, 10],
+                [0, 0]
+            ]
+        ]);
+        const geometryResult = Util.toSuperMapGeometry(polygon);
+        expect(geometryResult).not.toBeNull();
+        expect(geometryResult instanceof Polygon).toBeTruthy();
+        expect(geometryResult.components.length).toBe(1);
+
+        const feature = new Feature(polygon);
+        const featureResult = Util.toSuperMapGeometry(feature);
+        expect(featureResult).not.toBeNull();
+        expect(featureResult instanceof Polygon).toBeTruthy();
+        expect(featureResult.components.length).toBe(1);
     });
 
     it('resolutionToScale', () => {

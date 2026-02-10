@@ -8,8 +8,6 @@ import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeomet
 import { Util } from '../core/Util';
 import ImageSource from 'ol/source/Image';
 import ImageWrapper, { decode } from 'ol/Image';
-import Geometry from 'ol/geom/Geometry';
-import GeoJSON from 'ol/format/GeoJSON';
 import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } from 'ol/extent';
 
 /**
@@ -109,8 +107,8 @@ export class ImageSuperMapRest extends ImageSource {
     if (options.prjCoordSys) {
       params['prjCoordSys'] = JSON.stringify(options.prjCoordSys);
     }
-    if (options.clipRegionEnabled && options.clipRegion instanceof Geometry) {
-      options.clipRegion = Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(options.clipRegion));
+    if (options.clipRegionEnabled) {
+      options.clipRegion = Util.toSuperMapGeometry(options.clipRegion);
       options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
       params['clipRegionEnabled'] = options.clipRegionEnabled;
       params['clipRegion'] = JSON.stringify(options.clipRegion);

@@ -7,8 +7,6 @@ import { EditFeaturesService } from '@supermapgis/iclient-common/iServer/EditFea
 import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-common/iServer/FeatureService';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import GeoJSON from 'ol/format/GeoJSON';
-import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 
 /**
@@ -200,8 +198,8 @@ export class FeatureService extends ServiceBase {
     if (params.bounds) {
       params.bounds = Util.toSuperMapBounds(params.bounds);
     }
-    if (params.geometry && params.geometry instanceof Geometry) {
-      params.geometry = Util.toSuperMapGeometry(JSON.parse(new GeoJSON().writeGeometry(params.geometry)));
+    if (params.geometry) {
+      params.geometry = Util.toSuperMapGeometry(params.geometry);
     }
     if (params.editType) {
       params.editType = params.editType.toLowerCase();
@@ -229,10 +227,7 @@ export class FeatureService extends ServiceBase {
       return geoFeature.toServerFeature({geometryFunction:(geometry)=>{
         if(Array.isArray(geometry) && geometry.length === 4){
           const polygon = new Polygon([[[geometry[0], geometry[1]], [geometry[2], geometry[1]], [geometry[2], geometry[3]], [geometry[0], geometry[3]]]]);
-          return Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(polygon));
-        }
-        if(geometry.getExtent){
-          return Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(geometry));
+          return Util.toSuperMapGeometry(polygon);
         }
         return Util.toSuperMapGeometry(geometry);
       }})
@@ -250,7 +245,7 @@ export class FeatureService extends ServiceBase {
     if (geoFeature.getId()) {
       feature.id = geoFeature.getId();
     }
-    feature.geometry = Util.toSuperMapGeometry(new GeoJSON().writeFeatureObject(geoFeature));
+    feature.geometry = Util.toSuperMapGeometry(geoFeature);
     return feature;
   }
 
