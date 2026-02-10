@@ -19,7 +19,7 @@
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
         "include": [
-            "src/common","src/openlayers"
+            "src/common/iServer/index.js", "src/common","src/openlayers"
         ],
         "exclude": [
             "src/common/overlay/levelRenderer",

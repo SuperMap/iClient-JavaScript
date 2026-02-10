@@ -18,7 +18,7 @@
   "source": {
     "includePattern": ".+\\.js?$",
     "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
-    "include": ["src/common", "src/maplibregl"],
+    "include": ["src/common/iServer/index.js","src/common", "src/maplibregl"],
     "exclude": [
       "src/common/overlay/levelRenderer",
       "src/common/thirdparty/ai",

@@ -19,7 +19,7 @@
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
         "include": [
-            "src/common","src/mapboxgl"
+            "src/common/iServer/index.js","src/common","src/mapboxgl"
         ],
         "exclude": [
             "src/common/overlay/levelRenderer",
