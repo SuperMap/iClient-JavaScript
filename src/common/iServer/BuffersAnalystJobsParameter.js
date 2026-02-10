@@ -14,7 +14,7 @@ import { MappingParameters } from './MappingParameters';
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
@@ -31,7 +31,7 @@ export class BuffersAnalystJobsParameter {
         this.datasetName = '';
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} BuffersAnalystJobsParameter.prototype.bounds
+         * @member {ModuleBounds} BuffersAnalystJobsParameter.prototype.bounds
          * @description 分析范围。
          */
         this.bounds = '';

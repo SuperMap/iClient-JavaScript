@@ -25,7 +25,7 @@ import {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.fields - 权重索引。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {number} [options.resolution=80] - 分辨率。
  * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
  * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
@@ -50,7 +50,7 @@ export class KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject} [KernelDensityJobParameter.prototype.query]
+         * @member {ModuleBounds} [KernelDensityJobParameter.prototype.query]
          * @description 分析范围。
          */
         this.query = "";

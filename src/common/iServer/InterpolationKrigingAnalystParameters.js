@@ -39,7 +39,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  *     的函数或者多项式进行拟合的情况下，适用泛克吕金插值法。<br>
  * @param {Object} options - 参数。
  * @param {string} options.type - 克吕金插值的类型。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
+ * @param {ModuleBounds} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {SearchMode} options.searchMode - 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。

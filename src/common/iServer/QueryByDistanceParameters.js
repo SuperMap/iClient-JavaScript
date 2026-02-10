@@ -11,7 +11,7 @@ import {QueryParameters} from './QueryParameters';
  * @classdesc 距离查询参数类。此类除了能够设置通用的查询参数以外，还可以指定查询距离等参数，查询距离的单位与所查询图层对应的数据集单位相同。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} options.geometry - 用于查询的几何对象。
+ * @param {Object} options.geometry - 用于查询的几何对象。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {number} options.distance - 查询距离，单位与所查询图层对应的数据集单位相同。距离查询时，表示距离地物的距离。最近地物查询时，表示搜索的范围。此为必设参数。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
@@ -40,7 +40,7 @@ export class QueryByDistanceParameters extends QueryParameters {
          */
 
         /**
-         * @member {GeoJSONObject} QueryByDistanceParameters.prototype.geometry
+         * @member {Object} QueryByDistanceParameters.prototype.geometry
          * @description 用于查询的地理对象。<br>
          * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。<br>
          * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。<br>

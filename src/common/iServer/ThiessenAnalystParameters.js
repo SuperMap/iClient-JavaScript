@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer SpatialAnalyst ThiessenPolygonAnalyst
  * @classdesc 泰森多边形分析参数基类。该类存储了泰森多边形分析结果数据集的名称和所在的数据源、结果数据的裁剪区域、是否返回分析得到的多边形面数组等参数。
  * @param {Object} options - 可选参数。
- * @param {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
+ * @param {ModulePolygon} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
  * @param {boolean} [options.createResultDataset=false] - 是否返回结果数据集。
  * @param {string} [options.resultDatasetName] - 指定结果数据集名称。
  * @param {string} [options.resultDatasourceName] - 指定结果数据集所在数据源，默认为当前数据源。
@@ -23,7 +23,7 @@ export class ThiessenAnalystParameters {
             return;
         }
         /**
-         * @member {GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject} [ThiessenAnalystParameters.prototype.clipRegion]
+         * @member {ModulePolygon} [ThiessenAnalystParameters.prototype.clipRegion]
          * @description 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
          */
         this.clipRegion = null;

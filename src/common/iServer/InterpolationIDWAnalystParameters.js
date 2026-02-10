@@ -11,7 +11,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @classdesc 反距离加权插值分析参数类。此类除了能够设置插值分析的一系列通用参数，还可以设置反距离加权插值分析中的查找参与运算点的方式、距离权重计算的幂次等参数。<br>
  * 当插值分析类型为 dataset 时，插值分析的数据集名称和插值字段名称为必设参数。当插值分析类型为 geometry 时，插值分析的离散点集合为必设参数。
  * @param {Object} options - 参数。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
+ * @param {ModuleBounds} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {SearchMode} options.searchMode - 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。

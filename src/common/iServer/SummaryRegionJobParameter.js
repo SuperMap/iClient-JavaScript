@@ -15,7 +15,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -57,7 +57,7 @@ export class SummaryRegionJobParameter {
         this.sumShape = true;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} SummaryRegionJobParameter.prototype.query
+         * @member {ModuleBounds} SummaryRegionJobParameter.prototype.query
          * @description 分析范围。
          */
         this.query = "";

@@ -17,7 +17,7 @@ import { ServerGeometry } from './ServerGeometry';
  * </div>
  * @param {Object} options - 参数。
  * @param {number} options.bufferDistance - 缓冲距离，单位与所查询图层对应的数据集单位相同。
- * @param {GeoJSONObject} options.geometry - 空间查询条件。
+ * @param {Object} options.geometry - 空间查询条件。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.attributeFilter] - 属性查询条件。
@@ -46,11 +46,8 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         this.attributeFilter = null;
 
         /**
-         * @member {GeoJSONObject} GetFeaturesByBufferParameters.prototype.geometry
+         * @member {ModuleGeometry} GetFeaturesByBufferParameters.prototype.geometry
          * @description 空间查询条件。<br>
-         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。</br>
-         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。</br>
-         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLatBounds}|{@link GeoJSONObject}。
          */
         this.geometry = null;
 

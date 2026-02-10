@@ -16,7 +16,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 查询的范围对象。
+ * @param {ModuleBounds} options.bounds - 查询的范围对象。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
@@ -42,7 +42,7 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         this.getFeatureMode = GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} GetFeaturesByBoundsParameters.prototype.bounds
+         * @member {ModuleBounds} GetFeaturesByBoundsParameters.prototype.bounds
          * @description 用于查询的范围对象。
          *
          */

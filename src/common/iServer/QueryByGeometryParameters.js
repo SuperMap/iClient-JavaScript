@@ -15,7 +15,7 @@ import {SpatialQueryMode} from '../REST';
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
- * @param {GeoJSONObject} options.geometry - 查询的几何对象。
+ * @param {Object} options.geometry - 查询的几何对象。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
@@ -45,7 +45,7 @@ export class QueryByGeometryParameters extends QueryParameters {
         this.returnContent = true;
 
         /**
-         * @member {GeoJSONObject} QueryByGeometryParameters.prototype.geometry
+         * @member {Object} QueryByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。<br>
          * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。<br>
          * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。<br>

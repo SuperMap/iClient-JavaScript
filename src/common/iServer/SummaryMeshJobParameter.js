@@ -16,7 +16,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 聚合分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 聚合分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
@@ -45,7 +45,7 @@ export class SummaryMeshJobParameter {
         this.regionDataset = "";
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} SummaryMeshJobParameter.prototype.query
+         * @member {ModuleBounds} SummaryMeshJobParameter.prototype.query
          * @description 聚合分析范围（聚合类型为网格面聚合时使用的参数）。
          */
         this.query = "";

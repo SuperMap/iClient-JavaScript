@@ -79,7 +79,7 @@
             "src/leaflet/core/CommontypesConversion"
         ]
     },
-    "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],
+    "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories","../plugins/modulecondition"],
     "markdown": {
         "tags": ["usage"]
     },
@@ -89,6 +89,7 @@
         "default": {
             "outputSourceFiles": false
         },
+        "moduleName":"leaflet",
         "namespace": "L.supermap",
         "npm":"@supermapgis/iclient-leaflet",
         "cdn":"https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"

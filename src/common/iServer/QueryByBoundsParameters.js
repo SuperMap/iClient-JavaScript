@@ -11,7 +11,7 @@ import {QueryParameters} from './QueryParameters';
  * @classdesc 范围查询参数类。此类除了能够设置地图查询中通用的查询参数以外，还可以指定查询范围等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 指定的查询范围。查询范围的投影坐标系与地图坐标系相同。
+ * @param {ModuleBounds} options.bounds - 指定的查询范围。查询范围的投影坐标系与地图坐标系相同。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
@@ -39,7 +39,7 @@ export class QueryByBoundsParameters extends QueryParameters {
         this.returnContent = true;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} QueryByBoundsParameters.prototype.bounds
+         * @member {ModuleBounds} QueryByBoundsParameters.prototype.bounds
          * @description 指定的查询范围。查询范围的投影坐标系与地图坐标系相同。
          */
         this.bounds = null;

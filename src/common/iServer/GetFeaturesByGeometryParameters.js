@@ -17,7 +17,7 @@ import { ServerGeometry } from './ServerGeometry';
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} options.geometry - 查询的几何对象。
+ * @param {ModuleGeometry} options.geometry - 查询的几何对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
  * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
@@ -43,11 +43,8 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         this.getFeatureMode = 'SPATIAL';
 
         /**
-         * @member {GeoJSONObject} GetFeaturesByGeometryParameters.prototype.geometry
+         * @member {ModuleGeometry} GetFeaturesByGeometryParameters.prototype.geometry
          * @description 用于查询的几何对象。 </br>
-         * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。</br>
-         * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。</br>
-         * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLatBounds}|{@link GeoJSONObject}。
          */
         this.geometry = null;
 

@@ -75,7 +75,7 @@
       "src/maplibregl/overlay/L7/l7-render"
     ]
   },
-  "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories"],
+  "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories","../plugins/modulecondition"],
   "markdown": {
     "tags": ["usage"]
   },
@@ -86,6 +86,7 @@
       "outputSourceFiles": false
     },
     "namespace": "maplibregl.supermap",
+    "moduleName":"maplibregl",
     "npm": "@supermapgis/iclient-maplibregl",
     "cdn": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js"
   }

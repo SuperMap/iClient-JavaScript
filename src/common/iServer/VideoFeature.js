@@ -9,7 +9,7 @@ import { Util } from '../commontypes/Util';
  * @classdesc 视频要素类
  * @version 11.2.0
  * @param {Object} options - 参数。
- * @param {(L.Bounds|L.LatLngBounds|L.Rectangle|L.Polygon|ol.extent|ol.geom.Polygon|mapboxgl.LngLatBounds|GeoJSONObject|SuperMap.Bounds)} options.geometry - 视频参数对应的视频视角空间范围，只支持矩形。
+ * @param {ModulePolygonAndBounds} options.geometry - 视频参数对应的视频视角空间范围，只支持矩形。
  * @param {string|number} [options.id] - 要素 ID。
  * @param {string} [options.name] - 视频名称。
  * @param {string} [options.address] - 视频流地址。
@@ -30,7 +30,7 @@ export class VideoFeature {
     this.name = null;
 
     /**
-     * @member {(L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject|SuperMap.Bounds)} VideoFeature.prototype.geometry
+     * @member {ModulePolygonAndBounds} VideoFeature.prototype.geometry
      * @description 视频参数对应的视频视角空间范围，只支持矩形
      *
      */
