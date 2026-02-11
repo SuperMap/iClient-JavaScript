@@ -1,7 +1,7 @@
 import { tiledMapLayer } from '../../../src/leaflet/mapping/TiledMapLayer';
 import { NDVIParameter } from '../../../src/common/iServer/NDVIParameter';
 import { HillshadeParameter } from '../../../src/common/iServer/HillshadeParameter';
-import { ChartSetting } from '../../../src/common/iServer/ChartSetting';
+import { ChartSettingS57 } from '../../../src/common/iServer/ChartSettingS57';
 import { getQueryValue } from '../../tool/utils';
 import { mockCreateTile } from '../../tool/mock_leaflet';
 import { crs } from '../../../src/leaflet/core/Proj4Leaflet';
@@ -220,7 +220,7 @@ describe('leaflet_TiledMapLayer', () => {
     });
     it("chartSetting", () => {
         const tempOptions = {
-            chartSetting: new ChartSetting({
+            chartSetting: new ChartSettingS57({
                 colourModeChart: L.supermap.ColourModeChart.DUSK
             })
         };
@@ -232,7 +232,7 @@ describe('leaflet_TiledMapLayer', () => {
     });
     it("updateParams", () => {
         const tempOptions = {
-            chartSetting: new ChartSetting({
+            chartSetting: new ChartSettingS57({
                 colourModeChart: L.supermap.ColourModeChart.DUSK
             })
         };
@@ -241,7 +241,7 @@ describe('leaflet_TiledMapLayer', () => {
         const tileUrl = tiledMapLayerObject.getTileUrl(L.point(1, 4));
         const chartSetting = getQueryValue(tileUrl, 'chartSetting');
         expect(chartSetting).not.toBeNull();
-        const newChartSetting = new ChartSetting({
+        const newChartSetting = new ChartSettingS57({
             colourModeChart: L.supermap.ColourModeChart.NIGHT
         });
         tiledMapLayerObject.updateParams({ chartSetting: newChartSetting });

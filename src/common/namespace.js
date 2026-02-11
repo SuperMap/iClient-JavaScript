@@ -144,7 +144,8 @@ import {
   ChartWaterLevelParameter,
   ChartWLTimeRangeParameter,
   ChartWaterDepthParameter,
-  ChartSetting,
+  ChartSettingS57,
+  ChartSettingS101,
   ClipParameter,
   ColorDictionary,
   CommonServiceBase,
@@ -600,7 +601,8 @@ SuperMap.ChartWaterLevelParameter = ChartWaterLevelParameter;
 SuperMap.ChartWLTimeRangeParameter = ChartWLTimeRangeParameter;
 SuperMap.ChartWaterDepthParameter = ChartWaterDepthParameter;
 SuperMap.ChartQueryService = ChartQueryService;
-SuperMap.ChartSetting = ChartSetting;
+SuperMap.ChartSettingS57 = ChartSettingS57;
+SuperMap.ChartSettingS101 = ChartSettingS101;
 SuperMap.ClipParameter = ClipParameter;
 SuperMap.ColorDictionary = ColorDictionary;
 SuperMap.CommonServiceBase = CommonServiceBase;

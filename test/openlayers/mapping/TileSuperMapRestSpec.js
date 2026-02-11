@@ -1,7 +1,7 @@
 import { TileSuperMapRest } from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
-import {ChartSetting} from '../../../src/common/iServer/ChartSetting';
+import {ChartSettingS57} from '../../../src/common/iServer/ChartSettingS57';
 import {getQueryValue} from '../../tool/utils';
 
 import Point from 'ol/geom/Point';
@@ -159,7 +159,7 @@ describe('openlayers_TileSuperMapRest', () => {
           prjCoordSys: {
               epsgCode: 4326
           },
-          chartSetting: new ChartSetting({
+          chartSetting: new ChartSettingS57({
             colourModeChart: ol.supermap.ColourModeChart.DUSK
           })
       };
@@ -179,7 +179,7 @@ describe('openlayers_TileSuperMapRest', () => {
           prjCoordSys: {
               epsgCode: 4326
           },
-          chartSetting: new ChartSetting({
+          chartSetting: new ChartSettingS57({
             colourModeChart: ol.supermap.ColourModeChart.DUSK
           })
       };
@@ -190,7 +190,7 @@ describe('openlayers_TileSuperMapRest', () => {
       expect(tileUrl).not.toBeNull();
       const chartSetting = getQueryValue(tileUrl,'chartSetting');
       expect(chartSetting).not.toBeNull;
-      const newChartSetting = new ChartSetting({
+      const newChartSetting = new ChartSettingS57({
         colourModeChart: ol.supermap.ColourModeChart.NIGHT
       });
       tileSource.updateParams({chartSetting: newChartSetting})

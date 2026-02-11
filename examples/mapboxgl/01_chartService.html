@@ -220,191 +220,98 @@
     <div class="tab-content">
       <!-- 海图设置面板 -->
       <div class='panel-body content tab-pane active' id="settings">
+          <div class='input-group'>
+            <span class='input-group-addon'>FourShades</span>
+            <select id='fourShades' class='form-control'>
+              <option value="true">Four Shades</option>
+              <option value="false" selected>Two Shades</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>ShallowWaterDangers</span>
+            <select id='shallowWaterDangers' class='form-control'>
+              <option value="true" data-i18n="resources.text_true" selected>TRUE</option>
+              <option value="false" data-i18n="resources.text_false">FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>PlainBoundaries</span>
+            <select id='plainBoundaries' class='form-control'>
+              <option value="true" data-i18n="resources.text_true" selected>TRUE</option>
+              <option value="false" data-i18n="resources.text_false">FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>SimplifiedSymbols</span>
+            <select id='simplifiedSymbols' class='form-control'>
+              <option value="true" data-i18n="resources.text_true">TRUE</option>
+              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>FullLightLines</span>
+            <select id='fullLightLines' class='form-control'>
+              <option value="true" data-i18n="resources.text_true">TRUE</option>
+              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>RadarOverlay</span>
+            <select id='radarOverlay' class='form-control'>
+              <option value="true" data-i18n="resources.text_true">TRUE</option>
+              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>IgnoreMinScale</span>
+            <select id='ignoreScamin' class='form-control'>
+              <option value="true" data-i18n="resources.text_true">TRUE</option>
+              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>ColorScheme</span>
+            <select id='colorScheme' class='form-control'>
+              <option value="DAY" selected>DAY</option>
+              <option value="DUSK">DUSK</option>
+              <option value="NIGHT">NIGHT</option>
+            </select>
+          </div>
+            <div class='input-group'>
+            <span class='input-group-addon'>SafetyContour</span>
+            <input type='number' class='form-control' id='safetyContour' value='15' />
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon' data-i18n="resources.text_shallowContour">ShallowContour</span>
+            <input type='number' class='form-control' id='shallowContour' value='2' />
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon' data-i18n="resources.text_deepContour">DeepContour</span>
+            <input type='number' class='form-control' id='deepContour' value='30' />
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon' data-i18n="resources.text_safetyDepth">SafetyDepth</span>
+            <input type='number' class='form-control' id='safetyDepth' value='30' />
+          </div>
         <div class='panel'>
-          <div data-i18n="resources.text_displaySetting" class="setting-title"></div>
+          <div data-i18n="resources.text_filterSetting" class="setting-title">互操作设置</div>
           <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_displayModeChart"></span>
-            <select id='displayModeChart' class='form-control' onchange="changeDisplayModeChart()">
-              <option value="STANDARD" data-i18n="resources.text_STANDARD"></option>
-              <option value="BASIC" data-i18n="resources.text_BASIC"></option>
-              <option value="OTHER" data-i18n="resources.text_OTHER" selected></option>
-            </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon' data-i18n="resources.text_colourModeChart"></span>
-              <select id='colourModeChart' class='form-control'>
-                <option value="DAY_BRIGHT" data-i18n="resources.text_DAY_BRIGHT" selected></option>
-                <option value="DUSK" data-i18n="resources.text_DUSK"></option>
-                <option value="NIGHT" data-i18n="resources.text_NIGHT"></option>
-              </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon' data-i18n="resources.text_displayTypeName"></span>
-              <input type='text' class='form-control' id='displayTypeName' value='S52'/>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon' data-i18n="resources.text_displayScaleFactor"></span>
-              <input type='text' class='form-control' id='displayScaleFactor' value='0.05'/>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon' data-i18n="resources.text_fontName"></span>
-              <select id='fontName' class='form-control'>
-                <option value="Arial">Arial</option>
-                <option value="宋体">宋体</option>
-                <option value="黑体">黑体</option>
-              </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_fontSize"></span>
-            <input type='number' class='form-control' id='fontSize' value='10'/>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon'  data-i18n="resources.text_markerType"></span>
-              <select id='simplifiedMarker' class='form-control'>
-                <option value="true" data-i18n="resources.text_simplifiedMarker" selected></option>
-                <option value="false" data-i18n="resources.text_traditionalMarker"></option>
-              </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon'  data-i18n="resources.text_boundaryType"></span>
-              <select id='symbolizedAreaBoundary' class='form-control'>
-                <option value="true" data-i18n="resources.text_symbolizedAreaBoundary"></option>
-                <option value="false" data-i18n="resources.text_simplifiedAreaBoundary" selected></option>
-              </select>
-          </div>
-        </div>
-        <div class='panel'>
-          <div data-i18n="resources.text_soundingSetting" class="setting-title"></div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_depthColorMode"></span>
-            <select id='displayTwoShades' class='form-control'>
-              <option value="true" data-i18n="resources.text_displayTwoShades"></option>
-              <option value="false" data-i18n="resources.text_displayFourShades" selected></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_safetyContour"></span>
-            <input type='number' class='form-control' id='safetyContour' value='15'/>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_shallowContour"></span>
-            <input type='number' class='form-control' id='shallowContour' value='2'/>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_deepContour"></span>
-            <input type='number' class='form-control' id='deepContour' value='30'/>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_safetyDepth"></span>
-            <input type='number' class='form-control' id='safetyDepth' value='30'/>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_depthUnit"></span>
-            <select id='depthUnit' class='form-control'>
-              <option value="DECIMETER"  data-i18n="resources.text_DECIMETER"></option>
-              <option value="METER"  data-i18n="resources.text_METER" selected></option>
-              <option value="FOOT"  data-i18n="resources.text_FOOT"></option>
-            </select>
-          </div>
-        </div>
-        <div class='panel'>
-          <div data-i18n="resources.text_filterSetting" class="setting-title"></div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displaySafetyContourLabel"></span>
-            <select id='displaySafetyContourLabel' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displayOtherContourLabel"></span>
-            <select id='displayOtherContourLabel' class='form-control' disabled>
-              <option value="true" data-i18n="resources.text_true"></option>
-              <option value="false" data-i18n="resources.text_false" selected></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displaySounding"></span>
-            <select id='displaySounding' class='form-control' disabled>
-              <option value="true" data-i18n="resources.text_true"></option>
-              <option value="false" data-i18n="resources.text_false" selected></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displayMetaObject"></span>
-            <select id='displayMetaObject' class='form-control' disabled>
-              <option value="true" data-i18n="resources.text_true"></option>
-              <option value="false" data-i18n="resources.text_false" selected></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displayTextMessage"></span>
-            <select id='displayTextMessage' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_displayLowAccurateMarker"></span>
-            <select id='displayLowAccurateMarker' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon'  data-i18n="resources.text_localizationDisplayText"></span>
-              <select id='localizationDisplayText' class='form-control'>
-                <option value="true" data-i18n="resources.text_true"></option>
-                <option value="false" data-i18n="resources.text_false" selected></option>
-              </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon'  data-i18n="resources.text_displayCellName"></span>
-              <select id='displayCellName' class='form-control'>
-                <option value="true" data-i18n="resources.text_true"></option>
-                <option value="false" data-i18n="resources.text_false" selected></option>
-              </select>
-          </div>
-          <div class='input-group'>
-              <span class='input-group-addon'  data-i18n="resources.text_displayBorder"></span>
-              <select id='displayBorder' class='form-control'>
-                <option value="true" data-i18n="resources.text_true"></option>
-                <option value="false" data-i18n="resources.text_false" selected></option>
-              </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_minVisibleScaleEnabled"></span>
-            <select id='minVisibleScaleEnabled' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'  data-i18n="resources.text_textClipRegionEnabled"></span>
-            <select id='textClipRegionEnabled' class='form-control'>
-              <option value="true" data-i18n="resources.text_true"></option>
-              <option value="false" data-i18n="resources.text_false" selected></option>
-            </select>
-          </div>
-        </div>
-        <div class='panel'>
-          <div data-i18n="resources.text_interoperationSetting" class="setting-title"></div>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_interoperation"></span>
+            <span class='input-group-addon'>互操作</span>
             <select id='s98InteroperableEnable' class='form-control'>
-              <option value="true" data-i18n="resources.text_true"></option>
-              <option value="false" data-i18n="resources.text_false" selected></option>
+              <option value="true" data-i18n="resources.text_true">是</option>
+              <option value="false" data-i18n="resources.text_false" selected>否</option>
             </select>
           </div>
-           <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_interoperationLevel"></span>
+          <div class='input-group'>
+            <span class='input-group-addon'>互操作等级</span>
             <select id='interoperabilityLevel' class='form-control'>
-              <option value="0" selected>L0</option>
-              <option value="1">L1</option>
+              <option value="0" data-i18n="resources.text_true" selected>L0</option>
+              <option value="1" data-i18n="resources.text_false">L1</option>
             </select>
           </div>
         </div>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_createChart" onclick="updateChartSetting()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_createChart" onclick="updateChartSetting()"
+          value="应用" />
       </div>
       <!-- 点选查询面板 -->
       <div class="panel-body tab-pane" id="attrs">
@@ -613,62 +520,41 @@
     }
 
     function getChartSetting() {
-      var displayModeChart = document.getElementById("displayModeChart").value;
-      var colourModeChart = document.getElementById("colourModeChart").value;
-      var displayScaleFactor = parseFloat(document.getElementById("displayScaleFactor").value);
-      var fontName = document.getElementById("fontName").value;
-      var simplifiedMarker = document.getElementById("simplifiedMarker").value === "true";
-      var symbolizedAreaBoundary = document.getElementById("symbolizedAreaBoundary").value === "true";
-      var displayTextMessage = document.getElementById("displayTextMessage").value === "true";
-      var displaySounding = document.getElementById("displaySounding").value === "true";
-      var minVisibleScaleEnabled = document.getElementById("minVisibleScaleEnabled").value === "true";
-      var localizationDisplayText = document.getElementById("localizationDisplayText").value === "true";
-      var displayMetaObject = document.getElementById("displayMetaObject").value === "true";
-      var displayCellName = document.getElementById("displayCellName").value === "true";
-      var displayBorder = document.getElementById("displayBorder").value === "true";
-      var displaySafetyContourLabel = document.getElementById("displaySafetyContourLabel").value === "true";
-      var safetyContour = parseFloat(document.getElementById("safetyContour").value);
-      var shallowContour = parseFloat(document.getElementById("shallowContour").value);
-      var deepContour = parseFloat(document.getElementById("deepContour").value);
-      var safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
-      var displayOtherContourLabel = document.getElementById("displayOtherContourLabel").value === "true";
-      var displayTwoShades = document.getElementById("displayTwoShades").value === "true";
-      var depthUnit = document.getElementById("depthUnit").value;
-      var fontSize = parseFloat(document.getElementById("fontSize").value);
-      var displayLowAccurateMarker = document.getElementById("displayLowAccurateMarker").value === "true";
-      var s98InteroperableEnable = document.getElementById("s98InteroperableEnable").value === "true";
-      var interoperabilityLevel = parseFloat(document.getElementById("interoperabilityLevel").value);
+    var safetyContour = parseFloat(document.getElementById("safetyContour").value);
+    var shallowContour = parseFloat(document.getElementById("shallowContour").value);
+    var deepContour = parseFloat(document.getElementById("deepContour").value);
+    var safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
+    var fourShades = document.getElementById("fourShades").value === "true";
+    var shallowWaterDangers = document.getElementById("shallowWaterDangers").value === "true";
+    var plainBoundaries = document.getElementById("plainBoundaries").value === "true";
+    var simplifiedSymbols = document.getElementById("simplifiedSymbols").value === "true";
+    var fullLightLines = document.getElementById("fullLightLines").value === "true";
+    var radarOverlay = document.getElementById("radarOverlay").value === "true";
+    var ignoreScamin = document.getElementById("ignoreScamin").value === "true";
+    var colorScheme = document.getElementById("colorScheme").value;
+    var s98InteroperableEnable = document.getElementById("s98InteroperableEnable").value === "true";
+    var interoperabilityLevel = parseFloat(document.getElementById("interoperabilityLevel").value);
 
-      var chartSetting = new mapboxgl.supermap.ChartSetting({
-        displayModeChart: displayModeChart,
-        colourModeChart: colourModeChart,
-        displayScaleFactor: displayScaleFactor,
-        fontName: fontName,
-        simplifiedMarker: simplifiedMarker,
-        symbolizedAreaBoundary: symbolizedAreaBoundary,
-        displayTextMessage: displayTextMessage,
-        displaySounding: displaySounding,
-        minVisibleScaleEnabled: minVisibleScaleEnabled,
-        localizationDisplayText: localizationDisplayText,
-        displayMetaObject: displayMetaObject,
-        displayCellName: displayCellName,
-        displaySafetyContourLabel: displaySafetyContourLabel,
-        safetyContour: safetyContour,
-        shallowContour: shallowContour,
-        deepContour: deepContour,
-        safetyDepth: safetyDepth,
-        displayOtherContourLabel: displayOtherContourLabel,
-        displayTwoShades: displayTwoShades,
-        depthUnit: depthUnit,
-        fontSize: fontSize,
-        displayBorder: displayBorder,
-        displayLowAccurateMarker: displayLowAccurateMarker,
-        displayableAcronymClassify: displayableAcronymClassify,
-        s98InteroperableEnable: s98InteroperableEnable,
-        interoperabilityLevel: interoperabilityLevel
-      })
-      return chartSetting;
-    }
+    var chartSetting = new mapboxgl.supermap.ChartSettingS101({
+      // chartType: 'S100',
+      safetyDepth: safetyDepth,
+      safetyContour: safetyContour,
+      shallowContour: shallowContour,
+      deepContour: deepContour,
+      fourShades: fourShades,
+      shallowWaterDangers: shallowWaterDangers,
+      plainBoundaries: plainBoundaries,
+      simplifiedSymbols: simplifiedSymbols,
+      fullLightLines: fullLightLines,
+      radarOverlay: radarOverlay,
+      ignoreScamin: ignoreScamin,
+      colorScheme: colorScheme,
+      s98InteroperableEnable: s98InteroperableEnable,
+      // edit 新增互操作等级
+      interoperabilityLevel: interoperabilityLevel
+    })
+    return chartSetting;
+  }
 
     function updateChartSetting() {
       var newChartSetting = getChartSetting();
@@ -1148,11 +1034,8 @@
     function S104QueryClickHandler(event) {
       // 查找点击的水位点
       var coordinates = [event.lngLat.lng, event.lngLat.lat];
-      var pixelCoor = event.point;
-      var b1 = map.unproject([pixelCoor.x-15,pixelCoor.y+15]);
-      var b2 = map.unproject([pixelCoor.x+15,pixelCoor.y-15]);
       const parm = new mapboxgl.supermap.ChartWaterLevelParameter({
-        bounds: new mapboxgl.LngLatBounds(b1, b2),
+        coordinates,
         dataSource: s104dataSource,
         // 数据集名称固定，可以不传
         // dataset: s104dataSet,
@@ -1185,7 +1068,7 @@
           });
         }
         if (features) {
-          stationFeatures = features.features;
+          stationFeatures = features;
           chartContainer.style.display = 'block';
           createEchart();
         }

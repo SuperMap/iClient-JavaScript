@@ -39,7 +39,7 @@ import Attributions from '../core/Attributions';
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
- * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+ * @param {ChartSettingS57|ChartSettingS101} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @param {number} [options.overflowTiles = 0] - 绘制超出图层范围的瓦片圈数。常用于位于地图边缘的要素符号显示不全的场景。默认值为0，表示不绘制超出图层范围的瓦片。当 options.noWrap 为 true 时，overflowTiles有效。
  * @fires TiledMapLayer#tilesetsinfoloaded
  * @fires TiledMapLayer#tileversionschanged

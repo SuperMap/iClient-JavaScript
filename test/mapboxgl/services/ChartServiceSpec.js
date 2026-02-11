@@ -131,7 +131,8 @@ describe('mapboxgl_ChartService', () => {
         var service = new ChartService(url, dataUrl, options);
         var parms = new ChartWaterLevelParameter({
             dataSource: 'testDataSrouce1',
-            bounds: [113.6307273864746, 22.780766677856448, 113.6358772277832, 22.785916519165042]
+            coordinates: [113.6307273864746, 22.780766677856448],
+            currentTime: '20251224T000000Z'
         });
         spyOn(FetchRequest, 'post').and.callFake((testUrl, params) => {
             if (params.includes('S104WaterLevel')) {
@@ -151,7 +152,7 @@ describe('mapboxgl_ChartService', () => {
         service.getWaterLevel(parms).then(res => {
           expect(res.stationFeature).not.toBeNull();
           expect(res.features).not.toBeNull();
-          expect(res.features.features[0].properties.TIMEPOINT).not.toBeNull();
+          expect(res.features[0].properties.TIMEPOINT).not.toBeNull();
           done();
         })
     });

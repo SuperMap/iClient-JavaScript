@@ -11,7 +11,9 @@
  import { FeatureService } from './FeatureService';
  import { GetFeaturesBySQLParameters } from './GetFeaturesBySQLParameters';
  import { GetGridCellInfosParameters } from './GetGridCellInfosParameters';
- import { GetFeaturesByBoundsParameters } from './GetFeaturesByBoundsParameters';
+ import { GetFeaturesByBufferParameters } from './GetFeaturesByBufferParameters';
+ import { distance } from "@turf/distance";
+ import { Point } from '../commontypes/geometry/Point';
  
  /**
   * @class ChartService
@@ -196,20 +198,15 @@
           crossOrigin: me.options.crossOrigin,
           headers: me.options.headers
         });
-        var { dataSource, dataset, waterLevelDataset, timeDataset, bounds, timeIdKey } = params;
-        // 查询水位点
-        var boundsParam = new GetFeaturesByBoundsParameters({
-          ...params,
-          datasetNames: [dataSource + ':' + dataset],
-          bounds: bounds
-        });
-        return featureService.getFeaturesByBounds(boundsParam, callback).then(function (boundsResult) {
-          var stationFeature = boundsResult.result.features.features[0];
-          if(!stationFeature) {
+        var { dataSource, dataset, waterLevelDataset, timeDataset, coordinates, currentTime, startTime, endTime, timeIdKey } = params;
+        // 查询最近的水位点
+        var datasetNames = [dataSource + ':' + dataset];
+        return this.findNearestPointNew(coordinates, datasetNames).then(function (closestFeature) {
+          if (!closestFeature) {
             return null;
           }
-          var stationId = stationFeature.properties.STATIONID;
-          var cellId = stationFeature.properties.CELLID;
+          var stationId = closestFeature.properties.STATIONID;
+          var cellId = closestFeature.properties.CELLID;
           // 查询水位
           var waterLevelSqlParam = new GetFeaturesBySQLParameters({
             ...params,
@@ -246,7 +243,19 @@
                   feature.properties.TIMEPOINT = null;
                 }
               });
-              return { features: waterLevelResult.result.features, stationFeature };
+              // 过滤时间范围,也可考虑用attributeFilter过滤
+              if (currentTime || startTime || endTime) {
+                features = features.filter(feature => {
+                  const timepoint = feature.properties.TIMEPOINT;
+                  if (currentTime) {
+                    return timepoint === currentTime;
+                  }
+                  const afterStart = !startTime || timepoint >= startTime;
+                  const beforeEnd = !endTime || timepoint <= endTime;
+                  return afterStart && beforeEnd;
+                });
+              }
+              return { features, stationFeature: closestFeature };
             });
           });
         });
@@ -303,6 +312,35 @@
         }).catch(function (err) {
           throw err;
         });
+      }
+
+      async findNearestPointNew(coordinates, datasetNames) {
+        const [x, y] = coordinates
+        if (x < -180.0 || x > 180.0 || y < -90 || y > 90){
+          return
+        }
+        const point = new Point([x, y])
+        const bufferParam = new GetFeaturesByBufferParameters({
+          datasetNames: datasetNames,
+          bufferDistance: 0.03,
+          geometry: point
+        })
+        const serviceResult = await new FeatureService(this.dataUrl).getFeaturesByBuffer(bufferParam)
+        if (serviceResult.result.features.features.length > 0) {
+          // 变量用于保存最近的点
+          let closestFeature = null
+          let minDistance = Infinity // 初始设置为最大距离
+          // 遍历所有的点数据，找出距离最近的点
+          serviceResult.result.features.features.forEach((pointData) => {
+            const dis = distance(coordinates, pointData.geometry.coordinates)
+            // 更新最近点
+            if (dis < minDistance) {
+              minDistance = dis
+              closestFeature = pointData
+            }
+          })
+          return closestFeature
+        } 
       }
 
       _processFormat(resultFormat) {
