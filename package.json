@@ -147,7 +147,7 @@
     "@turf/center": "^7.2.0",
     "@turf/distance": "^7.2.0",
     "@turf/meta": "^7.2.0",
-    "@turf/turf": "7.2.0",
+    "@turf/turf": "7.3.4",
     "canvg": "^4.0.3",
     "echarts": "5.5.0",
     "fast-xml-parser": "^5.3.4",
