@@ -29,7 +29,6 @@ import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
 import * as olLayer from 'ol/layer';
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import * as olTilegrid from 'ol/tilegrid';
@@ -49,6 +48,7 @@ import Text from 'ol/style/Text';
 import Collection from 'ol/Collection';
 import { containsCoordinate, getCenter } from 'ol/extent';
 import difference from 'lodash.difference';
+import { XMLParser } from 'fast-xml-parser';
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
@@ -70,6 +70,19 @@ const dpiConfig = {
   default: 96, // 常用dpi
   iServerWMTS: 90.7142857142857 // iserver使用的wmts图层dpi
 };
+// 以下路径统一转为array格式（fast-xml-parser插件在返回值数量为1时候返回obj,返回数量大于1时返回array）
+const WMTS_ARRAY_NODE_PATHS = [
+    'Capabilities.Contents.Layer',
+    'Capabilities.Contents.Layer.Format',
+    'Capabilities.Contents.Layer.Style',
+    'Capabilities.Contents.Layer.TileMatrixSetLink',
+    'Capabilities.Contents.TileMatrixSet',
+    'Capabilities.Contents.TileMatrixSet.TileMatrix',
+    'Capabilities.OperationsMetadata.Operation',
+    'Capabilities.OperationsMetadata.Operation.DCP.HTTP.Get',
+    'Capabilities.OperationsMetadata.Operation.DCP.HTTP.Get.Constraint',
+    'Capabilities.OperationsMetadata.Operation.DCP.HTTP.Get.Constraint.AllowedValues.Value'
+];
 /**
  * @class WebMap
  * @category  iPortal/Online Resources Map
@@ -667,9 +680,15 @@ export class WebMap extends Observable {
    * @param {Object} capabilitiesText - wmts信息
    */
   getWMTSScales(identifier, capabilitiesText) {
-    const format = new WMTSCapabilities();
-    let capabilities = format.read(capabilitiesText);
-
+    const parser = new XMLParser({
+      attributeNamePrefix: '',
+      ignoreAttributes: false,
+      removeNSPrefix: true,
+      isArray: (name, jpath) => {
+        return WMTS_ARRAY_NODE_PATHS.includes(jpath);
+      }
+    });
+    const capabilities = parser.parse(capabilitiesText).Capabilities;
     let content = capabilities.Contents;
     let tileMatrixSet = content.TileMatrixSet;
     let scales = [];
@@ -1628,7 +1647,12 @@ export class WebMap extends Observable {
     }
     return this.getRequestUrl(url, proxy);
   }
-
+  getBoundsFromConrner(lower, upper) {
+        const bottomLeft = lower.split(' '),
+            topRight = upper.split(' ');
+        const bounds = bottomLeft.concat(topRight);
+        return [+bounds[0], +bounds[1], +bounds[2], +bounds[3]];
+  }
   /**
    * @private
    * @function WebMap.prototype.getWmtsInfo
@@ -1648,8 +1672,15 @@ export class WebMap extends Observable {
         return response.text();
       })
       .then(function (capabilitiesText) {
-        const format = new WMTSCapabilities();
-        let capabilities = format.read(capabilitiesText);
+        const parser = new XMLParser({
+          attributeNamePrefix: '',
+          ignoreAttributes: false,
+          removeNSPrefix: true,
+          isArray: (name, jpath) => {
+            return WMTS_ARRAY_NODE_PATHS.includes(jpath);
+          }
+        });
+        const capabilities = parser.parse(capabilitiesText).Capabilities;
         if (that.isValidResponse(capabilities)) {
           let content = capabilities.Contents;
           let tileMatrixSet = content.TileMatrixSet,
@@ -1664,7 +1695,10 @@ export class WebMap extends Observable {
               idx = n;
               layer = layers[idx];
               layerFormat = layer.Format[0];
-              var layerBounds = layer.WGS84BoundingBox;
+              var WGS84BoundingBox = layer.WGS84BoundingBox;
+              var boundingBox = layer.BoundingBox;
+              let bbox = WGS84BoundingBox ? WGS84BoundingBox : boundingBox;
+              var layerBounds = that.getBoundsFromConrner(bbox.LowerCorner, bbox.UpperCorner)
               // tileMatrixSetLink = layer.TileMatrixSetLink;
               break;
             }
@@ -1686,7 +1720,7 @@ export class WebMap extends Observable {
                 matrixIds.push(tileMatrixSet[i].TileMatrix[h].Identifier);
               }
               //bug wmts出图需要加上origin，否则会出现出图不正确的情况。偏移或者瓦片出不了
-              let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner;
+              let origin = tileMatrixSet[i].TileMatrix[0].TopLeftCorner.split(' ').map(Number);
               layerInfo.origin =
                 ['EPSG:4326', 'EPSG:4490'].indexOf(wmtsLayerEpsg) > -1 ? [origin[1], origin[0]] : origin;
               break;
@@ -1694,7 +1728,7 @@ export class WebMap extends Observable {
           }
           let name = layerInfo.name,
             extent;
-          if (layerBounds) {
+          if(WGS84BoundingBox) {
             if (layerBounds[0] < -180) {
               layerBounds[0] = -180;
             }
@@ -1708,11 +1742,13 @@ export class WebMap extends Observable {
               layerBounds[3] = 90;
             }
             extent = olProj.transformExtent(layerBounds, 'EPSG:4326', that.baseProjection);
-          } else {
+        } else if(boundingBox) {
+            extent = layerBounds;
+        } else {
             extent = olProj.get(that.baseProjection).getExtent();
-          }
+        }
           layerInfo.tileUrl = that.getTileUrl(
-            capabilities.OperationsMetadata.GetTile.DCP.HTTP.Get,
+            capabilities.OperationsMetadata.Operation.find(o => o.name === 'GetTile').DCP.HTTP.Get,
             layer,
             layerFormat,
             isKvp
