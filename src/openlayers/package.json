@@ -17,7 +17,7 @@
   "dependencies": {
     "@supermapgis/iclient-common": "12.1.0-dev",
     "@supermapgis/tile-decryptor": "^1.0.0",
-    "@turf/turf": "7.2.0",
+    "@turf/turf": "7.3.2",
     "mapv": "2.0.62",
     "ol": "10.5.0",
     "canvg": "^4.0.3",
