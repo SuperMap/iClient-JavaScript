@@ -119,9 +119,9 @@ describe('maplibregl_ChartService', () => {
         const service2Res = service2.getChartWaterDepth(parms);
         expect(service2Res).toBeNull();
         service.getChartWaterDepth(parms).then(res => {
-          expect(res.result.value).toBe(12)
-          expect(res.result.row).toBe(845)
-          expect(res.result.column).toBe(385)
+          expect(res.depth.result.value).toBe(12)
+          expect(res.depth.result.row).toBe(845)
+          expect(res.depth.result.column).toBe(385)
           done();
         })
     });
@@ -177,6 +177,30 @@ describe('maplibregl_ChartService', () => {
           expect(res.features).not.toBeNull();
           done();
         })
+    });
+    it('getChartMaritimePcInfo', (done) => {
+        var service = new ChartService(url, dataUrl, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/maritimepcinfo");
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(JSON.stringify(maritimepcinfo)));
+        });
+         service.getChartMaritimePcInfo((result) => {
+            serviceResult = result;
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                done();
+            } catch (e) {
+                console.log("'getChartMaritimePcInfo'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
     it('_processFormat', (done) => {
         var service = new ChartService(url, {});
