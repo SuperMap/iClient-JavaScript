@@ -6,6 +6,7 @@
  import { ChartQueryService } from './ChartQueryService';
  import { ChartFeatureInfoSpecsService } from './ChartFeatureInfoSpecsService';
  import { ChartAcronymClassifyService } from './ChartAcronymClassifyService';
+ import { ChartMaritimePcInfoService } from './ChartMaritimePcInfoService';
  import { LayerInfoService } from './LayerInfoService';
  import { GetGridCellInfosService } from './GetGridCellInfosService';
  import { FeatureService } from './FeatureService';
@@ -112,6 +113,25 @@
          return chartAcronymClassifyService.processAsync(callback);
      }
 
+      _getDatasetNameByLayers(layers) {
+        if (!Array.isArray(layers)) {
+          return [];
+        }
+        let datasetNames = [];
+
+        layers.forEach(layer => {
+          if (layer.datasetInfo && layer.datasetInfo.type === 'GRID') {
+            datasetNames.push(layer.datasetInfo.name);
+          }
+
+          if (layer.subLayers && Array.isArray(layer.subLayers.layers)) {
+            const subNames = this._getDatasetNameByLayers(layer.subLayers.layers);
+            datasetNames.push(...subNames);
+          }
+        });
+
+        return datasetNames;
+      }
       /**
       * @function ChartService.prototype.getChartWaterDepth
       * @version 12.1.0
@@ -129,12 +149,7 @@
         var { dataSource, X, Y } = params;
         var queryPromises = [];
         return new LayerInfoService(me.url).getLayersInfo().then(function (serviceResult) {
-          var datasetNames = [];
-          serviceResult.result.subLayers.layers.forEach(function (layer) {
-            if (layer.datasetInfo && layer.datasetInfo.type === 'GRID') {
-              datasetNames.push(layer.datasetInfo.name)
-            }
-          });
+          const datasetNames = me._getDatasetNameByLayers(serviceResult.result.subLayers.layers);
           datasetNames.forEach(function (datasetName) {
             // 栅格查询
             var getGridCellInfosParam = new GetGridCellInfosParameters({
@@ -155,23 +170,30 @@
           });
           return Promise.all(queryPromises).then(function (res) {
             var datasetMap = {};
-            var topDatasetQuery = null;
+            let result = { depth: null, uncertainty: null };
             // 找到所有成功的查询
             res.forEach(function (queryRes) {
-              if (queryRes.result) {
+              if (queryRes && queryRes.result) {
                 var datasetName = queryRes.options.scope.datasetName;
                 datasetMap[datasetName] = queryRes;
               }
             });
             // 如果某一处有多个图层，从datasetNames找到第一个，代表最顶层的
             for (var j = 0; j < datasetNames.length; j++) {
-              if (datasetMap.hasOwnProperty(datasetNames[j])) {
-                var topDataset = datasetNames[j];
-                topDatasetQuery = datasetMap[topDataset]
-                break;
+              const name = datasetNames[j];
+              if (!datasetMap.hasOwnProperty(name)) {
+                continue;
+              }
+              const dataset = datasetMap[name];
+              if (name.endsWith('_D') && !result.depth) {
+                result.depth = dataset;
+              } else if (name.endsWith('_U') && !result.uncertainty) {
+                result.uncertainty = dataset;
+              } else {
+                continue;
               }
             }
-            return topDatasetQuery;
+            return result;
           }).catch(function (err) {
             throw err;
           });
@@ -342,6 +364,24 @@
           return closestFeature
         } 
       }
+
+      /**
+      * @function ChartService.prototype.getChartMaritimePcInfo
+      * @version 12.1.0
+      * @description 展示海图S100图示目录支持的版本和其参数信息。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
+      */
+     getChartMaritimePcInfo(callback) {
+         var me = this;
+         var chartMaritimePcInfoService = new ChartMaritimePcInfoService(me.url, {
+             proxy: me.options.proxy,
+             withCredentials: me.options.withCredentials,
+             crossOrigin: me.options.crossOrigin,
+             headers: me.options.headers
+         });
+         return chartMaritimePcInfoService.processAsync(callback);
+     }
 
       _processFormat(resultFormat) {
           return (resultFormat) ? resultFormat : DataFormat.GEOJSON;

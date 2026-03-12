@@ -11,10 +11,6 @@
   * @version 11.2.0
   * @param {Object} options - 参数。
   * @param {string} [options.chartType] - 海图显示类型，S57、S100。
-  * @param {number} [options.safetyContour=30.0] - 安全等深线。单位以 depthUnit 设置的水深单位为准。
-  * @param {number} [options.shallowContour=2.0] - 浅水等深线。单位以 depthUnit 设置的水深单位为准。
-  * @param {number} [options.deepContour=30.0] - 深水等深线。单位以 depthUnit 设置的水深单位为准。
-  * @param {number} [options.safetyDepth=30.0] - 安全水深值。单位以 depthUnit 设置的水深单位为准。
   * @usage
   */
  export class ChartSetting {
@@ -26,35 +22,6 @@
           */
          this.chartType = null;
 
-         /**
-          * @member {number} [options.safetyContour]
-          * @description 安全等深线。单位以 depthUnit 设置的水深单位为准。
-          */
-         this.safetyContour = 30.0;
-
-         /**
-          * @member {number} [options.safetyContour]
-          * @description 安全等深线。
-          */
-         this.safetyContour = 30.0;
-
-         /**
-          * @member {number} [options.shallowContour]
-          * @description 浅水等深线。
-          */
-         this.shallowContour = 2.0;
-
-         /**
-          * @member {number} [options.deepContour]
-          * @description 深水等深线。
-          */
-         this.deepContour = 30.0;
-
-         /**
-          * @member {number} [options.safetyDepth]
-          * @description 安全水深值
-          */
-         this.safetyDepth = 30.0;
 
          if (options) {
              Util.extend(this, options);
@@ -69,10 +36,6 @@
       */
      destroy() {
       this.chartType = null;
-      this.safetyContour = null;
-      this.shallowContour = null;
-      this.deepContour = null;
-      this.safetyDepth = null;
      }
  }
  

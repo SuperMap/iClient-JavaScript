@@ -112,6 +112,16 @@ export var ChartService = ServiceBase.extend({
       return this._chartServiceBase.getWLTimeRange(params, callback);
     },
 
+    /**
+     * @function ChartService.prototype.getChartMaritimePcInfo
+     * @description 展示海图S100图示目录支持的版本和其参数信息。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getChartMaritimePcInfo(callback) {
+      return this._chartServiceBase.getChartMaritimePcInfo(callback);
+    },
+
     _processParams: function (params) {
         if (!params) {
             return {};

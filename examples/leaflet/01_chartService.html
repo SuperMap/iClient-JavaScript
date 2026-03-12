@@ -23,7 +23,7 @@
     }
 
     .setting-title {
-      padding-bottom: 4px;
+      padding: 4px;
       text-align: left;
     }
 
@@ -176,6 +176,16 @@
     #datetimepicker {
       width: 160px;
     }
+
+    #settings .chartseting-panel-heading {
+      margin: 10px 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .chartseting-panel-heading:not(.collapsed) .collapse-icon {
+      display: inline-block;
+      rotate: 90deg;
+    }
   </style>
 </head>
 
@@ -214,98 +224,6 @@
     <div class="tab-content">
       <!-- 海图设置面板 -->
       <div class='panel-body content tab-pane active' id="settings">
-          <div class='input-group'>
-            <span class='input-group-addon'>FourShades</span>
-            <select id='fourShades' class='form-control'>
-              <option value="true">Four Shades</option>
-              <option value="false" selected>Two Shades</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>ShallowWaterDangers</span>
-            <select id='shallowWaterDangers' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected>TRUE</option>
-              <option value="false" data-i18n="resources.text_false">FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>PlainBoundaries</span>
-            <select id='plainBoundaries' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected>TRUE</option>
-              <option value="false" data-i18n="resources.text_false">FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>SimplifiedSymbols</span>
-            <select id='simplifiedSymbols' class='form-control'>
-              <option value="true" data-i18n="resources.text_true">TRUE</option>
-              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>FullLightLines</span>
-            <select id='fullLightLines' class='form-control'>
-              <option value="true" data-i18n="resources.text_true">TRUE</option>
-              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>RadarOverlay</span>
-            <select id='radarOverlay' class='form-control'>
-              <option value="true" data-i18n="resources.text_true">TRUE</option>
-              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>IgnoreMinScale</span>
-            <select id='ignoreScamin' class='form-control'>
-              <option value="true" data-i18n="resources.text_true">TRUE</option>
-              <option value="false" data-i18n="resources.text_false" selected>FALSE</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>ColorScheme</span>
-            <select id='colorScheme' class='form-control'>
-              <option value="DAY" selected>DAY</option>
-              <option value="DUSK">DUSK</option>
-              <option value="NIGHT">NIGHT</option>
-            </select>
-          </div>
-            <div class='input-group'>
-            <span class='input-group-addon'>SafetyContour</span>
-            <input type='number' class='form-control' id='safetyContour' value='15' />
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_shallowContour">ShallowContour</span>
-            <input type='number' class='form-control' id='shallowContour' value='2' />
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_deepContour">DeepContour</span>
-            <input type='number' class='form-control' id='deepContour' value='30' />
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_safetyDepth">SafetyDepth</span>
-            <input type='number' class='form-control' id='safetyDepth' value='30' />
-          </div>
-        <div class='panel'>
-          <div data-i18n="resources.text_filterSetting" class="setting-title">互操作设置</div>
-          <div class='input-group'>
-            <span class='input-group-addon'>互操作</span>
-            <select id='s98InteroperableEnable' class='form-control'>
-              <option value="true" data-i18n="resources.text_true">是</option>
-              <option value="false" data-i18n="resources.text_false" selected>否</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>互操作等级</span>
-            <select id='interoperabilityLevel' class='form-control'>
-              <option value="0" data-i18n="resources.text_true" selected>L0</option>
-              <option value="1" data-i18n="resources.text_false">L1</option>
-            </select>
-          </div>
-        </div>
-        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_createChart" onclick="updateChartSetting()"
-          value="应用" />
       </div>
       <!-- 点选查询面板 -->
       <div class="panel-body tab-pane" id="attrs">
@@ -501,57 +419,159 @@
   // S104水位查询，某个站点的全部时间要素
   var stationFeatures = [];
   var displayableAcronymClassify = {};
-  var chartSetting = getChartSetting();
+  // var chartSetting = getChartSetting();
   var layer = new L.supermap.TiledMapLayer(url,{
-    chartSetting: chartSetting
+    // chartSetting: chartSetting
   }).addTo(map);
 
-  changeDisplayModeChart();
+  // changeDisplayModeChart();
 
-  function changeDisplayModeChart() {
-    // 当将显示模式设置为OTHER时,是否显示水深点、是否显示元物标、是否显示其他等深线标注 才有效
-    var displayModeChart = document.getElementById("displayModeChart").value;
-    document.getElementById("displaySounding").disabled = displayModeChart !== 'OTHER';
-    document.getElementById("displayMetaObject").disabled = displayModeChart !== 'OTHER';
-    document.getElementById("displayOtherContourLabel").disabled = displayModeChart !== 'OTHER';
-  }
+  // function changeDisplayModeChart() {
+  //   // 当将显示模式设置为OTHER时,是否显示水深点、是否显示元物标、是否显示其他等深线标注 才有效
+  //   var displayModeChart = document.getElementById("displayModeChart").value;
+  //   document.getElementById("displaySounding").disabled = displayModeChart !== 'OTHER';
+  //   document.getElementById("displayMetaObject").disabled = displayModeChart !== 'OTHER';
+  //   document.getElementById("displayOtherContourLabel").disabled = displayModeChart !== 'OTHER';
+  // }
 
-  function getChartSetting() {
-    var safetyContour = parseFloat(document.getElementById("safetyContour").value);
-    var shallowContour = parseFloat(document.getElementById("shallowContour").value);
-    var deepContour = parseFloat(document.getElementById("deepContour").value);
-    var safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
-    var fourShades = document.getElementById("fourShades").value === "true";
-    var shallowWaterDangers = document.getElementById("shallowWaterDangers").value === "true";
-    var plainBoundaries = document.getElementById("plainBoundaries").value === "true";
-    var simplifiedSymbols = document.getElementById("simplifiedSymbols").value === "true";
-    var fullLightLines = document.getElementById("fullLightLines").value === "true";
-    var radarOverlay = document.getElementById("radarOverlay").value === "true";
-    var ignoreScamin = document.getElementById("ignoreScamin").value === "true";
-    var colorScheme = document.getElementById("colorScheme").value;
-    var s98InteroperableEnable = document.getElementById("s98InteroperableEnable").value === "true";
-    var interoperabilityLevel = parseFloat(document.getElementById("interoperabilityLevel").value);
+  function createChartSettingPanel(defaultChartSetting, maritimePcInfo) {
+      const container = document.getElementById('settings');
+      let htmlContent = '';
+      const chartTypes = Object.keys(defaultChartSetting && defaultChartSetting.contextParameters || {});
+      chartTypes.forEach((type, index) => {
+        const collapseId = `collapse-${type}-${index}`; // 为每个类型生成唯一 ID
+        htmlContent += `
+          <div data-toggle='collapse' 
+               data-target='#${collapseId}' 
+               aria-expanded='true' 
+               class='chartseting-panel-heading'>
+              <i class="collapse-icon"> > </i> Maritime${type}
+          </div>
+          <div id='${collapseId}' class='collapse in'> `;
+        const PCVersion = defaultChartSetting.contextParameters[type].PCVersion;
+        const S100Parameter = maritimePcInfo[PCVersion];
+        S100Parameter.sort((a, b) => a.type.localeCompare(b.type));
+        S100Parameter.forEach(item => {
+          const domId = type + item.id;
 
-    var chartSetting = new L.supermap.ChartSettingS101({
-      // chartType: 'S100',
-      safetyDepth: safetyDepth,
-      safetyContour: safetyContour,
-      shallowContour: shallowContour,
-      deepContour: deepContour,
-      fourShades: fourShades,
-      shallowWaterDangers: shallowWaterDangers,
-      plainBoundaries: plainBoundaries,
-      simplifiedSymbols: simplifiedSymbols,
-      fullLightLines: fullLightLines,
-      radarOverlay: radarOverlay,
-      ignoreScamin: ignoreScamin,
-      colorScheme: colorScheme,
-      s98InteroperableEnable: s98InteroperableEnable,
-      // edit 新增互操作等级
-      interoperabilityLevel: interoperabilityLevel
-    })
-    return chartSetting;
-  }
+          // 1. 开始构建 input-group 容器
+          htmlContent += `<div class='input-group'>`;
+          htmlContent += `<span class='input-group-addon'>${item.name}</span>`;
+
+          // 2. 判断渲染逻辑
+          // 情况 A: 有枚举值 或者 类型是布尔值 -> 渲染 Select
+          if (item.contextParameterEnums || item.type === 'Boolean') {
+              htmlContent += `<select id='${domId}' class='form-control'>`;
+              
+              let options = [];
+              if (item.contextParameterEnums) {
+                  // 使用提供的枚举值
+                  options = item.contextParameterEnums.map(opt => ({
+                      value: opt.id,
+                      text: opt.description
+                  }));
+              } else if (item.type === 'Boolean') {
+                  // 基础布尔值，没有提供枚举时默认 TRUE/FALSE
+                  options = [
+                      { value: "TRUE", text: "TRUE" },
+                      { value: "FALSE", text: "FALSE" }
+                  ];
+              }
+
+              // 循环生成 Option
+              options.forEach(opt => {
+                  const isSelected = item.defaultValue.toUpperCase() === opt.value.toUpperCase() ? 'selected' : '';
+                  htmlContent += `<option value="${opt.value}" ${isSelected}>${opt.text}</option>`;
+              });
+
+              htmlContent += `</select>`;
+          } 
+          // 情况 B: 类型是数值 (Double) -> 渲染 Input Number
+          else if (item.type === 'Double') {
+              htmlContent += `<input type='number' class='form-control' id='${domId}' value='${item.defaultValue}' />`;
+          }
+
+          htmlContent += `</div>`;
+        });
+        htmlContent += `</div>`; // 闭合 collapse 容器
+      });
+      htmlContent += `
+        <div class='panel'>
+          <div data-i18n="resources.text_filterSetting" class="setting-title">互操作设置</div>
+          <div class='input-group'>
+            <span class='input-group-addon'>互操作</span>
+            <select id='s98InteroperableEnable' class='form-control'>
+              <option value="true" >是</option>
+              <option value="false" selected>否</option>
+            </select>
+          </div>
+          <div class='input-group'>
+            <span class='input-group-addon'>互操作等级</span>
+            <select id='interoperabilityLevel' class='form-control'>
+              <option value="0" selected>L0</option>
+              <option value="1">L1</option>
+            </select>
+          </div>
+        </div>
+        <input type="button" class="btn btn-default" onclick="updateChartSetting()" value="应用" />
+     `;
+      container.innerHTML = htmlContent;
+    }
+
+    // 获取地图默认chartSetting
+    function getMapDefaultChartSetting() {
+      return new ol.supermap.MapService(url).getMapInfo().then(function(res) {
+        return res.result && res.result.chartSetting;
+      });
+    }
+
+    function getChartMaritimePcInfo() {
+      getMapDefaultChartSetting().then(defaultChartSetting => {
+        DefaultChartSetting = defaultChartSetting;
+        chartService.getChartMaritimePcInfo().then(function(maritimePcInfo) {
+          MaritimePcInfo = maritimePcInfo.result;
+          createChartSettingPanel(defaultChartSetting, maritimePcInfo.result);
+          updateChartSetting();
+        });
+      })
+    }
+    getChartMaritimePcInfo()
+
+    function getChartSetting() {
+      const getValue = (id, type) => {
+        const el = document.getElementById(id);
+        if (!el) return undefined;
+        const val = el.value;
+        
+        switch (type) {
+          case 'Double': return parseFloat(val);
+          case 'Boolean': return val.toUpperCase() === "TRUE";
+          default: return val;
+        }
+      };
+
+      const chartTypes = Object.keys(DefaultChartSetting.contextParameters || {});
+      const contextParameters = {};
+      chartTypes.forEach(type => {
+        const PCVersion = DefaultChartSetting.contextParameters[type].PCVersion;
+        const S100Parameter = MaritimePcInfo[PCVersion];
+        contextParameters[type] = {};
+        S100Parameter.forEach(item => {
+          contextParameters[type][item.id] = getValue(type + item.id, item.type);
+        });
+      })
+      // 其余属性
+      var s98InteroperableEnable = document.getElementById("s98InteroperableEnable").value.toUpperCase() === "TRUE";
+      var interoperabilityLevel = parseFloat(document.getElementById("interoperabilityLevel").value);
+
+      var chartSetting = new ol.supermap.ChartSettingS100({
+        contextParameters: contextParameters,
+        s98InteroperableEnable: s98InteroperableEnable,
+        // edit 新增互操作等级
+        interoperabilityLevel: interoperabilityLevel
+      })
+      return chartSetting;
+    }
 
   function updateChartSetting() {
     var newChartSetting = getChartSetting();
@@ -717,7 +737,6 @@
     var tbody = document.createElement('tbody');
     table.append(tbody);
     _createTreeTable(featureProp, tbody);
-    $('.tree').treegrid();
   }
 
   // 创建点选后的UI
@@ -793,6 +812,7 @@
         })
       })
     })
+    $('.tree').treegrid();
     document.querySelector('#groups li').classList.add('active');
     document.querySelector('#tablePanel .tab-pane').classList.add('active');
   }
@@ -857,10 +877,10 @@
       attributeFilter,
       featureCode,
       // 以下为S57参数
-      chartFeatureInfoSpecCode: featureCode,
-      isQueryPoint,
-      isQueryLine,
-      isQueryRegion
+      // chartFeatureInfoSpecCode: featureCode,
+      // isQueryPoint,
+      // isQueryLine,
+      // isQueryRegion
     });
     var chartQueryParameters = new L.supermap.ChartQueryParameters({
       queryMode: "ChartAttributeQuery",
@@ -890,7 +910,8 @@
       X: X,
       Y: Y
     })
-    chartService.getChartWaterDepth(chartWaterDepthParameter).then(function (topDatasetQuery) {
+    chartService.getChartWaterDepth(chartWaterDepthParameter).then(function (res) {
+      const topDatasetQuery = res.depth;
       if (topDatasetQuery) {
         var content = topDatasetQuery.result;
         var datasetName = topDatasetQuery.options.scope.datasetName;

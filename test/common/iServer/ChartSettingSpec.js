@@ -1,5 +1,5 @@
 ﻿﻿import {ChartSettingS57} from '../../../src/common/iServer/ChartSettingS57';
-import {ChartSettingS101} from '../../../src/common/iServer/ChartSettingS101';
+import {ChartSettingS100} from '../../../src/common/iServer/ChartSettingS100';
 import {Unit, DisplayModeChart, ColourModeChart} from '../../../src/common/REST';
 
 describe('ChartSetting', () => {
@@ -93,60 +93,53 @@ describe('ChartSetting', () => {
         expect(chartSetting57.displayScaleFactor).toBeNull();
         expect(chartSetting57.displayableAcronymClassify).toBeNull();
     });
-    it('chartSettingS101', () => {
+    it('chartSettingS100', () => {
         var optionS101 = {
-          safetyContour: 30,
-          shallowContour: 2,
-          deepContour: 30,
-          safetyDepth: 30,
-          fourShades: true,
-          shallowWaterDangers: false,
-          plainBoundaries: false,
-          simplifiedSymbols: true,
-          fullLightLines: true,
-          radarOverlay: true,
-          ignoreScamin: true,
+          contextParameters:{
+            S101: {
+              safetyContour: 30,
+              shallowContour: 2,
+              deepContour: 30,
+              safetyDepth: 30,
+              fourShades: true,
+              shallowWaterDangers: false,
+              plainBoundaries: false,
+              simplifiedSymbols: true,
+              fullLightLines: true,
+              radarOverlay: true,
+              ignoreScamin: true,
+              colorScheme: 'DAY'
+            }
+          },
           s98InteroperableEnable: true,
           interoperabilityLevel: 1,
           wlaEnable: true,
           wlaDatetime: '20240224T000000Z',
-          colorScheme: 'DAY'
         }
-        var chartSetting101 = new ChartSettingS101(optionS101);
-        expect(chartSetting101.safetyContour).toEqual(30);
-        expect(chartSetting101.shallowContour).toEqual(2);
-        expect(chartSetting101.deepContour).toEqual(30);
-        expect(chartSetting101.safetyDepth).toEqual(30);
+        var chartSetting101 = new ChartSettingS100(optionS101);
         expect(chartSetting101.chartType).toEqual('S100');
-        expect(chartSetting101.fourShades).toEqual(true);
-        expect(chartSetting101.shallowWaterDangers).toEqual(false);
-        expect(chartSetting101.plainBoundaries).toEqual(false);
-        expect(chartSetting101.simplifiedSymbols).toEqual(true);
-        expect(chartSetting101.fullLightLines).toEqual(true);
-        expect(chartSetting101.radarOverlay).toEqual(true);
-        expect(chartSetting101.ignoreScamin).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.safetyContour).toEqual(30);
+        expect(chartSetting101.contextParameters.S101.shallowContour).toEqual(2);
+        expect(chartSetting101.contextParameters.S101.deepContour).toEqual(30);
+        expect(chartSetting101.contextParameters.S101.safetyDepth).toEqual(30);
+        expect(chartSetting101.contextParameters.S101.fourShades).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.shallowWaterDangers).toEqual(false);
+        expect(chartSetting101.contextParameters.S101.plainBoundaries).toEqual(false);
+        expect(chartSetting101.contextParameters.S101.simplifiedSymbols).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.fullLightLines).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.radarOverlay).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.ignoreScamin).toEqual(true);
+        expect(chartSetting101.contextParameters.S101.colorScheme).toEqual('DAY');
         expect(chartSetting101.s98InteroperableEnable).toEqual(true);
         expect(chartSetting101.interoperabilityLevel).toEqual(1);
         expect(chartSetting101.wlaEnable).toEqual(true);
         expect(chartSetting101.wlaDatetime).toEqual('20240224T000000Z');
-        expect(chartSetting101.colorScheme).toEqual('DAY');
         chartSetting101.destroy();
-        expect(chartSetting101.safetyContour).toBeNull();
-        expect(chartSetting101.shallowContour).toBeNull();
-        expect(chartSetting101.deepContour).toBeNull();
-        expect(chartSetting101.safetyDepth).toBeNull();
-        expect(chartSetting101.chartType).toBeNull();
-        expect(chartSetting101.fourShades).toBeNull();
-        expect(chartSetting101.shallowWaterDangers).toBeNull();
-        expect(chartSetting101.plainBoundaries).toBeNull();
-        expect(chartSetting101.simplifiedSymbols).toBeNull();
-        expect(chartSetting101.fullLightLines).toBeNull();
-        expect(chartSetting101.radarOverlay).toBeNull();
-        expect(chartSetting101.ignoreScamin).toBeNull();
+        expect(chartSetting101.contextParameters).toBeNull();
+       
         expect(chartSetting101.s98InteroperableEnable).toBeNull();
         expect(chartSetting101.interoperabilityLevel).toBeNull();
         expect(chartSetting101.wlaEnable).toBeNull();
         expect(chartSetting101.wlaDatetime).toBeNull();
-        expect(chartSetting101.colorScheme).toBeNull();
     });
 });
