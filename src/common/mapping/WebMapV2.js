@@ -3104,7 +3104,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       const unit = crs.unit;
       const scaleBase = 1.0 / Util.getScaleFromResolutionDpi((extent[2] - extent[0]) / tileSize, 96, unit);
       const scaleDenominator = scale.split(':')[1];
-      return Math.min(24, +Math.log2(scaleBase / +scaleDenominator).toFixed(2));
+      return Math.min(23, +Math.log2(scaleBase / +scaleDenominator).toFixed(2));
     }
 
     _updateLayer(layerInfo) {
