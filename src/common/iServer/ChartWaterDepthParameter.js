@@ -9,18 +9,12 @@ import { Util } from '../commontypes/Util';
  * @category  iServer Map Chart
  * @classdesc 海图水深查询参数类
  * @param {Object} options - 参数。
- * @param {Object} options.dataSource - 数据源名称。
  * @param {number} options.X - 地理位置 X 轴。
  * @param {number} options.Y - 地理位置 Y 轴。
  * @usage
  */
 export class ChartWaterDepthParameter {
   constructor(options) {
-    /**
-     * @member {string} [ChartWaterDepthParameter.prototype.dataSource]
-     * @description 数据源名称。
-     */
-    this.dataSource = null;
 
     /**
      * @member {number} [ChartWaterDepthParameter.prototype.X]
@@ -45,7 +39,6 @@ export class ChartWaterDepthParameter {
    */
   destroy() {
     var me = this;
-    me.dataSource = null;
     me.X = null;
     me.Y = null;
   }

@@ -121,7 +121,7 @@
 
         layers.forEach(layer => {
           if (layer.datasetInfo && layer.datasetInfo.type === 'GRID') {
-            datasetNames.push(layer.datasetInfo.name);
+            datasetNames.push([layer.datasetInfo.dataSourceName, layer.datasetInfo.name]);
           }
 
           if (layer.subLayers && Array.isArray(layer.subLayers.layers)) {
@@ -146,15 +146,15 @@
           console.error('dataUrl is required');
           return null;
         }
-        var { dataSource, X, Y } = params;
+        var { X, Y } = params;
         var queryPromises = [];
         return new LayerInfoService(me.url).getLayersInfo().then(function (serviceResult) {
           const datasetNames = me._getDatasetNameByLayers(serviceResult.result.subLayers.layers);
           datasetNames.forEach(function (datasetName) {
             // 栅格查询
             var getGridCellInfosParam = new GetGridCellInfosParameters({
-              dataSourceName: dataSource,
-              datasetName: datasetName,
+              dataSourceName: datasetName[0],
+              datasetName: datasetName[1],
               X: X,
               Y: Y
             });
@@ -180,7 +180,7 @@
             });
             // 如果某一处有多个图层，从datasetNames找到第一个，代表最顶层的
             for (var j = 0; j < datasetNames.length; j++) {
-              const name = datasetNames[j];
+              const name = datasetNames[j][1];
               if (!datasetMap.hasOwnProperty(name)) {
                 continue;
               }

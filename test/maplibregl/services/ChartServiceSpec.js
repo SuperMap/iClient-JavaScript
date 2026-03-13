@@ -98,7 +98,6 @@ describe('maplibregl_ChartService', () => {
     it('getChartWaterDepth', (done) => {
         var service = new ChartService(url, dataUrl, options);
         var parms = new ChartWaterDepthParameter({
-            dataSource: 'testDataSrouce1',
             X:113.62145767211913,
             Y:22.775788497924808
         });

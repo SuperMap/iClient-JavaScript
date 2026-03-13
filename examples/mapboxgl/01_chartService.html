@@ -379,7 +379,6 @@
     var url = "https://iserver.supermap.io/iserver/services/map-chart/rest/maps/GB4X0000_52000";
     // var url = "http://localhost:8090/iserver/services/map-WorkSpace1-2/rest/maps/S104S102_1";
     var dataUrl = "http://localhost:8090/iserver/services/data-WorkSpace1-2/rest/data";
-    var s102dataSourceName = 'nanbaoS102v3003f';
     var s104dataSource = 'nanbaoS104v200';
     var s104dataSet = 'S104Position4326';
     var s104dataSetWaterLevel = 'S104WaterLevel';
@@ -991,7 +990,6 @@
 
     function S102GridQueryDebounceFun(X, Y) {
       var chartWaterDepthParameter = new mapboxgl.supermap.ChartWaterDepthParameter({
-        dataSource: s102dataSourceName,
         X: X,
         Y: Y
       })
@@ -999,8 +997,8 @@
         const topDatasetQuery = res.depth;
         if (topDatasetQuery) {
           var content = topDatasetQuery.result;
-          var datasetName = topDatasetQuery.options.scope.datasetName;
-          var innerHTML = resources.text_Datasources + '：' + s102dataSourceName + "<br/>";
+          var { datasetName, dataSourceName } = topDatasetQuery.options.scope;
+          var innerHTML = resources.text_Datasources + '：' + dataSourceName + "<br/>";
           innerHTML += resources.text_dataset + '：' + datasetName + "<br/>";
           innerHTML += resources.text_x_field + '：'  + X + "<br/>";
           innerHTML += resources.text_y_field + '：'  + Y + "<br/>";
