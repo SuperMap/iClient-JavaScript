@@ -504,6 +504,8 @@ CRS.defaultWKTs = {
 };
 CRS.EPSG3857 = new CRS('EPSG:3857', [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
 CRS.EPSG4326 = new CRS('EPSG:4326', [-180, -90, 180, 90]);
+CRS.EPSG4490 = new CRS('EPSG:4490', [-180, -90, 180, 90]);
+
 
 function revertCRS() {
   keyCache.forEach((key) => {

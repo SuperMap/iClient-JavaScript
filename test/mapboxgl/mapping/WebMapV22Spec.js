@@ -631,4 +631,99 @@ describe('mapboxgl_WebMapV2_2', () => {
       }
     });
   });
+  it('ISVJ-11511_maxzoom<=24', (done) => {
+    // mapboxgl  map的maxzoom是闭区间 layer的mazzoom是开区间。layer maxzoom的最大值是24
+    // 为保证地图在maxzoom=24时能正常显示，地图的maxzoom不能设置为24，否则会导致图层无法显示，所以地图的maxzoom最大只能设置为23。
+    let options = {
+      server: server
+    };
+    const mapJSON = {
+    "extent": {
+        "leftBottom": {
+            "x": 118.02310000000011,
+            "y": 27.044700000000034
+        },
+        "rightTop": {
+            "x": 122.94200000000001,
+            "y": 31.180900000000065
+        }
+    },
+    "maxScale": "1:0.9626322617192434",
+    "level": 1,
+    "center": {
+        "x": 120.48255000000006,
+        "y": 29.11280000000005
+    },
+    "baseLayer": {
+        "layerType": "TILE",
+        "name": "quxian",
+        "url": "http://fack:8090/iserver/services/map-shapefile-quxian/rest/maps/quxian"
+    },
+    "layers": [],
+    "description": "",
+    "projection": "GEOGCS[\"China Geodetic Coordinate System 2000\", \r\n  DATUM[\"China 2000\", \r\n    SPHEROID[\"CGCS2000\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"1024\"]], \r\n    AUTHORITY[\"EPSG\",\"1043\"]], \r\n  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \r\n  UNIT[\"degree\", 0.017453292519943295], \r\n  AXIS[\"lat\", NORTH], \r\n  AXIS[\"lon\", EAST], \r\n  AUTHORITY[\"EPSG\",\"4490\"]]",
+    "minScale": "1:4037572.3458580696",
+    "title": "maxzoom",
+    "version": "2.4.3",
+    "rootUrl": "http://fack:8190/iportal/"
+};
+    const restmapjson = {
+    "scale": 1.9900535920750805E-8,
+    "prjCoordSys": {
+        "epsgCode": 4490,
+    },
+    "minScale": 0,
+    "visibleScales": [],
+    "dpi": 96,
+    "visibleScalesEnabled": false,
+
+    "center": {
+        "x": 120.48255000000006,
+        "y": 29.11280000000005
+    },
+    "name": "quxian",
+    "bounds": {
+        "top": 31.180900000000065,
+        "left": 118.02310000000011,
+        "bottom": 27.044700000000034,
+        "leftBottom": {
+            "x": 118.02310000000011,
+            "y": 27.044700000000034
+        },
+        "right": 122.94200000000001,
+        "rightTop": {
+            "x": 122.94200000000001,
+            "y": 31.180900000000065
+        }
+    }
+   
+};
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapJSON)));
+      }
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(portalConfig)));
+      }
+      if (url.indexOf('/quxian.json')> -1) {
+        return Promise.resolve(new Response(JSON.stringify(restmapjson)));
+      }
+      console.log('FetchRequest', url);
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    var datavizWebmap = new WebMap(id, options);
+
+    datavizWebmap.on('mapcreatesucceeded', (data) => {
+      try {
+        expect(datavizWebmap.map.getMaxZoom()).toBe(23);
+        expect(datavizWebmap.map.getStyle().layers.length).toBe(1);
+        expect(datavizWebmap.map.getStyle().layers[0].maxzoom).toBe(24);
+        done();
+      } catch (error) {
+        console.log(error);
+        done();
+      }
+    });
+  });
 });
