@@ -336,6 +336,30 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     return epsgCode;
   }
+  _getFilterByCatalog(catalog, res = {}) {
+    const { catalogType, children } = catalog;
+    if(catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getFiltersByCatalog(child, res);
+      })
+    }
+    if (catalogType === 'layer') {
+      const { filter, layersContent = [] } = catalog;
+      if (filter) {
+        layersContent.forEach(layerId => {
+          res[layerId] = filter;
+        })
+      }
+    }
+  }
+  _getFiltersByCatalog(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getFilterByCatalog(item, res);
+    })
+    return res;
+  }
 
   /**
    * @private
@@ -363,6 +387,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
           description: relatedInfo.description
         };
         this._mapResourceInfo = JSON.parse(relatedInfo.projectInfo);
+        const catalogFilters =  this._getFiltersByCatalog();
+        this._changeMapInfoFilter(catalogFilters);
         this._createMapRelatedInfo();
         this._addLayersToMap();
       })
@@ -370,6 +396,79 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         this.fire('mapcreatefailed', { error: error });
         console.error(error);
       });
+  }
+  /**
+   * @private
+   * @function WebMapV3.prototype._changeMapInfoFilter
+   * @description 更新地图图层的过滤器， 将filter的内容 ['==', 'Ctype', '']转换为['==', ['get', 'Ctype'], 'label']
+   */
+  _changeMapInfoFilter(catalogFilters = {}) {
+      const { layers =[]} = this._mapInfo;
+      layers.forEach(layer => {
+        if (layer.filter && catalogFilters[layer.id]) {
+          const catalogFilter = catalogFilters[layer.id];
+          const matchKeys = this._collectMatchKeys(catalogFilter);
+          const filter =  this._transformFilterByMatchKeys(layer.filter, matchKeys);
+          layer.filter = filter;
+        }
+      })
+      this._mapInfo ={
+        ...this._mapInfo,
+        layers
+      }
+  }
+
+  _collectMatchKeys(filter) {
+    const keys = [];
+    const excludeKeys = ['$type', '$id', '$layer'];
+    if (!Array.isArray(filter)) {return keys;}
+    const traverse = (arr) => {
+      for (const item of arr) {
+        if (!Array.isArray(item)) {continue;}
+        if (item.length >= 3 && this._isComparisonOperator(item[0])) {
+          const prop = this._getPropertyKey(item[1]);
+          if (prop && !excludeKeys.includes(prop)) {
+            keys.push(prop);
+            continue;
+          }
+          if (typeof item[1] === 'string' && !excludeKeys.includes(item[1])) {
+            keys.push(item[1]);
+          }
+        } else {
+          traverse(item);
+        }
+      }
+    };
+    traverse(filter);
+    return [...new Set(keys)];
+  }
+
+  _getPropertyKey(item) {
+    if (Array.isArray(item) && item.length === 2 && item[0] === 'get' && typeof item[1] === 'string') {
+      return item[1];
+    }
+    return null;
+  }
+
+  _transformFilterByMatchKeys(filter, matchKeys) {
+    if (!Array.isArray(filter)) {
+      return filter;
+    }
+    if (filter.length >= 3 && typeof filter[1] === 'string' && this._isComparisonOperator(filter[0])) {
+      if (matchKeys.includes(filter[1])) {
+        return [filter[0], ['get', filter[1]], ...filter.slice(2)];
+      }
+      return filter;
+    }
+    if (filter.length >= 2 && typeof filter[1] !== 'string' && this._isComparisonOperator(filter[0])) {
+      const operands = filter.slice(1).map(item => this._transformFilterByMatchKeys(item, matchKeys));
+      return [filter[0], ...operands];
+    }
+    return filter.map(item => this._transformFilterByMatchKeys(item, matchKeys));
+  }
+
+  _isComparisonOperator(op) {
+    return ['==', '!=', '>', '<', '>=', '<=', 'in', '!in', 'all', 'any', 'none'].includes(op);
   }
 
   /**
