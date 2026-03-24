@@ -375,6 +375,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       };
       if (this._relatedInfo.projectInfo) {
         this._mapResourceInfo = JSON.parse(this._relatedInfo.projectInfo);
+        const catalogFilters =  this._getFiltersByCatalog();
+        this._changeMapInfoFilter(catalogFilters);
       }
       this._createMapRelatedInfo();
       this._addLayersToMap();
