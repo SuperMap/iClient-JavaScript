@@ -170,34 +170,67 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_filters));
       }
-      if (url.indexOf('617580084.json') > -1) {
+      if (url.indexOf('932266699.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_filters));
       }
-      if (url.indexOf('/sprite') > -1) {
-        return Promise.resolve(new Response(msSpriteInfo));
+      if (url.indexOf('/sprites') > -1) {
+        return Promise.resolve(new Response(spriteJson));
       }
       return Promise.resolve();
     });
-    mapstudioWebmap = new WebMap(id, {
+    mapstudioWebmap = new WebMap('932266699', {
       server: server
     });
 
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      const style = map.getStyle();
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
-      const mapInfo = JSON.parse(mapstudioWebMap_symbol);
-      expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(webMapV3._mapInfo.layers[0].filter).toBe([]);
-      expect(webMapV3._mapInfo.layers[1].filter).toBe([]);
-      expect(webMapV3._mapInfo.layers[2].filter).toBe([]);
-      expect(webMapV3._mapInfo.layers[3].filter).toBe([]);
-      expect(webMapV3._mapInfo.layers[4].filter).toBe([]);
+      expect(webMapV3._mapInfo.layers[1].filter).toEqual([
+        'all',
+        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
+      ]);
+      expect(webMapV3._mapInfo.layers[2].filter).toEqual([
+        'all',
+        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
+      ]);
       done();
     });
   });
+  it('filters mapId is JSON', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprites') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_filters);
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map',
+      iportalServiceProxyUrlPrefix: 'mapId is JSON',
+      relatedInfo: JSON.parse(msProjectINfo_filters)
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
 
+    mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      expect(mapstudioWebmap._mapInfo.layers[1].filter).toEqual([
+        'all',
+        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
+      ]);
+      expect(mapstudioWebmap._mapInfo.layers[2].filter).toEqual([
+        'all',
+        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
+      ]);
+      done();
+    });
+  });
   it('mapId is JSON', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
