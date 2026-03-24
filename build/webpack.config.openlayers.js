@@ -92,7 +92,7 @@ module.exports = {
                         ]
                     }
             }
-            configBase.moduleVersion === "es6" && (babelConfig.include = /FGB|flatgeobuf|fast-xml-parser/);
+            configBase.moduleVersion === "es6" && (babelConfig.include = /FGB|flatgeobuf|fast-xml-parser|path-expression-matcher/);
             moduleRules.push(babelConfig);
             moduleRules.push(configBase.module.rules.css);
             return moduleRules;
