@@ -220,35 +220,39 @@ export class GeoJSON extends JSONFormat {
             /**
              * @function GeoJSONFormat.extract.feature
              * @description 返回一个表示单个要素对象的 GeoJSON 的一部分。
-             * @param {SuperMap.ServerFeature} feature - SuperMap iServer 要素对象。
+             * @param {SuperMap.ServerFeature} fea - SuperMap iServer 要素对象。
              * @returns {Object} 一个表示点的对象。
              */
-            'feature': function (feature, options) {
+            'feature': function (fea, options) {
                 var { parseProperties, extraKeys } = options || {};
-                var geom = this.extract.geometry.apply(this, [feature.geometry]);
+                var geom = this.extract.geometry.apply(this, [fea.geometry]);
                 var json = {
                     "type": "Feature",
-                    "properties": this.createAttributes(feature, parseProperties),
+                    "properties": this.createAttributes(fea, parseProperties),
                     "geometry": geom
                 };
 
-                if (feature.geometry && feature.geometry.type === 'TEXT') {
-                    json.properties.texts = feature.geometry.texts;
-                    json.properties.textStyle = feature.geometry.textStyle;
+                if (fea.geometry && fea.geometry.type === 'TEXT') {
+                    json.properties.texts = fea.geometry.texts;
+                    json.properties.textStyle = fea.geometry.textStyle;
                 }
-                if (feature.fid) {
-                    json.id = feature.fid;
+                if (fea.geometry && fea.geometry.type === 'LINEM') {
+                    json.length = fea.geometry.length;
+                    json.maxM = fea.geometry.maxM;
+                    json.minM = fea.geometry.minM;
                 }
-                if (feature.ID) {
-                    json.id = feature.ID;
+                if (fea.fid) {
+                    json.id = fea.fid;
                 }
-
+                if (fea.ID) {
+                    json.id = fea.ID;
+                }
                 var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
-                for (var key in feature) {
+                for (var key in fea) {
                   if (exceptKeys.indexOf(key) > -1) {
                       continue;
                   }
-                  var value = this._transformValue(feature[key], parseProperties);
+                  var value = this._transformValue(fea[key], parseProperties);
                   if (extraKeys) {
                     json[key] = value;
                   } else {

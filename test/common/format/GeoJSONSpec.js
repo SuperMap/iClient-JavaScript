@@ -978,4 +978,47 @@ describe('GeoJSON', () => {
     expect(GeoJSON.getGeoJSONType({ type: 'GeometryCollection', geometries: [] })).toBe('Geometry');
     expect(GeoJSON.getGeoJSONType({ type: 'GeometryCollection', geometries: {} })).toBeNull();
   });
+  it('LINEM', () => {
+    const obj = {
+      length: 1917.06710696352,
+      minM: 0,
+      type: 'LINEM',
+      points: [
+        {
+          measure: 0,
+          x: 4904.02504854072,
+          y: -2859.76067773666,
+          m: null
+        },
+        {
+          measure: 5.02909324784013,
+          x: 4908.0531496305,
+          y: -2856.75409713806,
+          m: null
+        },
+        {
+          measure: 95.3036432157134,
+          x: 4980.35942735994,
+          y: -2802.78458472214,
+          m: null
+        },
+        {
+          measure: 105.983393002926,
+          x: 4991.03087203703,
+          y: -2803.02359431299,
+          m: null
+        }
+      ],
+      parts: [4],
+      maxM: 1918.07805168498,
+      style: null,
+      id: 0,
+      partTopo: null
+    };
+    const outObj = new GeoJSON().toGeoJSON(obj);
+    expect(outObj).not.toBeNull();
+    expect(outObj.maxM).toBe(1918.07805168498);
+    expect(outObj.length).toBe(1917.06710696352);
+    expect(outObj.minM).toBe(0);
+  });
 });
