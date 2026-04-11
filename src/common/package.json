@@ -21,7 +21,7 @@
     "@turf/distance": "^7.2.0",
     "@turf/meta": "^7.2.0",
     "canvg": "^4.0.3",
-    "echarts": "5.5.0",
+    "echarts": "5.5.1",
     "fast-xml-parser": "5.5.9",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
