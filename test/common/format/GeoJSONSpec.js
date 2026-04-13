@@ -1021,4 +1021,37 @@ describe('GeoJSON', () => {
     expect(outObj.length).toBe(1917.06710696352);
     expect(outObj.minM).toBe(0);
   });
+  it('TEXT', () => {
+    const obj ={
+      fid:1234,
+      geometry:{
+        "texts": ["北京"],
+        "center": {
+            "x": 116.22391121440256,
+            "y": 39.95012680584955
+        },
+        "parts": null,
+        "style": null,
+        "prjCoordSys": null,
+        "textStyle": {
+            "fontHeight": 3.7,
+        },
+        "id": 2,
+        "type": "TEXT",
+        "rotations": [-2.7],
+        "partTopo": null,
+        "points": [{
+            "x": 116.22391121440256,
+            "y": 39.95012680584955
+        }]
+    }
+
+    }  ;
+    const outObj = new GeoJSON().toGeoJSON(obj);
+    expect(outObj).not.toBeNull();
+    expect(outObj.id).toBe(1234);
+    expect(outObj.properties.textStyle.fontHeight).toBe(3.7);
+    expect(outObj.properties.texts.length).toBe(1);
+    expect(outObj.properties.texts[0]).toBe("北京");
+  });
 });
