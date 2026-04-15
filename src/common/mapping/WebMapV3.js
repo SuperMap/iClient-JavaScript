@@ -388,7 +388,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     const { catalogType, children } = catalog;
     if(catalogType === 'group' && children) {
       children.forEach(child => {
-        this._getFiltersByCatalog(child, res);
+        this._getFilterByCatalog(child, res);
       })
     }
     if (catalogType === 'layer') {
@@ -402,7 +402,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   }
   _getFiltersByCatalog(_mapResourceInfo = this._mapResourceInfo) {
     const { catalogs = [] } = _mapResourceInfo;
-    const res = [];
+    const res = {};
     catalogs.forEach((item) => {
       this._getFilterByCatalog(item, res);
     })
