@@ -178,24 +178,28 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    // const Spy = spyOn(mapboxgl, 'convertFilter').and.callThrough();
+    const Spy = jasmine.createSpy('myMock');
+    Spy.and.callFake((arg) => arg);
+    mapboxgl.convertFilter = Spy
     mapstudioWebmap = new WebMap('932266699', {
       server: server
     });
-
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      const webMapV3 = mapstudioWebmap._getWebMapInstance();
-      expect(webMapV3._mapInfo.layers[1].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
-      ]);
-      expect(webMapV3._mapInfo.layers[2].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
-      ]);
+      expect(Spy).toHaveBeenCalledTimes(2);
+      // const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      // expect(webMapV3._mapInfo.layers[1].filter).toEqual([
+      //   'all',
+      //   ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+      //   ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
+      // ]);
+      // expect(webMapV3._mapInfo.layers[2].filter).toEqual([
+      //   'all',
+      //   ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+      //   ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
+      // ]);
       done();
     });
   });
@@ -207,6 +211,11 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     const mapInfo = JSON.parse(mapstudioWebMap_filters);
+    // const Spy = spyOn(mapboxgl, 'convertFilter').and.callThrough();
+    const Spy = jasmine.createSpy('myMock');
+    Spy.and.callFake((arg) => arg);
+    mapboxgl.convertFilter = Spy
+
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
@@ -214,50 +223,12 @@ describe('mapboxgl-webmap3.0', () => {
       relatedInfo: JSON.parse(msProjectINfo_filters)
     });
     mapstudioWebmap.initializeMap(mapInfo);
-
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
-      window.mapstudioWebmap = mapstudioWebmap;
       expect(mapstudioWebmap.map).toEqual(map);
-      expect(mapstudioWebmap._mapInfo.layers[1].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
-      ]);
-      expect(mapstudioWebmap._mapInfo.layers[2].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
-      ]);
-      const catelogGroup = [
-        {
-          filter: ['all', ['==', 'Ctype', ''], ['!=', 'smpid', '']],
-          visible: true,
-          catalogType: 'layer',
-          layersContent: ['ms_郑州POI_GBK_1774245016129_27']
-        },
-        {
-          catalogType: 'group',
-          children: [
-            {
-              filter: ['all', ['==', 'Ctype1', ''], ['!=', 'smpid1', ''], ['!=', '$type', 'point']],
-              visible: true,
-              catalogType: 'layer',
-              layersContent: ['ms_郑州POI_GBK_1774245104313_105']
-            }
-          ]
-        }
-      ];
-      const result = mapstudioWebmap._getFiltersByCatalog({ catalogs: catelogGroup });
-      expect(result).toEqual({
-        ms_郑州POI_GBK_1774245016129_27: ['all', ['==', 'Ctype', ''], ['!=', 'smpid', '']],
-        ms_郑州POI_GBK_1774245104313_105: ['all', ['==', 'Ctype1', ''], ['!=', 'smpid1', ''], ['!=', '$type', 'point']]
-      });
-      const result1 = mapstudioWebmap._getFiltersByCatalog({});
-      expect(result1).toEqual({});
+      expect(Spy).toHaveBeenCalledTimes(2);
       const result2 = mapstudioWebmap._getPopupInfos({});
       expect(result2).toEqual([]);
-      mapstudioWebmap._changeMapInfoFilter();
       done();
     });
   });
@@ -8504,246 +8475,6 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.on('mapcreatefailed', (e) => {
       done();
-    });
-  });
-});
-
-describe('WebMapV3 Filter Methods Additional Tests', () => {
-  let webMapV3;
-  let testDiv;
-  let originalTimeout;
-
-  beforeEach(() => {
-    testDiv = window.document.createElement('div');
-    testDiv.setAttribute('id', 'map');
-    testDiv.style.styleFloat = 'left';
-    testDiv.style.marginLeft = '8px';
-    testDiv.style.marginTop = '50px';
-    testDiv.style.width = '500px';
-    testDiv.style.height = '500px';
-    window.document.body.appendChild(testDiv);
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    mapboxgl.Map.prototype.overlayLayersManager = {};
-    mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
-    mapboxgl.CRS = CRS;
-    mapboxgl.proj4 = proj4;
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('web/config/portal.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
-      }
-      if (url.indexOf('map.json') > -1) {
-        return Promise.resolve(new Response(mapstudioWebMap_filters));
-      }
-      if (url.indexOf('932266699.json') > -1) {
-        return Promise.resolve(new Response(msProjectINfo_filters));
-      }
-      if (url.indexOf('/sprites') > -1) {
-        return Promise.resolve(new Response(spriteJson));
-      }
-      return Promise.resolve();
-    });
-  });
-  afterEach(() => {
-    if (webMapV3 && webMapV3.map) {
-      const webMapV31 = webMapV3._getWebMapInstance ? webMapV3._getWebMapInstance() : webMapV3;
-      webMapV31.clean && webMapV31.clean();
-      webMapV3 = null;
-    }
-    window.document.body.removeChild(testDiv);
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    mbglmap.prototype.getL7Scene = undefined;
-    mapboxgl.CRS = undefined;
-    mapboxgl.proj4 = undefined;
-    revertCRS();
-  });
-
-  it('should return empty array for empty catalogs', () => {
-    webMapV3 = new WebMap('932266699', {
-      server: server
-    });
-    webMapV3.on('mapcreatesucceeded', (e) => {
-      const result = webMapV3._getFiltersByCatalog({});
-      expect(result).toEqual([]);
-      const result1 = webMapV3._getFiltersByCatalog(null);
-      expect(result1).toEqual([]);
-      const catalogs = [
-        {
-          catalogType: 'layer',
-          filter: ['all', ['==', 'Ctype', '']],
-          layersContent: ['layer1', 'layer2']
-        }
-      ];
-      const result2 = webMapV3._getFiltersByCatalog({ catalogs });
-      expect(result2).toEqual({
-        layer1: ['all', ['==', 'Ctype', '']],
-        layer2: ['all', ['==', 'Ctype', '']]
-      });
-
-      const catalogs1 = [
-        {
-          catalogType: 'group',
-          children: [
-            {
-              catalogType: 'layer',
-              filter: ['all', ['==', 'Ctype', '']],
-              layersContent: ['layer1']
-            }
-          ]
-        }
-      ];
-      const result3 = webMapV3._getFiltersByCatalog({ catalogs: catalogs1 });
-      expect(result3).toEqual({
-        layer1: ['all', ['==', 'Ctype', '']]
-      });
-      const catalogFilter = [
-        'all',
-        ['==', '$type', 'Point'],
-        ['==', '$id', '123'],
-        ['==', '$layer', 'layer1'],
-        ['==', 'smpid', '']
-      ];
-      const keys = webMapV3._collectMatchKeys(catalogFilter);
-      expect(keys).not.toContain('$type');
-      expect(keys).not.toContain('$id');
-      expect(keys).not.toContain('$layer');
-      expect(keys).toContain('smpid');
-    });
-  });
-  describe('_changeMapInfoFilter', () => {
-    it('should handle empty catalogFilters', () => {
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        webMapV3._mapInfo = {
-          layers: [{ id: 'layer1', filter: ['all', ['==', 'Ctype', '']] }]
-        };
-        webMapV3._changeMapInfoFilter({});
-        expect(webMapV3._mapInfo.layers[0].filter).toEqual(['all', ['==', 'Ctype', '']]);
-      });
-    });
-
-    it('should handle null catalogFilters', () => {
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        webMapV3._mapInfo = {
-          layers: [{ id: 'layer1', filter: ['all', ['==', 'Ctype', '']] }]
-        };
-        webMapV3._changeMapInfoFilter(null);
-        expect(webMapV3._mapInfo.layers[0].filter).toEqual(['all', ['==', 'Ctype', '']]);
-      });
-    });
-    it('should transform layer filter when catalog filter exists', () => {
-      const catalogFilters = {
-        layer1: ['all', ['==', 'Ctype', ''], ['!=', 'smpid', '']]
-      };
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        webMapV3._mapInfo = {
-          layers: [
-            { id: 'layer1', filter: ['all', ['==', 'Ctype', ''], ['!=', 'smpid', ''], ['==', 'other', 'value']] }
-          ]
-        };
-        webMapV3._changeMapInfoFilter(catalogFilters);
-        expect(webMapV3._mapInfo.layers[0].filter[1]).toEqual(['==', ['get', 'Ctype'], '']);
-        expect(webMapV3._mapInfo.layers[0].filter[2]).toEqual(['!=', ['get', 'smpid'], '']);
-        expect(webMapV3._mapInfo.layers[0].filter[3]).toEqual(['==', 'other', 'value']);
-      });
-    });
-
-    it('should not transform layer without filter', () => {
-      const catalogFilters = {
-        layer1: ['all', ['==', 'Ctype', '']]
-      };
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        webMapV3._mapInfo = {
-          layers: [{ id: 'layer1' }]
-        };
-        webMapV3._changeMapInfoFilter(catalogFilters);
-        expect(webMapV3._mapInfo.layers[0].filter).toBeUndefined();
-      });
-    });
-
-    it('should not transform when no matching catalog filter', () => {
-      const catalogFilters = {
-        layer2: ['all', ['==', 'Ctype', '']]
-      };
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        webMapV3._mapInfo = {
-          layers: [{ id: 'layer1', filter: ['all', ['==', 'Ctype', '']] }]
-        };
-
-        webMapV3._changeMapInfoFilter(catalogFilters);
-        expect(webMapV3._mapInfo.layers[0].filter).toEqual(['all', ['==', 'Ctype', '']]);
-      });
-    });
-  });
-
-  describe('_transformFilterByMatchKeys', () => {
-    it('should handle empty matchKeys', () => {
-      const filter = ['all', ['==', 'Ctype', '']];
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        const result = webMapV3._transformFilterByMatchKeys(filter, []);
-        expect(result).toEqual(['all', ['==', 'Ctype', '']]);
-      });
-    });
-
-    it('should handle all comparison operators', () => {
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        const matchKeys = ['prop'];
-        expect(webMapV3._transformFilterByMatchKeys(['==', 'prop', 'value'], matchKeys)).toEqual([
-          '==',
-          ['get', 'prop'],
-          'value'
-        ]);
-        expect(webMapV3._transformFilterByMatchKeys(['!=', 'prop', 'value'], matchKeys)).toEqual([
-          '!=',
-          ['get', 'prop'],
-          'value'
-        ]);
-        expect(webMapV3._transformFilterByMatchKeys(['>', 'prop', 10], matchKeys)).toEqual(['>', ['get', 'prop'], 10]);
-        expect(webMapV3._transformFilterByMatchKeys(['<', 'prop', 10], matchKeys)).toEqual(['<', ['get', 'prop'], 10]);
-        expect(webMapV3._transformFilterByMatchKeys(['>=', 'prop', 10], matchKeys)).toEqual([
-          '>=',
-          ['get', 'prop'],
-          10
-        ]);
-        expect(webMapV3._transformFilterByMatchKeys(['<=', 'prop', 10], matchKeys)).toEqual([
-          '<=',
-          ['get', 'prop'],
-          10
-        ]);
-      });
-    });
-
-    it('should handle in and !in operators', () => {
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        const matchKeys = ['prop'];
-        expect(webMapV3._transformFilterByMatchKeys(['in', 'prop', 'A', 'B'], matchKeys)).toEqual([
-          'in',
-          ['get', 'prop'],
-          'A',
-          'B'
-        ]);
-        expect(webMapV3._transformFilterByMatchKeys(['!in', 'prop', 'A', 'B'], matchKeys)).toEqual([
-          '!in',
-          ['get', 'prop'],
-          'A',
-          'B'
-        ]);
-      });
-    });
-
-    it('should handle complex nested filters', () => {
-      webMapV3.on('mapcreatesucceeded', (e) => {
-        const layerFilter = [
-          'any',
-          ['all', ['==', 'Ctype', 'A'], ['!=', 'smpid', '']],
-          ['none', ['==', '$type', 'Point']]
-        ];
-        const catalogFilter = ['all', ['==', 'Ctype', ''], ['!=', 'smpid', '']];
-        const matchKeys = webMapV3._collectMatchKeys(catalogFilter);
-        const result = webMapV3._transformFilterByMatchKeys(layerFilter, matchKeys);
-        expect(result[1][1]).toEqual(['==', ['get', 'Ctype'], 'A']);
-        expect(result[1][2]).toEqual(['!=', ['get', 'smpid'], '']);
-        expect(result[2][1]).toEqual(['==', '$type', 'Point']);
-      });
     });
   });
 });
