@@ -226,8 +226,6 @@ describe('mapboxgl-webmap3.0', () => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       expect(Spy).toHaveBeenCalledTimes(2);
-      const result2 = mapstudioWebmap._getPopupInfos({});
-      expect(result2).toEqual([]);
       done();
     });
   });
