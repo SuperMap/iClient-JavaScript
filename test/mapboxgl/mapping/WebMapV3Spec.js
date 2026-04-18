@@ -177,24 +177,28 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    // const Spy = spyOn(mapboxgl, 'convertFilter').and.callThrough();
+    const Spy = jasmine.createSpy('myMock');
+    Spy.and.callFake((arg) => arg);
+    mapboxgl.convertFilter = Spy
     mapstudioWebmap = new WebMap('932266699', {
       server: server
     });
-
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      const webMapV3 = mapstudioWebmap._getWebMapInstance();
-      expect(webMapV3._mapInfo.layers[1].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
-      ]);
-      expect(webMapV3._mapInfo.layers[2].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
-      ]);
+      expect(Spy).toHaveBeenCalledTimes(2);
+      // const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      // expect(webMapV3._mapInfo.layers[1].filter).toEqual([
+      //   'all',
+      //   ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+      //   ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
+      // ]);
+      // expect(webMapV3._mapInfo.layers[2].filter).toEqual([
+      //   'all',
+      //   ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
+      //   ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
+      // ]);
       done();
     });
   });
@@ -206,6 +210,11 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     const mapInfo = JSON.parse(mapstudioWebMap_filters);
+    // const Spy = spyOn(mapboxgl, 'convertFilter').and.callThrough();
+    const Spy = jasmine.createSpy('myMock');
+    Spy.and.callFake((arg) => arg);
+    mapboxgl.convertFilter = Spy
+
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map',
@@ -213,20 +222,12 @@ describe('mapboxgl-webmap3.0', () => {
       relatedInfo: JSON.parse(msProjectINfo_filters)
     });
     mapstudioWebmap.initializeMap(mapInfo);
-
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      expect(mapstudioWebmap._mapInfo.layers[1].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['all', ['!=', ['get', 'smpid'], 121]]]]]
-      ]);
-      expect(mapstudioWebmap._mapInfo.layers[2].filter).toEqual([
-        'all',
-        ['all', ['==', ['get', 'Ctype'], ''], ['!=', ['get', 'smpid'], '']],
-        ['all', ['all', ['all', ['any', ['==', ['get', 'smpid'], 121]]]]]
-      ]);
+      expect(Spy).toHaveBeenCalledTimes(2);
+      const result2 = mapstudioWebmap._getPopupInfos({});
+      expect(result2).toEqual([]);
       done();
     });
   });

@@ -1387,8 +1387,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       const labelStyle = layerInfo.labelStyle;
       const properties = features[0] && features[0].properties;
       const textField = labelStyle.labelField.replace(/{(.+)}/g, '$1');
-      if (!properties || !properties[textField]) {
-        return;
+      if (!properties || !Object.prototype.hasOwnProperty.call(properties, textField)) {
+          return;
       }
       let { backgroundFill = [255, 255, 255, 0] } = labelStyle;
       const fontFamily = labelStyle.fontFamily;
