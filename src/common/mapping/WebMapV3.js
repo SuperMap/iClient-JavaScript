@@ -371,16 +371,12 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       })
     }
     if (catalogType === 'layer') {
-      const { popupInfo, msDatasetId, layersContent = [] } = catalog;
+      const { popupInfo, msDatasetId, title, layersContent } = catalog;
       if (popupInfo) {
         const popupInfoVal = this._getPopupInfoContent(popupInfo, msDatasetId);
-        const infos = layersContent.map(layerId => {
-          return {
-            layerId,
-            ...cloneDeep(popupInfoVal)
-          }
-        })
-        res.push(...infos);
+        if (popupInfoVal) {
+          res.push({...popupInfoVal, layerId: layersContent, title});
+        }
       }
     }
   }

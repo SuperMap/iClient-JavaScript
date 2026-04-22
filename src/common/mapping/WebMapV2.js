@@ -196,7 +196,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
               return item;
             });
           }
-          return { ...popupInfo, layerId, elements };
+          return { ...popupInfo, layerId: [layerId], elements, title: name };
         }
         if (enableFields) {
           const elements = enableFields.map((fieldName) => ({
@@ -204,7 +204,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
             fieldName,
             fieldCaption: fieldCaptions ? (fieldCaptions[fieldName] || fieldName) : fieldName
           }));
-          return { elements, layerId, title: name };
+          return { elements, layerId: [layerId], title: name };
         }
         return null;
       }).filter(item => item !== null);

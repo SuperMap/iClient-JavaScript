@@ -4413,7 +4413,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
             }
           ],
           title: '北京市(3)',
-          layerId: '北京市(3)'
+          layerId: ['北京市(3)']
         },
         {
           elements: [
@@ -4427,7 +4427,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
             }
           ],
           title: '北京市轨道交通线路-打印(3)',
-          layerId: '北京市轨道交通线路-打印(3)'
+          layerId:[ '北京市轨道交通线路-打印(3)']
         }
       ];
       expect(popupInfo).toEqual(data);
@@ -4469,7 +4469,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
             }
           ],
           title: '北京市轨道交通线路-打印(3)',
-          layerId: '北京市轨道交通线路-打印(3)'
+          layerId: ['北京市轨道交通线路-打印(3)']
         }
       ];
       expect(popupInfo).toEqual(data);
@@ -4550,7 +4550,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
               fieldCaption: 'acroutes'
             }
           ],
-          layerId: '北京市(3)',
+          layerId:[ '北京市(3)'],
           title: '北京市(3)'
         },
         {
@@ -4565,7 +4565,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
             }
           ],
           title: '北京市轨道交通线路-打印(3)',
-          layerId: '北京市轨道交通线路-打印(3)'
+          layerId: ['北京市轨道交通线路-打印(3)']
         }
       ];
       expect(popupInfo).toEqual(data);
