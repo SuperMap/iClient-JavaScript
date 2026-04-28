@@ -1022,6 +1022,27 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
+  it('changeBaseLayer should delegate to handler', () => {
+    spyOn(WebMap.prototype, '_initWebMap').and.stub();
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    const layerInfo = {
+      id: 'base-layer-1',
+      title: 'Base Layer'
+    };
+    const expected = { id: 'base-layer-2' };
+    const changeBaseLayerSpy = jasmine.createSpy('changeBaseLayer').and.returnValue(expected);
+    mapstudioWebmap._handler = {
+      changeBaseLayer: changeBaseLayerSpy
+    };
+
+    const result = mapstudioWebmap.changeBaseLayer(layerInfo);
+
+    expect(changeBaseLayerSpy).toHaveBeenCalledWith(layerInfo);
+    expect(result).toBe(expected);
+  });
+
   it('test group', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('/sprite') > -1) {
