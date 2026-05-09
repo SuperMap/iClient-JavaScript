@@ -2075,7 +2075,8 @@ export function L7LayerUtil(config) {
     getL7MarkerLayers() {
       return ChartController.markerLayers;
     },
-    removeL7MarkerLayer
+    removeL7MarkerLayer,
+    getRestDataGeojsonByWebMap
   }
 }
 
