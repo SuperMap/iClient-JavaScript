@@ -486,7 +486,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       });
       Object.assign(this._mapResourceInfo, { catalogs });
       const mapboxglLayers = layers.filter((layer) => !l7LayerUtil.isL7Layer(layer));
-      for(const sourceId in sources) {
+      const mapboxSourceIds = mapboxglLayers.map((layer) => layer.source);
+      for(const sourceId of mapboxSourceIds) {
         const source = sources[sourceId]; 
         if(source.type === 'geojson' && source.data?.type === 'supermap-rest-data') {
           source.data = await l7LayerUtil.getRestDataGeojsonByWebMap(source.data, {iportalServiceProxyUrlPrefix: this.options.server, withoutFormatSuffix: true});
