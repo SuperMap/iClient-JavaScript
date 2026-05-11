@@ -436,7 +436,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       const mapboxSourceIds = mapboxglLayers.map((layer) => layer.source);
       for(const sourceId of mapboxSourceIds) {
         const source = sources[sourceId]; 
-        if(source.type === 'geojson' && source.data?.type === 'supermap-rest-data') {
+        if(source && source.type === 'geojson' && source.data && source.data.type === 'supermap-rest-data') {
           source.data = await l7LayerUtil.getRestDataGeojsonByWebMap(source.data, {iportalServiceProxyUrlPrefix: this.options.server, withoutFormatSuffix: true});
         }
       }
