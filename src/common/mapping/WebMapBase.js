@@ -365,7 +365,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      * @returns {Array} 弹窗信息数组。
      */
     getPopupInfos() {
-      return this._handler._getPopupInfos() || [];
+      return (this._handler && this._handler._getPopupInfos()) || [];
     }
 
     /**
