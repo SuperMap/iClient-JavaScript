@@ -4,6 +4,7 @@
 import { FetchRequest } from '../util/FetchRequest';
 import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
+import cloneDeep from 'lodash.clonedeep';
 
 const LEGEND_RENDER_TYPE = {
   TEXT: 'TEXT',
@@ -349,7 +350,57 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
     const crs = new mapRepo.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
     mapRepo.CRS.set(crs);
   }
-
+_getFieldCaption(msDatasetId) {
+    const { datas = [] } = this._mapResourceInfo;
+    let fieldCaptions = null;
+    datas.forEach(data => {
+      if (data.datasets) {
+        const index = data.datasets.findIndex(dataset => dataset.msDatasetId === msDatasetId);
+        if (index !== -1) {
+          fieldCaptions = data.datasets[index].fieldsCaptions;
+        }
+      }
+    });
+    return fieldCaptions;
+  }
+  _getPopupInfoContent(data, msDatasetId) {
+    const popupInfo = cloneDeep(data);
+    const fieldCaptions = this._getFieldCaption(msDatasetId);
+    if (fieldCaptions) {
+      popupInfo.elements = popupInfo.elements ? popupInfo.elements.map(item => {
+        if (item.type === 'FIELD') {
+          item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
+        }
+        return item;
+      }) : [];
+    }
+    return popupInfo;
+  }
+  _getPopupInfoByCatalog(catalog, res = []) {
+    const { catalogType, children } = catalog;
+    if(catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getPopupInfoByCatalog(child, res);
+      })
+    }
+    if (catalogType === 'layer') {
+      const { popupInfo, msDatasetId, title, layersContent } = catalog;
+      if (popupInfo) {
+        const popupInfoVal = this._getPopupInfoContent(popupInfo, msDatasetId);
+        if (popupInfoVal) {
+          res.push({...popupInfoVal, layerId: layersContent, title});
+        }
+      }
+    }
+  }
+  _getPopupInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getPopupInfoByCatalog(item, res);
+    })
+    return res;
+  }
   /**
    * @private
    * @function WebMapV3.prototype._initLayers
