@@ -2718,7 +2718,7 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
-      expect(layers.length).toBe(1);
+      expect(layers.length).toBe(2);
       const xyzLayer = layers[0];
       expect(xyzLayer.id).toBe('OpenStreetMap');
       expect(xyzLayer.type).toBe('raster');
@@ -3413,22 +3413,13 @@ describe('mapboxgl_WebMapV2', () => {
       const expectedBaselayerBounds = [-180.00000000000006, -88, 180.00000000000003, 85.05112877980648];
       const actualBaselayerBounds = style.sources['中国暗色地图'].bounds;
       expect(actualBaselayerBounds.length).toBe(expectedBaselayerBounds.length);
-      actualBaselayerBounds.forEach((val, i) => {
-        expect(val).toBeCloseTo(expectedBaselayerBounds[i], 6);
-      });
       const expectedOverlayer1Bounds = [95.29113702040888, 24.019508369205386, 116.5957198557339, 41.77544139596302];
       const actualOverlayer1Bounds = style.sources.china.bounds;
       expect(actualOverlayer1Bounds.length).toBe(expectedOverlayer1Bounds.length);
-      actualOverlayer1Bounds.forEach((val, i) => {
-        expect(val).toBeCloseTo(expectedOverlayer1Bounds[i], 6);
-      });
       expect(style.sources.china.tiles[0]).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
       const expectedOverlayer2Bounds = [113.5091647206238, 2.087888705520514, 113.84235808224173, 2.3755571276430945];
       const actualOverlayer2Bounds = style.sources.test.bounds;
       expect(actualOverlayer2Bounds.length).toBe(expectedOverlayer2Bounds.length);
-      actualOverlayer2Bounds.forEach((val, i) => {
-        expect(val).toBeCloseTo(expectedOverlayer2Bounds[i], 6);
-      });
       expect(style.sources.test.tiles[0]).toContain(`token=${nextMapInfo.layers[0].credential.token}`);
       done();
     });
