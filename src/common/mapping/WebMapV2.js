@@ -182,6 +182,33 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       crsManager.registerCRS(crs);
       return epsgCode;
     }
+    _getPopupInfos() {
+      const { layers = [] } = this._mapInfo;
+      return layers.map((layer) => {
+        const { popupInfo, enableFields, name, layerID: layerId, captions: fieldCaptions } = layer;
+        if (popupInfo){ 
+          let elements = popupInfo.elements || [];
+          if (fieldCaptions) {
+            elements = (popupInfo.elements || []).map(item => {
+              if (item.type === 'FIELD') {
+                item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
+              }
+              return item;
+            });
+          }
+          return { ...popupInfo, layerId: [layerId], elements, title: name };
+        }
+        if (enableFields) {
+          const elements = enableFields.map((fieldName) => ({
+            type: 'FIELD',
+            fieldName,
+            fieldCaption: fieldCaptions ? (fieldCaptions[fieldName] || fieldName) : fieldName
+          }));
+          return { elements, layerId: [layerId], title: name };
+        }
+        return null;
+      }).filter(item => item !== null);
+    }
 
     _handleLayerInfo(mapInfo, _taskID) {
       mapInfo = this._setLayerID(mapInfo);
