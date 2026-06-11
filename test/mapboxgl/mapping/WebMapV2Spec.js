@@ -345,7 +345,6 @@ describe('mapboxgl_WebMapV2', () => {
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     mapboxgl.CRS = undefined;
-    mapboxgl.proj4 = undefined;
     window.jsonsql = undefined;
     window.geostats = undefined;
     window.EchartsLayer = undefined;
@@ -353,7 +352,7 @@ describe('mapboxgl_WebMapV2', () => {
   });
 
   it('test baseLayer layers count maploaded', (done) => {
-    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
       }
