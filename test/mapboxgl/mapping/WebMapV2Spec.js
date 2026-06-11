@@ -2718,7 +2718,7 @@ describe('mapboxgl_WebMapV2', () => {
     });
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       const layers = map.getStyle().layers;
-      expect(layers.length).toBe(2);
+      expect(layers.length).toBe(1);
       const xyzLayer = layers[0];
       expect(xyzLayer.id).toBe('OpenStreetMap');
       expect(xyzLayer.type).toBe('raster');
