@@ -244,8 +244,7 @@ describe('mapboxgl-webmap3.0', () => {
       target: 'map'
     });
     mapstudioWebmap.on('mapcreatefailed', ({ error }) => {
-      const throwError =
-        'WebMap needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362';
+      const throwError = `The EPSG code ${nextMapInfo.crs.name} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
       expect(mapstudioWebmap.map).toBeUndefined();
       expect(error).toBe(throwError);
       done();
