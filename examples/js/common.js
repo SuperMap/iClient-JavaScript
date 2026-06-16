@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.*/
 
 
     //目前只支持中英文

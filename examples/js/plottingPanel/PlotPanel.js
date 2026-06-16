@@ -1,5 +1,5 @@
 
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initPlotPanel = function (div, serverUrl, drawControl) {
     var plotPanel = document.getElementById(div);
 

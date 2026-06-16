@@ -1,7 +1,7 @@
 /*!
  * 
  *          iclient-openlayers
- *          Copyright© 2000 - 2025 SuperMap Software Co.Ltd
+ *          Copyright© 2000 - 2026 SuperMap Software Co.Ltd
  *          license: Apache-2.0
  *          version: v12.0.1-r
  *
