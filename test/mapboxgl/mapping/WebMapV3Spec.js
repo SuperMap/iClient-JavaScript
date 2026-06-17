@@ -14,7 +14,14 @@ import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map';
 import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
 var server = 'http://localhost:8190/iportal/';
-
+if (!Array.prototype.at) {
+  Array.prototype.at = function(n) {
+    n = Math.trunc(n) || 0;
+    if (n < 0) n += this.length;
+    if (n < 0 || n >= this.length) return undefined;
+    return this[n];
+  };
+}
 describe('mapboxgl-webmap3.0', () => {
   var originalTimeout, testDiv;
   var id = 617580084;
