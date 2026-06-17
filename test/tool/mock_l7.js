@@ -1,3 +1,36 @@
+if (!Array.prototype.at) {
+  Object.defineProperty(Array.prototype, 'at', {
+    value: function at(index) {
+      // 1. 让 O 成为 ToObject(this)
+      if (this == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+      var O = Object(this);
+
+      // 2. 让 len 成为 ToLength(O.length)
+      var len = O.length >>> 0;
+
+      // 3. 让 relativeIndex 成为 ToInteger(index)
+      var relativeIndex = Math.trunc(index) || 0;
+
+      // 如果参数是 NaN，Math.trunc(NaN) 是 NaN，NaN || 0 会将其变成 0
+      // 这符合标准（规范中 ToIntegerOrInfinity(undefined) 结果为 0）
+
+      // 4. 计算实际索引
+      var k = relativeIndex >= 0 ? relativeIndex : len + relativeIndex;
+
+      // 5. 边界检查：如果超出范围，返回 undefined
+      if (k < 0 || k >= len) {
+        return undefined;
+      }
+
+      // 6. 返回对应的属性值
+      return O[k];
+    },
+    writable: true,
+    configurable: true
+  });
+}
 class Event {
   constructor() {
     this.stacks = {};

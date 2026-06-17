@@ -13,14 +13,7 @@ import * as mockL7 from '../../tool/mock_l7';
 import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
 import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
-if (!Array.prototype.at) {
-  Array.prototype.at = function(n) {
-    n = Math.trunc(n) || 0;
-    if (n < 0) n += this.length;
-    if (n < 0 || n >= this.length) return undefined;
-    return this[n];
-  };
-}
+
 describe('maplibregl-webmap3.0', () => {
   var originalTimeout, testDiv;
   var server = 'http://localhost:8190/iportal/';
