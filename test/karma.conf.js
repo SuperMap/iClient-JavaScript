@@ -27,7 +27,7 @@ module.exports = function (config) {
     },
 
     browserify: {
-      debug: true,
+      debug: false,
       transform: [
         [
           require('babelify'),
