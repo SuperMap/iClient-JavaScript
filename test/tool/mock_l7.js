@@ -31,6 +31,7 @@ if (!Array.prototype.at) {
     configurable: true
   });
 }
+<<<<<<< HEAD
 class Event {
   constructor() {
     this.stacks = {};
@@ -47,6 +48,8 @@ class Event {
   }
 }
 const event = new Event();
+=======
+>>>>>>> 044e62b26... Add polyfill for Array.prototype.at
 class Scene {
   constructor() {
     this.layerService = {
