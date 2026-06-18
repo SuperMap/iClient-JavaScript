@@ -351,38 +351,6 @@ describe('mapboxgl_WebMapV2', () => {
     dataFlowServiceSpyTest = null;
   });
 
-  xit('_setCRS', (done) => {
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('portal.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
-      }
-      if (url.indexOf('map.json') > -1) {
-        return Promise.resolve(new Response(JSON.stringify(webmap_MAPBOXSTYLE_Tile)));
-      }
-      if (url.indexOf('maps/China_4326/style.json') > -1) {
-        return Promise.resolve(new Response(styleJson));
-      }
-      return Promise.resolve();
-    });
-    datavizWebmap = new WebMap(id, {
-      server: server
-    });
-
-    spyOn(mapboxgl.CRS.prototype, 'get').and.callFake((crs) => {
-      if (crs === 'EPSG:4326') {
-        return crs;
-      }
-      return null;
-    });
-    datavizWebmap.on('mapcreatesucceeded', () => {
-      spyOn(mapboxgl.CRS.prototype, 'set');
-      datavizWebmap._handler._setCRS('EPSG:4326', 'test', { left: -180, right: 180 });
-      expect(mapboxgl.CRS.prototype.set).not.toHaveBeenCalled();
-      datavizWebmap._handler._setCRS('EPSG:2362', 'test', { left: -180, right: 180 });
-      expect(mapboxgl.CRS.prototype.set).toHaveBeenCalled();
-      done();
-    });
-  });
   it('test baseLayer layers count maploaded', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -1436,8 +1404,6 @@ describe('mapboxgl_WebMapV2', () => {
     datavizWebmap.on('mapcreatesucceeded', callback);
   });
 
-  
-
   it('updateOverlayLayer unique', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
@@ -1546,7 +1512,7 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
-  it('add zxytile layer', (done) => {
+  it('add zxytile layer 3857全球剖分', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('portal.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
@@ -2109,7 +2075,7 @@ describe('mapboxgl_WebMapV2', () => {
       return Promise.resolve(new Response(JSON.stringify({})));
     });
     const iportalServiceProxyUrl = 'http://localhost:8195/portalproxy';
-    const tileCustomRequestHeaders = { 'Authorization': 'test token' };
+    const tileCustomRequestHeaders = { Authorization: 'test token' };
     datavizWebmap = new WebMap(vectorLayer_line, {
       ...commonOption,
       iportalServiceProxyUrlPrefix: iportalServiceProxyUrl,
@@ -2737,7 +2703,7 @@ describe('mapboxgl_WebMapV2', () => {
     });
   });
 
-  it('initial_xyzLayer', (done) => {
+  it('initial_xyzLayer 3857全球剖分', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify(xyzLayer)));
@@ -3287,7 +3253,7 @@ describe('mapboxgl_WebMapV2', () => {
   it('updateOverlayLayer featureProjection', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
-        webmap_rangeLayer.layers.map(item => {
+        webmap_rangeLayer.layers.map((item) => {
           item.projection = 'EPSG:3857';
         });
         return Promise.resolve(new Response(JSON.stringify(webmap_rangeLayer)));
@@ -3457,7 +3423,303 @@ describe('mapboxgl_WebMapV2', () => {
       done();
     });
   });
-  
+
+  it('webmap2.0 popupinfo', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              fieldName: 'parent',
+              type: 'FIELD',
+              fieldCaption: 'parent3121'
+            },
+            {
+              fieldName: 'adcode',
+              type: 'FIELD',
+              fieldCaption: 'adcode'
+            },
+            {
+              fieldName: 'level',
+              type: 'FIELD',
+              fieldCaption: 'level'
+            },
+            {
+              fieldName: 'childrenNum',
+              type: 'FIELD',
+              fieldCaption: 'childrenNum'
+            },
+            {
+              fieldName: 'smpid',
+              type: 'FIELD',
+              fieldCaption: 'smpid'
+            },
+            {
+              fieldName: 'centroid',
+              type: 'FIELD',
+              fieldCaption: 'centroid'
+            },
+            {
+              fieldName: 'center',
+              type: 'FIELD',
+              fieldCaption: 'center'
+            },
+            {
+              fieldName: 'subFeatureIndex',
+              type: 'FIELD',
+              fieldCaption: 'subFeatureIndex'
+            },
+            {
+              fieldName: 'name',
+              type: 'FIELD',
+              fieldCaption: 'name'
+            },
+            {
+              fieldName: 'acroutes',
+              type: 'FIELD',
+              fieldCaption: 'acroutes'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', ['get', 'level'], ['get', 'adcode'], '----'],
+                  attributes: {
+                    size: 'small',
+                    color: '#4e35cc',
+                    underline: true,
+                    strike: true,
+                    bold: true,
+                    italic: true
+                  }
+                },
+                {
+                  insert: ['concat', ['get', 'childrenNum'], ['get', 'parent']],
+                  attributes: {
+                    size: 'small',
+                    color: '#e01b4b'
+                  }
+                },
+                {
+                  insert: '\n',
+                  attributes: {
+                    align: 'center'
+                  }
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'adcode']],
+              value: ['concat', ['get', 'parent']]
+            },
+            {
+              type: 'IMAGE',
+              title: 'afdfd',
+              value: ['concat', ['get', 'level']]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'VIDEO',
+              title: 'fdsfs',
+              value: 'http://fake:8190/iportal/apps/mapstudio/edit.html'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', ['get', 'parent'], ['get', 'adcode']],
+              value: ['concat', ['get', 'adcode'], ['get', 'level']]
+            }
+          ],
+          title: '北京市(3)',
+          layerId: ['北京市(3)']
+        },
+        {
+          elements: [
+            {
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          layerId:[ '北京市轨道交通线路-打印(3)']
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
+  });
+  it('webmap2.0 popupinfo no captions', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo_no_captions)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              fieldCaption: "SmID",
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldCaption: '标准名称',
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          layerId: ['北京市轨道交通线路-打印(3)']
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
+  });
+  it('webmap2.0 popupinfo 没有配置弹窗', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(Webmap2_popupInfo_no)));
+      } else if (url.indexOf('1168691327/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(chart_content)));
+      } else if (url.indexOf('1371715657/content.json?') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(layerData_geojson['POINT_GEOJSON'])));
+      } else if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      server: server
+    });
+    const callback = function () {
+      const popupInfo = datavizWebmap.getPopupInfos();
+      const data = [
+        {
+          elements: [
+            {
+              type: 'FIELD',
+              fieldName: 'parent',
+              fieldCaption: 'parent3121'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'adcode',
+              fieldCaption: 'adcode'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'level',
+              fieldCaption: 'level'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'childrenNum',
+              fieldCaption: 'childrenNum'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'smpid',
+              fieldCaption: 'smpid'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'centroid',
+              fieldCaption: 'centroid'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'center',
+              fieldCaption: 'center'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'subFeatureIndex',
+              fieldCaption: 'subFeatureIndex'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'name',
+              fieldCaption: 'name'
+            },
+            {
+              type: 'FIELD',
+              fieldName: 'acroutes',
+              fieldCaption: 'acroutes'
+            }
+          ],
+          layerId:[ '北京市(3)'],
+          title: '北京市(3)'
+        },
+        {
+          elements: [
+            {
+              fieldName: 'SmID',
+              type: 'FIELD'
+            },
+            {
+              fieldName: '标准名称',
+              type: 'FIELD'
+            }
+          ],
+          title: '北京市轨道交通线路-打印(3)',
+          layerId: ['北京市轨道交通线路-打印(3)']
+        }
+      ];
+      expect(popupInfo).toEqual(data);
+      done();
+    };
+    datavizWebmap.on('mapcreatesucceeded', callback);
+    datavizWebmap.on('map');
+  });
+
   it('baselayer is MAPBOXSTYLE when mapInfo has no extent', (done) => {
     const mapInfo = {
       "maxScale": "1:144447.92746805",
