@@ -5726,3 +5726,270 @@ var spriteJson = JSON.stringify({
         "height": 100
     }
 })
+const msPopupInfo = JSON.stringify({
+  extent: {
+    top: 31.632108900689214,
+    left: 102.62340682672561,
+    bottom: 29.58439805731813,
+    leftBottom: {
+      x: 102.62340682672561,
+      y: 29.58439805731813,
+      m: null
+    },
+    right: 105.60836654973976,
+    rightTop: {
+      x: 105.60836654973976,
+      y: 31.632108900689214,
+      m: null
+    }
+  },
+  controls: null,
+  extentString: '',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: 'ms-弹窗-复杂',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo: JSON.stringify({
+    images: 'http://fake:8190/iportal/web/maps/1171931401/sprites/sprite',
+    catalogs: [
+      {
+        visualization: {
+          renderer: [
+            {
+              symbolsContent: {
+                type: 'simple',
+                value: {
+                  symbolId: 'circle',
+                  style: {
+                    layout: {
+                      'icon-image': 'circle'
+                    }
+                  }
+                }
+              },
+              size: {
+                type: 'simple',
+                value: 20
+              },
+              color: {
+                type: 'simple',
+                value: '#EE4D5A'
+              },
+              translateAnchor: {
+                type: 'simple',
+                value: 'map'
+              },
+              opacity: {
+                type: 'simple',
+                value: 0.9
+              },
+              translate: {
+                type: 'simple',
+                value: [0, 0]
+              },
+              styleRenderMode: 'mapboxgl'
+            }
+          ]
+        },
+        visible: true,
+        catalogType: 'layer',
+        msDatasetId: 'ms_datasetId_1763102159620_163',
+        bounds: [103.46143, 30.194359, 104.550339, 30.99114],
+        id: 'layer_A点_1763102159640_174',
+        popupInfo: {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value:
+                'https://pic1.arkoo.com/56D0B40F99F841DF8A2425762AE2565D/picture/o_1i4qop009177v1tgf14db15he1iaj1is.jpg'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: '这是一段文本信息\n'
+                }
+              ]
+            }
+          ],
+          title: 'A点'
+        },
+        title: 'A点',
+        layerSourceType: 'Data',
+        zoomRange: [0, 24],
+        layersContent: ['A点']
+      },
+      {
+        visualization: {
+          renderer: [
+            {
+              symbolsContent: {
+                type: 'simple',
+                value: {
+                  symbolId: 'polygon-0',
+                  style: {
+                    layout: {
+                      visibility: 'visible'
+                    },
+                    paint: {
+                      'fill-outline-color': '#FFFFFF',
+                      'fill-color': '#826DBA',
+                      'fill-opacity': 0.9
+                    }
+                  }
+                }
+              },
+              color: {
+                type: 'simple',
+                value: '#826DBA'
+              },
+              antialias: {
+                type: 'simple',
+                value: true
+              },
+              outlineColor: {
+                type: 'simple',
+                value: '#FFFFFF'
+              },
+              opacity: {
+                type: 'simple',
+                value: 0.9
+              },
+              styleRenderMode: 'mapboxgl'
+            }
+          ]
+        },
+        visible: true,
+        catalogType: 'layer',
+        msDatasetId: 'ms_datasetId_1763102129825_23',
+        bounds: [102.992886, 30.089615, 104.89738, 31.435321],
+        id: 'layer_A面_1763102129836_26',
+        popupInfo: {
+          elements: [
+            {
+              fieldName: 'geometry',
+              type: 'FIELD'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'TEXT',
+              infos: [
+                {
+                  insert: ['concat', '这是一段文本信息', ['get', 'smpid'], '\n']
+                }
+              ]
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题', ['get', 'adcode'], '-图片'],
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'IMAGE',
+              title: '无标题',
+              value: ['concat', ['get', 'adcode']]
+            },
+            {
+              type: 'VIDEO',
+              title: '无标题-视频',
+              value: 'https://www.runoob.com/try/demo_source/mov_bbb.mp4'
+            },
+            {
+              type: 'DIVIDER'
+            },
+            {
+              type: 'IMAGE',
+              title: ['concat', '无标题图片', ['get', 'adcode']],
+              value: ['concat', ['get', 'name'], ['get', 'smpid']]
+            }
+          ],
+          title: 'A面'
+        },
+        title: 'A面',
+        layerSourceType: 'Data',
+        zoomRange: [0, 24],
+        layersContent: ['A面', 'A面1']
+      }
+    ],
+    datas: [
+      {
+        sourceType: 'STRUCTURE_DATA',
+        datasets: [
+          {
+            datasetTitle: 'A面',
+            msDatasetId: 'ms_datasetId_1763102129825_23',
+            datasetId: '1578304463',
+            geometryField: 'geometry',
+            fieldsCaptions: {
+              smpid: 'smpidxxxxx'
+            }
+          }
+        ],
+        title: 'A面'
+      },
+      {
+        sourceType: 'STRUCTURE_DATA',
+        datasets: [
+          {
+            datasetTitle: 'A点',
+            msDatasetId: 'ms_datasetId_1763102159620_163',
+            datasetId: '2105298173',
+            geometryField: 'geometry'
+          }
+        ],
+        title: 'A点'
+      }
+    ],
+    baseLayer: {
+      internetMapName: 'OSM',
+      type: 'INTERNET_MAP',
+      labelVisible: true
+    },
+    version: '3.1.2'
+  }),
+  visitCount: 65,
+  centerString: '{"x":104.11588668823242,"y":30.608253479003906,"m":null}',
+  epsgCode: 4326,
+  nickname: 'admin_123',
+  layers: null,
+  id: 1171931401,
+  searchSetting: null,
+  thumbnail: 'http://172.16.14.44:8190/iportal/resources/thumbnail/map/map1171931401.png',
+  level: 8,
+  center: {
+    x: 104.11588668823242,
+    y: 30.608253479003906,
+    m: null
+  },
+  authorizeSetting: [],
+  updateTime: 1763359863094,
+  userName: 'admin_123',
+  tags: [],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1763102527590,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
+  favoriteCount: 0
+});
