@@ -1,0 +1,44 @@
+{
+  "mapOptions": {
+    "container": "map",
+    "center": [116.39, 39.9],
+    "zoom": 3,
+    "bearing": 0,
+    "pitch": 0,
+    "maxZoom": 22,
+    "minZoom": 0
+  },
+  "style": {
+    "emptyStyle": { "version": 8, "sources": {}, "layers": [] },
+    "note": "MUST NOT pass style in initMap mapOptions"
+  },
+  "bufferAnalysis": {
+    "defaultEndType": "ROUND",
+    "defaultSemicircleLineSegment": 10,
+    "defaultRadiusUnit": "METER"
+  },
+  "vectorTile": {
+    "defaultType": "vector-tile",
+    "tileSize": 512
+  },
+  "layer": {
+    "defaultCircleRadius": 6,
+    "defaultLineWidth": 3,
+    "defaultFillOpacity": 0.5,
+    "defaultLineColor": "#ff0000",
+    "defaultFillColor": "#ff8800",
+    "defaultBufferColor": "#00ff00"
+  },
+  "cdns": {
+    "version": "1.12.1-11",
+    "enhance": {
+      "js": "https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-11/mapbox-gl-enhance.js",
+      "css": "https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-11/mapbox-gl-enhance.css"
+    },
+    "iclient": {
+      "js": "https://iclient.supermap.io/dist/mapboxgl/iclient-mapboxgl-es6.min.js",
+      "css": "https://iclient.supermap.io/dist/mapboxgl/iclient-mapboxgl.min.css"
+    },
+    "note": "CDN version is FIXED, do not change based on user request"
+  }
+}

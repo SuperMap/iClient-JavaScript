@@ -1,0 +1,70 @@
+{
+  "iserver": {
+    "restMap": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/maps/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China",
+      "services": ["initMap (load map)", "MapService (map info)", "QueryService (map query)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /rest/maps/{serviceName}",
+          "endsWithRest": "Append maps/{serviceName}",
+          "needsMapName": "Ask user for map name"
+        }
+      }
+    },
+    "restData": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/data",
+      "example": "https://iserver.supermap.io/iserver/services/data-world/rest/data",
+      "services": ["FeatureService (data query/edit)", "DatasetService (dataset management)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /rest/data"
+        }
+      }
+    },
+    "spatialAnalyst": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/restjsr/spatialanalyst",
+      "example": "https://iserver.supermap.io/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+      "services": ["SpatialAnalystService (buffer, overlay, interpolation, surface analysis)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /restjsr/spatialanalyst"
+        }
+      }
+    },
+    "wmts": {
+      "pattern": "https?://{host}:{port}/iserver/services/{wmtsServiceName}",
+      "example": "https://iserver.supermap.io/iserver/services/wmts-china",
+      "note": "WMTS does not use /rest/maps/ path, direct service format"
+    },
+    "wms": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/ogc/wms/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-china400/ogc/wms/China"
+    }
+  },
+  "urlToService": {
+    "/rest/maps/": "Use initMap / MapService / QueryService",
+    "/rest/data": "Use FeatureService / DatasetService",
+    "/restjsr/spatialanalyst": "Use SpatialAnalystService",
+    "wmts": "Use WMTS raster source",
+    "wms": "Use WMS raster source"
+  },
+  "autoCompletion": [
+    {
+      "userProvides": "map-china400",
+      "autoCompleteTo": "https://localhost:8090/iserver/services/map-china400/rest/maps/mapChina400"
+    },
+    {
+      "userProvides": "iserver/services/map-china400/rest/maps/China",
+      "autoCompleteTo": "Already complete"
+    },
+    {
+      "userProvides": "https://iserver.supermap.io/iserver/services/map-china400",
+      "note": "Need mapName from user or use serviceName as mapName"
+    },
+    {
+      "userProvides": "wmts-china",
+      "autoCompleteTo": "https://localhost:8090/iserver/services/wmts-china (WMTS direct)"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "MAP_OPERATIONS": {
+    "description": "Camera control, map interaction, layer/style manipulation",
+    "module": null,
+    "note": "Use native MapboxGL JS API — refer to metadata/mapbox-gl-enhance/ (index.d.ts for types, index.html for enhance docs)",
+    "keywords": ["飞行到", "移动到", "设置中心", "缩放", "旋转", "flyTo", "setCenter", "setZoom", "fitBounds", "添加控件", "图层可见性", "地图事件", "map.on", "camera"],
+    "requiredParams": []
+  },
+  "LOAD_MAP": {
+    "description": "Load iServer REST Map as base layer",
+    "module": "core/init-map",
+    "keywords": ["加载地图", "添加地图", "显示地图", "打开地图", "加载iserver", "添加iserver地图", "显示地图服务"],
+    "requiredParams": ["url"],
+    "optionalParams": ["center", "zoom"]
+  },
+  "ADD_LAYER": {
+    "description": "Add overlay layer to map",
+    "subIntents": {
+      "ADD_GEOJSON": {
+        "module": "mapping/add-geojson",
+        "keywords": ["添加geojson", "geojson数据", "添加json"]
+      },
+      "ADD_VECTOR_TILE": {
+        "module": "mapping/vector-tile",
+        "keywords": ["矢量瓦片", "vector tile", "mvt", "矢量切片"]
+      },
+      "ADD_WMTS": {
+        "module": "mapping/wmts",
+        "keywords": ["wmts", "WMTS图层", "添加wmts", "加载wmts"]
+      },
+      "ADD_WMS": {
+        "module": "mapping/wms",
+        "keywords": ["wms", "WMS图层", "添加wms", "加载wms"]
+      }
+    },
+    "keywords": ["添加图层", "添加数据", "叠加图层", "加载图层", "显示图层"]
+  },
+  "QUERY_ANALYSIS": {
+    "description": "Query or analyze spatial data",
+    "subIntents": {
+      "SQL_QUERY": {
+        "module": "services/feature-service",
+        "keywords": ["SQL查询", "属性查询", "按属性查询", "数据服务查询"]
+      },
+      "SPATIAL_QUERY": {
+        "module": "services/feature-service",
+        "keywords": ["空间查询", "几何查询", "INTERSECT"]
+      },
+      "BUFFER_QUERY": {
+        "module": "services/feature-service",
+        "keywords": ["缓冲区查询", "buffer query", "GetFeaturesByBuffer"]
+      },
+      "MAP_QUERY": {
+        "module": "services/query-service",
+        "keywords": ["地图查询", "QueryService", "地图服务查询", "范围查询", "距离查询"]
+      },
+      "BUFFER_ANALYSIS": {
+        "module": "services/buffer-analysis",
+        "keywords": ["缓冲区分析", "bufferAnalysis", "SpatialAnalystService"]
+      }
+    },
+    "keywords": ["查询", "分析", "搜索", "筛选", "filter", "query", "空间查询", "SQL查询", "缓冲区分析", "量算", "叠加分析", "插值分析"]
+  }
+}
