@@ -1,8 +1,1372 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 193:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 444
+(module) {
+
+(function(self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+  if (!self.__disableNativeFetch && self.fetch) {
+    return
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var list = this.map[name]
+    if (!list) {
+      list = []
+      this.map[name] = list
+    }
+    list.push(value)
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    var values = this.map[normalizeName(name)]
+    return values ? values[0] : null
+  }
+
+  Headers.prototype.getAll = function(name) {
+    return this.map[normalizeName(name)] || []
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)]
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+      this.map[name].forEach(function(value) {
+        callback.call(thisArg, value, name, this)
+      }, this)
+    }, this)
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    reader.readAsArrayBuffer(blob)
+    return fileReaderReady(reader)
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader()
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
+    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var args = [blob]
+
+    if(_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
+    }
+
+    reader.readAsText.apply(reader, args)
+    return fileReaderReady(reader)
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob();
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+
+    this._initBody = function(body, options) {
+      this._bodyInit = body
+      if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+        this._options = options
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (!body) {
+        this._bodyText = ''
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+
+      this.text = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options)
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text')
+        } else {
+          return Promise.resolve(this._bodyText)
+        }
+      }
+    } else {
+      this.text = function() {
+        var rejected = consumed(this)
+        return rejected ? rejected : Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = input
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body, options)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this)
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function headers(xhr) {
+    var head = new Headers()
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+    pairs.forEach(function(header) {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    })
+    return head
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this._initBody(bodyInit, options)
+    this.type = 'default'
+    this.status = options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = options.statusText
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.url = options.url || ''
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+
+      var xhr = new XMLHttpRequest()
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL')
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return
+        }
+        var status = (xhr.status === 1223) ? 204 : xhr.status
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+          reject(new TypeError('Network request failed'))
+          return
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        }
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        resolve(new Response(body, options))
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function() {
+        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+
+  // Support CommonJS
+  if ( true && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ },
+
+/***/ 348
+(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{ var mod; }
+})(this, function (exports, module) {
+  'use strict';
+
+  var defaultOptions = {
+    timeout: 5000,
+    jsonpCallback: 'callback',
+    jsonpCallbackFunction: null
+  };
+
+  function generateCallbackFunction() {
+    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+  }
+
+  function clearFunction(functionName) {
+    // IE8 throws an exception when you try to delete a property on window
+    // http://stackoverflow.com/a/1824228/751089
+    try {
+      delete window[functionName];
+    } catch (e) {
+      window[functionName] = undefined;
+    }
+  }
+
+  function removeScript(scriptId) {
+    var script = document.getElementById(scriptId);
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
+  }
+
+  function fetchJsonp(_url) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    // to avoid param reassign
+    var url = _url;
+    var timeout = options.timeout || defaultOptions.timeout;
+    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+
+    var timeoutId = undefined;
+
+    return new Promise(function (resolve, reject) {
+      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+      window[callbackFunction] = function (response) {
+        resolve({
+          ok: true,
+          // keep consistent with fetch API
+          json: function json() {
+            return Promise.resolve(response);
+          }
+        });
+
+        if (timeoutId) clearTimeout(timeoutId);
+
+        removeScript(scriptId);
+
+        clearFunction(callbackFunction);
+      };
+
+      // Check if the user set their own params, and if not add a ? to start a list of params
+      url += url.indexOf('?') === -1 ? '?' : '&';
+
+      var jsonpScript = document.createElement('script');
+      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
+      jsonpScript.id = scriptId;
+      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+
+      timeoutId = setTimeout(function () {
+        reject(new Error('JSONP request to ' + _url + ' timed out'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
+      }, timeout);
+
+      // Caught if got 404/500
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    });
+  }
+
+  // export as global function
+  /*
+  let local;
+  if (typeof global !== 'undefined') {
+    local = global;
+  } else if (typeof self !== 'undefined') {
+    local = self;
+  } else {
+    try {
+      local = Function('return this')();
+    } catch (e) {
+      throw new Error('polyfill failed because global object is unavailable in this environment');
+    }
+  }
+  local.fetchJsonp = fetchJsonp;
+  */
+
+  module.exports = fetchJsonp;
+});
+
+/***/ },
+
+/***/ 836
+(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? factory() :
+	0;
+}(this, (function () { 'use strict';
+
+/**
+ * @this {Promise}
+ */
+function finallyConstructor(callback) {
+  var constructor = this.constructor;
+  return this.then(
+    function(value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        return value;
+      });
+    },
+    function(reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    }
+  );
+}
+
+function allSettled(arr) {
+  var P = this;
+  return new P(function(resolve, reject) {
+    if (!(arr && typeof arr.length !== 'undefined')) {
+      return reject(
+        new TypeError(
+          typeof arr +
+            ' ' +
+            arr +
+            ' is not iterable(cannot read property Symbol(Symbol.iterator))'
+        )
+      );
+    }
+    var args = Array.prototype.slice.call(arr);
+    if (args.length === 0) return resolve([]);
+    var remaining = args.length;
+
+    function res(i, val) {
+      if (val && (typeof val === 'object' || typeof val === 'function')) {
+        var then = val.then;
+        if (typeof then === 'function') {
+          then.call(
+            val,
+            function(val) {
+              res(i, val);
+            },
+            function(e) {
+              args[i] = { status: 'rejected', reason: e };
+              if (--remaining === 0) {
+                resolve(args);
+              }
+            }
+          );
+          return;
+        }
+      }
+      args[i] = { status: 'fulfilled', value: val };
+      if (--remaining === 0) {
+        resolve(args);
+      }
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      res(i, args[i]);
+    }
+  });
+}
+
+// Store setTimeout reference so promise-polyfill will be unaffected by
+// other code modifying setTimeout (like sinon.useFakeTimers())
+var setTimeoutFunc = setTimeout;
+
+function isArray(x) {
+  return Boolean(x && typeof x.length !== 'undefined');
+}
+
+function noop() {}
+
+// Polyfill for Function.prototype.bind
+function bind(fn, thisArg) {
+  return function() {
+    fn.apply(thisArg, arguments);
+  };
+}
+
+/**
+ * @constructor
+ * @param {Function} fn
+ */
+function Promise(fn) {
+  if (!(this instanceof Promise))
+    throw new TypeError('Promises must be constructed via new');
+  if (typeof fn !== 'function') throw new TypeError('not a function');
+  /** @type {!number} */
+  this._state = 0;
+  /** @type {!boolean} */
+  this._handled = false;
+  /** @type {Promise|undefined} */
+  this._value = undefined;
+  /** @type {!Array<!Function>} */
+  this._deferreds = [];
+
+  doResolve(fn, this);
+}
+
+function handle(self, deferred) {
+  while (self._state === 3) {
+    self = self._value;
+  }
+  if (self._state === 0) {
+    self._deferreds.push(deferred);
+    return;
+  }
+  self._handled = true;
+  Promise._immediateFn(function() {
+    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+    if (cb === null) {
+      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+      return;
+    }
+    var ret;
+    try {
+      ret = cb(self._value);
+    } catch (e) {
+      reject(deferred.promise, e);
+      return;
+    }
+    resolve(deferred.promise, ret);
+  });
+}
+
+function resolve(self, newValue) {
+  try {
+    // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+    if (newValue === self)
+      throw new TypeError('A promise cannot be resolved with itself.');
+    if (
+      newValue &&
+      (typeof newValue === 'object' || typeof newValue === 'function')
+    ) {
+      var then = newValue.then;
+      if (newValue instanceof Promise) {
+        self._state = 3;
+        self._value = newValue;
+        finale(self);
+        return;
+      } else if (typeof then === 'function') {
+        doResolve(bind(then, newValue), self);
+        return;
+      }
+    }
+    self._state = 1;
+    self._value = newValue;
+    finale(self);
+  } catch (e) {
+    reject(self, e);
+  }
+}
+
+function reject(self, newValue) {
+  self._state = 2;
+  self._value = newValue;
+  finale(self);
+}
+
+function finale(self) {
+  if (self._state === 2 && self._deferreds.length === 0) {
+    Promise._immediateFn(function() {
+      if (!self._handled) {
+        Promise._unhandledRejectionFn(self._value);
+      }
+    });
+  }
+
+  for (var i = 0, len = self._deferreds.length; i < len; i++) {
+    handle(self, self._deferreds[i]);
+  }
+  self._deferreds = null;
+}
+
+/**
+ * @constructor
+ */
+function Handler(onFulfilled, onRejected, promise) {
+  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+  this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+  this.promise = promise;
+}
+
+/**
+ * Take a potentially misbehaving resolver function and make sure
+ * onFulfilled and onRejected are only called once.
+ *
+ * Makes no guarantees about asynchrony.
+ */
+function doResolve(fn, self) {
+  var done = false;
+  try {
+    fn(
+      function(value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      },
+      function(reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      }
+    );
+  } catch (ex) {
+    if (done) return;
+    done = true;
+    reject(self, ex);
+  }
+}
+
+Promise.prototype['catch'] = function(onRejected) {
+  return this.then(null, onRejected);
+};
+
+Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
+  var prom = new this.constructor(noop);
+
+  handle(this, new Handler(onFulfilled, onRejected, prom));
+  return prom;
+};
+
+Promise.prototype['finally'] = finallyConstructor;
+
+Promise.all = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.all accepts an array'));
+    }
+
+    var args = Array.prototype.slice.call(arr);
+    if (args.length === 0) return resolve([]);
+    var remaining = args.length;
+
+    function res(i, val) {
+      try {
+        if (val && (typeof val === 'object' || typeof val === 'function')) {
+          var then = val.then;
+          if (typeof then === 'function') {
+            then.call(
+              val,
+              function(val) {
+                res(i, val);
+              },
+              reject
+            );
+            return;
+          }
+        }
+        args[i] = val;
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      } catch (ex) {
+        reject(ex);
+      }
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      res(i, args[i]);
+    }
+  });
+};
+
+Promise.allSettled = allSettled;
+
+Promise.resolve = function(value) {
+  if (value && typeof value === 'object' && value.constructor === Promise) {
+    return value;
+  }
+
+  return new Promise(function(resolve) {
+    resolve(value);
+  });
+};
+
+Promise.reject = function(value) {
+  return new Promise(function(resolve, reject) {
+    reject(value);
+  });
+};
+
+Promise.race = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.race accepts an array'));
+    }
+
+    for (var i = 0, len = arr.length; i < len; i++) {
+      Promise.resolve(arr[i]).then(resolve, reject);
+    }
+  });
+};
+
+// Use polyfill for setImmediate for performance gains
+Promise._immediateFn =
+  // @ts-ignore
+  (typeof setImmediate === 'function' &&
+    function(fn) {
+      // @ts-ignore
+      setImmediate(fn);
+    }) ||
+  function(fn) {
+    setTimeoutFunc(fn, 0);
+  };
+
+Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+  if (typeof console !== 'undefined' && console) {
+    console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+  }
+};
+
+/** @suppress {undefinedVars} */
+var globalNS = (function() {
+  // the only reliable means to get the global object is
+  // `Function('return this')()`
+  // However, this causes CSP violations in Chrome apps.
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+  if (typeof __webpack_require__.g !== 'undefined') {
+    return __webpack_require__.g;
+  }
+  throw new Error('unable to locate global object');
+})();
+
+// Expose the polyfill if Promise is undefined or set to a
+// non-function value. The latter can be due to a named HTMLElement
+// being exposed by browsers for legacy reasons.
+// https://github.com/taylorhakes/promise-polyfill/issues/114
+if (typeof globalNS['Promise'] !== 'function') {
+  globalNS['Promise'] = Promise;
+} else {
+  if (!globalNS.Promise.prototype['finally']) {
+    globalNS.Promise.prototype['finally'] = finallyConstructor;
+  } 
+  if (!globalNS.Promise.allSettled) {
+    globalNS.Promise.allSettled = allSettled;
+  }
+}
+
+})));
+
+
+/***/ },
+
+/***/ 430
+(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * URI.js - Mutating URLs
+ * IPv6 Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if ( true && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{}
+}(this, function (root) {
+  'use strict';
+
+  /*
+  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
+  var _out = IPv6.best(_in);
+  var _expected = "fe80::204:61ff:fe9d:f156";
+
+  console.log(_in, _out, _expected, _out === _expected);
+  */
+
+  // save current IPv6 variable, if any
+  var _IPv6 = root && root.IPv6;
+
+  function bestPresentation(address) {
+    // based on:
+    // Javascript to test an IPv6 address for proper format, and to
+    // present the "best text representation" according to IETF Draft RFC at
+    // http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04
+    // 8 Feb 2010 Rich Brown, Dartware, LLC
+    // Please feel free to use this code as long as you provide a link to
+    // http://www.intermapper.com
+    // http://intermapper.com/support/tools/IPV6-Validator.aspx
+    // http://download.dartware.com/thirdparty/ipv6validator.js
+
+    var _address = address.toLowerCase();
+    var segments = _address.split(':');
+    var length = segments.length;
+    var total = 8;
+
+    // trim colons (:: or ::a:b:c… or …a:b:c::)
+    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
+      // must have been ::
+      // remove first two items
+      segments.shift();
+      segments.shift();
+    } else if (segments[0] === '' && segments[1] === '') {
+      // must have been ::xxxx
+      // remove the first item
+      segments.shift();
+    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
+      // must have been xxxx::
+      segments.pop();
+    }
+
+    length = segments.length;
+
+    // adjust total segments for IPv4 trailer
+    if (segments[length - 1].indexOf('.') !== -1) {
+      // found a "." which means IPv4
+      total = 7;
+    }
+
+    // fill empty segments them with "0000"
+    var pos;
+    for (pos = 0; pos < length; pos++) {
+      if (segments[pos] === '') {
+        break;
+      }
+    }
+
+    if (pos < total) {
+      segments.splice(pos, 1, '0000');
+      while (segments.length < total) {
+        segments.splice(pos, 0, '0000');
+      }
+    }
+
+    // strip leading zeros
+    var _segments;
+    for (var i = 0; i < total; i++) {
+      _segments = segments[i].split('');
+      for (var j = 0; j < 3 ; j++) {
+        if (_segments[0] === '0' && _segments.length > 1) {
+          _segments.splice(0,1);
+        } else {
+          break;
+        }
+      }
+
+      segments[i] = _segments.join('');
+    }
+
+    // find longest sequence of zeroes and coalesce them into one segment
+    var best = -1;
+    var _best = 0;
+    var _current = 0;
+    var current = -1;
+    var inzeroes = false;
+    // i; already declared
+
+    for (i = 0; i < total; i++) {
+      if (inzeroes) {
+        if (segments[i] === '0') {
+          _current += 1;
+        } else {
+          inzeroes = false;
+          if (_current > _best) {
+            best = current;
+            _best = _current;
+          }
+        }
+      } else {
+        if (segments[i] === '0') {
+          inzeroes = true;
+          current = i;
+          _current = 1;
+        }
+      }
+    }
+
+    if (_current > _best) {
+      best = current;
+      _best = _current;
+    }
+
+    if (_best > 1) {
+      segments.splice(best, _best, '');
+    }
+
+    length = segments.length;
+
+    // assemble remaining segments
+    var result = '';
+    if (segments[0] === '')  {
+      result = ':';
+    }
+
+    for (i = 0; i < length; i++) {
+      result += segments[i];
+      if (i === length - 1) {
+        break;
+      }
+
+      result += ':';
+    }
+
+    if (segments[length - 1] === '') {
+      result += ':';
+    }
+
+    return result;
+  }
+
+  function noConflict() {
+    /*jshint validthis: true */
+    if (root.IPv6 === this) {
+      root.IPv6 = _IPv6;
+    }
+
+    return this;
+  }
+
+  return {
+    best: bestPresentation,
+    noConflict: noConflict
+  };
+}));
+
+
+/***/ },
+
+/***/ 704
+(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * URI.js - Mutating URLs
+ * Second Level Domain (SLD) Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+(function (root, factory) {
+  'use strict';
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if ( true && module.exports) {
+    // Node
+    module.exports = factory();
+  } else if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else // removed by dead control flow
+{}
+}(this, function (root) {
+  'use strict';
+
+  // save current SecondLevelDomains variable, if any
+  var _SecondLevelDomains = root && root.SecondLevelDomains;
+
+  var SLD = {
+    // list of known Second Level Domains
+    // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
+    // ----
+    // publicsuffix.org is more current and actually used by a couple of browsers internally.
+    // downside is it also contains domains like "dyndns.org" - which is fine for the security
+    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
+    // ----
+    list: {
+      'ac':' com gov mil net org ',
+      'ae':' ac co gov mil name net org pro sch ',
+      'af':' com edu gov net org ',
+      'al':' com edu gov mil net org ',
+      'ao':' co ed gv it og pb ',
+      'ar':' com edu gob gov int mil net org tur ',
+      'at':' ac co gv or ',
+      'au':' asn com csiro edu gov id net org ',
+      'ba':' co com edu gov mil net org rs unbi unmo unsa untz unze ',
+      'bb':' biz co com edu gov info net org store tv ',
+      'bh':' biz cc com edu gov info net org ',
+      'bn':' com edu gov net org ',
+      'bo':' com edu gob gov int mil net org tv ',
+      'br':' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
+      'bs':' com edu gov net org ',
+      'bz':' du et om ov rg ',
+      'ca':' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
+      'ck':' biz co edu gen gov info net org ',
+      'cn':' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
+      'co':' com edu gov mil net nom org ',
+      'cr':' ac c co ed fi go or sa ',
+      'cy':' ac biz com ekloges gov ltd name net org parliament press pro tm ',
+      'do':' art com edu gob gov mil net org sld web ',
+      'dz':' art asso com edu gov net org pol ',
+      'ec':' com edu fin gov info med mil net org pro ',
+      'eg':' com edu eun gov mil name net org sci ',
+      'er':' com edu gov ind mil net org rochest w ',
+      'es':' com edu gob nom org ',
+      'et':' biz com edu gov info name net org ',
+      'fj':' ac biz com info mil name net org pro ',
+      'fk':' ac co gov net nom org ',
+      'fr':' asso com f gouv nom prd presse tm ',
+      'gg':' co net org ',
+      'gh':' com edu gov mil org ',
+      'gn':' ac com gov net org ',
+      'gr':' com edu gov mil net org ',
+      'gt':' com edu gob ind mil net org ',
+      'gu':' com edu gov net org ',
+      'hk':' com edu gov idv net org ',
+      'hu':' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
+      'id':' ac co go mil net or sch web ',
+      'il':' ac co gov idf k12 muni net org ',
+      'in':' ac co edu ernet firm gen gov i ind mil net nic org res ',
+      'iq':' com edu gov i mil net org ',
+      'ir':' ac co dnssec gov i id net org sch ',
+      'it':' edu gov ',
+      'je':' co net org ',
+      'jo':' com edu gov mil name net org sch ',
+      'jp':' ac ad co ed go gr lg ne or ',
+      'ke':' ac co go info me mobi ne or sc ',
+      'kh':' com edu gov mil net org per ',
+      'ki':' biz com de edu gov info mob net org tel ',
+      'km':' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
+      'kn':' edu gov net org ',
+      'kr':' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
+      'kw':' com edu gov net org ',
+      'ky':' com edu gov net org ',
+      'kz':' com edu gov mil net org ',
+      'lb':' com edu gov net org ',
+      'lk':' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
+      'lr':' com edu gov net org ',
+      'lv':' asn com conf edu gov id mil net org ',
+      'ly':' com edu gov id med net org plc sch ',
+      'ma':' ac co gov m net org press ',
+      'mc':' asso tm ',
+      'me':' ac co edu gov its net org priv ',
+      'mg':' com edu gov mil nom org prd tm ',
+      'mk':' com edu gov inf name net org pro ',
+      'ml':' com edu gov net org presse ',
+      'mn':' edu gov org ',
+      'mo':' com edu gov net org ',
+      'mt':' com edu gov net org ',
+      'mv':' aero biz com coop edu gov info int mil museum name net org pro ',
+      'mw':' ac co com coop edu gov int museum net org ',
+      'mx':' com edu gob net org ',
+      'my':' com edu gov mil name net org sch ',
+      'nf':' arts com firm info net other per rec store web ',
+      'ng':' biz com edu gov mil mobi name net org sch ',
+      'ni':' ac co com edu gob mil net nom org ',
+      'np':' com edu gov mil net org ',
+      'nr':' biz com edu gov info net org ',
+      'om':' ac biz co com edu gov med mil museum net org pro sch ',
+      'pe':' com edu gob mil net nom org sld ',
+      'ph':' com edu gov i mil net ngo org ',
+      'pk':' biz com edu fam gob gok gon gop gos gov net org web ',
+      'pl':' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
+      'pr':' ac biz com edu est gov info isla name net org pro prof ',
+      'ps':' com edu gov net org plo sec ',
+      'pw':' belau co ed go ne or ',
+      'ro':' arts com firm info nom nt org rec store tm www ',
+      'rs':' ac co edu gov in org ',
+      'sb':' com edu gov net org ',
+      'sc':' com edu gov net org ',
+      'sh':' co com edu gov net nom org ',
+      'sl':' com edu gov net org ',
+      'st':' co com consulado edu embaixada gov mil net org principe saotome store ',
+      'sv':' com edu gob org red ',
+      'sz':' ac co org ',
+      'tr':' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
+      'tt':' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
+      'tw':' club com ebiz edu game gov idv mil net org ',
+      'mu':' ac co com gov net or org ',
+      'mz':' ac co edu gov org ',
+      'na':' co com ',
+      'nz':' ac co cri geek gen govt health iwi maori mil net org parliament school ',
+      'pa':' abo ac com edu gob ing med net nom org sld ',
+      'pt':' com edu gov int net nome org publ ',
+      'py':' com edu gov mil net org ',
+      'qa':' com edu gov mil net org ',
+      're':' asso com nom ',
+      'ru':' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
+      'rw':' ac co com edu gouv gov int mil net ',
+      'sa':' com edu gov med net org pub sch ',
+      'sd':' com edu gov info med net org tv ',
+      'se':' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
+      'sg':' com edu gov idn net org per ',
+      'sn':' art com edu gouv org perso univ ',
+      'sy':' com edu gov mil net news org ',
+      'th':' ac co go in mi net or ',
+      'tj':' ac biz co com edu go gov info int mil name net nic org test web ',
+      'tn':' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
+      'tz':' ac co go ne or ',
+      'ua':' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
+      'ug':' ac co go ne or org sc ',
+      'uk':' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
+      'us':' dni fed isa kids nsn ',
+      'uy':' com edu gub mil net org ',
+      've':' co com edu gob info mil net org web ',
+      'vi':' co com k12 net org ',
+      'vn':' ac biz com edu gov health info int name net org pro ',
+      'ye':' co com gov ltd me net org plc ',
+      'yu':' ac co edu gov org ',
+      'za':' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
+      'zm':' ac co com edu gov net org sch ',
+      // https://en.wikipedia.org/wiki/CentralNic#Second-level_domains
+      'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
+      'net': 'gb jp se uk ',
+      'org': 'ae',
+      'de': 'com '
+    },
+    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
+    // in both performance and memory footprint. No initialization required.
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
+    // Following methods use lastIndexOf() rather than array.split() in order
+    // to avoid any memory allocations.
+    has: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
+      if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset+1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') >= 0;
+    },
+    is: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
+      if (sldOffset >= 0) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset+1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
+    },
+    get: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+        return null;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
+      if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
+        return null;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset+1)];
+      if (!sldList) {
+        return null;
+      }
+      if (sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') < 0) {
+        return null;
+      }
+      return domain.slice(sldOffset+1);
+    },
+    noConflict: function(){
+      if (root.SecondLevelDomains === this) {
+        root.SecondLevelDomains = _SecondLevelDomains;
+      }
+      return this;
+    }
+  };
+
+  return SLD;
+}));
+
+
+/***/ },
+
+/***/ 193
+(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * URI.js - Mutating URLs
@@ -2371,10 +3735,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 }));
 
 
-/***/ }),
+/***/ },
 
-/***/ 340:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 340
+(module, exports, __webpack_require__) {
 
 /* module decorator */ module = __webpack_require__.nmd(module);
 var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathias */
@@ -2899,1371 +4263,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 }(this));
 
 
-/***/ }),
-
-/***/ 348:
-/***/ (function(module, exports) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else // removed by dead control flow
-{ var mod; }
-})(this, function (exports, module) {
-  'use strict';
-
-  var defaultOptions = {
-    timeout: 5000,
-    jsonpCallback: 'callback',
-    jsonpCallbackFunction: null
-  };
-
-  function generateCallbackFunction() {
-    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-  }
-
-  function clearFunction(functionName) {
-    // IE8 throws an exception when you try to delete a property on window
-    // http://stackoverflow.com/a/1824228/751089
-    try {
-      delete window[functionName];
-    } catch (e) {
-      window[functionName] = undefined;
-    }
-  }
-
-  function removeScript(scriptId) {
-    var script = document.getElementById(scriptId);
-    if (script) {
-      document.getElementsByTagName('head')[0].removeChild(script);
-    }
-  }
-
-  function fetchJsonp(_url) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    // to avoid param reassign
-    var url = _url;
-    var timeout = options.timeout || defaultOptions.timeout;
-    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-
-    var timeoutId = undefined;
-
-    return new Promise(function (resolve, reject) {
-      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-      window[callbackFunction] = function (response) {
-        resolve({
-          ok: true,
-          // keep consistent with fetch API
-          json: function json() {
-            return Promise.resolve(response);
-          }
-        });
-
-        if (timeoutId) clearTimeout(timeoutId);
-
-        removeScript(scriptId);
-
-        clearFunction(callbackFunction);
-      };
-
-      // Check if the user set their own params, and if not add a ? to start a list of params
-      url += url.indexOf('?') === -1 ? '?' : '&';
-
-      var jsonpScript = document.createElement('script');
-      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-      if (options.charset) {
-        jsonpScript.setAttribute('charset', options.charset);
-      }
-      jsonpScript.id = scriptId;
-      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-
-      timeoutId = setTimeout(function () {
-        reject(new Error('JSONP request to ' + _url + ' timed out'));
-
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        window[callbackFunction] = function () {
-          clearFunction(callbackFunction);
-        };
-      }, timeout);
-
-      // Caught if got 404/500
-      jsonpScript.onerror = function () {
-        reject(new Error('JSONP request to ' + _url + ' failed'));
-
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        if (timeoutId) clearTimeout(timeoutId);
-      };
-    });
-  }
-
-  // export as global function
-  /*
-  let local;
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-  local.fetchJsonp = fetchJsonp;
-  */
-
-  module.exports = fetchJsonp;
-});
-
-/***/ }),
-
-/***/ 430:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * URI.js - Mutating URLs
- * IPv6 Support
- *
- * Version: 1.19.11
- *
- * Author: Rodney Rehm
- * Web: http://medialize.github.io/URI.js/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *
- */
-
-(function (root, factory) {
-  'use strict';
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if ( true && module.exports) {
-    // Node
-    module.exports = factory();
-  } else if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else // removed by dead control flow
-{}
-}(this, function (root) {
-  'use strict';
-
-  /*
-  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
-  var _out = IPv6.best(_in);
-  var _expected = "fe80::204:61ff:fe9d:f156";
-
-  console.log(_in, _out, _expected, _out === _expected);
-  */
-
-  // save current IPv6 variable, if any
-  var _IPv6 = root && root.IPv6;
-
-  function bestPresentation(address) {
-    // based on:
-    // Javascript to test an IPv6 address for proper format, and to
-    // present the "best text representation" according to IETF Draft RFC at
-    // http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04
-    // 8 Feb 2010 Rich Brown, Dartware, LLC
-    // Please feel free to use this code as long as you provide a link to
-    // http://www.intermapper.com
-    // http://intermapper.com/support/tools/IPV6-Validator.aspx
-    // http://download.dartware.com/thirdparty/ipv6validator.js
-
-    var _address = address.toLowerCase();
-    var segments = _address.split(':');
-    var length = segments.length;
-    var total = 8;
-
-    // trim colons (:: or ::a:b:c… or …a:b:c::)
-    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
-      // must have been ::
-      // remove first two items
-      segments.shift();
-      segments.shift();
-    } else if (segments[0] === '' && segments[1] === '') {
-      // must have been ::xxxx
-      // remove the first item
-      segments.shift();
-    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
-      // must have been xxxx::
-      segments.pop();
-    }
-
-    length = segments.length;
-
-    // adjust total segments for IPv4 trailer
-    if (segments[length - 1].indexOf('.') !== -1) {
-      // found a "." which means IPv4
-      total = 7;
-    }
-
-    // fill empty segments them with "0000"
-    var pos;
-    for (pos = 0; pos < length; pos++) {
-      if (segments[pos] === '') {
-        break;
-      }
-    }
-
-    if (pos < total) {
-      segments.splice(pos, 1, '0000');
-      while (segments.length < total) {
-        segments.splice(pos, 0, '0000');
-      }
-    }
-
-    // strip leading zeros
-    var _segments;
-    for (var i = 0; i < total; i++) {
-      _segments = segments[i].split('');
-      for (var j = 0; j < 3 ; j++) {
-        if (_segments[0] === '0' && _segments.length > 1) {
-          _segments.splice(0,1);
-        } else {
-          break;
-        }
-      }
-
-      segments[i] = _segments.join('');
-    }
-
-    // find longest sequence of zeroes and coalesce them into one segment
-    var best = -1;
-    var _best = 0;
-    var _current = 0;
-    var current = -1;
-    var inzeroes = false;
-    // i; already declared
-
-    for (i = 0; i < total; i++) {
-      if (inzeroes) {
-        if (segments[i] === '0') {
-          _current += 1;
-        } else {
-          inzeroes = false;
-          if (_current > _best) {
-            best = current;
-            _best = _current;
-          }
-        }
-      } else {
-        if (segments[i] === '0') {
-          inzeroes = true;
-          current = i;
-          _current = 1;
-        }
-      }
-    }
-
-    if (_current > _best) {
-      best = current;
-      _best = _current;
-    }
-
-    if (_best > 1) {
-      segments.splice(best, _best, '');
-    }
-
-    length = segments.length;
-
-    // assemble remaining segments
-    var result = '';
-    if (segments[0] === '')  {
-      result = ':';
-    }
-
-    for (i = 0; i < length; i++) {
-      result += segments[i];
-      if (i === length - 1) {
-        break;
-      }
-
-      result += ':';
-    }
-
-    if (segments[length - 1] === '') {
-      result += ':';
-    }
-
-    return result;
-  }
-
-  function noConflict() {
-    /*jshint validthis: true */
-    if (root.IPv6 === this) {
-      root.IPv6 = _IPv6;
-    }
-
-    return this;
-  }
-
-  return {
-    best: bestPresentation,
-    noConflict: noConflict
-  };
-}));
-
-
-/***/ }),
-
-/***/ 444:
-/***/ (function(module) {
-
-(function(self) {
-  'use strict';
-
-  // if __disableNativeFetch is set to true, the it will always polyfill fetch
-  // with Ajax.
-  if (!self.__disableNativeFetch && self.fetch) {
-    return
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var list = this.map[name]
-    if (!list) {
-      list = []
-      this.map[name] = list
-    }
-    list.push(value)
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    var values = this.map[normalizeName(name)]
-    return values ? values[0] : null
-  }
-
-  Headers.prototype.getAll = function(name) {
-    return this.map[normalizeName(name)] || []
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)]
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-      this.map[name].forEach(function(value) {
-        callback.call(thisArg, value, name, this)
-      }, this)
-    }, this)
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
-  }
-
-  function readBlobAsText(blob, options) {
-    var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
-    var args = [blob]
-
-    if(_charset) {
-      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
-    }
-
-    reader.readAsText.apply(reader, args)
-    return fileReaderReady(reader)
-  }
-
-  var support = {
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob();
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-
-    this._initBody = function(body, options) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-        this._options = options
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
-        } else {
-          return Promise.resolve(this._bodyText)
-        }
-      }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = input
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body, options)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this)
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = xhr.getAllResponseHeaders().trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
-    })
-    return head
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this._initBody(bodyInit, options)
-    this.type = 'default'
-    this.status = options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-    this.url = options.url || ''
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers;
-  self.Request = Request;
-  self.Response = Response;
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
-      var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return;
-      }
-
-      var __onLoadHandled = false;
-
-      function onload() {
-        if (xhr.readyState !== 4) {
-          return
-        }
-        var status = (xhr.status === 1223) ? 204 : xhr.status
-        if (status < 100 || status > 599) {
-          if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-          reject(new TypeError('Network request failed'))
-          return
-        }
-        var options = {
-          status: status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        }
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        resolve(new Response(body, options))
-      }
-      xhr.onreadystatechange = onload;
-      xhr.onload = onload;
-      xhr.onerror = function() {
-        if (__onLoadHandled) { return; } else { __onLoadHandled = true; }
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      // `withCredentials` should be setted after calling `.open` in IE10
-      // http://stackoverflow.com/a/19667959/1219343
-      try {
-        if (request.credentials === 'include') {
-          if ('withCredentials' in xhr) {
-            xhr.withCredentials = true;
-          } else {
-            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
-          }
-        }
-      } catch (e) {
-        console && console.warn && console.warn('set withCredentials error:' + e);
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-
-  // Support CommonJS
-  if ( true && module.exports) {
-    module.exports = self.fetch;
-  }
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-
-/***/ 704:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * URI.js - Mutating URLs
- * Second Level Domain (SLD) Support
- *
- * Version: 1.19.11
- *
- * Author: Rodney Rehm
- * Web: http://medialize.github.io/URI.js/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *
- */
-
-(function (root, factory) {
-  'use strict';
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if ( true && module.exports) {
-    // Node
-    module.exports = factory();
-  } else if (true) {
-    // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else // removed by dead control flow
-{}
-}(this, function (root) {
-  'use strict';
-
-  // save current SecondLevelDomains variable, if any
-  var _SecondLevelDomains = root && root.SecondLevelDomains;
-
-  var SLD = {
-    // list of known Second Level Domains
-    // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
-    // ----
-    // publicsuffix.org is more current and actually used by a couple of browsers internally.
-    // downside is it also contains domains like "dyndns.org" - which is fine for the security
-    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
-    // ----
-    list: {
-      'ac':' com gov mil net org ',
-      'ae':' ac co gov mil name net org pro sch ',
-      'af':' com edu gov net org ',
-      'al':' com edu gov mil net org ',
-      'ao':' co ed gv it og pb ',
-      'ar':' com edu gob gov int mil net org tur ',
-      'at':' ac co gv or ',
-      'au':' asn com csiro edu gov id net org ',
-      'ba':' co com edu gov mil net org rs unbi unmo unsa untz unze ',
-      'bb':' biz co com edu gov info net org store tv ',
-      'bh':' biz cc com edu gov info net org ',
-      'bn':' com edu gov net org ',
-      'bo':' com edu gob gov int mil net org tv ',
-      'br':' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
-      'bs':' com edu gov net org ',
-      'bz':' du et om ov rg ',
-      'ca':' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
-      'ck':' biz co edu gen gov info net org ',
-      'cn':' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
-      'co':' com edu gov mil net nom org ',
-      'cr':' ac c co ed fi go or sa ',
-      'cy':' ac biz com ekloges gov ltd name net org parliament press pro tm ',
-      'do':' art com edu gob gov mil net org sld web ',
-      'dz':' art asso com edu gov net org pol ',
-      'ec':' com edu fin gov info med mil net org pro ',
-      'eg':' com edu eun gov mil name net org sci ',
-      'er':' com edu gov ind mil net org rochest w ',
-      'es':' com edu gob nom org ',
-      'et':' biz com edu gov info name net org ',
-      'fj':' ac biz com info mil name net org pro ',
-      'fk':' ac co gov net nom org ',
-      'fr':' asso com f gouv nom prd presse tm ',
-      'gg':' co net org ',
-      'gh':' com edu gov mil org ',
-      'gn':' ac com gov net org ',
-      'gr':' com edu gov mil net org ',
-      'gt':' com edu gob ind mil net org ',
-      'gu':' com edu gov net org ',
-      'hk':' com edu gov idv net org ',
-      'hu':' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
-      'id':' ac co go mil net or sch web ',
-      'il':' ac co gov idf k12 muni net org ',
-      'in':' ac co edu ernet firm gen gov i ind mil net nic org res ',
-      'iq':' com edu gov i mil net org ',
-      'ir':' ac co dnssec gov i id net org sch ',
-      'it':' edu gov ',
-      'je':' co net org ',
-      'jo':' com edu gov mil name net org sch ',
-      'jp':' ac ad co ed go gr lg ne or ',
-      'ke':' ac co go info me mobi ne or sc ',
-      'kh':' com edu gov mil net org per ',
-      'ki':' biz com de edu gov info mob net org tel ',
-      'km':' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
-      'kn':' edu gov net org ',
-      'kr':' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
-      'kw':' com edu gov net org ',
-      'ky':' com edu gov net org ',
-      'kz':' com edu gov mil net org ',
-      'lb':' com edu gov net org ',
-      'lk':' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
-      'lr':' com edu gov net org ',
-      'lv':' asn com conf edu gov id mil net org ',
-      'ly':' com edu gov id med net org plc sch ',
-      'ma':' ac co gov m net org press ',
-      'mc':' asso tm ',
-      'me':' ac co edu gov its net org priv ',
-      'mg':' com edu gov mil nom org prd tm ',
-      'mk':' com edu gov inf name net org pro ',
-      'ml':' com edu gov net org presse ',
-      'mn':' edu gov org ',
-      'mo':' com edu gov net org ',
-      'mt':' com edu gov net org ',
-      'mv':' aero biz com coop edu gov info int mil museum name net org pro ',
-      'mw':' ac co com coop edu gov int museum net org ',
-      'mx':' com edu gob net org ',
-      'my':' com edu gov mil name net org sch ',
-      'nf':' arts com firm info net other per rec store web ',
-      'ng':' biz com edu gov mil mobi name net org sch ',
-      'ni':' ac co com edu gob mil net nom org ',
-      'np':' com edu gov mil net org ',
-      'nr':' biz com edu gov info net org ',
-      'om':' ac biz co com edu gov med mil museum net org pro sch ',
-      'pe':' com edu gob mil net nom org sld ',
-      'ph':' com edu gov i mil net ngo org ',
-      'pk':' biz com edu fam gob gok gon gop gos gov net org web ',
-      'pl':' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
-      'pr':' ac biz com edu est gov info isla name net org pro prof ',
-      'ps':' com edu gov net org plo sec ',
-      'pw':' belau co ed go ne or ',
-      'ro':' arts com firm info nom nt org rec store tm www ',
-      'rs':' ac co edu gov in org ',
-      'sb':' com edu gov net org ',
-      'sc':' com edu gov net org ',
-      'sh':' co com edu gov net nom org ',
-      'sl':' com edu gov net org ',
-      'st':' co com consulado edu embaixada gov mil net org principe saotome store ',
-      'sv':' com edu gob org red ',
-      'sz':' ac co org ',
-      'tr':' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
-      'tt':' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
-      'tw':' club com ebiz edu game gov idv mil net org ',
-      'mu':' ac co com gov net or org ',
-      'mz':' ac co edu gov org ',
-      'na':' co com ',
-      'nz':' ac co cri geek gen govt health iwi maori mil net org parliament school ',
-      'pa':' abo ac com edu gob ing med net nom org sld ',
-      'pt':' com edu gov int net nome org publ ',
-      'py':' com edu gov mil net org ',
-      'qa':' com edu gov mil net org ',
-      're':' asso com nom ',
-      'ru':' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
-      'rw':' ac co com edu gouv gov int mil net ',
-      'sa':' com edu gov med net org pub sch ',
-      'sd':' com edu gov info med net org tv ',
-      'se':' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
-      'sg':' com edu gov idn net org per ',
-      'sn':' art com edu gouv org perso univ ',
-      'sy':' com edu gov mil net news org ',
-      'th':' ac co go in mi net or ',
-      'tj':' ac biz co com edu go gov info int mil name net nic org test web ',
-      'tn':' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
-      'tz':' ac co go ne or ',
-      'ua':' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
-      'ug':' ac co go ne or org sc ',
-      'uk':' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
-      'us':' dni fed isa kids nsn ',
-      'uy':' com edu gub mil net org ',
-      've':' co com edu gob info mil net org web ',
-      'vi':' co com k12 net org ',
-      'vn':' ac biz com edu gov health info int name net org pro ',
-      'ye':' co com gov ltd me net org plc ',
-      'yu':' ac co edu gov org ',
-      'za':' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
-      'zm':' ac co com edu gov net org sch ',
-      // https://en.wikipedia.org/wiki/CentralNic#Second-level_domains
-      'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
-      'net': 'gb jp se uk ',
-      'org': 'ae',
-      'de': 'com '
-    },
-    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
-    // in both performance and memory footprint. No initialization required.
-    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
-    // Following methods use lastIndexOf() rather than array.split() in order
-    // to avoid any memory allocations.
-    has: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-      if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset+1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') >= 0;
-    },
-    is: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-      if (sldOffset >= 0) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset+1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
-    },
-    get: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
-        return null;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-      if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
-        return null;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset+1)];
-      if (!sldList) {
-        return null;
-      }
-      if (sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') < 0) {
-        return null;
-      }
-      return domain.slice(sldOffset+1);
-    },
-    noConflict: function(){
-      if (root.SecondLevelDomains === this) {
-        root.SecondLevelDomains = _SecondLevelDomains;
-      }
-      return this;
-    }
-  };
-
-  return SLD;
-}));
-
-
-/***/ }),
-
-/***/ 836:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-(function (global, factory) {
-	 true ? factory() :
-	0;
-}(this, (function () { 'use strict';
-
-/**
- * @this {Promise}
- */
-function finallyConstructor(callback) {
-  var constructor = this.constructor;
-  return this.then(
-    function(value) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function() {
-        return value;
-      });
-    },
-    function(reason) {
-      // @ts-ignore
-      return constructor.resolve(callback()).then(function() {
-        // @ts-ignore
-        return constructor.reject(reason);
-      });
-    }
-  );
-}
-
-function allSettled(arr) {
-  var P = this;
-  return new P(function(resolve, reject) {
-    if (!(arr && typeof arr.length !== 'undefined')) {
-      return reject(
-        new TypeError(
-          typeof arr +
-            ' ' +
-            arr +
-            ' is not iterable(cannot read property Symbol(Symbol.iterator))'
-        )
-      );
-    }
-    var args = Array.prototype.slice.call(arr);
-    if (args.length === 0) return resolve([]);
-    var remaining = args.length;
-
-    function res(i, val) {
-      if (val && (typeof val === 'object' || typeof val === 'function')) {
-        var then = val.then;
-        if (typeof then === 'function') {
-          then.call(
-            val,
-            function(val) {
-              res(i, val);
-            },
-            function(e) {
-              args[i] = { status: 'rejected', reason: e };
-              if (--remaining === 0) {
-                resolve(args);
-              }
-            }
-          );
-          return;
-        }
-      }
-      args[i] = { status: 'fulfilled', value: val };
-      if (--remaining === 0) {
-        resolve(args);
-      }
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      res(i, args[i]);
-    }
-  });
-}
-
-// Store setTimeout reference so promise-polyfill will be unaffected by
-// other code modifying setTimeout (like sinon.useFakeTimers())
-var setTimeoutFunc = setTimeout;
-
-function isArray(x) {
-  return Boolean(x && typeof x.length !== 'undefined');
-}
-
-function noop() {}
-
-// Polyfill for Function.prototype.bind
-function bind(fn, thisArg) {
-  return function() {
-    fn.apply(thisArg, arguments);
-  };
-}
-
-/**
- * @constructor
- * @param {Function} fn
- */
-function Promise(fn) {
-  if (!(this instanceof Promise))
-    throw new TypeError('Promises must be constructed via new');
-  if (typeof fn !== 'function') throw new TypeError('not a function');
-  /** @type {!number} */
-  this._state = 0;
-  /** @type {!boolean} */
-  this._handled = false;
-  /** @type {Promise|undefined} */
-  this._value = undefined;
-  /** @type {!Array<!Function>} */
-  this._deferreds = [];
-
-  doResolve(fn, this);
-}
-
-function handle(self, deferred) {
-  while (self._state === 3) {
-    self = self._value;
-  }
-  if (self._state === 0) {
-    self._deferreds.push(deferred);
-    return;
-  }
-  self._handled = true;
-  Promise._immediateFn(function() {
-    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
-    if (cb === null) {
-      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
-      return;
-    }
-    var ret;
-    try {
-      ret = cb(self._value);
-    } catch (e) {
-      reject(deferred.promise, e);
-      return;
-    }
-    resolve(deferred.promise, ret);
-  });
-}
-
-function resolve(self, newValue) {
-  try {
-    // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-    if (newValue === self)
-      throw new TypeError('A promise cannot be resolved with itself.');
-    if (
-      newValue &&
-      (typeof newValue === 'object' || typeof newValue === 'function')
-    ) {
-      var then = newValue.then;
-      if (newValue instanceof Promise) {
-        self._state = 3;
-        self._value = newValue;
-        finale(self);
-        return;
-      } else if (typeof then === 'function') {
-        doResolve(bind(then, newValue), self);
-        return;
-      }
-    }
-    self._state = 1;
-    self._value = newValue;
-    finale(self);
-  } catch (e) {
-    reject(self, e);
-  }
-}
-
-function reject(self, newValue) {
-  self._state = 2;
-  self._value = newValue;
-  finale(self);
-}
-
-function finale(self) {
-  if (self._state === 2 && self._deferreds.length === 0) {
-    Promise._immediateFn(function() {
-      if (!self._handled) {
-        Promise._unhandledRejectionFn(self._value);
-      }
-    });
-  }
-
-  for (var i = 0, len = self._deferreds.length; i < len; i++) {
-    handle(self, self._deferreds[i]);
-  }
-  self._deferreds = null;
-}
-
-/**
- * @constructor
- */
-function Handler(onFulfilled, onRejected, promise) {
-  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-  this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-  this.promise = promise;
-}
-
-/**
- * Take a potentially misbehaving resolver function and make sure
- * onFulfilled and onRejected are only called once.
- *
- * Makes no guarantees about asynchrony.
- */
-function doResolve(fn, self) {
-  var done = false;
-  try {
-    fn(
-      function(value) {
-        if (done) return;
-        done = true;
-        resolve(self, value);
-      },
-      function(reason) {
-        if (done) return;
-        done = true;
-        reject(self, reason);
-      }
-    );
-  } catch (ex) {
-    if (done) return;
-    done = true;
-    reject(self, ex);
-  }
-}
-
-Promise.prototype['catch'] = function(onRejected) {
-  return this.then(null, onRejected);
-};
-
-Promise.prototype.then = function(onFulfilled, onRejected) {
-  // @ts-ignore
-  var prom = new this.constructor(noop);
-
-  handle(this, new Handler(onFulfilled, onRejected, prom));
-  return prom;
-};
-
-Promise.prototype['finally'] = finallyConstructor;
-
-Promise.all = function(arr) {
-  return new Promise(function(resolve, reject) {
-    if (!isArray(arr)) {
-      return reject(new TypeError('Promise.all accepts an array'));
-    }
-
-    var args = Array.prototype.slice.call(arr);
-    if (args.length === 0) return resolve([]);
-    var remaining = args.length;
-
-    function res(i, val) {
-      try {
-        if (val && (typeof val === 'object' || typeof val === 'function')) {
-          var then = val.then;
-          if (typeof then === 'function') {
-            then.call(
-              val,
-              function(val) {
-                res(i, val);
-              },
-              reject
-            );
-            return;
-          }
-        }
-        args[i] = val;
-        if (--remaining === 0) {
-          resolve(args);
-        }
-      } catch (ex) {
-        reject(ex);
-      }
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      res(i, args[i]);
-    }
-  });
-};
-
-Promise.allSettled = allSettled;
-
-Promise.resolve = function(value) {
-  if (value && typeof value === 'object' && value.constructor === Promise) {
-    return value;
-  }
-
-  return new Promise(function(resolve) {
-    resolve(value);
-  });
-};
-
-Promise.reject = function(value) {
-  return new Promise(function(resolve, reject) {
-    reject(value);
-  });
-};
-
-Promise.race = function(arr) {
-  return new Promise(function(resolve, reject) {
-    if (!isArray(arr)) {
-      return reject(new TypeError('Promise.race accepts an array'));
-    }
-
-    for (var i = 0, len = arr.length; i < len; i++) {
-      Promise.resolve(arr[i]).then(resolve, reject);
-    }
-  });
-};
-
-// Use polyfill for setImmediate for performance gains
-Promise._immediateFn =
-  // @ts-ignore
-  (typeof setImmediate === 'function' &&
-    function(fn) {
-      // @ts-ignore
-      setImmediate(fn);
-    }) ||
-  function(fn) {
-    setTimeoutFunc(fn, 0);
-  };
-
-Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
-  if (typeof console !== 'undefined' && console) {
-    console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-  }
-};
-
-/** @suppress {undefinedVars} */
-var globalNS = (function() {
-  // the only reliable means to get the global object is
-  // `Function('return this')()`
-  // However, this causes CSP violations in Chrome apps.
-  if (typeof self !== 'undefined') {
-    return self;
-  }
-  if (typeof window !== 'undefined') {
-    return window;
-  }
-  if (typeof __webpack_require__.g !== 'undefined') {
-    return __webpack_require__.g;
-  }
-  throw new Error('unable to locate global object');
-})();
-
-// Expose the polyfill if Promise is undefined or set to a
-// non-function value. The latter can be due to a named HTMLElement
-// being exposed by browsers for legacy reasons.
-// https://github.com/taylorhakes/promise-polyfill/issues/114
-if (typeof globalNS['Promise'] !== 'function') {
-  globalNS['Promise'] = Promise;
-} else {
-  if (!globalNS.Promise.prototype['finally']) {
-    globalNS.Promise.prototype['finally'] = finallyConstructor;
-  } 
-  if (!globalNS.Promise.allSettled) {
-    globalNS.Promise.allSettled = allSettled;
-  }
-}
-
-})));
-
-
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -4354,7 +4354,7 @@ var __webpack_exports__ = {};
 // UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, FetchRequest, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util, VectorClipJobsParameter
 
 ;// ./src/common/commontypes/Pixel.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4530,7 +4530,8 @@ Pixel.Mode = {
 };
 
 ;// ./src/common/commontypes/BaseTypes.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* unused harmony import specifier */ var CircularUtil;
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -4553,7 +4554,7 @@ var inheritExt = function (C, P) {
         if (typeof o === "function") {
             o = o.prototype;
         }
-        Util.extend(C.prototype, o);
+        CircularUtil.extend(C.prototype, o);
     }
 };
 
@@ -4963,7 +4964,7 @@ var FunctionExt = {
  * @description 数组操作的一系列常用扩展函数。
  * @private
  */
-var ArrayExt = {
+var ArrayExt = (/* unused pure expression or super */ null && ({
 
     /**
      * @function ArrayExt.filter
@@ -4996,10 +4997,62 @@ var ArrayExt = {
         return selected;
     }
 
+}));
+
+;// ./src/common/commontypes/CircularUtil.js
+const CircularUtil_CircularUtil = {
+  lastSeqID: 0,
+  parentUtil: null,
+  setRelativeParentUtil: function (util) {
+    CircularUtil_CircularUtil.parentUtil = util;
+  },
+  createUniqueID: function (prefix) {
+    return createUniqueID(prefix, CircularUtil_CircularUtil.parentUtil || CircularUtil_CircularUtil);
+  },
+  extend: function (destination, source) {
+    destination = destination || {};
+    if (source) {
+      for (var property in source) {
+        var value = source[property];
+        if (value !== undefined) {
+          destination[property] = value;
+        }
+      }
+
+      /**
+       * IE doesn't include the toString property when iterating over an object's
+       * properties with the for(property in object) syntax.  Explicitly check if
+       * the source has its own toString property.
+       */
+
+      /*
+       * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+       * prototype object" when calling hawOwnProperty if the source object
+       * is an instance of window.Event.
+       */
+
+      var sourceIsEvt = typeof window.Event === 'function' && source instanceof window.Event;
+
+      if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty('toString')) {
+        destination.toString = source.toString;
+      }
+    }
+    return destination;
+  }
 };
 
+function createUniqueID(prefix, util) {
+  if (prefix == null) {
+    prefix = 'id_';
+  }
+  util.lastSeqID += 1;
+  return prefix + util.lastSeqID;
+}
+
+
+
 ;// ./src/common/commontypes/Geometry.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -5023,7 +5076,7 @@ class Geometry {
          * @description  几何对象的唯一标识符。
          *
          */
-        this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = CircularUtil_CircularUtil.createUniqueID(this.CLASS_NAME + "_");
 
         /**
          * @member {Geometry} Geometry.prototype.parent
@@ -5176,9 +5229,10 @@ class Geometry {
 var URI = __webpack_require__(193);
 var URI_default = /*#__PURE__*/__webpack_require__.n(URI);
 ;// ./src/common/commontypes/Util.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -5305,7 +5359,7 @@ const DOTS_PER_INCH = 96;
  * ```
  */
 
-const Util_Util = {
+const Util = {
 
   /**
    * @memberOf CommonUtil
@@ -5346,36 +5400,7 @@ const Util_Util = {
    * @returns {Object} 目标对象。
    */
 
-  extend: function (destination, source) {
-    destination = destination || {};
-    if (source) {
-      for (var property in source) {
-        var value = source[property];
-        if (value !== undefined) {
-          destination[property] = value;
-        }
-      }
-
-      /**
-       * IE doesn't include the toString property when iterating over an object's
-       * properties with the for(property in object) syntax.  Explicitly check if
-       * the source has its own toString property.
-       */
-
-      /*
-       * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
-       * prototype object" when calling hawOwnProperty if the source object
-       * is an instance of window.Event.
-       */
-
-      var sourceIsEvt = typeof window.Event === 'function' && source instanceof window.Event;
-
-      if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty('toString')) {
-        destination.toString = source.toString;
-      }
-    }
-    return destination;
-  },
+  extend: CircularUtil_CircularUtil.extend,
   /**
    * @memberOf CommonUtil
    * @description 对象拷贝。
@@ -5613,6 +5638,18 @@ const Util_Util = {
     return paramsArray.join('&');
   },
 
+  handleUrlSuffix(url, suffix = '.json') {
+    if (url.indexOf('?') < 0) {
+      url += suffix;
+    } else {
+        var urlArrays = url.split('?');
+        if (urlArrays.length === 2) {
+            url = urlArrays[0] + suffix + '?' + urlArrays[1];
+        }
+    }
+    return url
+  },
+
   /**
    * @memberOf CommonUtil
    * @description 给 URL 追加查询参数。
@@ -5672,7 +5709,7 @@ const Util_Util = {
    */
   toFloat: function (number, precision) {
     if (precision == null) {
-      precision = Util_Util.DEFAULT_PRECISION;
+      precision = Util.DEFAULT_PRECISION;
     }
     if (typeof number !== 'number') {
       number = parseFloat(number);
@@ -5757,13 +5794,7 @@ const Util_Util = {
    * @param {string} [prefix] - 前缀。
    * @returns {string} 唯一的 ID 值。
    */
-  createUniqueID: function (prefix) {
-    if (prefix == null) {
-      prefix = 'id_';
-    }
-    Util_Util.lastSeqID += 1;
-    return prefix + Util_Util.lastSeqID;
-  },
+  createUniqueID: CircularUtil_CircularUtil.createUniqueID,
 
   /**
    * @memberOf CommonUtil
@@ -5789,7 +5820,7 @@ const Util_Util = {
       if (units == null) {
         units = 'degrees';
       }
-      var normScale = Util_Util.normalizeScale(scale);
+      var normScale = Util.normalizeScale(scale);
       resolution = 1 / (normScale * INCHES_PER_UNIT[units] * DOTS_PER_INCH);
     }
     return resolution;
@@ -5833,7 +5864,7 @@ const Util_Util = {
    * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
-    return Util_Util.isSupportCanvas;
+    return Util.isSupportCanvas;
   },
 
   /**
@@ -5850,7 +5881,7 @@ const Util_Util = {
     if (index === -1) {
       return true;
     }
-    return Util_Util.isSameDomain(url, document.location.toString());
+    return Util.isSameDomain(url, document.location.toString());
   },
 
   isSameDomain(url, otherUrl) {
@@ -5922,7 +5953,7 @@ const Util_Util = {
       case Array:
         var arr = '';
         for (var i = 0, len = objInn.length; i < len; i++) {
-          arr += Util_Util.toJSON(objInn[i]);
+          arr += Util.toJSON(objInn[i]);
           if (i !== objInn.length - 1) {
             arr += ',';
           }
@@ -5969,7 +6000,7 @@ const Util_Util = {
           if (objInn.length) {
             let arr = [];
             for (let i = 0, len = objInn.length; i < len; i++) {
-              arr.push(Util_Util.toJSON(objInn[i]));
+              arr.push(Util.toJSON(objInn[i]));
             }
             return '[' + arr.join(',') + ']';
           }
@@ -5977,7 +6008,7 @@ const Util_Util = {
           for (let attr in objInn) {
             //为解决Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
             if (typeof objInn[attr] !== 'function' && attr !== 'CLASS_NAME' && attr !== 'parent') {
-              arr.push("'" + attr + "':" + Util_Util.toJSON(objInn[attr]));
+              arr.push("'" + attr + "':" + Util.toJSON(objInn[attr]));
             }
           }
 
@@ -6008,7 +6039,7 @@ const Util_Util = {
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || '';
     if (scale > 0 && dpi > 0) {
-      scale = Util_Util.normalizeScale(scale);
+      scale = Util.normalizeScale(scale);
       if (
         coordUnit.toLowerCase() === 'degree' ||
         coordUnit.toLowerCase() === 'degrees' ||
@@ -6154,7 +6185,7 @@ const Util_Util = {
       let copy = {};
       for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) {
-          copy[attr] = Util_Util.cloneObject(obj[attr]);
+          copy[attr] = Util.cloneObject(obj[attr]);
         }
       }
       return copy;
@@ -6340,7 +6371,7 @@ INCHES_PER_UNIT['nmi'] = 1852 * INCHES_PER_UNIT.m;
 
 // Units from CS-Map
 const METERS_PER_INCH = 0.0254000508001016002;
-Util_Util.extend(INCHES_PER_UNIT, {
+Util.extend(INCHES_PER_UNIT, {
   Inch: INCHES_PER_UNIT.inches,
   Meter: 1.0 / METERS_PER_INCH, //EPSG:9001
   Foot: 0.30480060960121920243 / METERS_PER_INCH, //EPSG:9003
@@ -6401,7 +6432,7 @@ Util_Util.extend(INCHES_PER_UNIT, {
 });
 
 //unit abbreviations supported by PROJ.4
-Util_Util.extend(INCHES_PER_UNIT, {
+Util.extend(INCHES_PER_UNIT, {
   mm: INCHES_PER_UNIT['Meter'] / 1000.0,
   cm: INCHES_PER_UNIT['Meter'] / 100.0,
   dm: INCHES_PER_UNIT['Meter'] * 100.0,
@@ -6455,10 +6486,12 @@ function canBeJsonified(str) {
   }
 }
 
+CircularUtil_CircularUtil.setRelativeParentUtil(Util);
+
 
 
 ;// ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -6658,7 +6691,7 @@ function canBeJsonified(str) {
       * @param {boolean} [useCapture=false] - 是否捕获。
       */
      observe: function (elementParam, name, observer, useCapture) {
-         var element = Util_Util.getElement(elementParam);
+         var element = Util.getElement(elementParam);
          useCapture = useCapture || false;
 
          if (name === 'keypress' &&
@@ -6678,7 +6711,7 @@ function canBeJsonified(str) {
              if (element.id) {
                  idPrefix = element.id + "_" + idPrefix;
              }
-             element._eventCacheID = Util_Util.createUniqueID(idPrefix);
+             element._eventCacheID = Util.createUniqueID(idPrefix);
          }
 
          var cacheID = element._eventCacheID;
@@ -6714,7 +6747,7 @@ function canBeJsonified(str) {
       * @param {(HTMLElement|string)} elementParam - 待监听的 DOM 对象或者其 ID 标识。
       */
      stopObservingElement: function (elementParam) {
-         var element = Util_Util.getElement(elementParam);
+         var element = Util.getElement(elementParam);
          var cacheID = element._eventCacheID;
          this._removeElementObservers(Event.observers[cacheID]);
      },
@@ -6739,7 +6772,7 @@ function canBeJsonified(str) {
      stopObserving: function (elementParam, name, observer, useCapture) {
          useCapture = useCapture || false;
 
-         var element = Util_Util.getElement(elementParam);
+         var element = Util.getElement(elementParam);
          var cacheID = element._eventCacheID;
 
          if (name === 'keypress') {
@@ -6808,7 +6841,7 @@ function canBeJsonified(str) {
  Event.observe(window, 'resize', Event.unloadCache, false);
 
 ;// ./src/common/commontypes/Events.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6917,7 +6950,7 @@ class Events {
          */
         this.clearMouseListener = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
@@ -7055,7 +7088,7 @@ class Events {
             this.extensions[type] = new Events[type](this);
         }
         if ((func != null) &&
-            (Util_Util.indexOf(this.eventTypes, type) !== -1)) {
+            (Util.indexOf(this.eventTypes, type) !== -1)) {
 
             if (obj == null) {
                 obj = this.object;
@@ -7265,7 +7298,7 @@ class Events {
         }
 
         if (!this.element.scrolls) {
-            var viewportElement = Util_Util.getViewportElement();
+            var viewportElement = Util.getViewportElement();
             this.element.scrolls = [
                 viewportElement.scrollLeft,
                 viewportElement.scrollTop
@@ -7280,7 +7313,7 @@ class Events {
         }
 
         if (!this.element.offsets) {
-            this.element.offsets = Util_Util.pagePosition(this.element);
+            this.element.offsets = Util.pagePosition(this.element);
         }
 
         return new Pixel(
@@ -7304,7 +7337,7 @@ Events.prototype.BROWSER_EVENTS = [
 ];
 
 ;// ./src/common/thirdparty/elasticsearch/ElasticSearch.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7403,7 +7436,7 @@ class ElasticSearch {
          * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         if (this.eventListeners instanceof Object) {
             this.events.on(this.eventListeners);
         }
@@ -7975,7 +8008,7 @@ var fetch = __webpack_require__(444);
 var fetch_jsonp = __webpack_require__(348);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 ;// ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7997,7 +8030,7 @@ var RequestJSONPPromise = {
       for (var key in values) {
           me.queryKeys.push(key);
           if (typeof values[key] !== 'string') {
-              values[key] = Util_Util.toJSON(values[key]);
+              values[key] = Util.toJSON(values[key]);
           }
           var tempValue = encodeURIComponent(values[key]);
           me.queryValues.push(tempValue);
@@ -8349,7 +8382,7 @@ var FetchRequest = {
      * @returns {boolean} 是否允许跨域请求。
      */
     supportDirectRequest: function (url, options) {
-        if (Util_Util.isInTheSameDomain(url)) {
+        if (Util.isInTheSameDomain(url)) {
             return true;
         }
         if (options.crossOrigin != undefined) {
@@ -8369,7 +8402,7 @@ var FetchRequest = {
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
@@ -8396,7 +8429,7 @@ var FetchRequest = {
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
-        url = Util_Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
@@ -8425,7 +8458,7 @@ var FetchRequest = {
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
-                url: Util_Util.urlAppend(url, "_method=POST"),
+                url: Util.urlAppend(url, "_method=POST"),
                 data: params
             };
             return RequestJSONPPromise.POST(config);
@@ -8491,14 +8524,7 @@ var FetchRequest = {
         }
 
         if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf('?') < 0) {
-                url += '.json';
-            } else {
-                var urlArrays = url.split('?');
-                if (urlArrays.length === 2) {
-                    url = urlArrays[0] + '.json?' + urlArrays[1];
-                }
-            }
+           url = Util.handleUrlSuffix(url);
         }
         if (options && options.proxy) {
             if (typeof options.proxy === 'function') {
@@ -8520,7 +8546,7 @@ var FetchRequest = {
         const customRequestHeadersGetter = getRequestHeaders();
         const customRequestHeaders = customRequestHeadersGetter && customRequestHeadersGetter(url);
         if (customRequestHeaders) {
-            options.headers = Util_Util.extend(options.headers, customRequestHeaders);
+            options.headers = Util.extend(options.headers, customRequestHeaders);
         }
         if (options.timeout) {
             return this._timeout(
@@ -8601,7 +8627,7 @@ var FetchRequest = {
 }
 
 ;// ./src/common/commontypes/Credential.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8697,7 +8723,7 @@ class Credential {
  Credential.CREDENTIAL = null;
 
 ;// ./src/common/security/SecurityManager.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8743,7 +8769,7 @@ class SecurityManager {
      */
     static registerServers(serverInfos) {
         this.servers = this.servers || {};
-        if (!Util_Util.isArray(serverInfos)) {
+        if (!Util.isArray(serverInfos)) {
             serverInfos = [serverInfos];
         }
         for (var i = 0; i < serverInfos.length; i++) {
@@ -8779,7 +8805,7 @@ class SecurityManager {
             return;
         }
 
-        ids = Util_Util.isArray(ids) ? ids : [ids];
+        ids = Util.isArray(ids) ? ids : [ids];
         for (var i = 0; i < ids.length; i++) {
             var id = this._getUrlRestString(ids[0]) || ids[0];
             this.keys[id] = key;
@@ -8834,7 +8860,7 @@ class SecurityManager {
      * @returns {Promise} 包含 SuperMap iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
-        url = Util_Util.urlPathAppend(url, 'services/security/login');
+        url = Util.urlPathAppend(url, 'services/security/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString(),
@@ -8858,7 +8884,7 @@ class SecurityManager {
      * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
-        url = Util_Util.urlPathAppend(url, 'services/security/logout');
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -8894,7 +8920,7 @@ class SecurityManager {
      * @returns {Promise} 包含 SuperMap iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
-        url = Util_Util.urlPathAppend(url, 'web/login');
+        url = Util.urlPathAppend(url, 'web/login');
         var loginInfo = {
             username: username && username.toString(),
             password: password && password.toString()
@@ -8918,7 +8944,7 @@ class SecurityManager {
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
-        url = Util_Util.urlPathAppend(url, 'services/security/logout');
+        url = Util.urlPathAppend(url, 'services/security/logout');
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -8947,7 +8973,7 @@ class SecurityManager {
      * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
     static loginManager(url, loginInfoParams) {
-        var requestUrl = Util_Util.urlPathAppend(url, '/security/tokens');
+        var requestUrl = Util.urlPathAppend(url, '/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -9027,9 +9053,28 @@ class SecurityManager {
             credential = value ? new Credential(value, 'key') : null;
           }
         if (credential) {
-            newUrl = Util_Util.urlAppend(newUrl, credential.getUrlParameters());
+            newUrl = Util.urlAppend(newUrl, credential.getUrlParameters());
         }
         return newUrl;
+    }
+     /**
+     * @description 获取授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
+     * @version 12.1.0
+     * @function SecurityManager.getCredential
+     * @param {string} url - 服务URL。
+     * @returns {Object} 返回授权信息 - 包含 name 和 value 的对象。
+     */
+    static getCredential(url) {
+        var value = this.getToken(url);
+        var credential = value ? new Credential(value, 'token') : null;
+		if (!credential) {
+            value = this.getKey(url);
+            credential = value ? new Credential(value, 'key') : null;
+          }
+        if (credential) {
+           return {name: credential.name, value: credential.value};
+        }
+        return null;
     }
 
     static _open(url, newTab) {
@@ -9081,7 +9126,7 @@ SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
 
 ;// ./src/common/REST.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9132,14 +9177,14 @@ var DataFormat = {
  * const result = ServerType.ISERVER;
  * ```
  */
-var ServerType = {
+var ServerType = (/* unused pure expression or super */ null && ({
     /** ISERVER */
     ISERVER: "ISERVER",
     /** IPORTAL */
     IPORTAL: "IPORTAL",
     /** ONLINE */
     ONLINE: "ONLINE"
-};
+}));
 
 /**
  * @enum GeometryType
@@ -9160,13 +9205,15 @@ var ServerType = {
  * const result = GeometryType.LINE;
  * ```
  */
-var GeometryType = {
+var GeometryType = (/* unused pure expression or super */ null && ({
     /** 线几何对象。 */
     LINE: "LINE",
     /** 路由对象。 */
     LINEM: "LINEM",
     /** 点几何对象。 */
     POINT: "POINT",
+    /** 3D点几何对象。 */
+    POINT3D: "POINT3D",
     /** 面几何对象。 */
     REGION: "REGION",
     /** EPS 点几何对象。 */
@@ -9187,7 +9234,7 @@ var GeometryType = {
     UNKNOWN: "UNKNOWN",
     /** 复合几何对象。 */
     GEOCOMPOUND:"GEOCOMPOUND"
-};
+}));
 
 /**
  * @enum QueryOption
@@ -9208,14 +9255,14 @@ var GeometryType = {
  * const result = QueryOption.ATTRIBUTE;
  * ```
  */
-var QueryOption = {
+var QueryOption = (/* unused pure expression or super */ null && ({
     /** 属性。 */
     ATTRIBUTE: "ATTRIBUTE",
     /** 属性和几何对象。 */
     ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
     /** 几何对象。 */
     GEOMETRY: "GEOMETRY"
-};
+}));
 
 /**
  * @enum JoinType
@@ -9237,12 +9284,12 @@ var QueryOption = {
  * const result = JoinType.INNERJOIN;
  * ```
  */
-var JoinType = {
+var JoinType = (/* unused pure expression or super */ null && ({
     /** 内连接。 */
     INNERJOIN: "INNERJOIN",
     /** 左连接。 */
     LEFTJOIN: "LEFTJOIN"
-};
+}));
 
 /**
  * @enum SpatialQueryMode
@@ -9307,14 +9354,14 @@ var SpatialQueryMode = {
  * const result = {namespace}.SpatialRelationType.CONTAIN;
  * ```
  */
-var SpatialRelationType = {
+var SpatialRelationType = (/* unused pure expression or super */ null && ({
     /** 包含关系。 */
     CONTAIN: "CONTAIN",
     /** 相交关系。 */
     INTERSECT: "INTERSECT",
     /** 被包含关系。 */
     WITHIN: "WITHIN"
-};
+}));
 
 /**
  * @enum MeasureMode
@@ -9336,12 +9383,12 @@ var SpatialRelationType = {
  * const result = MeasureMode.DISTANCE;
  * ```
  */
-var MeasureMode = {
+var MeasureMode = (/* unused pure expression or super */ null && ({
     /** 距离测量。 */
     DISTANCE: "DISTANCE",
     /** 面积测量。 */
     AREA: "AREA"
-};
+}));
 
 /**
  * @enum Unit
@@ -9411,7 +9458,7 @@ var Unit = {
  * const result = BufferRadiusUnit.CENTIMETER;
  * ```
  */
-var BufferRadiusUnit = {
+var BufferRadiusUnit = (/* unused pure expression or super */ null && ({
     /**  厘米。 */
     CENTIMETER: "CENTIMETER",
     /**  分米。 */
@@ -9430,7 +9477,7 @@ var BufferRadiusUnit = {
     MILLIMETER: "MILLIMETER",
     /**  码。 */
     YARD: "YARD"
-}
+}))
 
 /**
  * @enum EngineType
@@ -9452,7 +9499,7 @@ var BufferRadiusUnit = {
  * const result = EngineType.IMAGEPLUGINS;
  * ```
  */
-var EngineType = {
+var EngineType = (/* unused pure expression or super */ null && ({
     /** 影像只读引擎类型，文件引擎，针对通用影像格式如 BMP，JPG，TIFF 以及超图自定义影像格式 SIT 等。 */
     IMAGEPLUGINS: "IMAGEPLUGINS",
     /**  OGC 引擎类型，针对于 Web 数据源，Web 引擎，目前支持的类型有 WMS，WFS，WCS。 */
@@ -9465,7 +9512,7 @@ var EngineType = {
     SQLPLUS: "SQLPLUS",
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
-};
+}));
 
 /**
  * @enum ThemeGraphTextFormat
@@ -9486,7 +9533,7 @@ var EngineType = {
  * const result = ThemeGraphTextFormat.CAPTION;
  * ```
  */
-var ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = (/* unused pure expression or super */ null && ({
     /**  标题。以各子项的标题来进行标注。 */
     CAPTION: "CAPTION",
     /**  标题 + 百分数。以各子项的标题和所占的百分比来进行标注。 */
@@ -9498,7 +9545,7 @@ var ThemeGraphTextFormat = {
     /**  实际数值。以各子项的真实数值来进行标注。 */
     VALUE: "VALUE"
 
-};
+}));
 
 /**
  * @enum ThemeGraphType
@@ -9519,7 +9566,7 @@ var ThemeGraphTextFormat = {
  * const result = ThemeGraphType.AREA;
  * ```
  */
-var ThemeGraphType = {
+var ThemeGraphType = (/* unused pure expression or super */ null && ({
     /**  面积图。 */
     AREA: "AREA",
     /**  柱状图。 */
@@ -9546,7 +9593,7 @@ var ThemeGraphType = {
     STACK_BAR3D: "STACK_BAR3D",
     /**  阶梯图。 */
     STEP: "STEP"
-};
+}));
 
 /**
  * @enum GraphAxesTextDisplayMode
@@ -9567,14 +9614,14 @@ var ThemeGraphType = {
  * const result = GraphAxesTextDisplayMode.ALL;
  * ```
  */
-var GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = (/* unused pure expression or super */ null && ({
     /**  显示全部文本。 */
     ALL: "ALL",
     /**  不显示文本。 */
     NONE: "NONE",
     /**  显示 Y 轴的文本。 */
     YAXES: "YAXES"
-};
+}));
 
 /**
  * @enum GraduatedMode
@@ -9598,14 +9645,14 @@ var GraphAxesTextDisplayMode = {
  * const result = GraduatedMode.CONSTANT;
  * ```
  */
-var GraduatedMode = {
+var GraduatedMode = (/* unused pure expression or super */ null && ({
     /**  常量分级模式。 */
     CONSTANT: "CONSTANT",
     /** 对数分级模式。 */
     LOGARITHM: "LOGARITHM",
     /**  平方根分级模式。 */
     SQUAREROOT: "SQUAREROOT"
-};
+}));
 
 /**
  * @enum RangeMode
@@ -9663,7 +9710,7 @@ var RangeMode = {
  * const result = ThemeType.DOTDENSITY;
  * ```
  */
-var ThemeType = {
+var ThemeType = (/* unused pure expression or super */ null && ({
     /** 点密度专题图。 */
     DOTDENSITY: "DOTDENSITY",
     /** 等级符号专题图。 */
@@ -9676,7 +9723,7 @@ var ThemeType = {
     RANGE: "RANGE",
     /** 単值专题图。 */
     UNIQUE: "UNIQUE"
-};
+}));
 
 /**
  * @enum ColorGradientType
@@ -9775,7 +9822,7 @@ var ColorGradientType = {
  * const result = TextAlignment.TOPLEFT;
  * ```
  */
-var TextAlignment = {
+var TextAlignment = (/* unused pure expression or super */ null && ({
     /** 左上角对齐。 */
     TOPLEFT: "TOPLEFT",
     /** 顶部居中对齐。 */
@@ -9800,7 +9847,7 @@ var TextAlignment = {
     MIDDLECENTER: "MIDDLECENTER",
     /** 右中对齐。 */
     MIDDLERIGHT: "MIDDLERIGHT"
-};
+}));
 
 /**
  * @enum FillGradientMode
@@ -9822,7 +9869,7 @@ var TextAlignment = {
  * const result = FillGradientMode.NONE;
  * ```
  */
-var FillGradientMode = {
+var FillGradientMode = (/* unused pure expression or super */ null && ({
     /** 无渐变。 */
     NONE: "NONE",
     /** 线性渐变填充。 */
@@ -9833,7 +9880,7 @@ var FillGradientMode = {
     CONICAL: "CONICAL",
     /** 四角渐变填充。 */
     SQUARE: "SQUARE"
-};
+}));
 
 /**
  * @enum AlongLineDirection
@@ -9854,7 +9901,7 @@ var FillGradientMode = {
  * const result = AlongLineDirection.NORMAL;
  * ```
  */
-var AlongLineDirection = {
+var AlongLineDirection = (/* unused pure expression or super */ null && ({
     /** 沿线的法线方向放置标签。 */
     NORMAL: "ALONG_LINE_NORMAL",
     /** 从下到上，从左到右放置。 */
@@ -9865,7 +9912,7 @@ var AlongLineDirection = {
     RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
     /** 从上到下，从右到左放置。 */
     RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
-};
+}));
 
 /**
  * @enum LabelBackShape
@@ -9887,7 +9934,7 @@ var AlongLineDirection = {
  * const result = LabelBackShape.DIAMOND;
  * ```
  */
-var LabelBackShape = {
+var LabelBackShape = (/* unused pure expression or super */ null && ({
     /** 菱形背景，即标签背景的形状为菱形。 */
     DIAMOND: "DIAMOND",
     /** 椭圆形背景，即标签背景的行状为椭圆形。 */
@@ -9902,7 +9949,7 @@ var LabelBackShape = {
     ROUNDRECT: "ROUNDRECT",
     /** 三角形背景，即标签背景的形状为三角形。 */
     TRIANGLE: "TRIANGLE"
-};
+}));
 
 /**
  * @enum LabelOverLengthMode
@@ -9925,14 +9972,14 @@ var LabelBackShape = {
  * const result = LabelOverLengthMode.NEWLINE;
  * ```
  */
-var LabelOverLengthMode = {
+var LabelOverLengthMode = (/* unused pure expression or super */ null && ({
     /** 对超长标签换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
     NONE: "NONE",
     /** 省略标签超出的部分。 */
     OMIT: "OMIT"
-};
+}));
 
 /**
  * @enum DirectionType
@@ -9954,7 +10001,7 @@ var LabelOverLengthMode = {
  * const result = DirectionType.EAST;
  * ```
  */
-var DirectionType = {
+var DirectionType = (/* unused pure expression or super */ null && ({
     /** 东。 */
     EAST: "EAST",
     /** 无方向。 */
@@ -9965,7 +10012,7 @@ var DirectionType = {
     SOURTH: "SOURTH",
     /** 西。 */
     WEST: "WEST"
-};
+}));
 
 /**
  * @enum SideType
@@ -9987,7 +10034,7 @@ var DirectionType = {
  * const result = SideType.LEFT;
  * ```
  */
-var SideType = {
+var SideType = (/* unused pure expression or super */ null && ({
     /** 路的左侧。 */
     LEFT: "LEFT",
     /** 在路上（即路的中间）。 */
@@ -9996,7 +10043,7 @@ var SideType = {
     NONE: "NONE",
     /** 路的右侧。 */
     RIGHT: "RIGHT"
-};
+}));
 
 /**
  * @enum SupplyCenterType
@@ -10019,14 +10066,14 @@ var SideType = {
  * const result = SupplyCenterType.FIXEDCENTER;
  * ```
  */
-var SupplyCenterType = {
+var SupplyCenterType = (/* unused pure expression or super */ null && ({
     /** 固定中心点，用于资源分配和选址分区。 */
     FIXEDCENTER: "FIXEDCENTER",
     /** 非中心点，在资源分配和选址分区时都不予考虑。 */
     NULL: "NULL",
     /** 可选中心点，用于选址分区。 */
     OPTIONALCENTER: "OPTIONALCENTER"
-};
+}));
 
 /**
  * @enum TurnType
@@ -10048,7 +10095,7 @@ var SupplyCenterType = {
  * const result = TurnType.AHEAD;
  * ```
  */
-var TurnType = {
+var TurnType = (/* unused pure expression or super */ null && ({
     /** 向前直行。 */
     AHEAD: "AHEAD",
     /** 掉头。 */
@@ -10061,7 +10108,7 @@ var TurnType = {
     NONE: "NONE",
     /** 右转弯。 */
     RIGHT: "RIGHT"
-};
+}));
 
 /**
  * @enum BufferEndType
@@ -10082,12 +10129,12 @@ var TurnType = {
  * const result = BufferEndType.FLAT;
  * ```
  */
-var BufferEndType = {
+var BufferEndType = (/* unused pure expression or super */ null && ({
     /** 平头缓冲。 */
     FLAT: "FLAT",
     /** 圆头缓冲。 */
     ROUND: "ROUND"
-};
+}));
 /**
  * @enum OverlayOperationType
  * @description  叠加分析类型枚举。
@@ -10107,7 +10154,7 @@ var BufferEndType = {
  * const result = OverlayOperationType.CLIP;
  * ```
  */
- var OverlayOperationType = {
+ var OverlayOperationType = (/* unused pure expression or super */ null && ({
     /** 操作数据集（几何对象）裁剪被操作数据集（几何对象）。 */
     CLIP: "CLIP",
     /** 在被操作数据集（几何对象）上擦除掉与操作数据集（几何对象）相重合的部分。 */
@@ -10122,7 +10169,7 @@ var BufferEndType = {
     UPDATE: "UPDATE",
     /** 对两个面数据集（几何对象）进行对称差操作。 */
     XOR: "XOR"
-};
+}));
 
 /**
  * @enum OutputType
@@ -10174,12 +10221,12 @@ var OutputType =  {
  * const result = SmoothMethod.BSPLINE;
  * ```
  */
- var SmoothMethod = {
+ var SmoothMethod = (/* unused pure expression or super */ null && ({
     /** B 样条法。 */
     BSPLINE: "BSPLINE",
     /** 磨角法。 */
     POLISH: "POLISH"
-};
+}));
 
 /**
  * @enum SurfaceAnalystMethod
@@ -10201,12 +10248,12 @@ var OutputType =  {
  * const result = SurfaceAnalystMethod.ISOLINE;
  * ```
  */
-var SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = (/* unused pure expression or super */ null && ({
     /** 等值线提取。 */
     ISOLINE: "ISOLINE",
     /** 等值面提取。 */
     ISOREGION: "ISOREGION"
-};
+}));
 
 /**
  * @enum DataReturnMode
@@ -10228,14 +10275,14 @@ var SurfaceAnalystMethod = {
  * const result = DataReturnMode.DATASET_AND_RECORDSET;
  * ```
  */
-var DataReturnMode = {
+var DataReturnMode = (/* unused pure expression or super */ null && ({
     /** 返回结果数据集标识(数据集名称@数据源名称)和记录集（RecordSet）。 */
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     /** 只返回数据集标识（数据集名称@数据源名称）。 */
     DATASET_ONLY: "DATASET_ONLY",
     /** 只返回记录集（RecordSet）。 */
     RECORDSET_ONLY: "RECORDSET_ONLY"
-};
+}));
 
 /**
  * @enum EditType
@@ -10257,14 +10304,14 @@ var DataReturnMode = {
  * const result = {namespace}.EditType.ADD;
  * ```
  */
-var EditType = {
+var EditType = (/* unused pure expression or super */ null && ({
     /** 增加操作。 */
     ADD: "add",
     /** 修改操作。 */
     UPDATE: "update",
     /** 删除操作。 */
     DELETE: "delete"
-};
+}));
 
 /**
  * @enum TransferTactic
@@ -10286,7 +10333,7 @@ var EditType = {
  * const result = TransferTactic.LESS_TIME;
  * ```
  */
-var TransferTactic = {
+var TransferTactic = (/* unused pure expression or super */ null && ({
     /** 时间最短。 */
     LESS_TIME: "LESS_TIME",
     /** 换乘最少。 */
@@ -10295,7 +10342,7 @@ var TransferTactic = {
     LESS_WALK: "LESS_WALK",
     /** 距离最短。 */
     MIN_DISTANCE: "MIN_DISTANCE"
-};
+}));
 
 /**
  * @enum TransferPreference
@@ -10317,7 +10364,7 @@ var TransferTactic = {
  * const result = TransferPreference.BUS;
  * ```
  */
-var TransferPreference = {
+var TransferPreference = (/* unused pure expression or super */ null && ({
     /** 公交汽车优先。 */
     BUS: "BUS",
     /** 地铁优先。 */
@@ -10326,7 +10373,7 @@ var TransferPreference = {
     NO_SUBWAY: "NO_SUBWAY",
     /** 无乘车偏好。 */
     NONE: "NONE"
-};
+}));
 
 /**
  * @enum GridType
@@ -10347,14 +10394,14 @@ var TransferPreference = {
  * const result = GridType.CROSS;
  * ```
  */
-var GridType =  {
+var GridType =  (/* unused pure expression or super */ null && ({
     /** 十字叉丝。 */
     CROSS: "CROSS",
     /** 网格线。 */
     GRID: "GRID",
     /** 点。 */
     POINT: "POINT"
-};
+}));
 
 /**
  * @enum ColorSpaceType
@@ -10379,12 +10426,12 @@ var GridType =  {
  * const result = ColorSpaceType.CMYK;
  * ```
  */
-var ColorSpaceType = {
+var ColorSpaceType = (/* unused pure expression or super */ null && ({
     /** CMYK色彩模式，该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
     /** RGB色彩模式，该类型主要在显示系统中使用。 */
     RGB: "RGB"
-};
+}));
 
 /**
  * @enum LayerType
@@ -10405,7 +10452,7 @@ var ColorSpaceType = {
  * const result = LayerType.UGC;
  * ```
  */
-var LayerType = {
+var LayerType = (/* unused pure expression or super */ null && ({
     /** SuperMap UGC 类型图层。如矢量图层、栅格(Grid)图层、影像图层。 */
     UGC: "UGC",
     /** WMS 图层。 */
@@ -10414,7 +10461,7 @@ var LayerType = {
     WFS: "WFS",
     /** 自定义图层。 */
     CUSTOM: "CUSTOM"
-};
+}));
 
 /**
  * @enum UGCLayerType
@@ -10435,7 +10482,7 @@ var LayerType = {
  * const result = UGCLayerType.THEME;
  * ```
  */
-var UGCLayerType = {
+var UGCLayerType = (/* unused pure expression or super */ null && ({
     /** 专题图层。 */
     THEME: "THEME",
     /** 矢量图层。 */
@@ -10444,7 +10491,7 @@ var UGCLayerType = {
     GRID: "GRID",
     /** 影像图层。 */
     IMAGE: "IMAGE"
-};
+}));
 
 /**
  * @enum StatisticMode
@@ -10465,7 +10512,7 @@ var UGCLayerType = {
  * const result = StatisticMode.AVERAGE;
  * ```
  */
-var StatisticMode = {
+var StatisticMode = (/* unused pure expression or super */ null && ({
     /** 统计所选字段的平均值。 */
     AVERAGE: "AVERAGE",
     /** 统计所选字段的最大值。 */
@@ -10478,7 +10525,7 @@ var StatisticMode = {
     SUM: "SUM",
     /** 统计所选字段的方差。 */
     VARIANCE: "VARIANCE"
-};
+}));
 
 /**
  * @enum PixelFormat
@@ -10503,7 +10550,7 @@ var StatisticMode = {
  * const result = PixelFormat.BIT16;
  * ```
  */
-var PixelFormat = {
+var PixelFormat = (/* unused pure expression or super */ null && ({
     /** 每个像元用16个比特(即2个字节)表示。 */
     BIT16: "BIT16",
     /** 每个像元用32个比特(即4个字节)表示。 */
@@ -10524,7 +10571,7 @@ var PixelFormat = {
     UBIT24: "UBIT24",
     /** 每个像元用32个比特(即4个字节)来表示。 */
     UBIT32: "UBIT32"
-};
+}));
 
 /**
  * @enum SearchMode
@@ -10545,7 +10592,7 @@ var PixelFormat = {
  * const result = SearchMode.KDTREE_FIXED_COUNT;
  * ```
  */
-var SearchMode = {
+var SearchMode = (/* unused pure expression or super */ null && ({
     /** 使用 KDTREE 的固定点数方式查找参与内插分析的点。 */
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     /** 使用 KDTREE 的定长方式查找参与内插分析的点。 */
@@ -10554,7 +10601,7 @@ var SearchMode = {
     NONE: "NONE",
     /** 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用。 */
     QUADTREE: "QUADTREE"
-};
+}));
 
 /**
  * @enum InterpolationAlgorithmType
@@ -10575,14 +10622,14 @@ var SearchMode = {
  * const result = InterpolationAlgorithmType.KRIGING;
  * ```
  */
-var InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = (/* unused pure expression or super */ null && ({
     /** 普通克吕金插值法。 */
     KRIGING: "KRIGING",
     /** 简单克吕金插值法。 */
     SimpleKriging: "SimpleKriging",
     /** 泛克吕金插值法。 */
     UniversalKriging: "UniversalKriging"
-};
+}));
 
 /**
  * @enum VariogramMode
@@ -10606,14 +10653,14 @@ var InterpolationAlgorithmType = {
  * const result = VariogramMode.EXPONENTIAL;
  * ```
  */
-var VariogramMode = {
+var VariogramMode = (/* unused pure expression or super */ null && ({
     /** 指数函数。 */
     EXPONENTIAL: "EXPONENTIAL",
     /** 高斯函数。 */
     GAUSSIAN: "GAUSSIAN",
     /** 球型函数。 */
     SPHERICAL: "SPHERICAL"
-};
+}));
 
 /**
  * @enum Exponent
@@ -10634,12 +10681,12 @@ var VariogramMode = {
  * const result = Exponent.EXP1;
  * ```
  */
-var Exponent = {
+var Exponent = (/* unused pure expression or super */ null && ({
     /** 阶数为1。 */
     EXP1: "EXP1",
     /** 阶数为2。 */
     EXP2: "EXP2"
-};
+}));
 
 /**
  * @enum ClientType
@@ -10660,7 +10707,7 @@ var Exponent = {
  * const result = ClientType.IP;
  * ```
  */
-var ClientType = {
+var ClientType = (/* unused pure expression or super */ null && ({
     /** 指定的 IP 地址。 */
     IP: "IP",
     /** 指定的 URL。 */
@@ -10673,7 +10720,7 @@ var ClientType = {
     SERVER: "SERVER",
     /** 浏览器端。 */
     WEB: "WEB"
-};
+}));
 
 /**
  * @enum ChartType
@@ -10694,7 +10741,7 @@ var ClientType = {
  * const result = ChartType.BAR;
  * ```
  */
-var ChartType = {
+var ChartType = (/* unused pure expression or super */ null && ({
     /** 柱状图。 */
     BAR: "Bar",
     /** 三维柱状图。 */
@@ -10709,7 +10756,7 @@ var ChartType = {
     LINE: "Line",
     /** 环状图。 */
     RING: "Ring"
-};
+}));
 
 /**
  * @enum ClipAnalystMode
@@ -10926,10 +10973,10 @@ var TopologyValidatorRule = {
  * const result = BucketAggType.GEOHASH_GRID;
  * ```
  */
-var BucketAggType = {
+var BucketAggType = (/* unused pure expression or super */ null && ({
     /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid"
-};
+}));
 
 /**
  * @enum MetricsAggType
@@ -10950,7 +10997,7 @@ var BucketAggType = {
  * const result = MetricsAggType.AVG;
  * ```
  */
-var MetricsAggType = {
+var MetricsAggType = (/* unused pure expression or super */ null && ({
   /** 平均值聚合类型。 */
   AVG:'avg',
   /** 最大值聚合类型。 */
@@ -10959,7 +11006,7 @@ var MetricsAggType = {
   MIN:'min',
   /** 求和聚合类型。 */
   SUM:'sum'
-};
+}));
 
 /**
  * @enum GetFeatureMode
@@ -10980,7 +11027,7 @@ var MetricsAggType = {
  * const result = GetFeatureMode.BOUNDS;
  * ```
  */
-var GetFeatureMode = {
+var GetFeatureMode = (/* unused pure expression or super */ null && ({
     /** 通过范围查询来获取要素。 */
     BOUNDS: "BOUNDS",
     /** 通过几何对象的缓冲区来获取要素。 */
@@ -10991,7 +11038,7 @@ var GetFeatureMode = {
     SPATIAL: "SPATIAL",
     /** 通过 SQL 查询来获取要素。 */
     SQL: 'SQL'
-}
+}))
 
 /**
  * @enum RasterFunctionType
@@ -11012,12 +11059,12 @@ var GetFeatureMode = {
  * const result = GetFeatureMode.NDVI;
  * ```
  */
-var RasterFunctionType = {
+var RasterFunctionType = (/* unused pure expression or super */ null && ({
     /** 归一化植被指数。 */
     NDVI: "NDVI",
     /** 阴影面分析。 */
     HILLSHADE: "HILLSHADE"
-}
+}))
 
 /**
  * @enum ResourceType
@@ -11039,7 +11086,7 @@ var RasterFunctionType = {
  * const result = GetFeatureMode.MAP;
  * ```
  */
-var ResourceType = {
+var ResourceType = (/* unused pure expression or super */ null && ({
     /** 地图资源。 */
     MAP: "MAP",
     /** 服务资源。 */
@@ -11052,7 +11099,7 @@ var ResourceType = {
     INSIGHTS_WORKSPACE: "INSIGHTS_WORKSPACE",
     /** 地图大屏资源。 */
     MAP_DASHBOARD: "MAP_DASHBOARD"
-}
+}))
 
 /**
  * @enum OrderBy
@@ -11074,14 +11121,14 @@ var ResourceType = {
  * const result = OrderBy.UPDATETIME;
  * ```
  */
-var OrderBy = {
+var OrderBy = (/* unused pure expression or super */ null && ({
     /** 按更新时间排序。 */
     UPDATETIME: "UPDATETIME",
     /** 按热度(可能是访问量、下载量)排序。 */
     HEATLEVEL: "HEATLEVEL",
     /** 按相关性排序。 */
     RELEVANCE: "RELEVANCE"
-}
+}))
 
 /**
  * @enum OrderType
@@ -11103,12 +11150,12 @@ var OrderBy = {
  * const result = OrderType.ASC;
  * ```
  */
-var OrderType = {
+var OrderType = (/* unused pure expression or super */ null && ({
     /** 升序过滤。 */
     ASC: "ASC",
     /** 降序过滤。 */
     DESC: "DESC"
-}
+}))
 
 /**
  * @enum SearchType
@@ -11130,7 +11177,7 @@ var OrderType = {
  * const result = SearchType.PUBLIC;
  * ```
  */
-var SearchType = {
+var SearchType = (/* unused pure expression or super */ null && ({
     /** 公开资源。 */
     PUBLIC: "PUBLIC",
     /** 我的资源。 */
@@ -11141,7 +11188,7 @@ var SearchType = {
     MYDEPARTMENT_RES: "MYDEPARTMENT_RES",
     /** 分享给我的资源。 */
     SHARETOME_RES: "SHARETOME_RES"
-}
+}))
 
 /**
  * @enum AggregationTypes
@@ -11163,12 +11210,12 @@ var SearchType = {
  * const result = AggregationTypes.TAG;
  * ```
  */
-var AggregationTypes = {
+var AggregationTypes = (/* unused pure expression or super */ null && ({
     /** 标签聚合。 */
     TAG: "TAG",
     /** 资源类型聚合。 */
     TYPE: "TYPE"
-}
+}))
 
 /**
  * @enum PermissionType
@@ -11190,7 +11237,7 @@ var AggregationTypes = {
  * const result = PermissionType.SEARCH;
  * ```
  */
-var PermissionType = {
+var PermissionType = (/* unused pure expression or super */ null && ({
     /** 可检索。 */
     SEARCH:"SEARCH",
     /** 可查看。 */
@@ -11201,7 +11248,7 @@ var PermissionType = {
     DELETE: "DELETE",
     /** 可下载，包括可查看、可检索。 */
     DOWNLOAD:"DOWNLOAD"
-}
+}))
 
 /**
  * @enum EntityType
@@ -11223,7 +11270,7 @@ var PermissionType = {
  * const result = EntityType.DEPARTMENT;
  * ```
  */
-var EntityType = {
+var EntityType = (/* unused pure expression or super */ null && ({
     /** 部门。 */
     DEPARTMENT: "DEPARTMENT",
     /** 用户组。 */
@@ -11234,7 +11281,7 @@ var EntityType = {
     ROLE: "ROLE",
     /** 用户。 */
     USER: "USER"
-}
+}))
 
 /**
  * @enum DataItemType
@@ -11256,7 +11303,7 @@ var EntityType = {
  * const result = DataItemType.GEOJSON;
  * ```
  */
-var DataItemType = {
+var DataItemType = (/* unused pure expression or super */ null && ({
     /** GeoJSON 数据。 */
     GEOJSON: "GEOJSON",
     /** UGCV5_MVT 矢量瓦片。 */
@@ -11313,7 +11360,7 @@ var DataItemType = {
     WORKENVIRONMENT: "WORKENVIRONMENT",
     /** 工作空间。 */
     WORKSPACE: "WORKSPACE"
-}
+}))
 
 /**
  * @enum WebExportFormatType
@@ -11335,12 +11382,12 @@ var DataItemType = {
  * const result = WebExportFormatType.PNG;
  * ```
  */
-var WebExportFormatType = {
+var WebExportFormatType = (/* unused pure expression or super */ null && ({
     /** PNG */
     PNG: "PNG",
     /** PDF */
     PDF: "PDF"
-}
+}))
 
 /**
  * @enum WebScaleOrientationType
@@ -11362,7 +11409,7 @@ var WebExportFormatType = {
  * const result = WebScaleOrientationType.HORIZONTALLABELSBELOW;
  * ```
  */
-var WebScaleOrientationType = {
+var WebScaleOrientationType = (/* unused pure expression or super */ null && ({
     /** 位于地图上侧的水平方向标签。 */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
     /** 位于地图下侧的水平方向标签。 */
@@ -11371,7 +11418,7 @@ var WebScaleOrientationType = {
     VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
     /** 位于地图右侧的垂直方向标签。 */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
-}
+}))
 
 /**
  * @enum WebScaleType
@@ -11393,14 +11440,14 @@ var WebScaleOrientationType = {
  * const result = WebScaleType.LINE;
  * ```
  */
-var WebScaleType = {
+var WebScaleType = (/* unused pure expression or super */ null && ({
     /** line. */
     LINE: "LINE",
     /** bar. */
     BAR: "BAR",
     /** bar sub. */
     BAR_SUB: "BAR_SUB"
-}
+}))
 
 /**
  * @enum WebScaleUnit
@@ -11422,14 +11469,14 @@ var WebScaleType = {
  * const result = WebScaleUnit.METER;
  * ```
  */
-var WebScaleUnit = {
+var WebScaleUnit = (/* unused pure expression or super */ null && ({
     /** 米。 */
     METER: "METER",
     /** 英尺。 */
     FOOT: "FOOT",
     /** 度。 */
     DEGREES: "DEGREES"
-}
+}))
 
 /**
  * @enum BoundsType
@@ -11451,14 +11498,14 @@ var WebScaleUnit = {
  * const result = BoundsType.UNION;
  * ```
  */
-var BoundsType = {
+var BoundsType = (/* unused pure expression or super */ null && ({
   /** 自定义范围。 */
   CUSTOM: "CUSTOM",
   /** 输入栅格数据集范围的交集。 */
   INTERSECTION: "INTERSECTION",
   /** 输入栅格数据集范围的并集。 */
   UNION: "UNION"
-}
+}))
 
 /**
  * @enum CellSizeType
@@ -11480,14 +11527,14 @@ var BoundsType = {
  * const result = CellSizeType.MAX;
  * ```
  */
-var CellSizeType = {
+var CellSizeType = (/* unused pure expression or super */ null && ({
   /** 将用户自己输入的单元格值大小作为单元格大小类型。 */
   CUSTOM: "CUSTOM",
   /** 输入栅格数据集中单元格最大值作为单元格大小类型。*/
   MAX : "MAX",
   /** 输入栅格数据集中单元格最小值作为单元格大小类型。 */
   MIN : "MIN"
-}
+}))
 
 /**
  * @enum ColourModeChart
@@ -11509,14 +11556,14 @@ var CellSizeType = {
  * const result = ColourModeChart.DAY_BRIGHT;
  * ```
  */
-var ColourModeChart = {
+var ColourModeChart = (/* unused pure expression or super */ null && ({
   /** 白昼模式。 */
   DAY_BRIGHT: "DAY_BRIGHT",
   /** 晨昏模式。*/
   DUSK : "DUSK",
   /** 夜晚模式。 */
   NIGHT : "NIGHT"
-}
+}))
 
 /**
  * @enum DisplayModeChart
@@ -11538,19 +11585,19 @@ var ColourModeChart = {
  * const result = DisplayModeChart.STANDARD;
  * ```
  */
-var DisplayModeChart = {
+var DisplayModeChart = (/* unused pure expression or super */ null && ({
   /** 基本显示模式 */
   BASIC: "BASIC",
   /** 标准显示模式*/
   STANDARD : "STANDARD",
   /** 其他显示模式。 */
   OTHER : "OTHER"
-}
+}))
 
 
 
 ;// ./src/common/iServer/DatasourceConnectionInfo.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11663,7 +11710,7 @@ class DatasourceConnectionInfo {
         this.user = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
@@ -11691,7 +11738,7 @@ class DatasourceConnectionInfo {
 }
 
 ;// ./src/common/iServer/OutputSetting.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11738,7 +11785,7 @@ class OutputSetting {
          */
         this.outputPath = "";
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OutputSetting";
     }
 
@@ -11760,7 +11807,7 @@ class OutputSetting {
 }
 
 ;// ./src/common/iServer/MappingParameters.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11813,7 +11860,7 @@ class MappingParameters {
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.MappingParameters";
     }
 
@@ -11841,7 +11888,7 @@ class MappingParameters {
 }
 
 ;// ./src/common/iServer/KernelDensityJobParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11859,7 +11906,7 @@ class MappingParameters {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.fields - 权重索引。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {number} [options.resolution=80] - 分辨率。
  * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
  * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
@@ -11884,7 +11931,7 @@ class KernelDensityJobParameter {
         this.datasetName = "";
 
         /**
-         * @member {SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject} [KernelDensityJobParameter.prototype.query]
+         * @member {ModuleBounds} [KernelDensityJobParameter.prototype.query]
          * @description 分析范围。
          */
         this.query = "";
@@ -11949,7 +11996,7 @@ class KernelDensityJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
@@ -12014,7 +12061,7 @@ class KernelDensityJobParameter {
 }
 
 ;// ./src/common/iServer/SingleObjectQueryJobsParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12078,7 +12125,7 @@ class SingleObjectQueryJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
@@ -12134,7 +12181,7 @@ class SingleObjectQueryJobsParameter {
 
 
 ;// ./src/common/iServer/SummaryAttributesJobsParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12196,7 +12243,7 @@ class SummaryAttributesJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
@@ -12250,7 +12297,7 @@ class SummaryAttributesJobsParameter {
 }
 
 ;// ./src/common/iServer/SummaryMeshJobParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12268,7 +12315,7 @@ class SummaryAttributesJobsParameter {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 聚合分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 聚合分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
@@ -12297,7 +12344,7 @@ class SummaryMeshJobParameter {
         this.regionDataset = "";
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} SummaryMeshJobParameter.prototype.query
+         * @member {ModuleBounds} SummaryMeshJobParameter.prototype.query
          * @description 聚合分析范围（聚合类型为网格面聚合时使用的参数）。
          */
         this.query = "";
@@ -12344,7 +12391,7 @@ class SummaryMeshJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
     }
@@ -12425,7 +12472,7 @@ class SummaryMeshJobParameter {
 
 
 ;// ./src/common/iServer/SummaryRegionJobParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12442,7 +12489,7 @@ class SummaryMeshJobParameter {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -12484,7 +12531,7 @@ class SummaryRegionJobParameter {
         this.sumShape = true;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} SummaryRegionJobParameter.prototype.query
+         * @member {ModuleBounds} SummaryRegionJobParameter.prototype.query
          * @description 分析范围。
          */
         this.query = "";
@@ -12561,7 +12608,7 @@ class SummaryRegionJobParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
@@ -12641,7 +12688,7 @@ class SummaryRegionJobParameter {
 
 
 ;// ./src/common/iServer/OverlayGeoJobParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12711,7 +12758,7 @@ class OverlayGeoJobParameter {
         */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
@@ -12766,7 +12813,7 @@ class OverlayGeoJobParameter {
 }
 
 ;// ./src/common/iServer/BuffersAnalystJobsParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12782,7 +12829,7 @@ class OverlayGeoJobParameter {
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
@@ -12799,7 +12846,7 @@ class BuffersAnalystJobsParameter {
         this.datasetName = '';
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} BuffersAnalystJobsParameter.prototype.bounds
+         * @member {ModuleBounds} BuffersAnalystJobsParameter.prototype.bounds
          * @description 分析范围。
          */
         this.bounds = '';
@@ -12843,7 +12890,7 @@ class BuffersAnalystJobsParameter {
         if (!options) {
             return this;
         }
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsParameter';
     }
@@ -12904,7 +12951,7 @@ class BuffersAnalystJobsParameter {
 
 
 ;// ./src/common/iServer/TopologyValidatorJobsParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12968,7 +13015,7 @@ class TopologyValidatorJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
@@ -13021,7 +13068,7 @@ class TopologyValidatorJobsParameter {
 }
 
 ;// ./src/common/iServer/GeoCodingParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13081,7 +13128,7 @@ class GeoCodingParameter {
          * @description 最大返回结果数。
          */
         this.maxReturn = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -13100,7 +13147,7 @@ class GeoCodingParameter {
 }
 
 ;// ./src/common/iServer/GeoDecodingParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13176,7 +13223,7 @@ class GeoDecodingParameter {
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -13197,7 +13244,7 @@ class GeoDecodingParameter {
 }
 
 ;// ./src/common/iServer/VectorClipJobsParameter.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13261,7 +13308,7 @@ class VectorClipJobsParameter {
          */
         this.mappingParameters = null;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
@@ -13391,13 +13438,13 @@ var getMeterPerMapUnit = function(mapUnit) {
  * ```
  */
 
-const AREA_MAP = {
+const AREA_MAP = (/* unused pure expression or super */ null && ({
   SquareFoot: 10.763910417,
   SquareKiloMeter: 0.000001,
   SquareMeter: 1,
   SquareMile: 3.86e-7,
   SquareYard: 1.195990046
-}
+}))
 
 var getSquareMeterPerMapUnit = function(mapUnit) {
   return AREA_MAP[mapUnit];
@@ -13661,7 +13708,7 @@ function getDpi(scale, resolution, mapUnit) {
   return intersection;
 }
 ;// ./src/classic/overlay/mapv/MapVRenderer.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14011,7 +14058,7 @@ class MapVRenderer extends MapVBaseLayer {
     }
 }
 ;// ./src/classic/overlay/MapVLayer.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14254,18 +14301,18 @@ class MapVLayer extends SuperMap.Layer {
 SuperMap.Layer.MapVLayer = MapVLayer;
 
 ;// ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 ;// ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 ;// ./src/common/format/Format.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14296,7 +14343,7 @@ class Format {
          */
         this.keepData = false;
 
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
         this.options = options;
 
         this.CLASS_NAME = "SuperMap.Format";
@@ -14331,7 +14378,7 @@ class Format {
 }
 
 ;// ./src/common/format/JSON.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14639,7 +14686,7 @@ class JSONFormat extends Format {
 }
 
 ;// ./src/common/iServer/CommonServiceBase.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -14658,7 +14705,7 @@ class JSONFormat extends Format {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -14689,9 +14736,9 @@ class CommonServiceBase {
 
         this.isInTheSameDomain = null;
 
-        this.withCredentials = false;
+        this.withCredentials =  null;
 
-        if (Util_Util.isArray(url)) {
+        if (Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -14706,7 +14753,7 @@ class CommonServiceBase {
             me.url = url;
         }
 
-        if (Util_Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
@@ -14714,9 +14761,9 @@ class CommonServiceBase {
         options = options || {};
         this.crossOrigin = options.crossOrigin;
         this.headers = options.headers;
-        Util_Util.extend(this, options);
+        Util.extend(this, options);
 
-        me.isInTheSameDomain = Util_Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
         me.events = new Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
@@ -14732,7 +14779,7 @@ class CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (Util_Util.isArray(me.urls)) {
+        if (Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -14762,7 +14809,7 @@ class CommonServiceBase {
      * @param {function} options.failure - 请求失败后的回调函数。
      * @param {Object} [options.scope] - 如果回调函数是对象的一个公共方法，设定该对象的范围。
      * @param {boolean} [options.isInTheSameDomain] - 请求是否在当前域中。
-     * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+     * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
      * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
      * @param {Object} [options.headers] - 请求头。
      */
@@ -14783,7 +14830,7 @@ class CommonServiceBase {
         let me = this;
         options.url = options.url || me.url;
         if (this._returnContent(options) && !options.url.includes('returnContent=true')) {
-          options.url = Util_Util.urlAppend(options.url, 'returnContent=true');
+          options.url = Util.urlAppend(options.url, 'returnContent=true');
         }
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
@@ -14791,6 +14838,7 @@ class CommonServiceBase {
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
         options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
+        options.preferServer = options.preferServer || me.preferServer;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 
@@ -14819,7 +14867,7 @@ class CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         options.url = url;
-        options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        options.isInTheSameDomain = Util.isInTheSameDomain(url);
         return me._commit(options);
     }
 
@@ -14869,7 +14917,7 @@ class CommonServiceBase {
      * @private
      */
     transformResult(result, options) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         return { result, options };
     }
 
@@ -14882,7 +14930,7 @@ class CommonServiceBase {
      * @private
      */
     transformErrorResult(result, options) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         let error = result.error || result;
         return { error, options };
     }
@@ -14939,11 +14987,11 @@ class CommonServiceBase {
     _commit(options) {
         if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
-                options.url = Util_Util.urlAppend(options.url, Util_Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
             if (typeof options.data === 'object' && !(options.data instanceof FormData)) {
                 try {
-                    options.params = Util_Util.toJSON(options.data);
+                    options.params = Util.toJSON(options.data);
                 } catch (e) {
                     console.log('不是json对象');
                 }
@@ -15046,7 +15094,7 @@ class CommonServiceBase {
  */
 
 ;// ./src/common/iServer/AddressMatchService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15143,7 +15191,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 
 
 ;// ./src/classic/services/AddressMatchService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -15207,7 +15255,7 @@ class AddressMatchService extends CommonServiceBase {
 SuperMap.REST.AddressMatchService = AddressMatchService;
 
 ;// ./src/common/iServer/DatasetService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15245,7 +15293,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
          */
         this.dataset = null;
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.DatasetService";
@@ -15269,7 +15317,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getDatasetsService(params, callback) {
-        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
+        const url = Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
         return this.processAsync(url, 'GET', callback);
     }
 
@@ -15280,7 +15328,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getDatasetService(datasourceName, datasetName, callback) {
-        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+        const url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
         return this.processAsync(url, 'GET', callback);
     }
 
@@ -15293,7 +15341,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
         if (!params) {
             return;
         }
-        const url = Util_Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
+        const url = Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
         delete params.datasourceName;
         return this.processAsync(url, 'PUT', callback, params);
     }
@@ -15305,7 +15353,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     deleteDatasetService(datasourceName, datasetName, callback) {
-      const url = Util_Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+      const url = Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
       return this.processAsync(url, 'DELETE', callback);
     }
 
@@ -15318,13 +15366,13 @@ class DatasetService_DatasetService extends CommonServiceBase {
           success: callback,
           failure: callback
         }
-        params && (requestConfig.data = Util_Util.toJSON(params));
+        params && (requestConfig.data = Util.toJSON(params));
         return me.request(requestConfig);
     }
 }
 
 ;// ./src/common/iServer/CreateDatasetParameters.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15367,7 +15415,7 @@ class CreateDatasetParameters {
         this.datasetType = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.CreateDatasetParameters";
     }
@@ -15385,7 +15433,7 @@ class CreateDatasetParameters {
 
 
 ;// ./src/common/iServer/UpdateDatasetParameters.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15463,7 +15511,7 @@ class UpdateDatasetParameters {
         this.noValue = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.UpdateDatasetParameters";
     }
@@ -15487,7 +15535,7 @@ class UpdateDatasetParameters {
 
 
 ;// ./src/classic/services/DatasetService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15611,7 +15659,7 @@ class DatasetService extends CommonServiceBase {
 SuperMap.REST.DatasetService = DatasetService;
 
 ;// ./src/common/iServer/DatasourceService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15638,7 +15686,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.DatasourceService";
     }
@@ -15661,7 +15709,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getDatasourceService(datasourceName, callback) {
-        let url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
+        let url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
         return this.processAsync(url, "GET", callback);
     }
 
@@ -15672,7 +15720,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getDatasourcesService(callback) {
-        let url = Util_Util.urlPathAppend(this.url,`datasources`);
+        let url = Util.urlPathAppend(this.url,`datasources`);
         return this.processAsync(url, "GET", callback);
     }
     /**
@@ -15686,7 +15734,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
         if (!params) {
             return;
         }
-        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
+        const url = Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
         return this.processAsync(url, "PUT", callback, params);
     }
 
@@ -15699,13 +15747,13 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
           success: callback,
           failure: callback
         }
-        params && (requestConfig.data = Util_Util.toJSON(params));
+        params && (requestConfig.data = Util.toJSON(params));
         return me.request(requestConfig);
     }
 }
 
 ;// ./src/common/iServer/SetDatasourceParameters.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15754,7 +15802,7 @@ class SetDatasourceParameters {
         this.distanceUnit = null;
 
         if (options) {
-            Util_Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.CLASS_NAME = "SuperMap.SetDatasourceParameters";
     }
@@ -15775,7 +15823,7 @@ class SetDatasourceParameters {
 
 
 ;// ./src/classic/services/DatasourceService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15867,7 +15915,7 @@ class DatasourceService extends CommonServiceBase {
 SuperMap.REST.DatasourceService = DatasourceService;
 
 ;// ./src/common/iServer/ProcessingServiceBase.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15983,7 +16031,7 @@ class ProcessingServiceBase extends CommonServiceBase {
     }
 
     transformResult(result, seconds, callback, processRunningCallback) {
-        result = Util_Util.transformResult(result);
+        result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
@@ -16043,7 +16091,7 @@ class ProcessingServiceBase extends CommonServiceBase {
 }
 
 ;// ./src/common/iServer/KernelDensityJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16070,7 +16118,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/density');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/density');
         this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
     }
 
@@ -16100,7 +16148,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getKernelDensityJob(id, callback) {
-      return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+      return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16119,7 +16167,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 }
 
 ;// ./src/common/iServer/SingleObjectQueryJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16142,7 +16190,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 class SingleObjectQueryJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/query');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/query');
         this.CLASS_NAME = 'SuperMap.SingleObjectQueryJobsService';
     }
 
@@ -16171,7 +16219,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getQueryJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16189,7 +16237,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
 
 ;// ./src/common/iServer/SummaryMeshJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16216,7 +16264,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
 class SummaryMeshJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/aggregatepoints');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/aggregatepoints');
         this.CLASS_NAME = 'SuperMap.SummaryMeshJobsService';
     }
 
@@ -16245,7 +16293,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16263,7 +16311,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
 
 
 ;// ./src/common/iServer/VectorClipJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16287,7 +16335,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
 class VectorClipJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/vectorclip');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/vectorclip');
         this.CLASS_NAME = 'SuperMap.VectorClipJobsService';
     }
 
@@ -16316,7 +16364,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getVectorClipJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16335,7 +16383,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
 
 
 ;// ./src/common/iServer/OverlayGeoJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16361,7 +16409,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
 class OverlayGeoJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/overlay');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/overlay');
         this.CLASS_NAME = 'SuperMap.OverlayGeoJobsService';
     }
 
@@ -16390,7 +16438,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16407,7 +16455,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
 }
 
 ;// ./src/common/iServer/SummaryRegionJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16433,7 +16481,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
 class SummaryRegionJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/summaryregion');
         this.CLASS_NAME = 'SuperMap.SummaryRegionJobsService';
     }
 
@@ -16462,7 +16510,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJob(id, callback) {
-       return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+       return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16480,7 +16528,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
 
 
 ;// ./src/common/iServer/BuffersAnalystJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16503,7 +16551,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
 class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/buffers');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/buffers');
         this.CLASS_NAME = 'SuperMap.BuffersAnalystJobsService';
     }
 
@@ -16532,7 +16580,7 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getBuffersJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16551,7 +16599,7 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
 
 
 ;// ./src/common/iServer/TopologyValidatorJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16576,7 +16624,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/topologyvalidator');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/topologyvalidator');
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     }
 
@@ -16605,7 +16653,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16623,7 +16671,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
 }
 
 ;// ./src/common/iServer/SummaryAttributesJobsService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16647,7 +16695,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.url = Util_Util.urlPathAppend(this.url, 'spatialanalyst/summaryattributes');
+        this.url = Util.urlPathAppend(this.url, 'spatialanalyst/summaryattributes');
         this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     }
 
@@ -16676,7 +16724,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getSummaryAttributesJob(id, callback) {
-        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -16693,7 +16741,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 }
 
 ;// ./src/common/iServer/ProcessingService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -16722,7 +16770,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
   * @param {string} url - 服务地址。 
   * @param {Object} options - 参数。
   * @param {string} [options.proxy] - 服务代理地址。
-  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
   * @param {Object} [options.headers] - 请求头。
   * @usage
@@ -17451,7 +17499,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
  }
  
 ;// ./src/classic/services/ProcessingService.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17969,7 +18017,7 @@ class ProcessingService {
 SuperMap.REST.ProcessingService = ProcessingService;
 
 ;// ./src/classic/services/index.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17977,7 +18025,7 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 ;// ./src/classic/index.js
-/* Copyright© 2000 - 2025 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18021,7 +18069,7 @@ SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 SuperMap.FetchRequest = FetchRequest;
-SuperMap.Util = {...SuperMap.Util, ...Util_Util};
+SuperMap.Util = {...SuperMap.Util, ...Util};
 
 
 })();

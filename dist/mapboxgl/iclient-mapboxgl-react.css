@@ -3,7 +3,7 @@
  *       @supermapgis/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2024 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v12.0.1-r
+ *       version: v12.1.0-r
  *
  */
 @font-face {font-family: "sm-components-icons-";
@@ -212,7 +212,6 @@
   width: 100%;
   height: 100%;
 }
-
 .sm-component-web-map > .ant-spin {
   position: absolute;
   top: 0;
@@ -226,12 +225,10 @@
   z-index: 100;
   background: rgba(0, 0, 0, 0.8);
 }
-
 .sm-component-web-map .echartMap {
   width: 100% !important;
   height: 100% !important;
 }
-
 .sm-component-web-map .mapboxgl-canvas-container {
   width: 100% !important;
   height: 100% !important;
@@ -241,7 +238,6 @@
   width: 100%;
   height: 100%;
 }
-
 .sm-component-map > .ant-spin {
   position: absolute;
   top: 0;
@@ -255,12 +251,10 @@
   z-index: 100;
   background: rgba(0, 0, 0, 0.8);
 }
-
 .sm-component-map .echartMap {
   width: 100% !important;
   height: 100% !important;
 }
-
 .sm-component-map .mapboxgl-canvas-container {
   width: 100% !important;
   height: 100% !important;
@@ -301,7 +295,6 @@
   --box-shadow-width-1: 6px;
   --box-shadow-width-2: 15px;
 }
-
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-01, .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-01:before,
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-02,
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-02:before,
@@ -316,7 +309,6 @@
   border: 1px solid var(--color-1);
   box-shadow: 0 0 var(--box-shadow-width-1) var(--color-1-transparent), 0 0 var(--box-shadow-width-2) var(--color-1-transparent), inset 0 0 var(--box-shadow-width-1) var(--color-1-transparent), inset 0 0 var(--box-shadow-width-2) var(--color-1-transparent);
 }
-
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-05, .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-05:before,
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-08,
 .sm-component-animate-marker--halo-ring .sm-component-animate-marker__ring-08:before {
@@ -351,7 +343,6 @@
   --box-shadow-color: rgb(126, 214, 223);
   --light-color: white;
 }
-
 .sm-component-animate-marker--fluorescence .sm-component-animate-marker__name-container > span {
   padding-left: 30px;
 }
@@ -415,7 +406,6 @@
   font-size: 14px;
   transition: all 0.5s ease-in-out;
 }
-
 .sm-component-animate-marker__name-container > span {
   width: 80px;
   position: absolute;
@@ -425,11 +415,9 @@
   white-space: nowrap;
   padding-left: 14px;
 }
-
 .sm-component-animate-marker__name-container--breathing-aperture-name {
   padding: 6px 10px;
 }
-
 .sm-component-animate-marker__name-container--breathing-aperture-name > span {
   padding-left: 20px;
 }
@@ -458,21 +446,21 @@
   left: 0;
   animation-fill-mode: forwards;
   margin: auto;
-  width: var(--dots-width);
-  height: var(--dots-height);
-  box-shadow: var(--dots-box-shadow-x-negative) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x-negative) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), var(--dots-box-shadow-x) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x-negative) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x-negative) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 0 4px 4px #111, 0 0 4px 8px var(--line-color);
 }
-
 .sm-component-animate-marker__dots:before,
 .sm-component-animate-marker__dots :after {
-  content: '';
+  content: "";
   position: absolute;
   display: block;
   height: inherit;
   width: inherit;
   border-radius: inherit;
 }
-
+.sm-component-animate-marker__dots {
+  width: var(--dots-width);
+  height: var(--dots-height);
+  box-shadow: var(--dots-box-shadow-x-negative) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x-negative) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), var(--dots-box-shadow-x) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x-negative) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x-negative) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 0 4px 4px #111, 0 0 4px 8px var(--line-color);
+}
 .sm-component-animate-marker__dots:before, .sm-component-animate-marker__dots:after {
   box-shadow: var(--dots-box-shadow-x-negative) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x-negative) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), var(--dots-box-shadow-x) 0 0 var(--dots-box-shadow-radius1-negative) var(--light-color), var(--dots-box-shadow-x) 0 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x-negative) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x-negative) 4px var(--dots-box-shadow-radius2-negative) var(--color), 0 var(--dots-box-shadow-x) 0 var(--dots-box-shadow-radius1-negative) var(--light-color), 0 var(--dots-box-shadow-x) 4px var(--dots-box-shadow-radius2-negative) var(--color);
 }
@@ -480,11 +468,9 @@
 .sm-component-animate-marker__dots-01 {
   animation: dots 4s linear infinite;
 }
-
 .sm-component-animate-marker__dots-01:before {
   transform: rotate(8deg);
 }
-
 .sm-component-animate-marker__dots-01:after {
   transform: rotate(65deg);
 }
@@ -492,11 +478,9 @@
 .sm-component-animate-marker__dots-02 {
   animation: dots2 4s linear infinite;
 }
-
 .sm-component-animate-marker__dots-02:before {
   transform: rotate(73deg);
 }
-
 .sm-component-animate-marker__dots-02:after {
   transform: rotate(122deg);
 }
@@ -504,11 +488,9 @@
 .sm-component-animate-marker__dots-03 {
   animation: dots 4s linear infinite;
 }
-
 .sm-component-animate-marker__dots-03:before {
   transform: rotate(39deg);
 }
-
 .sm-component-animate-marker__dots-03:after {
   transform: rotate(242deg);
 }
@@ -523,9 +505,8 @@
   height: var(--halo-width);
   -webkit-transform: scale(1);
 }
-
 .sm-component-animate-marker__halo:before {
-  content: '';
+  content: "";
   position: absolute;
   width: var(--halo-width);
   height: var(--halo-width);
@@ -539,7 +520,6 @@
 .sm-component-animate-marker__ring-02 {
   animation: halo 2s infinite alternate-reverse;
 }
-
 .sm-component-animate-marker__ring-02:before {
   animation: halo 3.5 infinite alternate-reverse;
 }
@@ -547,7 +527,6 @@
 .sm-component-animate-marker__ring-03 {
   animation: halo2 4s infinite alternate-reverse;
 }
-
 .sm-component-animate-marker__ring-03:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -555,7 +534,6 @@
 .sm-component-animate-marker__ring-04 {
   animation: halo 7s infinite alternate-reverse;
 }
-
 .sm-component-animate-marker__ring-04:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -563,7 +541,6 @@
 .sm-component-animate-marker__ring-05 {
   animation: halo2 5s infinite alternate;
 }
-
 .sm-component-animate-marker__ring-05:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -571,7 +548,6 @@
 .sm-component-animate-marker__ring-06 {
   animation: halo 2s infinite alternate-reverse;
 }
-
 .sm-component-animate-marker__ring-06:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -579,7 +555,6 @@
 .sm-component-animate-marker__ring-07 {
   animation: halo2 5s infinite alternate;
 }
-
 .sm-component-animate-marker__ring-07:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -587,7 +562,6 @@
 .sm-component-animate-marker__ring-08 {
   animation: halo 10s infinite alternate-reverse;
 }
-
 .sm-component-animate-marker__ring-08:before {
   animation: halo 3.5s infinite alternate-reverse;
 }
@@ -599,7 +573,6 @@
   color: var(--border-color);
   box-shadow: inset 0 0 0 1px var(--box-shadow-color);
 }
-
 .sm-component-animate-marker__boder, .sm-component-animate-marker__boder::before, .sm-component-animate-marker__boder::after {
   position: absolute;
   top: 0;
@@ -607,19 +580,16 @@
   left: 0;
   right: 0;
 }
-
 .sm-component-animate-marker__boder {
   left: var(--text-left-position);
 }
-
 .sm-component-animate-marker__boder::before, .sm-component-animate-marker__boder::after {
-  content: '';
+  content: "";
   z-index: -1;
   margin: -5%;
   box-shadow: inset 0 0 0 2px;
   animation: var(--animation-name) 8s linear infinite;
 }
-
 .sm-component-animate-marker__boder::before {
   animation-delay: -4s;
 }
@@ -669,7 +639,6 @@
     opacity: 0;
   }
 }
-
 @keyframes dots {
   0% {
     transform: rotate(0deg) scale(0.7, 0.7);
@@ -681,7 +650,6 @@
     transform: rotate(360deg) scale(0.7, 0.7);
   }
 }
-
 @keyframes dots2 {
   0% {
     transform: rotate(0deg) scale(0.7, 0.7);
@@ -693,7 +661,6 @@
     transform: rotate(-360deg) scale(0.7, 0.7);
   }
 }
-
 @keyframes halo {
   0% {
     transform: rotate(360deg) scaleX(1);
@@ -702,7 +669,6 @@
     transform: rotate(0deg) scaleX(1.1);
   }
 }
-
 @keyframes halo2 {
   0% {
     transform: rotate(360deg) scaleX(0.9);
@@ -711,10 +677,8 @@
     transform: rotate(90deg) scaleX(1.1);
   }
 }
-
 @keyframes clipMe1 {
-  0%,
-  100% {
+  0%, 100% {
     clip: rect(0px, var(--clip-width-1), 2px, 0px);
   }
   25% {
@@ -727,10 +691,8 @@
     clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2));
   }
 }
-
 @keyframes clipMe2 {
-  0%,
-  100% {
+  0%, 100% {
     clip: rect(0px, var(--clip-width-1), 2px, 0px);
   }
   25% {
@@ -743,7 +705,6 @@
     clip: rect(0px, var(--clip-width-1), var(--clip-height-1), var(--clip-width-2));
   }
 }
-
 @keyframes pulse {
   0% {
     box-shadow: 0 0 8px 6px transparent;
@@ -755,4 +716,3 @@
     box-shadow: 0 0 8px 6px transparent;
   }
 }
-
