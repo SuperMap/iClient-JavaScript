@@ -235,6 +235,7 @@ import './common/util/EncryptRequestSpec';
 import './common/util/MapCalculateUtilSpec';
 import './common/util/GeometryAnalysisSpec.js';
 
+import './common/mapping/utils/AppreciableLayerBaseSpec.js'
 import './common/mapping/utils/L7LayerUtilSpec';
 import './common/mapping/utils/ColorUtilSpec.js';
 import './common/mapping/utils/SourceListModelV2Spec.js';
