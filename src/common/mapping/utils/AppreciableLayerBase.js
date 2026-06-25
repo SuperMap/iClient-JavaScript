@@ -98,10 +98,12 @@ export class AppreciableLayerBase extends Events {
     }
   }
 
-  setLayersVisible(layers, visibility) {
+  setLayersVisible(layers, visibility, isSetVisible = true) {
     layers.forEach((layer) => {
       const visbleId = this._getLayerVisibleId(layer);
-      this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      if (isSetVisible) {
+        this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      }
       if (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide) {
         visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
         this.map.style.fire('data', { dataType: 'style' });
