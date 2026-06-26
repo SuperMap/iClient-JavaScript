@@ -1757,4 +1757,1175 @@ describe('SourceListV3', () => {
     expect(nextAppreciableLayers.some(item => item.title === baseLayerInfoCopy.layers[0].metadata.title)).toBeTruthy();
     done();
   });
+
+  it('getSelfLayerIds', (done) => {
+    const mapInfo = JSON.parse(apstudioWebMap_layerData);
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: JSON.parse(msProjectINfo_layerData),
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const selfLayerIds = sourceListModel.getSelfLayerIds();
+    expect(Array.isArray(selfLayerIds)).toBeTruthy();
+    expect(selfLayerIds.length).toBeGreaterThan(0);
+    selfLayerIds.forEach(id => {
+      expect(typeof id).toBe('string');
+    });
+    done();
+  });
+
+  it('setBaseLayer with single layer', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'test-layer',
+            title: 'test-layer',
+            type: 'basic'
+          },
+          {
+            visible: true,
+            id: 'base-layer',
+            title: 'base-layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'test-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/test.png']
+        },
+        'base-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/base.png']
+        }
+      },
+      layers: [
+        {
+          id: 'test-layer',
+          type: 'raster',
+          source: 'test-layer',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'base-layer',
+          type: 'raster',
+          source: 'base-layer',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const newBaseLayer = {
+      id: 'new-base',
+      title: 'new-base',
+      layers: [
+        {
+          id: 'new-base-layer',
+          type: 'raster',
+          source: 'new-base-source',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      sources: {
+        'new-base-source': {
+          type: 'raster',
+          tiles: ['http://localhost/newbase.png']
+        }
+      }
+    };
+    sourceListModel.setBaseLayer(newBaseLayer);
+    const updatedLayers = sourceListModel.getLayers();
+    expect(updatedLayers.some(layer => layer.id === 'new-base-layer')).toBeTruthy();
+    expect(updatedLayers[0].id).toBe('new-base-layer');
+    done();
+  });
+
+  it('setBaseLayer with group layer', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'test-layer',
+            title: 'test-layer',
+            type: 'basic'
+          },
+          {
+            visible: true,
+            id: 'base-layer',
+            title: 'base-layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'test-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/test.png']
+        },
+        'base-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/base.png']
+        }
+      },
+      layers: [
+        {
+          id: 'test-layer',
+          type: 'raster',
+          source: 'test-layer',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'base-layer',
+          type: 'raster',
+          source: 'base-layer',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const newBaseLayer = {
+      id: 'new-base-group',
+      title: 'new-base-group',
+      layers: [
+        {
+          id: 'new-base-layer-1',
+          type: 'raster',
+          source: 'new-base-source-1',
+          minzoom: 0,
+          maxzoom: 12,
+          metadata: { title: 'layer-1' }
+        },
+        {
+          id: 'new-base-layer-2',
+          type: 'raster',
+          source: 'new-base-source-2',
+          minzoom: 0,
+          maxzoom: 12,
+          metadata: { title: 'layer-2' }
+        }
+      ],
+      sources: {
+        'new-base-source-1': {
+          type: 'raster',
+          tiles: ['http://localhost/newbase1.png']
+        },
+        'new-base-source-2': {
+          type: 'raster',
+          tiles: ['http://localhost/newbase2.png']
+        }
+      }
+    };
+    sourceListModel.setBaseLayer(newBaseLayer);
+    const layerCatalog = sourceListModel.getLayerCatalog();
+    const baseCatalog = layerCatalog[layerCatalog.length - 1];
+    expect(baseCatalog.id).toBe('new-base-group');
+    expect(baseCatalog.type).toBe('group');
+    expect(baseCatalog.children.length).toBe(2);
+    expect(baseCatalog.children[0].title).toBe('layer-1');
+    expect(baseCatalog.children[1].title).toBe('layer-2');
+    done();
+  });
+
+  it('_generateLayers with REST_DATA source', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'rest-data-layer',
+            title: 'REST_DATA Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'rest-data-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/data-test/rest/data/datasources/test/datasets/test_dataset/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'rest-data-layer',
+          type: 'circle',
+          source: 'rest-data-source',
+          'source-layer': 'test_dataset'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'rest-data-layer',
+          msDatasetId: 'ms_test_dataset_123',
+          serviceLayerId: '0'
+        }
+      ],
+      datas: [
+        {
+          sourceType: 'REST_DATA',
+          url: 'http://localhost:8090/iserver/services/data-test/rest/data/datasources/test',
+          datasets: [
+            {
+              msDatasetId: 'ms_test_dataset_123',
+              datasetId: 'test_dataset',
+              datasetName: 'test:test_dataset'
+            }
+          ]
+        }
+      ]
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const restDataLayer = layers.find(layer => layer.id === 'rest-data-layer');
+    expect(restDataLayer).toBeTruthy();
+    expect(restDataLayer.layerInfo.dataSource.type).toBe('REST_DATA');
+    expect(restDataLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(restDataLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    done();
+  });
+
+  it('_generateLayers with REST_MAP source', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'rest-map-layer',
+            title: 'REST_MAP Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'rest-map-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/map-test/rest/maps/test_map/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'rest-map-layer',
+          type: 'circle',
+          source: 'rest-map-source',
+          'source-layer': 'test_layer'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const restMapLayer = layers.find(layer => layer.id === 'rest-map-layer');
+    expect(restMapLayer).toBeTruthy();
+    expect(restMapLayer.layerInfo.dataSource.type).toBe('REST_MAP');
+    expect(restMapLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
+    expect(restMapLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    done();
+  });
+
+  it('_generateLayers with RESTJSR source', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'restjsr-layer',
+            title: 'RESTJSR Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'restjsr-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/restjsr/v1/maps/test_map/tiles/{z}/{x}/{y}.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'restjsr-layer',
+          type: 'circle',
+          source: 'restjsr-source',
+          'source-layer': 'test_layer'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const restjsrLayer = layers.find(layer => layer.id === 'restjsr-layer');
+    expect(restjsrLayer).toBeTruthy();
+    expect(restjsrLayer.layerInfo.dataSource.type).toBe('RESTJSR');
+    expect(restjsrLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
+    expect(restjsrLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    done();
+  });
+
+  it('_generateLayers with VECTOR_OTHER source', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'other-vector-layer',
+            title: 'OTHER Vector Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'other-vector-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8080/tiles/{z}/{x}/{y}.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'other-vector-layer',
+          type: 'circle',
+          source: 'other-vector-source',
+          'source-layer': 'layer_name'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const otherLayer = layers.find(layer => layer.id === 'other-vector-layer');
+    expect(otherLayer).toBeTruthy();
+    expect(otherLayer.layerInfo.dataSource.type).toBe('VECTOR_OTHER');
+    expect(otherLayer.layerInfo.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
+    done();
+  });
+
+  it('_generateLayers with serviceLayerId in dataSource', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'service-layer',
+            title: 'Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/data-test/rest/data/datasources/test/datasets/test_dataset/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'service-layer',
+          type: 'circle',
+          source: 'service-source',
+          'source-layer': 'test_dataset'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'service-layer',
+          msDatasetId: 'ms_test_dataset_123',
+          serviceLayerId: '1.2'
+        }
+      ],
+      datas: [
+        {
+          sourceType: 'REST_DATA',
+          url: 'http://localhost:8090/iserver/services/data-test/rest/data/datasources/test',
+          datasets: [
+            {
+              msDatasetId: 'ms_test_dataset_123',
+              datasetId: 'test_dataset',
+              datasetName: 'test:test_dataset'
+            }
+          ]
+        }
+      ]
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const serviceLayer = layers.find(layer => layer.id === 'service-layer');
+    expect(serviceLayer).toBeTruthy();
+    expect(serviceLayer.layerInfo.dataSource.serviceLayerId).toBe('1.2');
+    expect(serviceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
+    expect(serviceLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(serviceLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    done();
+  });
+
+  it('_generateLayers without serviceLayerId in dataSource', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'no-service-layer',
+            title: 'No Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'no-service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/data-test/rest/data/datasources/test/datasets/test_dataset/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'no-service-layer',
+          type: 'circle',
+          source: 'no-service-source',
+          'source-layer': 'test_dataset'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'no-service-layer',
+          msDatasetId: 'ms_test_dataset_123'
+        }
+      ],
+      datas: [
+        {
+          sourceType: 'REST_DATA',
+          url: 'http://localhost:8090/iserver/services/data-test/rest/data/datasources/test',
+          datasets: [
+            {
+              msDatasetId: 'ms_test_dataset_123',
+              datasetId: 'test_dataset',
+              datasetName: 'test:test_dataset'
+            }
+          ]
+        }
+      ]
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const noServiceLayer = layers.find(layer => layer.id === 'no-service-layer');
+    expect(noServiceLayer).toBeTruthy();
+    expect(noServiceLayer.layerInfo.dataSource.serviceLayerId).toBeUndefined();
+    expect(noServiceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
+    expect(noServiceLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(noServiceLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    done();
+  });
+
+  it('_generateLayers with empty serviceLayerId', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'empty-service-layer',
+            title: 'Empty Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'empty-service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/data-test/rest/data/datasources/test/datasets/test_dataset/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'empty-service-layer',
+          type: 'circle',
+          source: 'empty-service-source',
+          'source-layer': 'test_dataset'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'empty-service-layer',
+          msDatasetId: 'ms_test_dataset_123',
+          serviceLayerId: ''
+        }
+      ],
+      datas: [
+        {
+          sourceType: 'REST_DATA',
+          url: 'http://localhost:8090/iserver/services/data-test/rest/data/datasources/test',
+          datasets: [
+            {
+              msDatasetId: 'ms_test_dataset_123',
+              datasetId: 'test_dataset',
+              datasetName: 'test:test_dataset'
+            }
+          ]
+        }
+      ]
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const emptyServiceLayer = layers.find(layer => layer.id === 'empty-service-layer');
+    expect(emptyServiceLayer).toBeTruthy();
+    expect(emptyServiceLayer.layerInfo.dataSource.serviceLayerId).toBe('');
+    expect(emptyServiceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
+    done();
+  });
+
+  it('_generateLayers with REST_MAP source and serviceLayerId', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'rest-map-service-layer',
+            title: 'REST_MAP Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'rest-map-service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/iserver/services/map-test/rest/maps/test_map/tileFeature.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'rest-map-service-layer',
+          type: 'circle',
+          source: 'rest-map-service-source',
+          'source-layer': 'test_layer'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'rest-map-service-layer',
+          serviceLayerId: '2'
+        }
+      ],
+      datas: []
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const restMapLayer = layers.find(layer => layer.id === 'rest-map-service-layer');
+    expect(restMapLayer).toBeTruthy();
+    expect(restMapLayer.layerInfo.dataSource.type).toBe('REST_MAP');
+    expect(restMapLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
+    expect(restMapLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    expect(restMapLayer.layerInfo.dataSource.serviceLayerId).toBe('2');
+    done();
+  });
+
+  it('_generateLayers with RESTJSR source and serviceLayerId', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'restjsr-service-layer',
+            title: 'RESTJSR Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'restjsr-service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8090/restjsr/v1/maps/test_map/tiles/{z}/{x}/{y}.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'restjsr-service-layer',
+          type: 'circle',
+          source: 'restjsr-service-source',
+          'source-layer': 'test_layer'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'restjsr-service-layer',
+          serviceLayerId: '3'
+        }
+      ],
+      datas: []
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const restjsrLayer = layers.find(layer => layer.id === 'restjsr-service-layer');
+    expect(restjsrLayer).toBeTruthy();
+    expect(restjsrLayer.layerInfo.dataSource.type).toBe('RESTJSR');
+    expect(restjsrLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
+    expect(restjsrLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    expect(restjsrLayer.layerInfo.dataSource.serviceLayerId).toBe('3');
+    done();
+  });
+
+  it('_generateLayers with VECTOR_OTHER source and serviceLayerId', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'other-service-layer',
+            title: 'OTHER Service Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'other-service-source': {
+          type: 'vector',
+          tiles: ['http://localhost:8080/tiles/{z}/{x}/{y}.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'other-service-layer',
+          type: 'circle',
+          source: 'other-service-source',
+          'source-layer': 'layer_name'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const mapResourceInfo = {
+      catalogs: [
+        {
+          id: 'other-service-layer',
+          serviceLayerId: '4'
+        }
+      ],
+      datas: []
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo,
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const otherLayer = layers.find(layer => layer.id === 'other-service-layer');
+    expect(otherLayer).toBeTruthy();
+    expect(otherLayer.layerInfo.dataSource.type).toBe('VECTOR_OTHER');
+    expect(otherLayer.layerInfo.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
+    expect(otherLayer.layerInfo.dataSource.serviceLayerId).toBe('4');
+    done();
+  });
+
+  it('_generateLayers with chart type layer', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'chart-layer',
+            title: 'Chart Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'chart-source': {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: []
+          }
+        }
+      },
+      layers: [
+        {
+          id: 'chart-layer',
+          type: 'chart',
+          source: 'chart-source'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const chartLayer = layers.find(layer => layer.id === 'chart-layer');
+    expect(chartLayer).toBeTruthy();
+    expect(chartLayer.layerInfo.metadata.SM_Layer_Order).toBe('top');
+    done();
+  });
+
+  it('_generateLayers with legendList', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'legend-layer',
+            title: 'Legend Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'legend-source': {
+          type: 'vector',
+          tiles: ['http://localhost/test.mvt']
+        }
+      },
+      layers: [
+        {
+          id: 'legend-layer',
+          type: 'circle',
+          source: 'legend-source'
+        }
+      ],
+      version: '3.0.0'
+    };
+    const legendList = [
+      { layerId: 'legend-layer', themeField: 'field1' },
+      { layerId: 'legend-layer', themeField: 'field2' },
+      { layerId: 'legend-layer', themeField: 'field1' }
+    ];
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList,
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const legendLayer = layers.find(layer => layer.id === 'legend-layer');
+    expect(legendLayer).toBeTruthy();
+    expect(legendLayer.themeSetting).toBeTruthy();
+    expect(legendLayer.themeSetting.themeField).toEqual(['field1', 'field2']);
+    done();
+  });
+
+  it('_generateBaseLayerInfo', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'overlay-layer',
+            title: 'Overlay Layer',
+            type: 'basic'
+          },
+          {
+            visible: true,
+            id: 'base-layer',
+            title: 'Base Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'overlay-layer': {
+          type: 'vector',
+          tiles: ['http://localhost/overlay.mvt']
+        },
+        'base-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/base.png']
+        }
+      },
+      layers: [
+        {
+          id: 'base-layer',
+          type: 'raster',
+          source: 'base-layer',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'overlay-layer',
+          type: 'circle',
+          source: 'overlay-layer',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const baseLayerInfo = sourceListModel.baseLayerInfoOnMap;
+    expect(baseLayerInfo).toBeTruthy();
+    expect(baseLayerInfo.id).toBe('__default__base-layer');
+    expect(baseLayerInfo.title).toBe('Base Layer');
+    expect(baseLayerInfo.layers.length).toBe(1);
+    expect(baseLayerInfo.layers[0].id).toBe('base-layer');
+    expect(baseLayerInfo.sources['base-layer']).toBeTruthy();
+    done();
+  });
+
+  it('_getBaseLayerRenderLayers with children', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'overlay-layer',
+            title: 'Overlay Layer',
+            type: 'basic'
+          },
+          {
+            visible: true,
+            id: 'base-group',
+            title: 'Base Group',
+            type: 'group',
+            children: [
+              {
+                visible: true,
+                id: 'base-layer-1',
+                title: 'Base Layer 1',
+                type: 'basic'
+              },
+              {
+                visible: true,
+                id: 'base-layer-2',
+                title: 'Base Layer 2',
+                type: 'basic'
+              }
+            ]
+          }
+        ]
+      },
+      sources: {
+        'overlay-layer': {
+          type: 'vector',
+          tiles: ['http://localhost/overlay.mvt']
+        },
+        'base-layer-1': {
+          type: 'raster',
+          tiles: ['http://localhost/base1.png']
+        },
+        'base-layer-2': {
+          type: 'raster',
+          tiles: ['http://localhost/base2.png']
+        }
+      },
+      layers: [
+        {
+          id: 'base-layer-1',
+          type: 'raster',
+          source: 'base-layer-1',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'base-layer-2',
+          type: 'raster',
+          source: 'base-layer-2',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'overlay-layer',
+          type: 'circle',
+          source: 'overlay-layer',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const baseLayerInfo = sourceListModel.baseLayerInfoOnMap;
+    expect(baseLayerInfo).toBeTruthy();
+    expect(baseLayerInfo.layers.length).toBe(2);
+    expect(baseLayerInfo.layers.some(layer => layer.id === 'base-layer-1')).toBeTruthy();
+    expect(baseLayerInfo.layers.some(layer => layer.id === 'base-layer-2')).toBeTruthy();
+    done();
+  });
+
+  it('_removeBaseLayerRenderLayers', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'overlay-layer',
+            title: 'Overlay Layer',
+            type: 'basic'
+          },
+          {
+            visible: true,
+            id: 'base-layer',
+            title: 'Base Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {
+        'overlay-layer': {
+          type: 'vector',
+          tiles: ['http://localhost/overlay.mvt']
+        },
+        'base-layer': {
+          type: 'raster',
+          tiles: ['http://localhost/base.png']
+        }
+      },
+      layers: [
+        {
+          id: 'base-layer',
+          type: 'raster',
+          source: 'base-layer',
+          minzoom: 0,
+          maxzoom: 12
+        },
+        {
+          id: 'overlay-layer',
+          type: 'circle',
+          source: 'overlay-layer',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      version: '3.0.0'
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer,
+        getL7MarkerLayers: () => ({})
+      }
+    });
+    const initialLayers = sourceListModel.getLayers();
+    expect(initialLayers.length).toBeGreaterThanOrEqual(2);
+    sourceListModel.changeBaseLayer({
+      id: 'new-base',
+      title: 'New Base',
+      layers: [
+        {
+          id: 'new-base-layer',
+          type: 'raster',
+          source: 'new-base-source',
+          minzoom: 0,
+          maxzoom: 12
+        }
+      ],
+      sources: {
+        'new-base-source': {
+          type: 'raster',
+          tiles: ['http://localhost/newbase.png']
+        }
+      }
+    });
+    const updatedLayers = sourceListModel.getLayers();
+    expect(updatedLayers.some(layer => layer.id === 'base-layer')).toBeFalsy();
+    expect(updatedLayers.some(layer => layer.id === 'new-base-layer')).toBeTruthy();
+    expect(updatedLayers.some(layer => layer.id === 'overlay-layer')).toBeTruthy();
+    done();
+  });
+
+  it('_generateLayers with L7 layer', (done) => {
+    const mapInfo = {
+      metadata: {
+        layerCatalog: [
+          {
+            visible: true,
+            id: 'l7-layer',
+            title: 'L7 Layer',
+            type: 'basic'
+          }
+        ]
+      },
+      sources: {},
+      layers: [
+        {
+          id: 'l7-layer',
+          type: 'custom',
+          renderingMode: '3d',
+          overlay: true
+        }
+      ],
+      version: '3.0.0'
+    };
+    const l7MarkerLayers = {
+      'l7-layer': {
+        show: () => {},
+        hide: () => {}
+      }
+    };
+    const sourceListModel = new SourceListModelV3({
+      map,
+      mapInfo,
+      mapResourceInfo: {},
+      legendList: [],
+      l7LayerUtil: {
+        isL7Layer: () => true,
+        getL7MarkerLayers: () => l7MarkerLayers
+      }
+    });
+    const layers = sourceListModel.getLayers();
+    const l7Layer = layers.find(layer => layer.id === 'l7-layer');
+    expect(l7Layer).toBeTruthy();
+    expect(l7Layer.CLASS_NAME).toBe('L7Layer');
+    expect(l7Layer.CLASS_INSTANCE).toBe(l7MarkerLayers['l7-layer']);
+    done();
+  });
 });
