@@ -181,18 +181,19 @@ export function conversionDegree(degrees) {
   * ```
  */
  export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22, baseScale) {
+  const dpiValue = dpi === '' || dpi === null || dpi === undefined ? 96 : dpi;
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
-      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+      resolutions.push(scaleToResolution(scales[i], dpiValue, mapUnit));
     }
   } else if (baseScale){
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
-    const baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    const baseRes = scaleToResolution(baseScale, dpiValue, mapUnit);
     let topRes = baseRes;
     for (let i = 0; i < level; i++) {
       const temp = baseRes * Math.pow(2, i);
-      if(Math.abs(temp,maxReolution)<= 1E-6 || temp>maxReolution){
+      if(Math.abs(temp - maxReolution) <= 1E-6 || temp > maxReolution){
         topRes = temp;
         break;
       }
