@@ -133,7 +133,7 @@ export class SourceListModelV3 extends AppreciableLayerBase {
         reused: layer.metadata && layer.metadata.reused
       };
       const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
-      const { msDatasetId, relationMsDatasetId } = matchProjectCatalog;
+      const { msDatasetId, relationMsDatasetId, serviceLayerId } = matchProjectCatalog;
       let dataSource = {};
       if (msDatasetId) {
         for (const data of datas) {
@@ -174,16 +174,33 @@ export class SourceListModelV3 extends AppreciableLayerBase {
       const sourceOnMap = this.map.getSource(layer.source);
       if (!Object.keys(dataSource).length && sourceOnMap && sourceOnMap.type === 'vector') {
         const matchSource = this._mapInfo.sources[layer.source] || sourceOnMap;
-        if (matchSource.tiles && matchSource.tiles[0].includes('/rest/maps/')) {
+        if (matchSource.tiles && matchSource.tiles.length > 0) {
           const tileUrl = matchSource.tiles[0];
-          const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
-          const [mapName] = leftParts.split('/tileFeature');
-          dataSource.url = `${serverUrl}/rest/maps`;
-          dataSource.mapName = mapName;
-          dataSource.type = 'REST_MAP';
+          switch (true) {
+            case tileUrl.includes('/rest/maps/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
+              const [mapName] = leftParts.split('/tileFeature');
+              dataSource.url = `${serverUrl}/rest/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'REST_MAP';
+              break;
+            }
+            case tileUrl.includes('/restjsr/v1/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/restjsr/v1/');
+              const [mapName] = leftParts.split('/tiles/');
+              dataSource.url = `${serverUrl}/restjsr/v1/vectortile/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'RESTJSR';
+              break;
+            }
+            default: {
+              dataSource.url = tileUrl;
+              dataSource.type = 'VECTOR_OTHER';
+            }
+          }
         }
       }
-      layerInfo.dataSource = dataSource;
+      layerInfo.dataSource = Object.assign(dataSource, { serviceLayerId });
       if (this._l7LayerUtil.isL7Layer(layer)) {
         layerInfo.CLASS_NAME = 'L7Layer';
       }
