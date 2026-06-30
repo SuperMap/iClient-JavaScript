@@ -807,6 +807,9 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
             ];
           }
         }
+        if (bounds && !this._isValidBounds(bounds)) {
+          bounds = null;
+        }
         this._addBaselayer({
           url: [requestUrl],
           layerID: layerId,
@@ -2756,6 +2759,28 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       //   coor.reverse();
       // }
       return coor;
+    }
+
+    // 校验 bounds 是否为合法的经纬度范围(EPSG:4326)
+    // 不合法返回 false：值非数字/无穷、左>=右、下>=上、四个坐标都在 ±0.5 度内(认为退化为原点附近)、超出经纬度范围
+    _isValidBounds(bounds) {
+      if (!Array.isArray(bounds) || bounds.length !== 4) {
+        return false;
+      }
+      const [left, bottom, right, top] = bounds;
+      if (![left, bottom, right, top].every((v) => typeof v === 'number' && Number.isFinite(v))) {
+        return false;
+      }
+      if (left >= right || bottom >= top) {
+        return false;
+      }
+      if (Math.abs(left) > 180 || Math.abs(right) > 180 || Math.abs(bottom) > 90 || Math.abs(top) > 90) {
+        return false;
+      }
+      if (Math.abs(left) < 0.5 && Math.abs(right) < 0.5 && Math.abs(bottom) < 0.5 && Math.abs(top) < 0.5) {
+        return false;
+      }
+      return true;
     }
 
     _getMapCenter(mapInfo) {
