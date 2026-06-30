@@ -499,16 +499,23 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      * @version 11.2.1
      * @function WebMapBase.prototype.cleanLayers
      * @description 删除追加的图层和事件。当设置 `map` 时有效
+     * @param {Array<Object>} [layersToClean] - 要删除的图层数组，默认为所有可删除的缓存图层（非 reused）。每个图层对象包含 id 属性
+     * @param {boolean} [isClean=true] - 是否调用 clean(false) 销毁内部资源。为 false 时只删除指定图层并同步清理 legends
      */
-    cleanLayers() {
+    cleanLayers(layersToClean = this._cacheCleanLayers.filter(item => !item.reused), isClean = true) {
       // 清空追加的地图图层以及对应的事件
       if (!this.map) {
         return;
       }
-      const layersToClean = this._cacheCleanLayers.filter(item => !item.reused);
+      const cacheLayers = this._cacheCleanLayers;
       this._handler && this._handler.cleanLayers(layersToClean);
-      this._cacheCleanLayers = [];
-      this.clean(false);
+      this._cacheCleanLayers = cacheLayers.filter(item => !layersToClean.some((item1=> item1.id === item.id)));
+      if (isClean) {
+        this.clean(false);
+      } else {
+        const legends = this.getLegends();
+        this._handler.setLegends(legends.filter(item => !layersToClean.some((item1=> item1.id === item.layerId))));
+      }
     }
     /**
     * @typedef {Object} BaseLayerConfig

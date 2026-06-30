@@ -26,6 +26,10 @@ export function createMapClassExtending(SuperClass = class {}) {
       return this._legendList;
     }
 
+    setLegends(legendList) {
+      this._legendList = legendList || [];
+    }
+
     getSelfAppreciableLayers() {
       return (this._sourceListModel && this._sourceListModel.getSelfLayers(...arguments)) || [];
     }
