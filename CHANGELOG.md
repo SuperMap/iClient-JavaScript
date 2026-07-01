@@ -1,3 +1,28 @@
+# 12.1.0-r #
+## Fixed
+
+### for Leaflet
+
+   - 修复 LineM 类型数据 `maxM`、`minM`、`length` 信息丢失问题
+
+
+### for OpenLayers
+
+   - 修复[`ol.source.VectorTileSuperMapRest`](https://iclient.supermap.io/docs/openlayers/VectorTileSuperMapRest.html) 无法使用 `urls` 和 `url` 中`{?-?}` 参数的问题
+
+   - 修复 LineM 类型数据 `maxM`、`minM`、`length` 信息丢失问题
+
+   
+### for MapboxGL
+
+   - 修复[`mapboxgl.supermap.initmap`](https://iclient.supermap.io/docs/mapboxgl/global.html#initMap) 无法根据地图服务dpi出图的问题
+  
+   - 修复 LineM 类型数据 `maxM`、`minM`、`length` 信息丢失问题
+
+### for MaplibreGL
+
+   - 修复 LineM 类型数据 `maxM`、`minM`、`length` 信息丢失问题
+  
 # 12.0.0-r #
 
 ## 新特性
