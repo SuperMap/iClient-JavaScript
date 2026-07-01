@@ -88,7 +88,9 @@ export function createMapClassExtending(SuperClass = class {}) {
         }
       }
       Array.from(new Set(sourceList)).forEach((sourceId) => {
-        this.map.removeSource(sourceId);
+        if (this.map.getSource(sourceId)) {
+          this.map.removeSource(sourceId);
+        }
       });
     }
   };
