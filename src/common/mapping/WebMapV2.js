@@ -236,6 +236,18 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       }).filter(item => item !== null);
     }
 
+    _getLegendInfos() {
+      const { layers = [] } = this._mapInfo;
+      return layers.map((layer) => {
+        const { legendSetting, name, layerID: layerId } = layer;
+        return {
+          showLegend: legendSetting ? legendSetting?.isShow !== false : false,
+          id: layerId,
+          title: name
+        };
+      });
+    }
+
     _handleLayerInfo(mapInfo, _taskID) {
       mapInfo = this._setLayerID(mapInfo);
       this._mapInfo = mapInfo;

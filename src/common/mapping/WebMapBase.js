@@ -383,6 +383,16 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
     }
 
     /**
+     * @version 11.3.0
+     * @function WebMapBase.prototype.getLegendInfos
+     * @description 获取地图本身所有图层的legend状态。
+     * @returns {Array} 图例信息数组，包含 showLegend、id、title 三个属性。
+     */
+    getLegendInfos() {
+      return (this._handler && this._handler._getLegendInfos()) || [];
+    }
+
+    /**
      * @version 11.2.1
      * @function WebMapBase.prototype.getLayers
      * @description 获取图层。
