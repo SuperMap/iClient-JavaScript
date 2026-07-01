@@ -388,6 +388,32 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     })
     return res;
   }
+
+  _getLegendInfoByCatalog(catalog, res = []) {
+    const { catalogType, children, showLegend, title, id } = catalog;
+    if (catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getLegendInfoByCatalog(child, res);
+      });
+    }
+    if (catalogType === 'layer') {
+      res.push({
+        showLegend: showLegend !== false,
+        id: id,
+        title: title
+      });
+    }
+  }
+
+  _getLegendInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getLegendInfoByCatalog(item, res);
+    });
+    return res;
+  }
+
   /**
    * @private
    * @function WebMapV3.prototype._initLayers
