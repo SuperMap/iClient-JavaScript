@@ -88,8 +88,113 @@ describe('MapBase', () => {
     
     it('should return empty array when _sourceListModel is null', () => {
       instance._sourceListModel = null;
-      
+
       expect(instance.getLayers()).toEqual([]);
+    });
+  });
+
+  describe('cleanLayers', () => {
+    beforeEach(() => {
+      instance.map = jasmine.createSpyObj('map', [
+        'getLayer',
+        'removeLayer',
+        'getSource',
+        'removeSource'
+      ]);
+    });
+
+    it('should remove layers from map', () => {
+      const layers = [
+        {
+          renderLayers: ['layer1', 'layer2'],
+          renderSource: { id: 'source1' },
+          l7Layer: false
+        }
+      ];
+      instance.map.getLayer.and.callFake((layerId) => {
+        if (layerId === 'layer1' || layerId === 'layer2') {
+          return { source: 'source1' };
+        }
+        return undefined;
+      });
+      instance.map.getSource.and.returnValue(true);
+
+      instance.cleanLayers(layers);
+
+      expect(instance.map.removeLayer).toHaveBeenCalledWith('layer1');
+      expect(instance.map.removeLayer).toHaveBeenCalledWith('layer2');
+    });
+
+    it('should remove sources from map when layers are removed', () => {
+      const layers = [
+        {
+          renderLayers: ['layer1'],
+          renderSource: { id: 'source1' },
+          l7Layer: false
+        }
+      ];
+      instance.map.getLayer.and.returnValue({ source: 'source1' });
+      instance.map.getSource.and.returnValue(true);
+
+      instance.cleanLayers(layers);
+
+      expect(instance.map.removeSource).toHaveBeenCalledWith('source1');
+    });
+
+    it('should not remove source when renderSource.id is falsy', () => {
+      const layers = [
+        {
+          renderLayers: ['layer1'],
+          renderSource: { id: null },
+          l7Layer: false
+        }
+      ];
+      instance.map.getLayer.and.returnValue({ source: null });
+      // getSource(null) returns falsy, so source won't be added to list
+      instance.map.getSource.and.returnValue(false);
+
+      instance.cleanLayers(layers);
+
+      expect(instance.map.removeSource).not.toHaveBeenCalled();
+    });
+
+    it('should not remove source when layer is l7Layer', () => {
+      const layers = [
+        {
+          renderLayers: ['layer1'],
+          renderSource: { id: 'source1' },
+          l7Layer: true
+        }
+      ];
+      instance.map.getLayer.and.returnValue({ source: 'source1' });
+      instance.map.getSource.and.returnValue(true);
+
+      instance.cleanLayers(layers);
+
+      expect(instance.map.removeSource).not.toHaveBeenCalled();
+    });
+
+    it('should deduplicate sources before removal', () => {
+      const layers = [
+        {
+          renderLayers: ['layer1'],
+          renderSource: { id: 'source1' },
+          l7Layer: false
+        },
+        {
+          renderLayers: ['layer2'],
+          renderSource: { id: 'source1' },
+          l7Layer: false
+        }
+      ];
+      instance.map.getLayer.and.returnValue({ source: 'source1' });
+      instance.map.getSource.and.returnValue(true);
+
+      instance.cleanLayers(layers);
+
+      // Should only call removeSource once due to deduplication
+      expect(instance.map.removeSource).toHaveBeenCalledTimes(1);
+      expect(instance.map.removeSource).toHaveBeenCalledWith('source1');
     });
   });
 });
