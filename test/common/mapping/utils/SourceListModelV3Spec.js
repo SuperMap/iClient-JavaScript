@@ -2004,7 +2004,7 @@ describe('SourceListV3', () => {
             {
               msDatasetId: 'ms_test_dataset_123',
               datasetId: 'test_dataset',
-              datasetName: 'test:test_dataset'
+              datasetName: 'test_dataset'
             }
           ]
         }
@@ -2023,9 +2023,9 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const restDataLayer = layers.find(layer => layer.id === 'rest-data-layer');
     expect(restDataLayer).toBeTruthy();
-    expect(restDataLayer.layerInfo.dataSource.type).toBe('REST_DATA');
-    expect(restDataLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
-    expect(restDataLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    expect(restDataLayer.dataSource.type).toBe('REST_DATA');
+    expect(restDataLayer.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(restDataLayer.dataSource.dataSourceName).toBe('test:test_dataset');
     done();
   });
 
@@ -2057,6 +2057,7 @@ describe('SourceListV3', () => {
       ],
       version: '3.0.0'
     };
+    map.addSource('rest-map-source', mapInfo.sources['rest-map-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2070,9 +2071,9 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const restMapLayer = layers.find(layer => layer.id === 'rest-map-layer');
     expect(restMapLayer).toBeTruthy();
-    expect(restMapLayer.layerInfo.dataSource.type).toBe('REST_MAP');
-    expect(restMapLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
-    expect(restMapLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    expect(restMapLayer.dataSource.type).toBe('REST_MAP');
+    expect(restMapLayer.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
+    expect(restMapLayer.dataSource.mapName).toBe('test_map');
     done();
   });
 
@@ -2091,7 +2092,7 @@ describe('SourceListV3', () => {
       sources: {
         'restjsr-source': {
           type: 'vector',
-          tiles: ['http://localhost:8090/restjsr/v1/maps/test_map/tiles/{z}/{x}/{y}.mvt']
+          tiles: ['http://localhost:8090/restjsr/v1/test_map/tiles/{z}/{x}/{y}.mvt']
         }
       },
       layers: [
@@ -2104,6 +2105,7 @@ describe('SourceListV3', () => {
       ],
       version: '3.0.0'
     };
+    map.addSource('restjsr-source', mapInfo.sources['restjsr-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2117,9 +2119,9 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const restjsrLayer = layers.find(layer => layer.id === 'restjsr-layer');
     expect(restjsrLayer).toBeTruthy();
-    expect(restjsrLayer.layerInfo.dataSource.type).toBe('RESTJSR');
-    expect(restjsrLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
-    expect(restjsrLayer.layerInfo.dataSource.mapName).toBe('test_map');
+    expect(restjsrLayer.dataSource.type).toBe('RESTJSR');
+    expect(restjsrLayer.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
+    expect(restjsrLayer.dataSource.mapName).toBe('test_map');
     done();
   });
 
@@ -2151,6 +2153,7 @@ describe('SourceListV3', () => {
       ],
       version: '3.0.0'
     };
+    map.addSource('other-vector-source', mapInfo.sources['other-vector-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2164,8 +2167,8 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const otherLayer = layers.find(layer => layer.id === 'other-vector-layer');
     expect(otherLayer).toBeTruthy();
-    expect(otherLayer.layerInfo.dataSource.type).toBe('VECTOR_OTHER');
-    expect(otherLayer.layerInfo.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
+    expect(otherLayer.dataSource.type).toBe('VECTOR_OTHER');
+    expect(otherLayer.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
     done();
   });
 
@@ -2213,7 +2216,7 @@ describe('SourceListV3', () => {
             {
               msDatasetId: 'ms_test_dataset_123',
               datasetId: 'test_dataset',
-              datasetName: 'test:test_dataset'
+              datasetName: 'test_dataset'
             }
           ]
         }
@@ -2232,10 +2235,10 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const serviceLayer = layers.find(layer => layer.id === 'service-layer');
     expect(serviceLayer).toBeTruthy();
-    expect(serviceLayer.layerInfo.dataSource.serviceLayerId).toBe('1.2');
-    expect(serviceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
-    expect(serviceLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
-    expect(serviceLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    expect(serviceLayer.dataSource.serviceLayerId).toBe('1.2');
+    expect(serviceLayer.dataSource.type).toBe('REST_DATA');
+    expect(serviceLayer.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(serviceLayer.dataSource.dataSourceName).toBe('test:test_dataset');
     done();
   });
 
@@ -2282,7 +2285,7 @@ describe('SourceListV3', () => {
             {
               msDatasetId: 'ms_test_dataset_123',
               datasetId: 'test_dataset',
-              datasetName: 'test:test_dataset'
+              datasetName: 'test_dataset'
             }
           ]
         }
@@ -2301,10 +2304,10 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const noServiceLayer = layers.find(layer => layer.id === 'no-service-layer');
     expect(noServiceLayer).toBeTruthy();
-    expect(noServiceLayer.layerInfo.dataSource.serviceLayerId).toBeUndefined();
-    expect(noServiceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
-    expect(noServiceLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
-    expect(noServiceLayer.layerInfo.dataSource.dataSourceName).toBe('test:test_dataset');
+    expect(noServiceLayer.dataSource.serviceLayerId).toBeUndefined();
+    expect(noServiceLayer.dataSource.type).toBe('REST_DATA');
+    expect(noServiceLayer.dataSource.url).toBe('http://localhost:8090/iserver/services/data-test/rest/data');
+    expect(noServiceLayer.dataSource.dataSourceName).toBe('test:test_dataset');
     done();
   });
 
@@ -2352,7 +2355,7 @@ describe('SourceListV3', () => {
             {
               msDatasetId: 'ms_test_dataset_123',
               datasetId: 'test_dataset',
-              datasetName: 'test:test_dataset'
+              datasetName: 'test_dataset'
             }
           ]
         }
@@ -2371,8 +2374,8 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const emptyServiceLayer = layers.find(layer => layer.id === 'empty-service-layer');
     expect(emptyServiceLayer).toBeTruthy();
-    expect(emptyServiceLayer.layerInfo.dataSource.serviceLayerId).toBe('');
-    expect(emptyServiceLayer.layerInfo.dataSource.type).toBe('REST_DATA');
+    expect(emptyServiceLayer.dataSource.serviceLayerId).toBe('');
+    expect(emptyServiceLayer.dataSource.type).toBe('REST_DATA');
     done();
   });
 
@@ -2413,6 +2416,7 @@ describe('SourceListV3', () => {
       ],
       datas: []
     };
+    map.addSource('rest-map-service-source', mapInfo.sources['rest-map-service-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2426,10 +2430,10 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const restMapLayer = layers.find(layer => layer.id === 'rest-map-service-layer');
     expect(restMapLayer).toBeTruthy();
-    expect(restMapLayer.layerInfo.dataSource.type).toBe('REST_MAP');
-    expect(restMapLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
-    expect(restMapLayer.layerInfo.dataSource.mapName).toBe('test_map');
-    expect(restMapLayer.layerInfo.dataSource.serviceLayerId).toBe('2');
+    expect(restMapLayer.dataSource.type).toBe('REST_MAP');
+    expect(restMapLayer.dataSource.url).toBe('http://localhost:8090/iserver/services/map-test/rest/maps');
+    expect(restMapLayer.dataSource.mapName).toBe('test_map');
+    expect(restMapLayer.dataSource.serviceLayerId).toBe('2');
     done();
   });
 
@@ -2448,7 +2452,7 @@ describe('SourceListV3', () => {
       sources: {
         'restjsr-service-source': {
           type: 'vector',
-          tiles: ['http://localhost:8090/restjsr/v1/maps/test_map/tiles/{z}/{x}/{y}.mvt']
+          tiles: ['http://localhost:8090/restjsr/v1/test_map/tiles/{z}/{x}/{y}.mvt']
         }
       },
       layers: [
@@ -2470,6 +2474,7 @@ describe('SourceListV3', () => {
       ],
       datas: []
     };
+    map.addSource('restjsr-service-source', mapInfo.sources['restjsr-service-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2483,10 +2488,10 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const restjsrLayer = layers.find(layer => layer.id === 'restjsr-service-layer');
     expect(restjsrLayer).toBeTruthy();
-    expect(restjsrLayer.layerInfo.dataSource.type).toBe('RESTJSR');
-    expect(restjsrLayer.layerInfo.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
-    expect(restjsrLayer.layerInfo.dataSource.mapName).toBe('test_map');
-    expect(restjsrLayer.layerInfo.dataSource.serviceLayerId).toBe('3');
+    expect(restjsrLayer.dataSource.type).toBe('RESTJSR');
+    expect(restjsrLayer.dataSource.url).toBe('http://localhost:8090/restjsr/v1/vectortile/maps');
+    expect(restjsrLayer.dataSource.mapName).toBe('test_map');
+    expect(restjsrLayer.dataSource.serviceLayerId).toBe('3');
     done();
   });
 
@@ -2527,6 +2532,7 @@ describe('SourceListV3', () => {
       ],
       datas: []
     };
+    map.addSource('other-service-source', mapInfo.sources['other-service-source']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
@@ -2540,9 +2546,9 @@ describe('SourceListV3', () => {
     const layers = sourceListModel.getLayers();
     const otherLayer = layers.find(layer => layer.id === 'other-service-layer');
     expect(otherLayer).toBeTruthy();
-    expect(otherLayer.layerInfo.dataSource.type).toBe('VECTOR_OTHER');
-    expect(otherLayer.layerInfo.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
-    expect(otherLayer.layerInfo.dataSource.serviceLayerId).toBe('4');
+    expect(otherLayer.dataSource.type).toBe('VECTOR_OTHER');
+    expect(otherLayer.dataSource.url).toBe('http://localhost:8080/tiles/{z}/{x}/{y}.mvt');
+    expect(otherLayer.dataSource.serviceLayerId).toBe('4');
     done();
   });
 
@@ -2586,10 +2592,11 @@ describe('SourceListV3', () => {
         getL7MarkerLayers: () => ({})
       }
     });
-    const layers = sourceListModel.getLayers();
+    const layers = sourceListModel.getLayers(false);
     const chartLayer = layers.find(layer => layer.id === 'chart-layer');
     expect(chartLayer).toBeTruthy();
-    expect(chartLayer.layerInfo.metadata.SM_Layer_Order).toBe('top');
+    expect(chartLayer.metadata).toBeTruthy();
+    expect(chartLayer.metadata.SM_Layer_Order).toBe('top');
     done();
   });
 
@@ -2689,6 +2696,8 @@ describe('SourceListV3', () => {
       ],
       version: '3.0.0'
     };
+    map.addSource('overlay-layer', mapInfo.sources['overlay-layer']);
+    map.addSource('base-layer', mapInfo.sources['base-layer']);
     const sourceListModel = new SourceListModelV3({
       map,
       mapInfo,
