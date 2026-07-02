@@ -1349,7 +1349,7 @@ describe('maplibregl_WebMapV2', () => {
         }
       ];
       datavizWebmap.cleanLayers();
-      expect(getSourceSpy).toHaveBeenCalledTimes(2);
+      expect(getSourceSpy).toHaveBeenCalledTimes(3);
       expect(removeSourceSpy).toHaveBeenCalledTimes(1);
       expect(datavizWebmap._cacheCleanLayers.length).toBe(0);
       done();
