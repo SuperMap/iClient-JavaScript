@@ -2895,7 +2895,14 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       if (left >= right || bottom >= top) {
         return false;
       }
-      if (Math.abs(left) > 180 || Math.abs(right) > 180 || Math.abs(bottom) > 90 || Math.abs(top) > 90) {
+      // 容差，吸收浮点计算误差(如 180.00000000000006)
+      const tolerance = 1e-6;
+      if (
+        Math.abs(left) > 180 + tolerance ||
+        Math.abs(right) > 180 + tolerance ||
+        Math.abs(bottom) > 90 + tolerance ||
+        Math.abs(top) > 90 + tolerance
+      ) {
         return false;
       }
       if (Math.abs(left) < 0.5 && Math.abs(right) < 0.5 && Math.abs(bottom) < 0.5 && Math.abs(top) < 0.5) {
