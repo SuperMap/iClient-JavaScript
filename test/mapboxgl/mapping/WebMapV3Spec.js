@@ -787,7 +787,7 @@ describe('mapboxgl-webmap3.0', () => {
         )
       ).toBeTruthy();
       expect(
-        appreciableLayers.some((item) => item.id === 'CHINA_DARK' && !Object.keys(item.dataSource).length)
+        appreciableLayers.some((item) => item.id === 'CHINA_DARK' && !item.dataSource.type)
       ).toBeTruthy();
       spyTest.calls.reset();
       done();
