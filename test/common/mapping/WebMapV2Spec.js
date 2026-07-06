@@ -1,0 +1,142 @@
+import { createWebMapV2Extending } from '../../../src/common/mapping/WebMapV2';
+import { createWebMapV2BaseExtending } from '../../../src/common/mapping/WebMapV2Base';
+import { Events } from '../../../src/common/commontypes';
+
+const mockCrsManager = {
+  isSameProjection: () => true,
+  registerCRS: () => {},
+  getCRS: () => ({}),
+  getProj4: () => ({ defs: () => null })
+};
+
+function createWebMapV2Instance() {
+  const WebMapV2 = createWebMapV2Extending(
+    createWebMapV2BaseExtending(Events, 'fire'),
+    {
+      MapManager: function (options) {
+        this.options = options;
+      },
+      mapRepo: {
+        LngLat: function (lng, lat) {
+          return { lng, lat };
+        },
+        CRS: {
+          get: () => ({
+            getExtent: () => [0, 0, 1, 1]
+          })
+        }
+      },
+      crsManager: mockCrsManager,
+      DataFlowService: function () {},
+      GraticuleLayer: {}
+    }
+  );
+  return new WebMapV2({}, { target: 'map' });
+}
+
+describe('WebMapV2 - addLocalIdeographFontFamily', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = createWebMapV2Instance();
+  });
+
+  describe('_getLabelFontFamily', () => {
+    it('should collect fontFamily from labelStyle and append supermapol-icons', () => {
+      const mapInfo = {
+        layers: [
+          { labelStyle: { fontFamily: 'Arial' } },
+          { labelStyle: { fontFamily: 'Microsoft YaHei' } }
+        ]
+      };
+
+      expect(instance._getLabelFontFamily(mapInfo)).toBe('sans-serif,Arial,Microsoft YaHei,supermapol-icons');
+    });
+
+    it('should return default fonts when no layers', () => {
+      expect(instance._getLabelFontFamily({})).toBe('sans-serif,supermapol-icons');
+    });
+
+    it('should skip layers without labelStyle', () => {
+      const mapInfo = {
+        layers: [{ labelStyle: { fontFamily: '黑体' } }, {}]
+      };
+
+      expect(instance._getLabelFontFamily(mapInfo)).toBe('sans-serif,黑体,supermapol-icons');
+    });
+  });
+
+  describe('initializeMap', () => {
+    it('should call addLocalIdeographFontFamily when map is provided', async () => {
+      spyOn(instance, '_registerMapCRS').and.returnValue(Promise.resolve('EPSG:3857'));
+      spyOn(instance, '_loadLayers');
+      const mapInfo = {
+        layers: [{ labelStyle: { fontFamily: '微软雅黑' } }]
+      };
+      const map = {
+        getCRS: () => ({ epsgCode: 'EPSG:3857' }),
+        addLocalIdeographFontFamily: jasmine.createSpy('addLocalIdeographFontFamily')
+      };
+
+      await instance.initializeMap(mapInfo, map);
+
+      expect(instance._appendLayers).toBe(true);
+      expect(instance.map).toBe(map);
+      expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,微软雅黑,supermapol-icons');
+      expect(instance._loadLayers).toHaveBeenCalledWith(mapInfo, instance._taskID);
+    });
+
+    it('should not call addLocalIdeographFontFamily when map does not support it', async () => {
+      spyOn(instance, '_registerMapCRS').and.returnValue(Promise.resolve('EPSG:3857'));
+      spyOn(instance, '_loadLayers');
+      const mapInfo = {
+        layers: [{ labelStyle: { fontFamily: '微软雅黑' } }]
+      };
+      const map = {
+        getCRS: () => ({ epsgCode: 'EPSG:3857' })
+      };
+
+      await expectAsync(instance.initializeMap(mapInfo, map)).toBeResolved();
+      expect(instance._appendLayers).toBe(true);
+      expect(instance._loadLayers).toHaveBeenCalledWith(mapInfo, instance._taskID);
+    });
+  });
+
+  describe('_createMap', () => {
+    it('should pass localIdeographFontFamily to MapManager', () => {
+      let capturedOptions;
+      const WebMapV2WithCapture = createWebMapV2Extending(
+        createWebMapV2BaseExtending(Events, 'fire'),
+        {
+          MapManager: function (options) {
+            capturedOptions = options;
+            this.on = jasmine.createSpy('on');
+          },
+          mapRepo: {
+            LngLat: function (lng, lat) {
+              return { lng, lat };
+            },
+            CRS: {
+              get: () => ({
+                getExtent: () => [0, 0, 1, 1]
+              })
+            }
+          },
+          DataFlowService: function () {},
+          GraticuleLayer: {},
+          crsManager: mockCrsManager
+        }
+      );
+      const inst = new WebMapV2WithCapture({}, { target: 'map' });
+      const mapInfo = {
+        projection: 'EPSG:3857',
+        extent: { leftBottom: { x: 0, y: 0 }, rightTop: { x: 1, y: 1 } },
+        layers: [{ labelStyle: { fontFamily: '微软雅黑' } }]
+      };
+      inst.baseProjection = 'EPSG:3857';
+      inst.fire = jasmine.createSpy('fire');
+      inst._createMap(mapInfo);
+      expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,微软雅黑,supermapol-icons');
+    });
+  });
+});

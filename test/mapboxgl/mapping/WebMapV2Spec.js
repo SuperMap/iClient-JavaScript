@@ -4617,4 +4617,35 @@ it('add rangeLayer last end === fieldValue', (done) => {
       done();
     });
   });
+
+  it('_getLabelFontFamily should collect labelStyle fontFamily', () => {
+    datavizWebmap = new WebMap('', { ...commonOption });
+    const WebMapV2 = datavizWebmap._createWebMapFactory('WebMap2');
+    const webMapV2 = new WebMapV2('', commonOption, { crs: 'EPSG:3857' });
+    const mapInfo = {
+      layers: [
+        { labelStyle: { fontFamily: 'Arial' } },
+        { labelStyle: { fontFamily: 'Microsoft YaHei' } }
+      ]
+    };
+    expect(webMapV2._getLabelFontFamily(mapInfo)).toBe('sans-serif,Arial,Microsoft YaHei,supermapol-icons');
+  });
+
+  it('initializeMap should call addLocalIdeographFontFamily when appending to existing map', async () => {
+    datavizWebmap = new WebMap('', { ...commonOption });
+    const WebMapV2 = datavizWebmap._createWebMapFactory('WebMap2');
+    const webMapV2 = new WebMapV2('', commonOption, { crs: 'EPSG:3857' });
+    spyOn(webMapV2, '_registerMapCRS').and.returnValue(Promise.resolve('EPSG:3857'));
+    spyOn(webMapV2, '_loadLayers');
+    const mapInfo = {
+      layers: [{ labelStyle: { fontFamily: '微软雅黑' } }]
+    };
+    const map = {
+      getCRS: () => ({ epsgCode: 'EPSG:3857' }),
+      addLocalIdeographFontFamily: jasmine.createSpy('addLocalIdeographFontFamily')
+    };
+    await webMapV2.initializeMap(mapInfo, map);
+    expect(webMapV2._appendLayers).toBe(true);
+    expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,微软雅黑,supermapol-icons');
+  });
 });
