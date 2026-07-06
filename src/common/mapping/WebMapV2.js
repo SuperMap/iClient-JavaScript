@@ -60,6 +60,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           }
           this._appendLayers = true;
           this.map = map;
+          if (this.map.addLocalIdeographFontFamily) {
+            const fontFamilys = this._getLabelFontFamily(mapInfo);
+            this.map.addLocalIdeographFontFamily(fontFamilys);
+          }
         }
         this._mapInfo = mapInfo;
         this._loadLayers(mapInfo, this._taskID);

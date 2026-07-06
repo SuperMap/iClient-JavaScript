@@ -8427,4 +8427,34 @@ describe('mapboxgl-webmap3.0', () => {
       done();
     });
   });
+
+  it('_getLabelFontFamily should collect text-font from layer layout', () => {
+    mapstudioWebmap = new WebMapV3({}, { server, target: 'map' });
+    const mapInfo = {
+      layers: [
+        { layout: { 'text-font': ['Arial Unicode MS Regular'] } },
+        { layout: { 'text-font': ['Microsoft YaHei Regular'] } }
+      ]
+    };
+    expect(mapstudioWebmap._getLabelFontFamily(mapInfo)).toBe(
+      'sans-serif,Arial Unicode MS Regular,Microsoft YaHei Regular'
+    );
+  });
+
+  it('initializeMap should call addLocalIdeographFontFamily when appending to existing map', () => {
+    mapstudioWebmap = new WebMapV3({}, { server, target: 'map' });
+    spyOn(mapstudioWebmap, '_initLayers');
+    const mapInfo = {
+      crs: 'EPSG:3857',
+      layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }]
+    };
+    const map = {
+      getCRS: () => ({ epsgCode: 'EPSG:3857' }),
+      addLocalIdeographFontFamily: jasmine.createSpy('addLocalIdeographFontFamily'),
+      remove: jasmine.createSpy('remove')
+    };
+    mapstudioWebmap.initializeMap(mapInfo, map);
+    expect(mapstudioWebmap._appendLayers).toBe(true);
+    expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,PingFang SC Regular');
+  });
 });
