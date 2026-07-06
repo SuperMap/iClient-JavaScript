@@ -1,3 +1,122 @@
+import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
+import { Events } from '../../../src/common/commontypes';
+
+function createWebMapV3Instance() {
+  const WebMapV3 = createWebMapV3Extending(Events, {
+    MapManager: function () {},
+    mapRepo: {
+      LngLat: function (lng, lat) {
+        return { lng, lat };
+      },
+      CRS: null
+    },
+    mapRepoName: 'mapbox-gl',
+    l7LayerUtil: {
+      getL7MarkerLayers: () => ({})
+    }
+  });
+  return new WebMapV3({}, { target: 'map' });
+}
+
+describe('WebMapV3 - addLocalIdeographFontFamily', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = createWebMapV3Instance();
+  });
+
+  describe('_getLabelFontFamily', () => {
+    it('should collect text-font from layer layout', () => {
+      const mapInfo = {
+        layers: [
+          { layout: { 'text-font': ['Arial Unicode MS Regular'] } },
+          { layout: { 'text-font': ['Microsoft YaHei Regular', 'Arial Unicode MS Regular'] } }
+        ]
+      };
+
+      expect(instance._getLabelFontFamily(mapInfo)).toBe(
+        'sans-serif,Arial Unicode MS Regular,Microsoft YaHei Regular,Arial Unicode MS Regular'
+      );
+    });
+
+    it('should return sans-serif when no layers', () => {
+      expect(instance._getLabelFontFamily({})).toBe('sans-serif');
+    });
+
+    it('should skip layers without text-font', () => {
+      const mapInfo = {
+        layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }, {}]
+      };
+
+      expect(instance._getLabelFontFamily(mapInfo)).toBe('sans-serif,PingFang SC Regular');
+    });
+  });
+
+  describe('initializeMap', () => {
+    it('should call addLocalIdeographFontFamily when map is provided', () => {
+      spyOn(instance, '_initLayers');
+      const mapInfo = {
+        crs: 'EPSG:3857',
+        layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }]
+      };
+      const map = {
+        addLocalIdeographFontFamily: jasmine.createSpy('addLocalIdeographFontFamily')
+      };
+
+      instance.initializeMap(mapInfo, map);
+
+      expect(instance._appendLayers).toBe(true);
+      expect(instance.map).toBe(map);
+      expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,PingFang SC Regular');
+      expect(instance._initLayers).toHaveBeenCalled();
+    });
+
+    it('should not call addLocalIdeographFontFamily when map does not support it', () => {
+      spyOn(instance, '_initLayers');
+      const mapInfo = {
+        crs: 'EPSG:3857',
+        layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }]
+      };
+      const map = {};
+
+      expect(() => instance.initializeMap(mapInfo, map)).not.toThrow();
+      expect(instance._appendLayers).toBe(true);
+      expect(instance._initLayers).toHaveBeenCalled();
+    });
+  });
+
+  describe('_createMap', () => {
+    it('should pass localIdeographFontFamily to MapManager', () => {
+      let capturedOptions;
+      const WebMapV3WithCapture = createWebMapV3Extending(Events, {
+        MapManager: function (options) {
+          capturedOptions = options;
+          this.on = jasmine.createSpy('on');
+        },
+        mapRepo: {
+          LngLat: function (lng, lat) {
+            return { lng, lat };
+          },
+          CRS: null
+        },
+        mapRepoName: 'mapbox-gl',
+        l7LayerUtil: {
+          getL7MarkerLayers: () => ({})
+        }
+      });
+      const inst = new WebMapV3WithCapture({}, { target: 'map' });
+      inst._mapInfo = {
+        crs: 'EPSG:3857',
+        layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }]
+      };
+      inst._baseProjection = 'EPSG:3857';
+      inst.fire = jasmine.createSpy('fire');
+      inst._createMap();
+      expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,PingFang SC Regular');
+    });
+  });
+});
+
 describe('WebMapV3 - _getLegendInfos', () => {
   let instance;
 

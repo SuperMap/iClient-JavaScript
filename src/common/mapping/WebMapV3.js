@@ -191,6 +191,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, mapRe
           sprite
          });
        }
+      if (this.map.addLocalIdeographFontFamily) {
+        const fontFamilys = this._getLabelFontFamily(mapInfo);
+        this.map.addLocalIdeographFontFamily(fontFamilys);
+      }
       this._initLayers();
       return;
     }
@@ -739,9 +743,9 @@ _getFieldCaption(msDatasetId) {
    * @function WebMapV3.prototype._getLabelFontFamily
    * @description 获取图层字体类型。
    */
-  _getLabelFontFamily() {
+  _getLabelFontFamily(mapInfo = this._mapInfo) {
     const fonts = ['sans-serif'];
-    const layers = this._mapInfo.layers;
+    const layers = mapInfo.layers;
     if (layers && layers.length > 0) {
       layers.forEach((layer) => {
         const textFont = (layer.layout && layer.layout['text-font']) || [];

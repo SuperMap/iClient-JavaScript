@@ -54,6 +54,10 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, DataF
       if (map) {
         this._appendLayers = true;
         this.map = map;
+        if (this.map.addLocalIdeographFontFamily) {
+          const fontFamilys = this._getLabelFontFamily(mapInfo);
+          this.map.addLocalIdeographFontFamily(fontFamilys);
+        }
       }
       this._getMapInfo(mapInfo, this._taskID);
     }
