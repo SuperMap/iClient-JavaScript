@@ -239,3 +239,4 @@ import './common/mapping/WebMapBaseSpec.js';
 import './common/mapping/WebMapServiceSpec';
 import './common/mapping/WebMapV2BaseSpec';
 import './common/mapping/WebMapV3Spec.js';
+import './common/mapping/WebMapV2Spec.js';

@@ -101,8 +101,10 @@ export function createMapExtendExtending(product) {
         }
         return this;
       }
-      this.style.setLayoutProperty(layerID, name, value);
-      this._update(true);
+      if (this.getLayer(layerID)) {
+        this.style.setLayoutProperty(layerID, name, value);
+        this._update(true); 
+      }
       return this;
     }
     
