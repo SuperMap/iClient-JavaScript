@@ -103,7 +103,7 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
   });
 
   describe('_createMap', () => {
-    it('should pass localIdeographFontFamily to MapManager', () => {
+    it('should pass localIdeographFontFamily to MapManager', async () => {
       let capturedOptions;
       const WebMapV2WithCapture = createWebMapV2Extending(
         createWebMapV2BaseExtending(Events, 'fire'),
@@ -118,7 +118,8 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
             },
             CRS: {
               get: () => ({
-                getExtent: () => [0, 0, 1, 1]
+                getExtent: () => [0, 0, 1, 1],
+                unit: 'degree'
               })
             }
           },
@@ -127,15 +128,18 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
           crsManager: mockCrsManager
         }
       );
-      const inst = new WebMapV2WithCapture({}, { target: 'map' });
+      const inst = new WebMapV2WithCapture({}, { target: 'map' }, { bounds: [[0, 0], [1, 1]], minZoom: 0, maxZoom: 22 });
       const mapInfo = {
         projection: 'EPSG:3857',
         extent: { leftBottom: { x: 0, y: 0 }, rightTop: { x: 1, y: 1 } },
+        baseLayer: { tileSize: 256 },
         layers: [{ labelStyle: { fontFamily: '微软雅黑' } }]
       };
       inst.baseProjection = 'EPSG:3857';
       inst.fire = jasmine.createSpy('fire');
-      inst._createMap(mapInfo);
+      spyOn(inst, '_getMapCenter').and.returnValue({ lng: 0, lat: 0 });
+      await inst._createMap(mapInfo);
+      expect(capturedOptions).toBeDefined();
       expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,微软雅黑,supermapol-icons');
     });
   });

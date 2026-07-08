@@ -116,11 +116,13 @@ describe('WebMapV3 - addLocalIdeographFontFamily', () => {
       const inst = new WebMapV3WithCapture({}, { target: 'map' });
       inst._mapInfo = {
         crs: 'EPSG:3857',
+        center: { lng: 0, lat: 0 },
         layers: [{ layout: { 'text-font': ['PingFang SC Regular'] } }]
       };
       inst._baseProjection = 'EPSG:3857';
       inst.fire = jasmine.createSpy('fire');
       inst._createMap();
+      expect(capturedOptions).toBeDefined();
       expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,PingFang SC Regular');
     });
   });
