@@ -141,6 +141,7 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
       await inst._createMap(mapInfo);
       expect(capturedOptions).toBeDefined();
       expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,微软雅黑,supermapol-icons');
+      await inst.clean(false);
     });
   });
 });

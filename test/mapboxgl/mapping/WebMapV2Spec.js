@@ -1,6 +1,11 @@
 import mapboxgl from 'mapbox-gl';
 import mbglmap, { CRS, proj4, revertCRS } from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import { createWebMapV2Extending } from '../../../src/common/mapping/WebMapV2';
+import { createWebMapV2BaseExtending } from '../../../src/common/mapping/WebMapV2Base';
+import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
+import { CRSManager } from '../../../src/mapboxgl/mapping/webmap/CRSManager';
+import { GraticuleLayer } from '../../../src/mapboxgl/overlay/GraticuleLayer';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -139,6 +144,20 @@ function DataFlowService(serviceUrl) {
   this.on = (event, callback) => {
     callback();
   };
+}
+
+function createMapboxWebMapV2Factory() {
+  const crsManager = new CRSManager();
+  return createWebMapV2Extending(
+    createWebMapV2BaseExtending(createMapClassExtending(mapboxgl.Evented), 'fire'),
+    {
+      MapManager: MapManagerUtil.default,
+      mapRepo: mapboxgl,
+      crsManager,
+      DataFlowService: DataFlowServiceUtil.DataFlowService,
+      GraticuleLayer
+    }
+  );
 }
 
 describe('mapboxgl_WebMapV2', () => {
@@ -336,7 +355,16 @@ describe('mapboxgl_WebMapV2', () => {
   });
   afterEach(() => {
     if (datavizWebmap) {
-      datavizWebmap.clean();
+      if (datavizWebmap._handler) {
+        if (datavizWebmap._handler._sendMapToUser) {
+          spyOn(datavizWebmap._handler, '_sendMapToUser').and.stub();
+        }
+        datavizWebmap._handler.clean(false);
+        datavizWebmap._handler = null;
+      }
+      if (datavizWebmap.map) {
+        datavizWebmap.clean();
+      }
       datavizWebmap.map = null;
       datavizWebmap = null;
     }
@@ -4619,8 +4647,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
   });
 
   it('_getLabelFontFamily should collect labelStyle fontFamily', () => {
-    datavizWebmap = new WebMap('', { ...commonOption });
-    const WebMapV2 = datavizWebmap._createWebMapFactory('WebMap2');
+    const WebMapV2 = createMapboxWebMapV2Factory();
     const webMapV2 = new WebMapV2('', commonOption, { crs: 'EPSG:3857' });
     const mapInfo = {
       layers: [
@@ -4632,8 +4659,7 @@ it('add rangeLayer last end === fieldValue', (done) => {
   });
 
   it('initializeMap should call addLocalIdeographFontFamily when appending to existing map', async () => {
-    datavizWebmap = new WebMap('', { ...commonOption });
-    const WebMapV2 = datavizWebmap._createWebMapFactory('WebMap2');
+    const WebMapV2 = createMapboxWebMapV2Factory();
     const webMapV2 = new WebMapV2('', commonOption, { crs: 'EPSG:3857' });
     spyOn(webMapV2, '_registerMapCRS').and.returnValue(Promise.resolve('EPSG:3857'));
     spyOn(webMapV2, '_loadLayers');
@@ -4647,5 +4673,6 @@ it('add rangeLayer last end === fieldValue', (done) => {
     await webMapV2.initializeMap(mapInfo, map);
     expect(webMapV2._appendLayers).toBe(true);
     expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,微软雅黑,supermapol-icons');
+    webMapV2.clean(false);
   });
 });
