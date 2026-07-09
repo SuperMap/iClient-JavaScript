@@ -144,3 +144,52 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
     });
   });
 });
+
+describe('WebMapV2 - _getLegendInfos', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = createWebMapV2Instance();
+  });
+
+  it('should return showLegend true when isShow is true', () => {
+    instance._mapInfo = {
+      layers: [{ name: 'Layer1', layerID: 'layer1', legendSetting: { isShow: true } }]
+    };
+    expect(instance._getLegendInfos()).toEqual([
+      { showLegend: true, id: 'layer1', title: 'Layer1' }
+    ]);
+  });
+
+  it('should return showLegend false when isShow is false', () => {
+    instance._mapInfo = {
+      layers: [{ name: 'Layer2', layerID: 'layer2', legendSetting: { isShow: false } }]
+    };
+    expect(instance._getLegendInfos()).toEqual([
+      { showLegend: false, id: 'layer2', title: 'Layer2' }
+    ]);
+  });
+
+  it('should return showLegend false when legendSetting exists without isShow', () => {
+    instance._mapInfo = {
+      layers: [{ name: 'Layer3', layerID: 'layer3', legendSetting: {} }]
+    };
+    expect(instance._getLegendInfos()).toEqual([
+      { showLegend: false, id: 'layer3', title: 'Layer3' }
+    ]);
+  });
+
+  it('should return showLegend false when legendSetting is absent', () => {
+    instance._mapInfo = {
+      layers: [{ name: 'Layer4', layerID: 'layer4' }]
+    };
+    expect(instance._getLegendInfos()).toEqual([
+      { showLegend: false, id: 'layer4', title: 'Layer4' }
+    ]);
+  });
+
+  it('should return empty array when no layers', () => {
+    instance._mapInfo = {};
+    expect(instance._getLegendInfos()).toEqual([]);
+  });
+});
