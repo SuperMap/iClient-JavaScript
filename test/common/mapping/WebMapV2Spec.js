@@ -175,7 +175,7 @@ describe('WebMapV2 - _getLegendInfos', () => {
       layers: [{ name: 'Layer3', layerID: 'layer3', legendSetting: {} }]
     };
     expect(instance._getLegendInfos()).toEqual([
-      { showLegend: false, id: 'layer3', title: 'Layer3' }
+      { showLegend: undefined, id: 'layer3', title: 'Layer3' }
     ]);
   });
 
