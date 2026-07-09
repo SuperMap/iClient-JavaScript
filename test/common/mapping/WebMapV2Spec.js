@@ -140,6 +140,7 @@ describe('WebMapV2 - addLocalIdeographFontFamily', () => {
       spyOn(inst, '_getMapCenter').and.returnValue({ lng: 0, lat: 0 });
       await inst._createMap(mapInfo);
       expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,微软雅黑,supermapol-icons');
+      await inst.clean(false);
     });
   });
 });
