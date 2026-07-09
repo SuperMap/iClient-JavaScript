@@ -146,7 +146,7 @@ describe('WebMapBase - Handler Methods', () => {
           return layers.map((layer) => {
             const { legendSetting, name, layerID: layerId } = layer;
             return {
-              showLegend: legendSetting?.isShow !== false,
+              showLegend: legendSetting ? legendSetting.isShow : false,
               id: layerId,
               title: name
             };
