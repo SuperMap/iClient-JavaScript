@@ -171,7 +171,7 @@ describe('WebMapV2 - _getLegendInfos', () => {
     ]);
   });
 
-  it('should return showLegend false when legendSetting exists without isShow', () => {
+  it('should return showLegend undefined when legendSetting exists without isShow', () => {
     instance._mapInfo = {
       layers: [{ name: 'Layer3', layerID: 'layer3', legendSetting: {} }]
     };
@@ -192,5 +192,20 @@ describe('WebMapV2 - _getLegendInfos', () => {
   it('should return empty array when no layers', () => {
     instance._mapInfo = {};
     expect(instance._getLegendInfos()).toEqual([]);
+  });
+
+  it('should return legend info for multiple layers', () => {
+    instance._mapInfo = {
+      layers: [
+        { name: 'Layer1', layerID: 'layer1', legendSetting: { isShow: true } },
+        { name: 'Layer2', layerID: 'layer2' },
+        { name: 'Layer3', layerID: 'layer3', legendSetting: { isShow: false } }
+      ]
+    };
+    expect(instance._getLegendInfos()).toEqual([
+      { showLegend: true, id: 'layer1', title: 'Layer1' },
+      { showLegend: false, id: 'layer2', title: 'Layer2' },
+      { showLegend: false, id: 'layer3', title: 'Layer3' }
+    ]);
   });
 });
