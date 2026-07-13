@@ -48,6 +48,10 @@
     "build-docs-maplibregl": "rimraf ./docs/maplibregl && jsdoc -c ./build/jsdocs/maplibregl/docs.json -R ./build/jsdocs/maplibregl/index.md",
     "build-docs-classic": "rimraf ./docs/classic && jsdoc -c ./build/jsdocs/classic/docs.json -R ./build/jsdocs/classic/index.md",
     "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic",
+    "deploy-custom-webmapv2base": "webpack --config ./build/custom/webpack.config.common-webmapv2base.js --color && rimraf ./custom-dist/iclient-common/iclient-common-webmapv2base.js.LICENSE.txt",
+    "deploy-custom-common": "webpack --config ./build/custom/webpack.config.common.js --color && rimraf ./custom-dist/iclient-common/iclient-common.js.LICENSE.txt",
+    "deploy-custom-mapboxgl-es5": "cross-env moduleVersion=es5 webpack --config ./build/custom/webpack.config.mapboxgl.js --color && uglifyjs ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.js --ecma 5 --comments /iclient-/i -c -m -o ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.min.js && cleancss -o ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.min.css ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.css && rimraf ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.js ./custom-dist/iclient-mapboxgl/iclient-mapboxgl.css",
+    "deploy-custom-mapboxgl": "npm run deploy-custom-webmapv2base && npm run deploy-custom-common && npm run deploy-custom-mapboxgl-es5",
     "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish"
   },
   "keywords": [

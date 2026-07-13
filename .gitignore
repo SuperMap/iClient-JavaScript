@@ -11,3 +11,4 @@
 .npmrc
 /dist/mapboxgl/resources/
 /dist/maplibregl/resources/
+/custom-dist/
