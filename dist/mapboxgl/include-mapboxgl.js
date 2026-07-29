@@ -169,7 +169,7 @@
       inputScript(libsurl + '/moment/2.30.1/moment.min.js');
     }
     if (inArray(includes, 'lodash')) {
-      inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
+      inputScript(libsurl + '/lodash/4.18.1/lodash.min.js');
     }
     if (inArray(includes, 'tensorflow')) {
       inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');

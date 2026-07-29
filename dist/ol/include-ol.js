@@ -125,7 +125,7 @@
             inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
         }
         if (inArray(includes, 'lodash')) {
-          inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
+          inputScript(libsurl + '/lodash/4.18.1/lodash.min.js');
         }
         if (inArray(includes, 'ugcwasm')) {
           inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
