@@ -35,7 +35,10 @@ describe('L7LayerUtil', () => {
 
     reRender() {}
   };
-  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
+  const mockWebMapService = {
+      handleUrlWithCredentials: jasmine.createSpy('handleUrlWithCredentials').and.returnValue(true)
+  };
+  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 ,webMapService: mockWebMapService});
   const mapstudioWebMap_L7LayersRes = JSON.parse(mapstudioWebMap_L7Layers);
 
   const scene = new mockL7.Scene();
@@ -185,7 +188,7 @@ describe('L7LayerUtil', () => {
 
   it('animate line layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
-      expect(options.withCredentials).toBeUndefined();
+      expect(options.withCredentials).toBeTruthy();
       expect(options.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/fields.json') > -1) {
         return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
@@ -196,7 +199,7 @@ describe('L7LayerUtil', () => {
       return Promise.resolve();
     });
     spyOn(FetchRequest, 'post').and.callFake((url, _, options) => {
-      expect(options.withCredentials).toBeUndefined();
+      expect(options.withCredentials).toBeTruthy();
       expect(options.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/data-Building/rest/data/featureResults.geojson') > -1) {
         return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
@@ -286,7 +289,8 @@ describe('L7LayerUtil', () => {
 
   it('add layer one error, one success', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
-      expect(options.withCredentials).toBeUndefined();
+       console.log('get', url, options.withCredentials);
+      expect(options.withCredentials).toBeTruthy();
       expect(options.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/fields.json') > -1) {
         return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
@@ -297,7 +301,8 @@ describe('L7LayerUtil', () => {
       return Promise.resolve();
     });
     spyOn(FetchRequest, 'post').and.callFake((url, _, options) => {
-      expect(options.withCredentials).toBeUndefined();
+      console.log('post', url, options.withCredentials);
+      expect(options.withCredentials).toBeTruthy();
       expect(options.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/data-Building/rest/data/featureResults.geojson') > -1) {
         return Promise.reject('error test');
