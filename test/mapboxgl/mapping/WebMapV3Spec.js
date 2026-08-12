@@ -19,11 +19,15 @@ describe('mapboxgl-webmap3.0', () => {
   var id = 617580084;
   var mapstudioWebmap;
   const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
+  const mockWebMapService = {
+      handleUrlWithCredentials: jasmine.createSpy('handleUrlWithCredentials').and.returnValue(true)
+  };
   const extendOptions = {
     MapManager: MapManagerUtil.default,
     mapRepo: mapboxgl,
     crsManager: new CRSManager(),
-    l7LayerUtil
+    l7LayerUtil,
+    webMapService: mockWebMapService
   };
   const WebMapV3 = createWebMapV3Extending(createMapClassExtending(mapboxgl.Evented), extendOptions);
   beforeEach(() => {
@@ -36,7 +40,7 @@ describe('mapboxgl-webmap3.0', () => {
     testDiv.style.height = '500px';
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     mapboxgl.Map.prototype.overlayLayersManager = {};
     mbglmap.prototype.getL7Scene = mapboxgl.Map.prototype.getL7Scene;
     mapboxgl.CRS = CRS;
@@ -172,7 +176,7 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('932266699.json') > -1) {
         return Promise.resolve(new Response(msProjectINfo_filters));
       }
-      if (url.indexOf('/sprites') > -1) {
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(spriteJson));
       }
       return Promise.resolve();
@@ -204,7 +208,7 @@ describe('mapboxgl-webmap3.0', () => {
   });
   it('filters mapId is JSON', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('/sprites') > -1) {
+      if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
@@ -8456,5 +8460,26 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.initializeMap(mapInfo, map);
     expect(mapstudioWebmap._appendLayers).toBe(true);
     expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,PingFang SC Regular');
+  });
+
+  it('_getSpriteData should use webMapService.handleWithCredentials for withCredentials', (done) => {
+
+    const spriteUrl = 'http://example.com/web/maps/123/sprite.json';
+    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+      if (url.indexOf('sprite.json') > -1) {
+        expect(mockWebMapService.handleUrlWithCredentials).toHaveBeenCalledWith(url);
+        expect(options.withCredentials).toBe(true);
+        return Promise.resolve(new Response(JSON.stringify({})));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    mapstudioWebmap = new WebMapV3(id, { server, target: 'map' });
+    mapstudioWebmap._getSpriteData(spriteUrl).then(() => {
+      expect(mockWebMapService.handleUrlWithCredentials).toHaveBeenCalled();
+      done();
+    }).catch((e) => {
+      done.fail(e);
+    });
   });
 });

@@ -121,7 +121,8 @@ export class WebMap extends createWebMapBaseExtending(maplibregl.Evented, { mapR
       spec,
       L7Layer,
       L7,
-      proj4: this._crsManager.getProj4()
+      proj4: this._crsManager.getProj4(),
+      webMapService: this.webMapService
     });
     switch (type) {
       case 'MapStyle':
@@ -129,7 +130,8 @@ export class WebMap extends createWebMapBaseExtending(maplibregl.Evented, { mapR
       case 'WebMap3':
         return createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), {
           ...commonFactoryOptions,
-          l7LayerUtil
+          l7LayerUtil,
+          webMapService: this.webMapService
         });
       default:
         return createWebMapV2Extending(

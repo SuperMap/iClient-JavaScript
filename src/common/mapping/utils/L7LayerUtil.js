@@ -220,7 +220,7 @@ export function getL7Filter(filter, featureFilter) {
 }
 
 export function L7LayerUtil(config) {
-  const { featureFilter, expression, spec, L7Layer, L7, proj4 } = config;
+  const { featureFilter, expression, spec, L7Layer, L7, proj4, webMapService } = config;
 
   /**
  * @param {string} url
@@ -244,7 +244,7 @@ export function L7LayerUtil(config) {
    */
   function getRestDataFields(datasetUrl, credential, options) {
     const url = addCredentialToUrl(`${datasetUrl}/fields.json?returnAll=true`, credential);
-    return FetchRequest.get(url, null, options)
+    return FetchRequest.get(url, null, { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) })
       .then((res) => res.json())
       .then((result) => {
         return result.map((item) => {
@@ -270,7 +270,7 @@ export function L7LayerUtil(config) {
    */
   function getRestDataDomains(datasetUrl, credential, options) {
     const url = addCredentialToUrl(`${datasetUrl}/domain.json`, credential);
-    return FetchRequest.get(url, null, options).then((result) => {
+    return FetchRequest.get(url, null, { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) }).then((result) => {
       return result.json();
     });
   }
@@ -453,7 +453,7 @@ export function L7LayerUtil(config) {
     const nextOptions = handleWithRequestOptions(datasetUrl, options);
     const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, nextOptions);
     const nextUrl = addCredentialToUrl(url, credential);
-    const attrDataInfo = await FetchRequest.post(nextUrl, JSON.stringify(SQLParams), nextOptions);
+    const attrDataInfo = await FetchRequest.post(nextUrl, JSON.stringify(SQLParams), { ...nextOptions, withCredentials: webMapService.handleUrlWithCredentials(nextUrl) });
     const featuresRes = await attrDataInfo.json();
 
     return {
@@ -468,7 +468,7 @@ export function L7LayerUtil(config) {
    * @param option
    */
   function getStructDataItemJson(href, option) {
-    return FetchRequest.get(href, null, option)
+    return FetchRequest.get(href, null, { ...option, withCredentials: webMapService.handleUrlWithCredentials(href) })
       .then((res) => res.json())
       .then((data) => {
         if (data.succeed === false) {
@@ -616,10 +616,11 @@ export function L7LayerUtil(config) {
    */
   async function getStructuredDataGeojsonByWebMap(data, options) {
     const allFeature = await getStructDataGeojson(data.dataId, options);
+    const url = `${options.server}web/datas/${data.dataId}/structureddata.json`
     const resultRes = await FetchRequest.get(
-      `${options.server}web/datas/${data.dataId}/structureddata.json`,
+      url,
       null,
-      options
+      { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) }
     );
     const result = await resultRes.json();
     const projection = `EPSG:${result.epsgCode}`;
