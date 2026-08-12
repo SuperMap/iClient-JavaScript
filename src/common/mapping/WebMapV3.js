@@ -160,7 +160,7 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil }) {
+export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil, webMapService }) {
   return class WebMapV3 extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
     super();
@@ -495,7 +495,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     const mapResourceUrl = transformUrl(
       Object.assign({ url: `${this.options.server}web/maps/${this.mapId}` }, this.options)
     );
-    return FetchRequest.get(mapResourceUrl, null, { withCredentials: this.options.withCredentials }).then((response) =>
+    return FetchRequest.get(mapResourceUrl, null, { withCredentials: webMapService.handleUrlWithCredentials(mapResourceUrl) }).then((response) =>
       response.json()
     );
   }
@@ -797,7 +797,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
 
   _getSpriteData(sprite) {
     const url = sprite.replace(/.+(web\/maps\/.+)/, `${this.options.server}$1`);
-    return FetchRequest.get(url, null, { withCredentials: this.options.withCredentials })
+    return FetchRequest.get(url, null, { withCredentials: webMapService.handleUrlWithCredentials(url) })
       .then((response) => {
         return response.json();
       });

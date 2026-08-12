@@ -1005,6 +1005,12 @@ export class WebMapService {
 
     return defaultValue;
   }
+  handleUrlWithCredentials(serviceUrl) {
+    if (serviceUrl && this.iportalServiceProxyUrl && serviceUrl.indexOf(this.iportalServiceProxyUrl) >= 0) {
+      return true;
+    }
+    return null;
+  }
 
   isIportalResourceUrl(serviceUrl) {
     return (

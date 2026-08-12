@@ -20,11 +20,15 @@ describe('maplibregl-webmap3.0', () => {
   var id = 617580084;
   var mapstudioWebmap;
   const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
+  const mockWebMapService = {
+      handleUrlWithCredentials: jasmine.createSpy('handleUrlWithCredentials').and.returnValue(true)
+  };
   const extendOptions = {
     MapManager: MapManagerUtil.default,
     mapRepo: maplibregl,
     crsManager: new CRSManager(),
-    l7LayerUtil
+    l7LayerUtil,
+    webMapService: mockWebMapService
   };
   const WebMapV3 = createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), extendOptions);
   beforeEach(() => {
@@ -1617,6 +1621,26 @@ describe('maplibregl-webmap3.0', () => {
         delete maplibregl.Map.prototype.getCRS;
         done();
       });
+    });
+  });
+  it('_getSpriteData should use webMapService.handleWithCredentials for withCredentials', (done) => {
+
+    const spriteUrl = 'http://example.com/web/maps/123/sprite.json';
+    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+      if (url.indexOf('sprite.json') > -1) {
+        expect(mockWebMapService.handleUrlWithCredentials).toHaveBeenCalledWith(url);
+        expect(options.withCredentials).toBe(true);
+        return Promise.resolve(new Response(JSON.stringify({})));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+
+    mapstudioWebmap = new WebMapV3(id, { server, target: 'map' });
+    mapstudioWebmap._getSpriteData(spriteUrl).then(() => {
+      expect(mockWebMapService.handleUrlWithCredentials).toHaveBeenCalled();
+      done();
+    }).catch((e) => {
+      done.fail(e);
     });
   });
 });
