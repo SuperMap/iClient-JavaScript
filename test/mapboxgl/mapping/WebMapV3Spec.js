@@ -19,10 +19,10 @@ describe('mapboxgl-webmap3.0', () => {
   var server = 'http://localhost:8190/iportal/';
   var id = 617580084;
   var mapstudioWebmap;
-  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7 });
   const mockWebMapService = {
       handleUrlWithCredentials: jasmine.createSpy('handleUrlWithCredentials').and.returnValue(true)
   };
+  const l7LayerUtil = L7LayerUtil({ featureFilter, expression, spec, L7Layer, L7, webMapService: mockWebMapService });
   const extendOptions = {
     MapManager: MapManagerUtil.default,
     mapRepo: mapboxgl,
