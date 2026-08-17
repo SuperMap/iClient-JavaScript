@@ -4675,4 +4675,258 @@ it('add rangeLayer last end === fieldValue', (done) => {
     expect(map.addLocalIdeographFontFamily).toHaveBeenCalledWith('sans-serif,微软雅黑,supermapol-icons');
     webMapV2.clean(false);
   });
+  it('layermaxzoom <=24', (done) => {
+    const mapInfo = {
+      "maxScale": "1:144447.92746805",
+      "baseLayer": {
+          "layerType": "MAPBOXSTYLE",
+          "name": "Capital@World33font",
+          "dataSource": {
+              "type": "EXTERNAL",
+              "url": "http://localhost:8195/portalproxy/ad4c697aec15c20c/iserver/services/map-mvt-CapitalWorld33font/restjsr/v1/vectortile/maps/Capital%40World33font"
+          }
+      },
+      "projection": "EPSG:4326",
+      "minScale": "1:591658710.909131",
+      "title": "Capital@World33font",
+      "version": "2.3.0",
+    }
+    const layerInfo = {
+        layerType: 'RANGE',
+        visible: 'visible',
+        themeSetting: {
+          themeField: 'TAX',
+          customSettings: {},
+          segmentMethod: 'offset',
+          segmentCount: 6,
+          colors: ['#ffc6c4', '#f4a3a8', '#e38191', '#cc607d', '#ad466c', '#8b3058', '#672044']
+        },
+        name: 'DataSource:DEMARCACION_TERRITORIAL_Tax',
+        featureType: 'POLYGON',
+        style: {
+          strokeWidth: 1,
+          fillColor: '#8b3058',
+          fillOpacity: 0.9,
+          lineDash: 'solid',
+          strokeColor: '#ffffff',
+          type: 'POLYGON',
+          strokeOpacity: 1
+        },
+        projection: 'EPSG:4326',
+        enableFields: ['TAX'],
+        dataSource: {
+          type: 'REST_DATA',
+          url: 'http://test:8090/iserver/services/data-JSON_test/rest/data',
+          dataSourceName: 'DataSource:DEMARCACION_TERRITORIAL_Tax'
+        },
+        layerID: 'DataSource:DEMARCACION_TERRITORIAL_Tax'
+    };
+    const features = [
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.0E18',
+            index: '0'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 1
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.00000000000098E12',
+            index: '1'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 2
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '2'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 3
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '3'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 4
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '4'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 5
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '5'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 6
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '6'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 7
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '7'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 8
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '8'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 9
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '9'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 10
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '10'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 11
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '11'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 12
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '12'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 13
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '13'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 14
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '14'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 15
+        },
+        {
+          type: 'Feature',
+          properties: {
+            TAX: '2.000000000098E10',
+            index: '15'
+          },
+          geometry: {
+            type: 'MultiPolygon'
+          },
+          id: 16
+        }
+    ];
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('portal.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(iportal_serviceProxy)));
+      }
+      if (url.indexOf('123/map.json') > -1) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify(mapInfo)
+          )
+        );
+      }
+      if (url.indexOf('/style.json')) {
+        return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+      }
+      return Promise.resolve(new Response(JSON.stringify({})));
+    });
+    datavizWebmap = new WebMap('123', {
+      target: 'map',
+      serverUrl: 'http://fake/fakeiportal',
+      withCredentials: false
+    });
+    datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(map.getStyle().layers.length).toBe(1);
+      map.setMaxZoom(24);
+      datavizWebmap._handler._createVectorLayer(layerInfo,features);
+      expect(map.getStyle().layers[1].maxzoom).toBe(24);
+      done();
+    });
+  });
 });
