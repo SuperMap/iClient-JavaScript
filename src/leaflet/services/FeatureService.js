@@ -14,7 +14,7 @@ import { FeatureService as CommonFeatureService } from '@supermapgis/iclient-com
 /**
  * @class FeatureService
  * @deprecatedclassinstance L.supermap.featureService
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，空间查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
  * @category  iServer Data Feature
  * @modulecategory Services
  * @example
@@ -92,8 +92,8 @@ export var FeatureService = ServiceBase.extend({
 
     /**
      * @function FeatureService.prototype.getFeaturesByGeometry
-     * @description 数据集几何查询服务类。
-     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @description 数据集空间查询服务类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。

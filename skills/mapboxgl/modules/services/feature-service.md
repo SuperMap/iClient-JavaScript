@@ -1,6 +1,6 @@
 ---
 name: "FeatureService"
-description: "要素数据集服务（REST Data）— 提供ID查询、范围查询、SQL查询、几何查询、缓冲区查询、地物编辑"
+description: "要素数据集服务（REST Data）— 提供 ID 查询、范围查询、SQL查询、空间查询、缓冲区查询、地物编辑"
 ---
 
 # FeatureService - 要素数据集服务
@@ -35,7 +35,7 @@ new mapboxgl.supermap.FeatureService(url, options)
 |------|------|
 | `getFeaturesBySQL(params)` | SQL 查询 |
 | `getFeaturesByBounds(params)` | 范围查询 |
-| `getFeaturesByGeometry(params)` | 几何查询 |
+| `getFeaturesByGeometry(params)` | 空间查询 |
 | `getFeaturesByBuffer(params)` | 缓冲区查询 |
 | `getFeaturesByIDs(params)` | ID 查询 |
 | `getFeaturesCount(params)` | 获取要素数量（v11.2.0+） |
@@ -109,7 +109,7 @@ mapboxgl.supermap.initMap('http://host:8090/iserver/services/map-world/rest/maps
 });
 ```
 
-## 几何查询 - getFeaturesByGeometry
+## 空间查询 - getFeaturesByGeometry
 
 ### 使用场景
 - 查询与几何对象相交、包含或被包含的要素

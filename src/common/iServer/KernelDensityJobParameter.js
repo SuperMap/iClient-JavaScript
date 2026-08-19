@@ -23,13 +23,13 @@ import {
  * @classdesc 此类用于设置核密度分析的数据集、分析范围、分析方法、权重、影响半径、分辨率、分析单位等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
+ * @param {string} options.datasetName - 进行核密度分析的点数据集或线数据集。
  * @param {string} options.fields - 权重索引。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
- * @param {number} [options.resolution=80] - 分辨率。
- * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
- * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
- * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {ModuleBounds} [options.query] - 核密度分析范围，默认为全图范围。
+ * @param {number} [options.resolution=80] - 核密度分析结果栅格数据的分辨率，即单个像元所对应的地面面积大小，单位与数据集单位一致。
+ * @param {number} [options.method=0] - 核密度分析方法。0 表示简单密度分析，1 表示核密度分析。
+ * @param {number} [options.meshType=0] - 核密度分析类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {number} [options.radius=300] - 核密度分析的影响半径。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
  * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
@@ -45,7 +45,7 @@ export class KernelDensityJobParameter {
         }
         /**
          * @member {string} KernelDensityJobParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 进行核密度分析的点数据集或线数据集。
          */
         this.datasetName = "";
 

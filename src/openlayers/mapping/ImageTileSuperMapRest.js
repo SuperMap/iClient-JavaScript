@@ -21,7 +21,7 @@ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util
  * @param {Array.<string>} [options.names] 返回影像集合中指定名称影像的瓦片资源。影像名称包含文件后缀，如 S-60-45.tif。
  * @param {string} [options.format='png'] - 瓦片表述类型，瓦片格式目前支持 png、jpg 和 webp 三种格式。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。默认透明。
- * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
+ * @param {boolean} [options.cacheEnabled=true] - 是否缓存到本地。为 true 时，访问发布的服务时就可以在本地生成地图瓦片，从而可以提高后续服务浏览访问的速度。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @extends {ol.source.XYZ}

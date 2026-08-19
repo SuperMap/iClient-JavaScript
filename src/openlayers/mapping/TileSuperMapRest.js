@@ -17,10 +17,10 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @browsernamespace ol.source
  * @category iServer Map Tile
  * @modulecategory Mapping
- * @classdesc SuperMap iServer TileImage 图层源。
+ * @classdesc 以地图瓦片的方式展示 SuperMap iServer 的 REST 地图服务的地图。它通过调用 TileImage 接口获取地图瓦片。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {Array.<string>} options.urls - 服务地址数组,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {string} options.url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Array.<string>} options.urls - 服务地址数组，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。

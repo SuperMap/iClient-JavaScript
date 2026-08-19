@@ -17,7 +17,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
- * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
+ * @param {boolean} [options.visible=false] - 图层是否可见。true 表示此图层可见，false 表示图层不可见。
  * @usage
  */
 export class UGCLayer {
@@ -68,7 +68,7 @@ export class UGCLayer {
 
         /**
          * @member {boolean} UGCLayer.prototype.visible
-         * @description 地图对象在同一范围内时，是否重叠显示。
+         * @description 图层是否可见。true 表示此图层可见，false 表示图层不可见。
          */
         this.visible = null;
 

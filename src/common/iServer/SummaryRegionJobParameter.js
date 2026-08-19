@@ -13,20 +13,20 @@ import { MappingParameters } from './MappingParameters';
  * @classdesc 区域汇总分析任务参数类。此类用于设置区域汇总分析的数据集、分析范围、标准属性字段、
  * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {string} options.datasetName - 数据集名称，只支持线数据集和面数据集。
+ * @param {string} [options.regionDataset] - 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
+ * @param {ModuleBounds} [options.query] - 区域汇总分析范围，默认为全图范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
- * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
- * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
- * @param {number} [options.resolution=100] - 网格大小。
- * @param {number} [options.meshType=0] - 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {boolean} [options.sumShape=true] - 如果源数据集是线数据集，则同时统计线的长度作为统计结果的一部分；如果源数据集是面数据集，则同时统计面的面积作为统计结果的一部分。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
+ * @param {number} [options.resolution=100] - 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
+ * @param {number} [options.meshType=0] - 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 汇总类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -46,7 +46,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {string} SummaryRegionJobParameter.prototype.regionDataset
-         * @description 汇总数据集（多边形汇总时用到的参数）。
+         * @description 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
          */
         this.regionDataset = "";
 
@@ -64,7 +64,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-         * @description 是否以标准属性字段统计。
+         * @description 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
          */
         this.standardSummaryFields = false;
 
@@ -82,7 +82,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
-         * @description 是否以权重字段统计。
+         * @description 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
          */
         this.weightedSummaryFields = false;
 
@@ -100,13 +100,13 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.meshType=0]
-         * @description 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+         * @description 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.resolution=100]
-         * @description 网格大小。
+         * @description 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
          */
         this.resolution = 100;
 
@@ -118,7 +118,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {SummaryType} [SummaryRegionJobParameter.prototype.type=SummaryType.SUMMARYMESH]
-         * @description 汇总类型。
+         * @description 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
          */
         this.type = SummaryType.SUMMARYMESH;
 

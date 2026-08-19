@@ -18,12 +18,12 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {string} options.operateDataset - 操作数据集的名称，即叠加对象数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：Neighbor_R@Jingjin。
  * @param {string} options.sourceDataset - 源数据集名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_R@Jingjin。
  * @param {Array.<string>} [options.operateDatasetFields] - 叠加分析中操作数据集保留在结果数据集中的字段名列表。
- * @param {FilterParameter} [options.operateDatasetFilter] - 设置操作数据集中空间对象过滤条件。
+ * @param {FilterParameter} [options.operateDatasetFilter] - 操作数据集的过滤条件，可以为 null。
  * @param {Array.<ModulePolygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
  * @param {Array.<string>} [options.sourceDatasetFields] - 叠加分析中源数据集保留在结果数据集中的字段名列表。
  * @param {FilterParameter} [options.sourceDatasetFilter] - 设置源数据集中空间对象过滤条件。设置了过滤参数后，只有满足条件的对象参与叠加分析。
- * @param {number} [options.tolerance=0] - 容限。
- * @param {OverlayOperationType} options.operation - 叠加操作枚举值。
+ * @param {number} [options.tolerance=0] - 叠加分析的容限值。
+ * @param {OverlayOperationType} options.operation - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -47,7 +47,7 @@ export class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {FilterParameter} DatasetOverlayAnalystParameters.prototype.operateDatasetFilter
-         * @description 设置操作数据集中空间对象过滤条件。
+         * @description 操作数据集的过滤条件，可以为 null。
          */
         this.operateDatasetFilter = new FilterParameter();
 
@@ -80,7 +80,7 @@ export class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {number} [DatasetOverlayAnalystParameters.prototype.tolerance=0]
-         * @description 容限。
+         * @description 叠加分析的容限值。
          */
         this.tolerance = 0;
 

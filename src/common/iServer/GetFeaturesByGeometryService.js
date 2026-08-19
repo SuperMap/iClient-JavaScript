@@ -8,7 +8,7 @@ import {GetFeaturesByGeometryParameters} from './GetFeaturesByGeometryParameters
  * @class GetFeaturesByGeometryService
  * @deprecatedclass SuperMap.GetFeaturesByGeometryService
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
+ * @classdesc 数据集空间查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
@@ -41,7 +41,7 @@ export class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 
     /**
      * @function GetFeaturesByGeometryService.prototype.getJsonParameters
-     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @returns {Object} 转化后的 JSON 字符串。

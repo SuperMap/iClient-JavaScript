@@ -18,12 +18,12 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @param {Array.<number>} options.IDs - 指定查询的元素 ID 信息。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage

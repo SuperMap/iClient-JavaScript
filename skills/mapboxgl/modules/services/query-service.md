@@ -1,6 +1,6 @@
 ---
 name: "QueryService"
-description: "地图查询服务类（REST Map）— 提供范围查询、SQL查询、几何查询、距离查询"
+description: "地图查询服务类（REST Map）— 提供范围查询、SQL 查询、空间查询、距离查询"
 ---
 
 # QueryService - 地图查询服务
@@ -34,7 +34,7 @@ new mapboxgl.supermap.QueryService(url, options)
 |------|------|
 | `queryBySQL(params)` | SQL 查询 |
 | `queryByBounds(params)` | 范围查询 |
-| `queryByGeometry(params)` | 几何查询 |
+| `queryByGeometry(params)` | 空间查询 |
 | `queryByDistance(params)` | 距离查询 |
 
 ## 返回格式
@@ -129,7 +129,7 @@ new mapboxgl.supermap.QueryService(mapUrl)
     });
 ```
 
-## 几何查询 - queryByGeometry
+## 空间查询 - queryByGeometry
 
 ```javascript
 var geomParams = new mapboxgl.supermap.QueryByGeometryParameters({

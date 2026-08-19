@@ -17,7 +17,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。
  * @param {Array.<GeoJSONFeature>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。
  * @param {Array.<GeoJSONFeature>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。
- * @param {OverlayOperationType} [options.operation] - 叠加操作枚举值。
+ * @param {OverlayOperationType} [options.operation] - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @extends {OverlayAnalystParameters}
  * @usage
  */

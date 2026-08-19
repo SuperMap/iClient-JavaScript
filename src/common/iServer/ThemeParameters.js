@@ -14,8 +14,8 @@ import {Util} from '../commontypes/Util';
  * @param {Array.<JoinItem>} [options.joinItems] - 专题图外部表的连接信息 JoinItem 数组。
  * @param {Array.<CommonTheme>} options.themes - 专题图对象列表。
  * @param {Array.<string>} [options.displayFilters] - 专题图属性过滤条件。
- * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。
- * @param {Object} [options.fieldValuesDisplayFilter] - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
+ * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
+ * @param {Object} [options.fieldValuesDisplayFilter] - 根据要素中的值来判断是否显示在地图中的过滤器。包含属性：values 待过滤的值、fieldName 待过滤的字段名称、fieldValuesDisplayMode 过滤模式。
  * @usage
  */
 export class ThemeParameters {
@@ -55,7 +55,7 @@ export class ThemeParameters {
 
         /**
          * @member {Array.<string>}  [ThemeParameters.prototype.displayOrderBys]
-         * @description 专题图对象生成符号叠加次序排序字段。
+         * @description 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
          */
         this.displayOrderBys = null;
 
@@ -63,7 +63,7 @@ export class ThemeParameters {
          * @member {Object} [ThemeParameters.prototype.fieldValuesDisplayFilter]
          * @property {Array.<number>} values - 待过滤的值。
          * @property {string} fieldName - 待过滤的字段名称，只支持数字类型的字段。
-         * @property {string} fieldValuesDisplayMode - 目前为 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
+         * @property {string} fieldValuesDisplayMode - 可选值为 DISPLAY / DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，当为 DISABLE 表示不显示以上设置的相应属性值的要素。
          */
         this.fieldValuesDisplayFilter = null;
 

@@ -12,7 +12,7 @@ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/
  * @class QueryService
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
- *            提供：范围查询，SQL 查询，几何查询，距离查询。
+ *            提供：范围查询，SQL 查询，空间查询，距离查询。
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -37,7 +37,7 @@ export class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByBounds
-     * @description 范围查询地图服务。
+     * @description 范围查询。查询指定矩形范围内的要素，以及外接矩形与指定范围相交的几何对象。
      * @param {QueryByBoundsParameters} params - 范围查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -76,8 +76,8 @@ export class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByGeometry
-     * @description 地图几何查询服务。
-     * @param {QueryByGeometryParameters} params - 几何查询参数类。
+     * @description 空间查询。查询与指定的几何对象符合某种空间关系和查询条件的要素。
+     * @param {QueryByGeometryParameters} params - 空间查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。

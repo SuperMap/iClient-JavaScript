@@ -16,7 +16,7 @@ import { LonLat } from '@supermapgis/iclient-common/commontypes/LonLat';
 /**
  * @class ThemeLayer
  * @category Visualization Theme
- * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。<br>
  * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * 调用建议：使用其子类实现该类。
  * @modulecategory Overlay
@@ -175,7 +175,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.display
-     * @description 隐藏或者显示图层。（通过对 CSS 控制产生即时效果，重新渲染失效。）
+     * @description 隐藏或者显示图层。（通过对 CSS 控制产生即时效果，重新渲染失效）
      * @param {boolean} [display] - 是否显示图层。
      */
     display(display) {
@@ -209,7 +209,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.addFeatures
      * @param {ThemeFeature|ServerFeature|GeoJSONObject} features - 待添加要素。
-     * @description 向专题图图层中添加数据
+     * @description 向专题图图层中添加数据。
      */
     addFeatures(features) { // eslint-disable-line no-unused-vars
 
@@ -220,7 +220,7 @@ export class Theme {
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除要素的数组或用来过滤的回调函数。 
      * @description 删除专题图中的要素。
      *              参数中的要素数组中的每一项，必须是已经添加到当前图层中的要素，
-     *              如果要删除的要素数组中的元素过多，推荐使用 removeAllFeatures删除所有要素后，再重新添加。这样效率会更高。
+     *              如果要删除的要素数组中的元素过多，推荐使用 removeAllFeatures 删除所有要素后，再重新添加，效率将更高。
      */
     removeFeatures(features) {
       var me = this;

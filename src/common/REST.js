@@ -1650,9 +1650,9 @@ var ChartType = {
  * ```
  */
 var ClipAnalystMode = {
-    /** 裁剪分析操作。 */
+    /** 内部裁剪，保留落在裁剪区范围内的数据。 */
     CLIP: "clip",
-    /** 求交分析操作。 */
+    /** 外部裁剪，保留落在裁剪区范围外的数据。 */
     INTERSECT: "intersect"
 };
 

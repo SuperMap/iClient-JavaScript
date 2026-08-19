@@ -16,8 +16,8 @@ import {Util} from '../commontypes/Util';
  * @param {boolean} [options.isBorderInside] - 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
  * @param {boolean} [options.returnFeature] - 是否返回 Feature 信息。
  * @param {boolean} [options.returnGeoRelatedOnly=true] - 仅返回满足指定空间关系的空间对象。
- * @param {number} [options.startRecord=0] - 分析结果起始记录位置。
- * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足500条结果则返回所有分析结果。
+ * @param {number} [options.startRecord=0] - 空间关系分析结果起始记录位置。
+ * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足 500 条结果则返回所有分析结果。
  * @usage
  */
 export class GeoRelationAnalystParameters {
@@ -68,7 +68,7 @@ export class GeoRelationAnalystParameters {
 
         /**
          * @member {number} [GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly=0]
-         * @description 分析结果起始记录位置。
+         * @description 空间关系分析结果起始记录位置。
          */
         this.startRecord = 0;
 

@@ -19,12 +19,12 @@ import {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -62,7 +62,7 @@ export class QueryParameters {
 
         /**
          * @member {QueryOption} [QueryParameters.prototype.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY]
-         * @description 查询结果类型。
+         * @description 查询结果选项对象，用于指定查询结果中包含的内容。
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
@@ -77,7 +77,7 @@ export class QueryParameters {
 
         /**
          * @member {number} [QueryParameters.prototype.startRecord=0]
-         * @description 查询起始记录号。
+         * @description 查询起始记录位置。
          */
         this.startRecord = 0;
 

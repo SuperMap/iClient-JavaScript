@@ -13,10 +13,10 @@ import { MappingParameters } from './MappingParameters';
  * @classdesc 矢量裁剪分析任务参数类。此类用于设置矢量裁剪分析的数据集、裁剪分析模式、裁剪几何对象等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} options.datasetVectorClip - 裁剪对象数据集。
- * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
- * @param {string} [options.geometryClip] - 裁剪几何对象。
+ * @param {string} options.datasetName - 待裁剪数据集的名称。
+ * @param {string} options.datasetVectorClip - 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
+ * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
+ * @param {string} [options.geometryClip] - 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -28,25 +28,25 @@ export class VectorClipJobsParameter {
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 待裁剪数据集的名称。
          */
         this.datasetName = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
-         * @description 裁剪对象数据集。
+         * @description 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
          */
         this.datasetVectorClip = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.geometryClip
-         * @description 裁剪几何对象。
+         * @description 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
          */
         this.geometryClip = "";
 
         /**
          * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-         * @description 裁剪分析模式。
+         * @description 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
          */
         this.mode = ClipAnalystMode.CLIP;
 

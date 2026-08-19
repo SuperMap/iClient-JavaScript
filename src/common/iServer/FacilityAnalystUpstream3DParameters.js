@@ -12,8 +12,8 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。
- * @param {number} [options.edgeID] - 指定的弧段 ID。edgeID 与 nodeID 必须指定一个。
- * @param {number} [options.nodeID] - 指定的结点 ID。edgeID 与 edgeID 必须指定一个。
+ * @param {number} [options.edgeID] - 三维设施网络分析中指定的弧段 ID，nodeID 与 edgeID 两者不能同时存在。
+ * @param {number} [options.nodeID] - 三维设施网络分析中指定的节点 ID，nodeID 与 edgeID 两者不能同时存在。
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  * @usage

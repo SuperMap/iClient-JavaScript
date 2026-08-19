@@ -13,8 +13,7 @@ import Attributions from '../core/Attributions';
 /**
  * @class TiledMapLayer
  * @deprecatedclassinstance L.supermap.tiledMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
- * 此类提供了与地图显示、地图裁剪、瓦片类型与大小、栅格分析等相关参数。
+ * @classdesc 以地图瓦片的方式展示 SuperMap iServer 的 REST 地图服务的地图。它通过调用 TileImage 接口获取地图瓦片。
  * @category iServer Map Tile
  * @extends {L.TileLayer}
  * @modulecategory Mapping
@@ -25,12 +24,12 @@ import Attributions from '../core/Attributions';
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.redirect=false] - 是否重定向，如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流。
  * @param {boolean} [options.transparent=true] - 背景是否透明。
- * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
+ * @param {boolean} [options.cacheEnabled=true] - 是否缓存到本地。为 true 时，访问发布的服务时就可以在本地生成地图瓦片，从而可以提高后续服务浏览访问的速度。
  * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}。
- * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
- * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
+ * @param {Object} [options.prjCoordSys] - 请求的地图瓦片的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行坐标转换，并返回坐标转换后的地图瓦片。
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
+ * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 该类可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {CRS} [options.crs] - 坐标系统类。
  * @param {string} [options.tileProxy] - 服务代理地址。

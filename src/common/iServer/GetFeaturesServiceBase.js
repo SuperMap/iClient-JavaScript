@@ -45,13 +45,13 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
-       * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+       * @description 查询结果的最小索引号，指定了返回结果的开始位置。如果该值大于查询结果的最大索引号，则查询结果为空。
        */
       this.fromIndex = 0;
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.toIndex=19]
-       * @description 查询结果的最大索引号。
+       * @description 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
        * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
        */
       this.toIndex = 19;
