@@ -1,20 +1,47 @@
-<?js var data = obj; ?>
-<?jsif(data && typeof data === 'object'){?>
-<pre class="prettyprint">
-<code>// 浏览器
-&lt;script type="text/javascript" src="<?js= data.globalParams.cdn ?>"&gt;&lt;/script&gt;
-&lt;script&gt;
-  <?js= "new {namespace}.{className}({paramsNames});".replace('{className}', data.aliasClass || data.className).replace('{namespace}',data.browserNamespace || data.globalParams.namespace).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
-  <?js= data.deprecatedClasses.length > 0 || data.deprecatedClassInstance?'\r  // 弃用的写法\r\n':'' ?><?jsdata.deprecatedClasses.forEach(deprecatedClass => { ?><?js= "  new {deprecatedClass}({paramsNames});\r\n".replace('{deprecatedClass}',deprecatedClass).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?><?js}); ?><?js if(data.deprecatedClassInstance){ ?><?js= "  {deprecatedClassInstance}({paramsNames});".replace('{deprecatedClassInstance}',data.deprecatedClassInstance).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
-  <?js } ?>
-&lt;/script&gt;
+<?js
+var data = obj;
+var cdnUsage = '';
+var esmUsage = '';
+var explicitUsage = data && typeof data !== 'object' ? data.toString() : '';
 
-<span class="nopretty">// ES6 Import</span>
-<?js= "import { {className} } from '{npm}';".replace('{className}',data.className).replace('{npm}',data.globalParams.npm) ?>
+if (data && typeof data === 'object') {
+  cdnUsage = '<pre class="prettyprint"><code>' +
+    '&lt;script type="text/javascript" src="' + data.globalParams.cdn + '"&gt;&lt;/script&gt;\n' +
+    '&lt;script&gt;\n' +
+    '  ' + "new {namespace}.{className}({paramsNames});"
+      .replace('{className}', data.aliasClass || data.className)
+      .replace('{namespace}', data.browserNamespace || data.globalParams.namespace) +
+    (data.deprecatedClasses.length > 0 || data.deprecatedClassInstance ? '\n  // 弃用的写法\n' : '') +
+    data.deprecatedClasses.map(function(deprecatedClass) {
+      return '  new ' + deprecatedClass + '(' + (data.paramsNames ? data.paramsNames.join(', ') : '') + ');';
+    }).join('\n') +
+    (data.deprecatedClassInstance ? '\n  ' + data.deprecatedClassInstance + '(' + (data.paramsNames ? data.paramsNames.join(', ') : '') + ');' : '') +
+    '\n&lt;/script&gt;</code></pre>';
 
-<?js= "new {className}({paramsNames});".replace('{className}',data.className).replace('{paramsNames}',data.paramsNames?data.paramsNames.join(', '):'') ?>
-</code>
-</pre>
-<?js}else{ ?>
-<?js= data ?>
-<?js} ?>
+  esmUsage = '<pre class="prettyprint"><code>' +
+    'import { ' + data.className + ' } from \'' + data.globalParams.npm + '\';\n\n' +
+    'new ' + data.className + '(' + (data.paramsNames ? data.paramsNames.join(', ') : '') + ');</code></pre>';
+} else {
+  var marker = explicitUsage.indexOf('// ES6 Import');
+  var codeStart = explicitUsage.indexOf('<code>');
+  var codeEnd = explicitUsage.lastIndexOf('</code>');
+  if (marker >= 0 && codeStart >= 0 && codeEnd >= 0) {
+    var codePrefix = explicitUsage.substring(0, codeStart + 6);
+    var codeSuffix = explicitUsage.substring(codeEnd);
+    cdnUsage = codePrefix + explicitUsage.substring(codeStart + 6, marker).replace(/^\s*\/\/ 浏览器\s*/, '') + codeSuffix;
+    esmUsage = codePrefix + explicitUsage.substring(marker + '// ES6 Import'.length).replace(/^\s*/, '');
+  } else {
+    cdnUsage = explicitUsage;
+    esmUsage = explicitUsage;
+  }
+}
+?>
+
+<div class="usage-tabs">
+  <div class="usage-tab-list" role="tablist">
+    <button type="button" class="usage-tab active" role="tab" aria-selected="true" data-usage-tab="esm">ESM</button>
+    <button type="button" class="usage-tab" role="tab" aria-selected="false" data-usage-tab="cdn">CDN</button>
+  </div>
+  <div class="usage-panel active" role="tabpanel" data-usage-panel="esm"><?js= esmUsage ?></div>
+  <div class="usage-panel" role="tabpanel" data-usage-panel="cdn"><?js= cdnUsage ?></div>
+</div>

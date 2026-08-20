@@ -1,4 +1,16 @@
 $(function () {
+    $('.usage-tabs').on('click', '.usage-tab', function () {
+        var tab = $(this);
+        var tabs = tab.closest('.usage-tabs');
+        var target = tab.data('usage-tab');
+        tabs.find('.usage-tab').removeClass('active').attr('aria-selected', 'false');
+        tabs.find('.usage-panel').removeClass('active');
+        tab.addClass('active').attr('aria-selected', 'true');
+        tabs.find('.usage-panel[data-usage-panel="' + target + '"]').addClass('active');
+        if (window.prettyPrint) {
+            window.prettyPrint();
+        }
+    });
     $('.navigationDiv').load("nav.html .main-sidebar", null, function () {
         var height = $('.sidebar').height();
         $('.main-sidebar #categories').css('height', height - 125 + 'px');
