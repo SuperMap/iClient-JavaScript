@@ -1,0 +1,71 @@
+<?js
+var data = obj;
+var self = this;
+var constructorCallers = [];
+var inputCallers = [];
+var resultCallers = [];
+var callers = self.find({kind: 'class'}).concat(self.find({kind: 'function'}));
+var escapeRegExp = function(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+var matchesClassName = function(typeName) {
+    if (!typeName || !data.longname) {
+        return false;
+    }
+
+    var names = [data.longname, data.name].filter(function(name, index, values) {
+        return name && values.indexOf(name) === index;
+    });
+    return names.some(function(name) {
+        var pattern = new RegExp('(^|[^A-Za-z0-9_$])' + escapeRegExp(name) + '([^A-Za-z0-9_$]|$)');
+        return pattern.test(typeName);
+    });
+};
+var matchesClass = function(item) {
+    return item && item.type && item.type.names && item.type.names.some(matchesClassName);
+};
+var addCaller = function(list, caller) {
+    if (caller && caller.longname !== data.longname && list.indexOf(caller) === -1) {
+        list.push(caller);
+    }
+};
+
+if (data.kind === 'class' && data.longname) {
+    callers.forEach(function(caller) {
+        if (caller.params) {
+            caller.params.forEach(function(param) {
+                if (matchesClass(param)) {
+                    addCaller(caller.kind === 'class' ? constructorCallers : inputCallers, caller);
+                }
+            });
+        }
+        if (caller.returns) {
+            caller.returns.forEach(function(ret) {
+                if (matchesClass(ret)) {
+                    addCaller(resultCallers, caller);
+                }
+            });
+        }
+    });
+}
+
+var callerLabel = function(caller) {
+    return (caller.longname || caller.name || '').replace(/#/g, '.');
+};
+?>
+
+<?js if (constructorCallers.length || inputCallers.length || resultCallers.length) { ?>
+    <h3 class="subsection-title">API Relations</h3>
+    <?js if (constructorCallers.length) { ?>
+        <div>As constructor parameter:<?js constructorCallers.forEach(function(caller, index) { ?>
+            <?js if (index > 0) { ?>, <?js } ?><?js= self.linkto(caller.longname, callerLabel(caller)) ?><?js }); ?>.</div>
+    <?js } ?>
+    <?js if (inputCallers.length) { ?>
+        <div>As method parameter: <?js inputCallers.forEach(function(caller, index) { ?>
+            <?js if (index > 0) { ?>, <?js } ?><?js= self.linkto(caller.longname, callerLabel(caller)) ?><?js }); ?>.</div>
+    <?js } ?>
+    <?js if (resultCallers.length) { ?>
+        <div>Returned by: <?js resultCallers.forEach(function(caller, index) { ?>
+            <?js if (index > 0) { ?>, <?js } ?><?js= self.linkto(caller.longname, callerLabel(caller)) ?><?js }); ?>.</div>
+    <?js } ?>
+<?js } ?>

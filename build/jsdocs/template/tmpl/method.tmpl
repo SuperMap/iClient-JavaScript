@@ -13,6 +13,7 @@ var self = this;
           <?js } ?>
           <?js= (kind === 'class' && !data.isFactoryFunction ? 'new ' : '') + (kind === 'class' && data.scope === 'static' ? longname : name) + (kind !== 'event' ? data.signature : '') ?>
         </h4>
+
         <?js if (data.usage) { ?>
         <h5>Usage</h5>
         <?js= self.partial('usage.tmpl', data.usage) ?>
@@ -23,6 +24,7 @@ var self = this;
             <?js= self.linkto(meta.filename) ?>, <?js= self.linkto(meta.filename, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
         </div>
         <?js } ?>
+
     </div>
 
     <?js if (data.summary) { ?>

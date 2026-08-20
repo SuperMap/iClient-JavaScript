@@ -48,20 +48,74 @@
        
     <?js } ?>
     </div>
+
+    <?js if (doc.kind === 'class') { ?>
+        <?js= self.partial('api-relations.tmpl', doc) ?>
+    <?js } ?>
     
-    <?js if (doc.augments && doc.augments.length) { ?>
+    <?js
+        var inheritanceChain = [];
+        var inheritanceVisited = {};
+        var normalizeClassName = function(name) {
+            return (name || '').replace(/[{}]/g, '').replace(/^module:/, '');
+        };
+        var findClass = function(name) {
+            name = normalizeClassName(name);
+            var classes = self.find({kind: 'class'});
+            for (var i = 0; i < classes.length; i++) {
+                if (
+                    classes[i] &&
+                    (classes[i].longname === name ||
+                        classes[i].name === name ||
+                        (classes[i].longname && classes[i].longname.split(':').pop() === name))
+                ) {
+                    return classes[i];
+                }
+            }
+        };
+        var addInheritance = function(classDoc) {
+            if (!classDoc) {
+                return;
+            }
+
+            var className = classDoc.longname || classDoc.name;
+            if (!className || inheritanceVisited[className]) {
+                return;
+            }
+
+            inheritanceVisited[className] = true;
+            inheritanceChain.push(classDoc);
+            if (classDoc.augments && classDoc.augments.length) {
+                var parentName = normalizeClassName(classDoc.augments[0]);
+                addInheritance(findClass(parentName) || { name: parentName, longname: parentName });
+            }
+        };
+        if (doc.kind === 'class') {
+            addInheritance(doc);
+        }
+        if (inheritanceChain.length > 1) {
+    ?>
         <h3 class="subsection-title">Extends</h3>
-        <ul><?js doc.augments.forEach(function(a) { ?>
-            <?js if (a) { ?>
-            <?js  array=a.split('{'); ?>
-            <?js if (array.length == 1) {  ?>
-            <?js var url=self.typeLinks[a]||a;  ?>
-            <li><?js= self.linkto(url, a)  ?></li>
-            <?js }else{ ?>
-            <li><?js= self.linkto(array[1].substring(0,array[1].length-1),array[0]) ?></li>
-            <?js } ?>
-            <?js } ?>
-        <?js }); ?></ul>
+        <div><?js inheritanceChain.forEach(function(classDoc, index) { ?>
+            <?js if (index > 0) { ?> -&gt; <?js } ?><?js if (index === 0) { ?><?js= classDoc.name || classDoc.longname ?><?js } else { ?><?js var classLink = self.typeLinks[classDoc.longname] || classDoc.longname; ?><?js= self.linkto(classLink, classDoc.name || classDoc.longname) ?><?js } ?>
+        <?js }); ?></div>
+    <?js } ?>
+
+    <?js
+        var subclasses = [];
+        if (doc.kind === 'class' && doc.longname) {
+            self.find({kind: 'class'}).forEach(function(candidate) {
+                if (candidate.augments && candidate.augments.indexOf(doc.longname) !== -1) {
+                    subclasses.push(candidate);
+                }
+            });
+        }
+        if (subclasses.length) {
+    ?>
+        <h3 class="subsection-title">Subclasses</h3>
+            <div><?js subclasses.forEach(function(child, index) { ?>
+                <?js if (index > 0) { ?>, <?js } ?><?js= self.linkto(child.longname, child.name || child.longname) ?>
+            <?js }); ?></div>
     <?js } ?>
 
     <?js if (doc.mixes && doc.mixes.length) { ?>
