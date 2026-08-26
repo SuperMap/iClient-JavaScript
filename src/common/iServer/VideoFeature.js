@@ -6,14 +6,14 @@ import { Util } from '../commontypes/Util';
 /**
  * @class VideoFeature
  * @category iServer Data
- * @classdesc 视频要素类
+ * @classdesc 视频要素类，用于表示视频流及其空间范围等相关属性的要素。
  * @version 11.2.0
  * @param {Object} options - 参数。
  * @param {ModulePolygonAndBounds} options.geometry - 视频参数对应的视频视角空间范围，只支持矩形。
- * @param {string|number} [options.id] - 要素 ID。
+ * @param {string|number} [options.id] - 要素ID。
  * @param {string} [options.name] - 视频名称。
- * @param {string} [options.address] - 视频流地址。
- * @param {string} [options.attributes] - 描述要素的任意的可序列化属性。
+ * @param {string} [options.address] - 视频流地址。目前支持m3u8格式视频流。
+ * @param {string} [options.attributes] - 要素属性信息。
  * @usage
  */
 export class VideoFeature {
@@ -44,7 +44,7 @@ export class VideoFeature {
 
     /**
      * @member {Object} VideoFeature.prototype.attributes
-     * @description 描述要素的任意的可序列化属性。
+     * @description 要素属性信息
      */
     this.attributes = {};
     // ToDo
