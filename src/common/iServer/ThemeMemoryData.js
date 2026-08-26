@@ -7,7 +7,7 @@
  * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。制作专题图时，如果设置了内存数据，则会制作基于内存数据的专题图。
- * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。
+ * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。即使用外部传入的内存数据制作专题图，而非使用图层本身的数据。适用于在不改动源数据的情况下，灵活呈现不同业务场景下的专题数据。
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  * @usage
