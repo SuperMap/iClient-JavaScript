@@ -27,7 +27,7 @@ import { ServiceBase } from './ServiceBase';
                 console.log(serverResult);
             })
         })
- * @param {string} url - 服务地址。
+ * @param {string} url - 处理自动化服务地址，如 http://{ip}:{port}/iserver/services/geoprocessing/restjsr/gp/v2 。
  * @param {Object} options - 参数。
  * @usage
  */

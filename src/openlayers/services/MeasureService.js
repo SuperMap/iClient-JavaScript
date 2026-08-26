@@ -11,7 +11,7 @@ import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-com
  * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {string} url -  地图服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options -  参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

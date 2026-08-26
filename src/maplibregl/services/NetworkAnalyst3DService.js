@@ -15,9 +15,7 @@ import { NetworkAnalyst3DService as CommonNetworkAnalyst3DService } from '@super
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求网络分析服务，URL 应为：</br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {string} url - 三维网络分析服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

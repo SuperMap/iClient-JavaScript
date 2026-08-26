@@ -17,7 +17,7 @@ import CommonMatchImageService  from '@supermapgis/iclient-common/iServer/ImageS
  *      .getCollections(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

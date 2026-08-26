@@ -19,9 +19,7 @@ import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermapg
  *  .findPath(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求网络分析服务，URL 应为：</br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
- *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
+ * @param {string} url - 网络分析服务地址，如 http://{ip}:{port}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

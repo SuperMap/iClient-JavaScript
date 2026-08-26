@@ -19,7 +19,7 @@ import { ProcessingService as CommonProcessingService } from '@supermapgis/iclie
  *  .getKernelDensityJobs(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 分布式分析服务地址，如 http://{ip}:{port}/iserver/services/distributedanalyst/rest/v1/jobs 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。

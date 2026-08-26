@@ -21,7 +21,7 @@
  *      })
  * @extends {ServiceBase}
  * @version 10.1.0
- * @param {string} url - 服务地址。
+ * @param {string} url - Web 打印服务地址，如 http://{ip}:{port}/iserver/services/webprinting/rest/webprinting/v1 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

@@ -14,7 +14,7 @@ import { LayerInfoService as CommonLayerInfoService } from '@supermapgis/iclient
  * new LayerInfoService(url).getLayersInfo(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求地图服务,URL 应为：</br>
+ * @param {string} url - 地图服务地址。请求地图服务,URL 应为：</br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

@@ -15,7 +15,7 @@ import Point from 'ol/geom/Point';
  *            提供：范围查询，SQL 查询，空间查询，距离查询。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

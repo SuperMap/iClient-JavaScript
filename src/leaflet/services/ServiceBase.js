@@ -7,7 +7,7 @@ import L from "leaflet";
  * @class ServiceBase
  * @classdesc L.supermap 服务基类。
  * @category  iServer Core
- * @param {string} url - 服务地址。
+ * @param {string} url - 服务地址。具体地址类型由子类决定。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

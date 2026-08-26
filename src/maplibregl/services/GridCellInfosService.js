@@ -16,8 +16,7 @@ import { GetGridCellInfosService } from '@supermapgis/iclient-common/iServer/Get
  *  .getGridCellInfos(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求地图服务，URL 应为：</br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

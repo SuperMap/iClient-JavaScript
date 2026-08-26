@@ -17,7 +17,7 @@ import {ServiceBase} from './ServiceBase';
  *      new ProcessingService(url,options).getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 分布式分析服务地址，如 http://{ip}:{port}/iserver/services/distributedanalyst/rest/v1/jobs 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

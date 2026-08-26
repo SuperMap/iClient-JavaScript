@@ -18,7 +18,7 @@ import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } 
  *   //doSomething
  * })
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 交通换乘分析服务地址，如 http://{ip}:{port}/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

@@ -16,7 +16,7 @@ import { DataFlowService as DataFlow } from '@supermapgis/iclient-common/iServer
  *  .queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据流服务地址，如 ws://{ip}:{port}/iserver/services/dataflowTest/dataflow 。
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
  * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。

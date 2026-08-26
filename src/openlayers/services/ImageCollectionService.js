@@ -16,7 +16,7 @@ import CommonMatchImageCollectionService from '@supermapgis/iclient-common/iServ
  *      new ImageCollectionService(url,options).getLegend(queryParams,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} options.collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
  * @param {string} [options.proxy] - 服务代理地址。

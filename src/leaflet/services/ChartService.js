@@ -23,7 +23,7 @@
  * }).queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-chart/rest/maps/GB4X0000_52000 。
  * @param {string} [dataUrl] - 数据服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

@@ -14,7 +14,7 @@ import {DataFlowService as DataFlow} from '@supermapgis/iclient-common/iServer/D
  * @category  iServer DataFlow
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据流服务地址，如 ws://{ip}:{port}/iserver/services/dataflowTest/dataflow 。
  * @param {Object} options - 参数。
  * @param {function} [options.style] - 设置数据加载样式。
  * @param {function} [options.onEachFeature] -  给该元素绑定事件和弹窗。

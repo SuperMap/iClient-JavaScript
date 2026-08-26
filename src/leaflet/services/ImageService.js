@@ -20,7 +20,7 @@ import CommonMatchImageService from '@supermapgis/iclient-common/iServer/ImageSe
  *      .getCollections(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 影像服务地址，如 http://{ip}:{port}/iserver/services/imageservice-hainan/restjsr 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

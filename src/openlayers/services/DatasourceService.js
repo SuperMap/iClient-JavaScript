@@ -10,7 +10,7 @@ import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/Set
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。提供方法：查询数据源集合、查询指定数据源信息、设置指定数据源信息。可以获取的数据源信息包括数据源名称、数据源描述、引擎类型、距离单位、坐标单位、投影信息等。
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。

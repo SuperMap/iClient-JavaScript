@@ -11,7 +11,7 @@ import { UpdateDatasetParameters } from '@supermapgis/iclient-common/iServer/Upd
  * @category  iServer Data Dataset
  * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
