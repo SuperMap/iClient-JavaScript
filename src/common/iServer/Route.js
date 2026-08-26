@@ -19,7 +19,6 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
- * @param {string} [options.type] - 数据类型，如："LINEM"。
  * @extends GeometryCollection
  * @usage
  */
@@ -95,7 +94,7 @@ export class Route extends Collection {
          * @member {string} Route.prototype.type
          * @description 服务端几何对象类型。
          */
-        this.type = null;
+        this.type = "LINEM";
 
         /**
          * @member {Array.<string>} [Route.prototype.componentTypes=LineString]

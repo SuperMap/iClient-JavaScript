@@ -34,7 +34,7 @@ export class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 根据数据源名称查询该数据源下所有数据集的信息。
      * @param {string} datasourceName - 数据源名称。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
@@ -48,7 +48,7 @@ export class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。

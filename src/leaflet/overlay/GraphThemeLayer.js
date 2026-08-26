@@ -24,11 +24,8 @@
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} options.themeFields - 指定创建专题图字段。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
- * @param {Object} [options.cache] - 缓存。
- * @param {Object} [options.charts] - 图表。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层不透明度。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下可设的基础属性:</br>
  * @param {number} options.chartsSetting.width - 专题要素（图表）宽度，单位为像素。
  * @param {number} options.chartsSetting.height - 专题要素（图表）高度，单位为像素。

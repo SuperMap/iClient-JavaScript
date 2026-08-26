@@ -23,15 +23,15 @@ import {
  * @param {Object} options - 参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为 'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link MapVLayer} 方式绘制实时数据。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
- * @param {string} [options.excludeField] - 排除字段。
+ * @param {string} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
- * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
+ * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上的函数。当接收到数据时，内部会调用此函数，并传递 GeoJSON 点要素及其经纬度坐标。
  `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式的函数。返回参数为{@link L.Path-option}。当接收到数据时，内部会调用此函数，并传递 GeoJSON 要素</br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -121,8 +121,8 @@ export var DataFlowLayer = L.LayerGroup.extend({
   },
   /**
    * @function DataFlowLayer.prototype.setExcludeField
-   * @description 设置唯一字段。
-   * @param {string} excludeField - 唯一字段。
+   * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+   * @param {string} excludeField - 过滤字段。
    */
   setExcludeField: function (excludeField) {
     this.dataService.setExcludeField(excludeField);

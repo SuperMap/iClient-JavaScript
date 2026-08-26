@@ -27,7 +27,6 @@ import Attributions from '../../core/Attributions'
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
- * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @fires ThemeLayer#featuresremoved
  * @usage
  */

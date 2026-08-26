@@ -34,7 +34,7 @@ export class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集合查询服务。
+     * @description 获取当前服务下所有数据源信息。
      * @example
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
@@ -48,7 +48,7 @@ export class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasource
-     * @description 数据源信息查询服务。
+     * @description 根据数据源名称获取指定数据源的信息。
      * @example
      *   new DatasourceService(url).getDatasource(datasourceName,function(result){
      *     //doSomething

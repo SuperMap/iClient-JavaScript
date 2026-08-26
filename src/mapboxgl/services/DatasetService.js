@@ -35,7 +35,7 @@ export class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 根据数据源名称查询该数据源下所有数据集的信息。
      * @example
      *   new DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
@@ -53,7 +53,7 @@ export class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息
      * @example
      *   new DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething

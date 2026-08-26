@@ -18,8 +18,8 @@ import { DataFlowService as DataFlow } from '@supermapgis/iclient-common/iServer
  * })
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - 排除字段。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
+ * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @fires DataFlowService#broadcastSocketConnected
@@ -129,8 +129,8 @@ export class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -140,8 +140,8 @@ export class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @description 空间范围，只有在该范围内的要素才能被接收。
+     * @param {GeoJSONObject} geometry - 空间范围。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

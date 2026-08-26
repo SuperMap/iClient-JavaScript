@@ -33,7 +33,7 @@ export class DatasetService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDatasets
-     * @description 数据集集合查询服务。
+     * @description 根据数据源名称查询该数据源下所有数据集的信息。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
@@ -51,7 +51,7 @@ export class DatasetService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDataset
-     * @description 数据集信息查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething

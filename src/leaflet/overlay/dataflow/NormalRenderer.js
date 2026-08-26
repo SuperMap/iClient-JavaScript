@@ -13,7 +13,7 @@ import '../../core/Base';
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
- * @param {string} [options.excludeField] - 排除字段。
+ * @param {string} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
  * @usage
  */
