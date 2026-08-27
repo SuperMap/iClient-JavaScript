@@ -382,3 +382,57 @@ describe('WebMapV3 - _getLegendInfos', () => {
     });
   });
 });
+
+describe('WebMapV3 - legend symbol/style helpers', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = createWebMapV3Instance();
+  });
+
+  describe('_isAllPictureSymbolSaved', () => {
+    it('should return false when symbolsContent type is custom for line symbol', () => {
+      // custom 为表达式类型，图例暂不支持，直接返回 false
+      const symbolsContent = {
+        type: 'custom',
+        value: { style: { 'line-pattern': 'some-image' } }
+      };
+
+      expect(instance._isAllPictureSymbolSaved('line', symbolsContent, {})).toBe(false);
+    });
+
+    it('should return false when symbolsContent type is custom for polygon symbol', () => {
+      const symbolsContent = {
+        type: 'custom',
+        values: [{ value: { style: { 'fill-pattern': 'some-image' } } }],
+        defaultValue: { style: { 'fill-pattern': 'default-image' } }
+      };
+
+      expect(instance._isAllPictureSymbolSaved('polygon', symbolsContent, {})).toBe(false);
+    });
+  });
+
+  describe('_getLegendStyleType', () => {
+    it('should return CUSTOM when currentType is custom', () => {
+      const result = instance._getLegendStyleType({
+        styleField: 'color',
+        currentType: 'custom',
+        custom: [],
+        interpolateInfo: {}
+      });
+
+      expect(result).toBe('CUSTOM');
+    });
+
+    it('should return CUSTOM for non-color styleField when currentType is custom', () => {
+      const result = instance._getLegendStyleType({
+        styleField: 'width',
+        currentType: 'custom',
+        custom: [{ key: 'expr' }],
+        interpolateInfo: { type: 'custom' }
+      });
+
+      expect(result).toBe('CUSTOM');
+    });
+  });
+});

@@ -127,7 +127,8 @@ const LEGEND_SYMBOL_DEFAULT = {
 const LegendType = {
   LINEAR: 'LINEAR',
   UNIQUE: 'UNIQUE',
-  RANGE: 'RANGE'
+  RANGE: 'RANGE',
+  CUSTOM: 'CUSTOM'
 };
 
 const SymbolType = {
@@ -1005,6 +1006,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     if (currentType === 'simple') {
       return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
     }
+    if(currentType === 'custom') {
+      // 表达式暂不支持图例显示
+      return false;
+    }
     const styles = symbolsContent.values.map((v) => v.value).concat(symbolsContent.defaultValue);
     return styles.every((v) => {
       return !!this._getImageIdFromValue(v.style, SymbolType[symbolType]).length;
@@ -1170,6 +1175,9 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         return LegendType.LINEAR;
       }
       return LegendType.UNIQUE;
+    }
+    if(currentType === 'custom') {
+      return LegendType.CUSTOM;
     }
     return LegendType.RANGE;
   }
