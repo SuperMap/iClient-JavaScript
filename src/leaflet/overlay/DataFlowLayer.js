@@ -31,7 +31,7 @@ import {
  `function(geoJsonPoint, latlng) {
                                                 return L.marker(latlng);
                                             }`
- * @param {function} [options.style] - 定义点、线、面要素样式的函数。返回参数为{@link L.Path-option}。当接收到数据时，内部会调用此函数，并传递 GeoJSON 要素</br>
+ * @param {function} [options.style] - 定义点、线、面要素样式的函数。返回参数为{@link L.Path-option}。当接收到数据时，内部会调用此函数，并传递 GeoJSON 要素。</br>
  `function (feature) {
                                                     return {
                                                         fillColor: "red",
@@ -132,7 +132,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
 
   /**
    * @function DataFlowLayer.prototype.setGeometry
-   * @description 设置几何要素。
+   * @description 设置空间范围，只有在该范围内的要素才能被接收。
    * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
    */
   setGeometry: function (geometry) {

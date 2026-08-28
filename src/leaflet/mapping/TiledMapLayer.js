@@ -29,7 +29,7 @@ import Attributions from '../core/Attributions';
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {Object} [options.prjCoordSys] - 请求的地图瓦片的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行坐标转换，并返回坐标转换后的地图瓦片。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 该类可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
+ * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {CRS} [options.crs] - 坐标系统类。
  * @param {string} [options.tileProxy] - 服务代理地址。

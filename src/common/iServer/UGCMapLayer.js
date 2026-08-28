@@ -19,7 +19,7 @@ import {UGCLayer} from './UGCLayer';
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {number} [options.symbolScale] - 图层符号缩放的基准比例尺。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 该类可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @usage
  */
 export class UGCMapLayer extends UGCLayer {
@@ -77,7 +77,7 @@ export class UGCMapLayer extends UGCLayer {
         /**
          * @member {OverlapDisplayedOptions} UGCMapLayer.prototype.overlapDisplayedOptions
          * @description 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。<br>
-         * 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 该类可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
+         * 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
          */
         this.overlapDisplayedOptions = null;
         

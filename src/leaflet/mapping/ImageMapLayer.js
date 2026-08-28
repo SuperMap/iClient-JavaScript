@@ -27,7 +27,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域（区域为一个面对象）。当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内，是否重叠显示。
- * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 该类可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
+ * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {string} [options.alt] - 图像无法显示时的提示文字。
  * @param {string} [options.pane='tilePane'] - 图层所归属的 map DOM 的分组。

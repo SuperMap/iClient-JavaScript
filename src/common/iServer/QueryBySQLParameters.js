@@ -20,7 +20,7 @@ import {QueryParameters} from './QueryParameters';
  * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
