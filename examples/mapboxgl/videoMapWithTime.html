@@ -1,0 +1,141 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoMapWithTime"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance,proj4,turf,videojs,opencv" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
+      var videoMap;
+      var count = 0;
+      var activePopups = [];
+
+      function queryFeatures(datasetName, dataSourceName) {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: datasetName + '@' + dataSourceName,
+            attributeFilter: 'SMID > 0'
+          },
+          targetEpsgCode: '4326',
+          datasetNames: [dataSourceName + ':' + datasetName]
+        });
+        return new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam);
+      }
+
+      function addVectorDataset(datasetName) {
+        queryFeatures(datasetName, 'TFxinqu').then(function (serviceResult) {
+          var features = serviceResult.result.features;
+          var sourceId = 'dynamic-source-' + count;
+          var layerId = 'dynamic-layer-' + count;
+          count++;
+          videoMap.addSource(sourceId, { type: 'geojson', data: features });
+          var type = features.features[0].geometry.type;
+          var layer = {
+            id: layerId,
+            type: type === 'Point' ? 'circle' : type === 'LineString' ? 'line' : 'fill',
+            source: sourceId,
+            paint: type === 'Point'
+              ? { 'circle-radius': 5, 'circle-color': '#ff5a36', 'circle-stroke-width': 1, 'circle-stroke-color': '#ffffff' }
+              : type === 'LineString'
+                ? { 'line-width': 4, 'line-color': '#ff9f1c' }
+                : { 'fill-color': '#48cae4', 'fill-opacity': 0.55 }
+          };
+          videoMap.addLayer(layer);
+          videoMap.map.on('click', layerId, function (e) {
+            var feature = e.features[0];
+            var properties = feature.properties;
+            var html =
+              '<div style="max-height:300px;overflow:auto;min-width:160px;">' +
+              '<h4 style="margin:0 0 8px;font-size:13px;">' + datasetName + '</h4>' +
+              '<table style="border-collapse:collapse;font-size:12px;">';
+            Object.keys(properties).forEach(function (key) {
+              html +=
+                '<tr>' +
+                '<td style="padding:2px 12px 2px 0;color:#888;vertical-align:top;">' + key + '</td>' +
+                '<td style="padding:2px 0;vertical-align:top;">' + properties[key] + '</td>' +
+                '</tr>';
+            });
+            html += '</table></div>';
+            var spatialPoint = videoMap.toSpatialCoordinate(e.lngLat);
+            var popup = new mapboxgl.Popup({ closeButton: true, closeOnClick: true })
+              .setLngLat(e.lngLat)
+              .setHTML(html)
+              .addTo(videoMap.map);
+            activePopups.push({ popup: popup, spatialPoint: spatialPoint });
+            popup.on('close', function () {
+              activePopups = activePopups.filter(function (item) {
+                return item.popup !== popup;
+              });
+            });
+          });
+          videoMap.map.on('mouseenter', layerId, function () {
+            videoMap.map.getCanvas().style.cursor = 'pointer';
+          });
+          videoMap.map.on('mouseleave', layerId, function () {
+            videoMap.map.getCanvas().style.cursor = '';
+          });
+        });
+      }
+
+      function createVideoMap() {
+        queryFeatures('DJI_09304', 'VideoData').then(function (serviceResult) {
+          var feature = serviceResult.result.features.features[0];
+          var parameters = feature.properties.videoParameters.videoParameterList.map(function (item) {
+            var calibration = item.calibrationModel;
+            var camera = calibration.cameraLocation;
+            return {
+              time: item.time,
+              fovX: calibration.fovX,
+              fovY: calibration.fovY,
+              centerX: calibration.centerX,
+              centerY: calibration.centerY,
+              pitch: camera.cameraPitch,
+              roll: camera.cameraRoll,
+              yaw: camera.cameraYaw,
+              x: camera.cameraX,
+              y: camera.cameraY,
+              z: camera.cameraZ
+            };
+          });
+          videoMap = new mapboxgl.supermap.VideoMap({
+            url: feature.properties.address,
+            videoParameters: parameters,
+            interval: 0.1,
+            vectorUpdateInterval: 0.1,
+            styleOptions: {
+              sprite: 'https://iclient.supermap.io/web/styles/street/sprite',
+              glyphs: 'https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf'
+            }
+          });
+          videoMap.on('load', function () {
+            ['trafficGuideLine', 'road', 'building', 'landuse'].forEach(addVectorDataset);
+          });
+          videoMap.on('vectorupdate', function () {
+            activePopups.forEach(function (item) {
+              if (!item.spatialPoint) {
+                return;
+              }
+              var lngLat = videoMap.toVideoMapCoordinate(item.spatialPoint);
+              if (lngLat) {
+                item.popup.setLngLat(lngLat);
+              }
+            });
+          });
+        });
+      }
+
+      createVideoMap();
+    </script>
+  </body>
+</html>

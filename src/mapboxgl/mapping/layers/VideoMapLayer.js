@@ -93,11 +93,58 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     if (this.autoplay) {
       this.map.getSource(this.id).play();
     }
+    this._bindTimeUpdates();
     this.fire('loaded', {
       originCoordsRightBottom: this.originCoordsRightBottom,
       originCoordsLeftTop: this.originCoordsLeftTop,
       videoWidth: this.videoWidth,
       videoHeight: this.videoHeight
+    });
+  }
+
+  _bindTimeUpdates() {
+    const videoElement = this.video.tech && this.video.tech().el();
+    if (!videoElement) {
+      return;
+    }
+    this._statsStartTime = performance.now();
+    this._statsFrameCount = 0;
+    this._statsLastMediaTime = 0;
+    if (videoElement.requestVideoFrameCallback) {
+      const update = (now, metadata) => {
+        this._statsFrameCount++;
+        this._statsLastMediaTime = metadata.mediaTime;
+        this.fire('timeupdate', { time: metadata.mediaTime });
+        if (this._statsFrameCount % 30 === 0) {
+          this._fireVideoStats(videoElement, metadata.mediaTime);
+        }
+        this.frameCallbackId = videoElement.requestVideoFrameCallback(update);
+      };
+      this.frameCallbackId = videoElement.requestVideoFrameCallback(update);
+    } else {
+      this.timeUpdateHandler = () => {
+        this._statsFrameCount++;
+        this._statsLastMediaTime = this.video.currentTime();
+        this.fire('timeupdate', { time: this.video.currentTime() });
+        if (this._statsFrameCount % 30 === 0) {
+          this._fireVideoStats(videoElement, this._statsLastMediaTime);
+        }
+      };
+      this.video.on('timeupdate', this.timeUpdateHandler);
+    }
+  }
+
+  _fireVideoStats(videoElement, mediaTime) {
+    const elapsed = (performance.now() - this._statsStartTime) / 1000;
+    const quality = videoElement.getVideoPlaybackQuality ? videoElement.getVideoPlaybackQuality() : null;
+    this.fire('videostats', {
+      mediaTime,
+      decodedFrames: quality ? quality.totalVideoFrames : videoElement.webkitDecodedFrameCount,
+      droppedFrames: quality ? quality.droppedVideoFrames : videoElement.webkitDroppedFrameCount,
+      measuredFps: elapsed ? this._statsFrameCount / elapsed : 0,
+      videoWidth: this.videoWidth,
+      videoHeight: this.videoHeight,
+      duration: this.video.duration()
     });
   }
 
@@ -146,6 +193,13 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    */
   remove() {
     if (this.id) {
+      const videoElement = this.video && this.video.tech && this.video.tech().el();
+      if (videoElement && this.frameCallbackId && videoElement.cancelVideoFrameCallback) {
+        videoElement.cancelVideoFrameCallback(this.frameCallbackId);
+      }
+      if (this.timeUpdateHandler) {
+        this.video.off('timeupdate', this.timeUpdateHandler);
+      }
       this.map.removeLayer(this.id);
       this.map.removeSource(this.id);
       document.body.removeChild(document.getElementById(this.id));

@@ -55,6 +55,15 @@ export default class CoordTransfer {
     if (!this.cv) {
       return;
     }
+    if (this.rotationMatrix) {
+      this.rotationMatrix.delete();
+    }
+    if (this.translationMatrix) {
+      this.translationMatrix.delete();
+    }
+    if (this.k) {
+      this.k.delete();
+    }
     this.rotationMatrix = this.toRotationMatrix(pitch, roll, yaw);
     this.translationMatrix = this.toTranslationMatrix(x, y, z);
     this.k = this.toCameraMatrix(fx, fy, centerX, centerY);
@@ -112,9 +121,15 @@ export default class CoordTransfer {
     ]);
 
     let tempResult = new this.cv.Mat(3, 3, this.cv.CV_64FC1);
-    this.cv.gemm(rx, ry, 1, new this.cv.Mat(), 0, tempResult);
-    this.cv.gemm(tempResult, rz, 1, new this.cv.Mat(), 0, tempResult);
+    let zeroMat = new this.cv.Mat();
+    this.cv.gemm(rx, ry, 1, zeroMat, 0, tempResult);
+    this.cv.gemm(tempResult, rz, 1, zeroMat, 0, tempResult);
     this.cv.Rodrigues(tempResult, rotationMatrix);
+    rx.delete();
+    ry.delete();
+    rz.delete();
+    tempResult.delete();
+    zeroMat.delete();
     return rotationMatrix;
   }
 
@@ -134,8 +149,12 @@ export default class CoordTransfer {
     let tvecs = this.cv.matFromArray(3, 1, this.cv.CV_64FC1, [-x, -y, -z]);
 
     let rotationMatrix = new this.cv.Mat(3, 3, this.cv.CV_64FC1);
+    let zeroMat = new this.cv.Mat();
     this.cv.Rodrigues(this.rotationMatrix, rotationMatrix);
-    this.cv.gemm(rotationMatrix, tvecs, 1.0, new this.cv.Mat(), 0, translationMatrix);
+    this.cv.gemm(rotationMatrix, tvecs, 1.0, zeroMat, 0, translationMatrix);
+    tvecs.delete();
+    rotationMatrix.delete();
+    zeroMat.delete();
     return translationMatrix;
   }
 
@@ -159,13 +178,17 @@ export default class CoordTransfer {
    */
   toVideoCoordinate(coord) {
     if (!this.cv || !this.cv.Mat) {
-      return [];
+      return { data64F: [] };
     }
     let emptyMat = new this.cv.Mat();
     let point3 = this.cv.matFromArray(3, 1, this.cv.CV_64FC1, [coord[0], coord[1], 0]);
     let point2 = new this.cv.Mat(2, 1, this.cv.CV_64FC1);
     this.cv.projectPoints(point3, this.rotationMatrix, this.translationMatrix, this.k, emptyMat, point2);
-    return point2;
+    const data64F = point2.data64F.length ? [point2.data64F[0], point2.data64F[1]] : [];
+    emptyMat.delete();
+    point3.delete();
+    point2.delete();
+    return { data64F };
   }
   /**
    * @function CoordTransfer.prototype.toSpatialCoordinate
@@ -177,22 +200,32 @@ export default class CoordTransfer {
     if (!this.cv || !this.cv.Mat) {
       return [];
     }
-    let uvPoint = new this.cv.matFromArray(3, 1, this.cv.CV_64FC1, [videoPoint[0], videoPoint[1], 1.0]);
+    let uvPoint = this.cv.matFromArray(3, 1, this.cv.CV_64FC1, [videoPoint[0], videoPoint[1], 1.0]);
     let rotationMatrix = new this.cv.Mat(3, 3, this.cv.CV_64FC1);
     this.cv.Rodrigues(this.rotationMatrix, rotationMatrix);
+    let zeroMat = new this.cv.Mat();
     let tempMat = new this.cv.Mat();
-    this.cv.gemm(rotationMatrix.inv(3), this.k.inv(3), 1, new this.cv.Mat(), 0, tempMat);
-    this.cv.gemm(tempMat, uvPoint, 1, new this.cv.Mat(), 0, tempMat);
+    this.cv.gemm(rotationMatrix.inv(3), this.k.inv(3), 1, zeroMat, 0, tempMat);
+    this.cv.gemm(tempMat, uvPoint, 1, zeroMat, 0, tempMat);
     let tempMat2 = new this.cv.Mat();
-    this.cv.gemm(rotationMatrix.inv(3), this.translationMatrix, 1, new this.cv.Mat(), 0, tempMat2);
+    this.cv.gemm(rotationMatrix.inv(3), this.translationMatrix, 1, zeroMat, 0, tempMat2);
     let zConst = 0;
     let s = zConst + tempMat2.data64F[2];
     s /= tempMat.data64F[2];
     let result = new this.cv.Mat();
-    this.cv.gemm(this.k.inv(3), uvPoint, 1, new this.cv.Mat(), 0, result);
-    this.cv.multiply(result, new this.cv.matFromArray(4, 1, this.cv.CV_64FC1, [s, 0, 0, 0]), result);
+    let scaleMat = this.cv.matFromArray(4, 1, this.cv.CV_64FC1, [s, 0, 0, 0]);
+    this.cv.gemm(this.k.inv(3), uvPoint, 1, zeroMat, 0, result);
+    this.cv.multiply(result, scaleMat, result);
     this.cv.subtract(result, this.translationMatrix, result);
-    this.cv.gemm(rotationMatrix.inv(3), result, 1, new this.cv.Mat(), 0, result);
-    return result.data64F;
+    this.cv.gemm(rotationMatrix.inv(3), result, 1, zeroMat, 0, result);
+    const data64F = [result.data64F[0], result.data64F[1], result.data64F[2]];
+    uvPoint.delete();
+    rotationMatrix.delete();
+    zeroMat.delete();
+    tempMat.delete();
+    tempMat2.delete();
+    scaleMat.delete();
+    result.delete();
+    return data64F;
   }
 }

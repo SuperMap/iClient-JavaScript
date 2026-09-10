@@ -12,6 +12,7 @@ import proj4 from 'proj4';
  */
 export default class GeojsonSource {
   constructor(videoMap) {
+    this.videoMap = videoMap;
     const { coordTransfer, originCoordsRightBottom, originCoordsLeftTop, videoWidth, videoHeight, map } = videoMap;
     this.map = map;
     this.coordTransfer = coordTransfer;
@@ -31,27 +32,42 @@ export default class GeojsonSource {
     if (this.map.getSource(id)) {
       return;
     }
-    const newData = cloneDeep(source.data);
+    this.id = id;
+    this.source = source;
+    this.originalData = cloneDeep(source.data);
+    const newData = this._transformData(this.originalData);
+    source.data = newData;
+    this.map.addSource(id, source);
+  }
+
+  update() {
+    const source = this.map.getSource(this.id);
+    if (!source || !this.originalData) {
+      return;
+    }
+    source.setData(this._transformData(this.originalData));
+  }
+
+  _transformData(data) {
+    const { coordTransfer, originCoordsRightBottom, originCoordsLeftTop, videoWidth, videoHeight } = this.videoMap;
+    const newData = cloneDeep(data);
     featureEach(newData, (currentFeature) => {
       coordEach(currentFeature, (curCoords) => {
         let transCurCoords = proj4('EPSG:4326', 'EPSG:3857', curCoords);
-        let transCoords = this.coordTransfer.toVideoCoordinate(transCurCoords);
+        let transCoords = coordTransfer.toVideoCoordinate(transCurCoords);
         curCoords.length = 0;
         curCoords.push(
           ...transformCoord({
             videoPoint: transCoords.data64F,
-            videoWidth: this.videoWidth,
-            videoHeight: this.videoHeight,
-            originCoordsRightBottom: this.originCoordsRightBottom,
-            originCoordsLeftTop: this.originCoordsLeftTop
+            videoWidth,
+            videoHeight,
+            originCoordsRightBottom,
+            originCoordsLeftTop
           })
         );
       });
     });
-
-    source.data = newData;
-
-    this.map.addSource(id, source);
+    return newData;
   }
   /**
    * @function GeojsonSource.prototype.remove
@@ -59,7 +75,9 @@ export default class GeojsonSource {
    * @param {Object} id - 数据源 id。
    * @param {Object} source
    */
-  remove(id) {
-    this.map.addSource(id);
+  remove() {
+    if (this.id && this.map.getSource(this.id)) {
+      this.map.removeSource(this.id);
+    }
   }
 }

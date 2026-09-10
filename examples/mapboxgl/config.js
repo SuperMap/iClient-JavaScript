@@ -1882,6 +1882,20 @@ var exampleConfig = {
                     version: '11.2.0',
                     thumbnail: 'videoLayerWithTime.png',
                     fileName: 'videoLayerWithTime'
+                                    },
+                                    {
+                                        name: '动态视频地图',
+                                        name_en: 'Dynamic Video Map',
+                                        version: '12.1.1',
+                                        thumbnail: 'videoMap.png',
+                                        fileName: 'videoMapWithTime'
+                  },
+                  {
+                    name: '动态视频地图 - 淮南',
+                    name_en: 'Dynamic Video Map - Huainan',
+                    version: '12.1.1',
+                    thumbnail: 'videoMap.png',
+                    fileName: 'videoMapWithTime_huainan'
                   }
                 ]
             }
