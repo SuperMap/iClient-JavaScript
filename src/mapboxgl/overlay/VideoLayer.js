@@ -129,6 +129,7 @@
        this._initParameters(this.videoParameters[0]).then((coordTransfer) => {
          this.coordTransfer = coordTransfer;
          this.timeParams = {};
+         let baseRatio;
          this.videoParameters.forEach((dataItem) => {
            const { pitch, roll, yaw, x, y, z, fovX, fovY, centerX, centerY } = dataItem;
            const time = dataItem.time || 0;
@@ -186,16 +187,24 @@
            let tl = map.project([result[0], result[1]]);
            let size = [Math.abs(br.x - tl.x), Math.abs(br.y - tl.y)];
            let ratio = size[0] / size[1];
+           if (baseRatio === undefined) {
+             baseRatio = ratio;
+           }
            this.timeParams[time].ratio = ratio;
-           this.timeParams[time].dsize = new this.cv.Size(realHeight * ratio, realHeight);
+           // 输出帧尺寸必须全程恒定：video source 的 WebGL 纹理按首帧尺寸创建，
+           // 后续帧尺寸一旦变化，texSubImage2D 会静默失败，表现为视频消失/后半段画面不更新。
+           // realHeight 恒定（视频高或裁剪区高），仅宽度随 ratio 变化，
+           // 这里统一为基准时刻宽度，并在下方把目标点横向缩放对齐，显示几何保持等价。
+           this.timeParams[time].dsize = new this.cv.Size(realHeight * baseRatio, realHeight);
            let realX = realHeight * ratio;
            let realY = realHeight;
            let ratioX = realX / size[0];
            let ratioY = realY / size[1];
            let realRatio = Math.min(ratioX, ratioY);
            pointCoords = this._getPixelBbox(pointCoords, result, this.timeParams[time].allContained);
-           pointCoords = pointCoords.map((item) => {
-             return item * realRatio;
+           const scaleX = baseRatio / ratio;
+           pointCoords = pointCoords.map((item, index) => {
+             return (index % 2 === 0 ? item * scaleX : item) * realRatio;
            });
            originBounds = this._getPixelBbox(originBounds);
            this.timeParams[time].originBounds = originBounds.map((item) => {
@@ -271,8 +280,25 @@
      that.dsize = that.timeParams[that.beginIndex].dsize;
      let dstTri = that.timeParams[that.beginIndex].dstTri;
      let canvas = document.createElement('canvas');
+     // 裁剪遮罩只依赖基准参数（originBounds / dsize 均恒定），创建一次即可。
+     // 原实现每帧新建 clipMat/dst1 且从不 delete，WASM 内存只增不减，
+     // 最终 OpenCV 分配失败，表现为画面不再更新。
      let { clipMat, dst1 } = this._updateMask(canvas, that.timeParams[that.beginIndex].realHeight, that.timeParams[that.beginIndex].ratio);
      let count = 0;
+     let lastGoodFrame = null;
+     // 输出帧尺寸已恒定，复用同一 ImageData，避免每帧分配约 30MB(4K) 大数组带来的 GC 停顿
+     let outFrame = null;
+     // 单应矩阵只在时间参数切换（dstTri 变化）时改变，缓存复用：
+     // 省掉每帧一次 findHomography 的 WASM 调用及其内部临时 Mat 分配
+     let cachedM = null;
+     let cachedDstTri = null;
+     // 自适应跳帧状态：4K 帧透视变换耗时(约 30~80ms)可能超过视频帧间隔(33ms)，
+     // 处理不过来时逐帧硬算会堆积阻塞主线程，表现为画面与位置一起卡。
+     // 记录每帧处理耗时，处理不过来时复用上一帧，等视频时间推进足够再处理新帧，
+     // 把"卡死式掉帧"变成"均匀降帧"。
+     const FRAME_INTERVAL = 1 / 30;
+     let lastProcessCost = 0;
+     let lastProcessTime = -1;
      const videoEle = this.video.tech().el();
      let current = 0;
      if (this.videoParameters.length > 1 && videoEle && videoEle.requestVideoFrameCallback) {
@@ -280,58 +306,147 @@
          current = metadata.mediaTime;
          videoEle.requestVideoFrameCallback(updateCanvas);
        };
- 
+
        videoEle.requestVideoFrameCallback(updateCanvas);
      }
+     // setCoordinates 会销毁并重建 source 的 WebGL 顶点缓冲，并触发 source 元数据事件。
+     // 原实现用 setTimeout(0)，执行时机可能落在渲染中途，与渲染管线形成竞态，
+     // 报 enableAttributes undefined，视频闪现。这里改为 rAF（帧间隙执行）+ 50ms 节流
+     // （位置更新 20Hz 足够平滑）+ 变化阈值，把调用频率和时机收敛到安全范围。
+     let coordRafId = 0;
+     let pendingResult = null;
+     let lastCoordTime = 0;
+     let lastAppliedResult = null;
+     const applyCoords = () => {
+       coordRafId = 0;
+       const r = pendingResult;
+       if (!r) {
+         return;
+       }
+       const now = performance.now();
+       if (now - lastCoordTime < 50) {
+         // 距上次更新不足 50ms，下一帧再试（不丢弃，保证最终位置收敛）
+         coordRafId = requestAnimationFrame(applyCoords);
+         return;
+       }
+       pendingResult = null;
+       if (!that.map || !that.map.getSource(that.layerId)) {
+         return;
+       }
+       lastCoordTime = now;
+       lastAppliedResult = r;
+       that.map.getSource(that.layerId).setCoordinates([
+         [r[0], r[3]],
+         [r[2], r[3]],
+         [r[2], r[1]],
+         [r[0], r[1]]
+       ]);
+     };
+     const scheduleSetCoordinates = (r) => {
+       // 变化小于约 1cm 时不更新，避免元数据事件风暴
+       if (lastAppliedResult && !pendingResult &&
+         Math.abs(r[0] - lastAppliedResult[0]) < 1e-7 &&
+         Math.abs(r[1] - lastAppliedResult[1]) < 1e-7 &&
+         Math.abs(r[2] - lastAppliedResult[2]) < 1e-7 &&
+         Math.abs(r[3] - lastAppliedResult[3]) < 1e-7) {
+         return;
+       }
+       pendingResult = r;
+       if (!coordRafId) {
+         coordRafId = requestAnimationFrame(applyCoords);
+       }
+     };
      map.addSource(this.layerId, {
        type: 'video',
        urls: [url],
        drawImageCallback(frame) {
-         if (that.videoParameters.length > 1) {
-           let time = current || that.video.currentTime();
-           let res = that.finder.findNearest(time);
-           if (res) {
-             count = res.value;
-           }
- 
-           if (count) {
-             let curData = that.timeParams[count];
-             count = 0;
-             if (curData) {
-               that.dsize = curData.dsize;
-               dstTri = curData.dstTri;
-               result = curData.result;
-               setTimeout(() => {
-                 that.map.getSource(that.layerId).setCoordinates([
-                   [result[0], result[3]],
-                   [result[2], result[3]],
-                   [result[2], result[1]],
-                   [result[0], result[1]]
-                 ])
-               }, 0);
+         let src = null;
+         let dst = null;
+         let M = null;
+         try {
+           let curData = null;
+           if (that.videoParameters.length > 1) {
+             let time = current || that.video.currentTime();
+             let res = that.finder.findNearest(time);
+             if (res) {
+               count = res.value;
+             }
+
+             if (count) {
+               curData = that.timeParams[count];
+               count = 0;
+               if (curData) {
+                 that.dsize = curData.dsize;
+                 dstTri = curData.dstTri;
+                 result = curData.result;
+                 scheduleSetCoordinates(result);
+               }
              }
            }
-         }
-         let src = that.cv.matFromImageData(frame);
-         let dst = new that.cv.Mat();
-         let M = that.cv.findHomography(srcTri, dstTri);
-         that.cv.warpPerspective(src, dst, M, that.dsize);
-         let newFrame;
-         if (that.timeParams[count].allContained) {
-           newFrame = new ImageData(new Uint8ClampedArray(dst.data), dst.cols, dst.rows);
-         } else {
-           if (that.videoParameters.length > 1) {
-             const res = that._updateMask(canvas, that.timeParams[that.beginIndex].realHeight, that.timeParams[that.beginIndex].ratio);
-             clipMat = res.clipMat;
-             dst1 = res.dst1;
+           // 自适应跳帧：位置跟随(上方的 scheduleSetCoordinates)照常执行，仅跳过重量级帧处理。
+           // 处理耗时超过帧间隔说明算不过来，视频时间推进不足一次处理耗时时直接复用上一帧；
+           // 上限 0.1s，保证画面最多降到 10fps，不会卡死。
+           // 注意 elapsed 必须非负：循环播放/拖拽进度条时视频时间会回退，
+           // 负值若参与比较会导致跳帧条件恒成立，画面永久停在缓存帧。
+           const videoTime = current || that.video.currentTime();
+           const elapsed = videoTime - lastProcessTime;
+           if (lastGoodFrame && lastProcessTime >= 0 && lastProcessCost > FRAME_INTERVAL &&
+             elapsed >= 0 && elapsed < Math.min(lastProcessCost, 0.1)) {
+             return lastGoodFrame;
            }
-           dst.copyTo(dst1, clipMat);
-           newFrame = new ImageData(new Uint8ClampedArray(dst1.data), dst1.cols, dst1.rows);
+           const processStart = performance.now();
+           src = that.cv.matFromImageData(frame);
+           dst = new that.cv.Mat();
+           if (!cachedM || cachedDstTri !== dstTri) {
+             if (cachedM) { cachedM.delete(); cachedM = null; }
+             const newM = that.cv.findHomography(srcTri, dstTri);
+             if (newM && newM.rows && newM.cols) {
+               cachedM = newM;
+               cachedDstTri = dstTri;
+             } else {
+               if (newM) { newM.delete(); }
+               throw new Error('findHomography failed');
+             }
+           }
+           M = cachedM;
+           that.cv.warpPerspective(src, dst, M, that.dsize);
+           let outMat = dst;
+           if (!that.timeParams[count].allContained) {
+             dst.copyTo(dst1, clipMat);
+             outMat = dst1;
+           }
+           if (!outFrame || outFrame.width !== outMat.cols || outFrame.height !== outMat.rows) {
+             outFrame = new ImageData(outMat.cols, outMat.rows);
+           }
+           outFrame.data.set(outMat.data);
+           src.delete();
+           dst.delete();
+           // 注意：M 是缓存的单应矩阵（cachedM），不能在此 delete，
+           // 仅时间参数切换时由缓存替换逻辑释放旧矩阵
+           lastProcessCost = (performance.now() - processStart) / 1000;
+           lastProcessTime = videoTime;
+           lastGoodFrame = outFrame;
+           return outFrame;
+         } catch (err) {
+           // 单帧处理失败不拖垮渲染循环：返回上一成功帧，视频不停更不消失
+           if (src) { src.delete(); }
+           if (dst) { dst.delete(); }
+           // M 指向缓存对象 cachedM，不能 delete
+           const nowErr = Date.now();
+           if (!that._lastErrorLogAt || nowErr - that._lastErrorLogAt > 1000) {
+             that._lastErrorLogAt = nowErr;
+             // eslint-disable-next-line no-console
+             console.error('[VideoLayer] process frame error:', err);
+           }
+           if (lastGoodFrame) {
+             return lastGoodFrame;
+           }
+           // 首帧即失败时返回与输出同尺寸的空白帧（尺寸必须恒定，否则上传静默失败）
+           return new ImageData(
+             Math.max(1, Math.round(that.dsize.width)),
+             Math.max(1, Math.round(that.dsize.height))
+           );
          }
-         src.delete();
-         dst.delete();
-         M.delete();
-         return newFrame;
        },
        coordinates: [
          [result[0], result[3]],

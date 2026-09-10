@@ -2,7 +2,14 @@ import mapboxgl from 'mapbox-gl';
 import CoordTransfer from './CoordTransfer';
 import VideoMapLayer from './layers/VideoMapLayer';
 import GeojsonLayer from './layers/GeojsonLayer';
-import { transformCoordReverse, fovXToFx, fovYToFy } from './utils/VideoMapUtil';
+import {
+  transformCoord,
+  transformCoordReverse,
+  fovXToFx,
+  fovYToFy,
+  smartTimeProcessor,
+  FastRangeSearcher
+} from './utils/VideoMapUtil';
 import GeojsonSource from './GeojsonSource';
 
 const MAP_EVENTS = [
@@ -50,31 +57,54 @@ const MAP_EVENTS = [
 ];
 
 /**
+ * @typedef {Object} VideoMap.VideoParameters - 视频地图配准参数（静态配准，相机位置固定）。
+ * @property {number} pitch - 相机俯仰角，单位：度。
+ * @property {number} roll - 相机侧偏角，单位：度。
+ * @property {number} yaw - 相机偏航角，单位：度。
+ * @property {number} x - 相机位置 x 坐标（投影至 EPSG:3857 后的横坐标）。
+ * @property {number} y - 相机位置 y 坐标（投影至 EPSG:3857 后的纵坐标）。
+ * @property {number} z - 相机位置 z 坐标（投影至 EPSG:3857 后的高程）。
+ * @property {number} fovX - 相机水平视场角，单位：度。内部通过 videoWidth 与该值换算为水平焦距 fx。
+ * @property {number} fovY - 相机垂直视场角，单位：度。内部通过 videoHeight 与该值换算为垂直焦距 fy。
+ * @property {number} centerX - 相机主点（光轴与图像平面交点）的水平像素坐标。
+ * @property {number} centerY - 相机主点（光轴与图像平面交点）的垂直像素坐标。
+ */
+
+/**
+ * @typedef {Object} VideoMap.VideoTimeParameters - 动态视频配准参数（按视频时间动态更新相机位置）。
+ * @property {number} time - 视频时间戳，单位秒。用于按视频播放时间匹配对应的相机参数。
+ * @property {number} pitch - 相机俯仰角，单位：度。
+ * @property {number} roll - 相机侧偏角，单位：度。
+ * @property {number} yaw - 相机偏航角，单位：度。
+ * @property {number} x - 相机位置 x 坐标（投影至 EPSG:3857 后的横坐标）。
+ * @property {number} y - 相机位置 y 坐标（投影至 EPSG:3857 后的纵坐标）。
+ * @property {number} z - 相机位置 z 坐标（投影至 EPSG:3857 后的高程）。
+ * @property {number} fovX - 相机水平视场角，单位：度。内部通过 videoWidth 与该值换算为水平焦距 fx。
+ * @property {number} fovY - 相机垂直视场角，单位：度。内部通过 videoHeight 与该值换算为垂直焦距 fy。
+ * @property {number} centerX - 相机主点（光轴与图像平面交点）的水平像素坐标。
+ * @property {number} centerY - 相机主点（光轴与图像平面交点）的垂直像素坐标。
+ */
+
+/**
  * @class VideoMap
  * @classdesc 视频地图
  * @category Visualization Video
  * @version 11.2.0
  * @modulecategory Mapping
  * @param {Object} options - 参数
- * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
- * @param {string} options.videoParameters - 视频地图配准参数
- * @param {number} options.videoParameters.pitch - 俯仰角。
- * @param {number} options.videoParameters.roll - 侧偏角。
- * @param {number} options.videoParameters.yaw - 偏航角。
- * @param {number} options.videoParameters.x - 视频 x 坐标。
- * @param {number} options.videoParameters.y - 视频 y 坐标。
- * @param {number} options.videoParameters.z - 视频 z 坐标。
- * @param {number} options.videoParameters.fovX - 水平方向上以像素为单位的焦距。
- * @param {number} options.videoParameters.fovY - 垂直方向上以像素为单位的焦距。
- * @param {number} options.videoParameters.centerX - 相机中心的水平坐标。
- * @param {number} options.videoParameters.centerY - 相机中心的垂直坐标。
- * @param {string} [options.container='map'] - 地图容器id
- * @param {string} [options.opencv] - opencv 实例
- * @param {function} [options.videoWidth] - 视频地图宽度，没设置时默认获取视频宽度
- * @param {function} [options.videoHeight] - 视频地图高度，没设置时默认获取视频高度
- * @param {Object} [options.styleOptions] - 视频地图风格配置
- * @param {string} [options.autoplay=true] - 视频是否自动播放
- * @param {string} [options.loop=true] - 视频是否循环播放
+ * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, mp4 格式。
+ * @param {VideoMap.VideoParameters|Array<VideoMap.VideoTimeParameters>} options.videoParameters - 视频地图配准参数。传入对象时为静态配准（相机位置固定）；传入数组时为动态配准，按视频时间动态更新相机参数。
+ * @param {string|HTMLElement} [options.container='map'] - 地图容器 id 或 DOM 元素。
+ * @param {Object} [options.opencv] - opencv.js 实例。未传入时取 window.cv；若均不存在将抛出异常。
+ * @param {number} [options.videoWidth] - 视频宽度，单位像素。未设置时默认读取视频实际宽度。
+ * @param {number} [options.videoHeight] - 视频高度，单位像素。未设置时默认读取视频实际高度。
+ * @param {Object} [options.styleOptions] - 视频地图风格配置，对应 mapbox-gl 的 style 对象（sprite、glyphs 等）。
+ * @param {boolean} [options.autoplay=true] - 视频是否自动播放。
+ * @param {boolean} [options.loop=true] - 视频是否循环播放。
+ * @param {number} [options.interval=0.1] - 动态配准参数的时间重采样间隔，单位秒。仅当 videoParameters 为数组时生效：对原始相机参数序列按该间隔做插值或抽稀，决定相机位置随时间变化的精度。
+ * @param {number} [options.vectorUpdateInterval] - 矢量要素重投影的节流间隔，单位秒。默认等于 interval。仅当 videoParameters 为数组时生效：值越大矢量刷新越省性能但与视频背景错位越明显；设为小于 interval 无意义。
+ * @fires VideoMap#load
+ * @fires VideoMap#vectorupdate
  * @extends {mapboxgl.Evented}
  * @usage
  *```
@@ -97,7 +127,19 @@ const MAP_EVENTS = [
 export class VideoMap extends mapboxgl.Evented {
   constructor(options) {
     super();
-    const { container, url, videoParameters, autoplay, loop, videoWidth, videoHeight, opencv, styleOptions } = options;
+    const {
+      container,
+      url,
+      videoParameters,
+      autoplay,
+      loop,
+      videoWidth,
+      videoHeight,
+      opencv,
+      styleOptions,
+      interval,
+      vectorUpdateInterval
+    } = options;
     this.container = container || 'map';
     this.layerCache = {};
     this.sourceCache = {};
@@ -113,7 +155,15 @@ export class VideoMap extends mapboxgl.Evented {
     if (!videoParameters) {
       throw new Error('videoParameters must be config!');
     }
-    this.videoParameters = videoParameters;
+    this.interval = interval || 0.1;
+    this.vectorUpdateInterval = vectorUpdateInterval || this.interval;
+    this.isTimeVarying = Array.isArray(videoParameters);
+    this.videoParameters = this.isTimeVarying
+      ? smartTimeProcessor(this.interval, videoParameters, ['yaw', 'pitch', 'roll', 'x', 'y', 'z'])
+      : videoParameters;
+    if (this.isTimeVarying) {
+      this.timeSearcher = new FastRangeSearcher(this.videoParameters.map((item) => item.time));
+    }
     this._createMap().then((map) => {
       this.map = map;
       this._addVideoLayer(url);
@@ -164,6 +214,106 @@ export class VideoMap extends mapboxgl.Evented {
     const geojsonSource = new GeojsonSource(this);
     geojsonSource.add(id, source);
     this.sourceCache[id] = geojsonSource;
+  }
+
+  /**
+   * @function VideoMap.prototype.updateAtTime
+   * @description 使用视频时间更新相机参数并重新投影已添加的 GeoJSON 数据源。
+   * @param {number} time - 视频时间，单位秒。
+   */
+  updateAtTime(time) {
+    if (!this.isTimeVarying || !this.timeSearcher || !this.coordTransfer) {
+      return;
+    }
+    if (time < this.currentTime) {
+      this.lastVectorUpdateTime = -Infinity;
+    }
+    this.currentTime = time;
+    if (this.pendingVectorUpdate || time - (this.lastVectorUpdateTime || -Infinity) < this.vectorUpdateInterval) {
+      return;
+    }
+    const range = this.timeSearcher.findRange(time);
+    if (!range) {
+      console.warn('[VideoMap] findRange 返回 null，time=', time, 'timeSearcher.data=', this.timeSearcher && this.timeSearcher.data);
+      return;
+    }
+    const { index, ratio } = range;
+    const prev = this.videoParameters[index];
+    const next = this.videoParameters[index + 1] || prev;
+    const lerp = (a, b) => a + (b - a) * ratio;
+    this.coordTransfer.setCameraLocation({
+      pitch: lerp(prev.pitch, next.pitch),
+      roll: lerp(prev.roll, next.roll),
+      yaw: lerp(prev.yaw, next.yaw),
+      x: lerp(prev.x, next.x),
+      y: lerp(prev.y, next.y),
+      z: lerp(prev.z, next.z),
+      fx: fovXToFx(lerp(prev.fovX, next.fovX), this.videoWidth),
+      fy: fovYToFy(lerp(prev.fovY, next.fovY), this.videoHeight),
+      centerX: lerp(prev.centerX, next.centerX),
+      centerY: lerp(prev.centerY, next.centerY)
+    });
+    this.pendingVectorUpdate = true;
+    const update = () => {
+      this.pendingVectorUpdate = false;
+      this.lastVectorUpdateTime = this.currentTime;
+      Object.keys(this.sourceCache).forEach((id) => {
+        this.sourceCache[id].update();
+      });
+      /**
+       * @event VideoMap#vectorupdate
+       * @description 矢量要素重投影完成时触发。已打开的弹窗可监听此事件跟随要素位置更新。
+       */
+      this.fire('vectorupdate', { time: this.currentTime });
+    };
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(update);
+    } else {
+      update();
+    }
+  }
+
+  /**
+   * @function VideoMap.prototype.toSpatialCoordinate
+   * @description 将视频地图坐标（lngLat）转换为真实地理坐标（EPSG:3857）。
+   * @param {mapboxgl.LngLat} lngLat - 视频地图坐标。
+   * @returns {Array<number>|null} 真实地理坐标 [x, y, z]（EPSG:3857），无法转换时返回 null。
+   */
+  toSpatialCoordinate(lngLat) {
+    if (!this.coordTransfer || !this.originCoordsLeftTop || !this.originCoordsRightBottom || !this.videoWidth || !this.videoHeight) {
+      return null;
+    }
+    const videoPixel = transformCoordReverse({
+      coord: [lngLat.lng, lngLat.lat],
+      originCoordsRightBottom: this.originCoordsRightBottom,
+      originCoordsLeftTop: this.originCoordsLeftTop,
+      videoHeight: this.videoHeight,
+      videoWidth: this.videoWidth
+    });
+    return this.coordTransfer.toSpatialCoordinate(videoPixel);
+  }
+
+  /**
+   * @function VideoMap.prototype.toVideoMapCoordinate
+   * @description 将真实地理坐标（EPSG:3857）按当前相机参数投影到视频地图坐标。
+   * @param {Array<number>} spatialPoint - 真实地理坐标 [x, y] 或 [x, y, z]（EPSG:3857）。
+   * @returns {Array<number>|null} 视频地图坐标 [lng, lat]，无法转换时返回 null。
+   */
+  toVideoMapCoordinate(spatialPoint) {
+    if (!this.coordTransfer || !this.originCoordsLeftTop || !this.originCoordsRightBottom || !this.videoWidth || !this.videoHeight) {
+      return null;
+    }
+    const videoCoord = this.coordTransfer.toVideoCoordinate(spatialPoint);
+    if (!videoCoord.data64F || videoCoord.data64F.length < 2) {
+      return null;
+    }
+    return transformCoord({
+      videoPoint: videoCoord.data64F,
+      originCoordsRightBottom: this.originCoordsRightBottom,
+      originCoordsLeftTop: this.originCoordsLeftTop,
+      videoHeight: this.videoHeight,
+      videoWidth: this.videoWidth
+    });
   }
 
   /**
@@ -269,11 +419,23 @@ export class VideoMap extends mapboxgl.Evented {
       if (this.videoHeight === undefined) {
         this.videoHeight = videoHeight;
       }
-      this.coordTransfer = await this._initParameters(this.videoParameters);
+      const initialParameters = this.isTimeVarying ? this.videoParameters[0] : this.videoParameters;
+      this.coordTransfer = await this._initParameters(initialParameters);
+      if (this.isTimeVarying) {
+        this.currentTime = initialParameters.time;
+        this.videoMapLayer.on('timeupdate', ({ time }) => {
+          this.updateAtTime(time);
+        });
+      }
       this._bindMapEventFn = this._bindMapEvent.bind(this);
       MAP_EVENTS.forEach((eventName) => {
         this.map.on(eventName, this._bindMapEventFn);
       });
+      /**
+       * @event VideoMap#load
+       * @description 视频地图加载完成时触发。此时可调用 addSource/addLayer 叠加矢量数据。
+       * @property {mapboxgl.Map} map - 底层 mapbox-gl 地图实例。
+       */
       this.fire('load', { map: this.map });
     });
   }
