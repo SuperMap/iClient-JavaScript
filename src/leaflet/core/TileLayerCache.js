@@ -4,7 +4,7 @@
 import L from 'leaflet';
 
 /**
- * 扩展 Leaflet `L.TileLayer`，提供与 Mapbox GL 类似的瓦片填充：
+ * 扩展 Leaflet `L.TileLayer`：
  * 1. 放大时沿用原生父级瓦片占位，不提前拆掉原级别。
  * 2. 额外保留邻近缩放级别的已加载瓦片（含放大前四周的瓦片）。
  * 3. 被裁掉的瓦片进入内存缓存；再次需要时立刻复用，缺失的再发请求。

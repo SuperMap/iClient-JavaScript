@@ -8,7 +8,6 @@ import './leaflet/core/TransformUtilSpec.js';
 import './leaflet/core/Proj4LeafletSpec.js';
 import './leaflet/core/BaseSpec.js';
 import './leaflet/core/TileLayerCacheSpec.js';
-import './leaflet/core/TileLayerEdgeBufferSpec.js';
 
 /*leaflet -- mapping*/
 import './leaflet/mapping/ImageMapLayerSpec.js';

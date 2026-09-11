@@ -4,6 +4,7 @@
 import L from "leaflet";
 import './Proj4Leaflet';
 import './TileLayerCache';
+import './TileLayerBuffer';
 import Attributions from './Attributions';
 
 L.Control.Attribution.include({
