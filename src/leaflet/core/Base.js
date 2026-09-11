@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import './Proj4Leaflet';
+import './TileLayerCache';
 import Attributions from './Attributions';
 
 L.Control.Attribution.include({

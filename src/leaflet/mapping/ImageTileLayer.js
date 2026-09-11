@@ -25,7 +25,11 @@ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityMa
  * @param {Array.<string>} [options.names] 返回影像集合中指定名称影像的瓦片资源。影像名称包含文件后缀，如 S-60-45.tif。
  * @param {string} [options.format='png'] - 瓦片表述类型，瓦片格式目前支持 png、jpg 和 webp 三种格式。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。默认透明。
- * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
+ * @param {boolean} [options.cacheEnabled=true] - 是否启用服务端缓存。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。与 cacheEnabled（服务端缓存）不同；开启后缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
+ * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
+ * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
  * @param {string} [options.tileProxy] - 服务代理地址。

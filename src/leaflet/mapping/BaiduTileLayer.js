@@ -18,6 +18,10 @@ import Attributions from '../core/Attributions'
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
  * @param {string} [options.tileProxy] - 服务代理地址。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。开启后，缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
+ * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
+ * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权描述信息。
  * @usage
  */

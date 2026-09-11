@@ -23,6 +23,10 @@ import Attributions from '../core/Attributions';
  * @param {Array.<number>} [options.subdomains=[0, 1, 2, 3, 4, 5, 6, 7]] - 子域名数组。
  * @param {string} [options.attribution='Map Data <a href='https://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='https://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a>'] - 版权描述信息。
  * @param {string} [options.noWrap=true] - 图层是否 X 方向平铺。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。开启后，缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
+ * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
+ * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @usage
  */
 export var TiandituTileLayer = WMTSLayer.extend({
