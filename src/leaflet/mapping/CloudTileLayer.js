@@ -18,9 +18,9 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=18] - 最大缩放级别。
  * @param {string} [options.mapName='quanguo'] - 地图名称。
- * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。支持小数。
- * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。开启后，缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
- * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片缓存。开启后缩放时优先使用已缓存瓦片填充，可避免放大、缩小、平移时的空白块。默认不启用。
+ * @param {number} [options.tileCacheZoomRange=5] - tileCache 为 true 时生效。缓存瓦片相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。默认值为 5。
  * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
  * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权描述信息。

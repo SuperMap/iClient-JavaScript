@@ -40,9 +40,9 @@ import Attributions from '../core/Attributions';
  * @param {Array.<number>|Array.<string>} [options.subdomains] - 子域名数组。
  * @param {ChartSettingS57|ChartSettingS100} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @param {number} [options.overflowTiles = 0] - 绘制超出图层范围的瓦片圈数。常用于位于地图边缘的要素符号显示不全的场景。默认值为0，表示不绘制超出图层范围的瓦片。当 options.noWrap 为 true 时，overflowTiles有效。
- * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。支持小数。
- * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。与 cacheEnabled（服务端缓存）不同；开启后缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
- * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片缓存。开启后缩放时优先使用已缓存瓦片填充，可避免放大、缩小、平移时的空白块。默认不启用。
+ * @param {number} [options.tileCacheZoomRange=5] - tileCache 为 true 时生效。缓存瓦片相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。默认值为 5。
  * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
  * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @fires TiledMapLayer#tilesetsinfoloaded

@@ -26,9 +26,9 @@ import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityMa
  * @param {string} [options.format='png'] - 瓦片表述类型，瓦片格式目前支持 png、jpg 和 webp 三种格式。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。默认透明。
  * @param {boolean} [options.cacheEnabled=true] - 是否启用服务端缓存。
- * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。支持小数。
- * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片内存缓存。与 cacheEnabled（服务端缓存）不同；开启后缩放时优先使用已缓存瓦片填充（放大后再缩小可避免空白块），再按需请求新瓦片。
- * @param {number} [options.tileCacheZoomRange=5] - 动态缓存相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。
+ * @param {number} [options.bufferTiles=0] - 视野外预加载的瓦片圈数。默认 0 表示不预加载；为 1 时上下左右各多加载一圈，可减少平移时的空白块。
+ * @param {boolean} [options.tileCache=false] - 是否启用客户端瓦片缓存。开启后缩放时优先使用已缓存瓦片填充，可避免放大、缩小、平移时的空白块。默认不启用。
+ * @param {number} [options.tileCacheZoomRange=5] - tileCache 为 true 时生效。缓存瓦片相对当前视野的缩放范围倍数。缓存上限为视野瓦片数 × tileCacheZoomRange。默认值为 5。
  * @param {number} [options.maxOverzooming=8] - 缩放时保留父级（更低级别）瓦片的深度，用于放大过程中的占位填充。
  * @param {number} [options.maxUnderzooming=3] - 缩放时保留子级（更高级别）瓦片的深度，用于缩小过程中的占位填充。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
