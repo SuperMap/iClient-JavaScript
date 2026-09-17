@@ -36,7 +36,9 @@ function initPage() {
 function initSelect() {
     var hash = window.location.hash;
     if (hash.indexOf("#") === -1) {
-        var id = $('#sidebar li').first().children('a')[0].hash;
+        //示例配置为空时侧边栏没有节点，取不到首项
+        var first = $('#sidebar li').first().children('a')[0];
+        var id = first ? first.hash : "";
 
         window.location.hash = (id) ? id : window.location.hash;
     }

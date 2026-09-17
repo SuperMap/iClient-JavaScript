@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/editor.css">
     <script type="text/javascript" src="../js/utils.js"></script>
+    <script type="text/javascript" src="../js/dataSource.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 
@@ -31,12 +32,8 @@
         };
         utils.loadTemplate(".icl-header", "../template/header.html", navigation);
         $body = $('body');
-        $body.append("<script type='text/javascript' src='../openlayers/config.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../leaflet/config.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../classic/config.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../maplibregl/config.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../component/config.js'><\/script>");
-        $body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        //按 sample-data cookie 加载对应数据源的示例配置，当前产品放最后
+        dataSource.appendConfigs($body, ['openlayers', 'leaflet', 'classic', 'maplibregl', 'component']);
         $body.append("<script type='text/javascript' src='../js/localization.js'><\/script>");
         $body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
         $body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");

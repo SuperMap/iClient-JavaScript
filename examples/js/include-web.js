@@ -1,13 +1,17 @@
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.*/
 (function () {
     var r = new RegExp("(^|(.*?\\/))(include-web\.js)(\\?|$)"),
-        s = document.getElementsByTagName('script'), targetScript;
+        s = document.getElementsByTagName('script'), targetScript, basePath;
     for (var i = 0; i < s.length; i++) {
         var src = s[i].getAttribute('src');
         if (src) {
             var m = src.match(r);
             if (m) {
                 targetScript = s[i];
+                //按本脚本自身的引入路径推导 examples 目录：本脚本位于 examples/js/ 下，
+                //去掉末尾的 js/ 即得 examples/。页面只要引对 include-web.js，
+                //无论自身在几层目录下都能定位到公共资源
+                basePath = m[1] ? m[1].replace(/js\/$/, "") : "./";
                 break;
             }
         }
@@ -69,9 +73,9 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         const resourceLanguage = getLanguage();
-        inputScript("../locales/" + resourceLanguage + "/resources.js");
-        inputScript("../js/tokengenerator.js");
-        inputCSS('../css/sidebariconfont/iconfont.css');
+        inputScript(basePath + "locales/" + resourceLanguage + "/resources.js");
+        inputScript(basePath + "js/tokengenerator.js");
+        inputCSS(basePath + 'css/sidebariconfont/iconfont.css');
         var jQueryInclude = false;
         if (!inArray(excludes, 'example-i18n')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
@@ -81,14 +85,14 @@
             inputScript(libsurl + '/css-vars-ponyfill/2.4.8/css-vars-ponyfill.min.js');
             inputScript(libsurl + '/compare-versions/5.0.3/index.min.js');
 
-            inputScript("../js/utils.js");
-            inputScript("../js/localization.js");
-            document.writeln("<script>Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();}); </script>");
+            inputScript(basePath + "js/utils.js");
+            inputScript(basePath + "js/localization.js");
+            document.writeln("<script>Localization.initializeI18N('" + basePath + "', function () {Localization.localize();Localization.initGlobal();}); </script>");
             jQueryInclude = true;
         }
         if (inArray(includes, 'theme')) {
-            inputScript("../js/theme/themeConfig.js");
-            inputScript("../js/theme/theme.js");
+            inputScript(basePath + "js/theme/themeConfig.js");
+            inputScript(basePath + "js/theme/theme.js");
         }
         if (inArray(includes, 'jquery') && !jQueryInclude) {
             inputScript(libsurl + '/jquery/jquery.min.js');
@@ -153,12 +157,12 @@
             inputScript(libsurl + '/ace/ace.js');
         }
         if (inArray(includes, 'widgets.alert')) {
-            inputScript("../js/widgets.js");
+            inputScript(basePath + "js/widgets.js");
         }
 
         if (inArray(includes, 'widgets')) {
             inputCSS(libsurl + '/css-loader/css-loader.css');
-            inputScript("../js/widgets.js");
+            inputScript(basePath + "js/widgets.js");
         }
         if (inArray(includes, 'zTree')) {
             inputCSS(libsurl + '/iclient8c/examples/js/plottingPanel/zTree/css/zTreeStyle.css');

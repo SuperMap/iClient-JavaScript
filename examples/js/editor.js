@@ -89,9 +89,8 @@ function loadExampleHtml() {
     if (!locationParam) {
         return;
     }
-    var href = window.location.toString();
-    var mapUrl = href.substr(0, href.lastIndexOf('/') + 1);
-    mapUrl = mapUrl + locationParam + ".html";
+    //示例 html 从当前数据源目录读取
+    var mapUrl = dataSource.resolveExampleUrl(locationParam);
     if (!mapUrl) {
         return;
     }
@@ -109,7 +108,8 @@ function loadExampleHtml() {
         $('#editor').val(html);
         loadPreview(html);
     } else {
-      window.location.href = window.location.origin + '/web/404.html';
+      //用相对路径，避免部署在非根路径下时跳丢
+      window.location.href = dataSource.resolveWebUrl('404.html');
     }
 }
 

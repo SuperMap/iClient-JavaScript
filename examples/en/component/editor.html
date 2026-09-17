@@ -6,39 +6,39 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_editorComponent"></title>
-    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <script type="text/javascript"  include="jquery,bootstrap,template,admin-lte,ace,i18n,theme"
-            src="../js/include-web.js"></script>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/sideBar.css">
-    <link rel="stylesheet" href="../css/editor.css">
-    <script type="text/javascript" src="../js/utils.js"></script>
-    <script type="text/javascript" src="../js/dataSource.js"></script>
+            src="../../js/include-web.js"></script>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/header.css">
+    <link rel="stylesheet" href="../../css/sideBar.css">
+    <link rel="stylesheet" href="../../css/editor.css">
+    <script type="text/javascript" src="../../js/utils.js"></script>
+    <script type="text/javascript" src="../../js/dataSource.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 
 <!-- ./wrapper -->
 <div class="wrapper"></div>
 <script>
-    $('.wrapper').load("../template/editor.html", function () {
+    $('.wrapper').load("../../template/editor.html", function () {
         var navigation = {
             nav: {
                 title: '2026',
-                path: "../../web/",
+                path: "../../../web/",
                 isLocal: window.isLocal
             }
         };
-        utils.loadTemplate(".icl-header", "../template/header.html", navigation);
+        utils.loadTemplate(".icl-header", "../../template/header.html", navigation);
 
         $body = $('body');
         //按 sample-data cookie 加载对应数据源的示例配置，当前产品放最后
         dataSource.appendConfigs($body, ['leaflet', 'mapboxgl', 'classic', 'openlayers', 'maplibregl']);
-        $body.append("<script type='text/javascript' src='../js/localization.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
-        $body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../../js/localization.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../../js/common.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../../js/sidebar.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../../js/editor.js'><\/script>");
     })
 </script>
 <!-- ./wrapper end-->

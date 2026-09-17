@@ -1,0 +1,71 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_tiledMapLayer"></title>
+    <script type="text/javascript" src="../../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" src="../../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+
+      // Method 1: Call mapboxgl.supermap.initMap to create map and base layer from SuperMap iServer map service info
+      mapboxgl.supermap
+        .initMap(host + '/iserver/services/map-World_en/rest/maps/World Map_VEC', {mapOptions:{zoom: 2}})
+        .then(function (result) {
+          var map = result.map;
+          map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        });
+
+      // Method 2: Directly use mapboxgl.Map to initialize
+      // var map = new mapboxgl.Map({
+      //     container: 'map', // container id
+      //     style: {
+      //         "version": 8,
+      //         "sources": {
+      //             "raster-tiles": {
+      //                 "attribution": attribution,
+      //                 "type": "raster",
+      //                 "tiles": [host + '/iserver/services/map-World_en/rest/maps/World Map_VEC/zxyTileImage.png?z={z}&x={x}&y={y}'],
+      //                 "tileSize": 256
+      //             }
+      //         },
+      //         "layers": [{
+      //             "id": "simple-tiles",
+      //             "type": "raster",
+      //             "source": "raster-tiles",
+      //             "minzoom": 0,
+      //             "maxzoom": 22
+      //         }]
+      //     },
+      //     center: [0, 0], // starting position
+      //     zoom: 2 // starting zoom
+      // });
+      // map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    </script>
+  </body>
+</html>

@@ -52,6 +52,13 @@
   function load(config) {
     var libsurl = config.libsurl;
     var disturl = config.disturl;
+    //按本脚本自身的引入路径推导 dist 目录：页面只要引对 include-*.js，
+    //无论自身在几层目录下都能定位到 dist。推导不出时沿用默认值
+    var selfSrc = targetScript.getAttribute('src') || '';
+    var distMatch = selfSrc.match(/^(.*?)\/?(?:mapboxgl\/)?include-mapboxgl\.js(?:[?#]|$)/);
+    if (distMatch && distMatch[1]) {
+        disturl = distMatch[1];
+    }
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(includes, 'mapbox-gl-enhance') && !inArray(excludes, 'mapbox-gl')) {
