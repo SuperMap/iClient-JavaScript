@@ -1,0 +1,73 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.text_mapOverlay"></title>
+    <script type="text/javascript" src="../../js/include-web.js"></script>
+    <script type="text/javascript" src="../../../dist/ol/include-ol.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript">
+      var map,
+        urlWorld =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
+          '/iserver/services/map-World_en/rest/maps/World%20Map_VEC',
+        urlLondon =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
+          '/iserver/services/map-London/rest/maps/London%20Map';
+      // Method 1: 1. Call ol.supermap.initMap to create the map and base layer according to the map info from SuperMap iServer map service
+      //         2. Call ol.source.TileSuperMapRest to create the overlay layer
+      ol.supermap
+        .initMap(urlWorld, {
+          mapOptions: {
+            // For ol v7+: ol.control.defaults.defaults; for ol v6 and below: ol.control.defaults
+            controls: ol.control.defaults.defaults({ attributionOptions: { collapsed: false } })
+              .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })])
+          },
+          viewOptions: {
+            center: [-0.06, 51.50],
+            zoom: 10
+          }
+        })
+        .then(({ map, source }) => {
+          var London = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+              url: urlLondon,
+              tileGrid: source.getTileGrid()
+            })
+          });
+          map.addLayer(London);
+        });
+      /* Method 2: 1. Call ol.supermap.MapService to get the map info from SuperMap iServer map service
+                2. Call ol.supermap.viewOptionsFromMapJSON to get the map view parameters
+                3. Call ol.Map to create the map
+                4. Call ol.layer.Tile and ol.source.TileSuperMapRest to create the base map and overlay layer
+         new ol.supermap.MapService(urlLondon).getMapInfo(function (serviceResult) {
+        const mapObj = serviceResult.result;
+        map = new ol.Map({
+          target: 'map',
+          // For ol v7+: ol.control.defaults.defaults; for ol v6 and below: ol.control.defaults
+          controls: ol.control.defaults.defaults({ attributionOptions: { collapsed: false } })
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+          view: new ol.View(ol.supermap.viewOptionsFromMapJSON(mapObj))
+        });
+        var worldLayer = new ol.layer.Tile({
+          source: new ol.source.TileSuperMapRest({
+            url: urlWorld
+          }),
+          projection: 'EPSG:4326'
+        });
+        map.addLayer(worldLayer);
+        var londonLayer = new ol.layer.Tile({
+          source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(urlLondon, mapObj))
+        });
+        map.addLayer(londonLayer);
+      });
+      */
+    </script>
+  </body>
+</html>

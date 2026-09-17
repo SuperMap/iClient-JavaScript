@@ -1,0 +1,167 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_fieldStatistics"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../../js/include-web.js"></script>
+    <script type="text/javascript" src="../../../dist/ol/include-ol.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            bottom: 10px;
+            left: 10px;
+            min-width: 280px;
+        }
+
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+<script type="text/javascript">
+    var container, content, info;
+    var map, currentData, layersName = [],
+        mapURL = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-World_en/rest/maps/World Map_VEC",
+        dataURL = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-World_en/rest/data";
+
+    map = new ol.Map({
+        target: 'map',
+        // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+        controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 3,
+            projection: 'EPSG:4326',
+            multiWorld: true
+        })
+    });
+    var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: mapURL
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(layer);
+    initResultInfoWin();
+    showLayersInfo();
+
+    function initResultInfoWin() {
+        container = document.getElementById('popup');
+        content = document.getElementById('popup-content');
+        info = new ol.control.Control({element: container});
+        info.setMap(map);
+        map.addControl(info);
+    }
+
+    //获取子图层信息
+    function showLayersInfo() {
+        var subLayer;
+        new ol.supermap.LayerInfoService(mapURL).getLayersInfo().then(function (serviceResult) {
+            var result = serviceResult.result;
+            var layers = result.subLayers.layers;
+            if (!layers) return;
+            // 递归扁平化所有图层
+            function flatten(layers) {
+                var flat = [];
+                for (var i = 0; i < layers.length; i++) {
+                    var layer = layers[i];
+                    if (layer.subLayers && layer.subLayers.layers) {
+                        flat = flat.concat(flatten(layer.subLayers.layers));
+                    } else {
+                        flat.push(layer);
+                    }
+                }
+                return flat;
+            }
+            var allLayers = flatten(layers);
+            for (var i = 0; i < allLayers.length; i++) {
+                subLayer = allLayers[i];
+                if ("UGC" == subLayer.type || subLayer.datasetInfo) {
+                    //记录数据源，数据集信息供字段查询统计使用
+                    if (subLayer.datasetInfo && subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
+                        layersName.push({
+                            dataSetName: subLayer.datasetInfo.name,
+                            dataSourceName: subLayer.datasetInfo.dataSourceName,
+                            layerName: subLayer.name
+                        });
+                    }
+                }
+            }
+            getFields();
+        });
+    }
+
+    //获取字段
+    function getFields() {
+        // 使用第一个可用的图层
+        if (layersName.length > 0) {
+            currentData = layersName[0];
+            var param = new ol.supermap.FieldParameters({
+                datasource: currentData.dataSourceName,
+                dataset: currentData.dataSetName
+            });
+            new ol.supermap.FieldService(dataURL).getFields(param).then(function (serviceResult) {
+                if (serviceResult.result && serviceResult.result.fieldNames && serviceResult.result.fieldNames.length > 0) {
+                    fieldStatistic(serviceResult.result.fieldNames[0]);
+                }
+            });
+        }
+    }
+
+    //统计结果
+    function fieldStatistic(fieldName) {
+        if (currentData) {
+            var param = new ol.supermap.FieldStatisticsParameters({
+                datasource: currentData.dataSourceName,
+                dataset: currentData.dataSetName,
+                fieldName: fieldName,
+                statisticMode: [
+                    ol.supermap.StatisticMode.MAX,
+                    ol.supermap.StatisticMode.MIN,
+                    ol.supermap.StatisticMode.SUM,
+                    ol.supermap.StatisticMode.AVERAGE,
+                    ol.supermap.StatisticMode.STDDEVIATION,
+                    ol.supermap.StatisticMode.VARIANCE
+                ]
+            });
+            new ol.supermap.FieldService(dataURL).getFieldStatisticsInfo(param, function (serviceResult) {
+                showResult(serviceResult.result);
+            });
+        }
+    }
+
+    function showResult(serviceResult) {
+        if (!serviceResult) {
+            return;
+        }
+        var innerHTMLStr = '<div style="line-height: 35px;">'
+            + '<strong>' + resources.text_layer + '</strong>（' + (currentData ? currentData.layerName : '') + '）&nbsp;&nbsp;&nbsp;<strong>' + resources.text_field + '</strong>（' + serviceResult.fieldName + '）<div>';
+        innerHTMLStr += '<div style="line-height: 35px;">'
+            + '<strong>' + resources.text_statisticResult + '</strong><div>';
+        var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
+        var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>" + resources.text_averageValue + "</td><td>" + resources.text_maxValue + "</td><td>" + resources.text_minValue + "</td>"
+            + "<td>" + resources.text_standardDeviation + "</td><td>" + resources.text_sum + "</td><td>" + resources.text_variance + "</td></tr>";
+        var resultTR = "<tr>";
+        for (var i = 0; i < keys.length; i++) {
+            resultTR += "<td>" + serviceResult[keys[i]] + "</td>";
+        }
+        resultTR += "</tr>";
+        tableStr += resultTR + "</table>";
+        innerHTMLStr += tableStr;
+        content.innerHTML = innerHTMLStr;
+        map.addControl(info);
+    }
+</script>
+</body>
+</html>

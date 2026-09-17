@@ -1,0 +1,39 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_tiledMapLayerNonEarth"></title>
+    <script type="text/javascript" src="../../js/include-web.js" ></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="margin: 0 auto; width: 100%; height: 100%"></div>
+    <script type="text/javascript" src="../../../dist/leaflet/include-leaflet.js" ></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+      var map,
+        url = host + "/iserver/services/map-London/rest/maps/London%20Map";
+
+      // Method 1: 1. Call L.supermap.initMap to create the map and base layer according to the map info from SuperMap iServer map service
+      L.supermap.initMap(url, { layerOptions: { noWrap: true } });
+      /*
+        // Method 2: 1. Call L.supermap.MapService to get the map info from SuperMap iServer map service
+        //         2. Call L.supermap.crsFromMapJSON to create CRS
+        //         3. Call L.map to create the map
+        //         4. Call L.supermap.TiledMapLayer to create the base layer
+        new L.supermap.MapService(url).getMapInfo().then((res) => {
+            var crs = L.supermap.crsFromMapJSON(res.result);
+            map = L.map('map', {
+              crs: crs,
+              center: [-0.06, 51.50],
+              maxZoom: 18,
+              zoom: 1
+            });
+            new L.supermap.TiledMapLayer(url, { noWrap: true }).addTo(map);
+        });
+      */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_overlayAnalyst"></title>
+    <script type="text/javascript" src="../../js/include-web.js"></script>
+    <script type="text/javascript" src="../../../dist/ol/include-ol.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript">
+    var map, options,
+        host = (window.isLocal ? window.server : "https://iserver.supermap.io"),
+        baseUrl = host + "/iserver/services/map-London/rest/maps/London%20Map",
+        serviceUrl = host + "/iserver/services/spatialAnalysis-London/restjsr/spatialanalyst";
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+            view: new ol.View(ol.supermap.viewOptionsFromMapJSON(mapJSONObj))
+        });
+        options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+
+        // Zoom in and center on the overlay area
+        map.getView().setCenter(ol.proj.transform([-0.06, 51.50], 'EPSG:4326', map.getView().getProjection()));
+        map.getView().setZoom(0);
+        map.getView().setMaxZoom(18);
+
+        overlayAnalystProcess();
+    });
+
+    function overlayAnalystProcess() {
+        var datasetOverlayAnalystParameters = new ol.supermap.DatasetOverlayAnalystParameters({
+            sourceDataset: "Commercial_R@London",
+            operateDataset: "Park_R@London",
+            tolerance: 0,
+            operation: ol.supermap.OverlayOperationType.UNION
+        });
+        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters).then(function (serviceResult) {
+            var viewProj = map.getView().getProjection();
+            var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordset.features);
+            features.forEach(function(feature) {
+                feature.getGeometry().transform('EPSG:4326', viewProj);
+            });
+            var resultLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: features
+                }),
+                style: new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 2
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.3)'
+                    })
+                })
+            });
+            map.addLayer(resultLayer);
+        });
+    }
+</script>
+</body>
+</html>
