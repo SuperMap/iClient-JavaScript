@@ -8,6 +8,8 @@ $(document).ready(function () {
 });
 var aceEditor;
 var containExamples = true;
+//当前预览示例所在目录，供 iframe 解析相对路径
+var previewBaseUrl = "";
 
 function initPage() {
     initSideBar();
@@ -91,6 +93,8 @@ function loadExampleHtml() {
     }
     //示例 html 从当前数据源目录读取
     var mapUrl = dataSource.resolveExampleUrl(locationParam);
+    //记录示例所在目录，预览时作为 iframe 内相对路径的基准
+    previewBaseUrl = dataSource.resolveExampleDir(locationParam);
     if (!mapUrl) {
         return;
     }
@@ -139,7 +143,7 @@ function loadPreview(content) {
         iframeDocument = iFrame.contentWindow.document;
     iFrame.contentWindow.resources=window.resources?window.resources.resources:{};
     iframeDocument.open();
-    iframeDocument.write(content);
+    iframeDocument.write(withBaseUrl(content));
     iframeDocument.close();
     var doc = document;
     iFrame.addEventListener('load', function () {
@@ -151,6 +155,29 @@ function loadPreview(content) {
     });
 
     mapHeight();
+}
+
+//预览用的 iframe 没有自己的 url，相对路径会按 editor.html 的位置解析。
+//示例 html 里写的是相对它自身位置的真实路径，故注入 <base> 指向示例所在目录，
+//这样无论示例在哪一层目录、站点部署在哪个路径下，都能正确解析
+function withBaseUrl(content) {
+    if (!previewBaseUrl) {
+        return content;
+    }
+    var base = '<base href="' + previewBaseUrl + '">';
+    //插到 <head> 之后，保证先于其它资源引用生效
+    if (/<head[^>]*>/i.test(content)) {
+        return content.replace(/<head[^>]*>/i, function (match) {
+            return match + base;
+        });
+    }
+    //没有 <head> 时退而插到 <html> 之后或开头
+    if (/<html[^>]*>/i.test(content)) {
+        return content.replace(/<html[^>]*>/i, function (match) {
+            return match + base;
+        });
+    }
+    return base + content;
 }
 
 function createIFrame() {

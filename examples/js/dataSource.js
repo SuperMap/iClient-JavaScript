@@ -22,6 +22,10 @@ var dataSource = {
     appendConfigs: null,
     //计算示例 html 的地址
     resolveExampleUrl: null,
+    //计算示例 html 所在目录
+    resolveExampleDir: null,
+    //计算缩略图所在目录
+    resolveThumbLocation: null,
     //计算 web 目录下页面的地址
     resolveWebUrl: null
 };
@@ -43,7 +47,8 @@ var dataSource = {
                 break;
             }
         }
-        return /^[a-zA-Z0-9_]+$/.test(value) ? value : "";
+        //只认 en 与 en-xx（如 en-US），其余值一律当作未设置，走默认数据源
+        return /^en(-[a-zA-Z0-9]+)?$/.test(value) ? value : "";
     }
 
     //从路径中取产品名。取页面所在目录名，/examples/leaflet/ 与 /en/examples/leaflet/ 均取到 leaflet
@@ -114,6 +119,22 @@ var dataSource = {
         return window.location.origin + normalizePath(dir + prefix + fileName + ".html");
     }
 
+    //计算示例 html 所在目录（结尾带 "/"）。
+    //预览时作为 iframe 的基准地址，使示例里的相对路径按其真实位置解析
+    function resolveExampleDir(fileName) {
+        var url = resolveExampleUrl(fileName);
+        return url.substr(0, url.lastIndexOf("/") + 1);
+    }
+
+    //计算缩略图所在目录，与示例配置取自同一数据源
+    function resolveThumbLocation() {
+        var pathname = window.location.pathname;
+        var dir = pathname.substr(0, pathname.lastIndexOf("/") + 1);
+        var prefix = useDataSource ? "../" + name + "/" + product + "/" : "./";
+        //结尾不带 "/"，与调用方拼接 "/img/" 的写法保持一致
+        return window.location.origin + normalizePath(dir + prefix);
+    }
+
     //计算 web 目录下页面的地址，如 404.html。
     //examples 与 web 同级，需从当前页退到 examples 的上一层再进 web。
     //退几层只取决于页面自身在 examples 下的深度，与数据源无关
@@ -138,6 +159,8 @@ var dataSource = {
     dataSource.configUrl = configUrl;
     dataSource.appendConfigs = appendConfigs;
     dataSource.resolveExampleUrl = resolveExampleUrl;
+    dataSource.resolveExampleDir = resolveExampleDir;
+    dataSource.resolveThumbLocation = resolveThumbLocation;
     dataSource.resolveWebUrl = resolveWebUrl;
 
 })(dataSource);

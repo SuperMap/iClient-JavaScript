@@ -136,8 +136,8 @@ function createGalleryChart(example) {
 }
 
 function getThumbLocation() {
-    var param = window.location.toString();
-    return param.substr(0, param.lastIndexOf('/'));
+    //缩略图与示例配置取自同一数据源
+    return dataSource.resolveThumbLocation();
 }
 
 //chart宽高自适应
