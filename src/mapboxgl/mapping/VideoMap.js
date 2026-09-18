@@ -105,6 +105,8 @@ const MAP_EVENTS = [
  * @param {number} [options.vectorUpdateInterval] - 矢量要素重投影的节流间隔，单位秒。默认等于 interval。仅当 videoParameters 为数组时生效：值越大矢量刷新越省性能但与视频背景错位越明显；设为小于 interval 无意义。
  * @fires VideoMap#load
  * @fires VideoMap#vectorupdate
+ * @fires VideoMap#play
+ * @fires VideoMap#pause
  * @extends {mapboxgl.Evented}
  * @usage
  *```
@@ -349,6 +351,35 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @function VideoMap.prototype.play
+   * @description 播放视频。
+   */
+  play() {
+    if (this.videoMapLayer) {
+      this.videoMapLayer.play();
+    }
+  }
+
+  /**
+   * @function VideoMap.prototype.pause
+   * @description 暂停视频。
+   */
+  pause() {
+    if (this.videoMapLayer) {
+      this.videoMapLayer.pause();
+    }
+  }
+
+  /**
+   * @function VideoMap.prototype.paused
+   * @description 获取当前视频播放状态。返回 `true` 表示已暂停，返回 `false` 表示正在播放。
+   * @returns {boolean} 视频是否暂停。
+   */
+  paused() {
+    return this.videoMapLayer ? this.videoMapLayer.paused() : true;
+  }
+
+  /**
    * @function VideoMap.prototype.destroy
    * @description  销毁视频地图。
    */
@@ -365,6 +396,20 @@ export class VideoMap extends mapboxgl.Evented {
 
   _addVideoLayer(src) {
     this.videoMapLayer = new VideoMapLayer(this);
+    /**
+     * @event VideoMap#play
+     * @description 视频开始播放时触发。
+     */
+    this.videoMapLayer.on('play', () => {
+      this.fire('play');
+    });
+    /**
+     * @event VideoMap#pause
+     * @description 视频暂停时触发。
+     */
+    this.videoMapLayer.on('pause', () => {
+      this.fire('pause');
+    });
     this.videoMapLayer.add(src);
     this._bindEvents();
   }

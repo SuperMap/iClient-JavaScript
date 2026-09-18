@@ -53,6 +53,8 @@
   * @param {number} [options.interval=0.1] 非定点视频参数间隔，单位秒，当视频参数为数组时，会根据该参数将 VideoTimeParameters.time 处理成均匀间隔的视频参数，默认为 0.1 秒，最小值为 0.001 秒。
   * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
   * @param {Array} [options.clipRegion] -裁剪范围
+  * @fires VideoLayer#play
+  * @fires VideoLayer#pause
   * @extends {mapboxgl.Evented}
   * @usage
   * ```
@@ -116,6 +118,7 @@
      this.renderer = new VideoLayerRenderer({ url: this.url, id: this.layerId });
      this.video = this.renderer.createVideo();
      this.videoDomId = this.renderer.getVideoDomId();
+     this._bindPlaybackEvents();
  
      this.video.one('firstplay', () => {
        this.video.play();
@@ -515,6 +518,73 @@
    setVisibility(visibility) {
      const visible = visibility ? 'visible' : 'none';
      this.map.setLayoutProperty(this.layerId, 'visibility', visible);
+   }
+
+   /**
+    * @function VideoLayer.prototype.play
+    * @description 播放视频。
+    */
+   play() {
+     if (this.video) {
+       this.video.play();
+     }
+     const source = this._getVideoSource();
+     if (source && typeof source.play === 'function') {
+       source.play();
+     }
+   }
+
+   /**
+    * @function VideoLayer.prototype.pause
+    * @description 暂停视频。
+    */
+   pause() {
+     if (this.video) {
+       this.video.pause();
+     }
+     const source = this._getVideoSource();
+     if (source && typeof source.pause === 'function') {
+       source.pause();
+     }
+   }
+
+   /**
+    * @function VideoLayer.prototype.paused
+    * @description 获取当前视频播放状态。返回 `true` 表示已暂停，返回 `false` 表示正在播放。
+    * @returns {boolean} 视频是否暂停。
+    */
+   paused() {
+     if (this.video && typeof this.video.paused === 'function') {
+       return this.video.paused();
+     }
+     return true;
+   }
+
+   _bindPlaybackEvents() {
+     if (!this.video) {
+       return;
+     }
+     /**
+      * @event VideoLayer#play
+      * @description 视频开始播放时触发。
+      */
+     this.video.on('play', () => {
+       this.fire('play');
+     });
+     /**
+      * @event VideoLayer#pause
+      * @description 视频暂停时触发。
+      */
+     this.video.on('pause', () => {
+       this.fire('pause');
+     });
+   }
+
+   _getVideoSource() {
+     if (!this.map || !this.layerId || typeof this.map.getSource !== 'function') {
+       return null;
+     }
+     return this.map.getSource(this.layerId) || null;
    }
  }
  
