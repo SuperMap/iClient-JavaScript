@@ -35,6 +35,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     this.renderer = new VideoLayerRenderer({ url: this.address, id: this.id, loop: this.loop, autoplay: this.autoplay });
     this.video = this.renderer.createVideo();
     this.videoDomId = this.renderer.getVideoDomId();
+    this._bindPlaybackEvents();
     this.video.one('firstplay', () => {
       if (this.autoplay) {
         this.play();
@@ -91,7 +92,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
 
   _afterAddVideoLayer() {
     if (this.autoplay) {
-      this.map.getSource(this.id).play();
+      this.play();
     }
     this._bindTimeUpdates();
     this.fire('loaded', {
@@ -178,14 +179,54 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    * @description  播放视频。
    */
   play() {
-    this.video.play();
+    if (this.video) {
+      this.video.play();
+    }
+    const source = this._getVideoSource();
+    if (source && typeof source.play === 'function') {
+      source.play();
+    }
   }
   /**
    * @function VideoMapLayer.prototype.pause
    * @description  暂停视频。
    */
   pause() {
-    this.video.pause();
+    if (this.video) {
+      this.video.pause();
+    }
+    const source = this._getVideoSource();
+    if (source && typeof source.pause === 'function') {
+      source.pause();
+    }
+  }
+  /**
+   * @function VideoMapLayer.prototype.paused
+   * @description  获取视频是否处于暂停状态。
+   * @returns {boolean} 视频是否暂停。
+   */
+  paused() {
+    if (this.video && typeof this.video.paused === 'function') {
+      return this.video.paused();
+    }
+    return true;
+  }
+  _bindPlaybackEvents() {
+    if (!this.video) {
+      return;
+    }
+    this.video.on('play', () => {
+      this.fire('play');
+    });
+    this.video.on('pause', () => {
+      this.fire('pause');
+    });
+  }
+  _getVideoSource() {
+    if (!this.map || !this.id || typeof this.map.getSource !== 'function') {
+      return null;
+    }
+    return this.map.getSource(this.id) || null;
   }
   /**
    * @function VideoMapLayer.prototype.remove

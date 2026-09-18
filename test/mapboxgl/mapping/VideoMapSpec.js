@@ -226,4 +226,33 @@ describe('mapboxgl_videoMap', () => {
       done();
     }, 2000);
   });
+
+  it('play pause', (done) => {
+    var videoMap = new VideoMap({
+      url: videoUrl,
+      opencv: cv,
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      }
+    });
+    videoMap.on('load', function () {
+      spyOn(videoMap.videoMapLayer, 'play').and.callThrough();
+      spyOn(videoMap.videoMapLayer, 'pause').and.callThrough();
+      videoMap.pause();
+      expect(videoMap.videoMapLayer.pause).toHaveBeenCalled();
+      expect(videoMap.paused()).toBeDefined();
+      videoMap.play();
+      expect(videoMap.videoMapLayer.play).toHaveBeenCalled();
+      done();
+    });
+  });
 });

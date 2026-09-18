@@ -387,4 +387,46 @@ describe('mapboxgl_VideoLayer', () => {
       done();
    }, 3000);
   });
+
+  it('play pause', (done) => {
+    const videoLayer = new VideoLayer({
+      opencv: cv,
+      url: videoUrl,
+      clipRegion: [
+        [0, 0],
+        [1920, 0],
+        [1920, 900],
+        [0, 900]
+      ],
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      },
+      extent: [
+        [116.14394400766855, 28.249134537249257],
+        [116.143464581289, 28.252977295834056],
+        [116.14734767029731, 28.251762901914655],
+        [116.14737169684759, 28.25095489453961]
+      ]
+    });
+    videoLayer.onAdd(map);
+    setTimeout(() => {
+      spyOn(videoLayer.video, 'play').and.callThrough();
+      spyOn(videoLayer.video, 'pause').and.callThrough();
+      videoLayer.pause();
+      expect(videoLayer.video.pause).toHaveBeenCalled();
+      expect(videoLayer.paused()).toBeDefined();
+      videoLayer.play();
+      expect(videoLayer.video.play).toHaveBeenCalled();
+      done();
+    }, 3000);
+  });
 });

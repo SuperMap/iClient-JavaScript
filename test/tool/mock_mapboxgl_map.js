@@ -174,7 +174,8 @@ const Map = function (options) {
     if (sourceInfo && sourceInfo.type === 'video') {
       return {
         setCoordinates: function () {},
-        play: function () {}
+        play: function () {},
+        pause: function () {}
       };
     }
     if (sourceInfo && sourceInfo.type === 'geojson') {
