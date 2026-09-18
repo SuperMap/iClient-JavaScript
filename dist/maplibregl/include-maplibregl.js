@@ -58,6 +58,10 @@
     var distMatch = selfSrc.match(/^(.*?)\/?(?:maplibregl\/)?include-maplibregl\.js(?:[?#]|$)/);
     if (distMatch && distMatch[1]) {
         disturl = distMatch[1];
+        //web 与 dist 同级：libsurl 若是相对路径的 web/libs，随 disturl 一起校正
+        if (libsurl && !/^https?:\/\//i.test(libsurl) && /(?:^|\/)web\/libs\/?$/.test(libsurl)) {
+            libsurl = disturl.replace(/\/?dist\/?$/, '') + '/web/libs';
+        }
     }
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');

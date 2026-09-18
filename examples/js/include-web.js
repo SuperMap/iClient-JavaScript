@@ -70,6 +70,11 @@
     //加载类库资源文件
     function load(config) {
         var libsurl = config.libsurl;
+        //web 在 examples 上一级：libsurl 若是相对路径的 web/libs，按 basePath 校正
+        if (libsurl && !/^https?:\/\//i.test(libsurl) && /(?:^|\/)web\/libs\/?$/.test(libsurl)) {
+            libsurl = basePath.replace(/\/?$/, '/../') + 'web/libs';
+        }
+
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         const resourceLanguage = getLanguage();
