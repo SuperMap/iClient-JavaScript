@@ -85,4 +85,5 @@ import './mapboxgl/mapping/WebMapV2Spec.js';
 import './mapboxgl/mapping/WebMapV3Spec.js';
 import './mapboxgl/mapping/InitMapSpec.js';
 import './mapboxgl/mapping/VideoMapSpec.js';
+import './mapboxgl/mapping/clipVideoMapGeometrySpec.js';
 import './mapboxgl/mapping/WebMapV22Spec.js';

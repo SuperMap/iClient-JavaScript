@@ -58,6 +58,9 @@ export default class CoordTransfer {
     if (this.rotationMatrix) {
       this.rotationMatrix.delete();
     }
+    if (this.rotationMat3) {
+      this.rotationMat3.delete();
+    }
     if (this.translationMatrix) {
       this.translationMatrix.delete();
     }
@@ -65,8 +68,16 @@ export default class CoordTransfer {
       this.k.delete();
     }
     this.rotationMatrix = this.toRotationMatrix(pitch, roll, yaw);
+    this.rotationMat3 = new this.cv.Mat(3, 3, this.cv.CV_64FC1);
+    this.cv.Rodrigues(this.rotationMatrix, this.rotationMat3);
     this.translationMatrix = this.toTranslationMatrix(x, y, z);
     this.k = this.toCameraMatrix(fx, fy, centerX, centerY);
+    this._R = this.rotationMat3.data64F ? Array.from(this.rotationMat3.data64F) : null;
+    this._t = this.translationMatrix.data64F ? Array.from(this.translationMatrix.data64F) : null;
+    this._fx = fx;
+    this._fy = fy;
+    this._cx = centerX;
+    this._cy = centerY;
   }
 
   /**
@@ -171,24 +182,64 @@ export default class CoordTransfer {
     return this.cv.matFromArray(3, 3, this.cv.CV_64FC1, [fx, 0, centerX, 0, fy, centerY, 0, 0, 1]);
   }
   /**
+   * @function CoordTransfer.prototype.toCameraCoordinate
+   * @description 将空间坐标转换到相机坐标系。Z > 0 表示在相机前方。
+   * @param {Array<number>} coord - 空间坐标 [x, y] 或 [x, y, z]（EPSG:3857）。
+   * @returns {Array<number>|null} 相机坐标 [Xc, Yc, Zc]。
+   */
+  toCameraCoordinate(coord) {
+    if (!this._R || this._R.length < 9 || !this._t || this._t.length < 3 || !coord || coord.length < 2) {
+      return null;
+    }
+    const x = coord[0];
+    const y = coord[1];
+    const z = coord.length > 2 ? coord[2] : 0;
+    const R = this._R;
+    const t = this._t;
+    return [
+      R[0] * x + R[1] * y + R[2] * z + t[0],
+      R[3] * x + R[4] * y + R[5] * z + t[1],
+      R[6] * x + R[7] * y + R[8] * z + t[2]
+    ];
+  }
+
+  /**
+   * @function CoordTransfer.prototype.projectCameraToVideo
+   * @description 将相机坐标投影为视频像素坐标。相机后方的点返回 null。
+   * @param {Array<number>} camera - 相机坐标 [Xc, Yc, Zc]。
+   * @param {number} [zNear=0.01] - 近裁剪面，单位与空间坐标一致。
+   * @returns {Array<number>|null} 视频像素坐标 [u, v]。
+   */
+  projectCameraToVideo(camera, zNear = 0.01) {
+    if (!camera || this._fx == null || this._fy == null) {
+      return null;
+    }
+    const depth = camera[2];
+    if (!(depth > zNear)) {
+      return null;
+    }
+    return [
+      this._fx * camera[0] / depth + this._cx,
+      this._fy * camera[1] / depth + this._cy
+    ];
+  }
+
+  /**
    * @function CoordTransfer.prototype.toVideoCoordinate
-   * @description  转换视频像素坐标到空间地理坐标。
+   * @description  将空间地理坐标转换为视频像素坐标。相机后方的点 data64F 为空数组。
    * @param {Array} coord - 空间坐标。
-   * @returns {Array} 视频像素坐标。
+   * @returns {{data64F: Array<number>, depth: (number|null)}} 视频像素坐标及相机深度。
    */
   toVideoCoordinate(coord) {
-    if (!this.cv || !this.cv.Mat) {
-      return { data64F: [] };
+    const camera = this.toCameraCoordinate(coord);
+    if (!camera) {
+      return { data64F: [], depth: null };
     }
-    let emptyMat = new this.cv.Mat();
-    let point3 = this.cv.matFromArray(3, 1, this.cv.CV_64FC1, [coord[0], coord[1], 0]);
-    let point2 = new this.cv.Mat(2, 1, this.cv.CV_64FC1);
-    this.cv.projectPoints(point3, this.rotationMatrix, this.translationMatrix, this.k, emptyMat, point2);
-    const data64F = point2.data64F.length ? [point2.data64F[0], point2.data64F[1]] : [];
-    emptyMat.delete();
-    point3.delete();
-    point2.delete();
-    return { data64F };
+    const uv = this.projectCameraToVideo(camera);
+    return {
+      data64F: uv || [],
+      depth: camera[2]
+    };
   }
   /**
    * @function CoordTransfer.prototype.toSpatialCoordinate
