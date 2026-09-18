@@ -1,7 +1,5 @@
-import { featureEach, coordEach } from '@turf/meta';
-import cloneDeep from 'lodash.clonedeep';
-import { transformCoord } from '../utils/VideoMapUtil';
-import proj4 from 'proj4';
+import { transformVideoMapGeoJSON } from '../utils/clipVideoMapGeometry';
+
 /**
  * @class GeojsonLayer
  * @version 11.2.0
@@ -11,14 +9,9 @@ import proj4 from 'proj4';
  */
 export default class GeojsonLayer {
   constructor(videoMap) {
-    const { coordTransfer, originCoordsRightBottom, originCoordsLeftTop, videoWidth, videoHeight, map } = videoMap;
-    this.map = map;
-    this.coordTransfer = coordTransfer;
+    this.videoMap = videoMap;
+    this.map = videoMap.map;
     this.layerId = null;
-    this.originCoordsRightBottom = originCoordsRightBottom;
-    this.originCoordsLeftTop = originCoordsLeftTop;
-    this.videoWidth = videoWidth;
-    this.videoHeight = videoHeight;
   }
 
   /**
@@ -33,8 +26,7 @@ export default class GeojsonLayer {
       return;
     }
     if (typeof source === 'object') {
-      const newData = this.eachData(cloneDeep(source.data));
-      layer.source.data = newData;
+      layer.source.data = this.eachData(source.data);
     }
 
     this.map.addLayer(layer, beforeId);
@@ -52,31 +44,13 @@ export default class GeojsonLayer {
   }
 
   /**
-   * @function GeojsonLayer.prototype.add
-   * @param {Array} features - Mapbox layer 地图对象。
+   * @function GeojsonLayer.prototype.eachData
+   * @param {Object} features - GeoJSON 数据。
    */
   eachData(features) {
-    if (!this.coordTransfer) {
-      return [];
+    if (!this.videoMap || !this.videoMap.coordTransfer) {
+      return features;
     }
-    featureEach(features, (currentFeature) => {
-      coordEach(currentFeature, (curCoords) => {
-        let transCurCoords = proj4('EPSG:4326', 'EPSG:3857', curCoords);
-        let transCoords = this.coordTransfer.toVideoCoordinate(transCurCoords);
-        curCoords.length = 0;
-        if (transCoords.data64F.length) {
-          curCoords.push(
-            ...transformCoord({
-              videoPoint: transCoords.data64F,
-              videoWidth: this.videoWidth,
-              videoHeight: this.videoHeight,
-              originCoordsRightBottom: this.originCoordsRightBottom,
-              originCoordsLeftTop: this.originCoordsLeftTop
-            })
-          );
-        }
-      });
-    });
-    return features;
+    return transformVideoMapGeoJSON(features, this.videoMap);
   }
 }
