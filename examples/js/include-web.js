@@ -70,9 +70,10 @@
     //加载类库资源文件
     function load(config) {
         var libsurl = config.libsurl;
-        //web 在 examples 上一级：libsurl 若是相对路径的 web/libs，按 basePath 校正
+        //相对路径的 web/libs 先去掉一层 ../，再按 basePath 拼接。
+        //默认 libsurl 按 examples/<产品>/ 的深度写（../../web/libs），en 页面更深一层，basePath 会多退一级
         if (libsurl && !/^https?:\/\//i.test(libsurl) && /(?:^|\/)web\/libs\/?$/.test(libsurl)) {
-            libsurl = basePath.replace(/\/?$/, '/../') + 'web/libs';
+            libsurl = basePath + libsurl.replace(/^\.\.\//, '');
         }
 
         var includes = (targetScript.getAttribute('include') || "").split(",");
