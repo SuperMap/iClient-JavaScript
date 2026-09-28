@@ -7,11 +7,50 @@ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util
 import { ServerGeometry } from '@supermapgis/iclient-common/iServer/ServerGeometry';
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
+import TileRange from 'ol/TileRange';
 import Geometry from 'ol/geom/Geometry';
 import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import * as olTilegrid from 'ol/tilegrid';
 import TileGrid from 'ol/tilegrid/TileGrid';
+
+function getOverflowTileCount(overflowTiles) {
+  return Math.max(0, Math.floor(Number(overflowTiles) || 0));
+}
+
+function wrapTileGridWithOverflow(tileGrid, overflowTiles) {
+  const overflowTileCount = getOverflowTileCount(overflowTiles);
+  if (!tileGrid || !overflowTileCount) {
+    return tileGrid;
+  }
+
+  const wrappedTileGrid = Object.create(tileGrid);
+  wrappedTileGrid.overflowTiles = overflowTileCount;
+  wrappedTileGrid.getTileRangeForExtentAndZ = function (extent, z, tempTileRange) {
+    const tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z, tempTileRange);
+    if (!tileRange) {
+      return tileRange;
+    }
+    tileRange.minX -= overflowTileCount;
+    tileRange.maxX += overflowTileCount;
+    tileRange.minY -= overflowTileCount;
+    tileRange.maxY += overflowTileCount;
+    return tileRange;
+  };
+  wrappedTileGrid.getFullTileRange = function (z) {
+    const tileRange = tileGrid.getFullTileRange ? tileGrid.getFullTileRange(z) : null;
+    if (!tileRange) {
+      return tileRange;
+    }
+    return new TileRange(
+      tileRange.minX - overflowTileCount,
+      tileRange.maxX + overflowTileCount,
+      tileRange.minY - overflowTileCount,
+      tileRange.maxY + overflowTileCount
+    );
+  };
+  return wrappedTileGrid;
+}
 
 /**
  * @class TileSuperMapRest
@@ -36,6 +75,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+ * @param {number} [options.overflowTiles = 0] - 在当前视口范围外额外渲染的瓦片圈数。为 1 时上下左右各多请求一圈瓦片，可用于缓解符号在图层范围边缘被裁切的问题。
  * @extends {ol.source.TileImage}
  * @usage
  */
@@ -46,6 +86,7 @@ export class TileSuperMapRest extends TileImage {
             options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
 
         options.format = options.format ? options.format : 'png';
+        const tileGrid = wrapTileGridWithOverflow(options.tileGrid, options.overflowTiles);
 
         super({ 
             attributions: options.attributions,
@@ -57,7 +98,7 @@ export class TileSuperMapRest extends TileImage {
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             state: options.state,
             tileClass: options.tileClass,
-            tileGrid: options.tileGrid,
+            tileGrid: tileGrid,
             tileLoadFunction: options.tileLoadFunction,
             tilePixelRatio: options.tilePixelRatio,
             tileUrlFunction: tileUrlFunction,
@@ -65,6 +106,7 @@ export class TileSuperMapRest extends TileImage {
             cacheEnabled: options.cacheEnabled,
             layersID: options.layersID
         });
+        options.tileGrid = tileGrid;
         if (options.tileProxy) {
             this.tileProxy = options.tileProxy;
         }
@@ -166,22 +208,28 @@ export class TileSuperMapRest extends TileImage {
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 if (options.extent) {
-                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
+                    me.tileGrid = wrapTileGridWithOverflow(TileSuperMapRest.createTileGrid(options.extent), options.overflowTiles);
                     if (me.resolutions) {
                         me.tileGrid.resolutions = me.resolutions;
                     }
                 } else {
                     if (projection.getCode() === 'EPSG:3857') {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([
-                            -20037508.3427892,
-                            -20037508.3427892,
-                            20037508.3427892,
-                            20037508.3427892
-                        ]);
+                        me.tileGrid = wrapTileGridWithOverflow(
+                            TileSuperMapRest.createTileGrid([
+                                -20037508.3427892,
+                                -20037508.3427892,
+                                20037508.3427892,
+                                20037508.3427892
+                            ]),
+                            options.overflowTiles
+                        );
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === 'EPSG:4326') {
-                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.tileGrid = wrapTileGridWithOverflow(
+                            TileSuperMapRest.createTileGrid([-180, -90, 180, 90]),
+                            options.overflowTiles
+                        );
                         me.extent = [-180, -90, 180, 90];
                     }
                 }

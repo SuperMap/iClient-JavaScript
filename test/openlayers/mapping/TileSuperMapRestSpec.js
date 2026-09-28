@@ -6,6 +6,7 @@ import {getQueryValue} from '../../tool/utils';
 
 import Point from 'ol/geom/Point';
 import * as olProj from 'ol/proj';
+import TileGrid from 'ol/tilegrid/TileGrid';
 
 var url = GlobeParameter.imageURL;
 describe('openlayers_TileSuperMapRest', () => {
@@ -44,6 +45,64 @@ describe('openlayers_TileSuperMapRest', () => {
         expect(tileUrl).not.toBeNull();
         expect(tileSourcetile.getTileGrid().getTileSize()).toEqual(256);
         expect(tileSourcetile.getTileGrid().getResolution(0)).toEqual(90.0 / 256);
+    });
+
+    it('tileGrid_overflowTiles_internalGrid', () => {
+        var tileSource = new TileSuperMapRest({
+            url: url,
+            extent: [-180, -90, 180, 90],
+            overflowTiles: 1,
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        });
+        tileSource.tileUrlFunction([0, 0, 0], 1, olProj.get('EPSG:4326'));
+        const tileRange = tileSource.getTileGrid().getTileRangeForExtentAndZ([-180, -90, 180, 90], 0);
+        const fullTileRange = tileSource.getTileGrid().getFullTileRange(0);
+        expect(tileRange.minX).toBe(-1);
+        expect(tileRange.maxX).toBe(1);
+        expect(tileRange.minY).toBe(-1);
+        expect(tileRange.maxY).toBe(1);
+        expect(fullTileRange.minX).toBe(-1);
+        expect(fullTileRange.maxX).toBe(1);
+        expect(fullTileRange.minY).toBe(-1);
+        expect(fullTileRange.maxY).toBe(1);
+    });
+
+    it('tileGrid_overflowTiles_customTileGrid', () => {
+        var tileGrid = new TileGrid({
+            extent: [-180, -90, 180, 90],
+            origin: [-180, 90],
+            resolutions: [180 / 256],
+            tileSize: 256
+        });
+        var tileSource = new TileSuperMapRest({
+            url: url,
+            tileGrid: tileGrid,
+            overflowTiles: 1,
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        });
+        const tileRange = tileSource.getTileGrid().getTileRangeForExtentAndZ([-180, -90, 180, 90], 0);
+        expect(tileRange.minX).toBe(-1);
+        expect(tileRange.maxX).toBe(1);
+        expect(tileRange.minY).toBe(-1);
+        expect(tileRange.maxY).toBe(1);
+    });
+
+    it('tileUrlFunction_overflowTiles_negativeTileCoord', () => {
+        var tileSource = new TileSuperMapRest({
+            url: url,
+            extent: [-180, -90, 180, 90],
+            overflowTiles: 1,
+            prjCoordSys: {
+                epsgCode: 4326
+            }
+        });
+        var tileUrl = tileSource.tileUrlFunction([0, -1, -1], 1, olProj.get('EPSG:4326'));
+        expect(tileUrl).toContain('&x=-1');
+        expect(tileUrl).toContain('&y=-1');
     });
 
     it('tileUrlFunction_tilePoxy', () => {
