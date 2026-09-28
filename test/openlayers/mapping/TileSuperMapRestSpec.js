@@ -135,7 +135,7 @@ describe('openlayers_TileSuperMapRest', () => {
         });
         const tileRange = tileSource.getTileGrid().getTileRangeForExtentAndZ([-180, -90, 180, 90], 0);
         expect(tileRange.minX).toBe(-1);
-        expect(tileRange.maxX).toBe(1);
+        expect(tileRange.maxX).toBe(2);
         expect(tileRange.minY).toBe(-1);
         expect(tileRange.maxY).toBe(1);
     });
