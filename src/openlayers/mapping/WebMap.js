@@ -111,6 +111,7 @@ const WMTS_ARRAY_NODE_PATHS = [
  * @param {function} [options.mapSetting.controls] - 地图的控件。
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数。
  * @param {number} [options.restDataSingleRequestCount=1000] - 自定义 restData 分批请求，单次请求数量。
+ * @param {number} [options.overflowTiles=0] - RestMap 栅格图层瓦片范围向外扩大的圈数。
  * @extends {ol.Observable}
  * @usage
  */
@@ -142,6 +143,7 @@ export class WebMap extends Observable {
     this.webMap = options.webMap;
     this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
     this.restDataSingleRequestCount = options.restDataSingleRequestCount || 1000;
+    this.overflowTiles = typeof options.overflowTiles === 'undefined' ? 1 : options.overflowTiles;
     this.tileRequestParameters = options.tileRequestParameters;
     this.createMap(options.mapSetting);
     if (this.webMap) {
@@ -1314,6 +1316,10 @@ export class WebMap extends Observable {
     ) {
       options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
     }
+    if(this.overflowTiles) {
+      options.overflowTiles = this.overflowTiles;
+      layerInfo.restMapExtentExpanded = true;
+    }
     let source = new TileSuperMapRest(options);
     SecurityManager[`register${keyfix}`](layerInfo.url);
     return source;
@@ -1401,7 +1407,11 @@ export class WebMap extends Observable {
   getLayerOtherOptions(layerInfo) {
     const { layerType, extent, minZoom, maxZoom } = layerInfo;
     const extentVal = layerType === 'ZXY_TILE' ? this._getZXYTileMapBounds(layerInfo) : extent;
-    const options = { extent: extentVal };
+    const options = {};
+    if (!layerInfo.restMapExtentExpanded) {
+      // 扩大 RestMap 栅格图层的 tileGrid 后，不再向图层传递 extent
+      options.extent = extentVal;
+    }
     if (typeof minZoom === 'number' && minZoom !== 0) {
       options.minZoom = minZoom - 1;
     }
