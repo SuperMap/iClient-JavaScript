@@ -1,4 +1,5 @@
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
+import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
 import { Events } from '../../../src/common/commontypes';
 
 const mockCrsManager = {
@@ -132,34 +133,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
   let instance;
 
   beforeEach(() => {
-    // Create a minimal mock instance with the method
-    instance = {
-      _mapResourceInfo: {},
-      _getLegendInfoByCatalog: function(catalog, res = []) {
-        const { catalogType, children, showLegend, title, layersContent, id } = catalog;
-        if (catalogType === 'group' && children) {
-          children.forEach(child => {
-            this._getLegendInfoByCatalog(child, res);
-          });
-        }
-        if (catalogType === 'layer') {
-          res.push({
-            showLegend: showLegend !== false,
-            id: layersContent || id,
-            title: title
-          });
-        }
-      },
-      _getLegendInfos: function(_mapResourceInfo) {
-        const mapResourceInfo = _mapResourceInfo || this._mapResourceInfo;
-        const { catalogs = [] } = mapResourceInfo;
-        const res = [];
-        catalogs.forEach((item) => {
-          this._getLegendInfoByCatalog(item, res);
-        });
-        return res;
-      }
-    };
+    instance = createWebMapV3Instance();
   });
 
   describe('_getLegendInfos', () => {
@@ -170,13 +144,13 @@ describe('WebMapV3 - _getLegendInfos', () => {
             catalogType: 'layer',
             title: 'Layer1',
             showLegend: true,
-            layersContent: 'layer1'
+            id: 'layer1'
           },
           {
             catalogType: 'layer',
             title: 'Layer2',
             showLegend: false,
-            layersContent: 'layer2'
+            id: 'layer2'
           }
         ]
       };
@@ -199,7 +173,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
                 catalogType: 'layer',
                 title: 'ChildLayer',
                 showLegend: true,
-                layersContent: 'childLayer'
+                id: 'childLayer'
               }
             ]
           }
@@ -219,7 +193,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
           {
             catalogType: 'layer',
             title: 'Layer1',
-            layersContent: 'layer1'
+            id: 'layer1'
           }
         ]
       };
@@ -231,21 +205,22 @@ describe('WebMapV3 - _getLegendInfos', () => {
       ]);
     });
 
-    it('should use id when layersContent is not available', () => {
-      instance._mapResourceInfo = {
+    it('should use the provided map resource info', () => {
+      const mapResourceInfo = {
         catalogs: [
           {
             catalogType: 'layer',
             title: 'Layer1',
+            showLegend: true,
             id: 'layer1'
           }
         ]
       };
 
-      const result = instance._getLegendInfos();
+      const result = instance._getLegendInfos(mapResourceInfo);
 
       expect(result).toEqual([
-        { showLegend: false, id: 'layer1', title: 'Layer1' }
+        { showLegend: true, id: 'layer1', title: 'Layer1' }
       ]);
     });
 
@@ -270,7 +245,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
                     catalogType: 'layer',
                     title: 'NestedLayer',
                     showLegend: true,
-                    layersContent: 'nestedLayer'
+                    id: 'nestedLayer'
                   }
                 ]
               }
@@ -301,7 +276,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
                     catalogType: 'layer',
                     title: 'DeepLayer',
                     showLegend: false,
-                    layersContent: 'deepLayer'
+                    id: 'deepLayer'
                   }
                 ]
               }
@@ -325,7 +300,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
         catalogType: 'other',
         title: 'Other',
         showLegend: true,
-        layersContent: 'other'
+        id: 'other'
       };
 
       instance._getLegendInfoByCatalog(catalog, res);
@@ -339,7 +314,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
         catalogType: 'layer',
         title: 'TestLayer',
         showLegend: true,
-        layersContent: 'testLayer'
+        id: 'testLayer'
       };
 
       instance._getLegendInfoByCatalog(catalog, res);
@@ -354,7 +329,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       const catalog = {
         catalogType: 'layer',
         title: 'TestLayer',
-        layersContent: 'testLayer'
+        id: 'testLayer'
       };
 
       instance._getLegendInfoByCatalog(catalog, res);
@@ -379,38 +354,41 @@ describe('WebMapV3 - _getLegendInfos', () => {
   });
 
   describe('getLegendInfos (WebMapV3)', () => {
-    it('should call _handler._getLegendInfos through WebMapBase', () => {
-      const webMapBase = {
-        _handler: null,
-        getLegendInfos: function() {
-          return (this._handler && this._handler._getLegendInfos()) || [];
-        }
-      };
+    let webMapBase;
 
-      const mockLegendInfos = [
-        { showLegend: true, id: 'layer1', title: 'Layer1' }
-      ];
-      webMapBase._handler = {
-        _getLegendInfos: jasmine.createSpy('_getLegendInfos').and.returnValue(mockLegendInfos)
-      };
-
-      const result = webMapBase.getLegendInfos();
-
-      expect(webMapBase._handler._getLegendInfos).toHaveBeenCalled();
-      expect(result).toEqual(mockLegendInfos);
+    beforeEach(() => {
+      const WebMapBase = createWebMapBaseExtending(Events, { mapRepo: {} });
+      webMapBase = new WebMapBase({}, { target: 'map' });
     });
 
-    it('should return empty array when _handler is null', () => {
-      const webMapBase = {
-        _handler: null,
-        getLegendInfos: function() {
-          return (this._handler && this._handler._getLegendInfos()) || [];
-        }
+    it('should return legend info from the WebMapV3 handler', () => {
+      instance._mapResourceInfo = {
+        catalogs: [
+          {
+            catalogType: 'layer',
+            id: 'layer1',
+            title: 'Layer1',
+            showLegend: true
+          },
+          {
+            catalogType: 'layer',
+            id: 'layer2',
+            title: 'Layer2'
+          }
+        ]
       };
+      webMapBase._handler = instance;
 
-      const result = webMapBase.getLegendInfos();
+      expect(webMapBase.getLegendInfos()).toEqual([
+        { showLegend: true, id: 'layer1', title: 'Layer1' },
+        { showLegend: false, id: 'layer2', title: 'Layer2' }
+      ]);
+    });
 
-      expect(result).toEqual([]);
+    it('should return an empty array when the handler is null', () => {
+      webMapBase._handler = null;
+
+      expect(webMapBase.getLegendInfos()).toEqual([]);
     });
   });
 });
