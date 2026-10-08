@@ -108,6 +108,8 @@ window.examplesResources = {
         "title_imageMapLayer3857": "SuperMap REST 地图服务底图(image)",
         "title_imageMapLayer4326": "SuperMap REST 地图服务底图(image)",
         "title_tiledMapLayer_rasterfunction": "SuperMap REST 地图服务(栅格分析)",
+        "title_tiledMapLayer_displayFilters": "SuperMap REST 地图服务(图层过滤)",
+        "title_tiledMapLayer_displayFilters_china4490": "SuperMap REST 地图服务(图层过滤)",
         "title_addressMatchService": "地址匹配服务",
         "title_bufferAnalyst1": "缓冲区分析一",
         "title_bufferAnalyst2": "缓冲区分析二",
@@ -2554,9 +2556,16 @@ window.examplesResources = {
         "text_setCurrentMapScaleToMintVisibleScale":"设置当前地图比例尺为最小可见比例尺",
         "text_setCurrentMapScaleToMaxVisibleScale":"设置当前地图比例尺为最大可见比例尺",
         "text_clearVisibleScaleSet":"清除可见比例尺设置",
-        "text_symbolAnnotations":"多注记"
+        "text_symbolAnnotations":"多注记",
+        "text_displayFiltersLandUseType": "土地利用类型",
+        "text_displayFiltersSelectAll": "全选",
+        "text_displayFiltersSelectNone": "清空",
+        "text_displayFiltersLoading": "正在读取土地利用类型...",
+        "text_displayFiltersLoadError": "无法读取土地利用类型"
         
 
     }
 };
 window.resources = window.examplesResources.resources;
+
+

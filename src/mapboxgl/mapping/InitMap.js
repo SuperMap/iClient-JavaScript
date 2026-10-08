@@ -15,6 +15,16 @@ import proj4 from 'proj4';
  * @param {Object} options - 参数。
  * @param {Object} [options.type] - 地图类型。可选值 'raster' | 'vector-tile'。默认 'raster'。
  * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://docs.mapbox.com/mapbox-gl-js/api/map/}。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素，仅栅格地图（type 为 'raster'）有效。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -198,6 +208,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
     if (sourceType === 'raster') {
       enhanceExtraInfo.rasterSource = 'iserver';
       enhanceExtraInfo.dpi = dpi;
+      if (options.displayFilters) {
+        enhanceExtraInfo.displayFilters = options.displayFilters;
+      }
     }
     if (vectorTileInfo && vectorTileInfo.center) {
       mapCenter = vectorTileInfo.center;
@@ -233,6 +246,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
       nonEnhanceExtraInfo.tileSize = tileSize;
       const transparent = mapOptions.transparent !== false;
       tileUrl = Util.urlAppend(Util.urlPathAppend(tileUrl, 'zxyTileImage.png'), `z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`);
+      if (options.displayFilters) {
+        tileUrl = Util.urlAppend(tileUrl, `displayFilters=${encodeURIComponent(JSON.stringify(options.displayFilters))}`);
+      }
     }
   }
   if (zoom === undefined) {

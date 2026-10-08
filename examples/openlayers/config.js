@@ -25,6 +25,11 @@ var exampleConfig = {
                     thumbnail: "ol_tiledMapLayer3857.png",
                     fileName: "01_tiledMapLayer3857"
                 }, {
+                    name: "图层过滤",
+                    name_en: "displayFilters",
+                    thumbnail: "ol_tiledMapLayer_displayFilters.png",
+                    fileName: "01_tiledMapLayer_displayFilters"
+                }, {
                     name: "地图叠加",
                     name_en: "overlay tile layer",
                     thumbnail: "ol_tiledMapLayerOverlapped.png",

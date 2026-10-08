@@ -21,6 +21,12 @@ var exampleConfig = {
                         thumbnail: 'mb_TileLayer.png',
                         fileName: '01_tiledMapLayer'
                     },
+                    {
+                        name: '图层过滤',
+                        name_en: 'displayFilters',
+                        thumbnail: 'mb_tiledMapLayer_displayFilters.png',
+                        fileName: '01_tiledMapLayer_displayFilters'
+                    },
                     // {
                     //     name: '地图-栅格分析',
                     //     name_en: 'map rasterFunction',
@@ -1958,6 +1964,12 @@ var exampleConfig = {
                         version: '9.1.1',
                         thumbnail: '01_tiledMapLayer_4326.png',
                         fileName: '01_tiledMapLayer_4326'
+                    },
+                    {
+                        name: '地图_WGS84_图层过滤',
+                        name_en: 'Map WGS84 displayFilters',
+                        thumbnail: 'mb_tiledMapLayer_displayFilters_4326.png',
+                        fileName: '01_tiledMapLayer_displayFilters_4326'
                     },
                     {
                         name: '地图_China2000',

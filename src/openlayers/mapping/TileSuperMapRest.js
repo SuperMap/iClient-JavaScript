@@ -74,6 +74,16 @@ function wrapTileGridWithOverflow(tileGrid, overflowTiles) {
  * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {ChartSettingS57|ChartSettingS100} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @param {number} [options.overflowTiles = 0] - 在当前视口范围外额外渲染的瓦片圈数。为 1 时上下左右各多请求一圈瓦片，可用于缓解符号在图层范围边缘被裁切的问题。
  * @extends {ol.source.TileImage}
@@ -114,6 +124,7 @@ export class TileSuperMapRest extends TileImage {
       //当前切片在切片集中的index
       this.tileSetsIndex = -1;
       this.tempIndex = -1;
+      this._paramsVersion = 0;
       this.dpi = this.options.dpi || 96;
       if (options.url) {
         this._urls = expandUrl(options.url);
@@ -179,6 +190,9 @@ export class TileSuperMapRest extends TileImage {
         }
         if (options.rasterfunction) {
           params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+        }
+        if (options.displayFilters) {
+          params['displayFilters'] = JSON.stringify(options.displayFilters);
         }
         if (options.chartSetting) {
           params['chartSetting'] = JSON.stringify(options.chartSetting);
@@ -462,8 +476,12 @@ export class TileSuperMapRest extends TileImage {
      * @version 11.2.0
      */
     updateParams(params) {
-      Object.assign(this.requestParams, params);
+      Object.assign(this.options, params);
+      if (this.requestParams) {
+        Object.assign(this.requestParams, params);
+      }
       this._paramsChanged = true;
+      this.setKey(String(++this._paramsVersion));
       this.refresh();
     }
 }

@@ -70,8 +70,8 @@
       inputScript(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.js');
     }
     if (inArray(includes, 'maplibre-gl-enhance')) {
-      inputCSS(libsurl + '/maplibre-gl-js-enhance/4.3.0-5/maplibre-gl-enhance.css');
-      inputScript(libsurl + '/maplibre-gl-js-enhance/4.3.0-5/maplibre-gl-enhance.js');
+      inputCSS(libsurl + '/maplibre-gl-js-enhance/5.9.0-1/maplibre-gl-enhance.css');
+      inputScript(libsurl + '/maplibre-gl-js-enhance/5.9.0-1/maplibre-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
       inputScript(libsurl + '/maplibregl-l7-render/0.0.3/maplibregl-l7-render.js');

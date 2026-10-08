@@ -164,6 +164,8 @@ window.examplesResources = {
         "title_imageMapLayer3857": "3857 Base Map of SuperMap REST (image)",
         "title_imageMapLayer4326": "4326 Base Map of SuperMap REST (image)",
         "title_tiledMapLayer_rasterfunction": "SuperMap REST Map Service(rasterfunction)",
+        "title_tiledMapLayer_displayFilters": "SuperMap REST Map Service(displayFilters)",
+        "title_tiledMapLayer_displayFilters_china4490": "SuperMap REST Map Service(displayFilters)",
         "title_addressMatchService": "Address Match Service",
         "title_bufferAnalyst1": "Buffer Analysis 1",
         "title_bufferAnalyst2": "Buffer Analysis 2",
@@ -2591,8 +2593,15 @@ window.examplesResources = {
         "text_setCurrentMapScaleToMintVisibleScale":"set current map scale to min visible scale",
         "text_setCurrentMapScaleToMaxVisibleScale":"set current map scale to max visible scale",
         "text_clearVisibleScaleSet":"clear visible scale set",
-        "text_symbolAnnotations":"symbolAnnotations"
+        "text_symbolAnnotations":"symbolAnnotations",
+        "text_displayFiltersLandUseType": "Land use type",
+        "text_displayFiltersSelectAll": "Select all",
+        "text_displayFiltersSelectNone": "Clear",
+        "text_displayFiltersLoading": "Loading land use types...",
+        "text_displayFiltersLoadError": "Unable to load land use types"
     }
 };
 
 window.resources = window.examplesResources.resources;
+
+

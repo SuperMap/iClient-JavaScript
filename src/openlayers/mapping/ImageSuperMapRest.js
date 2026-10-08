@@ -39,6 +39,16 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @deprecated {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
  * @param {string} [options.ratio=1.5] - 	请求图片大小比例。 1 表示请求图片大小和地图视窗范围一致，2 表示请求图片大小是地图视窗范围的2倍，以此类推。
@@ -123,6 +133,9 @@ export class ImageSuperMapRest extends ImageSource {
     }
     if (options.rasterfunction) {
       params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+    }
+    if (options.displayFilters) {
+      params['displayFilters'] = JSON.stringify(options.displayFilters);
     }
     //是否反走样地图,默认为false
     if (options.antialias !== undefined) {

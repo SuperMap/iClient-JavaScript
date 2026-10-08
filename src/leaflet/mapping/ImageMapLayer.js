@@ -40,6 +40,16 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片格式。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。支持归一化植被指数分析参数、山体阴影分析参数。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @fires ImageMapLayer#load
  * @fires ImageMapLayer#error
@@ -227,6 +237,10 @@ export var ImageMapLayer = Layer.extend({
         }
         if (options.rasterfunction) {
             params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+        }
+
+        if (options.displayFilters) {
+            params['displayFilters'] = JSON.stringify(options.displayFilters);
         }
 
         if (options.clipRegionEnabled && options.clipRegion) {

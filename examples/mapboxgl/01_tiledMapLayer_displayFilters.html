@@ -1,0 +1,315 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_tiledMapLayer_displayFilters"></title>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      #land-use-control {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 1;
+        width: 260px;
+        max-width: calc(100vw - 32px);
+        max-height: calc(100vh - 32px);
+        overflow: hidden;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+        color: #333;
+        font: 14px/1.5 Arial, "Microsoft YaHei", sans-serif;
+      }
+
+      #land-use-control h3 {
+        margin: 0;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e5e5e5;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      #land-use-toolbar {
+        display: flex;
+        gap: 8px;
+        padding: 8px 12px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      #land-use-toolbar button {
+        padding: 3px 9px;
+        border: 1px solid #c8c8c8;
+        border-radius: 3px;
+        background: #fff;
+        color: #333;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      #land-use-toolbar button:hover {
+        border-color: #1890ff;
+        color: #1890ff;
+      }
+
+      #land-use-count {
+        margin-left: auto;
+        color: #777;
+        line-height: 26px;
+        white-space: nowrap;
+      }
+
+      #land-use-list {
+        max-height: calc(100vh - 150px);
+        padding: 6px 12px 10px;
+        overflow-y: auto;
+      }
+
+      .land-use-item {
+        display: flex;
+        align-items: center;
+        min-height: 28px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .land-use-item input {
+        margin: 0 7px 0 0;
+      }
+
+      .land-use-swatch {
+        width: 13px;
+        height: 13px;
+        margin-right: 6px;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        box-sizing: border-box;
+      }
+
+      .land-use-loading {
+        margin: 5px 0;
+        color: #777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <section id="land-use-control" data-i18n="[aria-label]resources.text_displayFiltersLandUseType">
+      <h3 data-i18n="resources.text_displayFiltersLandUseType"></h3>
+      <div id="land-use-toolbar">
+        <button type="button" id="select-all" data-i18n="resources.text_displayFiltersSelectAll"></button>
+        <button type="button" id="select-none" data-i18n="resources.text_displayFiltersSelectNone"></button>
+        <span id="land-use-count"></span>
+      </div>
+      <div id="land-use-list">
+        <p class="land-use-loading" data-i18n="resources.text_displayFiltersLoading"></p>
+      </div>
+    </section>
+    
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var mapUrl = host + '/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图';
+      var landUseLayerName = 'Landuse_R@Jingjin#1';
+      var filterField = 'LANDTYPE';
+      var center = [117.08, 40.04];
+      var zoom = 7;
+
+      var rasterSourceId = 'land-use-raster';
+      var rasterLayerId = 'land-use-raster-layer';
+      var landUseTypes = [];
+      var landUseColors = {};
+      var selectedLandUseTypes = {};
+      var map = null;
+
+      function getDisplayFilters() {
+        var selected = landUseTypes.filter(function (type) {
+          return selectedLandUseTypes[type];
+        });
+        var filter = 'SmID < 0';
+        if (selected.length) {
+          filter = selected
+            .map(function (type) {
+              return filterField + " = '" + type.replace(/'/g, "''") + "'";
+            })
+            .join(' OR ');
+        }
+        var displayFilters = {};
+        displayFilters[landUseLayerName] = filter;
+        return displayFilters;
+      }
+
+      function createRasterSource() {
+        return {
+          type: 'raster',
+          tileSize: 256,
+          tiles: [
+            mapUrl +
+              '/zxyTileImage.png?z={z}&x={x}&y={y}&displayFilters=' +
+              encodeURIComponent(JSON.stringify(getDisplayFilters()))
+          ]
+        };
+      }
+
+      function refreshRasterSource() {
+        if (!map || !map.isStyleLoaded()) {
+          return;
+        }
+        var source = map.getSource(rasterSourceId);
+        var sourceCache = map.style && map.style.sourceCaches && map.style.sourceCaches[rasterSourceId];
+        if (!source || !sourceCache) {
+          return;
+        }
+        source.tiles = createRasterSource().tiles;
+        sourceCache.clearTiles();
+        sourceCache.update(map.transform);
+        map.triggerRepaint();
+      }
+
+      function getSelectedCount() {
+        return landUseTypes.filter(function (type) {
+          return selectedLandUseTypes[type];
+        }).length;
+      }
+
+      function renderLandUseList() {
+        var list = document.getElementById('land-use-list');
+        var count = document.getElementById('land-use-count');
+        list.innerHTML = '';
+        landUseTypes.forEach(function (type) {
+          var label = document.createElement('label');
+          label.className = 'land-use-item';
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = !!selectedLandUseTypes[type];
+          checkbox.addEventListener('change', function () {
+            selectedLandUseTypes[type] = checkbox.checked;
+            count.textContent = getSelectedCount() + '/' + landUseTypes.length;
+            refreshRasterSource();
+          });
+          var swatch = document.createElement('span');
+          swatch.className = 'land-use-swatch';
+          swatch.style.backgroundColor = landUseColors[type];
+          label.appendChild(checkbox);
+          label.appendChild(swatch);
+          label.appendChild(document.createTextNode(type));
+          list.appendChild(label);
+        });
+        count.textContent = getSelectedCount() + '/' + landUseTypes.length;
+      }
+
+      function setAllTypes(checked) {
+        landUseTypes.forEach(function (type) {
+          selectedLandUseTypes[type] = checked;
+        });
+        renderLandUseList();
+        refreshRasterSource();
+      }
+
+      function findLandUseTheme(layer) {
+        if (!layer) {
+          return null;
+        }
+        if (layer.name === landUseLayerName && layer.theme && layer.theme.items) {
+          return layer;
+        }
+        var layers = layer.subLayers && layer.subLayers.layers;
+        if (!layers) {
+          return null;
+        }
+        for (var i = 0; i < layers.length; i++) {
+          var result = findLandUseTheme(layers[i]);
+          if (result) {
+            return result;
+          }
+        }
+        return null;
+      }
+
+      function renderLoadError() {
+        document.getElementById('land-use-list').innerHTML =
+          '<p class="land-use-loading" data-i18n="resources.text_displayFiltersLoadError"></p>';
+        if (window.Localization) { Localization.localize(); }
+      }
+
+      function createMap() {
+        map = new mapboxgl.Map({
+          container: 'map',
+          style: { version: 8, sources: {}, layers: [] },
+          center: center,
+          zoom: zoom
+        });
+        map.on('load', function () {
+          map.addSource(rasterSourceId, createRasterSource());
+          map.addLayer({ id: rasterLayerId, type: 'raster', source: rasterSourceId, minzoom: 0, maxzoom: 22 });
+        });
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      }
+
+      function loadLandUseTypes() {
+        new mapboxgl.supermap.LayerInfoService(mapUrl)
+          .getLayersInfo()
+          .then(function (serviceResult) {
+            var themeLayer = findLandUseTheme(serviceResult && serviceResult.result);
+            if (!themeLayer) {
+              throw new Error('Land use theme layer not found');
+            }
+            themeLayer.theme.items.forEach(function (item) {
+              var type = item.unique || item.caption;
+              if (type && landUseTypes.indexOf(type) === -1) {
+                landUseTypes.push(type);
+                var color = item.style && item.style.fillForeColor;
+                if (color) {
+                  landUseColors[type] = 'rgb(' + color.red + ', ' + color.green + ', ' + color.blue + ')';
+                }
+              }
+            });
+            if (!landUseTypes.length) {
+              throw new Error('No land use types found');
+            }
+            landUseTypes.forEach(function (type) {
+              selectedLandUseTypes[type] = true;
+            });
+            renderLandUseList();
+            createMap();
+          })
+          .catch(renderLoadError);
+      }
+
+      document.getElementById('select-all').addEventListener('click', function () {
+        setAllTypes(true);
+      });
+      document.getElementById('select-none').addEventListener('click', function () {
+        setAllTypes(false);
+      });
+
+      loadLandUseTypes();
+
+    </script>
+  </body>
+</html>
+
+
+
+
