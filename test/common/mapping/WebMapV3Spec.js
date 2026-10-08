@@ -182,7 +182,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       ]);
     });
 
-    it('should default showLegend to true when undefined', () => {
+    it('should default showLegend to false when undefined', () => {
       instance._mapResourceInfo = {
         catalogs: [
           {
@@ -194,7 +194,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       };
 
       expect(instance._getLegendInfos()).toEqual([
-        { showLegend: true, id: 'layer1', title: 'Layer1' }
+        { showLegend: false, id: 'layer1', title: 'Layer1' }
       ]);
     });
 
@@ -210,7 +210,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       };
 
       expect(instance._getLegendInfos()).toEqual([
-        { showLegend: true, id: 'layer1', title: 'Layer1' }
+        { showLegend: false, id: 'layer1', title: 'Layer1' }
       ]);
     });
 
@@ -233,7 +233,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       };
 
       expect(instance._getLegendInfos(customResourceInfo)).toEqual([
-        { showLegend: true, id: 'customLayer', title: 'CustomLayer' }
+        { showLegend: false, id: 'customLayer', title: 'CustomLayer' }
       ]);
     });
 
@@ -321,7 +321,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       ]);
     });
 
-    it('should default showLegend to true when not specified', () => {
+    it('should default showLegend to false when not specified', () => {
       const res = [];
       instance._getLegendInfoByCatalog({
         catalogType: 'layer',
@@ -330,7 +330,7 @@ describe('WebMapV3 - _getLegendInfos', () => {
       }, res);
 
       expect(res).toEqual([
-        { showLegend: true, id: 'testLayer', title: 'TestLayer' }
+        { showLegend: false, id: 'testLayer', title: 'TestLayer' }
       ]);
     });
 

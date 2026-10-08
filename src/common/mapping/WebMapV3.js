@@ -403,7 +403,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     if (catalogType === 'layer') {
       res.push({
-        showLegend: showLegend !== false,
+        showLegend: showLegend === true,
         id: id,
         title: title
       });
