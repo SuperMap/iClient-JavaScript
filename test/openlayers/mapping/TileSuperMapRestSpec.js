@@ -96,6 +96,85 @@ describe('openlayers_TileSuperMapRest', () => {
         expect(tileSourcetile.getTileGrid().getResolution(0)).toEqual(90.0 / 256);
     });
 
+    it('tileUrlFunction_displayFilters', () => {
+        const displayFilters = {
+            'World@World': "NAME = 'A&B+C' AND SMID > 1",
+            'Capitals@World': 'POPULATION >= 1000000'
+        };
+        const tileSource = new TileSuperMapRest({
+            url: url,
+            prjCoordSys: { epsgCode: 4326 },
+            displayFilters: displayFilters
+        });
+        const tileUrl = tileSource.tileUrlFunction([0, 0, 0], 1, olProj.get('EPSG:4326'));
+        expect(tileSource.requestParams.displayFilters).toBe(JSON.stringify(displayFilters));
+        expect(getQueryValue(tileUrl, 'displayFilters')).toBe(encodeURIComponent(JSON.stringify(displayFilters)));
+        expect(JSON.parse(decodeURIComponent(getQueryValue(tileUrl, 'displayFilters')))).toEqual(displayFilters);
+        expect(getQueryValue(tileUrl, 'x')).toBe('0');
+        expect(getQueryValue(tileUrl, 'width')).toBe('256');
+    });
+
+    it('tileUrlFunction_withoutDisplayFilters', () => {
+        const tileSource = new TileSuperMapRest({
+            url: url,
+            prjCoordSys: { epsgCode: 4326 }
+        });
+        const tileUrl = tileSource.tileUrlFunction([0, 0, 0], 1, olProj.get('EPSG:4326'));
+        expect(tileSource.requestParams.displayFilters).toBeUndefined();
+        expect(getQueryValue(tileUrl, 'displayFilters')).toBeNull();
+    });
+
+    it('tileUrlFunction_displayFilters_tileProxy', () => {
+        const displayFilters = { 'World@World': "NAME = 'A&B+C'" };
+        const tileProxy = 'https://example.com/proxy?url=';
+        const tileSource = new TileSuperMapRest({
+            url: url,
+            prjCoordSys: { epsgCode: 4326 },
+            displayFilters: displayFilters,
+            tileProxy: tileProxy
+        });
+        const tileUrl = tileSource.tileUrlFunction([0, 0, 0], 1, olProj.get('EPSG:4326'));
+        expect(tileUrl.startsWith(tileProxy)).toBeTrue();
+        const requestUrl = decodeURIComponent(tileUrl.substring(tileProxy.length));
+        expect(requestUrl.startsWith(url + '/tileImage.png?')).toBeTrue();
+        expect(JSON.parse(decodeURIComponent(getQueryValue(requestUrl, 'displayFilters')))).toEqual(displayFilters);
+        expect(tileSource.requestParams.displayFilters).toBe(JSON.stringify(displayFilters));
+    });
+
+    it('tileUrlFunction_displayFilters_urls', () => {
+        const displayFilters = { 'World@World': 'SMID > 1' };
+        const urls = [url + '/map-world1', url + '/map-world2'];
+        const tileSource = new TileSuperMapRest({
+            urls: urls,
+            prjCoordSys: { epsgCode: 4326 },
+            displayFilters: displayFilters
+        });
+        const tileUrl = tileSource.tileUrlFunction([5, 4, 2], 1, olProj.get('EPSG:4326'));
+        expect(tileUrl.startsWith(urls[0] + '/tileImage.png?')).toBeTrue();
+        expect(tileSource.requestParams.displayFilters).toBe(JSON.stringify(displayFilters));
+        expect(JSON.parse(decodeURIComponent(getQueryValue(tileUrl, 'displayFilters')))).toEqual(displayFilters);
+    });
+
+    it('updateParams_displayFilters', () => {
+        const displayFilters = { 'World@World': 'SMID > 1' };
+        const tileSource = new TileSuperMapRest({
+            url: url,
+            prjCoordSys: { epsgCode: 4326 },
+            displayFilters: displayFilters
+        });
+        const projection = olProj.get('EPSG:4326');
+        const tileUrl = tileSource.tileUrlFunction([0, 0, 0], 1, projection);
+        expect(JSON.parse(decodeURIComponent(getQueryValue(tileUrl, 'displayFilters')))).toEqual(displayFilters);
+
+        const newDisplayFilters = { 'World@World': 'SMID > 10', 'Capitals@World': 'POPULATION > 1000000' };
+        tileSource.updateParams({ displayFilters: newDisplayFilters });
+        const updatedTileUrl = tileSource.tileUrlFunction([0, 0, 0], 1, projection);
+        expect(tileSource.options.displayFilters).toEqual(newDisplayFilters);
+        expect(JSON.parse(decodeURIComponent(getQueryValue(updatedTileUrl, 'displayFilters')))).toEqual(newDisplayFilters);
+        expect(updatedTileUrl).not.toBe(tileUrl);
+        expect(tileSource.tileUrlFunction([0, 0, 0], 1, projection)).toBe(updatedTileUrl);
+    });
+
     it('tileGrid_overflowTiles_internalGrid', () => {
         var tileSource = new TileSuperMapRest({
             url: url,

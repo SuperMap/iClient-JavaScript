@@ -74,13 +74,6 @@
         color: #1890ff;
       }
 
-      #land-use-count {
-        margin-left: auto;
-        color: #777;
-        line-height: 26px;
-        white-space: nowrap;
-      }
-
       #land-use-list {
         max-height: calc(100vh - 150px);
         padding: 6px 12px 10px;
@@ -130,7 +123,6 @@
       <div id="land-use-toolbar">
         <button type="button" id="select-all" data-i18n="resources.text_displayFiltersSelectAll"></button>
         <button type="button" id="select-none" data-i18n="resources.text_displayFiltersSelectNone"></button>
-        <span id="land-use-count"></span>
       </div>
       <div id="land-use-list">
         <p class="land-use-loading" data-i18n="resources.text_displayFiltersLoading"></p>
@@ -260,44 +252,46 @@
         list.appendChild(message);
       }
 
-      // function createMap() {
-      //   map = new mapboxgl.Map({
-      //     container: 'map',
-      //     style: {
-      //       version: 8,
-      //       sources: {
-      //         'land-use-raster': createRasterSource()
-      //       },
-      //       layers: [
-      //         {
-      //           id: rasterLayerId,
-      //           type: 'raster',
-      //           source: rasterSourceId,
-      //           minzoom: 0,
-      //           maxzoom: 22
-      //         }
-      //       ]
-      //     },
-      //     crs: 'EPSG:4326',
-      //     center: [117.08, 40.04],
-      //     zoom: 7
-      //   });
+      // 方式一：手动创建地图和图层。
+      function createMap() {
+        map = new mapboxgl.Map({
+          container: 'map',
+          style: {
+            version: 8,
+            sources: {
+              'land-use-raster': createRasterSource()
+            },
+            layers: [
+              {
+                id: rasterLayerId,
+                type: 'raster',
+                source: rasterSourceId,
+                minzoom: 0,
+                maxzoom: 22
+              }
+            ]
+          },
+          crs: 'EPSG:4326',
+          center: [117.08, 40.04],
+          zoom: 7
+        });
 
-      //   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-      // }
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      }
 
       /*
+       * 方式二：使用 mapboxgl.supermap.initMap 根据服务信息创建地图和图层。
        */
-      function createMap() {
-        return mapboxgl.supermap.initMap(mapUrl, {
-          displayFilters: getDisplayFilters(),
-        }).then(function (result) {
-          map = result.map;
-          rasterSourceId = 'smaples-source';
-          rasterLayerId = 'sample-layer';
-          map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-        });
-      }
+      // function createMap() {
+      //   return mapboxgl.supermap.initMap(mapUrl, {
+      //     displayFilters: getDisplayFilters(),
+      //   }).then(function (result) {
+      //     map = result.map;
+      //     rasterSourceId = 'smaples-source';
+      //     rasterLayerId = 'sample-layer';
+      //     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      //   });
+      // }
 
       function loadLandUseTypes() {
         new mapboxgl.supermap.LayerInfoService(mapUrl).getLayersInfo().then(function (serviceResult) {

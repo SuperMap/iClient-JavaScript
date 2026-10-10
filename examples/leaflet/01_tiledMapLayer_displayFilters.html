@@ -67,13 +67,6 @@
         color: #1890ff;
       }
 
-      #land-use-count {
-        margin-left: auto;
-        color: #777;
-        line-height: 26px;
-        white-space: nowrap;
-      }
-
       #land-use-list {
         max-height: calc(100vh - 150px);
         padding: 6px 12px 10px;
@@ -114,7 +107,6 @@
       <div id="land-use-toolbar">
         <button type="button" id="select-all" data-i18n="resources.text_displayFiltersSelectAll"></button>
         <button type="button" id="select-none" data-i18n="resources.text_displayFiltersSelectNone"></button>
-        <span id="land-use-count"></span>
       </div>
       <div id="land-use-list">
         <p class="land-use-loading" data-i18n="resources.text_displayFiltersLoading"></p>
@@ -154,12 +146,6 @@
         return displayFilters;
       }
 
-      function getSelectedCount() {
-        return landUseTypes.filter(function (type) {
-          return selectedLandUseTypes[type];
-        }).length;
-      }
-
       function refreshLayer() {
         if (!map || !layer) {
           return;
@@ -171,7 +157,6 @@
 
       function renderLandUseList() {
         var list = document.getElementById('land-use-list');
-        var count = document.getElementById('land-use-count');
         list.innerHTML = '';
         landUseTypes.forEach(function (type) {
           var label = document.createElement('label');
@@ -181,7 +166,6 @@
           checkbox.checked = !!selectedLandUseTypes[type];
           checkbox.addEventListener('change', function () {
             selectedLandUseTypes[type] = checkbox.checked;
-            count.textContent = getSelectedCount() + '/' + landUseTypes.length;
             refreshLayer();
           });
           var swatch = document.createElement('span');
@@ -192,7 +176,6 @@
           label.appendChild(document.createTextNode(type));
           list.appendChild(label);
         });
-        count.textContent = getSelectedCount() + '/' + landUseTypes.length;
       }
 
       function setAllTypes(checked) {
@@ -224,6 +207,7 @@
       }
 
       /*
+       * 方式一：手动创建地图和图层。
        */
       function createMap() {
         map = L.map('map', {
@@ -237,6 +221,7 @@
       }
 
       /*
+       * 方式二：使用 L.supermap.initMap 根据服务信息创建地图和图层。
        */
       // function createMap() {
       //   return L.supermap.initMap(mapUrl, {

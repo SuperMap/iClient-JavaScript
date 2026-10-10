@@ -88,6 +88,29 @@ describe('leaflet_TiledMapLayer', () => {
         var tileUrl = tiledMapLayerObject.getTileUrl(coords);
     });
 
+    it('getTileUrl, displayFilters', () => {
+        const displayFilters = {
+            'Countries@World': "NAME = 'A&B'",
+            'Cities@World': 'POPULATION >= 1000000'
+        };
+        const layer = tiledMapLayer(url, { displayFilters }).addTo(map);
+        const params = layer._getAllRequestParams();
+        expect(params.displayFilters).toBe(JSON.stringify(displayFilters));
+        const tileUrl = layer.getTileUrl(L.point(1, 4));
+        const displayFiltersValue = getQueryValue(tileUrl, 'displayFilters');
+        expect(displayFiltersValue).toBe(encodeURIComponent(JSON.stringify(displayFilters)));
+        expect(JSON.parse(decodeURIComponent(displayFiltersValue))).toEqual(displayFilters);
+        layer.removeFrom(map);
+    });
+
+    it('getTileUrl, without displayFilters', () => {
+        const layer = tiledMapLayer(url).addTo(map);
+        const params = layer._getAllRequestParams();
+        expect(Object.keys(params)).not.toContain('displayFilters');
+        expect(getQueryValue(layer.getTileUrl(L.point(1, 4)), 'displayFilters')).toBeNull();
+        layer.removeFrom(map);
+    });
+
     it('changeTilesVersion', () => {
         var sourceUrl = "http://54.223.164.155:8090//iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces";
         var tiledMapLayerObject = tiledMapLayer(sourceUrl);

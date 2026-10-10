@@ -28,6 +28,100 @@ describe('mapboxgl_InitMap', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
+  describe('displayFilters', () => {
+    const restMapUrl = 'http://fake:8090/iserver/services/map-china400/rest/maps/China';
+    const url = `${restMapUrl}?${tokenQuery}`;
+    const displayFilters = {
+      'China_Province@China': "NAME = 'A&B' AND POP > 100",
+      'China_Roads@China': 'SmID < 10'
+    };
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: { epsgCode: 3857 },
+      bounds: { left: -20037508, bottom: -20037508, right: 20037508, top: 20037508 },
+      center: { x: 0, y: 0 },
+      dpi: 96,
+      coordUnit: 'METER',
+      scale: 1 / 200000000
+    };
+    let originalCRS;
+
+    beforeEach(() => {
+      originalCRS = mapboxgl.CRS;
+      delete mapboxgl.CRS;
+      spyOn(FetchRequest, 'get').and.callFake((requestUrl) => {
+        if (requestUrl.includes('/prjCoordSys.wkt')) {
+          return Promise.resolve(new Response('EPSG:3857'));
+        }
+        if (requestUrl.includes('/tilesets')) {
+          return Promise.resolve(new Response('[]'));
+        }
+        if (requestUrl.includes('/vectorstyles.json')) {
+          return Promise.resolve(new Response(JSON.stringify({
+            metadata: { indexbounds: [-20037508, -20037508, 20037508, 20037508] }
+          })));
+        }
+        return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
+      });
+    });
+
+    afterEach(() => {
+      if (originalCRS === undefined) {
+        delete mapboxgl.CRS;
+      } else {
+        mapboxgl.CRS = originalCRS;
+      }
+    });
+
+    it('encodes displayFilters in raster tile URLs without enhance', async () => {
+      const { map } = await initMap(url, { displayFilters });
+      const source = Object.values(map.options.style.sources)[0];
+      const tileUrl = source.tiles[0];
+      expect(tileUrl).toBe(
+        `${restMapUrl}/zxyTileImage.png?${tokenQuery}&z={z}&x={x}&y={y}&width=256&height=256&transparent=true` +
+        `&displayFilters=${encodeURIComponent(JSON.stringify(displayFilters))}`
+      );
+      expect(JSON.parse(new URL(tileUrl).searchParams.get('displayFilters'))).toEqual(displayFilters);
+      expect(Object.keys(source)).not.toContain('displayFilters');
+    });
+
+    it('omits displayFilters without enhance when not configured', async () => {
+      const { map } = await initMap(url);
+      const source = Object.values(map.options.style.sources)[0];
+      expect(new URL(source.tiles[0]).searchParams.has('displayFilters')).toBe(false);
+      expect(Object.keys(source)).not.toContain('displayFilters');
+    });
+
+    it('passes displayFilters to the enhanced raster source', async () => {
+      mapboxgl.CRS = jasmine.createSpy('CRS').and.returnValue({ code: 'EPSG:3857' });
+      const { map } = await initMap(url, { type: 'raster', displayFilters });
+      const source = Object.values(map.options.style.sources)[0];
+      expect(source.rasterSource).toBe('iserver');
+      expect(source.displayFilters).toBe(displayFilters);
+      expect(source.tiles).toEqual([url]);
+    });
+
+    it('omits displayFilters from the enhanced raster source when not configured', async () => {
+      mapboxgl.CRS = jasmine.createSpy('CRS').and.returnValue({ code: 'EPSG:3857' });
+      const { map } = await initMap(url);
+      const source = Object.values(map.options.style.sources)[0];
+      expect(source.rasterSource).toBe('iserver');
+      expect(Object.keys(source)).not.toContain('displayFilters');
+      expect(source.tiles).toEqual([url]);
+    });
+
+    it('ignores displayFilters for vector tiles with and without enhance', async () => {
+      const vectorStyleUrl = `${restMapUrl}/tileFeature/vectorstyles.json?${tokenQuery}` +
+        '&type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY';
+      const options = { type: 'vector-tile', displayFilters };
+      const { map } = await initMap(url, options);
+      expect(map.options.style).toBe(vectorStyleUrl);
+      mapboxgl.CRS = jasmine.createSpy('CRS').and.returnValue({ code: 'EPSG:3857' });
+      const { map: enhancedMap } = await initMap(url, options);
+      expect(enhancedMap.options.style).toBe(vectorStyleUrl);
+    });
+  });
+
   it('initMap plane coordinate system', async () => {
     const url = 'http:/fake:8090/iserver/iserver/services/map-china400/rest/maps/China';
     const mapServiceInfo = {

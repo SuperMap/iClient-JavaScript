@@ -74,13 +74,6 @@
         color: #1890ff;
       }
 
-      #land-use-count {
-        margin-left: auto;
-        color: #777;
-        line-height: 26px;
-        white-space: nowrap;
-      }
-
       #land-use-list {
         max-height: calc(100vh - 150px);
         padding: 6px 12px 10px;
@@ -130,7 +123,6 @@
       <div id="land-use-toolbar">
         <button type="button" id="select-all" data-i18n="resources.text_displayFiltersSelectAll"></button>
         <button type="button" id="select-none" data-i18n="resources.text_displayFiltersSelectNone"></button>
-        <span id="land-use-count"></span>
       </div>
       <div id="land-use-list">
         <p class="land-use-loading" data-i18n="resources.text_displayFiltersLoading"></p>
@@ -260,6 +252,9 @@
         list.appendChild(message);
       }
 
+      /*
+       * 方式一：手动创建地图和图层。
+       */
       function createMap() {
         map = new maplibregl.Map({
           container: 'map',
@@ -287,6 +282,7 @@
       }
 
       /*
+       * 方式二：使用 maplibregl.supermap.initMap 根据服务信息创建地图和图层。
        */
       // function createMap() {
       //   return maplibregl.supermap.initMap(mapUrl, {

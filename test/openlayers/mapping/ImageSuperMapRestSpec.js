@@ -164,3 +164,47 @@ describe('openlayers_ImageSuperMapRest', () => {
         expect(hillshadeParameter.zFactor).toBe(1);
     });
 });
+
+describe('openlayers_ImageSuperMapRest_displayFilters', () => {
+    const extent = [-102.919921875, -11.250000000000002, 122.080078125, 35.244140625];
+    const resolution = 0.087890625;
+    const pixelRatio = 1;
+
+    it('getImageInternal_displayFilters', () => {
+        const displayFilters = {
+            'World@World': "NAME = 'A&B+C' AND SMID > 1",
+            'Capitals@World': 'POPULATION >= 1000000'
+        };
+        const imageSource = new ImageSuperMapRest({ url: url, displayFilters: displayFilters });
+        const encodedFilters = encodeURIComponent(JSON.stringify(displayFilters));
+        expect(getQueryValue(imageSource._layerUrl, 'displayFilters')).toBe(encodedFilters);
+
+        const imageUrl = imageSource._getImageInternalParams(extent, resolution, pixelRatio).src;
+        expect(getQueryValue(imageUrl, 'displayFilters')).toBe(encodedFilters);
+        expect(JSON.parse(decodeURIComponent(getQueryValue(imageUrl, 'displayFilters')))).toEqual(displayFilters);
+        expect(getQueryValue(imageUrl, 'width')).not.toBeNull();
+        expect(getQueryValue(imageUrl, 'viewBounds')).not.toBeNull();
+    });
+
+    it('getImageInternal_withoutDisplayFilters', () => {
+        const imageSource = new ImageSuperMapRest({ url: url });
+        const imageUrl = imageSource._getImageInternalParams(extent, resolution, pixelRatio).src;
+        expect(getQueryValue(imageSource._layerUrl, 'displayFilters')).toBeNull();
+        expect(getQueryValue(imageUrl, 'displayFilters')).toBeNull();
+    });
+
+    it('getImageInternal_displayFilters_tileProxy', () => {
+        const displayFilters = { 'World@World': "NAME = 'A&B+C'" };
+        const tileProxy = 'https://example.com/proxy?url=';
+        const imageSource = new ImageSuperMapRest({
+            url: url,
+            displayFilters: displayFilters,
+            tileProxy: tileProxy
+        });
+        const imageUrl = imageSource._getImageInternalParams(extent, resolution, pixelRatio).src;
+        expect(imageUrl.startsWith(tileProxy)).toBeTrue();
+        const requestUrl = decodeURIComponent(imageUrl.substring(tileProxy.length));
+        expect(requestUrl.startsWith(url + '/image.png?')).toBeTrue();
+        expect(JSON.parse(decodeURIComponent(getQueryValue(requestUrl, 'displayFilters')))).toEqual(displayFilters);
+    });
+});

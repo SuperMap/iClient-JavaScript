@@ -142,6 +142,27 @@ describe('leaflet_ImageMapLayer', () => {
     expect(imageLayer.getImageUrl()).not.toBeNull();
   });
 
+  it('getImageUrl, displayFilters', () => {
+    const displayFilters = {
+      'Countries@World': "NAME = 'A&B'",
+      'Cities@World': 'POPULATION >= 1000000'
+    };
+    imageLayer = imageMapLayer(url, { displayFilters });
+    const params = imageLayer._initAllRequestParams();
+    expect(params.displayFilters).toBe(JSON.stringify(displayFilters));
+    const imageUrl = imageLayer.getImageUrl();
+    const displayFiltersValue = getQueryValue(imageUrl, 'displayFilters');
+    expect(displayFiltersValue).toBe(encodeURIComponent(JSON.stringify(displayFilters)));
+    expect(JSON.parse(decodeURIComponent(displayFiltersValue))).toEqual(displayFilters);
+  });
+
+  it('getImageUrl, without displayFilters', () => {
+    imageLayer = imageMapLayer(url);
+    const params = imageLayer._initAllRequestParams();
+    expect(Object.keys(params)).not.toContain('displayFilters');
+    expect(getQueryValue(imageLayer.getImageUrl(), 'displayFilters')).toBeNull();
+  });
+
   it('update_zoomIn', (done) => {
     imageLayer = imageMapLayer(url).addTo(map);
     var oldUrl, newUrl;
