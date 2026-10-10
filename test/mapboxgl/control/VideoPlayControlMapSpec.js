@@ -30,10 +30,20 @@ describe('mapboxgl_VideoPlayControl with VideoMap', () => {
           height: 690
         };
       },
-      matFromArray: function () {},
+        matFromArray: function () {
+          return {
+            inv: function () {
+              return this;
+            },
+            data64F: [200, 100, 1],
+            delete: function () {}
+          };
+        },
       Mat: function () {
         return {
-          inv: function () {},
+          inv: function () {
+            return this;
+          },
           delete: function () {},
           data64F: [200, 100],
           cols: 2,

@@ -31,10 +31,20 @@ describe('mapboxgl_VideoMapDrawControl', () => {
           height: 690
         };
       },
-      matFromArray: function () {},
+        matFromArray: function () {
+          return {
+            inv: function () {
+              return this;
+            },
+            data64F: [200, 100, 1],
+            delete: function () {}
+          };
+        },
       Mat: function () {
         return {
-          inv: function () {},
+          inv: function () {
+            return this;
+          },
           delete: function () {},
           data64F: [200, 100],
           cols: 2,
@@ -120,10 +130,10 @@ describe('mapboxgl_VideoMapDrawControl', () => {
     Lang.code = originalLanguage;
   });
 
-  it('uses top-left as the default control position', () => {
+  it('uses the configured control position', () => {
     var control = new VideoMapDrawControl({ position: 'bottom-right' });
-    expect(control.getDefaultPosition()).toBe('top-left');
-    expect(control.options.position).toBeUndefined();
+    expect(control.getDefaultPosition()).toBe('bottom-right');
+    expect(control.options.position).toBe('bottom-right');
   });
 
   it('buttons change draw mode', (done) => {

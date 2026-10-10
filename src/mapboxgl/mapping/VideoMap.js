@@ -107,7 +107,7 @@ const MAP_EVENTS = [
  * @param {boolean} [options.loop=true] - 视频是否循环播放。
  * @param {number} [options.interval=0.1] - 动态配准参数的时间重采样间隔，单位秒。仅当 videoParameters 为数组时生效：对原始相机参数序列按该间隔做插值或抽稀，决定相机位置随时间变化的精度。
  * @fires VideoMap#load
- * @fires VideoMap#vectorupdate
+ * @fires VideoMap#videoparameterupdate
  * @fires VideoMap#play
  * @fires VideoMap#pause
  * @fires VideoMap#drawstart
@@ -395,10 +395,10 @@ export class VideoMap extends mapboxgl.Evented {
         this.map.fire('move');
       }
       /**
-       * @event VideoMap#vectorupdate
+      * @event VideoMap#videoparameterupdate
        * @description 矢量要素重投影完成时触发。已打开的弹窗可监听此事件跟随要素位置更新。
        */
-      this.fire('vectorupdate', { time: this.currentTime });
+      this.fire('videoparameterupdate', { time: this.currentTime });
     };
     if (typeof window.requestAnimationFrame === 'function') {
       window.requestAnimationFrame(update);
@@ -445,6 +445,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @private
    * @function VideoMap.prototype.projectVideoMapCoordinate
    * @description 将当前视频地图坐标转换为屏幕像素坐标。仅供已经持有视频地图坐标的调用方使用。
    * @param {Array<number>|mapboxgl.LngLat|null} videoLngLat - 当前视频地图坐标。
@@ -456,8 +457,8 @@ export class VideoMap extends mapboxgl.Evented {
     }
     return this.map.project(mapboxgl.LngLat.convert(videoLngLat));
   }
-
   /**
+   * @private
    * @function VideoMap.prototype.toVideoMapCoordinate
    * @description 将真实地理坐标（EPSG:3857）按当前相机参数投影到视频地图坐标。
    * @param {Array<number>} spatialPoint - 真实地理坐标 [x, y] 或 [x, y, z]（EPSG:3857）。
@@ -1006,8 +1007,10 @@ export class VideoMap extends mapboxgl.Evented {
           );
           const spatialPoint2d = [spatialPoint[0], spatialPoint[1]];
           const lngLat = proj4('EPSG:3857', 'EPSG:4326', spatialPoint2d);
+          const point = this.project(lngLat);
           return {
             ...e,
+            point,
             lngLat: new mapboxgl.LngLat(lngLat[0], lngLat[1]),
             spatialPoint: spatialPoint2d,
             mapEvent

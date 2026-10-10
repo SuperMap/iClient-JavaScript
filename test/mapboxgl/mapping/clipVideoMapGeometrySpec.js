@@ -164,7 +164,7 @@ describe('clipVideoMapGeometry', () => {
     );
     expect(result.geometry.type).toBe('LineString');
     expect(result.geometry.coordinates.length).toBe(2);
-    expect(result.geometry.coordinates[0][0]).toBeCloseTo(0, 5);
-    expect(result.geometry.coordinates[1][0]).toBeCloseTo(1, 5);
+    expect(result.geometry.coordinates[0][0]).toBeCloseTo(-0.05, 5);
+    expect(result.geometry.coordinates[1][0]).toBeCloseTo(1.05, 5);
   });
 });

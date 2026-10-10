@@ -165,6 +165,7 @@
       var mapSourceCount = 0;
       var dynamicLayerIds = [];
       var measurementMarkers = {};
+      var uploadedDatasetFeatures = {};
       var mapBearing = 214;
       var tk = '1d109683f4d84198e37a38c442d68311';
       var attribution =
@@ -345,10 +346,22 @@
 
       function addUploadedDataset(datasetName) {
         queryFeatures(datasetName).then(function (serviceResult) {
-          var featureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
-          if (!featureCollection || !featureCollection.features) {
+          var queriedFeatureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
+          if (!queriedFeatureCollection || !queriedFeatureCollection.features) {
             return;
           }
+          var featuresByKey = uploadedDatasetFeatures[datasetName] || {};
+          queriedFeatureCollection.features.forEach(function (feature) {
+            var key = feature.id == null ? JSON.stringify(feature) : String(feature.id);
+            featuresByKey[key] = feature;
+          });
+          uploadedDatasetFeatures[datasetName] = featuresByKey;
+          var featureCollection = {
+            type: 'FeatureCollection',
+            features: Object.keys(featuresByKey).map(function (key) {
+              return featuresByKey[key];
+            })
+          };
           var sourceId = 'uploaded-draw-source-' + datasetName;
           addOrUpdateRealSource('real-' + sourceId, featureCollection, '#e66b2e');
           if (!videoMap) {
@@ -616,7 +629,7 @@
             videoMap.on('drawclear', function () {
               syncVideoDraw({ type: 'FeatureCollection', features: [] });
             });
-            videoMap.on('vectorupdate', function () {
+            videoMap.on('videoparameterupdate', function () {
               updateMeasurementMarkers('video', videoMap, mapDraw.getAll(), true);
               updateVideoFootprint();
             });

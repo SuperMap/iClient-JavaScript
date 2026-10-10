@@ -1882,13 +1882,6 @@ var exampleConfig = {
                     thumbnail: 'videoMap.png',
                     fileName: 'videoMap'
                   },
-                  // {
-                  //   name: '视频地图标绘对比',
-                  //   name_en: 'Video Map Draw Compare',
-                  //   version: '12.1.1',
-                  //   thumbnail: 'videoMap.png',
-                  //   fileName: 'videoMapDraw'
-                  // },
                   {
                     name: '无人机视频',
                     name_en: 'UAV video',
@@ -1909,20 +1902,6 @@ var exampleConfig = {
                     version: '12.1.1',
                     thumbnail: 'videoMapWithTimeDraw.png',
                     fileName: 'videoMapWithTimeDraw'
-                  },
-                  {
-                    name: '动态视频地图 - 淮南',
-                    name_en: 'Dynamic Video Map - Huainan',
-                    version: '12.1.1',
-                    thumbnail: 'videoMap_huainan.png',
-                    fileName: 'videoMapWithTime_huainan'
-                  },
-                  {
-                    name: '动态视频地图标绘对比 - 淮南',
-                    name_en: 'Dynamic Video Map Draw Compare - Huainan',
-                    version: '12.1.1',
-                    thumbnail: 'videoMap_huainan_draw.png',
-                    fileName: 'videoMapWithTime_huainanDraw'
                   }
                 ]
             }

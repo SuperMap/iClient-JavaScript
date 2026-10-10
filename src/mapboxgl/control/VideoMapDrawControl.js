@@ -62,6 +62,7 @@ function resolveControls(options) {
  * @param {VideoMap} [options.videoMap] - 视频地图实例。通过 `videoMap.addControl` 添加时会自动注入。
  * @param {Object} [options.controls={point:true, line_string:true, polygon:true, trash:true}] - 按钮显隐，`point` / `line_string` / `polygon` / `trash`。不传时默认全部显示；传入后仅 `true` 对应的按钮显示，未指定项隐藏。
  * @param {Object} [options.styles] - 点、线、面的全局样式，使用 Mapbox paint 属性名。`point`：`circle-radius` / `circle-color` / `circle-opacity` / `circle-stroke-width` / `circle-stroke-color`；`line`：`line-color` / `line-width` / `line-opacity` / `line-dasharray`；`polygon`：`fill-color` / `fill-opacity` 及轮廓的 `line-*`。选中要素的颜色由 `selected.color` 指定（默认 `#fbb03b`），绘制完成后要素处于选中状态；绘制中的预览线点沿用对应的点、线、面颜色。可通过 `preview.point` / `preview.line` / `preview.polygon` 单独设置绘制中的样式（属性同上，面预览可用 `fill-*` 与轮廓 `line-*`），未设置的属性沿用主样式或默认值。
+ * @param {string} [options.position='top-left'] - 未在 `videoMap.addControl` 中指定位置时使用的控件位置。
  * @example
  * videoMap.addControl(new mapboxgl.supermap.VideoMapDrawControl({
  *   styles: { point: { 'circle-color': '#f00' }, line: { 'line-width': 4 } }
@@ -74,7 +75,8 @@ export class VideoMapDrawControl {
     this.options = {
       videoMap: options.videoMap,
       controls: resolveControls(options),
-      styles: options.styles
+      styles: options.styles,
+      position: options.position || 'top-left'
     };
     this.videoMap = options.videoMap || null;
     this._buttons = {};
@@ -85,6 +87,7 @@ export class VideoMapDrawControl {
   }
 
   /**
+   * @private
    * @function VideoMapDrawControl.prototype.setVideoMap
    * @description 绑定视频地图实例。
    * @param {VideoMap} videoMap - 视频地图。
@@ -100,6 +103,7 @@ export class VideoMapDrawControl {
   }
 
   /**
+   * @private
    * @function VideoMapDrawControl.prototype.onAdd
    * @description 添加到地图。
    * @param {mapboxgl.Map} map - MapboxGL 地图对象。
@@ -139,6 +143,7 @@ export class VideoMapDrawControl {
   }
 
   /**
+   * @private
    * @function VideoMapDrawControl.prototype.onRemove
    * @description 从地图移除控件。
    */
@@ -156,12 +161,13 @@ export class VideoMapDrawControl {
   }
 
   /**
+   * @private
    * @function VideoMapDrawControl.prototype.getDefaultPosition
    * @description 默认位置。
    * @returns {string} 控件位置。
    */
   getDefaultPosition() {
-    return 'top-left';
+    return this.options.position;
   }
 
   /**

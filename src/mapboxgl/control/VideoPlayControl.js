@@ -10,35 +10,25 @@ const PAUSE_ICON =
   '<svg viewBox="0 0 24 24" class="sm-mapboxgl-play-svg sm-mapboxgl-play-svg--pause" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>';
 const DEFAULT_CONTENT = `<button type="button" class="sm-mapboxgl-play-btn">${PLAY_ICON}${PAUSE_ICON}</button>`;
 
-const BLOCKED_TAGS = /^(script|iframe|frame|frameset|object|embed|applet|link|meta|base|style|noscript|template|foreignobject|animate|set|animatetransform|animatemotion)$/;
-const URL_ATTRS = /^(href|xlink:href|src|action|formaction|data|poster|background)$/;
-
-// 在惰性的 template 中解析，不会执行脚本或加载资源；以 DocumentFragment 返回，避免二次序列化再解析
-function sanitizeHTML(html) {
-  const template = document.createElement('template');
-  template.innerHTML = html;
-  const fragment = template.content;
-  Array.from(fragment.querySelectorAll('*')).forEach((el) => {
-    if (BLOCKED_TAGS.test(el.localName.toLowerCase())) {
-      el.remove();
-      return;
+export function escapeHTML(strings) {
+  var result = '';
+  for (var i = 0; i < strings.length; i++) {
+    result += strings[i];
+    if (i + 1 < arguments.length) {
+      var value = arguments[i + 1] || '';
+      result += String(value).replace(/[&<>"'/]/g, function (s) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&apos;',
+          '/': '&#x2F;'
+        }[s];
+      });
     }
-    Array.from(el.attributes).forEach((attr) => {
-      const name = attr.name.toLowerCase();
-      // 浏览器会忽略 scheme 中的空白和控制字符，先去除再判断
-      const value = Array.from(attr.value)
-        .filter((char) => char.charCodeAt(0) > 32)
-        .join('')
-        .toLowerCase();
-      const unsafeUrl =
-        URL_ATTRS.test(name) &&
-        (/^(javascript|vbscript):/.test(value) || (/^data:/.test(value) && !(name === 'src' && /^data:image\//.test(value))));
-      if (name.indexOf('on') === 0 || name === 'srcdoc' || unsafeUrl) {
-        el.removeAttribute(attr.name);
-      }
-    });
-  });
-  return fragment;
+  }
+  return result;
 }
 
 /**
@@ -68,7 +58,7 @@ export class VideoPlayControl {
     };
     this.target = null;
     this._targetBound = false;
-    this._content = sanitizeHTML(DEFAULT_CONTENT);
+    this._content = DEFAULT_CONTENT;
     this._onPlayState = this._syncUI.bind(this);
     this.setTarget(options.target);
   }
@@ -80,7 +70,7 @@ export class VideoPlayControl {
    * @returns {VideoPlayControl} this。
    */
   setHTML(html) {
-    this._content = sanitizeHTML(String(html));
+    this._content = escapeHTML`${String(html)}`;
     this._renderContent();
     return this;
   }
@@ -155,9 +145,15 @@ export class VideoPlayControl {
     if (!this._container) {
       return;
     }
-    // 文档片段插入后会被清空，需克隆以支持控件重复添加
-    const node = this._content.nodeType === 11 ? this._content.cloneNode(true) : this._content;
-    this._container.replaceChildren(node);
+    while (this._container.firstChild) {
+      this._container.removeChild(this._container.firstChild);
+    }
+    if (typeof this._content === 'string') {
+      this._container.innerHTML = this._content;
+    } else {
+      const node = this._content.nodeType === 11 ? this._content.cloneNode(true) : this._content;
+      this._container.appendChild(node);
+    }
     // 仅内置按钮存在时应用 size，并维护标题和 aria-label
     this._button = this._container.querySelector('.sm-mapboxgl-play-btn');
     if (this._button && this.options.size) {

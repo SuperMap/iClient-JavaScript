@@ -116,13 +116,20 @@
       var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
       var datasourceName = 'VideoData';
       var datasetName = 'DJI_09304';
+      var dataSourceUrl = dataUrl + '/datasources/' + datasourceName;
+      var datasetUrl = {
+        Point: dataSourceUrl + '/datasets/NewPoint',
+        LineString: dataSourceUrl + '/datasets/NewLine',
+        Polygon: dataSourceUrl + '/datasets/NewRegion'
+      };
       var REAL_MAP_DRAW_SOURCE_ID = 'real-map-draw-sync';
       var videoMap;
       var map;
       var mapDraw;
       var measurementMarkers = {};
+      var uploadedDatasetFeatures = {};
       var mapFitted = false;
-      var mapBearing = 90;
+      var mapBearing = 270;
       var videoExtents = [];
       var lastVideoExtentTime;
       var tk = '1d109683f4d84198e37a38c442d68311';
@@ -336,7 +343,7 @@
             syncVideoMapDraw();
             syncVideoFootprint();
             fitVideoBounds();
-            videoMap.on('vectorupdate', function () {
+            videoMap.on('videoparameterupdate', function () {
               syncVideoFootprint(videoMap.currentTime);
             });
             videoMap.on('drawupdate', function (e) {
@@ -345,6 +352,7 @@
             videoMap.on('drawcreate', function (e) {
               updateDrawHint(e.data.features.length);
               fitRealMap(e.data);
+              uploadDrawFeature(e.feature);
             });
             videoMap.on('drawdelete', function (e) {
               updateDrawHint(e.data.features.length);
@@ -353,6 +361,7 @@
               updateDrawHint(0);
               mapFitted = false;
             });
+            ['NewPoint', 'NewLine', 'NewRegion'].forEach(addUploadedDataset);
             resizeMaps();
           });
         });
@@ -464,6 +473,129 @@
         });
       }
 
+      function uploadDrawFeature(feature) {
+        if (!feature || !feature.geometry) {
+          return;
+        }
+        var targetUrl = datasetUrl[feature.geometry.type];
+        if (!targetUrl) {
+          return;
+        }
+        var datasetPath = targetUrl.match(/^(.*)\/datasources\/([^/]+)\/datasets\/([^/?#]+)\/?$/);
+        if (!datasetPath) {
+          return;
+        }
+        var editFeaturesService = new mapboxgl.supermap.FeatureService(datasetPath[1]);
+        var editFeaturesParams = new mapboxgl.supermap.EditFeaturesParameters({
+          features: feature,
+          dataSourceName: decodeURIComponent(datasetPath[2]),
+          dataSetName: decodeURIComponent(datasetPath[3]),
+          editType: 'add',
+          returnContent: true
+        });
+        editFeaturesService.editFeatures(editFeaturesParams).then(function (serviceResult) {
+          if (!serviceResult || !serviceResult.result || !serviceResult.result.succeed) {
+            return;
+          }
+          addUploadedDataset(decodeURIComponent(datasetPath[3]));
+        }).catch(function (error) {
+          console.error('视频标绘上传失败:', error);
+        });
+      }
+
+      function addUploadedDataset(dataset) {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: { name: dataset + '@' + datasourceName },
+          targetEpsgCode: '4326',
+          datasetNames: [datasourceName + ':' + dataset],
+          toIndex: 99999
+        });
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var featureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
+          if (!featureCollection || !featureCollection.features) {
+            return;
+          }
+          var featuresByKey = uploadedDatasetFeatures[dataset] || {};
+          featureCollection.features.forEach(function (item) {
+            var key = item.id == null ? JSON.stringify(item) : String(item.id);
+            featuresByKey[key] = item;
+          });
+          uploadedDatasetFeatures[dataset] = featuresByKey;
+          var data = {
+            type: 'FeatureCollection',
+            features: Object.keys(featuresByKey).map(function (key) {
+              return featuresByKey[key];
+            })
+          };
+          var sourceId = 'uploaded-draw-' + dataset;
+          var source = map.getSource(sourceId);
+          if (source) {
+            source.setData(data);
+            syncUploadedDatasetToVideoMap(dataset, data);
+            return;
+          }
+          map.addSource(sourceId, { type: 'geojson', data: data });
+          map.addLayer({
+            id: sourceId + '-fill',
+            type: 'fill',
+            source: sourceId,
+            filter: ['==', '$type', 'Polygon'],
+            paint: { 'fill-color': '#52c41a', 'fill-opacity': 0.2 }
+          });
+          map.addLayer({
+            id: sourceId + '-line',
+            type: 'line',
+            source: sourceId,
+            filter: ['in', '$type', 'LineString', 'Polygon'],
+            paint: { 'line-color': '#52c41a', 'line-width': 3 }
+          });
+          map.addLayer({
+            id: sourceId + '-point',
+            type: 'circle',
+            source: sourceId,
+            filter: ['==', '$type', 'Point'],
+            paint: { 'circle-radius': 5, 'circle-color': '#52c41a', 'circle-stroke-width': 1, 'circle-stroke-color': '#fff' }
+          });
+          syncUploadedDatasetToVideoMap(dataset, data);
+        }).catch(function (error) {
+          console.error('已上传标绘数据查询失败:', error);
+        });
+      }
+
+      function syncUploadedDatasetToVideoMap(dataset, data) {
+        if (!videoMap || !videoMap.map || !data) {
+          return;
+        }
+        var sourceId = 'uploaded-draw-' + dataset;
+        var source = videoMap.sourceCache && videoMap.sourceCache[sourceId];
+        if (source) {
+          source.setData(data);
+          return;
+        }
+        videoMap.addSource(sourceId, { type: 'geojson', data: data });
+        videoMap.addLayer({
+          id: sourceId + '-fill',
+          type: 'fill',
+          source: sourceId,
+          filter: ['==', '$type', 'Polygon'],
+          paint: { 'fill-color': '#52c41a', 'fill-opacity': 0.2 }
+        });
+        videoMap.addLayer({
+          id: sourceId + '-line',
+          type: 'line',
+          source: sourceId,
+          filter: ['in', '$type', 'LineString', 'Polygon'],
+          paint: { 'line-color': '#52c41a', 'line-width': 3 }
+        });
+        videoMap.addLayer({
+          id: sourceId + '-point',
+          type: 'circle',
+          source: sourceId,
+          filter: ['==', '$type', 'Point'],
+          paint: { 'circle-radius': 5, 'circle-color': '#52c41a', 'circle-stroke-width': 1, 'circle-stroke-color': '#fff' }
+        });
+      }
+
       function getFeatureMeasurement(feature) {
         if (!feature.geometry) {
           return null;
@@ -509,6 +641,7 @@
         map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
           padding: 48,
           maxZoom: 17,
+          bearing: mapBearing,
           duration: 600
         });
       }

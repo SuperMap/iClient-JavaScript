@@ -37,7 +37,9 @@ describe('mapboxgl_VideoLayer', () => {
           copyTo: function () {
 
           },
-          inv: function () { },
+          inv: function () {
+            return this;
+          },
           delete: function () { },
           data64F: [200, 100],
           cols: 2,
@@ -128,7 +130,7 @@ describe('mapboxgl_VideoLayer', () => {
 
   it('init videoLayer', (done) => {
     var url = videoUrl;
-    spyOn(cv, 'Size');
+    spyOn(cv, 'Size').and.callThrough();
     spyOn(cv, 'warpPerspective');
     var videoLayer = new VideoLayer({
       url: url,

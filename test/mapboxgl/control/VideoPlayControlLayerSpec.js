@@ -96,19 +96,18 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     expect(nextLayer.listeners.pause).toBeUndefined();
   });
 
-  it('renders custom content from setHTML before and after onAdd', () => {
+  it('renders escaped text from setHTML before and after onAdd', () => {
     var videoLayer = createVideoLayer(true);
     var control = new VideoPlayControl({ target: videoLayer });
 
-    expect(control.setHTML('<i class="my-play"></i><i class="my-pause"></i>')).toBe(control);
+    expect(control.setHTML('<i class="my-play"></i>')).toBe(control);
     control.onAdd({});
-    expect(control._container.querySelector('.my-play')).not.toBeNull();
+    expect(control._container.textContent).toBe('<i class="my-play"></i>');
     expect(control._container.querySelector('.sm-mapboxgl-play-btn')).toBeNull();
     expect(control._button).toBeNull();
 
     control.setHTML('<b class="next"></b>');
-    expect(control._container.querySelector('.next')).not.toBeNull();
-    expect(control._container.querySelector('.my-play')).toBeNull();
+    expect(control._container.textContent).toBe('<b class="next"></b>');
 
     control.onRemove();
   });
@@ -116,7 +115,10 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
   it('toggles playback when a custom button is clicked', () => {
     var videoLayer = createVideoLayer(true);
     var control = new VideoPlayControl({ target: videoLayer });
-    control.setHTML('<button class="mine"><span class="sm-mapboxgl-play-when-paused">go</span></button>');
+    var customButton = document.createElement('button');
+    customButton.className = 'mine';
+    customButton.innerHTML = '<span class="sm-mapboxgl-play-when-paused">go</span>';
+    control.setDOMContent(customButton);
     control.onAdd({});
     spyOn(videoLayer, 'play').and.callThrough();
 
@@ -133,24 +135,12 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     control.onRemove();
   });
 
-  it('sanitizes dangerous markup passed to setHTML', () => {
+  it('escapes markup passed to setHTML', () => {
     var control = new VideoPlayControl();
     control.onAdd({});
-    control.setHTML(
-      '<script>window.__xss = 1</script><iframe src="x"></iframe><style>a{}</style>' +
-        '<img src="x" onerror="window.__xss = 1">' +
-        '<a id="a1" href="java\nscript:alert(1)">x</a><a id="a2" href="https://example.com">y</a>' +
-        '<svg><foreignObject><div></div></foreignObject><path d="M0 0" onclick="x"/></svg>' +
-        '<span class="ok" style="color:red">z</span>'
-    );
-    var button = control._container;
+    control.setHTML('<script>window.__xss = 1</script><img onerror="alert(1)">');
 
-    expect(button.querySelector('script, iframe, style, foreignObject')).toBeNull();
-    expect(button.querySelector('img').hasAttribute('onerror')).toBe(false);
-    expect(button.querySelector('#a1').hasAttribute('href')).toBe(false);
-    expect(button.querySelector('#a2').getAttribute('href')).toBe('https://example.com');
-    expect(button.querySelector('path').hasAttribute('onclick')).toBe(false);
-    expect(button.querySelector('.ok').getAttribute('style')).toContain('color');
+    expect(control._container.textContent).toBe('<script>window.__xss = 1</script><img onerror="alert(1)">');
     expect(window.__xss).toBeUndefined();
 
     control.onRemove();
@@ -163,7 +153,7 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     control.onRemove();
     control.onAdd({});
 
-    expect(control._container.querySelector('.again')).not.toBeNull();
+    expect(control._container.textContent).toBe('<i class="again"></i>');
 
     control.onRemove();
   });
