@@ -2611,4 +2611,45 @@ describe('openlayers_WebMap', () => {
       done();
     }
   });
+  it('overflowTiles_default_value', () => {
+    const webmap = new WebMap(id, { server: server });
+    expect(webmap.overflowTiles).toBe(1);
+  });
+
+  it('overflowTiles_custom_value', () => {
+    const webmap = new WebMap(id, { server: server, overflowTiles: 0 });
+    expect(webmap.overflowTiles).toBe(0);
+
+    const webmap2 = new WebMap(id, { server: server, overflowTiles: 2 });
+    expect(webmap2.overflowTiles).toBe(2);
+  });
+
+  it('createDynamicTiledSource_sets_overflowTiles_option_when_overflowTiles_has_value', () => {
+    const webmap = new WebMap(id, { server: server, overflowTiles: 2 });
+    // Need to set baseProjection before calling createDynamicTiledSource
+    webmap.baseProjection = 'EPSG:4326';
+    const layerInfo = {
+      url: 'http://example.com/map',
+      extent: [0, 0, 100, 100]
+    };
+    // Since SecurityManager.register is called dynamically, we just need to ensure it doesn't throw
+    const source = webmap.createDynamicTiledSource(layerInfo, true);
+    // Check that the options includes overflowTiles
+    expect(source.options.overflowTiles).toBe(2);
+    expect(layerInfo.restMapExtentExpanded).toBe(true);
+  });
+
+  it('createDynamicTiledSource_does_not_set_overflowTiles_option_when_overflowTiles_is_zero', () => {
+    const webmap = new WebMap(id, { server: server, overflowTiles: 0 });
+    // Need to set baseProjection before calling createDynamicTiledSource
+    webmap.baseProjection = 'EPSG:4326';
+    const layerInfo = {
+      url: 'http://example.com/map',
+      extent: [0, 0, 100, 100]
+    };
+    const source = webmap.createDynamicTiledSource(layerInfo, true);
+    // Check that overflowTiles is not set in the options when it's 0
+    expect(source.options.overflowTiles).toBeUndefined();
+    expect(layerInfo.restMapExtentExpanded).toBeUndefined();
+  });
 });
