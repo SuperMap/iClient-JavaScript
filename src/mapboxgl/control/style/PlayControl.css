@@ -1,0 +1,47 @@
+/* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+.sm-mapboxgl-play-ctrl {
+  background: transparent;
+  box-shadow: none;
+}
+
+.sm-mapboxgl-play-btn {
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 覆盖 mapbox-gl 的 .mapboxgl-ctrl button:not(:disabled):hover，保持按钮原有背景色 */
+.mapboxgl-ctrl .sm-mapboxgl-play-btn:not(:disabled):hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.sm-mapboxgl-play-svg {
+  width: 54%;
+  height: 54%;
+  fill: currentColor;
+  display: none;
+}
+
+.sm-mapboxgl-play-btn.is-paused .sm-mapboxgl-play-svg--play {
+  display: block;
+  margin-left: 6%;
+}
+
+.sm-mapboxgl-play-btn.is-playing .sm-mapboxgl-play-svg--pause {
+  display: block;
+}

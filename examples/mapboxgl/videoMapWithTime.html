@@ -19,7 +19,7 @@
       var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
       var videoMap;
       var count = 0;
-      var activePopups = [];
+      var dynamicLayerIds = [];
 
       function queryFeatures(datasetName, dataSourceName) {
         var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
@@ -52,8 +52,13 @@
                 : { 'fill-color': '#48cae4', 'fill-opacity': 0.55 }
           };
           videoMap.addLayer(layer);
-          videoMap.map.on('click', layerId, function (e) {
-            var feature = e.features[0];
+          dynamicLayerIds.push(layerId);
+          videoMap.on('click', function (e) {
+            var features = videoMap.queryRenderedFeatures(e.point, { layers: [layerId] });
+            if (!features.length) {
+              return;
+            }
+            var feature = features[0];
             var properties = feature.properties;
             var html =
               '<div style="max-height:300px;overflow:auto;min-width:160px;">' +
@@ -67,23 +72,10 @@
                 '</tr>';
             });
             html += '</table></div>';
-            var spatialPoint = videoMap.toSpatialCoordinate(e.lngLat);
             var popup = new mapboxgl.Popup({ closeButton: true, closeOnClick: true })
               .setLngLat(e.lngLat)
               .setHTML(html)
-              .addTo(videoMap.map);
-            activePopups.push({ popup: popup, spatialPoint: spatialPoint });
-            popup.on('close', function () {
-              activePopups = activePopups.filter(function (item) {
-                return item.popup !== popup;
-              });
-            });
-          });
-          videoMap.map.on('mouseenter', layerId, function () {
-            videoMap.map.getCanvas().style.cursor = 'pointer';
-          });
-          videoMap.map.on('mouseleave', layerId, function () {
-            videoMap.map.getCanvas().style.cursor = '';
+              .addTo(videoMap);
           });
         });
       }
@@ -111,26 +103,17 @@
           videoMap = new mapboxgl.supermap.VideoMap({
             url: feature.properties.address,
             videoParameters: parameters,
-            interval: 0.1,
-            vectorUpdateInterval: 0.1,
-            styleOptions: {
-              sprite: 'https://iclient.supermap.io/web/styles/street/sprite',
-              glyphs: 'https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf'
-            }
+            interval: 0.1
           });
           videoMap.on('load', function () {
-            ['trafficGuideLine', 'road', 'building', 'landuse'].forEach(addVectorDataset);
-          });
-          videoMap.on('vectorupdate', function () {
-            activePopups.forEach(function (item) {
-              if (!item.spatialPoint) {
-                return;
-              }
-              var lngLat = videoMap.toVideoMapCoordinate(item.spatialPoint);
-              if (lngLat) {
-                item.popup.setLngLat(lngLat);
-              }
+            videoMap.on('mousemove', function (e) {
+              var features = videoMap.queryRenderedFeatures(e.point, { layers: dynamicLayerIds });
+              videoMap.getCanvas().style.cursor = features.length ? 'pointer' : '';
             });
+            videoMap.on('mouseout', function () {
+              videoMap.getCanvas().style.cursor = '';
+            });
+            ['trafficGuideLine', 'road', 'building', 'landuse'].forEach(addVectorDataset);
           });
         });
       }

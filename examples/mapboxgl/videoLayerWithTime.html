@@ -14,7 +14,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title data-i18n="resources.title_uavVideo"></title>
+    <title data-i18n="resources.title_videoLayerWithTime"></title>
     <style type="text/css">
         body {
             margin: 0;
@@ -132,6 +132,7 @@
                     ]
                 });
                 map.addLayer(videoLayer);
+                map.addControl(new mapboxgl.supermap.VideoPlayControl({ target: videoLayer }));
             });
         }
         map.on('load', function () {

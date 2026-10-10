@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import { Logo } from './control';
+ import { Logo, VideoMapDrawControl, VideoPlayControl } from './control';
  import { Util, decryptSources } from './core';
  import {
    GraphThemeLayer,
@@ -76,6 +76,8 @@
  mapboxgl.supermap.map = mapboxgl.supermap.map || {};
  mapboxgl.supermap.LogoControl = Logo;
  mapboxgl.supermap.Logo = Logo;
+ mapboxgl.supermap.VideoMapDrawControl = VideoMapDrawControl;
+ mapboxgl.supermap.VideoPlayControl = VideoPlayControl;
  mapboxgl.supermap.Util = Util;
  mapboxgl.supermap.decryptSources = decryptSources;
  mapboxgl.supermap.WebMap = WebMap;

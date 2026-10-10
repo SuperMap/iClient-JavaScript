@@ -26,6 +26,28 @@
         bottom: 0;
         width: 100%;
       }
+
+      .custom-play-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background: #1f6feb;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .custom-play-icon {
+        width: 18px;
+        height: 18px;
+        fill: #fff;
+      }
+      .mapboxgl-ctrl .custom-play-btn:not(:disabled):hover {
+        background: #1f6feb;
+      }
     </style>
   </head>
   <body>
@@ -215,6 +237,42 @@
           });
 
           videoMap.on('load', function () {
+            var playControl = new mapboxgl.supermap.VideoPlayControl();
+            playControl.setHTML(
+              '<button type="button" class="custom-play-btn">' +
+                '<span class="sm-mapboxgl-play-when-paused">' +
+                resources.text_videoLayerWithTime_play +
+                '</span>' +
+                '<span class="sm-mapboxgl-play-when-playing">' +
+                resources.text_videoLayerWithTime_pause +
+                '</span>' +
+                '</button>'
+            );
+            videoMap.addControl(playControl, 'bottom-left');
+
+            videoMap.on('click', function (event) {
+              var features = videoMap.queryRenderedFeatures(event.point);
+              if (!features.length) {
+                return;
+              }
+              var feature = features[0];
+              var content = document.createElement('div');
+              Object.keys(feature.properties || {}).forEach(function (key) {
+                var row = document.createElement('div');
+                var label = document.createElement('strong');
+                label.textContent = key + ': ';
+                var value = document.createElement('span');
+                value.textContent = String(feature.properties[key]);
+                row.appendChild(label);
+                row.appendChild(value);
+                content.appendChild(row);
+              });
+              new mapboxgl.Popup({ closeButton: true, closeOnClick: true })
+                .setLngLat(event.lngLat)
+                .setDOMContent(content)
+                .addTo(videoMap);
+            });
+
             var datasetList = ['POI', 'Road_L', 'Water', '写字楼', '学校', '步行道'];
             datasetList.forEach((name) => {
               query1(name);

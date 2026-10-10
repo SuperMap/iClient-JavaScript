@@ -78,6 +78,9 @@ export default class CoordTransfer {
     this._fy = fy;
     this._cx = centerX;
     this._cy = centerY;
+    this._x = x;
+    this._y = y;
+    this._z = z;
   }
 
   /**
