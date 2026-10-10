@@ -40,6 +40,16 @@ export default class GeojsonSource {
     source.setData(this._transformData(this.originalData));
   }
 
+  /**
+   * @function GeojsonSource.prototype.setData
+   * @description 更新原始地理数据并重新投影到视频地图。
+   * @param {Object} data - GeoJSON 数据。
+   */
+  setData(data) {
+    this.originalData = cloneDeep(data);
+    this.update();
+  }
+
   _transformData(data) {
     return transformVideoMapGeoJSON(data, this.videoMap);
   }

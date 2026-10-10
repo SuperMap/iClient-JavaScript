@@ -3,6 +3,9 @@ import './mapboxgl/core/UtilSpec.js';
 
 /*mapboxgl -- control*/
 import './mapboxgl/control/LogoSpec.js';
+import './mapboxgl/control/VideoMapDrawControlSpec.js';
+import './mapboxgl/control/VideoPlayControlLayerSpec.js';
+import './mapboxgl/control/VideoPlayControlMapSpec.js';
 
 /*mapboxgl -- overlay*/
 import './mapboxgl/overlay/mapv/MapvDataSetSpec.js';
@@ -86,4 +89,5 @@ import './mapboxgl/mapping/WebMapV3Spec.js';
 import './mapboxgl/mapping/InitMapSpec.js';
 import './mapboxgl/mapping/VideoMapSpec.js';
 import './mapboxgl/mapping/clipVideoMapGeometrySpec.js';
+import './mapboxgl/mapping/VideoMapUtilSpec.js';
 import './mapboxgl/mapping/WebMapV22Spec.js';

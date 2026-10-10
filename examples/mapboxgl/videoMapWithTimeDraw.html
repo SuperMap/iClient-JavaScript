@@ -1,0 +1,587 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-12/mapbox-gl-enhance.js)
+* mapbox-gl-draw (https://github.com/mapbox/mapbox-gl-draw)
+* Turf (https://github.com/Turfjs/turf/)
+* proj4js (https://github.com/proj4js/proj4js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title data-i18n="resources.title_videoMapWithTimeDraw"></title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #layout {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+      }
+
+      #leftPane,
+      #rightPane {
+        position: relative;
+        width: 50%;
+        height: 100%;
+      }
+
+      #leftPane {
+        border-right: 1px solid #d9d9d9;
+      }
+
+      #videoMap,
+      #map {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      .pane-label {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 11;
+        padding: 4px 10px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        border-radius: 4px;
+        font-size: 13px;
+        pointer-events: none;
+      }
+
+      #drawHint {
+        position: absolute;
+        top: 16px;
+        left: 54px;
+        z-index: 10;
+        max-width: 280px;
+        padding: 6px 10px;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        font-size: 12px;
+        color: #8c8c8c;
+        line-height: 1.5;
+        pointer-events: none;
+      }
+
+      .measurement-marker {
+        padding: 4px 7px;
+        border: 1px solid #1890ff;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        color: #17324d;
+        font-size: 12px;
+        line-height: 1.3;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="layout">
+      <div id="leftPane">
+        <div class="pane-label" data-i18n="resources.text_videoMapDraw_videoLabel"></div>
+        <div id="drawHint" data-i18n="resources.text_videoMapDraw_hint"></div>
+        <div id="videoMap"></div>
+      </div>
+      <div id="rightPane">
+        <div class="pane-label" data-i18n="resources.text_videoMapDraw_basemapLabel"></div>
+        <div id="map"></div>
+      </div>
+    </div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script
+      type="text/javascript"
+      include="mapbox-gl-enhance,draw,proj4,turf,videojs,opencv"
+      src="../../dist/mapboxgl/include-mapboxgl.js"
+    ></script>
+    <script type="text/javascript">
+      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
+      var datasourceName = 'VideoData';
+      var datasetName = 'DJI_09304';
+      var REAL_MAP_DRAW_SOURCE_ID = 'real-map-draw-sync';
+      var videoMap;
+      var map;
+      var mapDraw;
+      var measurementMarkers = {};
+      var mapFitted = false;
+      var mapBearing = 90;
+      var videoExtents = [];
+      var lastVideoExtentTime;
+      var tk = '1d109683f4d84198e37a38c442d68311';
+      var attribution =
+        "© <a href='https://www.tianditu.gov.cn' target='_blank'>天地图</a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span> ";
+
+      initRealMap();
+      query();
+
+      function initRealMap() {
+        map = new mapboxgl.Map({
+          container: 'map',
+          style: {
+            version: 8,
+            sources: {
+              tianditu_img: {
+                attribution: attribution,
+                type: 'raster',
+                tiles: ['https://t4.tianditu.gov.cn/img_w/wmts?tk=' + tk + '&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}'],
+                tileSize: 256
+              },
+              tianditu_cia: {
+                type: 'raster',
+                tiles: ['https://t4.tianditu.gov.cn/cia_w/wmts?tk=' + tk + '&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cia&tilematrix={z}&tilerow={y}&tilecol={x}'],
+                tileSize: 256
+              }
+            },
+            layers: [
+              {
+                id: 'tianditu-img',
+                type: 'raster',
+                source: 'tianditu_img',
+                minzoom: 0,
+                maxzoom: 18
+              },
+              {
+                id: 'tianditu-cia',
+                type: 'raster',
+                source: 'tianditu_cia',
+                minzoom: 0,
+                maxzoom: 18
+              }
+            ]
+          },
+          center: [104.0924, 30.5217],
+          zoom: 17,
+          bearing: mapBearing,
+          maxZoom: 18
+        });
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        mapDraw = new MapboxDraw();
+        map.addControl(mapDraw, 'top-left');
+        map.addControl(new mapboxgl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+        map.on('draw.create', updateDrawMeasurements);
+        map.on('draw.update', updateDrawMeasurements);
+        map.on('draw.delete', updateDrawMeasurements);
+        map.on('load', function () {
+          map.addSource('draw-sync', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: [] }
+          });
+          map.addLayer({
+            id: 'draw-sync-fill',
+            type: 'fill',
+            source: 'draw-sync',
+            filter: ['==', '$type', 'Polygon'],
+            paint: {
+              'fill-color': '#1890ff',
+              'fill-opacity': 0.25
+            }
+          });
+          map.addLayer({
+            id: 'draw-sync-line',
+            type: 'line',
+            source: 'draw-sync',
+            filter: ['in', '$type', 'LineString', 'Polygon'],
+            paint: {
+              'line-color': '#1890ff',
+              'line-width': 2
+            }
+          });
+          map.addLayer({
+            id: 'draw-sync-point',
+            type: 'circle',
+            source: 'draw-sync',
+            filter: ['==', '$type', 'Point'],
+            paint: {
+              'circle-radius': 5,
+              'circle-color': '#1890ff',
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#fff'
+            }
+          });
+          map.addSource('video-footprint', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: [] }
+          });
+          map.addLayer({
+            id: 'video-footprint-fill',
+            type: 'fill',
+            source: 'video-footprint',
+            paint: {
+              'fill-color': '#fbb03b',
+              'fill-opacity': 0.08
+            }
+          });
+          map.addLayer({
+            id: 'video-footprint-line',
+            type: 'line',
+            source: 'video-footprint',
+            paint: {
+              'line-color': '#fbb03b',
+              'line-width': 2,
+              'line-dasharray': [2, 1]
+            }
+          });
+          if (videoMap && videoMap.getDrawLiveData) {
+            syncRealMap(videoMap.getDrawLiveData());
+          }
+          syncVideoFootprint();
+        });
+      }
+
+      function query() {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: datasetName + '@' + datasourceName,
+            attributeFilter: 'SMID > 0'
+          },
+          datasetNames: [datasourceName + ':' + datasetName]
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var feature = serviceResult.result.features.features[0];
+          var parameters = feature.properties.videoParameters.videoParameterList.map(function (item) {
+            var calibration = item.calibrationModel;
+            var camera = calibration.cameraLocation;
+            var extent = item.extent && item.extent.points
+              ? item.extent.points.map(function (point) {
+                  var coordinate = Array.isArray(point) ? point : [point.x, point.y];
+                  return proj4('EPSG:3857', 'EPSG:4326', coordinate);
+                })
+              : null;
+            if (extent && extent.length >= 3) {
+              videoExtents.push({ time: item.time, coordinates: extent });
+            }
+            return {
+              time: item.time,
+              fovX: calibration.fovX,
+              fovY: calibration.fovY,
+              centerX: calibration.centerX,
+              centerY: calibration.centerY,
+              pitch: camera.cameraPitch,
+              roll: camera.cameraRoll,
+              yaw: camera.cameraYaw,
+              x: camera.cameraX,
+              y: camera.cameraY,
+              z: camera.cameraZ
+            };
+          });
+          if (parameters.length && map) {
+            var cameraLngLat = proj4('EPSG:3857', 'EPSG:4326', [parameters[0].x, parameters[0].y]);
+            map.jumpTo({ center: cameraLngLat, zoom: 17, bearing: mapBearing });
+          }
+          videoMap = new mapboxgl.supermap.VideoMap({
+            container: 'videoMap',
+            url: feature.properties.address,
+            videoParameters: parameters,
+            interval: 0.1
+          });
+          videoMap.addControl(new mapboxgl.supermap.VideoPlayControl(), 'bottom-left');
+          videoMap.addControl(new mapboxgl.supermap.VideoMapDrawControl(), 'top-left');
+          videoMap.on('load', function () {
+            videoMap.addSource(REAL_MAP_DRAW_SOURCE_ID, {
+              type: 'geojson',
+              data: { type: 'FeatureCollection', features: [] }
+            });
+            videoMap.addLayer({
+              id: 'real-map-draw-fill',
+              type: 'fill',
+              source: REAL_MAP_DRAW_SOURCE_ID,
+              filter: ['==', '$type', 'Polygon'],
+              paint: {
+                'fill-color': '#ff5a36',
+                'fill-opacity': 0.2
+              }
+            });
+            videoMap.addLayer({
+              id: 'real-map-draw-line',
+              type: 'line',
+              source: REAL_MAP_DRAW_SOURCE_ID,
+              filter: ['in', '$type', 'LineString', 'Polygon'],
+              paint: {
+                'line-color': '#ff5a36',
+                'line-width': 3
+              }
+            });
+            videoMap.addLayer({
+              id: 'real-map-draw-point',
+              type: 'circle',
+              source: REAL_MAP_DRAW_SOURCE_ID,
+              filter: ['==', '$type', 'Point'],
+              paint: {
+                'circle-radius': 6,
+                'circle-color': '#ff5a36',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+              }
+            });
+            syncVideoMapDraw();
+            syncVideoFootprint();
+            fitVideoBounds();
+            videoMap.on('vectorupdate', function () {
+              syncVideoFootprint(videoMap.currentTime);
+            });
+            videoMap.on('drawupdate', function (e) {
+              syncRealMap(e.live);
+            });
+            videoMap.on('drawcreate', function (e) {
+              updateDrawHint(e.data.features.length);
+              fitRealMap(e.data);
+            });
+            videoMap.on('drawdelete', function (e) {
+              updateDrawHint(e.data.features.length);
+            });
+            videoMap.on('drawclear', function () {
+              updateDrawHint(0);
+              mapFitted = false;
+            });
+            resizeMaps();
+          });
+        });
+      }
+
+      function syncRealMap(featureCollection) {
+        if (!map || !map.getSource('draw-sync') || !featureCollection) {
+          return;
+        }
+        map.getSource('draw-sync').setData(featureCollection);
+        if (!mapFitted && featureCollection.features && featureCollection.features.length) {
+          fitRealMap(featureCollection);
+        }
+      }
+
+      function syncVideoFootprint(time) {
+        if (!map || !map.getSource('video-footprint') || !videoMap || !videoMap.getVideoBounds) {
+          return;
+        }
+        var extent = getVideoExtent(time);
+        if (extent) {
+          map.getSource('video-footprint').setData({
+            type: 'Feature',
+            properties: { source: 'server-extent' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [closeRing(extent.coordinates)]
+            }
+          });
+          return;
+        }
+        var feature = videoMap.getVideoBounds();
+        map.getSource('video-footprint').setData(
+          feature || { type: 'FeatureCollection', features: [] }
+        );
+      }
+
+      function getVideoExtent(time) {
+        if (!videoExtents.length) {
+          return null;
+        }
+        var target = typeof time === 'number' ? time : videoExtents[0].time;
+        var nearest = videoExtents[0];
+        var nearestDistance = Math.abs((nearest.time || 0) - target);
+        videoExtents.forEach(function (item) {
+          var distance = Math.abs((item.time || 0) - target);
+          if (distance < nearestDistance) {
+            nearest = item;
+            nearestDistance = distance;
+          }
+        });
+        if (nearest.time === lastVideoExtentTime) {
+          return nearest;
+        }
+        lastVideoExtentTime = nearest.time;
+        return nearest;
+      }
+
+      function closeRing(coordinates) {
+        if (!coordinates || !coordinates.length) {
+          return [];
+        }
+        var ring = coordinates.slice();
+        var first = ring[0];
+        var last = ring[ring.length - 1];
+        if (!last || first[0] !== last[0] || first[1] !== last[1]) {
+          ring.push(first.slice());
+        }
+        return ring;
+      }
+
+      function updateDrawMeasurements() {
+        var features = mapDraw.getAll().features;
+        syncVideoMapDraw(features);
+        var activeIds = {};
+        features.forEach(function (feature) {
+          var measurement = getFeatureMeasurement(feature);
+          if (!measurement) {
+            return;
+          }
+          var id = feature.id;
+          activeIds[id] = true;
+          var marker = measurementMarkers[id];
+          if (!marker) {
+            var element = document.createElement('div');
+            element.className = 'measurement-marker';
+            marker = new mapboxgl.Marker({ element: element });
+            measurementMarkers[id] = marker;
+          }
+          marker.getElement().textContent = measurement.label;
+          marker.setLngLat(measurement.coordinates).addTo(map);
+        });
+        Object.keys(measurementMarkers).forEach(function (id) {
+          if (!activeIds[id]) {
+            measurementMarkers[id].remove();
+            delete measurementMarkers[id];
+          }
+        });
+      }
+
+      function syncVideoMapDraw(features) {
+        var source = videoMap && videoMap.sourceCache && videoMap.sourceCache[REAL_MAP_DRAW_SOURCE_ID];
+        if (!source) {
+          return;
+        }
+        source.setData({
+          type: 'FeatureCollection',
+          features: features || mapDraw.getAll().features
+        });
+      }
+
+      function getFeatureMeasurement(feature) {
+        if (!feature.geometry) {
+          return null;
+        }
+        if (feature.geometry.type === 'LineString') {
+          var length = turf.length(feature, { units: 'meters' });
+          var midpoint = turf.along(feature, length / 2, { units: 'meters' });
+          return {
+            coordinates: midpoint.geometry.coordinates,
+            label: resources.text_videoMapDraw_length + ' ' + formatDistance(length)
+          };
+        }
+        if (feature.geometry.type === 'Polygon') {
+          var area = turf.area(feature);
+          var center = turf.center(feature);
+          return {
+            coordinates: center.geometry.coordinates,
+            label: resources.text_videoMapDraw_area + ' ' + formatArea(area)
+          };
+        }
+        return null;
+      }
+
+      function formatDistance(meters) {
+        return meters >= 1000 ? (meters / 1000).toFixed(2) + ' km' : meters.toFixed(2) + ' m';
+      }
+
+      function formatArea(squareMeters) {
+        return squareMeters >= 1000000
+          ? (squareMeters / 1000000).toFixed(2) + ' km²'
+          : squareMeters.toFixed(2) + ' m²';
+      }
+
+      function fitVideoBounds() {
+        if (!map || !videoMap || !videoMap.getVideoBounds) {
+          return;
+        }
+        var footprint = videoMap.getVideoBounds();
+        if (!footprint) {
+          return;
+        }
+        var bounds = turf.bbox(footprint);
+        map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
+          padding: 48,
+          maxZoom: 17,
+          duration: 600
+        });
+      }
+
+      function fitRealMap(featureCollection) {
+        var bounds = collectBounds(featureCollection);
+        if (!bounds || !map) {
+          return;
+        }
+        mapFitted = true;
+        if (bounds[0][0] === bounds[1][0] && bounds[0][1] === bounds[1][1]) {
+          map.flyTo({ center: bounds[0], zoom: 16, bearing: mapBearing });
+          return;
+        }
+        map.fitBounds(bounds, { padding: 48, maxZoom: 17, bearing: mapBearing, duration: 600 });
+        map.setBearing(mapBearing);
+      }
+
+      function collectBounds(featureCollection) {
+        var lngLats = [];
+        function walk(value) {
+          if (!value) {
+            return;
+          }
+          if (typeof value[0] === 'number' && typeof value[1] === 'number') {
+            lngLats.push([value[0], value[1]]);
+            return;
+          }
+          value.forEach(walk);
+        }
+        (featureCollection.features || []).forEach(function (feature) {
+          if (feature.geometry && feature.geometry.coordinates) {
+            walk(feature.geometry.coordinates);
+          }
+        });
+        if (!lngLats.length) {
+          return null;
+        }
+        var minLng = lngLats[0][0];
+        var minLat = lngLats[0][1];
+        var maxLng = minLng;
+        var maxLat = minLat;
+        lngLats.forEach(function (coord) {
+          minLng = Math.min(minLng, coord[0]);
+          minLat = Math.min(minLat, coord[1]);
+          maxLng = Math.max(maxLng, coord[0]);
+          maxLat = Math.max(maxLat, coord[1]);
+        });
+        return [
+          [minLng, minLat],
+          [maxLng, maxLat]
+        ];
+      }
+
+      function updateDrawHint(count) {
+        var hint = document.getElementById('drawHint');
+        if (!hint) {
+          return;
+        }
+        var suffix = count ? ' ' + resources.text_videoMapDraw_drawnCount.replace('{count}', count) : '';
+        hint.textContent = resources.text_videoMapDraw_syncHint + suffix;
+      }
+
+      function resizeMaps() {
+        if (videoMap && videoMap.resize) {
+          videoMap.resize();
+        }
+        if (map && map.resize) {
+          map.resize();
+        }
+      }
+
+      window.addEventListener('resize', resizeMaps);
+    </script>
+  </body>
+</html>

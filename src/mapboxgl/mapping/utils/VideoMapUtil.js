@@ -30,6 +30,151 @@ export const fovYToFy = (fovY, videoHeight) => {
   return videoHeight / (2 * Math.tan(fovY / 2 * Math.PI / 180));
 }
 
+/** 连续航向变化累计超过该角度时，视为一次快转（度）。 */
+export const ANGLE_SNAP_THRESHOLD = 45;
+/** 快转检测的最大时间窗口（秒）。 */
+export const HEADING_SWEEP_WINDOW = 2;
+/** 快转过程中保持起点姿态的时间比例，接近终点再切到 B。 */
+export const HEADING_SWEEP_HOLD_RATIO = 0.95;
+const YAW_EPS = 0.5;
+
+export function shortestAngleDelta(from, to) {
+  return ((to - from) % 360 + 540) % 360 - 180;
+}
+
+export function lerpAngle(from, to, t) {
+  return from + shortestAngleDelta(from, to) * t;
+}
+
+export function findParamIndexAtTime(params, time) {
+  if (!params || !params.length) {
+    return 0;
+  }
+  if (time <= params[0].time) {
+    return 0;
+  }
+  const last = params.length - 1;
+  if (time >= params[last].time) {
+    return last;
+  }
+  let lo = 0;
+  let hi = last;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (params[mid].time <= time && params[mid + 1].time > time) {
+      return mid;
+    }
+    if (params[mid].time < time) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  return Math.max(0, Math.min(last, lo));
+}
+
+/**
+ * 从当前关键帧向前后扩展，找出同一方向上的短时大角度航向变化。
+ * 用于避免 A→B 快转时用中间朝向把 B 侧要素提前投进画面。
+ */
+export function findHeadingSweep(params, index, maxWindow = HEADING_SWEEP_WINDOW, minDelta = ANGLE_SNAP_THRESHOLD) {
+  if (!params || !params.length || index < 0 || index >= params.length) {
+    return null;
+  }
+  const stepDelta = (i) => shortestAngleDelta(params[i].yaw, params[i + 1].yaw);
+  const isNoise = (d) => Math.abs(d) < YAW_EPS;
+  let dir = 0;
+  if (index < params.length - 1 && !isNoise(stepDelta(index))) {
+    dir = Math.sign(stepDelta(index));
+  }
+  if (!dir && index > 0 && !isNoise(stepDelta(index - 1))) {
+    dir = Math.sign(stepDelta(index - 1));
+  }
+  if (!dir) {
+    return null;
+  }
+
+  let start = index;
+  while (start > 0) {
+    const d = stepDelta(start - 1);
+    if (!isNoise(d) && Math.sign(d) !== dir) {
+      break;
+    }
+    if (params[index].time - params[start - 1].time > maxWindow) {
+      break;
+    }
+    start--;
+  }
+
+  let end = Math.min(index, params.length - 1);
+  while (end < params.length - 1) {
+    const d = stepDelta(end);
+    if (!isNoise(d) && Math.sign(d) !== dir) {
+      break;
+    }
+    if (params[end + 1].time - params[start].time > maxWindow) {
+      break;
+    }
+    end++;
+  }
+
+  if (end <= start) {
+    return null;
+  }
+  const delta = shortestAngleDelta(params[start].yaw, params[end].yaw);
+  const span = params[end].time - params[start].time;
+  if (Math.abs(delta) < minDelta || span <= 0 || span > maxWindow) {
+    return null;
+  }
+  return {
+    startIndex: start,
+    endIndex: end,
+    start: params[start],
+    end: params[end],
+    delta,
+    span
+  };
+}
+
+export function interpolateCameraPose(prev, next, ratio) {
+  const t = ratio;
+  const lerp = (a, b) => a + (b - a) * t;
+  return {
+    pitch: lerpAngle(prev.pitch, next.pitch, t),
+    roll: lerpAngle(prev.roll, next.roll, t),
+    yaw: lerpAngle(prev.yaw, next.yaw, t),
+    x: lerp(prev.x, next.x),
+    y: lerp(prev.y, next.y),
+    z: lerp(prev.z, next.z),
+    fovX: lerp(prev.fovX, next.fovX),
+    fovY: lerp(prev.fovY, next.fovY),
+    centerX: lerp(prev.centerX, next.centerX),
+    centerY: lerp(prev.centerY, next.centerY)
+  };
+}
+
+/**
+ * 解析当前时间应使用的相机姿态。
+ * 若处于短时大角度航向快转中，在接近终点前始终使用起点 A。
+ * 不能按相邻 20°/45° 关键帧成对切换，否则画面只转到约 20° 就会用到下一帧朝向。
+ */
+export function resolveCameraPose(params, time) {
+  if (!params || !params.length) {
+    return null;
+  }
+  const index = findParamIndexAtTime(params, time);
+  const prev = params[index];
+  const next = params[index + 1] || prev;
+  const dt = (next.time || 0) - (prev.time || 0);
+  const ratio = dt > 0 ? (time - prev.time) / dt : 0;
+  const sweep = findHeadingSweep(params, index);
+  if (sweep) {
+    const r = sweep.span > 0 ? (time - sweep.start.time) / sweep.span : 1;
+    return r >= HEADING_SWEEP_HOLD_RATIO ? sweep.end : sweep.start;
+  }
+  return interpolateCameraPose(prev, next, ratio);
+}
+
 /**
  * @private
  */
@@ -161,14 +306,19 @@ export function smartTimeProcessor(interval, data, properties = []) {
 
       if (useInterpolation) {
           const ratio = next.time === current.time ? 0 : (t - current.time) / (next.time - current.time);
+          const poseT = (properties.indexOf('yaw') !== -1 && Math.abs(shortestAngleDelta(current.yaw, next.yaw)) >= ANGLE_SNAP_THRESHOLD)
+            ? (ratio >= HEADING_SWEEP_HOLD_RATIO ? 1 : 0)
+            : ratio;
           let res = {};
           properties.forEach(prop => {
               if (prop === 'extent') {
                 res[prop] = current[prop].map((item, index) => {
-                  return [current[prop][index].x + (next[prop][index].x - current[prop][index].x) * ratio, current[prop][index].y + (next[prop][index].y - current[prop][index].y) * ratio];
+                  return [current[prop][index].x + (next[prop][index].x - current[prop][index].x) * poseT, current[prop][index].y + (next[prop][index].y - current[prop][index].y) * poseT];
                 });
+              } else if (prop === 'yaw' || prop === 'pitch' || prop === 'roll') {
+                res[prop] = +lerpAngle(current[prop], next[prop], poseT);
               } else {
-                const value = current[prop] + (next[prop] - current[prop]) * ratio;
+                const value = current[prop] + (next[prop] - current[prop]) * poseT;
                 res[prop] = +value;
               }
           });

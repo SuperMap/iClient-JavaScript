@@ -98,6 +98,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     this.fire('loaded', {
       originCoordsRightBottom: this.originCoordsRightBottom,
       originCoordsLeftTop: this.originCoordsLeftTop,
+      originCoordinates: this.originCoordinates,
       videoWidth: this.videoWidth,
       videoHeight: this.videoHeight
     });
@@ -172,6 +173,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
     });
     this.originCoordsLeftTop = coords[0];
     this.originCoordsRightBottom = coords[2];
+    this.originCoordinates = coords;
     return coords;
   }
   /**
