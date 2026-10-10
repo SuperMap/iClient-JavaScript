@@ -62,6 +62,8 @@ describe('mapboxgl_VideoLayer', () => {
       },
       findHomography: function () {
         return {
+          rows: 3,
+          cols: 3,
           delete: function () { }
         }
       },

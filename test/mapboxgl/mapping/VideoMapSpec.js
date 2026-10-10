@@ -106,15 +106,15 @@ describe('mapboxgl_videoMap', () => {
       videoMap.videoWidth = 100;
       videoMap.videoHeight = 100;
       spyOn(videoMap.coordTransfer, 'toSpatialCoordinate').and.returnValue([13358338.895192828, 3503549.8435043753, 0]);
+      var projectedPoint = { x: 10, y: 20 };
+      spyOn(videoMap.map, 'project').and.returnValue(projectedPoint);
       videoMap.map.fire('click', { lngLat: { lng: 120, lat: 30 }, point: { x: 10, y: 20 } });
       expect(clickEvent.lngLat.lng).toBeCloseTo(120, 6);
       expect(clickEvent.lngLat.lat).toBeCloseTo(30, 6);
-      expect(clickEvent.point).toEqual({ x: 10, y: 20 });
+      expect(clickEvent.point).toBe(projectedPoint);
       expect(clickEvent.mapEvent.lngLat).toEqual({ lng: 120, lat: 30 });
       var container = {};
-      var projectedPoint = { x: 10, y: 20 };
       spyOn(videoMap.map, 'getContainer').and.returnValue(container);
-      videoMap.map.project = jasmine.createSpy('project').and.returnValue(projectedPoint);
       spyOn(videoMap.coordTransfer, 'toVideoCoordinate').and.returnValue({ data64F: [50, 50] });
       expect(videoMap.getContainer()).toBe(container);
       expect(videoMap.project({ lng: 120, lat: 30 })).toBe(projectedPoint);
