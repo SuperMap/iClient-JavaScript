@@ -10,25 +10,23 @@ const PAUSE_ICON =
   '<svg viewBox="0 0 24 24" class="sm-mapboxgl-play-svg sm-mapboxgl-play-svg--pause" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>';
 const DEFAULT_CONTENT = `<button type="button" class="sm-mapboxgl-play-btn">${PLAY_ICON}${PAUSE_ICON}</button>`;
 
-export function escapeHTML(strings) {
-  var result = '';
-  for (var i = 0; i < strings.length; i++) {
-    result += strings[i];
-    if (i + 1 < arguments.length) {
-      var value = arguments[i + 1] || '';
-      result += String(value).replace(/[&<>"'/]/g, function (s) {
-        return {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&apos;',
-          '/': '&#x2F;'
-        }[s];
-      });
-    }
-  }
-  return result;
+// 保留合法 HTML 结构，只移除危险内容。移除 script、iframe、onerror、onclick、javascript: 等危险标签和属性。
+function sanitizeHTML(html) {
+  var template = document.createElement('template');
+  template.innerHTML = String(html);
+  template.content.querySelectorAll('script, iframe, object, embed, style, link, meta').forEach(function (element) {
+    element.remove();
+  });
+  template.content.querySelectorAll('*').forEach(function (element) {
+    Array.from(element.attributes).forEach(function (attribute) {
+      var name = attribute.name.toLowerCase();
+      var value = attribute.value.trim().toLowerCase();
+      if (name.indexOf('on') === 0 || /^(javascript|vbscript|data):/.test(value)) {
+        element.removeAttribute(attribute.name);
+      }
+    });
+  });
+  return template.innerHTML;
 }
 
 /**
@@ -70,7 +68,7 @@ export class VideoPlayControl {
    * @returns {VideoPlayControl} this。
    */
   setHTML(html) {
-    this._content = escapeHTML`${String(html)}`;
+    this._content = sanitizeHTML(html);
     this._renderContent();
     return this;
   }

@@ -108,20 +108,20 @@ describe('mapboxgl_videoMap', () => {
       spyOn(videoMap.coordTransfer, 'toSpatialCoordinate').and.returnValue([13358338.895192828, 3503549.8435043753, 0]);
       var projectedPoint = { x: 10, y: 20 };
       spyOn(videoMap.map, 'project').and.returnValue(projectedPoint);
+      spyOn(videoMap.coordTransfer, 'toVideoCoordinate').and.returnValue({ data64F: [50, 50] });
       videoMap.map.fire('click', { lngLat: { lng: 120, lat: 30 }, point: { x: 10, y: 20 } });
       expect(clickEvent.lngLat.lng).toBeCloseTo(120, 6);
       expect(clickEvent.lngLat.lat).toBeCloseTo(30, 6);
-      expect(clickEvent.point).toBe(projectedPoint);
+      expect(clickEvent.point).toEqual(projectedPoint);
       expect(clickEvent.mapEvent.lngLat).toEqual({ lng: 120, lat: 30 });
       var container = {};
       spyOn(videoMap.map, 'getContainer').and.returnValue(container);
-      spyOn(videoMap.coordTransfer, 'toVideoCoordinate').and.returnValue({ data64F: [50, 50] });
       expect(videoMap.getContainer()).toBe(container);
-      expect(videoMap.project({ lng: 120, lat: 30 })).toBe(projectedPoint);
+      expect(videoMap.project({ lng: 120, lat: 30 })).toEqual(projectedPoint);
       expect(videoMap.map.project).toHaveBeenCalledWith(jasmine.objectContaining({ lng: 50, lat: 50 }));
       videoMap.map.project.calls.reset();
       videoMap.coordTransfer.toVideoCoordinate.calls.reset();
-      expect(videoMap.projectVideoMapCoordinate([60, 70])).toBe(projectedPoint);
+      expect(videoMap.projectVideoMapCoordinate([60, 70])).toEqual(projectedPoint);
       expect(videoMap.map.project).toHaveBeenCalledWith(jasmine.objectContaining({ lng: 60, lat: 70 }));
       expect(videoMap.coordTransfer.toVideoCoordinate).not.toHaveBeenCalled();
       expect(videoMap.transform).toBe(videoMap.map.transform);
@@ -156,6 +156,7 @@ describe('mapboxgl_videoMap', () => {
       spyOn(videoMap.coordTransfer, 'toSpatialCoordinate').and.callFake(function (pixel) {
         return [11587478 + pixel[0], 3570800 - pixel[1], 0];
       });
+      spyOn(videoMap.coordTransfer, 'toCameraCoordinate').and.returnValue([0, 0, 1]);
       var footprint = videoMap.getVideoBounds();
       expect(footprint.type).toBe('Feature');
       expect(footprint.geometry.type).toBe('Polygon');

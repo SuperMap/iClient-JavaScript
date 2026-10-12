@@ -96,18 +96,17 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     expect(nextLayer.listeners.pause).toBeUndefined();
   });
 
-  it('renders escaped text from setHTML before and after onAdd', () => {
+  it('renders custom HTML from setHTML before and after onAdd', () => {
     var videoLayer = createVideoLayer(true);
     var control = new VideoPlayControl({ target: videoLayer });
 
     expect(control.setHTML('<i class="my-play"></i>')).toBe(control);
     control.onAdd({});
-    expect(control._container.textContent).toBe('<i class="my-play"></i>');
-    expect(control._container.querySelector('.sm-mapboxgl-play-btn')).toBeNull();
+    expect(control._container.querySelector('.my-play')).not.toBeNull();
     expect(control._button).toBeNull();
 
     control.setHTML('<b class="next"></b>');
-    expect(control._container.textContent).toBe('<b class="next"></b>');
+    expect(control._container.querySelector('.next')).not.toBeNull();
 
     control.onRemove();
   });
@@ -135,12 +134,15 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     control.onRemove();
   });
 
-  it('escapes markup passed to setHTML', () => {
+  it('filters dangerous markup passed to setHTML', () => {
     var control = new VideoPlayControl();
     control.onAdd({});
-    control.setHTML('<script>window.__xss = 1</script><img onerror="alert(1)">');
+    control.setHTML('<script>window.__xss = 1</script><img onerror="alert(1)" src="javascript:alert(1)"><b class="safe">safe</b>');
 
-    expect(control._container.textContent).toBe('<script>window.__xss = 1</script><img onerror="alert(1)">');
+    expect(control._container.querySelector('script')).toBeNull();
+    expect(control._container.querySelector('img').hasAttribute('onerror')).toBeFalse();
+    expect(control._container.querySelector('img').hasAttribute('src')).toBeFalse();
+    expect(control._container.querySelector('.safe')).not.toBeNull();
     expect(window.__xss).toBeUndefined();
 
     control.onRemove();
@@ -153,7 +155,7 @@ describe('mapboxgl_VideoPlayControl with VideoLayer', () => {
     control.onRemove();
     control.onAdd({});
 
-    expect(control._container.textContent).toBe('<i class="again"></i>');
+    expect(control._container.querySelector('.again')).not.toBeNull();
 
     control.onRemove();
   });
