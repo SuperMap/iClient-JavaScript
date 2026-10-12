@@ -155,6 +155,7 @@ import './common/commontypes/geometry/LinearRingSpec.js';
 import './common/commontypes/Geometry3DSpec.js';
 
 /**common -- overlay**/
+import './common/overlay/fgb/FGBLayerRendererSpec.js';
 import './common/overlay/feature/ShapeFactorySpec.js';
 import './common/overlay/levelRenderer/AreaSpec.js';
 import './common/overlay/levelRenderer/ClipSpec.js';

@@ -85,9 +85,12 @@ export class FGBLayerRenderer {
       rect.value = { extent: bounds.slice() };
       this.loadedExtentsRtree_.insert(rect);
     }
-   
-    return await deserialize((fgbStream && fgbStream.body) || this.url, rect, (headerMeta) => {
-      this.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
+
+    return await deserialize((fgbStream && fgbStream.body) || this.url, {
+      rect,
+      headerMetaFn: (headerMeta) => {
+        this.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
+      }
     });
   }
 

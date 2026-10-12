@@ -24,11 +24,6 @@ var exampleConfig = {
           thumbnail: "l_tiledMapLayer3857.png",
           fileName: "01_tiledMapLayer3857"
         }, {
-          name: "图层过滤",
-          name_en: "displayFilters",
-          thumbnail: "l_tiledMapLayer_displayFilters.png",
-          fileName: "01_tiledMapLayer_displayFilters"
-        }, {
           name: "4326底图(image)",
           name_en: "4326 coordinate system(image)",
           thumbnail: "l_imageMapLayer4326.png",
@@ -133,6 +128,12 @@ var exampleConfig = {
           version: '11.3.0',
           thumbnail: "createTempLayer.png",
           fileName: "createTempLayer"
+        },
+        {
+          name: "图层过滤",
+          name_en: "displayFilters",
+          thumbnail: "l_tiledMapLayer_displayFilters.png",
+          fileName: "01_tiledMapLayer_displayFilters"
         }
         ]
       },

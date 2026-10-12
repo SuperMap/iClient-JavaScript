@@ -114,7 +114,7 @@ export var FGBLayer = L.FeatureGroup.extend({
       this.loadedExtentsRtree_.insert(rect);
     }
 
-    const fgb = deserialize((fgbStream && fgbStream.body) || this.url, rect);
+    const fgb = deserialize((fgbStream && fgbStream.body) || this.url, { rect });
     if (!this._validatedId) {
       this.curLayer = L.geoJSON(null, this.options);
       this.previousLayer && this.removeLayer(this.previousLayer);
