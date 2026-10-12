@@ -16,7 +16,8 @@
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapbox-gl-enhance,proj4,turf,videojs,opencv" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
-      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
+      var host = 'https://iserver.supermap.io';
+      var dataUrl = host + '/iserver/services/data-video/rest/data';
       var videoMap;
       var count = 0;
       var dynamicLayerIds = [];

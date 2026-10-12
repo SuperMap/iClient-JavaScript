@@ -351,6 +351,38 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @function VideoMap.prototype.getSource
+   * @description 获取数据源。视频地图 GeoJSON 数据源的 data 为 EPSG:4326 原始数据，其余行为保持 Mapbox source 兼容。
+   * @param {string} id - 数据源 id。
+   * @returns {Object|undefined} Mapbox source 或视频地图 GeoJSON source 代理。
+   */
+  getSource(id) {
+    if (!this._mapExisted()) {
+      return undefined;
+    }
+    const source = this.map.getSource(id);
+    const videoSource = this.sourceCache[id];
+    if (!source || !videoSource || typeof videoSource.getData !== 'function') {
+      return source;
+    }
+    return new Proxy(source, {
+      get(target, property) {
+        if (property === '_data') {
+          return videoSource.getData();
+        }
+        if (property === 'getData') {
+          return videoSource.getData.bind(videoSource);
+        }
+        if (property === 'setData') {
+          return videoSource.setData.bind(videoSource);
+        }
+        const value = Reflect.get(target, property, target);
+        return typeof value === 'function' ? value.bind(target) : value;
+      }
+    });
+  }
+
+  /**
    * @function VideoMap.prototype.updateAtTime
    * @description 使用视频时间更新相机参数并重新投影已添加的 GeoJSON 数据源。
    * @param {number} time - 视频时间，单位秒。

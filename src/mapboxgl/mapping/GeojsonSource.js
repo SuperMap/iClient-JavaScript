@@ -50,6 +50,10 @@ export default class GeojsonSource {
     this.update();
   }
 
+  getData() {
+    return cloneDeep(this.originalData);
+  }
+
   _transformData(data) {
     return transformVideoMapGeoJSON(data, this.videoMap);
   }

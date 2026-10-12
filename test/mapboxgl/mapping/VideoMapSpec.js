@@ -279,6 +279,7 @@ describe('mapboxgl_videoMap', () => {
         }
       });
       expect(videoMap.sourceCache['test111']).not.toBe(null);
+      expect(videoMap.getSource('test111').getData()).toEqual(videoMap.sourceCache['test111'].originalData);
       videoMap.removeSource('test111');
       expect(videoMap.sourceCache['test111']).toBeUndefined();
       done();

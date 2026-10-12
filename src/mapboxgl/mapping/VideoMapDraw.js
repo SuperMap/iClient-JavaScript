@@ -523,7 +523,9 @@ export default class VideoMapDraw {
     this.features.push(feature);
     this._setSelectedIds([feature.id]);
     this._syncResult();
-    this.videoMap.fire('drawcreate', { feature, data: this.getData() });
+    const eventFeature = Object.assign({}, feature);
+    delete eventFeature.id;
+    this.videoMap.fire('drawcreate', { feature: eventFeature, data: this.getData() });
     this._emitModeChange();
     this._emitUpdate();
     this._showMeasureLabels(feature);
@@ -760,7 +762,7 @@ export default class VideoMapDraw {
     return {
       type: 'Feature',
       id,
-      properties: { drawType: type, id },
+      properties: {},
       geometry: { type, coordinates }
     };
   }
@@ -825,7 +827,7 @@ export default class VideoMapDraw {
       features.push({
         type: 'Feature',
         id: `videomap-draw-draft-p${index}`,
-        properties: { drawType: 'Point', draft: true },
+        properties: { draft: true },
         geometry: { type: 'Point', coordinates: coord }
       });
     });
@@ -833,7 +835,7 @@ export default class VideoMapDraw {
       features.push({
         type: 'Feature',
         id: 'videomap-draw-draft-line',
-        properties: { drawType: 'LineString', draft: true },
+        properties: { draft: true },
         geometry: { type: 'LineString', coordinates: vertices }
       });
     }
@@ -842,14 +844,14 @@ export default class VideoMapDraw {
         features.push({
           type: 'Feature',
           id: 'videomap-draw-draft-polygon',
-          properties: { drawType: 'Polygon', draft: true },
+          properties: { draft: true },
           geometry: { type: 'Polygon', coordinates: [vertices.concat([vertices[0]])] }
         });
       } else {
         features.push({
           type: 'Feature',
           id: 'videomap-draw-draft-line',
-          properties: { drawType: 'LineString', draft: true },
+          properties: { draft: true },
           geometry: { type: 'LineString', coordinates: vertices }
         });
       }
