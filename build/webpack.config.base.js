@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const path = require('path');
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const LintExportWebpackPlugin = require('./lint-export-webpack-plugin');
@@ -83,11 +82,7 @@ module.exports = {
 
     //其它解决方案配置
     resolve: {
-        extensions: ['.js', '.json', '.css'],
-        // flatgeobuf 依赖的 @bokuweb/zstd-wasm 默认入口是 node 构建（依赖 fs/path），浏览器包需指向 web 构建
-        alias: {
-            '@bokuweb/zstd-wasm$': path.resolve(__dirname, '../node_modules/@bokuweb/zstd-wasm/dist/web/index.web.js')
-        }
+        extensions: ['.js', '.json', '.css']
     },
 
     externals: {

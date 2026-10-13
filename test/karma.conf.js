@@ -2,9 +2,6 @@
 // Generated on Fri Feb 17 2017 15:57:25 GMT+0800 (中国标准时间)
 const fileUtil = require('karma-sonarqube-unit-reporter/src/file-util.js');
 const { Command } = require('commander');
-const path = require('path');
-
-const zstdWasmPath = path.resolve(__dirname, '../node_modules/@bokuweb/zstd-wasm/dist/web/zstd.wasm').replace(/\\/g, '/');
 const program = new Command();
 const testPath = ['./test'];
 const testFilePattern = 'Spec.js';
@@ -54,7 +51,7 @@ module.exports = function (config) {
               '../node_modules/@mapbox/mapbox-gl-style-spec'
               
             ],
-            plugins: ['istanbul', '@babel/plugin-transform-runtime', require('./helpers/babel-plugin-zstd-import-meta')]
+            plugins: ['istanbul', '@babel/plugin-transform-runtime']
           }
         ],
         [require('browserify-css'), { global: true }],
@@ -73,7 +70,6 @@ module.exports = function (config) {
       { pattern: '../src/classic/libs/Lang/*.js', included: true },
       { pattern: '../src/classic/theme/default/*.css', included: true },
       { pattern: './resources/data/**.fgb', included: false },
-      { pattern: zstdWasmPath, included: false, watched: false },
       { pattern: './resources/data/**.mp4', included: false },
       { pattern: './resources/img/**.svg', included: false },
       { pattern: './resources/img/baiduTileTest.png', included: false },
@@ -202,8 +198,6 @@ module.exports = function (config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
     proxies: {
-      // FlatGeobuf and the test Babel transform both resolve the codec here.
-      '/base/zstd.wasm': '/absolute' + zstdWasmPath,
       '/iserver/': testServer
     }
   });

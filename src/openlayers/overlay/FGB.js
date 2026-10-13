@@ -116,7 +116,7 @@ export class FGB extends VectorSource {
         maxY: extent[3]
       };
     }
-    const fgb = deserialize(url, Object.keys(rect).length ? { rect } : {});
+    const fgb = deserialize(url, rect);
     let featureList = [];
     const throttleFn = throttle(() => {
       this.addFeatures(featureList);

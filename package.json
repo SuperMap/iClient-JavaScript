@@ -157,7 +157,7 @@
     "fast-xml-parser": "5.5.9",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
-    "flatgeobuf": "4.6.0",
+    "flatgeobuf": "3.31.1",
     "flv.js": "^1.6.2",
     "insert-css": "^2.0.0",
     "jsonsql": "0.2.5",
