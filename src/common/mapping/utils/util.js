@@ -217,3 +217,18 @@ export function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
   const renderLayers = getLayerCatalogRenderLayers(layerParts, catalogId, layersOnMap);
   return layersOnMap.find(item => item.id === renderLayers[0]);
 }
+
+// 垂直翻转 RGBA 图片，保持像素顺序并避免逐通道复制。
+export function flipImageVertically(imageData, width, height) {
+  const sourceData = imageData.data || imageData;
+  const flipped = new Uint8Array(sourceData.length);
+  const rowSize = width * 4;
+
+  for (let row = 0; row < height; row++) {
+    const sourceRowStart = row * rowSize;
+    const targetRowStart = (height - row - 1) * rowSize;
+    flipped.set(sourceData.subarray(sourceRowStart, sourceRowStart + rowSize), targetRowStart);
+  }
+
+  return flipped;
+}

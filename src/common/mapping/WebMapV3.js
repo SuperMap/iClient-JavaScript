@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl } from './utils/util';
+import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl, flipImageVertically } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -289,6 +289,9 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     // 初始化 map
     const mapOptions = {
       ...this.mapOptions,
+      // 统一线图案方向，避免 Mapbox GL 默认方向与 WebMap 符号方向约定不一致；旧版资源翻转由 _getSpriteLoad 按地图版本处理。
+      linePatternOrientation: 'west-to-east',
+      onSpriteLoad: this._getSpriteLoad(),
       transformRequest: this._getTransformRequest(),
       container: this.options.target,
       crs: this._baseProjection,
@@ -313,6 +316,23 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     this.map.on('load', () => {
       this._initLayers();
     });
+  }
+
+  _getSpriteLoad() {
+    const version = this._mapInfo && this._mapInfo.version;
+    const [major, minor, patch] = typeof version === 'string' ? version.split('.').map(Number) : [];
+    // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
+    if (major > 3 || (major === 3 && minor > 3) || (major === 3 && minor === 3 && patch > 7)) {
+      return;
+    }
+    return (id, imageData, width, height) => {
+      // 翻转所有 line- 开头的图案
+      if (id && id.startsWith('line-')) {
+        return flipImageVertically(imageData, width, height);
+      }
+
+      return null;
+    };
   }
 
   _getTransformRequest() {
