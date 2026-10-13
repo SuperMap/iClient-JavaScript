@@ -52,22 +52,6 @@
         pointer-events: none;
       }
 
-      #drawHint {
-        position: absolute;
-        top: 16px;
-        left: 54px;
-        z-index: 10;
-        max-width: 280px;
-        padding: 6px 10px;
-        border-radius: 4px;
-        background: rgba(255, 255, 255, 0.94);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-        color: #59636e;
-        font-size: 12px;
-        line-height: 1.5;
-        pointer-events: none;
-      }
-
       .measurement-marker {
         padding: 4px 7px;
         border: 1px solid #e66b2e;
@@ -130,7 +114,6 @@
     <div id="layout">
       <div id="videoPane">
         <div class="pane-label" data-i18n="resources.text_huainanDraw_videoMapLabel"></div>
-        <div id="drawHint" data-i18n="resources.text_huainanDraw_hint"></div>
         <div id="videoMap"></div>
       </div>
       <div id="realPane">
@@ -165,7 +148,7 @@
       var mapSourceCount = 0;
       var dynamicLayerIds = [];
       var measurementMarkers = {};
-      var uploadedDatasetFeatures = {};
+      var uploadedDatasetRefreshVersions = {};
       var mapBearing = 214;
       var tk = '1d109683f4d84198e37a38c442d68311';
       var attribution =
@@ -344,23 +327,21 @@
         });
       }
 
-      function addUploadedDataset(datasetName) {
+      function refreshUploadedDataset(datasetName) {
+        var refreshVersion = (uploadedDatasetRefreshVersions[datasetName] || 0) + 1;
+        uploadedDatasetRefreshVersions[datasetName] = refreshVersion;
         queryFeatures(datasetName).then(function (serviceResult) {
           var queriedFeatureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
-          if (!queriedFeatureCollection || !queriedFeatureCollection.features) {
+          if (
+            refreshVersion !== uploadedDatasetRefreshVersions[datasetName] ||
+            !queriedFeatureCollection ||
+            !Array.isArray(queriedFeatureCollection.features)
+          ) {
             return;
           }
-          var featuresByKey = uploadedDatasetFeatures[datasetName] || {};
-          queriedFeatureCollection.features.forEach(function (feature) {
-            var key = feature.id == null ? JSON.stringify(feature) : String(feature.id);
-            featuresByKey[key] = feature;
-          });
-          uploadedDatasetFeatures[datasetName] = featuresByKey;
           var featureCollection = {
             type: 'FeatureCollection',
-            features: Object.keys(featuresByKey).map(function (key) {
-              return featuresByKey[key];
-            })
+            features: queriedFeatureCollection.features
           };
           var sourceId = 'uploaded-draw-source-' + datasetName;
           addOrUpdateRealSource('real-' + sourceId, featureCollection, '#e66b2e');
@@ -370,6 +351,7 @@
           var source = videoMap.getSource(sourceId);
           if (source) {
             source.setData(featureCollection);
+            bringVideoDrawLayersToFront();
             return;
           }
           videoMap.addSource(sourceId, { type: 'geojson', data: featureCollection });
@@ -403,8 +385,20 @@
             });
             dynamicLayerIds.push(layerConfig.id);
           });
+          bringVideoDrawLayersToFront();
         }).catch(function (error) {
           console.error('视频标绘数据查询失败:', error);
+        });
+      }
+
+      function bringVideoDrawLayersToFront() {
+        if (!videoMap || !videoMap.moveLayer) {
+          return;
+        }
+        ['video-draw-fill', 'video-draw-line', 'video-draw-point'].forEach(function (layerId) {
+          if (videoMap.getLayer(layerId)) {
+            videoMap.moveLayer(layerId);
+          }
         });
       }
 
@@ -422,7 +416,6 @@
         var features = mapDraw.getAll();
         addOrUpdateRealSource(REAL_VIDEO_DRAW_SOURCE_ID, features, '#168aad');
         syncVideoMapDraw(features);
-        updateMeasurementMarkers('real', map, features, false);
         updateMeasurementMarkers('video', videoMap, features, true);
       }
 
@@ -431,7 +424,7 @@
           return;
         }
         addOrUpdateRealSource(VIDEO_DRAW_SOURCE_ID, featureCollection, '#ff5a36');
-        updateMeasurementMarkers('video-draw', map, featureCollection, false);
+        updateMeasurementMarkers('video-draw-video', videoMap, featureCollection, true);
       }
 
       function uploadVideoDrawFeature(feature) {
@@ -458,9 +451,55 @@
           if (!serviceResult || !serviceResult.result || !serviceResult.result.succeed) {
             return;
           }
-          addUploadedDataset(decodeURIComponent(datasetPath[3]));
+          refreshUploadedDataset(decodeURIComponent(datasetPath[3]));
         }).catch(function (error) {
           console.error('视频标绘上传失败:', error);
+        });
+      }
+
+      function deleteUploadedFeature(feature) {
+        if (!feature || !feature.geometry) {
+          return;
+        }
+        var targetUrl = datasetUrl[feature.geometry.type];
+        if (!targetUrl) {
+          return;
+        }
+        var datasetPath = targetUrl.match(/^(.*)\/datasources\/([^/]+)\/datasets\/([^/?#]+)\/?$/);
+        if (!datasetPath) {
+          return;
+        }
+        var dataset = decodeURIComponent(datasetPath[3]);
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: { name: dataset + '@' + dataSourceName },
+          targetEpsgCode: '4326',
+          datasetNames: [dataSourceName + ':' + dataset],
+          toIndex: 99999
+        });
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var featureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
+          var serverFeature = featureCollection && (featureCollection.features || []).find(function (item) {
+            return JSON.stringify(item.geometry) === JSON.stringify(feature.geometry);
+          });
+          if (!serverFeature || serverFeature.id == null) {
+            return;
+          }
+          var editFeaturesParams = new mapboxgl.supermap.EditFeaturesParameters({
+            dataSourceName: decodeURIComponent(datasetPath[2]),
+            dataSetName: dataset,
+            IDs: [serverFeature.id],
+            editType: 'delete',
+            returnContent: true
+          });
+          return new mapboxgl.supermap.FeatureService(datasetPath[1])
+            .editFeatures(editFeaturesParams)
+            .then(function (deleteResult) {
+              if (deleteResult && deleteResult.result && deleteResult.result.succeed) {
+                refreshUploadedDataset(dataset);
+              }
+            });
+        }).catch(function (error) {
+          console.error('视频标绘删除失败:', error);
         });
       }
 
@@ -617,20 +656,22 @@
             });
             syncMapDraw();
             videoMap.on('drawupdate', function (event) {
-              syncVideoDraw(event.live);
+              syncVideoDraw(event.live || event.data);
             });
             videoMap.on('drawcreate', function (event) {
-              syncVideoDraw(event.data);
+              syncVideoDraw(event.data || videoMap.getDrawData());
               uploadVideoDrawFeature(event.feature);
             });
             videoMap.on('drawdelete', function (event) {
-              syncVideoDraw(event.data);
+              syncVideoDraw(event.data || videoMap.getDrawData());
+              (event.features || []).forEach(deleteUploadedFeature);
             });
             videoMap.on('drawclear', function () {
               syncVideoDraw({ type: 'FeatureCollection', features: [] });
             });
             videoMap.on('videoparameterupdate', function () {
               updateMeasurementMarkers('video', videoMap, mapDraw.getAll(), true);
+              updateMeasurementMarkers('video-draw-video', videoMap, videoMap.getDrawData(), true);
               updateVideoFootprint();
             });
             updateVideoFootprint();
@@ -641,7 +682,7 @@
               videoMap.getCanvas().style.cursor = hits.length ? 'pointer' : '';
             });
             ['roads'].forEach(addVectorDataset);
-            ['NewPoint', 'NewLine', 'NewRegion'].forEach(addUploadedDataset);
+            ['NewPoint', 'NewLine', 'NewRegion'].forEach(refreshUploadedDataset);
           });
         });
       }

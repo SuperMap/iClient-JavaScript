@@ -761,7 +761,6 @@ window.examplesResources = {
         "text_videoMapDraw_area":"Area",
         "text_huainanDraw_videoMapLabel":"Dynamic Video Map",
         "text_huainanDraw_realMapLabel":"Tianditu Imagery",
-        "text_huainanDraw_hint":"Draw on either map; edits sync in real time. Lines show length and polygons show area.",
         "text_huainanDraw_length":"Length",
         "text_huainanDraw_area":"Area",
         "title_uavVideo":"Uav Video",

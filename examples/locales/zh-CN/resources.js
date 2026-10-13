@@ -736,7 +736,6 @@ window.examplesResources = {
         "text_videoMapDraw_area":"面积",
         "text_huainanDraw_videoMapLabel":"动态视频地图",
         "text_huainanDraw_realMapLabel":"天地图影像",
-        "text_huainanDraw_hint":"两侧均可绘制，完成后实时同步；线显示长度，面显示面积。",
         "text_huainanDraw_length":"长度",
         "text_huainanDraw_area":"面积",
         "title_uavVideo":"无人机视频",
