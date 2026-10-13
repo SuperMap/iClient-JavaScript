@@ -3,6 +3,7 @@ import {
   clipPolylineToRect,
   clipPolygonToRect,
   clipPolylineNearPlane,
+  clipRingNearPlane,
   getImageClipRect,
   isInImageRect,
   transformVideoMapGeoJSON,
@@ -166,5 +167,82 @@ describe('clipVideoMapGeometry', () => {
     expect(result.geometry.coordinates.length).toBe(2);
     expect(result.geometry.coordinates[0][0]).toBeCloseTo(-0.05, 5);
     expect(result.geometry.coordinates[1][0]).toBeCloseTo(1.05, 5);
+  });
+
+  it('should cover empty segments, parallel edges, and polygon rings outside the image', () => {
+    expect(clipSegmentToRect(10, 10, 10, 90, rect)).toEqual([[10, 10], [10, 90]]);
+    expect(clipSegmentToRect(-10, -10, -10, 110, rect)).toBeNull();
+    expect(clipPolylineToRect([], rect)).toEqual([]);
+    expect(clipPolylineToRect([[10, 10], null, [20, 20]], rect)).toEqual([]);
+    expect(clipPolygonToRect([], rect)).toEqual([]);
+    expect(clipPolygonToRect([[-20, 10], [-10, 20], [-15, 30], [-20, 10]], rect)).toEqual([]);
+  });
+
+  it('clips near-plane rings through visible and hidden vertices', () => {
+    const projectFn = (camera) => [camera[0], camera[1]];
+    expect(clipPolylineNearPlane([{ camera: [0, 0, -1], uv: null }], CAMERA_Z_NEAR, projectFn)).toEqual([]);
+    expect(clipRingNearPlane([], CAMERA_Z_NEAR, projectFn)).toEqual([]);
+
+    const visible = [
+      { camera: [0, 0, 2], uv: null },
+      { camera: [10, 0, 2], uv: [10, 0] },
+      { camera: [10, 10, 2], uv: [10, 10] },
+      { camera: [0, 10, 2], uv: [0, 10] },
+      { camera: [0, 0, 2], uv: null }
+    ];
+    const clipped = clipRingNearPlane(visible, CAMERA_Z_NEAR, projectFn);
+    expect(clipped.length).toBe(4);
+    expect(clipRingNearPlane([
+      { camera: [0, 0, -1], uv: null },
+      { camera: [1, 0, -1], uv: null },
+      { camera: [0, 1, -1], uv: null }
+    ], CAMERA_Z_NEAR, projectFn)).toEqual([]);
+  });
+
+  it('transforms each supported GeoJSON geometry and drops invalid geometries', () => {
+    const videoMap = {
+      videoWidth: 100,
+      videoHeight: 100,
+      originCoordsLeftTop: { lng: 0, lat: 1 },
+      originCoordsRightBottom: { lng: 1, lat: 0 },
+      coordTransfer: {
+        toCameraCoordinate: (coord) => [coord[0] / 5000, coord[1] / 5000, 10],
+        projectCameraToVideo: (camera) => [50 + camera[0], 50 - camera[1]]
+      }
+    };
+    const polygonRing = [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]];
+    const result = transformVideoMapGeoJSON({
+      type: 'FeatureCollection',
+      features: [
+        { type: 'Feature', properties: { id: 'point' }, geometry: { type: 'Point', coordinates: [0, 0] } },
+        { type: 'Feature', properties: { id: 'multipoint' }, geometry: { type: 'MultiPoint', coordinates: [[0, 0], [1, 1]] } },
+        { type: 'Feature', properties: { id: 'line' }, geometry: { type: 'LineString', coordinates: [[0, 0], [1, 1]] } },
+        { type: 'Feature', properties: { id: 'multiline' }, geometry: { type: 'MultiLineString', coordinates: [[[0, 0], [1, 1]]] } },
+        { type: 'Feature', properties: { id: 'polygon' }, geometry: { type: 'Polygon', coordinates: [polygonRing, polygonRing] } },
+        { type: 'Feature', properties: { id: 'multipolygon' }, geometry: { type: 'MultiPolygon', coordinates: [[polygonRing]] } },
+        { type: 'Feature', properties: { id: 'collection' }, geometry: { type: 'GeometryCollection', geometries: [{ type: 'Point', coordinates: [0, 0] }] } },
+        { type: 'Feature', properties: { id: 'unsupported' }, geometry: { type: 'CircularString', coordinates: [] } },
+        { type: 'Feature', properties: { id: 'missing' }, geometry: null }
+      ]
+    }, videoMap);
+
+    expect(result.features.map((feature) => feature.properties.id)).toEqual([
+      'point', 'multipoint', 'line', 'multiline', 'polygon', 'multipolygon', 'collection'
+    ]);
+    expect(result.features[1].geometry.coordinates.length).toBe(2);
+    expect(result.features[4].geometry.coordinates.length).toBe(2);
+    expect(result.features[6].geometry.type).toBe('GeometryCollection');
+  });
+
+  it('returns unprojectable inputs unchanged and empty output for dropped feature geometry', () => {
+    const data = { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [0, 0] } };
+    expect(transformVideoMapGeoJSON(data, null)).toBe(data);
+    expect(transformVideoMapGeoJSON(data, { coordTransfer: null })).toBe(data);
+    const dropped = transformVideoMapGeoJSON(data, {
+      videoWidth: 100,
+      videoHeight: 100,
+      coordTransfer: { toCameraCoordinate: () => null, projectCameraToVideo: () => null }
+    });
+    expect(dropped).toEqual({ type: 'FeatureCollection', features: [] });
   });
 });

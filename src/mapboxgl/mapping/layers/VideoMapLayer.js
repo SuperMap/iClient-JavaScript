@@ -105,7 +105,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   }
 
   _bindTimeUpdates() {
-    const videoElement = this.video.tech && this.video.tech().el();
+    const videoElement = this.video && this.video.tech && this.video.tech().el();
     if (!videoElement) {
       return;
     }
@@ -181,7 +181,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    * @description  播放视频。
    */
   play() {
-    if (this.video) {
+    if (this.video && typeof this.video.play === 'function') {
       this.video.play();
     }
     const source = this._getVideoSource();
@@ -194,7 +194,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    * @description  暂停视频。
    */
   pause() {
-    if (this.video) {
+    if (this.video && typeof this.video.pause === 'function') {
       this.video.pause();
     }
     const source = this._getVideoSource();

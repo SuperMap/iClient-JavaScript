@@ -189,4 +189,5 @@ describe('mapboxgl_VideoMapDrawControl', () => {
     expect(container.querySelectorAll('button').length).toBe(2);
     control.onRemove();
   });
+
 });

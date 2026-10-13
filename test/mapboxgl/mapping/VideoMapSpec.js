@@ -450,3 +450,153 @@ describe('mapboxgl_videoMap', () => {
     });
   });
 });
+
+function createVideoMapForCoverage() {
+  const videoMap = Object.create(VideoMap.prototype);
+  videoMap.map = {
+    on: jasmine.createSpy('on'),
+    once: jasmine.createSpy('once'),
+    off: jasmine.createSpy('off'),
+    fire: jasmine.createSpy('mapFire'),
+    removeControl: jasmine.createSpy('removeControl')
+  };
+  videoMap._mapEventListeners = {};
+  videoMap._pendingControls = [];
+  videoMap.sourceCache = {};
+  videoMap.fire = jasmine.createSpy('fire');
+  return videoMap;
+}
+
+function makeCoveragePose(time, offset) {
+  return {
+    time,
+    pitch: 1 + offset,
+    roll: 2 + offset,
+    yaw: 3 + offset,
+    x: 4 + offset,
+    y: 5 + offset,
+    z: 6 + offset,
+    fovX: 60,
+    fovY: 40,
+    centerX: 10,
+    centerY: 20
+  };
+}
+
+describe('VideoMap focused coverage', () => {
+  it('dispatches once listeners and removes both event overloads', () => {
+    const videoMap = createVideoMapForCoverage();
+    const listener = jasmine.createSpy('listener');
+    videoMap.once('click', listener);
+    const handler = videoMap.map.once.calls.argsFor(0)[1];
+    handler({ type: 'click' });
+    expect(listener).toHaveBeenCalledWith(jasmine.objectContaining({ mapEvent: jasmine.any(Object) }));
+    expect(videoMap.map.off).toHaveBeenCalledWith('click', handler);
+
+    const context = {};
+    const layerListener = jasmine.createSpy('layerListener');
+    videoMap.once('click', ['video-layer'], layerListener, context);
+    const layerHandler = videoMap.map.once.calls.argsFor(1)[2];
+    layerHandler({ type: 'click' });
+    expect(layerListener.calls.mostRecent().object).toBe(context);
+    expect(videoMap.map.off).toHaveBeenCalledWith('click', ['video-layer'], layerHandler);
+
+    const retained = jasmine.createSpy('retained');
+    videoMap.on('click', retained);
+    videoMap.on('click', ['layer-a'], listener);
+    videoMap.off('click', retained);
+    expect(videoMap._mapEventListeners.click.length).toBe(1);
+    videoMap._clearEvents();
+    expect(videoMap.map.off).toHaveBeenCalledWith('click', ['layer-a'], jasmine.any(Function));
+  });
+
+  it('updates camera and source state after time changes and rewind', () => {
+    const videoMap = createVideoMapForCoverage();
+    const update = jasmine.createSpy('sourceUpdate');
+    const range = { index: 0, ratio: 0.5 };
+    let animationFrame;
+    videoMap.isTimeVarying = true;
+    videoMap.timeSearcher = { findRange: jasmine.createSpy('findRange').and.returnValue(range) };
+    videoMap.coordTransfer = { setCameraLocation: jasmine.createSpy('setCameraLocation') };
+    videoMap.rawVideoParameters = [makeCoveragePose(0, 0), makeCoveragePose(2, 10)];
+    videoMap.videoWidth = 100;
+    videoMap.videoHeight = 50;
+    videoMap.vectorUpdateInterval = 0.1;
+    videoMap.currentTime = 1.5;
+    videoMap.lastVectorUpdateTime = 1.5;
+    videoMap.sourceCache = { source: { update } };
+    spyOn(window, 'requestAnimationFrame').and.callFake((callback) => {
+      animationFrame = callback;
+      return 1;
+    });
+
+    videoMap.updateAtTime(0.5);
+    expect(videoMap.lastVectorUpdateTime).toBe(-Infinity);
+    expect(videoMap.pendingVectorUpdate).toBe(true);
+    expect(videoMap.coordTransfer.setCameraLocation).toHaveBeenCalled();
+    animationFrame();
+    expect(update).toHaveBeenCalled();
+    expect(videoMap.map.fire).toHaveBeenCalledWith('move');
+    expect(videoMap.fire).toHaveBeenCalledWith('videoparameterupdate', { time: 0.5 });
+    expect(videoMap.lastVectorUpdateTime).toBe(0.5);
+  });
+
+  it('skips unavailable, pending, throttled and out-of-range time updates', () => {
+    const videoMap = createVideoMapForCoverage();
+    videoMap.updateAtTime(1);
+    videoMap.isTimeVarying = true;
+    videoMap.timeSearcher = { findRange: jasmine.createSpy('findRange').and.returnValue(null) };
+    videoMap.coordTransfer = { setCameraLocation: jasmine.createSpy('setCameraLocation') };
+    videoMap.pendingVectorUpdate = true;
+    videoMap.updateAtTime(1);
+    videoMap.pendingVectorUpdate = false;
+    videoMap.vectorUpdateInterval = 1;
+    videoMap.lastVectorUpdateTime = 1;
+    videoMap.updateAtTime(1.5);
+    expect(videoMap.timeSearcher.findRange).not.toHaveBeenCalled();
+
+    videoMap.lastVectorUpdateTime = -Infinity;
+    spyOn(console, 'warn');
+    videoMap.updateAtTime(2);
+    expect(videoMap.timeSearcher.findRange).toHaveBeenCalledWith(2);
+    expect(console.warn).toHaveBeenCalled();
+  });
+
+  it('converts coordinates only after all video transform inputs are ready', () => {
+    const videoMap = createVideoMapForCoverage();
+    expect(videoMap.toSpatialCoordinate({ lng: 0.5, lat: 0.5 })).toBeNull();
+    const toSpatialCoordinate = jasmine.createSpy('toSpatialCoordinate').and.returnValue([1, 2, 3]);
+    videoMap.coordTransfer = { toSpatialCoordinate };
+    videoMap.originCoordsLeftTop = { lng: 0, lat: 1 };
+    videoMap.originCoordsRightBottom = { lng: 1, lat: 0 };
+    videoMap.videoWidth = 100;
+    videoMap.videoHeight = 100;
+    expect(videoMap.toSpatialCoordinate({ lng: 0.5, lat: 0.5 })).toEqual([1, 2, 3]);
+    expect(toSpatialCoordinate).toHaveBeenCalledWith([50, 50]);
+  });
+
+  it('removes pending controls and safely handles missing map state', () => {
+    const videoMap = createVideoMapForCoverage();
+    const control = {};
+    videoMap._pendingControls = [{ control }, { control: {} }];
+    expect(videoMap.removeControl(control)).toBe(videoMap);
+    expect(videoMap._pendingControls.length).toBe(1);
+    expect(videoMap.map.removeControl).toHaveBeenCalledWith(control);
+    videoMap.removeControl(null);
+    videoMap.map = null;
+    expect(videoMap.removeControl(control)).toBe(videoMap);
+  });
+
+  it('searches vertical edges toward ground and returns null when none is found', () => {
+    const videoMap = createVideoMapForCoverage();
+    videoMap.videoHeight = 100;
+    spyOn(videoMap, '_pixelToGroundSpatial').and.returnValues(null, [10, 20, 0]);
+    expect(videoMap._searchGroundOnVerticalEdge(4, 0, 500)).toEqual([10, 20, 0]);
+    expect(videoMap._pixelToGroundSpatial.calls.argsFor(1)[0][1]).toBeGreaterThan(0);
+    videoMap._pixelToGroundSpatial.calls.reset();
+    videoMap._pixelToGroundSpatial.and.returnValue(null);
+    expect(videoMap._searchGroundOnVerticalEdge(4, 100, 500)).toBeNull();
+    expect(videoMap._pixelToGroundSpatial).toHaveBeenCalledTimes(24);
+    expect(videoMap._pixelToGroundSpatial.calls.argsFor(0)[0][1]).toBeLessThan(100);
+  });
+});
