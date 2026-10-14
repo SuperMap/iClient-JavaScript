@@ -75,6 +75,7 @@ const MAP_EVENTS = [
  */
 
 /**
+ * @version 12.1.1
  * @typedef {Object} VideoMap.VideoTimeParameters - 动态视频配准参数（按视频时间动态更新相机位置）。
  * @property {number} time - 视频时间戳，单位秒。用于按视频播放时间匹配对应的相机参数。
  * @property {number} pitch - 相机俯仰角，单位：度。
@@ -217,7 +218,11 @@ export class VideoMap extends mapboxgl.Evented {
       has: (target, property) => Reflect.has(target, property) || !!(target.map && property in target.map)
     });
   }
-
+  /**
+   * 
+   * 
+   * @version 12.1.1
+   */
   on(type, layerIds, listener) {
     if (!MAP_EVENTS.includes(type) || type === 'load') {
       return arguments.length === 2 ? super.on(type, layerIds) : super.on(type, listener);
@@ -383,6 +388,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @private
    * @function VideoMap.prototype.updateAtTime
    * @description 使用视频时间更新相机参数并重新投影已添加的 GeoJSON 数据源。
    * @param {number} time - 视频时间，单位秒。
@@ -427,7 +433,8 @@ export class VideoMap extends mapboxgl.Evented {
         this.map.fire('move');
       }
       /**
-      * @event VideoMap#videoparameterupdate
+       * @version 12.1.1
+      `* @event VideoMap#videoparameterupdate
        * @description 矢量要素重投影完成时触发。已打开的弹窗可监听此事件跟随要素位置更新。
        */
       this.fire('videoparameterupdate', { time: this.currentTime });
@@ -460,6 +467,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @private
    * @function VideoMap.prototype.project
    * @description 将 EPSG:4326 经纬度投影到当前视频地图坐标后，再转换为屏幕像素坐标。
    * @param {mapboxgl.LngLat|Object|Array<number>} lngLat - EPSG:4326 坐标。
@@ -515,6 +523,7 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.getVideoBounds
+   * @version 12.1.1
    * @description 获取当前视频画面反投影到地面的覆盖多边形。
    * 顶点顺序为左上 → 右上 → 右下 → 左下；坐标为 EPSG:4326，经纬度，环自动闭合。
    * @param {Object} [options] - 参数。
@@ -570,7 +579,8 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.play
-  * @description 播放视频。推荐使用 {@link VideoPlayControl} 提供圆形播放/暂停按钮。
+   * @version 12.1.1
+   * @description 播放视频。推荐使用 {@link VideoPlayControl} 提供圆形播放/暂停按钮。
    */
   play() {
     if (this.videoMapLayer) {
@@ -580,6 +590,7 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.pause
+   * @version 12.1.1
    * @description 暂停视频。
    */
   pause() {
@@ -590,6 +601,7 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.paused
+   * @version 12.1.1
    * @description 获取当前视频播放状态。返回 `true` 表示已暂停，返回 `false` 表示正在播放。
    * @returns {boolean} 视频是否暂停。
    */
@@ -599,9 +611,10 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.addControl
-  * @description 向视频地图添加 MapboxGL 控件。若控件实现了 `setTarget` 且尚无目标，或实现了 `setVideoMap`，会自动注入当前 VideoMap。
+   * @version 12.1.1
+   * @description 向视频地图添加 MapboxGL 控件。若控件实现了 `setTarget` 且尚无目标，或实现了 `setVideoMap`，会自动注入当前 VideoMap。
    * @param {Object} control - MapboxGL IControl 控件。
-  * @param {string} [position] - MapboxGL 原生控件位置：`'top-left'` | `'top-right'` | `'bottom-left'` | `'bottom-right'`。
+   * @param {string} [position] - MapboxGL 原生控件位置：`'top-left'` | `'top-right'` | `'bottom-left'` | `'bottom-right'`。
    * @returns {VideoMap} this。
    */
   addControl(control, position) {
@@ -615,6 +628,7 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.removeControl
+   * @version 12.1.1
    * @description 移除控件。
    * @param {Object} control - 已添加的控件。
    * @returns {VideoMap} this。
@@ -630,6 +644,7 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.startDraw
+   * @version 12.1.1
    * @description 开始点、线、面标绘。单击加点；线、面双击或调用 `finishDraw` 结束当前图形。坐标会转换为真实地理坐标，并随相机更新重投影。推荐使用 {@link VideoMapDrawControl} 提供工具条。
    * @param {string} type - 标绘类型，`'Point'` | `'LineString'` | `'Polygon'`。
    */
@@ -639,11 +654,13 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @event VideoMap#drawstart
+   * @version 12.1.1
    * @description 开始标绘时触发。
    * @property {string} type - 标绘类型。
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawcreate
    * @description 完成一个标绘要素时触发。
    * @property {Object} feature - 新增的 GeoJSON Feature。
@@ -651,6 +668,7 @@ export class VideoMap extends mapboxgl.Evented {
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawupdate
    * @description 标绘结果或绘制中的图形发生变化时触发，可用于同步到其它地图。
    * @property {Object} data - 已完成的 GeoJSON FeatureCollection。
@@ -658,16 +676,19 @@ export class VideoMap extends mapboxgl.Evented {
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawcancel
    * @description 取消当前标绘时触发。
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawclear
    * @description 清空标绘结果时触发。
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawmodechange
    * @description 绘制模式变化时触发。
    * @property {string} mode - UI 模式，`'simple_select'` | `'draw_point'` | `'draw_line_string'` | `'draw_polygon'`。
@@ -675,12 +696,14 @@ export class VideoMap extends mapboxgl.Evented {
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawselectionchange
    * @description 选中要素变化时触发，供后续要素编辑使用。
    * @property {Array} features - 当前选中的 GeoJSON Feature。
    */
 
   /**
+   * @version 12.1.1
    * @event VideoMap#drawdelete
    * @description 删除选中要素时触发。
    * @property {Array} features - 被删除的 GeoJSON Feature。
@@ -688,6 +711,7 @@ export class VideoMap extends mapboxgl.Evented {
    */
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.finishDraw
    * @description 结束当前线或面标绘并保存图形。点标绘在单击时即完成，无需调用此方法。
    * @returns {Object|null} 完成的 GeoJSON Feature。
@@ -697,6 +721,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.cancelDraw
    * @description 取消当前正在绘制的图形并退出标绘。
    */
@@ -707,6 +732,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.clearDraw
    * @description 清空已标绘的点、线、面。
    */
@@ -717,6 +743,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.getDrawData
    * @description 获取已标绘要素的 GeoJSON（经纬度，EPSG:4326）。
    * @returns {Object} GeoJSON FeatureCollection。
@@ -726,6 +753,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.getDrawLiveData
    * @description 获取已完成标绘加上当前草稿的 GeoJSON（经纬度，EPSG:4326），可用于同步到真实地图。
    * @returns {Object} GeoJSON FeatureCollection。
@@ -735,6 +763,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.getDrawMode
    * @description 获取当前标绘类型。未处于标绘状态时返回 `null`。
    * @returns {string|null} `'Point'` | `'LineString'` | `'Polygon'` | `null`。
@@ -744,6 +773,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.getDrawUiMode
    * @description 获取当前绘制 UI 模式，对齐 mapbox-gl-draw。
    * @returns {string} `'simple_select'` | `'draw_point'` | `'draw_line_string'` | `'draw_polygon'`。
@@ -753,6 +783,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.changeDrawMode
    * @description 切换绘制模式。`direct_select` 预留给后续顶点编辑，当前按选中处理。
    * @param {string} mode - `'simple_select'` | `'draw_point'` | `'draw_line_string'` | `'draw_polygon'` | `'direct_select'`。
@@ -763,6 +794,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.deleteDraw
    * @description 删除标绘要素。不传 ids 时删除当前选中要素。
    * @param {string|Array<string>} [ids] - 要素 id。
@@ -773,6 +805,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
+   * @version 12.1.1
    * @function VideoMap.prototype.getDrawSelected
    * @description 获取当前选中的标绘要素。
    * @returns {Object} GeoJSON FeatureCollection。

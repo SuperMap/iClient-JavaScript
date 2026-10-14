@@ -32,6 +32,7 @@ function sanitizeHTML(html) {
 /**
  * @class VideoPlayControl
  * @category Control
+ * @version 12.1.1
  * @classdesc VideoMap 或 VideoLayer 的播放/暂停控件。
  * @modulecategory Control
  * @param {Object} [options] - 参数。

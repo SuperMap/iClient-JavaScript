@@ -521,6 +521,7 @@
    }
 
    /**
+    * @version 12.1.1
     * @function VideoLayer.prototype.play
     * @description 播放视频。
     */
@@ -535,6 +536,7 @@
    }
 
    /**
+    * @version 12.1.1
     * @function VideoLayer.prototype.pause
     * @description 暂停视频。
     */
@@ -549,6 +551,7 @@
    }
 
    /**
+    * @version 12.1.1
     * @function VideoLayer.prototype.paused
     * @description 获取当前视频播放状态。返回 `true` 表示已暂停，返回 `false` 表示正在播放。
     * @returns {boolean} 视频是否暂停。

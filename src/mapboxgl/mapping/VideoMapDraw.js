@@ -663,8 +663,9 @@ export default class VideoMapDraw {
     const queried = map.queryRenderedFeatures(box, { layers }) || [];
     const ids = [];
     queried.forEach((item) => {
-      const id = item.id || (item.properties && (item.properties.id || item.properties.drawId));
-      if (id && ids.indexOf(id) === -1) {
+      const properties = item.properties || {};
+      const id = properties.drawId != null ? properties.drawId : item.id != null ? item.id : properties.id;
+      if (id != null && id !== '' && ids.indexOf(id) === -1) {
         ids.push(id);
       }
     });
@@ -785,7 +786,10 @@ export default class VideoMapDraw {
         return {
           type: 'Feature',
           id: feature.id,
-          properties: Object.assign({}, feature.properties, { selected: !!selected[feature.id] }),
+          properties: Object.assign({}, feature.properties, {
+            selected: !!selected[feature.id],
+            drawId: feature.id
+          }),
           geometry: feature.geometry
         };
       })
