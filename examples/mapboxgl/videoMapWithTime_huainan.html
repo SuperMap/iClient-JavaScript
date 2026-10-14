@@ -46,16 +46,6 @@
       var count = 0;
       var dynamicLayerIds = [];
 
-      function resolveVideoUrl(address) {
-        if (!address) {
-          return address;
-        }
-        if (/^https?:\/\//i.test(address)) {
-          return address;
-        }
-        return host + (address.charAt(0) === '/' ? address : '/' + address);
-      }
-
       function queryFeatures(datasetName) {
         var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
@@ -144,7 +134,7 @@
             };
           });
           videoMap = new mapboxgl.supermap.VideoMap({
-            url: resolveVideoUrl(feature.properties.address),
+            url: feature.properties.address,
             videoParameters: parameters,
             interval: 0.1
           });

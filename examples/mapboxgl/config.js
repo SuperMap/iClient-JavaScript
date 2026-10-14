@@ -1883,22 +1883,22 @@ var exampleConfig = {
                     fileName: 'videoMap'
                   },
                   {
-                    name: '无人机视频',
-                    name_en: 'UAV video',
+                    name: '无人机视频图层',
+                    name_en: 'UAV Video Layer',
                     version: '11.2.0',
                     thumbnail: 'videoLayerWithTime.png',
                     fileName: 'videoLayerWithTime'
                   },
                   {
-                    name: '动态视频地图',
-                    name_en: 'Dynamic Video Map',
+                    name: '无人机视频地图',
+                    name_en: 'UAV Video Map',
                     version: '12.1.1',
                     thumbnail: 'videoMapWithTime.png',
                     fileName: 'videoMapWithTime'
                   },
                   {
-                    name: '动态视频地图标绘对比',
-                    name_en: 'Dynamic Video Map Draw Compare',
+                    name: '视频标绘',
+                    name_en: 'Video Map Draw',
                     version: '12.1.1',
                     thumbnail: 'videoMapWithTimeDraw.png',
                     fileName: 'videoMapWithTimeDraw'
