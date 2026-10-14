@@ -1,5 +1,8 @@
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
 import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
+import { createSpriteLoadHandler } from '../../../src/common/mapping';
+import { createSpriteLoadHandler as createPublicSpriteLoadHandler } from '../../../src/common/index.common';
+import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
 import { Events } from '../../../src/common/commontypes';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -175,6 +178,58 @@ describe('WebMapV3 - addLocalIdeographFontFamily', () => {
       inst._createMap();
       expect(capturedOptions).toBeDefined();
       expect(capturedOptions.localIdeographFontFamily).toBe('sans-serif,PingFang SC Regular');
+      expect(capturedOptions.linePatternOrientation).toBe('west-to-east');
+      expect(capturedOptions.onSpriteLoad).toEqual(jasmine.any(Function));
+    });
+  });
+
+  describe('_getSpriteLoad', () => {
+    it('should be exported for external WebApps', () => {
+      expect(createSpriteLoadHandler('3.3.7')).toEqual(jasmine.any(Function));
+      expect(createSpriteLoadHandler('3.3.8')).toBeUndefined();
+      expect(createPublicSpriteLoadHandler).toBe(createSpriteLoadHandler);
+    });
+
+    it('should flip line sprites for maps at version 3.3.7', () => {
+      instance._mapInfo = { version: '3.3.7' };
+      const onSpriteLoad = instance._getSpriteLoad();
+      const imageData = new Uint8Array([
+        1, 2, 3, 4,
+        5, 6, 7, 8
+      ]);
+
+      expect(onSpriteLoad('line-pattern', imageData, 1, 2)).toEqual(new Uint8Array([
+        5, 6, 7, 8,
+        1, 2, 3, 4
+      ]));
+      expect(onSpriteLoad('point-pattern', imageData, 1, 2)).toBeNull();
+    });
+
+    it('should not add a sprite callback for maps newer than version 3.3.7', () => {
+      instance._mapInfo = { version: '3.3.8' };
+
+      expect(instance._getSpriteLoad()).toBeUndefined();
+    });
+
+    it('should compare version components numerically', () => {
+      instance._mapInfo = { version: '3.3.10' };
+
+      expect(instance._getSpriteLoad()).toBeUndefined();
+    });
+
+    it('should disable the callback for higher major and minor versions', () => {
+      ['4.0.0', '3.4.0'].forEach(version => {
+        instance._mapInfo = { version };
+        expect(instance._getSpriteLoad()).toBeUndefined();
+      });
+    });
+
+    it('should keep the callback when the map version is missing', () => {
+      instance._mapInfo = {};
+      const onSpriteLoad = instance._getSpriteLoad();
+
+      expect(onSpriteLoad).toEqual(jasmine.any(Function));
+      expect(onSpriteLoad(null, new Uint8Array(4), 1, 1)).toBeNull();
     });
   });
 });

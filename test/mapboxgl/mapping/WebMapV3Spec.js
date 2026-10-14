@@ -4,6 +4,7 @@ import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
 import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
 import { L7LayerUtil } from '../../../src/common/mapping/utils/L7LayerUtil';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import { createSpriteLoadHandler } from '../../../src/mapboxgl';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
 import { CRSManager } from '../../../src/mapboxgl/mapping/webmap/CRSManager';
 import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
@@ -15,6 +16,9 @@ import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
 var server = 'http://localhost:8190/iportal/';
 describe('mapboxgl-webmap3.0', () => {
+  it('exports the Sprite load handler from the package entry point', () => {
+    expect(createSpriteLoadHandler('3.3.7')).toEqual(jasmine.any(Function));
+  });
   var originalTimeout, testDiv;
   var id = 617580084;
   var mapstudioWebmap;
