@@ -160,6 +160,28 @@ export const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
+
+/**
+ * 按地图版本创建 Sprite 加载处理函数，供 WebMap 和外部 WebApp 共用。
+ * @param {string} mapVersion 地图版本号。
+ * @returns {Function|undefined} 旧版地图返回线符号处理函数，新版地图不需要额外处理。
+ */
+export function createSpriteLoadHandler(mapVersion) {
+  const [major, minor, patch] = typeof mapVersion === 'string' ? mapVersion.split('.').map(Number) : [];
+  // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
+  if (major > 3 || (major === 3 && minor > 3) || (major === 3 && minor === 3 && patch > 7)) {
+    return;
+  }
+  return (id, imageData, width, height) => {
+    // 翻转所有 line- 开头的图案
+    if (id && id.startsWith('line-')) {
+      return flipImageVertically(imageData, width, height);
+    }
+
+    return null;
+  };
+}
+
 export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil, webMapService }) {
   return class WebMapV3 extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
@@ -319,20 +341,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   }
 
   _getSpriteLoad() {
-    const version = this._mapInfo && this._mapInfo.version;
-    const [major, minor, patch] = typeof version === 'string' ? version.split('.').map(Number) : [];
-    // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
-    if (major > 3 || (major === 3 && minor > 3) || (major === 3 && minor === 3 && patch > 7)) {
-      return;
-    }
-    return (id, imageData, width, height) => {
-      // 翻转所有 line- 开头的图案
-      if (id && id.startsWith('line-')) {
-        return flipImageVertically(imageData, width, height);
-      }
-
-      return null;
-    };
+    return createSpriteLoadHandler(this._mapInfo && this._mapInfo.version);
   }
 
   _getTransformRequest() {

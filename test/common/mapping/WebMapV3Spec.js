@@ -1,4 +1,5 @@
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
+import { createSpriteLoadHandler } from '../../../src/common/mapping';
 import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
 import { Events } from '../../../src/common/commontypes';
 
@@ -131,6 +132,11 @@ describe('WebMapV3 - addLocalIdeographFontFamily', () => {
   });
 
   describe('_getSpriteLoad', () => {
+    it('should be exported for external WebApps', () => {
+      expect(createSpriteLoadHandler('3.3.7')).toEqual(jasmine.any(Function));
+      expect(createSpriteLoadHandler('3.3.8')).toBeUndefined();
+    });
+
     it('should flip line sprites for maps at version 3.3.7', () => {
       instance._mapInfo = { version: '3.3.7' };
       const onSpriteLoad = instance._getSpriteLoad();
