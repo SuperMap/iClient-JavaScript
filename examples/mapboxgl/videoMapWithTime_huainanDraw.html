@@ -92,6 +92,44 @@
         color: #888;
       }
 
+      #drawActions {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        z-index: 12;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: calc(100% - 32px);
+        padding: 8px 10px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        font-size: 13px;
+      }
+
+      #drawActions button {
+        padding: 4px 16px;
+        border: 1px solid #1677ff;
+        border-radius: 3px;
+        background: #1677ff;
+        color: #fff;
+        font-size: 13px;
+        line-height: 20px;
+        cursor: pointer;
+      }
+
+      #drawActions button:disabled {
+        border-color: #d9d9d9;
+        background: #f5f5f5;
+        color: rgba(0, 0, 0, 0.25);
+        cursor: not-allowed;
+      }
+
+      #drawActions .draw-status {
+        color: rgba(0, 0, 0, 0.65);
+      }
+
       @media (max-width: 720px) {
         #layout {
           flex-direction: column;
@@ -115,6 +153,10 @@
       <div id="videoPane">
         <div class="pane-label" data-i18n="resources.text_huainanDraw_videoMapLabel"></div>
         <div id="videoMap"></div>
+        <div id="drawActions">
+          <button id="saveDrawBtn" type="button" data-i18n="resources.text_videoMapDraw_save" disabled></button>
+          <span id="drawStatus" class="draw-status"></span>
+        </div>
       </div>
       <div id="realPane">
         <div class="pane-label" data-i18n="resources.text_huainanDraw_realMapLabel"></div>
@@ -149,6 +191,9 @@
       var dynamicLayerIds = [];
       var measurementMarkers = {};
       var uploadedDatasetRefreshVersions = {};
+      var pendingVideoDrawIds = {};
+      var pendingMapDrawIds = {};
+      var savingDraw = false;
       // 天地图标绘要素 id -> 服务端 SmID，用于删除时定位已上传的要素
       var mapDrawSmIDs = {};
       var mapBearing = 214;
@@ -199,10 +244,16 @@
         });
         // 天地图上的新增标绘同样上传到 iServer，并支持删除
         map.on('draw.create', function (event) {
-          (event.features || []).forEach(uploadMapDrawFeature);
+          (event.features || []).forEach(function (feature) {
+            if (feature.id != null) {
+              pendingMapDrawIds[String(feature.id)] = true;
+            }
+          });
+          refreshDrawActions();
         });
         map.on('draw.delete', function (event) {
           (event.features || []).forEach(deleteMapDrawFeature);
+          refreshDrawActions();
         });
         map.on('load', function () {
           mapReady = true;
@@ -212,6 +263,7 @@
           });
           pendingRealSources = {};
           updateVideoBounds();
+          bindSaveButton();
         });
       }
       
@@ -390,7 +442,7 @@
           });
           bringVideoDrawLayersToFront();
         }).catch(function (error) {
-          console.error('视频标绘数据查询失败:', error);
+          console.error(resources.text_videoMapDraw_queryFailed, error);
         });
       }
 
@@ -441,49 +493,110 @@
         return targetUrl.match(/^(.*)\/datasources\/([^/]+)\/datasets\/([^/?#]+)\/?$/);
       }
 
-      function uploadServerFeature(feature, onSuccess) {
+      function toUploadFeature(feature) {
+        return {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: feature.geometry.type,
+            coordinates: JSON.parse(JSON.stringify(feature.geometry.coordinates))
+          }
+        };
+      }
+
+      function uploadServerFeature(feature) {
         var datasetPath = resolveDatasetPath(feature);
         if (!datasetPath) {
-          return;
+          return Promise.resolve(null);
         }
         var editFeaturesService = new mapboxgl.supermap.FeatureService(datasetPath[1]);
         var editFeaturesParams = new mapboxgl.supermap.EditFeaturesParameters({
-          features: [feature],
+          features: [toUploadFeature(feature)],
           dataSourceName: decodeURIComponent(datasetPath[2]),
           dataSetName: decodeURIComponent(datasetPath[3]),
           editType: 'add',
           returnContent: true
         });
-        editFeaturesService.editFeatures(editFeaturesParams).then(function (serviceResult) {
+        return editFeaturesService.editFeatures(editFeaturesParams).then(function (serviceResult) {
           var result = serviceResult && serviceResult.result;
           if (!result || result.succeed === false) {
-            return;
+            return null;
           }
           // returnContent 为 true 时返回新建要素的 ID 数组，回填 SmID 以便删除时定位服务端要素
           var SmID = Array.isArray(result) ? result[0] : result.SmID;
-          if (SmID != null && onSuccess) {
-            onSuccess(SmID);
-          }
-          refreshUploadedDataset(decodeURIComponent(datasetPath[3]));
+          return SmID != null ? SmID : findUploadedSmID(feature);
         }).catch(function (error) {
-          console.error('视频标绘上传失败:', error);
+          console.error(resources.text_videoMapDraw_uploadFailed, error);
+          return null;
         });
       }
 
-      function uploadVideoDrawFeature(feature, drawFeature) {
-        uploadServerFeature(feature, function (SmID) {
-          if (drawFeature) {
-            drawFeature.properties = drawFeature.properties || {};
-            drawFeature.properties.SmID = SmID;
+      function findUploadedSmID(feature) {
+        var datasetPath = resolveDatasetPath(feature);
+        if (!datasetPath) {
+          return Promise.resolve(null);
+        }
+        var dataset = decodeURIComponent(datasetPath[3]);
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: { name: dataset + '@' + dataSourceName },
+          targetEpsgCode: '4326',
+          datasetNames: [dataSourceName + ':' + dataset],
+          toIndex: 99999
+        });
+        return new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var featureCollection = serviceResult && serviceResult.result && serviceResult.result.features;
+          var target = JSON.stringify(feature.geometry);
+          var serverFeature = ((featureCollection && featureCollection.features) || []).find(function (item) {
+            return JSON.stringify(item.geometry) === target;
+          });
+          if (!serverFeature) {
+            return null;
           }
+          var properties = serverFeature.properties || {};
+          return properties.SMID != null ? properties.SMID : serverFeature.id;
+        }).catch(function (error) {
+          console.error(resources.text_videoMapDraw_findFailed, error);
+          return null;
         });
       }
 
-      function uploadMapDrawFeature(feature) {
-        uploadServerFeature(feature, function (SmID) {
-          if (feature.id != null) {
-            mapDrawSmIDs[String(feature.id)] = SmID;
-          }
+      function saveDrawFeatures() {
+        if (savingDraw) {
+          return;
+        }
+        var videoFeatures = getPendingVideoDrawFeatures();
+        var mapFeatures = getPendingMapDrawFeatures();
+        if (!videoFeatures.length && !mapFeatures.length) {
+          return;
+        }
+        savingDraw = true;
+        refreshDrawActions();
+        var chain = Promise.resolve();
+        videoFeatures.concat(mapFeatures).forEach(function (feature) {
+          chain = chain.then(function () {
+            return uploadServerFeature(feature).then(function (SmID) {
+              if (SmID == null) {
+                return;
+              }
+              if (videoFeatures.indexOf(feature) !== -1) {
+                rememberVideoDrawSmID(feature, SmID);
+                delete pendingVideoDrawIds[feature.id];
+              } else {
+                mapDrawSmIDs[String(feature.id)] = SmID;
+                delete pendingMapDrawIds[String(feature.id)];
+              }
+              refreshDrawActions();
+            });
+          });
+        });
+        chain.then(function () {
+          savingDraw = false;
+          ['NewPoint', 'NewLine', 'NewRegion'].forEach(refreshUploadedDataset);
+          refreshDrawActions();
+        }).catch(function (error) {
+          savingDraw = false;
+          console.error(resources.text_videoMapDraw_saveFailed, error);
+          refreshDrawActions();
         });
       }
 
@@ -495,7 +608,57 @@
         return properties.SmID != null ? properties.SmID : properties.SMID;
       }
 
+      function rememberVideoDrawSmID(feature, SmID) {
+        if (!feature || feature.id == null || SmID == null) {
+          return;
+        }
+        feature.properties = feature.properties || {};
+        feature.properties.SmID = SmID;
+      }
+
+      function getPendingVideoDrawFeatures() {
+        return videoMap && videoMap.getDrawData
+          ? (videoMap.getDrawData().features || []).filter(function (feature) {
+              return feature.id != null && pendingVideoDrawIds[feature.id] && getFeatureSmID(feature) == null;
+            })
+          : [];
+      }
+
+      function getPendingMapDrawFeatures() {
+        return mapDraw ? (mapDraw.getAll().features || []).filter(function (feature) {
+          return feature.id != null && pendingMapDrawIds[String(feature.id)] && getFeatureSmID(feature) == null;
+        }) : [];
+      }
+
+      function refreshDrawActions() {
+        var button = document.getElementById('saveDrawBtn');
+        var status = document.getElementById('drawStatus');
+        if (!button || !status) {
+          return;
+        }
+        var count = getPendingVideoDrawFeatures().length + getPendingMapDrawFeatures().length;
+        button.disabled = savingDraw || !count;
+        status.textContent = savingDraw
+          ? resources.text_videoMapDraw_saving
+          : count
+            ? resources.text_videoMapDraw_pending.replace('{count}', count)
+            : resources.text_videoMapDraw_saveHint;
+      }
+
+      function bindSaveButton() {
+        var button = document.getElementById('saveDrawBtn');
+        if (button) {
+          button.addEventListener('click', saveDrawFeatures);
+        }
+        refreshDrawActions();
+      }
+
       function deleteUploadedFeature(feature, SmID) {
+        if (!feature || feature.id == null) {
+          return;
+        }
+        var wasPending = !!pendingVideoDrawIds[feature.id];
+        delete pendingVideoDrawIds[feature.id];
         var datasetPath = resolveDatasetPath(feature);
         if (!datasetPath) {
           return;
@@ -505,6 +668,10 @@
         }
         if (SmID != null) {
           deleteServerFeature(datasetPath, SmID);
+          return;
+        }
+        if (wasPending) {
+          refreshDrawActions();
           return;
         }
         // 未记录 SmID（如上传播报未返回）时，按几何从服务端反查后再删除
@@ -525,36 +692,45 @@
           }
           deleteServerFeature(datasetPath, serverFeature.id);
         }).catch(function (error) {
-          console.error('视频标绘删除失败:', error);
+          console.error(resources.text_videoMapDraw_deleteFailed, error);
         });
       }
 
       function deleteMapDrawFeature(feature) {
         var featureId = feature && feature.id != null ? String(feature.id) : null;
+        var wasPending = featureId != null && !!pendingMapDrawIds[featureId];
         var SmID = featureId != null ? mapDrawSmIDs[featureId] : null;
         if (featureId != null) {
+          delete pendingMapDrawIds[featureId];
           delete mapDrawSmIDs[featureId];
+        }
+        if (wasPending && SmID == null) {
+          refreshDrawActions();
+          return;
         }
         deleteUploadedFeature(feature, SmID);
       }
 
       function deleteServerFeature(datasetPath, SmID) {
+        var normalizedSmID = SmID !== '' && SmID != null && !isNaN(SmID) ? Number(SmID) : SmID;
         var editFeaturesParams = new mapboxgl.supermap.EditFeaturesParameters({
           dataSourceName: decodeURIComponent(datasetPath[2]),
           dataSetName: decodeURIComponent(datasetPath[3]),
-          IDs: [SmID],
-          editType: 'delete',
-          returnContent: true
+          IDs: [normalizedSmID],
+          editType: 'delete'
         });
         new mapboxgl.supermap.FeatureService(datasetPath[1])
           .editFeatures(editFeaturesParams)
           .then(function (deleteResult) {
-            if (deleteResult && deleteResult.result && deleteResult.result.succeed) {
-              refreshUploadedDataset(decodeURIComponent(datasetPath[3]));
+            var result = deleteResult && deleteResult.result;
+            if (!result || result.succeed === false) {
+              console.error(resources.text_videoMapDraw_deleteFailed, result);
+              return;
             }
+            refreshUploadedDataset(decodeURIComponent(datasetPath[3]));
           })
           .catch(function (error) {
-            console.error('视频标绘删除失败:', error);
+            console.error(resources.text_videoMapDraw_deleteFailed, error);
           });
       }
 
@@ -715,8 +891,11 @@
             });
             videoMap.on('drawcreate', function (event) {
               syncVideoDraw(event.data || videoMap.getDrawData());
-              var selectedFeatures = videoMap.getDrawSelected().features;
-              uploadVideoDrawFeature(event.feature, selectedFeatures[0]);
+              var createdFeature = videoMap.getDrawSelected().features[0] || event.feature;
+              if (createdFeature && createdFeature.id != null) {
+                pendingVideoDrawIds[createdFeature.id] = true;
+              }
+              refreshDrawActions();
             });
             videoMap.on('drawdelete', function (event) {
               syncVideoDraw(event.data || videoMap.getDrawData());
@@ -726,6 +905,8 @@
             });
             videoMap.on('drawclear', function () {
               syncVideoDraw({ type: 'FeatureCollection', features: [] });
+              pendingVideoDrawIds = {};
+              refreshDrawActions();
             });
             videoMap.on('videoparameterupdate', function () {
               updateMeasurementMarkers('video', videoMap, mapDraw.getAll(), true);
