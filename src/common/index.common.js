@@ -762,4 +762,4 @@ export { CartoCSS, ThemeStyle };
 export { ElasticSearch };
 export { Lang };
 export { KnowledgeGraph } from './overlay/KnowledgeGraph';
-export { createSpriteLoadHandler } from './mapping/WebMapV3';
+export { createSpriteLoadHandler, isMapVersionGreaterThan, flipImageVertically } from './mapping/WebMapV3';

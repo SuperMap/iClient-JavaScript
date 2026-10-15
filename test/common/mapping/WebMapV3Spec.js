@@ -1,7 +1,11 @@
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
 import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
-import { createSpriteLoadHandler } from '../../../src/common/mapping';
-import { createSpriteLoadHandler as createPublicSpriteLoadHandler } from '../../../src/common/index.common';
+import { createSpriteLoadHandler, flipImageVertically, isMapVersionGreaterThan } from '../../../src/common/mapping';
+import {
+  createSpriteLoadHandler as createPublicSpriteLoadHandler,
+  flipImageVertically as flipPublicImageVertically,
+  isMapVersionGreaterThan as isPublicMapVersionGreaterThan
+} from '../../../src/common/index.common';
 import { createWebMapBaseExtending } from '../../../src/common/mapping/WebMapBase';
 import { Events } from '../../../src/common/commontypes';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -188,6 +192,8 @@ describe('WebMapV3 - addLocalIdeographFontFamily', () => {
       expect(createSpriteLoadHandler('3.3.7')).toEqual(jasmine.any(Function));
       expect(createSpriteLoadHandler('3.3.8')).toBeUndefined();
       expect(createPublicSpriteLoadHandler).toBe(createSpriteLoadHandler);
+      expect(flipImageVertically).toBe(flipPublicImageVertically);
+      expect(isMapVersionGreaterThan).toBe(isPublicMapVersionGreaterThan);
     });
 
     it('should flip line sprites for maps at version 3.3.7', () => {

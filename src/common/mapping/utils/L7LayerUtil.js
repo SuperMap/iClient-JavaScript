@@ -1,7 +1,7 @@
 import { FetchRequest } from '../../util/FetchRequest';
 import center from '@turf/center';
 import * as G2 from '@antv/g2';
-import { isNumber } from './util';
+import { flipImageVertically, isMapVersionGreaterThan, isNumber } from './util';
 import Color from './Color';
 import debounce from 'lodash.debounce';
 import { getEpsgCodeInfo, getProjection, registerProjection, transformCoodinates } from './epsg-define';
@@ -220,7 +220,7 @@ export function getL7Filter(filter, featureFilter) {
 }
 
 export function L7LayerUtil(config) {
-  const { featureFilter, expression, spec, L7Layer, L7, proj4, webMapService } = config;
+  const { featureFilter, expression, spec, L7Layer, L7, proj4, webMapService, linePatternOrientation = 'east-to-west' } = config;
 
   /**
  * @param {string} url
@@ -1653,14 +1653,31 @@ export function L7LayerUtil(config) {
    * @param sprite
    * @param scene
    */
-  async function addTextures({ layers, sprite, spriteJson, scene, options }) {
+  async function addTextures({ layers, sprite, spriteJson, scene, options, mapVersion }) {
     const timestamp = +new Date();
     for (let index = 0; index < layers.length; index++) {
       const l = layers[index];
       const texture = (l.texture || {}).values;
       const iconInfo = spriteJson[texture];
       if (iconInfo) {
-        const image = await changeSpriteIconToImgData(sprite, { ...iconInfo, id: texture }, options);
+        let image = await changeSpriteIconToImgData(sprite, { ...iconInfo, id: texture }, options);
+        if (
+          image &&
+          l.type === MSLayerType.line &&
+          typeof mapVersion === 'string' &&
+          !isMapVersionGreaterThan(mapVersion, '3.3.7')
+        ) {
+          // 3.3.7 及以前的 L7 线纹理需垂直翻转，才能与地图线符号方向保持一致。
+          const canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const context = canvas.getContext('2d');
+          if (context) {
+            const flippedImage = context.createImageData(image.width, image.height);
+            flippedImage.data.set(flipImageVertically(image, image.width, image.height));
+            image = flippedImage;
+          }
+        }
         const style = l.style || {};
         const color = style.textureColor,
           rotate = style.textureRotate;
@@ -1983,7 +2000,8 @@ export function L7LayerUtil(config) {
       options: {
         ...l.options,
         layerID: (l.options || {}).name,
-        featureId: promoteId
+        featureId: promoteId,
+        linePatternOrientation
       }
     });
     // getL7Layer返回原生antv l7 layer的实例
@@ -2033,7 +2051,7 @@ export function L7LayerUtil(config) {
   return {
     async addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, options }) {
       // 添加L7图层
-      const { layers, sources, sprite } = webMapInfo;
+      const { layers, sources, sprite, version: mapVersion } = webMapInfo;
       const formateL7Layers = await restoreL7Layers({
         layers: l7Layers,
         sources,
@@ -2049,7 +2067,8 @@ export function L7LayerUtil(config) {
             spriteJson: spriteDatas,
             sprite,
             scene,
-            options
+            options,
+            mapVersion
           });
         } catch (error) {
           console.error(error);

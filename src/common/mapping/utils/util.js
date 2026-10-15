@@ -218,6 +218,24 @@ export function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
   return layersOnMap.find(item => item.id === renderLayers[0]);
 }
 
+// 按数字组件比较地图版本，避免 3.3.10 被误判为低于 3.3.7。
+export function isMapVersionGreaterThan(mapVersion, referenceVersion) {
+  if (typeof mapVersion !== 'string' || typeof referenceVersion !== 'string') {
+    return false;
+  }
+  const mapVersionParts = mapVersion.split('.').map(Number);
+  const referenceVersionParts = referenceVersion.split('.').map(Number);
+  const partCount = Math.max(mapVersionParts.length, referenceVersionParts.length);
+  for (let index = 0; index < partCount; index++) {
+    const mapPart = mapVersionParts[index] || 0;
+    const referencePart = referenceVersionParts[index] || 0;
+    if (mapPart !== referencePart) {
+      return mapPart > referencePart;
+    }
+  }
+  return false;
+}
+
 // 垂直翻转 RGBA 图片，保持像素顺序并避免逐通道复制。
 export function flipImageVertically(imageData, width, height) {
   const sourceData = imageData.data || imageData;

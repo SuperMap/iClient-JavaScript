@@ -3,6 +3,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
 import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
 import { L7LayerUtil } from '../../../src/common/mapping/utils/L7LayerUtil';
+import * as L7LayerUtilModule from '../../../src/common/mapping/utils/L7LayerUtil';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { createSpriteLoadHandler } from '../../../src/mapboxgl';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
@@ -19,6 +20,20 @@ describe('mapboxgl-webmap3.0', () => {
   it('exports the Sprite load handler from the package entry point', () => {
     expect(createSpriteLoadHandler('3.3.7')).toEqual(jasmine.any(Function));
   });
+
+  it('sets the WebMap line pattern orientation for L7 layers', () => {
+    const webMap = Object.create(WebMap.prototype);
+    webMap._crsManager = { getProj4: () => proj4 };
+    webMap.webMapService = mockWebMapService;
+    spyOn(L7LayerUtilModule, 'L7LayerUtil').and.callThrough();
+
+    webMap._createWebMapFactory('WebMap3');
+
+    expect(L7LayerUtilModule.L7LayerUtil).toHaveBeenCalledWith(
+      jasmine.objectContaining({ linePatternOrientation: 'west-to-east' })
+    );
+  });
+
   var originalTimeout, testDiv;
   var id = 617580084;
   var mapstudioWebmap;

@@ -1,4 +1,8 @@
-import { flipImageVertically, isSameRasterLayer } from '../../../../src/common/mapping/utils/util';
+import {
+  flipImageVertically,
+  isMapVersionGreaterThan,
+  isSameRasterLayer
+} from '../../../../src/common/mapping/utils/util';
 
 describe('util', () => {
   describe('flipImageVertically', () => {
@@ -21,6 +25,23 @@ describe('util', () => {
       expect(result).toEqual(new Uint8Array(pixels));
     });
   });
+
+  describe('isMapVersionGreaterThan', () => {
+    it('compares numeric version components', () => {
+      expect(isMapVersionGreaterThan('3.3.8', '3.3.7')).toBe(true);
+      expect(isMapVersionGreaterThan('3.3.10', '3.3.7')).toBe(true);
+      expect(isMapVersionGreaterThan('3.4.0', '3.3.7')).toBe(true);
+      expect(isMapVersionGreaterThan('4.0.0', '3.3.7')).toBe(true);
+      expect(isMapVersionGreaterThan('3.3.7', '3.3.7')).toBe(false);
+      expect(isMapVersionGreaterThan('3.3.6', '3.3.7')).toBe(false);
+    });
+
+    it('returns false when either version is absent or not a string', () => {
+      expect(isMapVersionGreaterThan(undefined, '3.3.7')).toBe(false);
+      expect(isMapVersionGreaterThan('3.3.8', undefined)).toBe(false);
+    });
+  });
+
   it('isSameRasterLayer', (done) => {
     let res = isSameRasterLayer(
       { type: 'raster', tiles: ['http:17.0.0.1:8190/iserver/rest/maps/China'] },

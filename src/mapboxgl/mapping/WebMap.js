@@ -123,7 +123,9 @@ export class WebMap extends createWebMapBaseExtending(mapboxgl.Evented, { mapRep
       L7Layer,
       L7,
       proj4: this._crsManager.getProj4(),
-      webMapService: this.webMapService
+      webMapService: this.webMapService,
+      // 统一线图案方向，避免 Mapbox GL 默认方向与 WebMap 符号方向约定不一致；
+      linePatternOrientation: 'west-to-east'
     });
     switch (type) {
       case 'MapStyle':
