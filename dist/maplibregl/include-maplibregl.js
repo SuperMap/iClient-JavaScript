@@ -74,7 +74,7 @@
       inputScript(libsurl + '/maplibre-gl-js-enhance/5.9.0-1/maplibre-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
-      inputScript(libsurl + '/maplibregl-l7-render/0.0.3/maplibregl-l7-render.js');
+      inputScript(libsurl + '/maplibregl-l7-render/0.0.4/maplibregl-l7-render.js');
     }
     if (inArray(includes, 'g2')) {
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');

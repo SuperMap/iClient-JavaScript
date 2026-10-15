@@ -74,7 +74,7 @@
       inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-13/mapbox-gl-enhance.js');
     }
     if (inArray(includes, 'L7')) {
-      inputScript(libsurl + '/mapboxgl-l7-render/0.0.3/mapboxgl-l7-render.js');
+      inputScript(libsurl + '/mapboxgl-l7-render/0.0.4/mapboxgl-l7-render.js');
     }
     if (inArray(includes, 'g2')) {
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
