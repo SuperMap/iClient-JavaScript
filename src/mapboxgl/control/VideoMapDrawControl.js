@@ -54,7 +54,7 @@ function resolveControls(options) {
 
 /**
  * @class VideoMapDrawControl
- * @version 12.1.1
+ * @version 12.1.2
  * @category  Control
  * @classdesc 视频地图绘制控件。UI 参考 mapbox-gl-draw：点、线、面、删除。
  * 绘制结果走 VideoMap 地理坐标与重投影链路，可同步到真实地图。后续可在此控件上扩展要素编辑。

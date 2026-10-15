@@ -250,6 +250,8 @@
     });
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
-    window.version = "12.1.1-dev";
+    window.version = "12.1.2";
+    window.nextVersion = "12.1.3";
+    window.versionName = "2026";
     window.preRelease = "";
 })();

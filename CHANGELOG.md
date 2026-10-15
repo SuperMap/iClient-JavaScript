@@ -1,3 +1,26 @@
+# 12.1.2 #
+## API changes
+
+### for Leaflet
+ - [`L.supermap.tiledMapLayer`](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 新增 `options.displayFilters` 参数支持设置图层的显示过滤条件
+ - [`L.supermap.tiledMapLayer`](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 新增 `options.bufferTiles` 参数支持屏幕范围外预加载的瓦片圈数，可减少平移时的白块
+ - [`L.supermap.tiledMapLayer`](https://iclient.supermap.io/docs/leaflet/TiledMapLayer.html) 新增 `options.tileCache`等参数支持启用客户端瓦片缓存。开启后缩放时优先使用已缓存瓦片填充，可避免放大、缩小、平移时的白块
+
+### for OpenLayers
+ - [`ol.source.VectorTileSuperMapRest`](https://iclient.supermap.io/docs/openlayers/VectorTileSuperMapRest.html) 支持通过设置 `overflowTiles` 控制额外渲染的瓦片圈数，确保地图边缘的符号能够正常显示
+ - [`ol.source.VectorTileSuperMapRest`](https://iclient.supermap.io/docs/openlayers/VectorTileSuperMapRest.html) 新增 `options.displayFilters` 参数支持设置图层的显示过滤条件
+
+### for MapboxGL
+ - MapboxGL raster source 新增 `options.displayFilters` 参数支持设置图层的显示过滤条件（需使用 mapbox-gl-enhance）
+ - [`mapboxgl.supermap.VideoMap`](https://iclient.supermap.io/docs/mapboxgl/VideoMap.html) 支持加载 SuperMap iServer 发布的含有配准后无人机拍摄视频文件的数据服务
+ - [`mapboxgl.supermap.VideoMap`](https://iclient.supermap.io/docs/mapboxgl/VideoMap.html) 新增`getVideoBounds()` 方法用于获取视频地理范围
+ - 新增 [`mapboxgl.supermap.VideoPlayControl`](https://iclient.supermap.io/docs/mapboxgl/VideoPlayControl.html) 控件，用于控制`mapboxgl.supermap.VideoMap`、 `mapboxgl.supermap.VideoLayer`中视频的播放暂停
+ - 新增 [`mapboxgl.supermap.VideoMapDrawControl`](https://iclient.supermap.io/docs/mapboxgl/VideoMapDrawControl.html) 控件，用于在`mapboxgl.supermap.VideoMap`上进行点线面矢量标绘
+
+### for MaplibreGL
+-  MaplibreGL raster source 新增 `options.displayFilters` 参数支持设置图层的显示过滤条件（需使用 maplibre-gl-enhance）
+
+
 # 12.1.0-r #
 ## Fixed
 
