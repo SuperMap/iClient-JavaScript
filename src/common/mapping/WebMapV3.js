@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl, flipImageVertically } from './utils/util';
+import { getLayerCatalogRenderLayers, getLayerInfosFromCatalogs, getMainLayerFromCatalog, isSameRasterLayer, mergeFeatures, transformUrl, flipImageVertically, isMapVersionGreaterThan } from './utils/util';
 import { SourceListModelV3 } from './utils/SourceListModelV3';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -161,15 +161,16 @@ export const LEGEND_STYLE_TYPES = {
   STYLE: 'style'
 };
 
+export { isMapVersionGreaterThan, flipImageVertically };
+
 /**
  * 按地图版本创建 Sprite 加载处理函数，供 WebMap 和外部 WebApp 共用。
  * @param {string} mapVersion 地图版本号。
  * @returns {Function|undefined} 旧版地图返回线符号处理函数，新版地图不需要额外处理。
  */
 export function createSpriteLoadHandler(mapVersion) {
-  const [major, minor, patch] = typeof mapVersion === 'string' ? mapVersion.split('.').map(Number) : [];
   // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
-  if (major > 3 || (major === 3 && minor > 3) || (major === 3 && minor === 3 && patch > 7)) {
+  if (isMapVersionGreaterThan(mapVersion, '3.3.7')) {
     return;
   }
   return (id, imageData, width, height) => {

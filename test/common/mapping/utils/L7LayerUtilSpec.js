@@ -76,8 +76,124 @@ describe('L7LayerUtil', () => {
     options
   };
 
+  async function addLineTextureForVersion(mapVersion, textureLayerUtil = l7LayerUtil) {
+    const sourcePixels = new Uint8ClampedArray([
+      1, 2, 3, 4, 5, 6, 7, 8,
+      9, 10, 11, 12, 13, 14, 15, 16
+    ]);
+    let uploadedPixels;
+    const context = {
+      drawImage: jasmine.createSpy('drawImage'),
+      getImageData: () => ({ width: 2, height: 2, data: sourcePixels.slice() }),
+      createImageData: (width, height) => ({ width, height, data: new Uint8ClampedArray(width * height * 4) }),
+      putImageData: (imageData) => {
+        uploadedPixels = Array.from(imageData.data);
+      }
+    };
+    spyOn(window, 'XMLHttpRequest').and.callFake(() => ({
+      open: jasmine.createSpy('open'),
+      setRequestHeader: jasmine.createSpy('setRequestHeader'),
+      send: function () {
+        this.readyState = 4;
+        this.status = 200;
+        this.response = {};
+        this.onreadystatechange();
+      }
+    }));
+    spyOn(window.URL, 'createObjectURL').and.returnValue('blob:test-sprite');
+    spyOn(window, 'Image').and.callFake(function () {
+      return {
+        width: 2,
+        height: 2,
+        set src(value) {
+          this.source = value;
+          setTimeout(() => this.onload && this.onload(), 0);
+        }
+      };
+    });
+    spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(context);
+    spyOn(HTMLCanvasElement.prototype, 'toDataURL').and.returnValue('data:image/png;base64,test');
+
+    const line = {
+      id: 'line-texture',
+      type: 'line-extrusion',
+      source: 'line-source',
+      layout: {},
+      paint: {
+        'line-extrusion-pattern': 'line-pattern',
+        'line-extrusion-width': 1
+      }
+    };
+    const scene = new mockL7.Scene();
+    const map = {
+      getL7Scene: () => Promise.resolve(scene),
+      getLayer: () => false,
+      addLayer: jasmine.createSpy('addLayer')
+    };
+    await textureLayerUtil.addL7Layers({
+      map,
+      webMapInfo: {
+        version: mapVersion,
+        sprite: '/sprite',
+        layers: [line],
+        sources: {
+          'line-source': {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: [] }
+          }
+        }
+      },
+      l7Layers: [line],
+      spriteDatas: {
+        'line-pattern': { x: 0, y: 0, width: 2, height: 2 }
+      },
+      options: {
+        withCredentials: false,
+        emitterEvent: jasmine.createSpy('emitterEvent')
+      }
+    });
+    return { uploadedPixels, layer: map.addLayer.calls.first().args[0] };
+  }
+
   afterEach(() => {
     layerMaplist = {};
+  });
+
+  it('vertically flips L7 line textures through version 3.3.7', async () => {
+    const westToEastL7LayerUtil = L7LayerUtil({
+      featureFilter,
+      expression,
+      spec,
+      L7Layer,
+      L7,
+      webMapService: mockWebMapService,
+      linePatternOrientation: 'west-to-east'
+    });
+    const { uploadedPixels, layer } = await addLineTextureForVersion('3.3.7', westToEastL7LayerUtil);
+
+    expect(uploadedPixels).toEqual([
+      9, 10, 11, 12, 13, 14, 15, 16,
+      1, 2, 3, 4, 5, 6, 7, 8
+    ]);
+    expect(layer.getLayer().linePatternOrientation).toBe('west-to-east');
+  });
+
+  it('keeps newer L7 line textures unchanged', async () => {
+    const { uploadedPixels } = await addLineTextureForVersion('3.3.8');
+    const originalPixels = [
+      1, 2, 3, 4, 5, 6, 7, 8,
+      9, 10, 11, 12, 13, 14, 15, 16
+    ];
+
+    expect(uploadedPixels).toEqual(originalPixels);
+  });
+
+  it('keeps unversioned L7 line textures unchanged', async () => {
+    const { uploadedPixels } = await addLineTextureForVersion(undefined);
+    expect(uploadedPixels).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8,
+      9, 10, 11, 12, 13, 14, 15, 16
+    ]);
   });
 
   it('add od layer', (done) => {
