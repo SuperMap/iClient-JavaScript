@@ -70,7 +70,8 @@ const LEGEND_CSS_DEFAULT = {
     marginLeft: '1px',
     outlineStyle: 'none',
     outlineColor: '#FFFFFF',
-    outlineWidth: '0.5px'
+    outlineWidth: '0.5px',
+    outlineOpacity: 1
   },
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: {
     width: '20px',
@@ -110,7 +111,7 @@ const LEGEND_STYLE_KEYS = {
   [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
-  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias' ,'outline', 'outlineColor', 'outlineWidth', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias', 'outline', 'outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.ANIMATEPOINT]: ['color', 'opacity', 'size', 'speed', 'rings'],
   [LEGEND_RENDER_TYPE.ANIMATELINE]: ['color', 'opacity', 'width', 'textureBlend', 'symbolsContent', 'iconStep'],
@@ -897,7 +898,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     if (keys) {
       const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
       simpleKeys.forEach((k) => {
-      const isOutlineKey = k === 'outlineColor' || k === 'outlineWidth';
+      const isOutlineKey = ['outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent'].includes(k);
       const hasOutline =
         styleSetting &&
         (
@@ -1382,13 +1383,36 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
           }
         });
         Object.assign(cssStyle, { outlineStyle: (customValue.antialias || customValue.outline) ? 'solid' : 'none'});
+        // 轮廓线符号与轮廓线宽平级，交由图例组件渲染
+        if (customValue.outlineSymbolsContent) {
+          cssStyle.outlineSymbolsContent = customValue.outlineSymbolsContent;
+          // 轮廓图片符号（line-pattern 连续纹理 / icon-image 图标点）的雪碧图信息，
+          // 按图片 id 附带在样式上，供图例组件直接裁剪轮廓图块
+          const outlineSprites = {};
+          [].concat(customValue.outlineSymbolsContent.style || []).forEach((outlineSymbol) => {
+            const outlinePaint = (outlineSymbol && outlineSymbol.paint) || {};
+            const outlineLayout = (outlineSymbol && outlineSymbol.layout) || {};
+            const outlineImageId = outlinePaint['line-pattern'] || outlineLayout['icon-image'];
+            if (outlineImageId && this._spriteDatas[outlineImageId]) {
+              outlineSprites[outlineImageId] = this._spriteDatas[outlineImageId];
+            }
+          });
+          if (Object.keys(outlineSprites).length) {
+            cssStyle.outlineSprites = outlineSprites;
+          }
+        }
         if (this._spriteDatas[symbolId]) {
           return this._getSpriteStyle(symbolId, { ...cssStyle, backgroundColor: 'transparent' });
         }
-        return {
+        // 纯色面填充 + 图片轮廓符号：样式仍走矢量渲染，附上雪碧图地址供图例组件加载并裁剪轮廓图块
+        const legendStyle = {
           type: LEGEND_STYLE_TYPES.STYLE,
           ...cssStyle
         };
+        if (customValue.outlineSymbolsContent && typeof this._sprite === 'string') {
+          legendStyle.url = `${this._sprite}.png`;
+        }
+        return legendStyle;
       }
     }
   }
