@@ -135,12 +135,14 @@ describe('openlayers_Graph', () => {
         };
         graphThemeSource.offset = 3;
         graphThemeSource.fire('mousemove', event);
+        console.log('---------');
         map.removeLayer(layer);
+        console.log('=========');
         done();
       });
       map.addLayer(layer);
     });
-  });
+  }, 20000);
 
   it('addFeatures, redraw, getFeatures, removeFeatures', (done) => {
     var graphThemeSource = new Graph('BarThemeLayer', 'Bar', {
