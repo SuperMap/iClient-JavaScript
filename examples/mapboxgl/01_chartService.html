@@ -192,6 +192,9 @@
       display: inline-block;
       rotate: 90deg;
     }
+    .apply-btn {
+      margin-top: 12px;
+    }
   </style>
 </head>
 
@@ -259,34 +262,6 @@
           <div class='input-group'>
             <span class='input-group-addon' data-i18n="resources.text_attributeFilter"></span>
             <input type='text' class='form-control' id='attributeFilter' value='SMID > 0' />
-          </div>
-        </div>
-        <!-- S57生效 -->
-        <div class='panel'>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_isQueryPoint"></span>
-            <select id='isQueryPoint' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-        </div>
-        <div class='panel'>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_isQueryLine"></span>
-            <select id='isQueryLine' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
-          </div>
-        </div>
-        <div class='panel'>
-          <div class='input-group'>
-            <span class='input-group-addon' data-i18n="resources.text_isQueryRegion"></span>
-            <select id='isQueryRegion' class='form-control'>
-              <option value="true" data-i18n="resources.text_true" selected></option>
-              <option value="false" data-i18n="resources.text_false"></option>
-            </select>
           </div>
         </div>
         <div class='panel'>
@@ -363,26 +338,17 @@
       </div>
     </div>
   </div>
-  <!-- 物标分类列表 -->
-  <div class="panel panel-primary" style="width:160px;position: absolute;bottom:5px;left:5px;z-index: 999;">
-    <div class="panel-heading">
-      <h5 class='panel-title text-center'>
-          <span  data-i18n="resources.text_classify"></span>
-      </h5>
-    </div>
-    <div class="panel-body" id="classify"></div>
-  </div>
   </script>
   <script type="text/javascript" include="bootstrap,moment,bootstrap-datetimepicker,jquery-treegrid" src="../js/include-web.js"></script>
   <script type="text/javascript" include="mapbox-gl-enhance,turf,lodash,echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script type="text/javascript">
-    var url = "https://iserver.supermap.io/iserver/services/map-chart/rest/maps/GB4X0000_52000";
-    // var url = "http://localhost:8090/iserver/services/map-WorkSpace1-2/rest/maps/S104S102_1";
-    var dataUrl = "http://localhost:8090/iserver/services/data-WorkSpace1-2/rest/data";
-    var s104dataSource = 'nanbaoS104v200';
-    var s104dataSet = 'S104Position4326';
-    var s104dataSetWaterLevel = 'S104WaterLevel';
-    var s104dataSetTime = 'S104Time';
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var url = host + "/iserver/services/map-chart2/rest/maps/S101S102S104";
+    var dataUrl = host + "/iserver/services/data-chart2/rest/data";
+    var s104dataSource = 'wla_20260422_S104';
+    // var s104dataSet = 'S104Position4326';
+    // var s104dataSetWaterLevel = 'S104WaterLevel';
+    // var s104dataSetTime = 'S104Time';
     var chartService = new mapboxgl.supermap.ChartService(url, dataUrl);
 
     var featureInfos;
@@ -399,6 +365,8 @@
     var overlayPopup = new mapboxgl.Popup({ maxWidth: 'none' });
     var chartContainer = document.getElementById('chartContainer');
     var displayableAcronymClassify = {};
+    // 地图chartSetting默认值、S100标准的图示目录参数信息
+    var DefaultChartSetting, MaritimePcInfo;
     // var chartSetting = getChartSetting();
     var map = new mapboxgl.Map({
         container: 'map',
@@ -422,39 +390,56 @@
           ]
         },
         crs: 'EPSG:4326',
-        center: [61.0, -32.51],
+        center: [60.93, -32.53],
         maxZoom: 20,
-        zoom: 12
+        zoom: 13
       });
- 
-    changeDisplayModeChart();
-    function changeDisplayModeChart() {
-      // 当将显示模式设置为OTHER时,是否显示水深点、是否显示元物标、是否显示其他等深线标注 才有效
-      var displayModeChart = document.getElementById("displayModeChart").value;
-      document.getElementById("displaySounding").disabled = displayModeChart !== 'OTHER';
-      document.getElementById("displayMetaObject").disabled = displayModeChart !== 'OTHER';
-      document.getElementById("displayOtherContourLabel").disabled = displayModeChart !== 'OTHER';
+
+    function inferType(value) {
+      if (['TRUE', 'FALSE'].includes(String(value).toUpperCase())) return 'Boolean';
+      if (value !== '' && !isNaN(value) && !isNaN(parseFloat(value))) return 'Double';
+      return 'String';
     }
 
     function createChartSettingPanel(defaultChartSetting, maritimePcInfo) {
       const container = document.getElementById('settings');
       let htmlContent = '';
+      let collapseTitle = '';
       const chartTypes = Object.keys(defaultChartSetting && defaultChartSetting.contextParameters || {});
       chartTypes.forEach((type, index) => {
+        let S100Parameter = [];
+        if (type === 'S98') {
+          const S98ContextParameters = defaultChartSetting.contextParameters[type];
+          S100Parameter = Object.keys(S98ContextParameters).map(key => {
+            return {
+              id: key,
+              name: key,
+              type: inferType(S98ContextParameters[key]),
+              defaultValue: S98ContextParameters[key],
+              // 特殊处理下InteroperabilityLevel，只能选 0、1
+              contextParameterEnums: key === 'InteroperabilityLevel' ? [{ id: '0', description: '0' }, { id: '1', description: '1' }] : undefined
+            }
+          });
+          collapseTitle = 'S98';
+        } else {
+          const PCVersion = defaultChartSetting.contextParameters[type].PCVersion;
+          collapseTitle = PCVersion;
+          S100Parameter = maritimePcInfo[PCVersion];
+        }
         const collapseId = `collapse-${type}-${index}`; // 为每个类型生成唯一 ID
         htmlContent += `
-          <div data-toggle='collapse' 
-               data-target='#${collapseId}' 
-               aria-expanded='true' 
-               class='chartseting-panel-heading'>
-              <i class="collapse-icon"> > </i> Maritime${type}
+          <div data-toggle='collapse'
+                data-target='#${collapseId}'
+                aria-expanded='true'
+                class='chartseting-panel-heading'>
+              <i class="collapse-icon"> > </i> Maritime${collapseTitle}
           </div>
           <div id='${collapseId}' class='collapse in'> `;
-        const PCVersion = defaultChartSetting.contextParameters[type].PCVersion;
-        const S100Parameter = maritimePcInfo[PCVersion];
         S100Parameter.sort((a, b) => a.type.localeCompare(b.type));
         S100Parameter.forEach(item => {
           const domId = type + item.id;
+          const parameterValue = defaultChartSetting.contextParameters[type][item.name];
+          const defaultValue = parameterValue === undefined ? item.defaultValue : parameterValue;
 
           // 1. 开始构建 input-group 容器
           htmlContent += `<div class='input-group'>`;
@@ -464,7 +449,7 @@
           // 情况 A: 有枚举值 或者 类型是布尔值 -> 渲染 Select
           if (item.contextParameterEnums || item.type === 'Boolean') {
               htmlContent += `<select id='${domId}' class='form-control'>`;
-              
+
               let options = [];
               if (item.contextParameterEnums) {
                   // 使用提供的枚举值
@@ -482,15 +467,18 @@
 
               // 循环生成 Option
               options.forEach(opt => {
-                  const isSelected = item.defaultValue.toUpperCase() === opt.value.toUpperCase() ? 'selected' : '';
+                  const isSelected = String(defaultValue).toUpperCase() === String(opt.value).toUpperCase() ? 'selected' : '';
                   htmlContent += `<option value="${opt.value}" ${isSelected}>${opt.text}</option>`;
               });
 
               htmlContent += `</select>`;
-          } 
+          }
           // 情况 B: 类型是数值 (Double) -> 渲染 Input Number
           else if (item.type === 'Double') {
-              htmlContent += `<input type='number' class='form-control' id='${domId}' value='${item.defaultValue}' />`;
+              htmlContent += `<input type='number' class='form-control' id='${domId}' value='${defaultValue}' />`;
+          } else {
+              // 其他类型默认渲染为文本输入框
+              htmlContent += `<input type='text' class='form-control' id='${domId}' value='${defaultValue}' />`;
           }
 
           htmlContent += `</div>`;
@@ -498,35 +486,18 @@
         htmlContent += `</div>`; // 闭合 collapse 容器
       });
       htmlContent += `
-        <div class='panel'>
-          <div data-i18n="resources.text_filterSetting" class="setting-title">互操作设置</div>
-          <div class='input-group'>
-            <span class='input-group-addon'>互操作</span>
-            <select id='s98InteroperableEnable' class='form-control'>
-              <option value="true" >是</option>
-              <option value="false" selected>否</option>
-            </select>
-          </div>
-          <div class='input-group'>
-            <span class='input-group-addon'>互操作等级</span>
-            <select id='interoperabilityLevel' class='form-control'>
-              <option value="0" selected>L0</option>
-              <option value="1">L1</option>
-            </select>
-          </div>
-        </div>
-        <input type="button" class="btn btn-default" onclick="updateChartSetting()" value="应用" />
+        <input type="button" class="btn btn-default apply-btn" onclick="updateChartSetting()" value="应用" />
      `;
       container.innerHTML = htmlContent;
     }
 
     // 获取地图默认chartSetting
     function getMapDefaultChartSetting() {
-      return new ol.supermap.MapService(url).getMapInfo().then(function(res) {
+      return new mapboxgl.supermap.MapService(url).getMapInfo().then(function(res) {
         return res.result && res.result.chartSetting;
       });
     }
-  
+
 
     function getChartMaritimePcInfo() {
       getMapDefaultChartSetting().then(defaultChartSetting => {
@@ -541,40 +512,43 @@
     getChartMaritimePcInfo()
 
     function getChartSetting() {
-      const getValue = (id, type) => {
-        const el = document.getElementById(id);
-        if (!el) return undefined;
-        const val = el.value;
-        
-        switch (type) {
-          case 'Double': return parseFloat(val);
-          case 'Boolean': return val.toUpperCase() === "TRUE";
-          default: return val;
-        }
-      };
+        const getValue = (id, type) => {
+          const el = document.getElementById(id);
+          if (!el) return undefined;
+          const val = el.value;
 
-      const chartTypes = Object.keys(DefaultChartSetting.contextParameters || {});
-      const contextParameters = {};
-      chartTypes.forEach(type => {
-        const PCVersion = DefaultChartSetting.contextParameters[type].PCVersion;
-        const S100Parameter = MaritimePcInfo[PCVersion];
-        contextParameters[type] = {};
-        S100Parameter.forEach(item => {
-          contextParameters[type][item.id] = getValue(type + item.id, item.type);
-        });
-      })
-      // 其余属性
-      var s98InteroperableEnable = document.getElementById("s98InteroperableEnable").value.toUpperCase() === "TRUE";
-      var interoperabilityLevel = parseFloat(document.getElementById("interoperabilityLevel").value);
+          switch (type) {
+            case 'Double': return parseFloat(val);
+            case 'Boolean': return val.toUpperCase() === "TRUE";
+            default: return val;
+          }
+        };
 
-      var chartSetting = new ol.supermap.ChartSettingS100({
-        contextParameters: contextParameters,
-        s98InteroperableEnable: s98InteroperableEnable,
-        // edit 新增互操作等级
-        interoperabilityLevel: interoperabilityLevel
-      })
-      return chartSetting;
-    }
+        const chartTypes = Object.keys(DefaultChartSetting.contextParameters || {});
+        const contextParameters = {};
+        chartTypes.forEach(type => {
+          if (type === 'S98') {
+            contextParameters[type] = {};
+            const S98Parameters = DefaultChartSetting.contextParameters[type];
+            Object.keys(S98Parameters).forEach(key => {
+              const paramType = inferType(S98Parameters[key]);
+              contextParameters[type][key] = getValue(type + key, paramType);
+            });
+            return;
+          }
+          const PCVersion = DefaultChartSetting.contextParameters[type].PCVersion;
+          const S100Parameter = MaritimePcInfo[PCVersion];
+          contextParameters[type] = {};
+          S100Parameter.forEach(item => {
+            contextParameters[type][item.id] = getValue(type + item.id, item.type);
+          });
+        })
+
+        var chartSetting = new mapboxgl.supermap.ChartSettingS100({
+          contextParameters: contextParameters
+        })
+        return chartSetting;
+      }
 
     function updateChartSetting() {
       var newChartSetting = getChartSetting();
@@ -603,37 +577,6 @@
     }
 
     getChartFeatureInfo();
-
-    function getClassify() {
-      var classifications = document.getElementById('classify')
-      // 获取海图物标分类信息
-      chartService.getChartAcronymClassify().then(function (serviceResult) {
-        // 创建分类信息复选框
-        serviceResult.result && serviceResult.result.forEach(function (element) {
-          displayableAcronymClassify[element.name] = true
-          updateChartSetting();
-          var checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.value = element.name;
-          checkbox.checked = true;
-          checkbox.id = element.name;
-          var label = document.createElement('label');
-          label.textContent = element.aliasName;
-          label.style.marginLeft = "15px";
-          label.htmlFor = element.name;
-          classifications.appendChild(checkbox);
-          classifications.appendChild(label);
-          var brElement = document.createElement('br');
-          classifications.appendChild(brElement);
-          checkbox.addEventListener("click", function () {
-            displayableAcronymClassify[checkbox.value] = checkbox.checked;
-            updateChartSetting();
-          });
-        });
-      })
-    }
-
-    getClassify();
   
     // 基于tree-grid插件，添加特定的类名，实现树状表格
     var index = 0;
@@ -781,9 +724,9 @@
         groups.append(groupName);
         recordset.chartRecordsets.forEach((chartFeatureRecordset, recordsetIndex) => {
           var matchFeatureInfo = featureInfos.find(function (featureInfo) {
-            return featureInfo.acronym === chartFeatureRecordset.acronym;
+            return featureInfo.alias === chartFeatureRecordset.acronym;
           });
-          var localName = matchFeatureInfo && matchFeatureInfo.localName || chartFeatureRecordset
+          var localName = matchFeatureInfo && matchFeatureInfo.code || chartFeatureRecordset
             .acronym || 'chartFeature';
           var datasetName = chartFeatureRecordset.datasetName;
           chartFeatureRecordset.features.features.forEach((feature, featureIndex) => {
@@ -943,18 +886,10 @@
       var chartLayerNames = document.getElementById("chartLayers").value;
       var featureCode = document.getElementById("featuresList").value;
       var attributeFilter = document.getElementById("attributeFilter").value;
-      var isQueryPoint = document.getElementById("isQueryPoint").value === "true";
-      var isQueryLine = document.getElementById("isQueryLine").value === "true";
-      var isQueryRegion = document.getElementById("isQueryRegion").value === "true";
 
       var chartQueryFilterParameter = new mapboxgl.supermap.ChartQueryFilterParameter({
         attributeFilter,
         featureCode,
-        // 以下为S57参数
-        // chartFeatureInfoSpecCode: featureCode,
-        // isQueryPoint,
-        // isQueryLine,
-        // isQueryRegion
       });
       var chartQueryParameters = new mapboxgl.supermap.ChartQueryParameters({
         queryMode: "ChartAttributeQuery",
@@ -1065,28 +1000,35 @@
         expectCount: 10000
       })
       chartService.getWaterLevel(parm).then(function (serviceResult) {
-        var { stationFeature, features } = serviceResult || {};
-        if (stationFeature) {
-          // 给点击的水位点添加选择框
-          if (map.getSource('S104-point-select')) {
-            map.removeLayer('S104-point-select');
-            map.removeSource('S104-point-select');
-          }
-          // 给点击的水位点添加选择框
-          map.addSource('S104-point-select', {
-            type: 'geojson',
-            data: stationFeature
-          });
-          map.addLayer({
-            'id': 'S104-point-select',
-            'type': 'symbol',
-            'source': 'S104-point-select',
-            'layout': {
-              'icon-image': 'icon_name'
-            },
-            'filter': ['==', '$type', 'Point']
-          });
+        if (!serviceResult) {
+          return;
         }
+        var { features } = serviceResult;
+        if (map.getSource('S104-point-select')) {
+          map.removeLayer('S104-point-select');
+          map.removeSource('S104-point-select');
+        }
+        // 给鼠标点击处添加选择框
+        map.addSource('S104-point-select', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: coordinates
+            },
+            properties: {}
+          }
+        });
+        map.addLayer({
+          'id': 'S104-point-select',
+          'type': 'symbol',
+          'source': 'S104-point-select',
+          'layout': {
+            'icon-image': 'icon_name'
+          },
+          'filter': ['==', '$type', 'Point']
+        });
         if (features) {
           stationFeatures = features;
           chartContainer.style.display = 'block';
@@ -1208,7 +1150,31 @@
       })
       if (wlaEnable) {
         setMapToCurrentTime();
+      } else {
+        closeWLA();
       }
+    }
+
+    function closeWLA() {
+      if (DefaultChartSetting === undefined) {
+        return;
+      }
+      clearInterval(timer);
+      var newChartSetting = getChartSetting();
+      newChartSetting = {
+        ...newChartSetting,
+        contextParameters: {
+          ...newChartSetting.contextParameters,
+          S98: {
+            ...newChartSetting.contextParameters.S98,
+            WLAEnable: false
+          }
+        }
+      };
+      map.getSource('raster-tiles').tiles=[url + '/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}&chartSetting='+ JSON.stringify(newChartSetting)]
+      map.style.sourceCaches['raster-tiles'].clearTiles()
+      map.style.sourceCaches['raster-tiles'].update(map.transform)
+      map.triggerRepaint();
     }
 
     changeWLA();
@@ -1247,8 +1213,14 @@
       var newChartSetting = getChartSetting();
       newChartSetting = {
         ...newChartSetting,
-        "wlaEnable": true,
-        "wlaDatetime": formatTime
+        contextParameters: {
+          ...newChartSetting.contextParameters,
+          S98: {
+            ...newChartSetting.contextParameters.S98,
+            WLAEnable: true,
+            WLATime: formatTime
+          }
+        }
       }
       map.getSource('raster-tiles').tiles=[url + '/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}&chartSetting='+ JSON.stringify(newChartSetting)]
       map.style.sourceCaches['raster-tiles'].clearTiles()
