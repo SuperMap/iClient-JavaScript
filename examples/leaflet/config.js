@@ -782,28 +782,28 @@ var exampleConfig = {
       }
     }
   },
-  "Elasticsearch": {
-    name: "Elasticsearch",
-    name_en: "Elasticsearch",
-    localIgnore: true,
-    content: {
-      "es_viz": {
-        name: "可视化",
-        name_en: "Visualization",
-        content: [{
-          name: "热力/格网图",
-          name_en: "heat/grid map",
-          thumbnail: "l_ESHeatMap.gif",
-          fileName: "ESHeatMap"
-        }, {
-          name: "航班监控",
-          name_en: "flight monitor",
-          thumbnail: "l_PlanesMonitor.gif",
-          fileName: "PlanesMonitor"
-        }]
-      }
-    }
-  },
+  // "Elasticsearch": {
+  //   name: "Elasticsearch",
+  //   name_en: "Elasticsearch",
+  //   localIgnore: true,
+  //   content: {
+  //     "es_viz": {
+  //       name: "可视化",
+  //       name_en: "Visualization",
+  //       content: [{
+  //         name: "热力/格网图",
+  //         name_en: "heat/grid map",
+  //         thumbnail: "l_ESHeatMap.gif",
+  //         fileName: "ESHeatMap"
+  //       }, {
+  //         name: "航班监控",
+  //         name_en: "flight monitor",
+  //         thumbnail: "l_PlanesMonitor.gif",
+  //         fileName: "PlanesMonitor"
+  //       }]
+  //     }
+  //   }
+  // },
   "viz": {
     name: "可视化",
     name_en: "Visualization",
