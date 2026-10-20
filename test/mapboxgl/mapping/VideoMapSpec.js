@@ -363,6 +363,7 @@ describe('mapboxgl_videoMap', () => {
 
       expect(videoMap.getDrawMode()).toBeNull();
       expect(videoMap.getDrawData().features.length).toBe(0);
+      expect(videoMap.getDrawLiveData()).toEqual({ type: 'FeatureCollection', features: [] });
 
       videoMap.startDraw('Point');
       expect(videoMap.getDrawMode()).toBe('Point');
@@ -376,17 +377,28 @@ describe('mapboxgl_videoMap', () => {
       videoMap.startDraw('LineString');
       videoMap.map.fire('click', { lngLat: { lng: 11587478.81, lat: 3570800.19 } });
       videoMap.map.fire('click', { lngLat: { lng: 11587578.81, lat: 3570900.19 } });
+      var lineLiveData = videoMap.getDrawLiveData();
+      expect(lineLiveData.features.length).toBe(4);
+      expect(lineLiveData.features.filter(function (item) {
+        return item.properties.draft;
+      }).length).toBe(3);
+      expect(lineLiveData.features.filter(function (item) {
+        return item.id === 'videomap-draw-draft-line';
+      }).length).toBe(1);
       expect(videoMap.finishDraw().geometry.type).toBe('LineString');
       expect(videoMap.getDrawData().features.length).toBe(2);
+      expect(videoMap.getDrawLiveData().features.length).toBe(2);
 
       videoMap.startDraw('Polygon');
       videoMap.map.fire('click', { lngLat: { lng: 11587478.81, lat: 3570800.19 } });
       videoMap.map.fire('click', { lngLat: { lng: 11587578.81, lat: 3570800.19 } });
       videoMap.map.fire('click', { lngLat: { lng: 11587578.81, lat: 3570900.19 } });
+      expect(videoMap.getDrawLiveData().features.length).toBe(6);
       var polygon = videoMap.finishDraw();
       expect(polygon.geometry.type).toBe('Polygon');
       expect(polygon.geometry.coordinates[0].length).toBe(4);
       expect(videoMap.getDrawData().features.length).toBe(3);
+      expect(videoMap.getDrawLiveData().features.length).toBe(3);
 
       videoMap.cancelDraw();
       expect(videoMap.getDrawMode()).toBeNull();

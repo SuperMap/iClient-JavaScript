@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
-import { Lang } from '../../common/lang/Lang';
+import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 import {
   MODE_SIMPLE_SELECT,
   MODE_DRAW_POINT,
