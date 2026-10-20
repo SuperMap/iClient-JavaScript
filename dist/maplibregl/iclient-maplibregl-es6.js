@@ -3,7 +3,7 @@
  *          iclient-maplibregl
  *          Copyright© 2000 - 2026 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v12.1.0-r
+ *          version: v12.1.2
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -8163,576 +8163,6 @@ module.exports.polyfill = function(object) {
 
 /***/ },
 
-/***/ 519
-(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = rbush;
-module.exports["default"] = rbush;
-
-var quickselect = __webpack_require__(261);
-
-function rbush(maxEntries, format) {
-    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
-
-    // max entries in a node is 9 by default; min node fill is 40% for best performance
-    this._maxEntries = Math.max(4, maxEntries || 9);
-    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
-
-    if (format) {
-        this._initFormat(format);
-    }
-
-    this.clear();
-}
-
-rbush.prototype = {
-
-    all: function () {
-        return this._all(this.data, []);
-    },
-
-    search: function (bbox) {
-
-        var node = this.data,
-            result = [],
-            toBBox = this.toBBox;
-
-        if (!intersects(bbox, node)) return result;
-
-        var nodesToSearch = [],
-            i, len, child, childBBox;
-
-        while (node) {
-            for (i = 0, len = node.children.length; i < len; i++) {
-
-                child = node.children[i];
-                childBBox = node.leaf ? toBBox(child) : child;
-
-                if (intersects(bbox, childBBox)) {
-                    if (node.leaf) result.push(child);
-                    else if (contains(bbox, childBBox)) this._all(child, result);
-                    else nodesToSearch.push(child);
-                }
-            }
-            node = nodesToSearch.pop();
-        }
-
-        return result;
-    },
-
-    collides: function (bbox) {
-
-        var node = this.data,
-            toBBox = this.toBBox;
-
-        if (!intersects(bbox, node)) return false;
-
-        var nodesToSearch = [],
-            i, len, child, childBBox;
-
-        while (node) {
-            for (i = 0, len = node.children.length; i < len; i++) {
-
-                child = node.children[i];
-                childBBox = node.leaf ? toBBox(child) : child;
-
-                if (intersects(bbox, childBBox)) {
-                    if (node.leaf || contains(bbox, childBBox)) return true;
-                    nodesToSearch.push(child);
-                }
-            }
-            node = nodesToSearch.pop();
-        }
-
-        return false;
-    },
-
-    load: function (data) {
-        if (!(data && data.length)) return this;
-
-        if (data.length < this._minEntries) {
-            for (var i = 0, len = data.length; i < len; i++) {
-                this.insert(data[i]);
-            }
-            return this;
-        }
-
-        // recursively build the tree with the given data from scratch using OMT algorithm
-        var node = this._build(data.slice(), 0, data.length - 1, 0);
-
-        if (!this.data.children.length) {
-            // save as is if tree is empty
-            this.data = node;
-
-        } else if (this.data.height === node.height) {
-            // split root if trees have the same height
-            this._splitRoot(this.data, node);
-
-        } else {
-            if (this.data.height < node.height) {
-                // swap trees if inserted one is bigger
-                var tmpNode = this.data;
-                this.data = node;
-                node = tmpNode;
-            }
-
-            // insert the small tree into the large tree at appropriate level
-            this._insert(node, this.data.height - node.height - 1, true);
-        }
-
-        return this;
-    },
-
-    insert: function (item) {
-        if (item) this._insert(item, this.data.height - 1);
-        return this;
-    },
-
-    clear: function () {
-        this.data = createNode([]);
-        return this;
-    },
-
-    remove: function (item, equalsFn) {
-        if (!item) return this;
-
-        var node = this.data,
-            bbox = this.toBBox(item),
-            path = [],
-            indexes = [],
-            i, parent, index, goingUp;
-
-        // depth-first iterative tree traversal
-        while (node || path.length) {
-
-            if (!node) { // go up
-                node = path.pop();
-                parent = path[path.length - 1];
-                i = indexes.pop();
-                goingUp = true;
-            }
-
-            if (node.leaf) { // check current node
-                index = findItem(item, node.children, equalsFn);
-
-                if (index !== -1) {
-                    // item found, remove the item and condense tree upwards
-                    node.children.splice(index, 1);
-                    path.push(node);
-                    this._condense(path);
-                    return this;
-                }
-            }
-
-            if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
-                path.push(node);
-                indexes.push(i);
-                i = 0;
-                parent = node;
-                node = node.children[0];
-
-            } else if (parent) { // go right
-                i++;
-                node = parent.children[i];
-                goingUp = false;
-
-            } else node = null; // nothing found
-        }
-
-        return this;
-    },
-
-    toBBox: function (item) { return item; },
-
-    compareMinX: compareNodeMinX,
-    compareMinY: compareNodeMinY,
-
-    toJSON: function () { return this.data; },
-
-    fromJSON: function (data) {
-        this.data = data;
-        return this;
-    },
-
-    _all: function (node, result) {
-        var nodesToSearch = [];
-        while (node) {
-            if (node.leaf) result.push.apply(result, node.children);
-            else nodesToSearch.push.apply(nodesToSearch, node.children);
-
-            node = nodesToSearch.pop();
-        }
-        return result;
-    },
-
-    _build: function (items, left, right, height) {
-
-        var N = right - left + 1,
-            M = this._maxEntries,
-            node;
-
-        if (N <= M) {
-            // reached leaf level; return leaf
-            node = createNode(items.slice(left, right + 1));
-            calcBBox(node, this.toBBox);
-            return node;
-        }
-
-        if (!height) {
-            // target height of the bulk-loaded tree
-            height = Math.ceil(Math.log(N) / Math.log(M));
-
-            // target number of root entries to maximize storage utilization
-            M = Math.ceil(N / Math.pow(M, height - 1));
-        }
-
-        node = createNode([]);
-        node.leaf = false;
-        node.height = height;
-
-        // split the items into M mostly square tiles
-
-        var N2 = Math.ceil(N / M),
-            N1 = N2 * Math.ceil(Math.sqrt(M)),
-            i, j, right2, right3;
-
-        multiSelect(items, left, right, N1, this.compareMinX);
-
-        for (i = left; i <= right; i += N1) {
-
-            right2 = Math.min(i + N1 - 1, right);
-
-            multiSelect(items, i, right2, N2, this.compareMinY);
-
-            for (j = i; j <= right2; j += N2) {
-
-                right3 = Math.min(j + N2 - 1, right2);
-
-                // pack each entry recursively
-                node.children.push(this._build(items, j, right3, height - 1));
-            }
-        }
-
-        calcBBox(node, this.toBBox);
-
-        return node;
-    },
-
-    _chooseSubtree: function (bbox, node, level, path) {
-
-        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
-
-        while (true) {
-            path.push(node);
-
-            if (node.leaf || path.length - 1 === level) break;
-
-            minArea = minEnlargement = Infinity;
-
-            for (i = 0, len = node.children.length; i < len; i++) {
-                child = node.children[i];
-                area = bboxArea(child);
-                enlargement = enlargedArea(bbox, child) - area;
-
-                // choose entry with the least area enlargement
-                if (enlargement < minEnlargement) {
-                    minEnlargement = enlargement;
-                    minArea = area < minArea ? area : minArea;
-                    targetNode = child;
-
-                } else if (enlargement === minEnlargement) {
-                    // otherwise choose one with the smallest area
-                    if (area < minArea) {
-                        minArea = area;
-                        targetNode = child;
-                    }
-                }
-            }
-
-            node = targetNode || node.children[0];
-        }
-
-        return node;
-    },
-
-    _insert: function (item, level, isNode) {
-
-        var toBBox = this.toBBox,
-            bbox = isNode ? item : toBBox(item),
-            insertPath = [];
-
-        // find the best node for accommodating the item, saving all nodes along the path too
-        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
-
-        // put the item into the node
-        node.children.push(item);
-        extend(node, bbox);
-
-        // split on node overflow; propagate upwards if necessary
-        while (level >= 0) {
-            if (insertPath[level].children.length > this._maxEntries) {
-                this._split(insertPath, level);
-                level--;
-            } else break;
-        }
-
-        // adjust bboxes along the insertion path
-        this._adjustParentBBoxes(bbox, insertPath, level);
-    },
-
-    // split overflowed node into two
-    _split: function (insertPath, level) {
-
-        var node = insertPath[level],
-            M = node.children.length,
-            m = this._minEntries;
-
-        this._chooseSplitAxis(node, m, M);
-
-        var splitIndex = this._chooseSplitIndex(node, m, M);
-
-        var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
-        newNode.height = node.height;
-        newNode.leaf = node.leaf;
-
-        calcBBox(node, this.toBBox);
-        calcBBox(newNode, this.toBBox);
-
-        if (level) insertPath[level - 1].children.push(newNode);
-        else this._splitRoot(node, newNode);
-    },
-
-    _splitRoot: function (node, newNode) {
-        // split root node
-        this.data = createNode([node, newNode]);
-        this.data.height = node.height + 1;
-        this.data.leaf = false;
-        calcBBox(this.data, this.toBBox);
-    },
-
-    _chooseSplitIndex: function (node, m, M) {
-
-        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
-
-        minOverlap = minArea = Infinity;
-
-        for (i = m; i <= M - m; i++) {
-            bbox1 = distBBox(node, 0, i, this.toBBox);
-            bbox2 = distBBox(node, i, M, this.toBBox);
-
-            overlap = intersectionArea(bbox1, bbox2);
-            area = bboxArea(bbox1) + bboxArea(bbox2);
-
-            // choose distribution with minimum overlap
-            if (overlap < minOverlap) {
-                minOverlap = overlap;
-                index = i;
-
-                minArea = area < minArea ? area : minArea;
-
-            } else if (overlap === minOverlap) {
-                // otherwise choose distribution with minimum area
-                if (area < minArea) {
-                    minArea = area;
-                    index = i;
-                }
-            }
-        }
-
-        return index;
-    },
-
-    // sorts node children by the best axis for split
-    _chooseSplitAxis: function (node, m, M) {
-
-        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
-            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
-            xMargin = this._allDistMargin(node, m, M, compareMinX),
-            yMargin = this._allDistMargin(node, m, M, compareMinY);
-
-        // if total distributions margin value is minimal for x, sort by minX,
-        // otherwise it's already sorted by minY
-        if (xMargin < yMargin) node.children.sort(compareMinX);
-    },
-
-    // total margin of all possible split distributions where each node is at least m full
-    _allDistMargin: function (node, m, M, compare) {
-
-        node.children.sort(compare);
-
-        var toBBox = this.toBBox,
-            leftBBox = distBBox(node, 0, m, toBBox),
-            rightBBox = distBBox(node, M - m, M, toBBox),
-            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
-            i, child;
-
-        for (i = m; i < M - m; i++) {
-            child = node.children[i];
-            extend(leftBBox, node.leaf ? toBBox(child) : child);
-            margin += bboxMargin(leftBBox);
-        }
-
-        for (i = M - m - 1; i >= m; i--) {
-            child = node.children[i];
-            extend(rightBBox, node.leaf ? toBBox(child) : child);
-            margin += bboxMargin(rightBBox);
-        }
-
-        return margin;
-    },
-
-    _adjustParentBBoxes: function (bbox, path, level) {
-        // adjust bboxes along the given tree path
-        for (var i = level; i >= 0; i--) {
-            extend(path[i], bbox);
-        }
-    },
-
-    _condense: function (path) {
-        // go through the path, removing empty nodes and updating bboxes
-        for (var i = path.length - 1, siblings; i >= 0; i--) {
-            if (path[i].children.length === 0) {
-                if (i > 0) {
-                    siblings = path[i - 1].children;
-                    siblings.splice(siblings.indexOf(path[i]), 1);
-
-                } else this.clear();
-
-            } else calcBBox(path[i], this.toBBox);
-        }
-    },
-
-    _initFormat: function (format) {
-        // data format (minX, minY, maxX, maxY accessors)
-
-        // uses eval-type function compilation instead of just accepting a toBBox function
-        // because the algorithms are very sensitive to sorting functions performance,
-        // so they should be dead simple and without inner calls
-
-        var compareArr = ['return a', ' - b', ';'];
-
-        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
-        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
-
-        this.toBBox = new Function('a',
-            'return {minX: a' + format[0] +
-            ', minY: a' + format[1] +
-            ', maxX: a' + format[2] +
-            ', maxY: a' + format[3] + '};');
-    }
-};
-
-function findItem(item, items, equalsFn) {
-    if (!equalsFn) return items.indexOf(item);
-
-    for (var i = 0; i < items.length; i++) {
-        if (equalsFn(item, items[i])) return i;
-    }
-    return -1;
-}
-
-// calculate node's bbox from bboxes of its children
-function calcBBox(node, toBBox) {
-    distBBox(node, 0, node.children.length, toBBox, node);
-}
-
-// min bounding rectangle of node children from k to p-1
-function distBBox(node, k, p, toBBox, destNode) {
-    if (!destNode) destNode = createNode(null);
-    destNode.minX = Infinity;
-    destNode.minY = Infinity;
-    destNode.maxX = -Infinity;
-    destNode.maxY = -Infinity;
-
-    for (var i = k, child; i < p; i++) {
-        child = node.children[i];
-        extend(destNode, node.leaf ? toBBox(child) : child);
-    }
-
-    return destNode;
-}
-
-function extend(a, b) {
-    a.minX = Math.min(a.minX, b.minX);
-    a.minY = Math.min(a.minY, b.minY);
-    a.maxX = Math.max(a.maxX, b.maxX);
-    a.maxY = Math.max(a.maxY, b.maxY);
-    return a;
-}
-
-function compareNodeMinX(a, b) { return a.minX - b.minX; }
-function compareNodeMinY(a, b) { return a.minY - b.minY; }
-
-function bboxArea(a)   { return (a.maxX - a.minX) * (a.maxY - a.minY); }
-function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
-
-function enlargedArea(a, b) {
-    return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
-           (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
-}
-
-function intersectionArea(a, b) {
-    var minX = Math.max(a.minX, b.minX),
-        minY = Math.max(a.minY, b.minY),
-        maxX = Math.min(a.maxX, b.maxX),
-        maxY = Math.min(a.maxY, b.maxY);
-
-    return Math.max(0, maxX - minX) *
-           Math.max(0, maxY - minY);
-}
-
-function contains(a, b) {
-    return a.minX <= b.minX &&
-           a.minY <= b.minY &&
-           b.maxX <= a.maxX &&
-           b.maxY <= a.maxY;
-}
-
-function intersects(a, b) {
-    return b.minX <= a.maxX &&
-           b.minY <= a.maxY &&
-           b.maxX >= a.minX &&
-           b.maxY >= a.minY;
-}
-
-function createNode(children) {
-    return {
-        children: children,
-        height: 1,
-        leaf: true,
-        minX: Infinity,
-        minY: Infinity,
-        maxX: -Infinity,
-        maxY: -Infinity
-    };
-}
-
-// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
-// combines selection algorithm with binary divide & conquer approach
-
-function multiSelect(arr, left, right, n, compare) {
-    var stack = [left, right],
-        mid;
-
-    while (stack.length) {
-        right = stack.pop();
-        left = stack.pop();
-
-        if (right - left <= n) continue;
-
-        mid = left + Math.ceil((right - left) / n / 2) * n;
-        quickselect(arr, mid, left, right, compare);
-
-        stack.push(left, mid, mid, right);
-    }
-}
-
-
-/***/ },
-
 /***/ 261
 (module) {
 
@@ -12462,17 +11892,17 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 /******/ 	});
 /************************************************************************/
 /******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
+/******/ 	const __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		const cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 		const module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
 /******/ 			loaded: false,
 /******/ 			exports: {}
@@ -12490,70 +11920,650 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = (module) => {
+/******/ 		const getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
+/******/ 	
+/******/ 	/* webpack/runtime/concatenation wrap */
+/******/ 	// wrap a concatenated module body as a lazy, memoized accessor; mod is
+/******/ 	// set before the body runs so re-entrant calls (require cycles) observe
+/******/ 	// the partial exports like Node.js
+/******/ 	__webpack_require__.cw = (body) => {
+/******/ 		var mod;
+/******/ 		return () => {
+/******/ 			if (body) {
+/******/ 				var fn = body;
+/******/ 				body = 0;
+/******/ 				mod = { exports: {} };
+/******/ 				fn.call(mod.exports, mod, mod.exports);
+/******/ 			}
+/******/ 			return mod.exports;
 /******/ 		};
-/******/ 	})();
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	})();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
+/******/ 	__webpack_require__.g = (function() {
+/******/ 		if (typeof globalThis === 'object') return globalThis;
+/******/ 		try {
+/******/ 			return this || new Function('return this')();
+/******/ 		} catch (e) {
+/******/ 			if (typeof window === 'object') return window;
+/******/ 		}
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
 /******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nmd = (module) => {
-/******/ 			module.paths = [];
-/******/ 			if (!module.children) module.children = [];
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
+/******/ 	__webpack_require__.nmd = (module) => {
+/******/ 		module.paths = [];
+/******/ 		if (!module.children) module.children = [];
+/******/ 		return module;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/set anonymous default export name */
-/******/ 	(() => {
-/******/ 		// set .name for anonymous default exports per ES spec
-/******/ 		__webpack_require__.dn = (x) => {
-/******/ 			(Object.getOwnPropertyDescriptor(x, "name") || {}).writable || Object.defineProperty(x, "name", { value: "default", configurable: true });
-/******/ 		};
-/******/ 	})();
+/******/ 	// set .name for anonymous default exports per ES spec
+/******/ 	// skipped when the property is non-configurable (pre-ES2015 engines),
+/******/ 	// where Object.defineProperty would throw
+/******/ 	__webpack_require__.dn = (x) => {
+/******/ 		var descriptor = Object.getOwnPropertyDescriptor(x, "name");
+/******/ 		if (!descriptor || (!descriptor.writable && descriptor.configurable)) Object.defineProperty(x, "name", { value: "default", configurable: true });
+/******/ 	};
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttachmentsParameters, AttributesPopContainer, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartSettingS57, ChartType, ChartView, ChartViewModel, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, ColourModeChart, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DisplayModeChart, DropDownBox, EditAttachmentsParameters, EditFeaturesParameters, EditType, ElasticSearch, EncryptRequest, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryAnalysis, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, GraphAxesTextDisplayMode, GraphMap, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, L7Layer, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, RangeMode, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, ThemeDotDensity, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VideoFeature, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, WebSymbol, conversionDegree, decrypt, getMeterPerMapUnit, getServiceKey, getWrapNum, initMap, isCORS, mapboxFilterToQueryFilter, setCORS, setRequestHeaders, terrainAnalystSetting
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttachmentsParameters, AttributesPopContainer, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartSettingS57, ChartType, ChartView, ChartViewModel, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, ColourModeChart, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DisplayModeChart, DropDownBox, EditAttachmentsParameters, EditFeaturesParameters, EditType, ElasticSearch, EncryptRequest, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryAnalysis, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, GraphAxesTextDisplayMode, GraphMap, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, L7Layer, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, RangeMode, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, ThemeDotDensity, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VideoFeature, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, WebSymbol, conversionDegree, createSpriteLoadHandler, decrypt, flipImageVertically, getMeterPerMapUnit, getServiceKey, getWrapNum, initMap, isCORS, isMapVersionGreaterThan, mapboxFilterToQueryFilter, setCORS, setRequestHeaders, terrainAnalystSetting
+
+// MODULE: ./node_modules/rbush/index.js
+var rbush_namespaceFn = /*#__PURE__*/__webpack_require__.cw((module) => {
+
+
+module.exports = rbush;
+module.exports["default"] = rbush;
+
+var quickselect = (quickselect_namespaceFn());
+
+function rbush(maxEntries, format) {
+    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
+
+    // max entries in a node is 9 by default; min node fill is 40% for best performance
+    this._maxEntries = Math.max(4, maxEntries || 9);
+    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+
+    if (format) {
+        this._initFormat(format);
+    }
+
+    this.clear();
+}
+
+rbush.prototype = {
+
+    all: function () {
+        return this._all(this.data, []);
+    },
+
+    search: function (bbox) {
+
+        var node = this.data,
+            result = [],
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return result;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf) result.push(child);
+                    else if (contains(bbox, childBBox)) this._all(child, result);
+                    else nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return result;
+    },
+
+    collides: function (bbox) {
+
+        var node = this.data,
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return false;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf || contains(bbox, childBBox)) return true;
+                    nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return false;
+    },
+
+    load: function (data) {
+        if (!(data && data.length)) return this;
+
+        if (data.length < this._minEntries) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                this.insert(data[i]);
+            }
+            return this;
+        }
+
+        // recursively build the tree with the given data from scratch using OMT algorithm
+        var node = this._build(data.slice(), 0, data.length - 1, 0);
+
+        if (!this.data.children.length) {
+            // save as is if tree is empty
+            this.data = node;
+
+        } else if (this.data.height === node.height) {
+            // split root if trees have the same height
+            this._splitRoot(this.data, node);
+
+        } else {
+            if (this.data.height < node.height) {
+                // swap trees if inserted one is bigger
+                var tmpNode = this.data;
+                this.data = node;
+                node = tmpNode;
+            }
+
+            // insert the small tree into the large tree at appropriate level
+            this._insert(node, this.data.height - node.height - 1, true);
+        }
+
+        return this;
+    },
+
+    insert: function (item) {
+        if (item) this._insert(item, this.data.height - 1);
+        return this;
+    },
+
+    clear: function () {
+        this.data = createNode([]);
+        return this;
+    },
+
+    remove: function (item, equalsFn) {
+        if (!item) return this;
+
+        var node = this.data,
+            bbox = this.toBBox(item),
+            path = [],
+            indexes = [],
+            i, parent, index, goingUp;
+
+        // depth-first iterative tree traversal
+        while (node || path.length) {
+
+            if (!node) { // go up
+                node = path.pop();
+                parent = path[path.length - 1];
+                i = indexes.pop();
+                goingUp = true;
+            }
+
+            if (node.leaf) { // check current node
+                index = findItem(item, node.children, equalsFn);
+
+                if (index !== -1) {
+                    // item found, remove the item and condense tree upwards
+                    node.children.splice(index, 1);
+                    path.push(node);
+                    this._condense(path);
+                    return this;
+                }
+            }
+
+            if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
+                path.push(node);
+                indexes.push(i);
+                i = 0;
+                parent = node;
+                node = node.children[0];
+
+            } else if (parent) { // go right
+                i++;
+                node = parent.children[i];
+                goingUp = false;
+
+            } else node = null; // nothing found
+        }
+
+        return this;
+    },
+
+    toBBox: function (item) { return item; },
+
+    compareMinX: compareNodeMinX,
+    compareMinY: compareNodeMinY,
+
+    toJSON: function () { return this.data; },
+
+    fromJSON: function (data) {
+        this.data = data;
+        return this;
+    },
+
+    _all: function (node, result) {
+        var nodesToSearch = [];
+        while (node) {
+            if (node.leaf) result.push.apply(result, node.children);
+            else nodesToSearch.push.apply(nodesToSearch, node.children);
+
+            node = nodesToSearch.pop();
+        }
+        return result;
+    },
+
+    _build: function (items, left, right, height) {
+
+        var N = right - left + 1,
+            M = this._maxEntries,
+            node;
+
+        if (N <= M) {
+            // reached leaf level; return leaf
+            node = createNode(items.slice(left, right + 1));
+            calcBBox(node, this.toBBox);
+            return node;
+        }
+
+        if (!height) {
+            // target height of the bulk-loaded tree
+            height = Math.ceil(Math.log(N) / Math.log(M));
+
+            // target number of root entries to maximize storage utilization
+            M = Math.ceil(N / Math.pow(M, height - 1));
+        }
+
+        node = createNode([]);
+        node.leaf = false;
+        node.height = height;
+
+        // split the items into M mostly square tiles
+
+        var N2 = Math.ceil(N / M),
+            N1 = N2 * Math.ceil(Math.sqrt(M)),
+            i, j, right2, right3;
+
+        multiSelect(items, left, right, N1, this.compareMinX);
+
+        for (i = left; i <= right; i += N1) {
+
+            right2 = Math.min(i + N1 - 1, right);
+
+            multiSelect(items, i, right2, N2, this.compareMinY);
+
+            for (j = i; j <= right2; j += N2) {
+
+                right3 = Math.min(j + N2 - 1, right2);
+
+                // pack each entry recursively
+                node.children.push(this._build(items, j, right3, height - 1));
+            }
+        }
+
+        calcBBox(node, this.toBBox);
+
+        return node;
+    },
+
+    _chooseSubtree: function (bbox, node, level, path) {
+
+        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
+
+        while (true) {
+            path.push(node);
+
+            if (node.leaf || path.length - 1 === level) break;
+
+            minArea = minEnlargement = Infinity;
+
+            for (i = 0, len = node.children.length; i < len; i++) {
+                child = node.children[i];
+                area = bboxArea(child);
+                enlargement = enlargedArea(bbox, child) - area;
+
+                // choose entry with the least area enlargement
+                if (enlargement < minEnlargement) {
+                    minEnlargement = enlargement;
+                    minArea = area < minArea ? area : minArea;
+                    targetNode = child;
+
+                } else if (enlargement === minEnlargement) {
+                    // otherwise choose one with the smallest area
+                    if (area < minArea) {
+                        minArea = area;
+                        targetNode = child;
+                    }
+                }
+            }
+
+            node = targetNode || node.children[0];
+        }
+
+        return node;
+    },
+
+    _insert: function (item, level, isNode) {
+
+        var toBBox = this.toBBox,
+            bbox = isNode ? item : toBBox(item),
+            insertPath = [];
+
+        // find the best node for accommodating the item, saving all nodes along the path too
+        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
+
+        // put the item into the node
+        node.children.push(item);
+        extend(node, bbox);
+
+        // split on node overflow; propagate upwards if necessary
+        while (level >= 0) {
+            if (insertPath[level].children.length > this._maxEntries) {
+                this._split(insertPath, level);
+                level--;
+            } else break;
+        }
+
+        // adjust bboxes along the insertion path
+        this._adjustParentBBoxes(bbox, insertPath, level);
+    },
+
+    // split overflowed node into two
+    _split: function (insertPath, level) {
+
+        var node = insertPath[level],
+            M = node.children.length,
+            m = this._minEntries;
+
+        this._chooseSplitAxis(node, m, M);
+
+        var splitIndex = this._chooseSplitIndex(node, m, M);
+
+        var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
+        newNode.height = node.height;
+        newNode.leaf = node.leaf;
+
+        calcBBox(node, this.toBBox);
+        calcBBox(newNode, this.toBBox);
+
+        if (level) insertPath[level - 1].children.push(newNode);
+        else this._splitRoot(node, newNode);
+    },
+
+    _splitRoot: function (node, newNode) {
+        // split root node
+        this.data = createNode([node, newNode]);
+        this.data.height = node.height + 1;
+        this.data.leaf = false;
+        calcBBox(this.data, this.toBBox);
+    },
+
+    _chooseSplitIndex: function (node, m, M) {
+
+        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
+
+        minOverlap = minArea = Infinity;
+
+        for (i = m; i <= M - m; i++) {
+            bbox1 = distBBox(node, 0, i, this.toBBox);
+            bbox2 = distBBox(node, i, M, this.toBBox);
+
+            overlap = intersectionArea(bbox1, bbox2);
+            area = bboxArea(bbox1) + bboxArea(bbox2);
+
+            // choose distribution with minimum overlap
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                index = i;
+
+                minArea = area < minArea ? area : minArea;
+
+            } else if (overlap === minOverlap) {
+                // otherwise choose distribution with minimum area
+                if (area < minArea) {
+                    minArea = area;
+                    index = i;
+                }
+            }
+        }
+
+        return index;
+    },
+
+    // sorts node children by the best axis for split
+    _chooseSplitAxis: function (node, m, M) {
+
+        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
+            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
+            xMargin = this._allDistMargin(node, m, M, compareMinX),
+            yMargin = this._allDistMargin(node, m, M, compareMinY);
+
+        // if total distributions margin value is minimal for x, sort by minX,
+        // otherwise it's already sorted by minY
+        if (xMargin < yMargin) node.children.sort(compareMinX);
+    },
+
+    // total margin of all possible split distributions where each node is at least m full
+    _allDistMargin: function (node, m, M, compare) {
+
+        node.children.sort(compare);
+
+        var toBBox = this.toBBox,
+            leftBBox = distBBox(node, 0, m, toBBox),
+            rightBBox = distBBox(node, M - m, M, toBBox),
+            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
+            i, child;
+
+        for (i = m; i < M - m; i++) {
+            child = node.children[i];
+            extend(leftBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(leftBBox);
+        }
+
+        for (i = M - m - 1; i >= m; i--) {
+            child = node.children[i];
+            extend(rightBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(rightBBox);
+        }
+
+        return margin;
+    },
+
+    _adjustParentBBoxes: function (bbox, path, level) {
+        // adjust bboxes along the given tree path
+        for (var i = level; i >= 0; i--) {
+            extend(path[i], bbox);
+        }
+    },
+
+    _condense: function (path) {
+        // go through the path, removing empty nodes and updating bboxes
+        for (var i = path.length - 1, siblings; i >= 0; i--) {
+            if (path[i].children.length === 0) {
+                if (i > 0) {
+                    siblings = path[i - 1].children;
+                    siblings.splice(siblings.indexOf(path[i]), 1);
+
+                } else this.clear();
+
+            } else calcBBox(path[i], this.toBBox);
+        }
+    },
+
+    _initFormat: function (format) {
+        // data format (minX, minY, maxX, maxY accessors)
+
+        // uses eval-type function compilation instead of just accepting a toBBox function
+        // because the algorithms are very sensitive to sorting functions performance,
+        // so they should be dead simple and without inner calls
+
+        var compareArr = ['return a', ' - b', ';'];
+
+        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
+        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
+
+        this.toBBox = new Function('a',
+            'return {minX: a' + format[0] +
+            ', minY: a' + format[1] +
+            ', maxX: a' + format[2] +
+            ', maxY: a' + format[3] + '};');
+    }
+};
+
+function findItem(item, items, equalsFn) {
+    if (!equalsFn) return items.indexOf(item);
+
+    for (var i = 0; i < items.length; i++) {
+        if (equalsFn(item, items[i])) return i;
+    }
+    return -1;
+}
+
+// calculate node's bbox from bboxes of its children
+function calcBBox(node, toBBox) {
+    distBBox(node, 0, node.children.length, toBBox, node);
+}
+
+// min bounding rectangle of node children from k to p-1
+function distBBox(node, k, p, toBBox, destNode) {
+    if (!destNode) destNode = createNode(null);
+    destNode.minX = Infinity;
+    destNode.minY = Infinity;
+    destNode.maxX = -Infinity;
+    destNode.maxY = -Infinity;
+
+    for (var i = k, child; i < p; i++) {
+        child = node.children[i];
+        extend(destNode, node.leaf ? toBBox(child) : child);
+    }
+
+    return destNode;
+}
+
+function extend(a, b) {
+    a.minX = Math.min(a.minX, b.minX);
+    a.minY = Math.min(a.minY, b.minY);
+    a.maxX = Math.max(a.maxX, b.maxX);
+    a.maxY = Math.max(a.maxY, b.maxY);
+    return a;
+}
+
+function compareNodeMinX(a, b) { return a.minX - b.minX; }
+function compareNodeMinY(a, b) { return a.minY - b.minY; }
+
+function bboxArea(a)   { return (a.maxX - a.minX) * (a.maxY - a.minY); }
+function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
+
+function enlargedArea(a, b) {
+    return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
+           (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
+}
+
+function intersectionArea(a, b) {
+    var minX = Math.max(a.minX, b.minX),
+        minY = Math.max(a.minY, b.minY),
+        maxX = Math.min(a.maxX, b.maxX),
+        maxY = Math.min(a.maxY, b.maxY);
+
+    return Math.max(0, maxX - minX) *
+           Math.max(0, maxY - minY);
+}
+
+function contains(a, b) {
+    return a.minX <= b.minX &&
+           a.minY <= b.minY &&
+           b.maxX <= a.maxX &&
+           b.maxY <= a.maxY;
+}
+
+function intersects(a, b) {
+    return b.minX <= a.maxX &&
+           b.minY <= a.maxY &&
+           b.maxX >= a.minX &&
+           b.maxY >= a.minY;
+}
+
+function createNode(children) {
+    return {
+        children: children,
+        height: 1,
+        leaf: true,
+        minX: Infinity,
+        minY: Infinity,
+        maxX: -Infinity,
+        maxY: -Infinity
+    };
+}
+
+// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
+// combines selection algorithm with binary divide & conquer approach
+
+function multiSelect(arr, left, right, n, compare) {
+    var stack = [left, right],
+        mid;
+
+    while (stack.length) {
+        right = stack.pop();
+        left = stack.pop();
+
+        if (right - left <= n) continue;
+
+        mid = left + Math.ceil((right - left) / n / 2) * n;
+        quickselect(arr, mid, left, right, compare);
+
+        stack.push(left, mid, mid, right);
+    }
+}
+
+});
+
+// EXTERNAL MODULE: ./node_modules/rbush/node_modules/quickselect/quickselect.js
+var quickselect_namespaceFn = () => {
+	return __webpack_require__(261);
+};
 
 ;// external "maplibregl"
 const external_maplibregl_namespaceObject = maplibregl;
@@ -18141,7 +18151,6 @@ class PointWithMeasure extends Point {
  * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
- * @param {string} [options.type] - 数据类型，如："LINEM"。
  * @extends GeometryCollection
  * @usage
  */
@@ -18217,7 +18226,7 @@ class Route extends Collection {
          * @member {string} Route.prototype.type
          * @description 服务端几何对象类型。
          */
-        this.type = null;
+        this.type = "LINEM";
 
         /**
          * @member {Array.<string>} [Route.prototype.componentTypes=LineString]
@@ -20007,9 +20016,9 @@ var ChartType = {
  * ```
  */
 var ClipAnalystMode = {
-    /** 裁剪分析操作。 */
+    /** 内部裁剪，保留落在裁剪区范围内的数据。 */
     CLIP: "clip",
-    /** 求交分析操作。 */
+    /** 外部裁剪，保留落在裁剪区范围外的数据。 */
     INTERSECT: "intersect"
 };
 
@@ -22543,6 +22552,40 @@ function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
   const renderLayers = getLayerCatalogRenderLayers(layerParts, catalogId, layersOnMap);
   return layersOnMap.find(item => item.id === renderLayers[0]);
 }
+
+// 按数字组件比较地图版本，避免 3.3.10 被误判为低于 3.3.7。
+function isMapVersionGreaterThan(mapVersion, referenceVersion) {
+  if (typeof mapVersion !== 'string' || typeof referenceVersion !== 'string') {
+    return false;
+  }
+  const mapVersionParts = mapVersion.split('.').map(Number);
+  const referenceVersionParts = referenceVersion.split('.').map(Number);
+  const partCount = Math.max(mapVersionParts.length, referenceVersionParts.length);
+  for (let index = 0; index < partCount; index++) {
+    const mapPart = mapVersionParts[index] || 0;
+    const referencePart = referenceVersionParts[index] || 0;
+    if (mapPart !== referencePart) {
+      return mapPart > referencePart;
+    }
+  }
+  return false;
+}
+
+// 垂直翻转 RGBA 图片，保持像素顺序并避免逐通道复制。
+function flipImageVertically(imageData, width, height) {
+  const sourceData = imageData.data || imageData;
+  const flipped = new Uint8Array(sourceData.length);
+  const rowSize = width * 4;
+
+  for (let row = 0; row < height; row++) {
+    const sourceRowStart = row * rowSize;
+    const targetRowStart = (height - row - 1) * rowSize;
+    flipped.set(sourceData.subarray(sourceRowStart, sourceRowStart + rowSize), targetRowStart);
+  }
+
+  return flipped;
+}
+
 ;// ./src/maplibregl/core/Util.js
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -22944,8 +22987,10 @@ function createMapExtendExtending(product) {
         }
         return this;
       }
-      this.style.setLayoutProperty(layerID, name, value);
-      this._update(true);
+      if (this.getLayer(layerID)) {
+        this.style.setLayoutProperty(layerID, name, value);
+        this._update(true); 
+      }
       return this;
     }
     
@@ -23165,7 +23210,7 @@ function createMapExtendExtending(product) {
   const originMapProto = (external_maplibregl_default()).Map.prototype;
 
   if (!originMapProto._inherit) {
-    (external_maplibregl_default()).Map = class MapEnhance extends createMapExtendExtending((external_maplibregl_default())) {
+    ;(external_maplibregl_default()).Map = class MapEnhance extends createMapExtendExtending((external_maplibregl_default())) {
       constructor(options) {
         super(options);
       }
@@ -23188,7 +23233,7 @@ function createMapExtendExtending(product) {
  * @category  iServer Core
  * @classdesc maplibregl.supermap 服务基类。
  * @version 11.1.0
- * @param {string} url - 服务地址。 
+ * @param {string} url - 服务地址。具体地址类型由子类决定。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -25889,7 +25934,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
  * .code(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 地址匹配服务地址，如 http://{ip}:{port}/iserver/services/addressmatch-Address/restjsr/v1/address 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -25944,12 +25989,12 @@ class AddressMatchService extends ServiceBase {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -25987,7 +26032,7 @@ class QueryParameters {
 
         /**
          * @member {QueryOption} [QueryParameters.prototype.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY]
-         * @description 查询结果类型。
+         * @description 查询结果选项对象，用于指定查询结果中包含的内容。
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
@@ -26002,7 +26047,7 @@ class QueryParameters {
 
         /**
          * @member {number} [QueryParameters.prototype.startRecord=0]
-         * @description 查询起始记录号。
+         * @description 查询起始记录位置。
          */
         this.startRecord = 0;
 
@@ -26881,8 +26926,8 @@ class ChartMaritimePcInfoService extends CommonServiceBase {
  * @aliasclass Theme
  * @deprecatedclass SuperMap.Theme
  * @category  iServer Map Theme
- * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
- * 专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
+ * @classdesc 专题图基类。单值专题图，标签专题图，范围分段专题图等都继承自该类。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @param {string} type - 专题图类型。
  * @param {Object} options - 可选参数。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -29595,7 +29640,7 @@ class ThemeRange extends Theme {
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
- * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
+ * @param {boolean} [options.visible=false] - 图层是否可见。true 表示此图层可见，false 表示图层不可见。
  * @usage
  */
 class UGCLayer {
@@ -29646,7 +29691,7 @@ class UGCLayer {
 
         /**
          * @member {boolean} UGCLayer.prototype.visible
-         * @description 地图对象在同一范围内时，是否重叠显示。
+         * @description 图层是否可见。true 表示此图层可见，false 表示图层不可见。
          */
         this.visible = null;
 
@@ -29718,8 +29763,8 @@ class UGCLayer {
  * @param {number} [options.opaqueRate] - 图层的不透明度。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {number} [options.symbolScale] - 图层符号缩放的基准比例尺。
- * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
- * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @usage
  */
 class UGCMapLayer extends UGCLayer {
@@ -29770,13 +29815,14 @@ class UGCMapLayer extends UGCLayer {
 
         /**
          * @member {boolean} [UGCMapLayer.prototype.overlapDisplayed=false]
-         * @description 地图对象在同一范围内时，是否重叠显示。
+         * @description 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
          */
         this.overlapDisplayed = null;
 
         /**
          * @member {OverlapDisplayedOptions} UGCMapLayer.prototype.overlapDisplayedOptions
-         * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+         * @description 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。<br>
+         * 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
          */
         this.overlapDisplayedOptions = null;
         
@@ -31831,13 +31877,13 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
-       * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+       * @description 查询结果的最小索引号，指定了返回结果的开始位置。如果该值大于查询结果的最大索引号，则查询结果为空。
        */
       this.fromIndex = 0;
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.toIndex=19]
-       * @description 查询结果的最大索引号。
+       * @description 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
        * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
        */
       this.toIndex = 19;
@@ -32126,19 +32172,19 @@ class FilterParameter {
  * @deprecatedclass SuperMap.GetFeaturesParametersBase
  * @category  iServer Data FeatureResults
  * @classdesc 要素查询参数基类。此类存储了进行要素查询的数据集列表以及一些通用的查询参数，
- * 包括：是否返回查询结果、查询结果的最大/最小索引号、动态投影的目标坐标系、聚合查询相关参数等。
+ * 包括：是否返回查询结果、查询结果的最大/最小索引号、查询结果的目标坐标系、聚合查询相关参数等。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于数据的原有坐标系统时， 系统会进行坐标转换，并返回坐标转换后的查询结果。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @usage
  */
@@ -32152,19 +32198,19 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {string} GetFeaturesParametersBase.prototype.targetEpsgCode
-         * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+         * @description 查询结果的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
          */
         this.targetEpsgCode = null;
 
         /**
          * @member {Object} GetFeaturesParametersBase.prototype.targetPrj
-         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         * @description 查询结果的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
          */
         this.targetPrj = null;
 
         /**
          * @member {boolean} [GetFeaturesParametersBase.prototype.returnContent=true]
-         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
          *              如果为 true，则直接返回新创建资源，即查询结果的表述。
          *              如果为 false，则返回的是查询结果资源的 URI。
          */
@@ -32172,13 +32218,13 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.fromIndex=0]
-         * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+         * @description 查询结果的最小索引号，指定了返回结果的开始位置。如果该值大于查询结果的最大索引号，则查询结果为空。
          */
         this.fromIndex = 0;
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.toIndex=19]
-         * @description 查询结果的最大索引号。如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+         * @description 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
          */
         this.toIndex = 19;
 
@@ -32253,12 +32299,12 @@ class GetFeaturesParametersBase {
  * @param {Array.<number>} options.IDs - 指定查询的元素 ID 信息。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -32421,12 +32467,12 @@ class GetFeaturesByIDsService extends GetFeaturesServiceBase {
  * @param {Object} options - 参数。
  * @param {FilterParameter} options.queryParameter - 查询过滤条件参数。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -32576,17 +32622,17 @@ class GetFeaturesBySQLService extends GetFeaturesServiceBase {
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
- * @param {ModuleBounds} options.bounds - 查询的范围对象。
+ * @param {ModuleBounds} options.bounds - 查询的矩形坐标范围。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
- * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
+ * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。如果为 true，仅返回要素信息，以提升查询性能。如果为 false，返回完整的查询结果，包含查询结果的要素信息、数据集信息以及要素数量。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于数据的原有坐标系统时，系统会进行坐标转换，并返回坐标转换后的查询结果。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -32603,7 +32649,7 @@ class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {ModuleBounds} GetFeaturesByBoundsParameters.prototype.bounds
-         * @description 用于查询的范围对象。
+         * @description 查询的矩形坐标范围。
          *
          */
         this.bounds = null;
@@ -32789,12 +32835,12 @@ class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.attributeFilter] - 属性查询条件。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */
@@ -32963,7 +33009,7 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
  * @class GetFeaturesByGeometryParameters
  * @deprecatedclass SuperMap.GetFeaturesByGeometryParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询参数类。此类用于指定进行几何查询的数据集列表，设置查询的几何对象、属性过滤条件、空间查询模式以及一些通用的查询参数。
+ * @classdesc 数据集空间查询参数类。此类用于指定进行空间查询的数据集列表，设置查询的几何对象、属性过滤条件、空间查询模式以及一些通用的查询参数。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
@@ -32971,16 +33017,16 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
  * @param {Object} options - 参数。
  * @param {ModuleGeometry} options.geometry - 查询的几何对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
- * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。
+ * @param {string} [options.attributeFilter] - 空间查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.orderBy] - 查询排序的字段，orderBy 的字段须为数值型的。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -32990,7 +33036,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {string} GetFeaturesByGeometryParameters.prototype.getFeatureMode
-         * @description 数据集查询模式。几何查询有 "SPATIAL"，"SPATIAL_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 SPATIAL_ATTRIBUTEFILTER 访问服务。
+         * @description 数据集查询模式。空间查询有 "SPATIAL"，"SPATIAL_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 SPATIAL_ATTRIBUTEFILTER 访问服务。
          */
         this.getFeatureMode = 'SPATIAL';
 
@@ -33008,7 +33054,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {string} GetFeaturesByGeometryParameters.prototype.attributeFilter
-         *  @description 几何查询属性过滤条件。
+         *  @description 空间查询属性过滤条件。
          */
         this.attributeFilter = null;
 
@@ -33124,7 +33170,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
  * @class GetFeaturesByGeometryService
  * @deprecatedclass SuperMap.GetFeaturesByGeometryService
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
+ * @classdesc 数据集空间查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
@@ -33157,7 +33203,7 @@ class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 
     /**
      * @function GetFeaturesByGeometryService.prototype.getJsonParameters
-     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @returns {Object} 转化后的 JSON 字符串。
@@ -33714,7 +33760,7 @@ const FEATURE_SERVICE_MAP = {
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑，要素附件查询、添加、删除等方法。
+ * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，空间查询，缓冲区查询，地物编辑，要素附件查询、添加、删除等方法。
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -33821,8 +33867,8 @@ class FeatureService_FeatureService {
 
   /**
    * @function FeatureService.prototype.getFeaturesByGeometry
-   * @description 数据集几何查询服务类。
-   * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+   * @description 数据集空间查询服务类。
+   * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
    * @returns {Promise} Promise 对象。
@@ -34116,36 +34162,58 @@ var earthRadius = 63710088e-1;
 var factors = {
   centimeters: earthRadius * 100,
   centimetres: earthRadius * 100,
+  cm: earthRadius * 100,
   degrees: 360 / (2 * Math.PI),
+  deg: 360 / (2 * Math.PI),
   feet: earthRadius * 3.28084,
+  ft: earthRadius * 3.28084,
   inches: earthRadius * 39.37,
+  in: earthRadius * 39.37,
   kilometers: earthRadius / 1e3,
   kilometres: earthRadius / 1e3,
+  km: earthRadius / 1e3,
   meters: earthRadius,
   metres: earthRadius,
+  m: earthRadius,
   miles: earthRadius / 1609.344,
+  mi: earthRadius / 1609.344,
   millimeters: earthRadius * 1e3,
   millimetres: earthRadius * 1e3,
+  mm: earthRadius * 1e3,
   nauticalmiles: earthRadius / 1852,
+  nmi: earthRadius / 1852,
   radians: 1,
-  yards: earthRadius * 1.0936
+  rad: 1,
+  yards: earthRadius * 1.0936,
+  yd: earthRadius * 1.0936
 };
 var areaFactors = (/* unused pure expression or super */ null && ({
   acres: 247105e-9,
+  ac: 247105e-9,
   centimeters: 1e4,
   centimetres: 1e4,
+  cm: 1e4,
   feet: 10.763910417,
+  ft: 10.763910417,
   hectares: 1e-4,
+  ha: 1e-4,
   inches: 1550.003100006,
+  in: 1550.003100006,
   kilometers: 1e-6,
   kilometres: 1e-6,
+  km: 1e-6,
   meters: 1,
   metres: 1,
+  m: 1,
   miles: 386e-9,
+  mi: 386e-9,
   nauticalmiles: 29155334959812285e-23,
+  nmi: 29155334959812285e-23,
   millimeters: 1e6,
   millimetres: 1e6,
-  yards: 1.195990046
+  mm: 1e6,
+  yards: 1.195990046,
+  yd: 1.195990046
 }));
 function feature(geom, properties, options = {}) {
   const feat = { type: "Feature" };
@@ -34364,6 +34432,16 @@ function dist_esm_isNumber(num) {
 }
 function esm_isObject(input) {
   return input !== null && typeof input === "object" && !Array.isArray(input);
+}
+function removeBbox(geojson) {
+  delete geojson.bbox;
+  if (geojson.type === "Feature") {
+    if (geojson.geometry) removeBbox(geojson.geometry);
+  } else if (geojson.type === "FeatureCollection") {
+    geojson.features.forEach(removeBbox);
+  } else if (geojson.type === "GeometryCollection") {
+    geojson.geometries.forEach(removeBbox);
+  }
 }
 function validateBBox(bbox) {
   if (!bbox) {
@@ -34827,7 +34905,7 @@ var index_default = (/* unused pure expression or super */ null && (distance));
  * }).queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-chart/rest/maps/GB4X0000_52000 。
  * @param {string} [dataUrl] - 数据服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -34965,8 +35043,8 @@ class ChartService extends ServiceBase {
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} [options.onEachFeature] - 设置每个数据加载 popup 等。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - 排除字段。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
+ * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -34986,7 +35064,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
         /**
          * @member {GeoJSONObject} DataFlowService.prototype.geometry
-         * @description 指定几何范围，只有在该范围内的要素才能被订阅。
+         * @description 空间范围，只有在该范围内的要素才能被接收。
          */
         this.geometry = null;
 
@@ -34998,7 +35076,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
         /**
          * @member {Object} DataFlowService.prototype.excludeField
-         * @description 排除字段。
+         * @description 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
          */
         this.excludeField = null;
 
@@ -35078,8 +35156,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setExcludeField(excludeField) {
@@ -35090,8 +35168,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @description 设置空间范围，只有在该范围内的要素才能被接收。
+     * @param {GeoJSONObject} geometry - 空间范围。
      * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setGeometry(geometry) {
@@ -35200,10 +35278,10 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
  *  .queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据流服务地址，如 ws://{ip}:{port}/iserver/services/dataflowTest/dataflow 。
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - 排除字段。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
+ * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @fires DataFlowService#broadcastSocketConnected
@@ -35313,8 +35391,8 @@ class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -35324,8 +35402,8 @@ class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @description 设置空间范围，只有在该范围内的要素才能被接收。
+     * @param {GeoJSONObject} geometry - 空间范围。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -35648,7 +35726,7 @@ class UpdateDatasetParameters {
  * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @version 11.1.0
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -35672,7 +35750,7 @@ class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 根据数据源名称查询该数据源下所有数据集的信息。
      * @example
      *   new DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
@@ -35689,7 +35767,7 @@ class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息
      * @example
      *   new DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething
@@ -35933,7 +36011,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
  * @modulecategory Services
  * @version 11.1.0
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -35955,7 +36033,7 @@ class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集合查询服务。
+     * @description 获取当前服务下所有数据源信息。
      * @example
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
@@ -35969,7 +36047,7 @@ class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasource
-     * @description 数据源信息查询服务。
+     * @description 根据数据源名称获取指定数据源的信息。
      * @example
      *   new DatasourceService(url).getDatasource(datasourceName,function(result){
      *     //doSomething
@@ -36025,7 +36103,7 @@ class DatasourceService extends ServiceBase {
 /**
  * @class FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、缓冲区查询、地物编辑，要素附件查询、编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、空间查询、缓冲区查询、地物编辑，要素附件查询、编辑等方法。
  * @version 11.1.0
  * @modulecategory Services
  * @example
@@ -36034,7 +36112,7 @@ class DatasourceService extends ServiceBase {
  *     //doSomething
  * })
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options -参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -36102,8 +36180,8 @@ class FeatureService extends ServiceBase {
 
     /**
      * @function FeatureService.prototype.getFeaturesByGeometry
-     * @description 数据集几何查询服务类。
-     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @description 数据集空间查询服务类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -36710,7 +36788,7 @@ class FieldService_FieldService {
  * new FieldService(url).getFields(function(result){
  *     //doSomething
  * });
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -36767,8 +36845,7 @@ class FieldService extends ServiceBase {
  *  .getGridCellInfos(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求地图服务，URL 应为：</br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -37001,7 +37078,7 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
                 console.log(serverResult);
             })
         })
- * @param {string} url - 服务地址。
+ * @param {string} url - 处理自动化服务地址，如 http://{ip}:{port}/iserver/services/geoprocessing/restjsr/gp/v2 。
  * @param {Object} options - 参数。
  * @usage
  */
@@ -37147,7 +37224,7 @@ class GeoprocessingService extends ServiceBase {
  * new LayerInfoService(url).getLayersInfo(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求地图服务,URL 应为：</br>
+ * @param {string} url - 地图服务地址。请求地图服务,URL 应为：</br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -37389,7 +37466,7 @@ class TilesetsService extends CommonServiceBase {
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -37661,7 +37738,7 @@ class MeasureService_MeasureService extends CommonServiceBase {
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
+ * @param {string} url - 地图服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -38612,7 +38689,7 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
   * @class TraceAnalystService
   * @deprecatedclass SuperMap.TraceAnalystService
   * @category iServer NetworkAnalyst TraceAnalystService
-  * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或节点的上游/下游弧段和结点。
+  * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或结点的上游/下游弧段和结点。
   * @version 11.1.1
   * @extends NetworkAnalystServiceBase
   * @param {string} url - 服务地址。请求网络分析服务，URL 应为：
@@ -40711,7 +40788,7 @@ class NetworkAnalystService_NetworkAnalystService {
     /**
      * @function NetworkAnalystService.prototype.traceAnalyst
      * @description 上游/下游 追踪分析服务。<br>
-     * 查找给定弧段或节点的上游/下游弧段和结点。
+     * 查找给定弧段或结点的上游/下游弧段和结点。
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -40940,9 +41017,7 @@ class NetworkAnalystService_NetworkAnalystService {
  *  .findPath(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求网络分析服务，URL 应为：</br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
- *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
+ * @param {string} url - 网络分析服务地址，如 http://{ip}:{port}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -41003,7 +41078,7 @@ class NetworkAnalystService extends ServiceBase {
     /**
      * @function NetworkAnalystService.prototype.traceAnalyst
      * @description 上游/下游 追踪分析服务。<br>
-     * 查找给定弧段或节点的上游/下游弧段和结点。
+     * 查找给定弧段或结点的上游/下游弧段和结点。
      * @version 11.1.1
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -41730,8 +41805,8 @@ class FacilityAnalystTracedown3DService extends CommonServiceBase {
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。
- * @param {number} [options.edgeID] - 指定的弧段 ID。edgeID 与 nodeID 必须指定一个。
- * @param {number} [options.nodeID] - 指定的结点 ID。edgeID 与 edgeID 必须指定一个。
+ * @param {number} [options.edgeID] - 三维设施网络分析中指定的弧段 ID，nodeID 与 edgeID 两者不能同时存在。
+ * @param {number} [options.nodeID] - 三维设施网络分析中指定的节点 ID，nodeID 与 edgeID 两者不能同时存在。
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  * @usage
@@ -41978,9 +42053,7 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
  *  .sinksFacilityAnalyst(params,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。请求网络分析服务，URL 应为：</br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {string} url - 三维网络分析服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -42541,13 +42614,13 @@ class MappingParameters {
  * @classdesc 此类用于设置核密度分析的数据集、分析范围、分析方法、权重、影响半径、分辨率、分析单位等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
+ * @param {string} options.datasetName - 进行核密度分析的点数据集或线数据集。
  * @param {string} options.fields - 权重索引。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
- * @param {number} [options.resolution=80] - 分辨率。
- * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
- * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
- * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {ModuleBounds} [options.query] - 核密度分析范围，默认为全图范围。
+ * @param {number} [options.resolution=80] - 核密度分析结果栅格数据的分辨率，即单个像元所对应的地面面积大小，单位与数据集单位一致。
+ * @param {number} [options.method=0] - 核密度分析方法。0 表示简单密度分析，1 表示核密度分析。
+ * @param {number} [options.meshType=0] - 核密度分析类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {number} [options.radius=300] - 核密度分析的影响半径。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
  * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
@@ -42563,7 +42636,7 @@ class KernelDensityJobParameter {
         }
         /**
          * @member {string} KernelDensityJobParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 进行核密度分析的点数据集或线数据集。
          */
         this.datasetName = "";
 
@@ -42980,14 +43053,14 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
  * @classdesc 点聚合分析任务参数类。此类用于设置点聚合分析的数据集、分析范围、权重索引、分析模式、分析类型、聚合类型等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
- * @param {ModuleBounds} [options.query] - 聚合分析范围（默认为全图范围）。
- * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
+ * @param {string} options.datasetName - 数据集名称，只支持点数据集。
+ * @param {string} [options.regionDataset ] - 指定输入数据需要聚合到的面数据集，比如行政区划面等。
+ * @param {ModuleBounds} [options.query] - 聚合分析范围，指定范围内的点参与聚合分析，默认为输入数据集的全幅范围。 
+ * @param {number} [options.fields] - 权重索引。指定待分析的点的权重值所在的字段名称集合。仅支持系统字段以外的整形、长整形、浮点型的字段。可以传递多个表示权重的字段索引，以逗号分隔，相当于对待分析的点进行多次操作，每次对应不同的权重值。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
  * @param {number} [options.meshType=0] - 聚合分析类型（聚合类型为网格面聚合时使用的参数）。0 表示四边形网格，1 表示六边形网格。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。指定聚合类型为网格面聚合，还是多边形聚合。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -43000,13 +43073,13 @@ class SummaryMeshJobParameter {
         }
         /**
          * @member {string} SummaryMeshJobParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 数据集名称，只支持点数据集。
          */
         this.datasetName = "";
 
         /**
          * @member {string} SummaryMeshJobParameter.prototype.regionDataset
-         * @description 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
+         * @description 指定输入数据需要聚合到的面数据集，比如行政区划面等。
          */
         this.regionDataset = "";
 
@@ -43228,10 +43301,10 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
  * @classdesc 矢量裁剪分析任务参数类。此类用于设置矢量裁剪分析的数据集、裁剪分析模式、裁剪几何对象等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} options.datasetVectorClip - 裁剪对象数据集。
- * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
- * @param {string} [options.geometryClip] - 裁剪几何对象。
+ * @param {string} options.datasetName - 待裁剪数据集的名称。
+ * @param {string} options.datasetVectorClip - 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
+ * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
+ * @param {string} [options.geometryClip] - 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -43243,25 +43316,25 @@ class VectorClipJobsParameter {
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 待裁剪数据集的名称。
          */
         this.datasetName = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
-         * @description 裁剪对象数据集。
+         * @description 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
          */
         this.datasetVectorClip = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.geometryClip
-         * @description 裁剪几何对象。
+         * @description 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
          */
         this.geometryClip = "";
 
         /**
          * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-         * @description 裁剪分析模式。
+         * @description 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
          */
         this.mode = ClipAnalystMode.CLIP;
 
@@ -43616,20 +43689,20 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
  * @classdesc 区域汇总分析任务参数类。此类用于设置区域汇总分析的数据集、分析范围、标准属性字段、
  * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {string} options.datasetName - 数据集名称，只支持线数据集和面数据集。
+ * @param {string} [options.regionDataset] - 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
+ * @param {ModuleBounds} [options.query] - 区域汇总分析范围，默认为全图范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
- * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
- * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
- * @param {number} [options.resolution=100] - 网格大小。
- * @param {number} [options.meshType=0] - 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {boolean} [options.sumShape=true] - 如果源数据集是线数据集，则同时统计线的长度作为统计结果的一部分；如果源数据集是面数据集，则同时统计面的面积作为统计结果的一部分。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
+ * @param {number} [options.resolution=100] - 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
+ * @param {number} [options.meshType=0] - 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 汇总类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -43649,7 +43722,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {string} SummaryRegionJobParameter.prototype.regionDataset
-         * @description 汇总数据集（多边形汇总时用到的参数）。
+         * @description 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
          */
         this.regionDataset = "";
 
@@ -43667,7 +43740,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-         * @description 是否以标准属性字段统计。
+         * @description 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
          */
         this.standardSummaryFields = false;
 
@@ -43685,7 +43758,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
-         * @description 是否以权重字段统计。
+         * @description 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
          */
         this.weightedSummaryFields = false;
 
@@ -43703,13 +43776,13 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.meshType=0]
-         * @description 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+         * @description 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.resolution=100]
-         * @description 网格大小。
+         * @description 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
          */
         this.resolution = 100;
 
@@ -43721,7 +43794,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {SummaryType} [SummaryRegionJobParameter.prototype.type=SummaryType.SUMMARYMESH]
-         * @description 汇总类型。
+         * @description 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
          */
         this.type = SummaryType.SUMMARYMESH;
 
@@ -43906,7 +43979,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围，默认为全图范围。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
@@ -45253,7 +45326,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
  *  .getKernelDensityJobs(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 分布式分析服务地址，如 http://{ip}:{port}/iserver/services/distributedanalyst/rest/v1/jobs 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -45921,13 +45994,13 @@ class QueryServiceBase extends CommonServiceBase {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 是否返回查询结果的查询范围信息，当 returnContent=false 时有效。如果为 true，返回查询结果的查询范围信息。如果为 false，则不返回查询范围信息。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -46057,14 +46130,14 @@ class QueryByBoundsService extends QueryServiceBase {
  * @param {number} options.distance - 查询距离，单位与所查询图层对应的数据集单位相同。距离查询时，表示距离地物的距离。最近地物查询时，表示搜索的范围。此为必设参数。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
+ * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
  * @param {boolean} [options.isNearest=false] - 是否为最近距离查询。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -46216,13 +46289,13 @@ class QueryByDistanceService extends QueryServiceBase {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -46337,21 +46410,21 @@ class QueryBySQLService extends QueryServiceBase {
  * @class QueryByGeometryParameters
  * @deprecatedclass SuperMap.QueryByGeometryParameters
  * @category  iServer Map QueryResults
- * @classdesc 几何查询参数类。
+ * @classdesc 空间查询参数类。
  *            此类除了能够设置地图查询中通用的查询参数以外，还可以指定几何对象等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {Object} options.geometry - 查询的几何对象。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.INTERSECT] - 空间查询模式。
  * @usage
@@ -46448,8 +46521,8 @@ class QueryByGeometryService extends QueryServiceBase {
     /**
      * @function QueryByGeometryService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
-     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
-     * @param {QueryByGeometryParameters} params - 几何查询参数类。
+     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
+     * @param {QueryByGeometryParameters} params - 空间查询参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
@@ -46485,7 +46558,7 @@ class QueryByGeometryService extends QueryServiceBase {
   * @class QueryService
   * @category  iServer Map QueryResults
   * @classdesc 地图查询服务类。
-  *            提供：范围查询，SQL 查询，几何查询，距离查询。
+  *            提供：范围查询，SQL 查询，空间查询，距离查询。
   * @extends {ServiceBase}
   * @param {string} url - 服务地址。
   * @param {Object} options - 参数。
@@ -46508,7 +46581,7 @@ class QueryByGeometryService extends QueryServiceBase {
  
      /**
       * @function QueryService.prototype.queryByBounds
-      * @description 范围查询地图服务。
+      * @description 范围查询。查询指定矩形范围内的要素，以及外接矩形与指定范围相交的几何对象。
       * @param {QueryByBoundsParameters} params - 范围查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -46571,8 +46644,8 @@ class QueryByGeometryService extends QueryServiceBase {
  
      /**
       * @function QueryService.prototype.queryByGeometry
-      * @description 地图几何查询服务。
-      * @param {QueryByGeometryParameters} params - 几何查询参数类。
+      * @description 空间查询。查询与指定的几何对象符合某种空间关系和查询条件的要素。
+      * @param {QueryByGeometryParameters} params - 空间查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -46609,11 +46682,11 @@ class QueryByGeometryService extends QueryServiceBase {
  * @class QueryService
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
- *            提供：范围查询，SQL 查询，几何查询，距离查询。
+ *            提供：范围查询，SQL 查询，空间查询，距离查询。
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址。如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -46634,7 +46707,7 @@ class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByBounds
-     * @description 范围查询地图服务。
+     * @description 范围查询。查询指定矩形范围内的要素，以及外接矩形与指定范围相交的几何对象。
      * @param {QueryByBoundsParameters} params - 范围查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -46673,8 +46746,8 @@ class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByGeometry
-     * @description 地图几何查询服务。
-     * @param {QueryByGeometryParameters} params - 几何查询参数类。
+     * @description 空间查询。查询与指定的几何对象符合某种空间关系和查询条件的要素。
+     * @param {QueryByGeometryParameters} params - 空间查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -48103,8 +48176,8 @@ class GenerateSpatialDataService extends SpatialAnalystBase {
  * @param {boolean} [options.isBorderInside] - 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
  * @param {boolean} [options.returnFeature] - 是否返回 Feature 信息。
  * @param {boolean} [options.returnGeoRelatedOnly=true] - 仅返回满足指定空间关系的空间对象。
- * @param {number} [options.startRecord=0] - 分析结果起始记录位置。
- * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足500条结果则返回所有分析结果。
+ * @param {number} [options.startRecord=0] - 空间关系分析结果起始记录位置。
+ * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足 500 条结果则返回所有分析结果。
  * @usage
  */
 class GeoRelationAnalystParameters {
@@ -48155,7 +48228,7 @@ class GeoRelationAnalystParameters {
 
         /**
          * @member {number} [GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly=0]
-         * @description 分析结果起始记录位置。
+         * @description 空间关系分析结果起始记录位置。
          */
         this.startRecord = 0;
 
@@ -49431,12 +49504,12 @@ class OverlayAnalystParameters {
  * @param {string} options.operateDataset - 操作数据集的名称，即叠加对象数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：Neighbor_R@Jingjin。
  * @param {string} options.sourceDataset - 源数据集名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_R@Jingjin。
  * @param {Array.<string>} [options.operateDatasetFields] - 叠加分析中操作数据集保留在结果数据集中的字段名列表。
- * @param {FilterParameter} [options.operateDatasetFilter] - 设置操作数据集中空间对象过滤条件。
+ * @param {FilterParameter} [options.operateDatasetFilter] - 操作数据集的过滤条件，可以为 null。
  * @param {Array.<ModulePolygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
  * @param {Array.<string>} [options.sourceDatasetFields] - 叠加分析中源数据集保留在结果数据集中的字段名列表。
  * @param {FilterParameter} [options.sourceDatasetFilter] - 设置源数据集中空间对象过滤条件。设置了过滤参数后，只有满足条件的对象参与叠加分析。
- * @param {number} [options.tolerance=0] - 容限。
- * @param {OverlayOperationType} options.operation - 叠加操作枚举值。
+ * @param {number} [options.tolerance=0] - 叠加分析的容限值。
+ * @param {OverlayOperationType} options.operation - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -49460,7 +49533,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {FilterParameter} DatasetOverlayAnalystParameters.prototype.operateDatasetFilter
-         * @description 设置操作数据集中空间对象过滤条件。
+         * @description 操作数据集的过滤条件，可以为 null。
          */
         this.operateDatasetFilter = new FilterParameter();
 
@@ -49493,7 +49566,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {number} [DatasetOverlayAnalystParameters.prototype.tolerance=0]
-         * @description 容限。
+         * @description 叠加分析的容限值。
          */
         this.tolerance = 0;
 
@@ -49592,7 +49665,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。
  * @param {Array.<GeoJSONFeature>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。
  * @param {Array.<GeoJSONFeature>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。
- * @param {OverlayOperationType} [options.operation] - 叠加操作枚举值。
+ * @param {OverlayOperationType} [options.operation] - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @extends {OverlayAnalystParameters}
  * @usage
  */
@@ -52686,7 +52759,7 @@ class SpatialAnalystService_SpatialAnalystService {
  *  .bufferAnalysis(params,function(result){
  *    //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 空间分析服务地址，如 http://{ip}:{port}/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -53129,8 +53202,8 @@ class SpatialAnalystService extends ServiceBase {
  * @param {Array.<JoinItem>} [options.joinItems] - 专题图外部表的连接信息 JoinItem 数组。
  * @param {Array.<CommonTheme>} options.themes - 专题图对象列表。
  * @param {Array.<string>} [options.displayFilters] - 专题图属性过滤条件。
- * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。
- * @param {Object} [options.fieldValuesDisplayFilter] - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
+ * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
+ * @param {Object} [options.fieldValuesDisplayFilter] - 根据要素中的值来判断是否显示在地图中的过滤器。包含属性：values 待过滤的值、fieldName 待过滤的字段名称、fieldValuesDisplayMode 过滤模式。
  * @usage
  */
 class ThemeParameters {
@@ -53170,7 +53243,7 @@ class ThemeParameters {
 
         /**
          * @member {Array.<string>}  [ThemeParameters.prototype.displayOrderBys]
-         * @description 专题图对象生成符号叠加次序排序字段。
+         * @description 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
          */
         this.displayOrderBys = null;
 
@@ -53178,7 +53251,7 @@ class ThemeParameters {
          * @member {Object} [ThemeParameters.prototype.fieldValuesDisplayFilter]
          * @property {Array.<number>} values - 待过滤的值。
          * @property {string} fieldName - 待过滤的字段名称，只支持数字类型的字段。
-         * @property {string} fieldValuesDisplayMode - 目前为 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
+         * @property {string} fieldValuesDisplayMode - 可选值为 DISPLAY / DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，当为 DISABLE 表示不显示以上设置的相应属性值的要素。
          */
         this.fieldValuesDisplayFilter = null;
 
@@ -53226,8 +53299,9 @@ class ThemeParameters {
  * @class ThemeService
  * @deprecatedclass SuperMap.ThemeService
  * @category  iServer Map Theme
- * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
- * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
+ * @classdesc 专题图服务类。该类可用于获取专题图的信息。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @extends {CommonServiceBase}
  * @example
  * var myThemeService = new ThemeService(url);
@@ -53356,7 +53430,8 @@ class ThemeService_ThemeService extends CommonServiceBase {
 /**
  * @class ThemeService
  * @category  iServer Map Theme
- * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
+ * @classdesc 专题图服务类。该类可用于获取专题图的信息。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @version 11.1.0
  * @extends {ServiceBase}
  * @example
@@ -53365,7 +53440,7 @@ class ThemeService_ThemeService extends CommonServiceBase {
  * }).getThemeInfo(params,function(result){
  *      //doSomething
  * });
- * @param {string} url - 服务地址。 
+ * @param {string} url - 地图服务地址。如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -53994,7 +54069,7 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
  *  .queryStop(params,function(result){
  *      //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 交通换乘分析服务地址，如 http://{ip}:{port}/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -54303,7 +54378,7 @@ class WebPrintingService extends CommonServiceBase {
  * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
  *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @extends {ServiceBase}
- * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+ * @param {string} url - Web 打印服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -54517,7 +54592,7 @@ class ImageService_ImageService extends CommonServiceBase {
  *      .getCollections(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -54734,7 +54809,7 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
  *      .getLegend(collectionId, queryParams, function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} options.collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -55114,7 +55189,7 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
  *     //doSomething
  * })
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 知识图谱服务地址，如 http://{ip}:{port}/iserver/services/knowledgeGraph-test/restjsr/graph 。
  * @param {Object} options -参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -58095,18 +58170,19 @@ function conversionDegree(degrees) {
   * ```
  */
  function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22, baseScale) {
+  const dpiValue = dpi === '' || dpi === null || dpi === undefined ? 96 : dpi;
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
-      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+      resolutions.push(scaleToResolution(scales[i], dpiValue, mapUnit));
     }
   } else if (baseScale){
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
-    const baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    const baseRes = scaleToResolution(baseScale, dpiValue, mapUnit);
     let topRes = baseRes;
     for (let i = 0; i < level; i++) {
       const temp = baseRes * Math.pow(2, i);
-      if(Math.abs(temp,maxReolution)<= 1E-6 || temp>maxReolution){
+      if(Math.abs(temp - maxReolution) <= 1E-6 || temp > maxReolution){
         topRes = temp;
         break;
       }
@@ -58207,7 +58283,7 @@ function getDpi(scale, resolution, mapUnit) {
  * @param {Array} extent2 范围 2。
  * @return {boolean} 范围是否相交。
  */
- function intersects(extent1, extent2) {
+ function MapCalculateUtil_intersects(extent1, extent2) {
   return (
     extent1[0] <= extent2[2] &&
     extent1[2] >= extent2[0] &&
@@ -58226,7 +58302,7 @@ function getDpi(scale, resolution, mapUnit) {
  */
  function getIntersection(extent1, extent2) {
   const intersection = [];
-  if (intersects(extent1, extent2)) {
+  if (MapCalculateUtil_intersects(extent1, extent2)) {
     if (extent1[0] > extent2[0]) {
       intersection[0] = extent1[0];
     } else {
@@ -63173,12 +63249,6 @@ var geometry_type_GeometryType;
   GeometryType[GeometryType["TIN"] = 16] = "TIN";
   GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
 })(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
-;// ./node_modules/flatbuffers/mjs/constants.js
-const SIZEOF_SHORT = 2;
-const SIZEOF_INT = 4;
-const FILE_IDENTIFIER_LENGTH = 4;
-const SIZE_PREFIX_LENGTH = 4;
-
 ;// ./node_modules/flatbuffers/mjs/utils.js
 const int32 = new Int32Array(2);
 const float32 = new Float32Array(int32.buffer);
@@ -63320,13 +63390,13 @@ class ByteBuffer {
      * start of a the root vtable).
      */
     getBufferIdentifier() {
-        if (this.bytes_.length < this.position_ + SIZEOF_INT +
-            FILE_IDENTIFIER_LENGTH) {
+        if (this.bytes_.length < this.position_ + (/* inlined export .SIZEOF_INT */4) +
+            (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
             throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
         }
         let result = "";
-        for (let i = 0; i < FILE_IDENTIFIER_LENGTH; i++) {
-            result += String.fromCharCode(this.readInt8(this.position_ + SIZEOF_INT + i));
+        for (let i = 0; i < (/* inlined export .FILE_IDENTIFIER_LENGTH */4); i++) {
+            result += String.fromCharCode(this.readInt8(this.position_ + (/* inlined export .SIZEOF_INT */4) + i));
         }
         return result;
     }
@@ -63360,7 +63430,7 @@ class ByteBuffer {
     __string(offset, opt_encoding) {
         offset += this.readInt32(offset);
         const length = this.readInt32(offset);
-        offset += SIZEOF_INT;
+        offset += (/* inlined export .SIZEOF_INT */4);
         const utf8bytes = this.bytes_.subarray(offset, offset + length);
         if (opt_encoding === Encoding.UTF8_BYTES)
             return utf8bytes;
@@ -63390,7 +63460,7 @@ class ByteBuffer {
      * Get the start of data of a vector whose offset is stored at "offset" in this object.
      */
     __vector(offset) {
-        return offset + this.readInt32(offset) + SIZEOF_INT; // data starts after the length
+        return offset + this.readInt32(offset) + (/* inlined export .SIZEOF_INT */4); // data starts after the length
     }
     /**
      * Get the length of a vector whose offset is stored at "offset" in this object.
@@ -63399,12 +63469,12 @@ class ByteBuffer {
         return this.readInt32(offset + this.readInt32(offset));
     }
     __has_identifier(ident) {
-        if (ident.length != FILE_IDENTIFIER_LENGTH) {
+        if (ident.length != (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
             throw new Error('FlatBuffers: file identifier must be length ' +
-                FILE_IDENTIFIER_LENGTH);
+                (/* inlined export .FILE_IDENTIFIER_LENGTH */4));
         }
-        for (let i = 0; i < FILE_IDENTIFIER_LENGTH; i++) {
-            if (ident.charCodeAt(i) != this.readInt8(this.position() + SIZEOF_INT + i)) {
+        for (let i = 0; i < (/* inlined export .FILE_IDENTIFIER_LENGTH */4); i++) {
+            if (ident.charCodeAt(i) != this.readInt8(this.position() + (/* inlined export .SIZEOF_INT */4) + i)) {
                 return false;
             }
         }
@@ -63443,10 +63513,7 @@ class ByteBuffer {
 
 ;// ./node_modules/flatbuffers/mjs/builder.js
 /* unused harmony import specifier */ var builder_ByteBuffer;
-/* unused harmony import specifier */ var builder_SIZEOF_INT;
-/* unused harmony import specifier */ var builder_SIZEOF_SHORT;
-/* unused harmony import specifier */ var builder_SIZE_PREFIX_LENGTH;
-/* unused harmony import specifier */ var builder_FILE_IDENTIFIER_LENGTH;
+/* unused harmony import specifier */ var SIZEOF_SHORT;
 
 
 class Builder {
@@ -63733,8 +63800,8 @@ class Builder {
      * @param offset The offset to add.
      */
     addOffset(offset) {
-        this.prep(builder_SIZEOF_INT, 0); // Ensure alignment is already done.
-        this.writeInt32(this.offset() - offset + builder_SIZEOF_INT);
+        this.prep((/* inlined export .SIZEOF_INT */4), 0); // Ensure alignment is already done.
+        this.writeInt32(this.offset() - offset + (/* inlined export .SIZEOF_INT */4));
     }
     /**
      * Start encoding a new object in the buffer.  Users will not usually need to
@@ -63776,7 +63843,7 @@ class Builder {
         }
         const standard_fields = 2; // The fields below:
         this.addInt16(vtableloc - this.object_start);
-        const len = (trimmed_size + standard_fields) * builder_SIZEOF_SHORT;
+        const len = (trimmed_size + standard_fields) * SIZEOF_SHORT;
         this.addInt16(len);
         // Search for an existing vtable that matches the current one.
         let existing_vtable = 0;
@@ -63784,7 +63851,7 @@ class Builder {
         outer_loop: for (i = 0; i < this.vtables.length; i++) {
             const vt2 = this.bb.capacity() - this.vtables[i];
             if (len == this.bb.readInt16(vt2)) {
-                for (let j = builder_SIZEOF_SHORT; j < len; j += builder_SIZEOF_SHORT) {
+                for (let j = SIZEOF_SHORT; j < len; j += SIZEOF_SHORT) {
                     if (this.bb.readInt16(vt1 + j) != this.bb.readInt16(vt2 + j)) {
                         continue outer_loop;
                     }
@@ -63814,20 +63881,20 @@ class Builder {
      * Finalize a buffer, poiting to the given `root_table`.
      */
     finish(root_table, opt_file_identifier, opt_size_prefix) {
-        const size_prefix = opt_size_prefix ? builder_SIZE_PREFIX_LENGTH : 0;
+        const size_prefix = opt_size_prefix ? (/* inlined export .SIZE_PREFIX_LENGTH */4) : 0;
         if (opt_file_identifier) {
             const file_identifier = opt_file_identifier;
-            this.prep(this.minalign, builder_SIZEOF_INT +
-                builder_FILE_IDENTIFIER_LENGTH + size_prefix);
-            if (file_identifier.length != builder_FILE_IDENTIFIER_LENGTH) {
+            this.prep(this.minalign, (/* inlined export .SIZEOF_INT */4) +
+                (/* inlined export .FILE_IDENTIFIER_LENGTH */4) + size_prefix);
+            if (file_identifier.length != (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
                 throw new TypeError('FlatBuffers: file identifier must be length ' +
-                    builder_FILE_IDENTIFIER_LENGTH);
+                    (/* inlined export .FILE_IDENTIFIER_LENGTH */4));
             }
-            for (let i = builder_FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
+            for (let i = (/* inlined export .FILE_IDENTIFIER_LENGTH */4) - 1; i >= 0; i--) {
                 this.writeInt8(file_identifier.charCodeAt(i));
             }
         }
-        this.prep(this.minalign, builder_SIZEOF_INT + size_prefix);
+        this.prep(this.minalign, (/* inlined export .SIZEOF_INT */4) + size_prefix);
         this.addOffset(root_table);
         if (size_prefix) {
             this.addInt32(this.bb.capacity() - this.space);
@@ -63866,7 +63933,7 @@ class Builder {
     startVector(elem_size, num_elems, alignment) {
         this.notNested();
         this.vector_num_elems = num_elems;
-        this.prep(builder_SIZEOF_INT, elem_size * num_elems);
+        this.prep((/* inlined export .SIZEOF_INT */4), elem_size * num_elems);
         this.prep(alignment, elem_size * num_elems); // Just in case alignment > int.
     }
     /**
@@ -63984,8 +64051,8 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function _toPrimitive(t, e) { if ("object" != _typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 var geometry_Geometry = /*#__PURE__*/function () {
   function Geometry() {
@@ -64128,7 +64195,7 @@ var geometry_Geometry = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsGeometry",
     value: function getSizePrefixedRootAsGeometry(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -64306,7 +64373,7 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 function buildGeometry(builder, parsedGeometry) {
   var xy = parsedGeometry.xy,
@@ -64564,8 +64631,8 @@ function column_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function column_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, column_toPropertyKey(o.key), o); } }
 function column_createClass(e, r, t) { return r && column_defineProperties(e.prototype, r), t && column_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function column_toPropertyKey(t) { var i = column_toPrimitive(t, "string"); return "symbol" == column_typeof(i) ? i : i + ""; }
-function column_toPrimitive(t, r) { if ("object" != column_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function column_toPrimitive(t, e) { if ("object" != column_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 var Column = /*#__PURE__*/function () {
   function Column() {
@@ -64654,7 +64721,7 @@ var Column = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsColumn",
     value: function getSizePrefixedRootAsColumn(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -64749,8 +64816,8 @@ function feature_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function feature_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, feature_toPropertyKey(o.key), o); } }
 function feature_createClass(e, r, t) { return r && feature_defineProperties(e.prototype, r), t && feature_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function feature_toPropertyKey(t) { var i = feature_toPrimitive(t, "string"); return "symbol" == feature_typeof(i) ? i : i + ""; }
-function feature_toPrimitive(t, r) { if ("object" != feature_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function feature_toPrimitive(t, e) { if ("object" != feature_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 var feature_Feature = /*#__PURE__*/function () {
@@ -64810,7 +64877,7 @@ var feature_Feature = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsFeature",
     value: function getSizePrefixedRootAsFeature(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -65126,7 +65193,7 @@ function feature_fromFeature(feature, header) {
   return geoJsonfeature;
 }
 ;// ./node_modules/slice-source/empty.js
-/* harmony default export */ const empty = (new Uint8Array(0));
+/* harmony default export */ const slice_source_empty = (new Uint8Array(0));
 
 ;// ./node_modules/slice-source/cancel.js
 __webpack_require__.dn(slice_source_cancel);
@@ -65152,7 +65219,7 @@ __webpack_require__.dn(read);
 /* harmony default export */ function read() {
   var that = this, array = that._array.subarray(that._index);
   return that._source.read().then(function(result) {
-    that._array = empty;
+    that._array = slice_source_empty;
     that._index = 0;
     return result.done ? (array.length > 0
         ? {done: false, value: array}
@@ -65183,7 +65250,7 @@ __webpack_require__.dn(slice);
       // When done, it’s possible the request wasn’t fully fullfilled!
       // If so, the pre-allocated array is too big and needs slicing.
       if (result.done) {
-        that._array = empty;
+        that._array = slice_source_empty;
         that._index = 0;
         return index > 0 ? array.subarray(0, index) : null;
       }
@@ -65218,7 +65285,7 @@ function slice_source_slice(source) {
 
 function SliceSource(source) {
   this._source = source;
-  this._array = empty;
+  this._array = slice_source_empty;
   this._index = 0;
 }
 
@@ -65232,8 +65299,8 @@ function crs_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("
 function crs_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, crs_toPropertyKey(o.key), o); } }
 function crs_createClass(e, r, t) { return r && crs_defineProperties(e.prototype, r), t && crs_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function crs_toPropertyKey(t) { var i = crs_toPrimitive(t, "string"); return "symbol" == crs_typeof(i) ? i : i + ""; }
-function crs_toPrimitive(t, r) { if ("object" != crs_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function crs_toPrimitive(t, e) { if ("object" != crs_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 var Crs = /*#__PURE__*/function () {
   function Crs() {
     crs_classCallCheck(this, Crs);
@@ -65291,7 +65358,7 @@ var Crs = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsCrs",
     value: function getSizePrefixedRootAsCrs(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -65355,8 +65422,8 @@ function header_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function header_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, header_toPropertyKey(o.key), o); } }
 function header_createClass(e, r, t) { return r && header_defineProperties(e.prototype, r), t && header_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function header_toPropertyKey(t) { var i = header_toPrimitive(t, "string"); return "symbol" == header_typeof(i) ? i : i + ""; }
-function header_toPrimitive(t, r) { if ("object" != header_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function header_toPrimitive(t, e) { if ("object" != header_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 
@@ -65483,7 +65550,7 @@ var Header = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsHeader",
     value: function getSizePrefixedRootAsHeader(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -66573,7 +66640,7 @@ function config_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function config_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, config_toPropertyKey(o.key), o); } }
 function config_createClass(e, r, t) { return r && config_defineProperties(e.prototype, r), t && config_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function config_toPropertyKey(t) { var i = config_toPrimitive(t, "string"); return "symbol" == config_typeof(i) ? i : i + ""; }
-function config_toPrimitive(t, r) { if ("object" != config_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function config_toPrimitive(t, e) { if ("object" != config_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var Config = /*#__PURE__*/function () {
   function Config() {
     config_classCallCheck(this, Config);
@@ -66602,7 +66669,7 @@ function logger_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function logger_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, logger_toPropertyKey(o.key), o); } }
 function logger_createClass(e, r, t) { return r && logger_defineProperties(e.prototype, r), t && logger_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function logger_toPropertyKey(t) { var i = logger_toPrimitive(t, "string"); return "symbol" == logger_typeof(i) ? i : i + ""; }
-function logger_toPrimitive(t, r) { if ("object" != logger_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function logger_toPrimitive(t, e) { if ("object" != logger_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var LogLevel;
 (function (LogLevel) {
   LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -66701,13 +66768,13 @@ function packedrtree_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function packedrtree_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, packedrtree_toPropertyKey(o.key), o); } }
 function packedrtree_createClass(e, r, t) { return r && packedrtree_defineProperties(e.prototype, r), t && packedrtree_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function packedrtree_toPropertyKey(t) { var i = packedrtree_toPrimitive(t, "string"); return "symbol" == packedrtree_typeof(i) ? i : i + ""; }
-function packedrtree_toPrimitive(t, r) { if ("object" != packedrtree_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function packedrtree_toPrimitive(t, e) { if ("object" != packedrtree_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function _awaitAsyncGenerator(e) { return new _OverloadYield(e, 0); }
 function _wrapAsyncGenerator(e) { return function () { return new AsyncGenerator(e.apply(this, arguments)); }; }
 function AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof _OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function _OverloadYield(e, d) { this.v = e, this.k = d; }
-
+;
 
 var NODE_ITEM_BYTE_LEN = 8 * 4 + 8;
 var NODE_ITEM_LEN = (/* unused pure expression or super */ null && (NODE_ITEM_BYTE_LEN));
@@ -66962,7 +67029,7 @@ function http_reader_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function http_reader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, http_reader_toPropertyKey(o.key), o); } }
 function http_reader_createClass(e, r, t) { return r && http_reader_defineProperties(e.prototype, r), t && http_reader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function http_reader_toPropertyKey(t) { var i = http_reader_toPrimitive(t, "string"); return "symbol" == http_reader_typeof(i) ? i : i + ""; }
-function http_reader_toPrimitive(t, r) { if ("object" != http_reader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function http_reader_toPrimitive(t, e) { if ("object" != http_reader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function http_reader_wrapAsyncGenerator(e) { return function () { return new http_reader_AsyncGenerator(e.apply(this, arguments)); }; }
 function http_reader_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof http_reader_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 http_reader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, http_reader_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, http_reader_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, http_reader_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
@@ -66971,7 +67038,7 @@ function _asyncGeneratorDelegate(t) { var e = {}, n = !1; function pump(e, r) { 
 function http_reader_OverloadYield(e, d) { this.v = e, this.k = d; }
 function _asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(r); }
-
+;
 
 
 
@@ -67376,7 +67443,7 @@ var HttpRangeClient = /*#__PURE__*/function () {
 function header_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = header_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function header_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return header_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? header_arrayLikeToArray(r, a) : void 0; } }
 function header_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 function featureGeomType(feature) {
   if (feature.getGeometry) {
@@ -67437,7 +67504,7 @@ function featurecollection_wrapAsyncGenerator(e) { return function () { return n
 function featurecollection_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof featurecollection_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 featurecollection_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, featurecollection_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, featurecollection_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, featurecollection_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function featurecollection_OverloadYield(e, d) { this.v = e, this.k = d; }
-
+;
 
 
 
@@ -67789,7 +67856,7 @@ function introspectHeaderMeta(features) {
 function geojson_featurecollection_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = geojson_featurecollection_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function geojson_featurecollection_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return geojson_featurecollection_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? geojson_featurecollection_arrayLikeToArray(r, a) : void 0; } }
 function geojson_featurecollection_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 
 
@@ -67873,9 +67940,10 @@ function geojson_deserialize(input, rect, headerMetaFn) {
   var nocache = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   if (input instanceof Uint8Array) return featurecollection_deserialize(input, headerMetaFn);else if (input instanceof ReadableStream) return featurecollection_deserializeStream(input, headerMetaFn);else return featurecollection_deserializeFiltered(input, rect, headerMetaFn, nocache);
 }
-// EXTERNAL MODULE: ./node_modules/rbush/index.js
-var rbush = __webpack_require__(519);
-var rbush_default = /*#__PURE__*/__webpack_require__.n(rbush);
+;// ./node_modules/rbush/index.js
+rbush_namespaceFn();
+
+function rbush_default() { return rbush_default.c || (rbush_default.c = __webpack_require__.n(rbush_namespaceFn())); }
 ;// ./src/common/overlay/fgb/FGBLayerRenderer.js
 function FGBLayerRenderer_typeof(o) { "@babel/helpers - typeof"; return FGBLayerRenderer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, FGBLayerRenderer_typeof(o); }
 function FGBLayerRenderer_regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return FGBLayerRenderer_regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (FGBLayerRenderer_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, FGBLayerRenderer_regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, FGBLayerRenderer_regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), FGBLayerRenderer_regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", FGBLayerRenderer_regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), FGBLayerRenderer_regeneratorDefine2(u), FGBLayerRenderer_regeneratorDefine2(u, o, "Generator"), FGBLayerRenderer_regeneratorDefine2(u, n, function () { return this; }), FGBLayerRenderer_regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (FGBLayerRenderer_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
@@ -67886,14 +67954,14 @@ function FGBLayerRenderer_classCallCheck(a, n) { if (!(a instanceof n)) throw ne
 function FGBLayerRenderer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, FGBLayerRenderer_toPropertyKey(o.key), o); } }
 function FGBLayerRenderer_createClass(e, r, t) { return r && FGBLayerRenderer_defineProperties(e.prototype, r), t && FGBLayerRenderer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function FGBLayerRenderer_toPropertyKey(t) { var i = FGBLayerRenderer_toPrimitive(t, "string"); return "symbol" == FGBLayerRenderer_typeof(i) ? i : i + ""; }
-function FGBLayerRenderer_toPrimitive(t, r) { if ("object" != FGBLayerRenderer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != FGBLayerRenderer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function FGBLayerRenderer_toPrimitive(t, e) { if ("object" != FGBLayerRenderer_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != FGBLayerRenderer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function FGBLayerRenderer_asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new FGBLayerRenderer_AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function FGBLayerRenderer_AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return FGBLayerRenderer_AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, FGBLayerRenderer_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new FGBLayerRenderer_AsyncFromSyncIterator(r); }
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-
+;
 
 
 
@@ -67943,7 +68011,7 @@ var FGBLayerRenderer = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       if (this.strategy === 'bbox') {
-        this.loadedExtentsRtree_ = new (rbush_default())();
+        this.loadedExtentsRtree_ = new (rbush_default()())();
       }
     }
   }, {
@@ -68136,7 +68204,7 @@ function FGBLayer_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeEr
 function FGBLayer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, FGBLayer_toPropertyKey(o.key), o); } }
 function FGBLayer_createClass(e, r, t) { return r && FGBLayer_defineProperties(e.prototype, r), t && FGBLayer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function FGBLayer_toPropertyKey(t) { var i = FGBLayer_toPrimitive(t, "string"); return "symbol" == FGBLayer_typeof(i) ? i : i + ""; }
-function FGBLayer_toPrimitive(t, r) { if ("object" != FGBLayer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != FGBLayer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function FGBLayer_toPrimitive(t, e) { if ("object" != FGBLayer_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != FGBLayer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68147,7 +68215,7 @@ function FGBLayer_toPrimitive(t, r) { if ("object" != FGBLayer_typeof(t) || !t) 
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
-
+;
 
 
 
@@ -70109,7 +70177,7 @@ class WebSymbol {
    * @param {string} [config.basePath] - 指定符号资源路径
    */
   init(config) {
-    (external_maplibregl_default()).Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
+    ;(external_maplibregl_default()).Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
     symbol_MapExtendSymbol();
   }
 }
@@ -71167,7 +71235,7 @@ function findPoint(geojson, options) {
 ;// ./node_modules/@turf/bbox/dist/esm/index.js
 // index.ts
 
-function bbox(geojson, options = {}) {
+function esm_bbox(geojson, options = {}) {
   if (geojson.bbox != null && true !== options.recompute) {
     return geojson.bbox;
   }
@@ -71188,7 +71256,7 @@ function bbox(geojson, options = {}) {
   });
   return result;
 }
-var esm_index_default = (/* unused pure expression or super */ null && (bbox));
+var esm_index_default = (/* unused pure expression or super */ null && (esm_bbox));
 
 //# sourceMappingURL=index.js.map
 ;// ./node_modules/@turf/center/dist/esm/index.js
@@ -71196,7 +71264,7 @@ var esm_index_default = (/* unused pure expression or super */ null && (bbox));
 
 
 function center(geojson, options = {}) {
-  const ext = bbox(geojson);
+  const ext = esm_bbox(geojson);
   const x = (ext[0] + ext[2]) / 2;
   const y = (ext[1] + ext[3]) / 2;
   return point([x, y], options.properties, options);
@@ -72048,7 +72116,7 @@ __webpack_require__.dn(projString);
   return self;
 }
 
-;// ./node_modules/wkt-parser/PROJJSONBuilderBase.js
+;// ./node_modules/wkt-parser/PROJJSONBuilder.js
 class PROJJSONBuilderBase {
   static getId(node) {
     const idNode = node.find((child) => Array.isArray(child) && child[0] === 'ID');
@@ -72145,7 +72213,7 @@ class PROJJSONBuilderBase {
         const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         if (csNode) {
           result.coordinate_system = {
-            type: csNode[1],
+            subtype: csNode[1],
             axis: this.extractAxes(node),
           };
         }
@@ -72185,8 +72253,9 @@ class PROJJSONBuilderBase {
           }
         }
       
+        const geogCsNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         result.coordinate_system = {
-          type: 'ellipsoidal',
+          subtype: geogCsNode ? geogCsNode[1] : 'ellipsoidal',
           axis: this.extractAxes(node),
         };
       
@@ -72367,93 +72436,9 @@ class PROJJSONBuilderBase {
   }
 }
 
-/* harmony default export */ const wkt_parser_PROJJSONBuilderBase = (PROJJSONBuilderBase);
-;// ./node_modules/wkt-parser/PROJJSONBuilder2015.js
-
-
-class PROJJSONBuilder2015 extends wkt_parser_PROJJSONBuilderBase {
-  static convert(node, result = {}) {
-    super.convert(node, result);
-
-    // Skip `CS` and `USAGE` nodes for WKT2-2015
-    if (result.coordinate_system && result.coordinate_system.subtype === 'Cartesian') {
-      delete result.coordinate_system;
-    }
-    if (result.usage) {
-      delete result.usage;
-    }
-
-    return result;
-  }
-}
-
-/* harmony default export */ const wkt_parser_PROJJSONBuilder2015 = (PROJJSONBuilder2015);
-;// ./node_modules/wkt-parser/PROJJSONBuilder2019.js
-
-
-class PROJJSONBuilder2019 extends wkt_parser_PROJJSONBuilderBase {
-  static convert(node, result = {}) {
-    super.convert(node, result);
-
-    // Handle `CS` node for WKT2-2019
-    const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
-    if (csNode) {
-      result.coordinate_system = {
-        subtype: csNode[1],
-        axis: this.extractAxes(node),
-      };
-    }
-
-    // Handle `USAGE` node for WKT2-2019
-    const usageNode = node.find((child) => Array.isArray(child) && child[0] === 'USAGE');
-    if (usageNode) {
-      const scope = usageNode.find((child) => Array.isArray(child) && child[0] === 'SCOPE');
-      const area = usageNode.find((child) => Array.isArray(child) && child[0] === 'AREA');
-      const bbox = usageNode.find((child) => Array.isArray(child) && child[0] === 'BBOX');
-      result.usage = {};
-      if (scope) {
-        result.usage.scope = scope[1];
-      }
-      if (area) {
-        result.usage.area = area[1];
-      }
-      if (bbox) {
-        result.usage.bbox = bbox.slice(1);
-      }
-    }
-
-    return result;
-  }
-}
-
-/* harmony default export */ const wkt_parser_PROJJSONBuilder2019 = (PROJJSONBuilder2019);
+/* harmony default export */ const PROJJSONBuilder = (PROJJSONBuilderBase);
 ;// ./node_modules/wkt-parser/buildPROJJSON.js
 
-
-
-/**
- * Detects the WKT2 version based on the structure of the WKT.
- * @param {Array} root The root WKT array node.
- * @returns {string} The detected version ("2015" or "2019").
- */
-function detectWKT2Version(root) {
-  // Check for WKT2-2019-specific nodes
-  if (root.find((child) => Array.isArray(child) && child[0] === 'USAGE')) {
-    return '2019'; // `USAGE` is specific to WKT2-2019
-  }
-
-  // Check for WKT2-2015-specific nodes
-  if (root.find((child) => Array.isArray(child) && child[0] === 'CS')) {
-    return '2015'; // `CS` is valid in both, but default to 2015 unless `USAGE` is present
-  }
-
-  if (root[0] === 'BOUNDCRS' || root[0] === 'PROJCRS' || root[0] === 'GEOGCRS') {
-    return '2015'; // These are valid in both, but default to 2015
-  }
-
-  // Default to WKT2-2015 if no specific indicators are found
-  return '2015';
-}
 
 /**
  * Builds a PROJJSON object from a WKT array structure.
@@ -72461,9 +72446,7 @@ function detectWKT2Version(root) {
  * @returns {Object} The PROJJSON object.
  */
 function buildPROJJSON(root) {
-  const version = detectWKT2Version(root);
-  const builder = version === '2019' ? wkt_parser_PROJJSONBuilder2019 : wkt_parser_PROJJSONBuilder2015;
-  return builder.convert(root);
+  return PROJJSONBuilder.convert(root);
 }
 
 ;// ./node_modules/wkt-parser/detectWKTVersion.js
@@ -73018,6 +73001,11 @@ function transformPROJJSON(projjson, result = {}) {
     }
   });
 
+  // Geographic and geodetic CRSs have no base_crs, so use their own id as datumCode
+  if (!result.datumCode && (projjson.type === 'GeographicCRS' || projjson.type === 'GeodeticCRS') && projjson.id) {
+    result.datumCode = projjson.id.authority + '_' + projjson.id.code;
+  }
+
   // Additional calculated properties
   if (result.latitude_of_false_origin !== undefined) {
     result.lat0 = result.latitude_of_false_origin; // Already in radians
@@ -73431,8 +73419,8 @@ function parse(code) {
 /* harmony default export */ const parseCode = (parse);
 
 ;// ./node_modules/proj4/lib/extend.js
-__webpack_require__.dn(extend);
-/* harmony default export */ function extend(destination, source) {
+__webpack_require__.dn(lib_extend);
+/* harmony default export */ function lib_extend(destination, source) {
   destination = destination || {};
   var value, property;
   if (!source) {
@@ -75537,8 +75525,8 @@ function Proj_Projection(srsCode, callback) {
   var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2,
     nadgrids);
 
-  extend(this, json); // transfer everything over from the projection because we don't know what we'll need
-  extend(this, ourProj); // transfer all the methods from the projection
+  lib_extend(this, json); // transfer everything over from the projection because we don't know what we'll need
+  lib_extend(this, ourProj); // transfer all the methods from the projection
 
   // copy the 4 things over we calculated in deriveConstants.sphere
   this.a = sphere_.a;
@@ -79894,7 +79882,7 @@ var sinu_names = ['Sinusoidal', 'sinu'];
 ;// ./node_modules/proj4/lib/projections/moll.js
 
 function moll_init() {}
-
+;
 /* Mollweide forward equations--mapping lat,long to x,y
     ---------------------------------------------------- */
 function moll_forward(p) {
@@ -81404,7 +81392,7 @@ var A1 = 1.340264,
   A2 = -0.081106,
   A3 = 0.000893,
   A4 = 0.003796,
-  M = Math.sqrt(3) / 2.0;
+  eqearth_M = Math.sqrt(3) / 2.0;
 
 function eqearth_init() {
   this.es = 0;
@@ -81414,11 +81402,11 @@ function eqearth_init() {
 function eqearth_forward(p) {
   var lam = adjust_lon(p.x - this.long0);
   var phi = p.y;
-  var paramLat = Math.asin(M * Math.sin(phi)),
+  var paramLat = Math.asin(eqearth_M * Math.sin(phi)),
     paramLatSq = paramLat * paramLat,
     paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
   p.x = lam * Math.cos(paramLat)
-    / (M * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq)));
+    / (eqearth_M * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq)));
   p.y = paramLat * (A1 + A2 * paramLatSq + paramLatPow6 * (A3 + A4 * paramLatSq));
 
   p.x = this.a * p.x + this.x0;
@@ -81447,9 +81435,9 @@ function eqearth_inverse(p) {
   }
   paramLatSq = paramLat * paramLat;
   paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
-  p.x = M * p.x * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq))
+  p.x = eqearth_M * p.x * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq))
     / Math.cos(paramLat);
-  p.y = Math.asin(Math.sin(paramLat) / M);
+  p.y = Math.asin(Math.sin(paramLat) / eqearth_M);
 
   p.x = adjust_lon(p.x + this.long0);
   return p;
@@ -81977,7 +81965,7 @@ function getL7Filter(filter, featureFilter) {
 }
 
 function L7LayerUtil(config) {
-  const { featureFilter, expression, spec, L7Layer, L7, proj4 } = config;
+  const { featureFilter, expression, spec, L7Layer, L7, proj4, webMapService, linePatternOrientation = 'east-to-west' } = config;
 
   /**
  * @param {string} url
@@ -82001,7 +81989,7 @@ function L7LayerUtil(config) {
    */
   function getRestDataFields(datasetUrl, credential, options) {
     const url = addCredentialToUrl(`${datasetUrl}/fields.json?returnAll=true`, credential);
-    return FetchRequest.get(url, null, options)
+    return FetchRequest.get(url, null, { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) })
       .then((res) => res.json())
       .then((result) => {
         return result.map((item) => {
@@ -82027,7 +82015,7 @@ function L7LayerUtil(config) {
    */
   function getRestDataDomains(datasetUrl, credential, options) {
     const url = addCredentialToUrl(`${datasetUrl}/domain.json`, credential);
-    return FetchRequest.get(url, null, options).then((result) => {
+    return FetchRequest.get(url, null, { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) }).then((result) => {
       return result.json();
     });
   }
@@ -82210,7 +82198,7 @@ function L7LayerUtil(config) {
     const nextOptions = handleWithRequestOptions(datasetUrl, options);
     const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, nextOptions);
     const nextUrl = addCredentialToUrl(url, credential);
-    const attrDataInfo = await FetchRequest.post(nextUrl, JSON.stringify(SQLParams), nextOptions);
+    const attrDataInfo = await FetchRequest.post(nextUrl, JSON.stringify(SQLParams), { ...nextOptions, withCredentials: webMapService.handleUrlWithCredentials(nextUrl) });
     const featuresRes = await attrDataInfo.json();
 
     return {
@@ -82225,7 +82213,7 @@ function L7LayerUtil(config) {
    * @param option
    */
   function getStructDataItemJson(href, option) {
-    return FetchRequest.get(href, null, option)
+    return FetchRequest.get(href, null, { ...option, withCredentials: webMapService.handleUrlWithCredentials(href) })
       .then((res) => res.json())
       .then((data) => {
         if (data.succeed === false) {
@@ -82373,10 +82361,11 @@ function L7LayerUtil(config) {
    */
   async function getStructuredDataGeojsonByWebMap(data, options) {
     const allFeature = await getStructDataGeojson(data.dataId, options);
+    const url = `${options.server}web/datas/${data.dataId}/structureddata.json`
     const resultRes = await FetchRequest.get(
-      `${options.server}web/datas/${data.dataId}/structureddata.json`,
+      url,
       null,
-      options
+      { ...options, withCredentials: webMapService.handleUrlWithCredentials(url) }
     );
     const result = await resultRes.json();
     const projection = `EPSG:${result.epsgCode}`;
@@ -83409,14 +83398,31 @@ function L7LayerUtil(config) {
    * @param sprite
    * @param scene
    */
-  async function addTextures({ layers, sprite, spriteJson, scene, options }) {
+  async function addTextures({ layers, sprite, spriteJson, scene, options, mapVersion }) {
     const timestamp = +new Date();
     for (let index = 0; index < layers.length; index++) {
       const l = layers[index];
       const texture = (l.texture || {}).values;
       const iconInfo = spriteJson[texture];
       if (iconInfo) {
-        const image = await changeSpriteIconToImgData(sprite, { ...iconInfo, id: texture }, options);
+        let image = await changeSpriteIconToImgData(sprite, { ...iconInfo, id: texture }, options);
+        if (
+          image &&
+          l.type === MSLayerType.line &&
+          typeof mapVersion === 'string' &&
+          !isMapVersionGreaterThan(mapVersion, '3.3.7')
+        ) {
+          // 3.3.7 及以前的 L7 线纹理需垂直翻转，才能与地图线符号方向保持一致。
+          const canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const context = canvas.getContext('2d');
+          if (context) {
+            const flippedImage = context.createImageData(image.width, image.height);
+            flippedImage.data.set(flipImageVertically(image, image.width, image.height));
+            image = flippedImage;
+          }
+        }
         const style = l.style || {};
         const color = style.textureColor,
           rotate = style.textureRotate;
@@ -83739,7 +83745,8 @@ function L7LayerUtil(config) {
       options: {
         ...l.options,
         layerID: (l.options || {}).name,
-        featureId: promoteId
+        featureId: promoteId,
+        linePatternOrientation
       }
     });
     // getL7Layer返回原生antv l7 layer的实例
@@ -83789,7 +83796,7 @@ function L7LayerUtil(config) {
   return {
     async addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, options }) {
       // 添加L7图层
-      const { layers, sources, sprite } = webMapInfo;
+      const { layers, sources, sprite, version: mapVersion } = webMapInfo;
       const formateL7Layers = await restoreL7Layers({
         layers: l7Layers,
         sources,
@@ -83805,7 +83812,8 @@ function L7LayerUtil(config) {
             spriteJson: spriteDatas,
             sprite,
             scene,
-            options
+            options,
+            mapVersion
           });
         } catch (error) {
           console.error(error);
@@ -87588,7 +87596,7 @@ const ColorArrayType = { kind: 'colorArray' };
 const NumberArrayType = { kind: 'numberArray' };
 const ResolvedImageType = { kind: 'resolvedImage' };
 const VariableAnchorOffsetCollectionType = { kind: 'variableAnchorOffsetCollection' };
-function array(itemType, N) {
+function dist_array(itemType, N) {
     return {
         kind: 'array',
         itemType,
@@ -87615,7 +87623,7 @@ const valueMemberTypes = [
     ProjectionDefinitionType,
     FormattedType,
     ObjectType,
-    array(ValueType),
+    dist_array(ValueType),
     PaddingType,
     NumberArrayType,
     ColorArrayType,
@@ -88707,7 +88715,7 @@ function typeOf(value) {
                 break;
             }
         }
-        return array(itemType || ValueType, length);
+        return dist_array(itemType || ValueType, length);
     }
     else {
         return ObjectType;
@@ -88801,7 +88809,7 @@ class Assertion {
                 N = args[2];
                 i++;
             }
-            type = array(itemType, N);
+            type = dist_array(itemType, N);
         }
         else {
             if (!types$1[name])
@@ -89243,7 +89251,7 @@ class At {
         if (args.length !== 3)
             return context.error(`Expected 2 arguments, but found ${args.length - 1} instead.`);
         const index = context.parse(args[1], 1, NumberType);
-        const input = context.parse(args[2], 2, array(context.expectedType || ValueType));
+        const input = context.parse(args[2], 2, dist_array(context.expectedType || ValueType));
         if (!index || !input)
             return null;
         const t = input.type;
@@ -89532,7 +89540,7 @@ class Slice {
         const beginIndex = context.parse(args[2], 2, NumberType);
         if (!input || !beginIndex)
             return null;
-        if (!isValidType(input.type, [array(ValueType), StringType, ValueType])) {
+        if (!isValidType(input.type, [dist_array(ValueType), StringType, ValueType])) {
             return context.error(`Expected first argument to be of type array or string, but found ${typeToString(input.type)} instead`);
         }
         if (args.length === 4) {
@@ -89871,7 +89879,7 @@ class Interpolate {
             !verifyType(outputType, NumberArrayType) &&
             !verifyType(outputType, ColorArrayType) &&
             !verifyType(outputType, VariableAnchorOffsetCollectionType) &&
-            !verifyType(outputType, array(NumberType))) {
+            !verifyType(outputType, dist_array(NumberType))) {
             return context.error(`Type ${typeToString(outputType)} is not interpolatable.`);
         }
         return new Interpolate(outputType, operator, interpolation, input, stops);
@@ -90353,7 +90361,7 @@ class FormatExpression {
                 }
                 let font = null;
                 if (arg['text-font']) {
-                    font = context.parse(arg['text-font'], 1, array(StringType));
+                    font = context.parse(arg['text-font'], 1, dist_array(StringType));
                     if (!font)
                         return null;
                 }
@@ -90896,7 +90904,7 @@ class TinyQueue {
  * @param {number} [right=arr.length-1] right index
  * @param {(a: T, b: T) => number} [compare = (a, b) => a - b] compare function
  */
-function quickselect(arr, k, left = 0, right = arr.length - 1, compare = defaultCompare) {
+function dist_quickselect(arr, k, left = 0, right = arr.length - 1, compare = defaultCompare) {
 
     while (right > left) {
         if (right - left > 600) {
@@ -90907,7 +90915,7 @@ function quickselect(arr, k, left = 0, right = arr.length - 1, compare = default
             const sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
             const newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
             const newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
-            quickselect(arr, k, newLeft, newRight, compare);
+            dist_quickselect(arr, k, newLeft, newRight, compare);
         }
 
         const t = arr[k];
@@ -90915,21 +90923,21 @@ function quickselect(arr, k, left = 0, right = arr.length - 1, compare = default
         /** @type {number} */
         let j = right;
 
-        swap(arr, left, k);
-        if (compare(arr[right], t) > 0) swap(arr, left, right);
+        dist_swap(arr, left, k);
+        if (compare(arr[right], t) > 0) dist_swap(arr, left, right);
 
         while (i < j) {
-            swap(arr, i, j);
+            dist_swap(arr, i, j);
             i++;
             j--;
             while (compare(arr[i], t) < 0) i++;
             while (compare(arr[j], t) > 0) j--;
         }
 
-        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        if (compare(arr[left], t) === 0) dist_swap(arr, left, j);
         else {
             j++;
-            swap(arr, j, right);
+            dist_swap(arr, j, right);
         }
 
         if (j <= k) left = j + 1;
@@ -90943,7 +90951,7 @@ function quickselect(arr, k, left = 0, right = arr.length - 1, compare = default
  * @param {number} i
  * @param {number} j
  */
-function swap(arr, i, j) {
+function dist_swap(arr, i, j) {
     const tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
@@ -90996,7 +91004,7 @@ function classifyRings(rings, maxRings) {
         for (let j = 0; j < polygons.length; j++) {
             if (polygons[j].length <= maxRings)
                 continue;
-            quickselect(polygons[j], maxRings, 1, polygons[j].length - 1, compareAreas);
+            dist_quickselect(polygons[j], maxRings, 1, polygons[j].length - 1, compareAreas);
             polygons[j] = polygons[j].slice(0, maxRings);
         }
     }
@@ -91828,7 +91836,7 @@ CompoundExpression.register(expressions$1, {
         (ctx, [v]) => typeToString(typeOf(v.evaluate(ctx)))
     ],
     'to-rgba': [
-        array(NumberType, 4),
+        dist_array(NumberType, 4),
         [ColorType],
         (ctx, [v]) => {
             const [r, g, b, a] = v.evaluate(ctx).rgb;
@@ -92163,23 +92171,23 @@ CompoundExpression.register(expressions$1, {
     ],
     'filter-type-in': [
         BooleanType,
-        [array(StringType)],
+        [dist_array(StringType)],
         (ctx, [v]) => v.value.indexOf(ctx.geometryType()) >= 0
     ],
     'filter-id-in': [
         BooleanType,
-        [array(ValueType)],
+        [dist_array(ValueType)],
         (ctx, [v]) => v.value.indexOf(ctx.id()) >= 0
     ],
     'filter-in-small': [
         BooleanType,
-        [StringType, array(ValueType)],
+        [StringType, dist_array(ValueType)],
         // assumes v is an array literal
         (ctx, [k, v]) => v.value.indexOf(ctx.properties()[k.value]) >= 0
     ],
     'filter-in-large': [
         BooleanType,
-        [StringType, array(ValueType)],
+        [StringType, dist_array(ValueType)],
         // assumes v is a array literal with values sorted in ascending order and of a single type
         (ctx, [k, v]) => binarySearch(ctx.properties()[k.value], v.value, 0, v.value.length - 1)
     ],
@@ -92939,7 +92947,7 @@ function getExpectedType(spec) {
         variableAnchorOffsetCollection: VariableAnchorOffsetCollectionType
     };
     if (spec.type === 'array') {
-        return array(types[spec.value] || ValueType, spec.length);
+        return dist_array(types[spec.value] || ValueType, spec.length);
     }
     return types[spec.type];
 }
@@ -93043,7 +93051,7 @@ function featureFilter(filter) {
     }
 }
 // Comparison function to sort numbers and strings
-function compare(a, b) {
+function dist_compare(a, b) {
     return a < b ? -1 : a > b ? 1 : 0;
 }
 function geometryNeeded(filter) {
@@ -93103,7 +93111,7 @@ function convertInOp$1(property, values) {
             return ['filter-id-in', ['literal', values]];
         default:
             if (values.length > 200 && !values.some(v => typeof v !== typeof values[0])) {
-                return ['filter-in-large', property, ['literal', values.sort(compare)]];
+                return ['filter-in-large', property, ['literal', values.sort(dist_compare)]];
             }
             else {
                 return ['filter-in-small', property, ['literal', values]];
@@ -95182,7 +95190,7 @@ function sortKeysBy(obj, reference) {
  * fs.writeFileSync('./dest.json', format(style));
  * fs.writeFileSync('./dest.min.json', format(style, 0));
  */
-function format(style, space = 2) {
+function dist_format(style, space = 2) {
     style = sortKeysBy(style, v8Spec.$root);
     if (style.layers) {
         style.layers = style.layers.map((layer) => sortKeysBy(layer, v8Spec.layer));
@@ -95913,6 +95921,16 @@ function getZoom({ scale, dpi, coordUnit }, extent) {
  * @param {Object} options - 参数。
  * @param {Object} [options.type] - 地图类型。可选值 'raster' | 'vector-tile'。默认 'raster'。
  * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://docs.mapbox.com/mapbox-gl-js/api/map/}。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素，仅栅格地图（type 为 'raster'）有效。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -96089,6 +96107,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
     crs = defineCRSByWKT(baseProjection, wkt, extent);
     if (sourceType === 'raster') {
       enhanceExtraInfo.rasterSource = 'iserver';
+      if (options.displayFilters) {
+        enhanceExtraInfo.displayFilters = options.displayFilters;
+      }
     }
     if (vectorTileInfo && vectorTileInfo.center) {
       mapCenter = vectorTileInfo.center;
@@ -96124,6 +96145,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
       nonEnhanceExtraInfo.tileSize = tileSize;
       const transparent = mapOptions.transparent !== false;
       tileUrl = Util.urlAppend(Util.urlPathAppend(tileUrl, 'zxyTileImage.png'), `z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`);
+      if (options.displayFilters) {
+        tileUrl = Util.urlAppend(tileUrl, `displayFilters=${encodeURIComponent(JSON.stringify(options.displayFilters))}`);
+      }
     }
   }
   if (zoom === undefined) {
@@ -96213,7 +96237,7 @@ var DANGEROUS_PROPERTY_NAMES = [
 var criticalProperties = ["__proto__", "constructor", "prototype"];
 ;// ./node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 function OptionsBuilder_typeof(o) { "@babel/helpers - typeof"; return OptionsBuilder_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OptionsBuilder_typeof(o); }
-
+;
 var defaultOnDangerousProperty = function defaultOnDangerousProperty(name) {
   if (DANGEROUS_PROPERTY_NAMES.includes(name)) {
     return "__" + name;
@@ -96393,7 +96417,7 @@ function xmlNode_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function xmlNode_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, xmlNode_toPropertyKey(o.key), o); } }
 function xmlNode_createClass(e, r, t) { return r && xmlNode_defineProperties(e.prototype, r), t && xmlNode_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function xmlNode_toPropertyKey(t) { var i = xmlNode_toPrimitive(t, "string"); return "symbol" == xmlNode_typeof(i) ? i : i + ""; }
-function xmlNode_toPrimitive(t, r) { if ("object" != xmlNode_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function xmlNode_toPrimitive(t, e) { if ("object" != xmlNode_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var METADATA_SYMBOL;
 if (typeof Symbol !== "function") {
   METADATA_SYMBOL = "@@xmlMetadata";
@@ -96453,8 +96477,8 @@ function DocTypeReader_classCallCheck(a, n) { if (!(a instanceof n)) throw new T
 function DocTypeReader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DocTypeReader_toPropertyKey(o.key), o); } }
 function DocTypeReader_createClass(e, r, t) { return r && DocTypeReader_defineProperties(e.prototype, r), t && DocTypeReader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function DocTypeReader_toPropertyKey(t) { var i = DocTypeReader_toPrimitive(t, "string"); return "symbol" == DocTypeReader_typeof(i) ? i : i + ""; }
-function DocTypeReader_toPrimitive(t, r) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function DocTypeReader_toPrimitive(t, e) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 var DocTypeReader = /*#__PURE__*/function () {
   function DocTypeReader(options) {
     DocTypeReader_classCallCheck(this, DocTypeReader);
@@ -97035,7 +97059,7 @@ function anynum(str) {
     if ((cc >= CHAR_0 && cc <= CHAR_9) || cc === CHAR_MINUS) continue;
 
     // Below first unicode digit script — check minus variants only
-    if (cc < TABLE_OFFSET) {
+    if (cc < (/* inlined export .TABLE_OFFSET */1632)) {
       if (MINUS_SET.has(cc)) { firstHit = i; break; }
       continue;
     }
@@ -97053,7 +97077,7 @@ function anynum(str) {
     }
 
     // BMP non-surrogate: flat table lookup; also check minus variants in this range
-    if (TABLE[cc - TABLE_OFFSET] !== NOT_DIGIT || MINUS_SET.has(cc)) {
+    if (TABLE[cc - (/* inlined export .TABLE_OFFSET */1632)] !== (/* inlined export .NOT_DIGIT */255) || MINUS_SET.has(cc)) {
       firstHit = i;
       break;
     }
@@ -97077,7 +97101,7 @@ function anynum(str) {
     }
 
     // Below TABLE_OFFSET — check minus variants, else pass through
-    if (cc < TABLE_OFFSET) {
+    if (cc < (/* inlined export .TABLE_OFFSET */1632)) {
       chars.push(MINUS_SET.has(cc) ? '-' : str[i]);
       continue;
     }
@@ -97105,8 +97129,8 @@ function anynum(str) {
       chars.push('-');
       continue;
     }
-    const d = TABLE[cc - TABLE_OFFSET];
-    chars.push(d !== NOT_DIGIT ? String.fromCharCode(d + 48) : str[i]);
+    const d = TABLE[cc - (/* inlined export .TABLE_OFFSET */1632)];
+    chars.push(d !== (/* inlined export .NOT_DIGIT */255) ? String.fromCharCode(d + 48) : str[i]);
   }
 
   return chars.join('');
@@ -97154,8 +97178,10 @@ function toNumber(str, options = {}) {
         return parse_int(trimmedStr, 2);
     } else if (options.octal && octRegex.test(trimmedStr)) {
         return parse_int(trimmedStr, 8);
-    } else if (!isFinite(trimmedStr)) { //Infinity
-        return handleInfinity(str, Number(trimmedStr), options);
+    } else if (!isFinite(trimmedStr)) { //Infinity or not a number
+        const num = Number(trimmedStr);
+        if (Number.isNaN(num)) return str; //not a number: always the original string
+        return handleInfinity(str, num, options); //only +/-Infinity reaches here
     } else if (trimmedStr.includes('e') || trimmedStr.includes('E')) { //eNotation
         return resolveEnotation(str, trimmedStr, options);
     } else {
@@ -97167,8 +97193,8 @@ function toNumber(str, options = {}) {
             const leadingZeros = match[2];
             let numTrimmedByZeros = trimZeros(match[3]); //complete num without leading zeros
             const decimalAdjacentToLeadingZeros = sign ? // 0., -00., 000.
-                str[leadingZeros.length + 1] === "."
-                : str[leadingZeros.length] === ".";
+                trimmedStr[leadingZeros.length + 1] === "."
+                : trimmedStr[leadingZeros.length] === ".";
 
             //trim ending zeros for floating number
             if (!options.leadingZeros //leading zeros are not allowed
@@ -97216,8 +97242,8 @@ function resolveEnotation(str, trimmedStr, options) {
         const eChar = notation[3].indexOf("e") === -1 ? "E" : "e";
         const leadingZeros = notation[2];
         const eAdjacentToLeadingZeros = sign ? // 0E.
-            str[leadingZeros.length + 1] === eChar
-            : str[leadingZeros.length] === eChar;
+            trimmedStr[leadingZeros.length + 1] === eChar
+            : trimmedStr[leadingZeros.length] === eChar;
 
         if (leadingZeros.length > 1 && eAdjacentToLeadingZeros) return str;
         else if (leadingZeros.length === 1
@@ -97226,8 +97252,7 @@ function resolveEnotation(str, trimmedStr, options) {
         } else if (leadingZeros.length > 0) {
             // Has leading zeros — only accept if leadingZeros option allows it
             if (options.leadingZeros && !eAdjacentToLeadingZeros) {
-                trimmedStr = (notation[1] || "") + notation[3];
-                return Number(trimmedStr);
+                return Number(trimmedStr); // Number() accepts leading zeros; stripping can leave a mantissa-less ".e0"
             } else return str;
         } else {
             // No leading zeros — always valid e-notation, parse it
@@ -97245,7 +97270,11 @@ function resolveEnotation(str, trimmedStr, options) {
  */
 function trimZeros(numStr) {
     if (numStr && numStr.indexOf(".") !== -1) {//float
-        numStr = numStr.replace(/0+$/, ""); //remove ending zeros
+        //remove ending zeros without the O(n^2) backtracking that /0+$/ hits
+        //when the string doesn't end in 0 but has a long internal zero-run
+        let end = numStr.length;
+        while (end > 0 && numStr.charCodeAt(end - 1) === 48 /* '0' */) end--;
+        numStr = numStr.slice(0, end);
         if (numStr === ".") numStr = "0";
         else if (numStr[0] === ".") numStr = "0" + numStr;
         else if (numStr[numStr.length - 1] === ".") numStr = numStr.substring(0, numStr.length - 1);
@@ -97286,6 +97315,7 @@ function handleInfinity(str, num, options) {
             return str; // Return original string like "1e1000"
     }
 }
+
 ;// ./node_modules/fast-xml-parser/src/ignoreAttributes.js
 function ignoreAttributes_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = ignoreAttributes_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ignoreAttributes_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return ignoreAttributes_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? ignoreAttributes_arrayLikeToArray(r, a) : void 0; } }
@@ -97324,15 +97354,12 @@ function Matcher_typeof(o) { "@babel/helpers - typeof"; return Matcher_typeof = 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { Matcher_defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function Matcher_defineProperty(e, r, t) { return (r = Matcher_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function Matcher_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = Matcher_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function Matcher_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return Matcher_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? Matcher_arrayLikeToArray(r, a) : void 0; } }
-function Matcher_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function Matcher_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function Matcher_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Matcher_toPropertyKey(o.key), o); } }
 function Matcher_createClass(e, r, t) { return r && Matcher_defineProperties(e.prototype, r), t && Matcher_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Matcher_toPropertyKey(t) { var i = Matcher_toPrimitive(t, "string"); return "symbol" == Matcher_typeof(i) ? i : i + ""; }
-function Matcher_toPrimitive(t, r) { if ("object" != Matcher_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function Matcher_toPrimitive(t, e) { if ("object" != Matcher_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 /**
  * MatcherView - A lightweight read-only view over a Matcher's internal state.
@@ -97420,6 +97447,30 @@ var MatcherView = /*#__PURE__*/function () {
       if (path.length === 0) return false;
       var current = path[path.length - 1];
       return current.values !== undefined && attrName in current.values;
+    }
+
+    /**
+     * Get the value of a "kept" attribute from the nearest ancestor (or
+     * current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {*}
+     */
+  }, {
+    key: "getAnyParentAttr",
+    value: function getAnyParentAttr(attrName) {
+      return this._matcher.getAnyParentAttr(attrName);
+    }
+
+    /**
+     * Check whether any ancestor (or the current node) kept the given
+     * attribute via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {boolean}
+     */
+  }, {
+    key: "hasAnyParentAttr",
+    value: function hasAnyParentAttr(attrName) {
+      return this._matcher.hasAnyParentAttr(attrName);
     }
 
     /**
@@ -97554,6 +97605,9 @@ var Matcher = /*#__PURE__*/function () {
     // Each siblingStacks entry: Map<tagName, count> tracking occurrences at each level
     this._pathStringCache = null;
     this._view = new MatcherView(this);
+
+    // Kept-attribute stack: only populated when push() is called with options.keep.
+    this._keptAttrs = [];
   }
 
   /**
@@ -97561,12 +97615,15 @@ var Matcher = /*#__PURE__*/function () {
    * @param {string} tagName
    * @param {Object|null} [attrValues=null]
    * @param {string|null} [namespace=null]
+   * @param {Object|null} [options=null]
+   * @param {string[]} [options.keep] - Names of attributes (from attrValues)
    */
   return Matcher_createClass(Matcher, [{
     key: "push",
     value: function push(tagName) {
       var attrValues = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var namespace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
       this._pathStringCache = null;
 
       // Remove values from previous current node (now becoming ancestor)
@@ -97576,34 +97633,32 @@ var Matcher = /*#__PURE__*/function () {
 
       // Get or create sibling tracking for current level
       var currentLevel = this.path.length;
-      if (!this.siblingStacks[currentLevel]) {
-        this.siblingStacks[currentLevel] = new Map();
+      var level = this.siblingStacks[currentLevel];
+      if (!level) {
+        // `counts` tells same-name siblings apart (the "counter" — nth <item>
+        // among other <item>s). `total` is every child seen at this level so
+        // far, kept as a running number instead of re-added from `counts` on
+        // every push — a parent with many differently-named children would
+        // otherwise cost more per child the more distinct names it has.
+        level = {
+          counts: new Map(),
+          total: 0
+        };
+        this.siblingStacks[currentLevel] = level;
       }
-      var siblings = this.siblingStacks[currentLevel];
 
       // Create a unique key for sibling tracking that includes namespace
       var siblingKey = namespace ? "".concat(namespace, ":").concat(tagName) : tagName;
 
       // Calculate counter (how many times this tag appeared at this level)
-      var counter = siblings.get(siblingKey) || 0;
+      var counter = level.counts.get(siblingKey) || 0;
 
-      // Calculate position (total children at this level so far)
-      var position = 0;
-      var _iterator = Matcher_createForOfIteratorHelper(siblings.values()),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var count = _step.value;
-          position += count;
-        }
+      // Position = total children at this level seen before this one.
+      var position = level.total;
 
-        // Update sibling count for this tag
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      siblings.set(siblingKey, counter + 1);
+      // Update sibling count for this tag, and the level's running total.
+      level.counts.set(siblingKey, counter + 1);
+      level.total++;
 
       // Create new node
       var node = {
@@ -97618,6 +97673,28 @@ var Matcher = /*#__PURE__*/function () {
         node.values = attrValues;
       }
       this.path.push(node);
+
+      // Depth of the node we just pushed (1-based, matches this.path.length)
+      var depth = this.path.length;
+
+      // Copy only the requested attributes into the kept-attrs stack. This is
+      // the one part of push() whose cost scales with input (O(keep.length))
+      // rather than being O(1) — by design, since the caller is explicitly
+      // opting in for specific attribute names. No options/keep => zero added
+      // cost beyond the two property reads below.
+      var keep = options !== null ? options.keep : null;
+      if (keep !== null && keep !== undefined && keep.length > 0 && attrValues) {
+        for (var i = 0; i < keep.length; i++) {
+          var name = keep[i];
+          if (attrValues[name] !== undefined) {
+            this._keptAttrs.push({
+              depth: depth,
+              name: name,
+              value: attrValues[name]
+            });
+          }
+        }
+      }
     }
 
     /**
@@ -97632,6 +97709,15 @@ var Matcher = /*#__PURE__*/function () {
       var node = this.path.pop();
       if (this.siblingStacks.length > this.path.length + 1) {
         this.siblingStacks.length = this.path.length + 1;
+      }
+
+      // Drop any kept attributes that belonged to the popped node (or deeper).
+      // _keptAttrs is depth-ordered (push only ever appends increasing depths),
+      // so this is a backward scan that stops at the first surviving entry —
+      // typically O(1) since kept attrs are rare by design.
+      var poppedDepth = this.path.length + 1;
+      while (this._keptAttrs.length > 0 && this._keptAttrs[this._keptAttrs.length - 1].depth >= poppedDepth) {
+        this._keptAttrs.pop();
       }
       return node;
     }
@@ -97696,6 +97782,42 @@ var Matcher = /*#__PURE__*/function () {
       if (this.path.length === 0) return false;
       var current = this.path[this.path.length - 1];
       return current.values !== undefined && attrName in current.values;
+    }
+
+    /**
+     * Get the value of a "kept" attribute from the nearest ancestor (or
+     * current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+     * Unlike getAttrValue(), this works regardless of how deep the path has
+     * gone since the attribute was pushed — but only for attribute names that
+     * were explicitly marked with `keep` at push time. Cost is proportional to
+     * the number of currently-kept attributes (typically 0-3), not path depth.
+     * @param {string} attrName
+     * @returns {*} the value, or undefined if no ancestor kept this attribute
+     */
+  }, {
+    key: "getAnyParentAttr",
+    value: function getAnyParentAttr(attrName) {
+      var kept = this._keptAttrs;
+      for (var i = kept.length - 1; i >= 0; i--) {
+        if (kept[i].name === attrName) return kept[i].value;
+      }
+      return undefined;
+    }
+
+    /**
+     * Check whether any ancestor (or the current node) kept the given
+     * attribute via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {boolean}
+     */
+  }, {
+    key: "hasAnyParentAttr",
+    value: function hasAnyParentAttr(attrName) {
+      var kept = this._keptAttrs;
+      for (var i = kept.length - 1; i >= 0; i--) {
+        if (kept[i].name === attrName) return true;
+      }
+      return false;
     }
 
     /**
@@ -97791,6 +97913,7 @@ var Matcher = /*#__PURE__*/function () {
       this._pathStringCache = null;
       this.path = [];
       this.siblingStacks = [];
+      this._keptAttrs = [];
     }
 
     /**
@@ -97935,8 +98058,14 @@ var Matcher = /*#__PURE__*/function () {
         path: this.path.map(function (node) {
           return _objectSpread({}, node);
         }),
-        siblingStacks: this.siblingStacks.map(function (map) {
-          return new Map(map);
+        siblingStacks: this.siblingStacks.map(function (level) {
+          return level ? {
+            counts: new Map(level.counts),
+            total: level.total
+          } : level;
+        }),
+        keptAttrs: this._keptAttrs.map(function (entry) {
+          return _objectSpread({}, entry);
         })
       };
     }
@@ -97952,8 +98081,14 @@ var Matcher = /*#__PURE__*/function () {
       this.path = snapshot.path.map(function (node) {
         return _objectSpread({}, node);
       });
-      this.siblingStacks = snapshot.siblingStacks.map(function (map) {
-        return new Map(map);
+      this.siblingStacks = snapshot.siblingStacks.map(function (level) {
+        return level ? {
+          counts: new Map(level.counts),
+          total: level.total
+        } : level;
+      });
+      this._keptAttrs = (snapshot.keptAttrs || []).map(function (entry) {
+        return _objectSpread({}, entry);
       });
     }
 
@@ -97987,7 +98122,7 @@ function Expression_classCallCheck(a, n) { if (!(a instanceof n)) throw new Type
 function Expression_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Expression_toPropertyKey(o.key), o); } }
 function Expression_createClass(e, r, t) { return r && Expression_defineProperties(e.prototype, r), t && Expression_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Expression_toPropertyKey(t) { var i = Expression_toPrimitive(t, "string"); return "symbol" == Expression_typeof(i) ? i : i + ""; }
-function Expression_toPrimitive(t, r) { if ("object" != Expression_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function Expression_toPrimitive(t, e) { if ("object" != Expression_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 /**
  * Expression - Parses and stores a tag pattern expression
  * 
@@ -98248,9 +98383,9 @@ function OrderedObjParser_typeof(o) { "@babel/helpers - typeof"; return OrderedO
 function OrderedObjParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OrderedObjParser_toPropertyKey(o.key), o); } }
 function OrderedObjParser_createClass(e, r, t) { return r && OrderedObjParser_defineProperties(e.prototype, r), t && OrderedObjParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function OrderedObjParser_toPropertyKey(t) { var i = OrderedObjParser_toPrimitive(t, "string"); return "symbol" == OrderedObjParser_typeof(i) ? i : i + ""; }
-function OrderedObjParser_toPrimitive(t, r) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function OrderedObjParser_toPrimitive(t, e) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function OrderedObjParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-
+;
 
 
 
@@ -99134,7 +99269,7 @@ function sanitizeName(name, options) {
 
 
 function node2json_typeof(o) { "@babel/helpers - typeof"; return node2json_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, node2json_typeof(o); }
-
+;
 
 var node2json_METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 
@@ -99662,8 +99797,8 @@ function XMLParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeE
 function XMLParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, XMLParser_toPropertyKey(o.key), o); } }
 function XMLParser_createClass(e, r, t) { return r && XMLParser_defineProperties(e.prototype, r), t && XMLParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function XMLParser_toPropertyKey(t) { var i = XMLParser_toPrimitive(t, "string"); return "symbol" == XMLParser_typeof(i) ? i : i + ""; }
-function XMLParser_toPrimitive(t, r) { if ("object" != XMLParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function XMLParser_toPrimitive(t, e) { if ("object" != XMLParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 
@@ -102318,7 +102453,7 @@ class ThemeLabelUniqueItem {
  * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。制作专题图时，如果设置了内存数据，则会制作基于内存数据的专题图。
- * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。
+ * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。即使用外部传入的内存数据制作专题图，而非使用图层本身的数据。适用于在不改动源数据的情况下，灵活呈现不同业务场景下的专题数据。
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  * @usage
@@ -104677,14 +104812,14 @@ class KnowledgeGraphEdgeParameter {
 /**
  * @class VideoFeature
  * @category iServer Data
- * @classdesc 视频要素类
+ * @classdesc 视频要素类，用于表示视频流及其空间范围等相关属性的要素。
  * @version 11.2.0
  * @param {Object} options - 参数。
  * @param {ModulePolygonAndBounds} options.geometry - 视频参数对应的视频视角空间范围，只支持矩形。
- * @param {string|number} [options.id] - 要素 ID。
+ * @param {string|number} [options.id] - 要素ID。
  * @param {string} [options.name] - 视频名称。
- * @param {string} [options.address] - 视频流地址。
- * @param {string} [options.attributes] - 描述要素的任意的可序列化属性。
+ * @param {string} [options.address] - 视频流地址。目前支持m3u8格式视频流。
+ * @param {string} [options.attributes] - 要素属性信息。
  * @usage
  */
 class VideoFeature {
@@ -104715,7 +104850,7 @@ class VideoFeature {
 
     /**
      * @member {Object} VideoFeature.prototype.attributes
-     * @description 描述要素的任意的可序列化属性。
+     * @description 要素属性信息
      */
     this.attributes = {};
     // ToDo
@@ -105435,6 +105570,20 @@ let en = {
     'title_dataServiceQuery': 'Data Service Query',
     'title_searchCity':'Search city',
     'title_searchLayer':' Search layer',
+    'text_videoMapDrawPoint': 'Draw point',
+    'text_videoMapDrawLine': 'Draw line',
+    'text_videoMapDrawPolygon': 'Draw polygon',
+    'text_videoMapDeleteSelectedFeature': 'Delete selected feature',
+    'text_videoMapPlay': 'Play',
+    'text_videoMapPause': 'Pause',
+    'text_videoMapMeasurementStart': 'Start',
+    'text_videoMapMeasurementTotalDistance': 'Total distance: ',
+    'text_videoMapMeasurementArea': 'Area: ',
+    'text_videoMapUnitMeter': ' m',
+    'text_videoMapUnitKilometer': ' km',
+    'text_videoMapUnitSquareMeter': ' m²',
+    'text_videoMapUnitSquareKilometer': ' km²',
+    'msg_videoMapTimeRangeMissing': '[VideoMap] Time range not found, time=',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',
@@ -105559,6 +105708,20 @@ let zh = {
     'title_dataServiceQuery': '数据服务查询',
     'title_searchCity':'搜索城市',
     'title_searchLayer':'搜索图层',
+    'text_videoMapDrawPoint': '绘制点',
+    'text_videoMapDrawLine': '绘制线',
+    'text_videoMapDrawPolygon': '绘制面',
+    'text_videoMapDeleteSelectedFeature': '删除选中要素',
+    'text_videoMapPlay': '播放',
+    'text_videoMapPause': '暂停',
+    'text_videoMapMeasurementStart': '起点',
+    'text_videoMapMeasurementTotalDistance': '总距离：',
+    'text_videoMapMeasurementArea': '面积：',
+    'text_videoMapUnitMeter': '米',
+    'text_videoMapUnitKilometer': '千米',
+    'text_videoMapUnitSquareMeter': '平方米',
+    'text_videoMapUnitSquareKilometer': '平方千米',
+    'msg_videoMapTimeRangeMissing': '[VideoMap] 未找到时间范围，time=',
 
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
@@ -107030,6 +107193,12 @@ class WebMapService {
 
     return defaultValue;
   }
+  handleUrlWithCredentials(serviceUrl) {
+    if (serviceUrl && this.iportalServiceProxyUrl && serviceUrl.indexOf(this.iportalServiceProxyUrl) >= 0) {
+      return true;
+    }
+    return null;
+  }
 
   isIportalResourceUrl(serviceUrl) {
     return (
@@ -107689,7 +107858,17 @@ function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      * @returns {Array} 弹窗信息数组。
      */
     getPopupInfos() {
-      return this._handler._getPopupInfos() || [];
+      return (this._handler && this._handler._getPopupInfos()) || [];
+    }
+
+    /**
+     * @version 11.3.0
+     * @function WebMapBase.prototype.getLegendInfos
+     * @description 获取地图本身所有图层的legend状态。
+     * @returns {Array} 图例信息数组，包含 showLegend、id、title 三个属性。
+     */
+    getLegendInfos() {
+      return (this._handler && this._handler._getLegendInfos()) || [];
     }
 
     /**
@@ -107809,16 +107988,23 @@ function createWebMapBaseExtending(SuperClass, { mapRepo }) {
      * @version 11.2.1
      * @function WebMapBase.prototype.cleanLayers
      * @description 删除追加的图层和事件。当设置 `map` 时有效
+     * @param {Array<Object>} [layersToClean] - 要删除的图层数组，默认为所有可删除的缓存图层（非 reused）。每个图层对象包含 id 属性
+     * @param {boolean} [isClean=true] - 是否调用 clean(false) 销毁内部资源。为 false 时只删除指定图层并同步清理 legends
      */
-    cleanLayers() {
+    cleanLayers(layersToClean = this._cacheCleanLayers.filter(item => !item.reused), isClean = true) {
       // 清空追加的地图图层以及对应的事件
       if (!this.map) {
         return;
       }
-      const layersToClean = this._cacheCleanLayers.filter((item) => !item.reused);
+      const cacheLayers = this._cacheCleanLayers.filter((item) => !item.reused);
       this._handler && this._handler.cleanLayers(layersToClean);
-      this._cacheCleanLayers = [];
-      this.clean(false);
+      this._cacheCleanLayers = cacheLayers.filter(item => !layersToClean.some((item1=> item1.id === item.id)));
+      if (isClean) {
+        this.clean(false);
+      } else {
+        const legends = this.getLegends();
+        this._handler.setLegends(legends.filter(item => !layersToClean.some((item1=> item1.id === item.layerId))));
+      }
     }
 
     /**
@@ -110360,10 +110546,12 @@ class AppreciableLayerBase extends Events {
     }
   }
 
-  setLayersVisible(layers, visibility) {
+  setLayersVisible(layers, visibility, isSetVisible = true) {
     layers.forEach((layer) => {
       const visbleId = this._getLayerVisibleId(layer);
-      this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      if (isSetVisible) {
+        this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      }
       if (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide) {
         visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
         this.map.style.fire('data', { dataType: 'style' });
@@ -110862,6 +111050,10 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           }
           this._appendLayers = true;
           this.map = map;
+          if (this.map.addLocalIdeographFontFamily) {
+            const fontFamilys = this._getLabelFontFamily(mapInfo);
+            this.map.addLocalIdeographFontFamily(fontFamilys);
+          }
         }
         this._mapInfo = mapInfo;
         this._loadLayers(mapInfo, this._taskID);
@@ -111010,6 +111202,18 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
         }
         return null;
       }).filter(item => item !== null);
+    }
+
+    _getLegendInfos() {
+      const { layers = [] } = this._mapInfo;
+      return layers.map((layer) => {
+        const { legendSetting, name, layerID: layerId } = layer;
+        return {
+          showLegend: legendSetting ? legendSetting.isShow : false,
+          id: layerId,
+          title: name
+        };
+      });
     }
 
     _handleLayerInfo(mapInfo, _taskID) {
@@ -111343,7 +111547,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
             const { minScale, maxScale } = layer.visibleScale;
             const crs = this.map.getCRS();
             layer.minzoom = Math.max(this._transformScaleToZoom(minScale, crs, layer.tileSize), 0);
-            layer.maxzoom = Math.min(this.map.getMaxZoom()+1, this._transformScaleToZoom(maxScale, crs, layer.tileSize) + 0.0000001);
+            layer.maxzoom = Math.min(this.map.getMaxZoom()+1, this._transformScaleToZoom(maxScale, crs, layer.tileSize) + 0.0000001, 24);
           }
 
           if (type === 'tile') {
@@ -111717,6 +111921,9 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
             bounds = this._getBoundList(res);
           }
         }
+      }
+      if (bounds && !this._isValidBounds(bounds)) {
+        bounds = null;
       }
       this._addBaselayer({
         url: [requestUrl],
@@ -112284,7 +112491,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           },
           layout,
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || this.map.getMaxZoom() + 1
+          maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
         },
         layerInfo.layerID
       );
@@ -112336,7 +112543,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || this.map.getMaxZoom() + 1
+        maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
       };
       if (filter) {
         layerOptions.filter = filter;
@@ -112391,7 +112598,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                 'icon-rotate': iconRotateExpression || ((layerInfo.style.rotation || 0) * 180) / Math.PI
               },
               minzoom: minzoom || 0,
-              maxzoom: maxzoom || this.map.getMaxZoom() + 1
+              maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
             };
             if (filter) {
               layerOptions.filter = filter;
@@ -112443,7 +112650,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                     'icon-color': style.fillColor
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || this.map.getMaxZoom() + 1
+                  maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
                 };
                 if (filter) {
                   layerOptions.filter = filter;
@@ -112747,7 +112954,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
               visibility: visible
             },
             minzoom: minzoom || 0,
-            maxzoom: maxzoom || this.map.getMaxZoom() + 1
+            maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
           };
           if (filterExpression.length > 1) {
             layerOptions.filter = filterExpression;
@@ -112865,7 +113072,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                     'icon-rotate': symbolStyle.rotation || 0
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || this.map.getMaxZoom() + 1,
+                  maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24),
                   filter: imagefilterExpression
                 },
                 layerID
@@ -112900,7 +113107,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                     'icon-color': symbolStyle.fillColor
                   },
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || this.map.getMaxZoom() + 1,
+                  maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24),
                   filter: svgfilterExpression
                 },
                 layerID
@@ -113071,7 +113278,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                   paint: this._transformStyleToMapBoxGl(defaultStyle, geomType),
                   layout: {},
                   minzoom: minzoom || 0,
-                  maxzoom: maxzoom || this.map.getMaxZoom() + 1
+                  maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
                 },
                 markerLayerID
               );
@@ -113089,7 +113296,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
                   visibility: layerInfo.visible
                 },
                 minzoom: minzoom || 0,
-                maxzoom: maxzoom || this.map.getMaxZoom() + 1
+                maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
               },
               markerLayerID
             );
@@ -113193,7 +113400,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           visibility: layerInfo.visible
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || this.map.getMaxZoom() + 1
+        maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
       });
       if (addToMap) {
         this._addLayerSucceeded({ layerInfo, features });
@@ -113400,7 +113607,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           paint: layerStyle.style,
           layout: layerStyle.layout || {},
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || this.map.getMaxZoom() + 1
+          maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
         };
         if (filter) {
           style.filter = filter;
@@ -113424,7 +113631,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
         type: 'raster',
         tiles: url,
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || this.map.getMaxZoom() + 1,
+        maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24),
         tileSize: isIserver ? this.rasterTileSize : tileSize,
         rasterSource: isIserver ? 'iserver' : '',
         prjCoordSys:
@@ -113447,7 +113654,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           type: 'raster',
           source: sourceId,
           minzoom: minzoom || 0,
-          maxzoom: maxzoom || this.map.getMaxZoom() + 1,
+          maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24),
           layout: {
             visibility: this._getVisibility(visibility)
           }
@@ -113630,7 +113837,7 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           visibility: layerInfo.visible ? 'visible' : 'none'
         },
         minzoom: minzoom || 0,
-        maxzoom: maxzoom || this.map.getMaxZoom() + 1
+        maxzoom: Math.min(maxzoom || this.map.getMaxZoom() + 1, 24)
       });
       this._addLayerSucceeded();
     }
@@ -113669,6 +113876,35 @@ function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsManager, 
       //   coor.reverse();
       // }
       return coor;
+    }
+
+    // 校验 bounds 是否为合法的经纬度范围(EPSG:4326)
+    // 不合法返回 false：值非数字/无穷、左>=右、下>=上、四个坐标都在 ±0.5 度内(认为退化为原点附近)、超出经纬度范围
+    _isValidBounds(bounds) {
+      if (!Array.isArray(bounds) || bounds.length !== 4) {
+        return false;
+      }
+      const [left, bottom, right, top] = bounds;
+      if (![left, bottom, right, top].every((v) => typeof v === 'number' && Number.isFinite(v))) {
+        return false;
+      }
+      if (left >= right || bottom >= top) {
+        return false;
+      }
+      // 容差，吸收浮点计算误差(如 180.00000000000006)
+      const tolerance = 1e-6;
+      if (
+        Math.abs(left) > 180 + tolerance ||
+        Math.abs(right) > 180 + tolerance ||
+        Math.abs(bottom) > 90 + tolerance ||
+        Math.abs(top) > 90 + tolerance
+      ) {
+        return false;
+      }
+      if (Math.abs(left) < 0.5 && Math.abs(right) < 0.5 && Math.abs(bottom) < 0.5 && Math.abs(top) < 0.5) {
+        return false;
+      }
+      return true;
     }
 
     _getMapCenter(mapInfo) {
@@ -114245,17 +114481,34 @@ class SourceListModelV3 extends AppreciableLayerBase {
       const sourceOnMap = this.map.getSource(layer.source);
       if (!Object.keys(dataSource).length && sourceOnMap && sourceOnMap.type === 'vector') {
         const matchSource = this._mapInfo.sources[layer.source] || sourceOnMap;
-        if (matchSource.tiles && matchSource.tiles[0].includes('/rest/maps/')) {
+        if (matchSource.tiles && matchSource.tiles.length > 0) {
           const tileUrl = matchSource.tiles[0];
-          const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
-          const [mapName] = leftParts.split('/tileFeature');
-          dataSource.url = `${serverUrl}/rest/maps`;
-          dataSource.mapName = mapName;
-          dataSource.type = 'REST_MAP';
-          dataSource.layerName = serviceLayerId;
+          switch (true) {
+            case tileUrl.includes('/rest/maps/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
+              const [mapName] = leftParts.split('/tileFeature');
+              dataSource.url = `${serverUrl}/rest/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'REST_MAP';
+              dataSource.layerName = serviceLayerId;
+              break;
+            }
+            case tileUrl.includes('/restjsr/v1/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/restjsr/v1/');
+              const [mapName] = leftParts.split('/tiles/');
+              dataSource.url = `${serverUrl}/restjsr/v1/vectortile/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'RESTJSR';
+              break;
+            }
+            default: {
+              dataSource.url = tileUrl;
+              dataSource.type = 'VECTOR_OTHER';
+            }
+          }
         }
       }
-      layerInfo.dataSource = dataSource;
+      layerInfo.dataSource = Object.assign(dataSource, { serviceLayerId });
       if (this._l7LayerUtil.isL7Layer(layer)) {
         layerInfo.CLASS_NAME = 'L7Layer';
       }
@@ -114419,7 +114672,8 @@ const LEGEND_CSS_DEFAULT = {
     marginLeft: '1px',
     outlineStyle: 'none',
     outlineColor: '#FFFFFF',
-    outlineWidth: '0.5px'
+    outlineWidth: '0.5px',
+    outlineOpacity: 1
   },
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: {
     width: '20px',
@@ -114459,7 +114713,7 @@ const LEGEND_STYLE_KEYS = {
   [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
-  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias' ,'outline', 'outlineColor', 'outlineWidth', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias', 'outline', 'outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent'],
   [LEGEND_RENDER_TYPE.ANIMATEPOINT]: ['color', 'opacity', 'size', 'speed', 'rings'],
   [LEGEND_RENDER_TYPE.ANIMATELINE]: ['color', 'opacity', 'width', 'textureBlend', 'symbolsContent', 'iconStep'],
@@ -114476,7 +114730,8 @@ const LEGEND_SYMBOL_DEFAULT = {
 const LegendType = {
   LINEAR: 'LINEAR',
   UNIQUE: 'UNIQUE',
-  RANGE: 'RANGE'
+  RANGE: 'RANGE',
+  CUSTOM: 'CUSTOM'
 };
 
 const SymbolType = {
@@ -114509,7 +114764,30 @@ const LEGEND_STYLE_TYPES = {
   IMAGE: 'image',
   STYLE: 'style'
 };
-function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil }) {
+
+
+
+/**
+ * 按地图版本创建 Sprite 加载处理函数，供 WebMap 和外部 WebApp 共用。
+ * @param {string} mapVersion 地图版本号。
+ * @returns {Function|undefined} 旧版地图返回线符号处理函数，新版地图不需要额外处理。
+ */
+function createSpriteLoadHandler(mapVersion) {
+  // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
+  if (isMapVersionGreaterThan(mapVersion, '3.3.7')) {
+    return;
+  }
+  return (id, imageData, width, height) => {
+    // 翻转所有 line- 开头的图案
+    if (id && id.startsWith('line-')) {
+      return flipImageVertically(imageData, width, height);
+    }
+
+    return null;
+  };
+}
+
+function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil, webMapService }) {
   return class WebMapV3 extends SuperClass {
     constructor(mapId, options, mapOptions = {}) {
     super();
@@ -114542,6 +114820,10 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           sprite
          });
        }
+      if (this.map.addLocalIdeographFontFamily) {
+        const fontFamilys = this._getLabelFontFamily(mapInfo);
+        this.map.addLocalIdeographFontFamily(fontFamilys);
+      }
       this._initLayers();
       return;
     }
@@ -114634,6 +114916,9 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     // 初始化 map
     const mapOptions = {
       ...this.mapOptions,
+      // 统一线图案方向，避免 Mapbox GL 默认方向与 WebMap 符号方向约定不一致；旧版资源翻转由 _getSpriteLoad 按地图版本处理。
+      linePatternOrientation: 'west-to-east',
+      onSpriteLoad: this._getSpriteLoad(),
       transformRequest: this._getTransformRequest(),
       container: this.options.target,
       crs: this._baseProjection,
@@ -114658,6 +114943,10 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     this.map.on('load', () => {
       this._initLayers();
     });
+  }
+
+  _getSpriteLoad() {
+    return createSpriteLoadHandler(this._mapInfo && this._mapInfo.version);
   }
 
   _getTransformRequest() {
@@ -114738,6 +115027,31 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     return res;
   }
 
+  _getLegendInfoByCatalog(catalog, res = []) {
+    const { catalogType, children, showLegend, title, id } = catalog;
+    if (catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getLegendInfoByCatalog(child, res);
+      });
+    }
+    if (catalogType === 'layer') {
+      res.push({
+        showLegend: showLegend === true,
+        id: id,
+        title: title
+      });
+    }
+  }
+
+  _getLegendInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getLegendInfoByCatalog(item, res);
+    });
+    return res;
+  }
+
   /**
    * @private
    * @function WebMapV3.prototype._initLayers
@@ -114815,7 +115129,7 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     const mapResourceUrl = transformUrl(
       Object.assign({ url: `${this.options.server}web/maps/${this.mapId}` }, this.options)
     );
-    return FetchRequest.get(mapResourceUrl, null, { withCredentials: this.options.withCredentials }).then((response) =>
+    return FetchRequest.get(mapResourceUrl, null, { withCredentials: webMapService.handleUrlWithCredentials(mapResourceUrl) }).then((response) =>
       response.json()
     );
   }
@@ -115074,9 +115388,9 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
    * @function WebMapV3.prototype._getLabelFontFamily
    * @description 获取图层字体类型。
    */
-  _getLabelFontFamily() {
+  _getLabelFontFamily(mapInfo = this._mapInfo) {
     const fonts = ['sans-serif'];
-    const layers = this._mapInfo.layers;
+    const layers = mapInfo.layers;
     if (layers && layers.length > 0) {
       layers.forEach((layer) => {
         const textFont = (layer.layout && layer.layout['text-font']) || [];
@@ -115117,7 +115431,7 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
 
   _getSpriteData(sprite) {
     const url = sprite.replace(/.+(web\/maps\/.+)/, `${this.options.server}$1`);
-    return FetchRequest.get(url, null, { withCredentials: this.options.withCredentials })
+    return FetchRequest.get(url, null, { withCredentials: webMapService.handleUrlWithCredentials(url) })
       .then((response) => {
         return response.json();
       });
@@ -115187,7 +115501,7 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     if (keys) {
       const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
       simpleKeys.forEach((k) => {
-      const isOutlineKey = k === 'outlineColor' || k === 'outlineWidth';
+      const isOutlineKey = ['outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent'].includes(k);
       const hasOutline =
         styleSetting &&
         (
@@ -115324,6 +115638,10 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
     const currentType = symbolsContent.type;
     if (currentType === 'simple') {
       return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
+    }
+    if(currentType === 'custom') {
+      // 表达式暂不支持图例显示
+      return false;
     }
     const styles = symbolsContent.values.map((v) => v.value).concat(symbolsContent.defaultValue);
     return styles.every((v) => {
@@ -115490,6 +115808,9 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
         return LegendType.LINEAR;
       }
       return LegendType.UNIQUE;
+    }
+    if(currentType === 'custom') {
+      return LegendType.CUSTOM;
     }
     return LegendType.RANGE;
   }
@@ -115671,13 +115992,36 @@ function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, 
           }
         });
         Object.assign(cssStyle, { outlineStyle: (customValue.antialias || customValue.outline) ? 'solid' : 'none'});
+        // 轮廓线符号与轮廓线宽平级，交由图例组件渲染
+        if (customValue.outlineSymbolsContent) {
+          cssStyle.outlineSymbolsContent = customValue.outlineSymbolsContent;
+          // 轮廓图片符号（line-pattern 连续纹理 / icon-image 图标点）的雪碧图信息，
+          // 按图片 id 附带在样式上，供图例组件直接裁剪轮廓图块
+          const outlineSprites = {};
+          [].concat(customValue.outlineSymbolsContent.style || []).forEach((outlineSymbol) => {
+            const outlinePaint = (outlineSymbol && outlineSymbol.paint) || {};
+            const outlineLayout = (outlineSymbol && outlineSymbol.layout) || {};
+            const outlineImageId = outlinePaint['line-pattern'] || outlineLayout['icon-image'];
+            if (outlineImageId && this._spriteDatas[outlineImageId]) {
+              outlineSprites[outlineImageId] = this._spriteDatas[outlineImageId];
+            }
+          });
+          if (Object.keys(outlineSprites).length) {
+            cssStyle.outlineSprites = outlineSprites;
+          }
+        }
         if (this._spriteDatas[symbolId]) {
           return this._getSpriteStyle(symbolId, { ...cssStyle, backgroundColor: 'transparent' });
         }
-        return {
+        // 纯色面填充 + 图片轮廓符号：样式仍走矢量渲染，附上雪碧图地址供图例组件加载并裁剪轮廓图块
+        const legendStyle = {
           type: LEGEND_STYLE_TYPES.STYLE,
           ...cssStyle
         };
+        if (customValue.outlineSymbolsContent && typeof this._sprite === 'string') {
+          legendStyle.url = `${this._sprite}.png`;
+        }
+        return legendStyle;
       }
     }
   }
@@ -115874,6 +116218,10 @@ function createMapClassExtending(SuperClass = class {}) {
       return this._legendList;
     }
 
+    setLegends(legendList) {
+      this._legendList = legendList || [];
+    }
+
     getSelfAppreciableLayers() {
       return (this._sourceListModel && this._sourceListModel.getSelfLayers(...arguments)) || [];
     }
@@ -115932,7 +116280,9 @@ function createMapClassExtending(SuperClass = class {}) {
         }
       }
       Array.from(new Set(sourceList)).forEach((sourceId) => {
-        this.map.removeSource(sourceId);
+        if (this.map.getSource(sourceId)) {
+          this.map.removeSource(sourceId);
+        }
       });
     }
   };
@@ -116143,7 +116493,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-var t=function(r,e){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,r){t.__proto__=r}||function(t,r){for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])})(r,e)};function r(r,e){if("function"!=typeof e&&null!==e)throw new TypeError("Class extends value "+String(e)+" is not a constructor or null");function i(){this.constructor=r}t(r,e),r.prototype=null===e?Object.create(e):(i.prototype=e.prototype,new i)}function e(t){var r="";Array.isArray(t)||(t=[t]);for(var e=0;e<t.length;e++){var i=t[e];if(i.type===_.CLOSE_PATH)r+="z";else if(i.type===_.HORIZ_LINE_TO)r+=(i.relative?"h":"H")+i.x;else if(i.type===_.VERT_LINE_TO)r+=(i.relative?"v":"V")+i.y;else if(i.type===_.MOVE_TO)r+=(i.relative?"m":"M")+i.x+" "+i.y;else if(i.type===_.LINE_TO)r+=(i.relative?"l":"L")+i.x+" "+i.y;else if(i.type===_.CURVE_TO)r+=(i.relative?"c":"C")+i.x1+" "+i.y1+" "+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_CURVE_TO)r+=(i.relative?"s":"S")+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.QUAD_TO)r+=(i.relative?"q":"Q")+i.x1+" "+i.y1+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_QUAD_TO)r+=(i.relative?"t":"T")+i.x+" "+i.y;else{if(i.type!==_.ARC)throw new Error('Unexpected command type "'+i.type+'" at index '+e+".");r+=(i.relative?"a":"A")+i.rX+" "+i.rY+" "+i.xRot+" "+ +i.lArcFlag+" "+ +i.sweepFlag+" "+i.x+" "+i.y}}return r}function i(t,r){var e=t[0],i=t[1];return[e*Math.cos(r)-i*Math.sin(r),e*Math.sin(r)+i*Math.cos(r)]}function a(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];for(var e=0;e<t.length;e++)if("number"!=typeof t[e])throw new Error("assertNumbers arguments["+e+"] is not a number. "+typeof t[e]+" == typeof "+t[e]);return!0}var n=Math.PI;function o(t,r,e){t.lArcFlag=0===t.lArcFlag?0:1,t.sweepFlag=0===t.sweepFlag?0:1;var a=t.rX,o=t.rY,s=t.x,u=t.y;a=Math.abs(t.rX),o=Math.abs(t.rY);var h=i([(r-s)/2,(e-u)/2],-t.xRot/180*n),c=h[0],y=h[1],p=Math.pow(c,2)/Math.pow(a,2)+Math.pow(y,2)/Math.pow(o,2);1<p&&(a*=Math.sqrt(p),o*=Math.sqrt(p)),t.rX=a,t.rY=o;var m=Math.pow(a,2)*Math.pow(y,2)+Math.pow(o,2)*Math.pow(c,2),O=(t.lArcFlag!==t.sweepFlag?1:-1)*Math.sqrt(Math.max(0,(Math.pow(a,2)*Math.pow(o,2)-m)/m)),l=a*y/o*O,T=-o*c/a*O,v=i([l,T],t.xRot/180*n);t.cX=v[0]+(r+s)/2,t.cY=v[1]+(e+u)/2,t.phi1=Math.atan2((y-T)/o,(c-l)/a),t.phi2=Math.atan2((-y-T)/o,(-c-l)/a),0===t.sweepFlag&&t.phi2>t.phi1&&(t.phi2-=2*n),1===t.sweepFlag&&t.phi2<t.phi1&&(t.phi2+=2*n),t.phi1*=180/n,t.phi2*=180/n}function s(t,r,e){a(t,r,e);var i=t*t+r*r-e*e;if(0>i)return[];if(0===i)return[[t*e/(t*t+r*r),r*e/(t*t+r*r)]];var n=Math.sqrt(i);return[[(t*e+r*n)/(t*t+r*r),(r*e-t*n)/(t*t+r*r)],[(t*e-r*n)/(t*t+r*r),(r*e+t*n)/(t*t+r*r)]]}var u,h=Math.PI/180;function c(t,r,e){return(1-e)*t+e*r}function y(t,r,e,i){return t+Math.cos(i/180*n)*r+Math.sin(i/180*n)*e}function p(t,r,e,i){var a=1e-6,n=r-t,o=e-r,s=3*n+3*(i-e)-6*o,u=6*(o-n),h=3*n;return Math.abs(s)<a?[-h/u]:function(t,r,e){void 0===e&&(e=1e-6);var i=t*t/4-r;if(i<-e)return[];if(i<=e)return[-t/2];var a=Math.sqrt(i);return[-t/2-a,-t/2+a]}(u/s,h/s,a)}function m(t,r,e,i,a){var n=1-a;return t*(n*n*n)+r*(3*n*n*a)+e*(3*n*a*a)+i*(a*a*a)}!function(t){function r(){return u((function(t,r,e){return t.relative&&(void 0!==t.x1&&(t.x1+=r),void 0!==t.y1&&(t.y1+=e),void 0!==t.x2&&(t.x2+=r),void 0!==t.y2&&(t.y2+=e),void 0!==t.x&&(t.x+=r),void 0!==t.y&&(t.y+=e),t.relative=!1),t}))}function e(){var t=NaN,r=NaN,e=NaN,i=NaN;return u((function(a,n,o){return a.type&_.SMOOTH_CURVE_TO&&(a.type=_.CURVE_TO,t=isNaN(t)?n:t,r=isNaN(r)?o:r,a.x1=a.relative?n-t:2*n-t,a.y1=a.relative?o-r:2*o-r),a.type&_.CURVE_TO?(t=a.relative?n+a.x2:a.x2,r=a.relative?o+a.y2:a.y2):(t=NaN,r=NaN),a.type&_.SMOOTH_QUAD_TO&&(a.type=_.QUAD_TO,e=isNaN(e)?n:e,i=isNaN(i)?o:i,a.x1=a.relative?n-e:2*n-e,a.y1=a.relative?o-i:2*o-i),a.type&_.QUAD_TO?(e=a.relative?n+a.x1:a.x1,i=a.relative?o+a.y1:a.y1):(e=NaN,i=NaN),a}))}function n(){var t=NaN,r=NaN;return u((function(e,i,a){if(e.type&_.SMOOTH_QUAD_TO&&(e.type=_.QUAD_TO,t=isNaN(t)?i:t,r=isNaN(r)?a:r,e.x1=e.relative?i-t:2*i-t,e.y1=e.relative?a-r:2*a-r),e.type&_.QUAD_TO){t=e.relative?i+e.x1:e.x1,r=e.relative?a+e.y1:e.y1;var n=e.x1,o=e.y1;e.type=_.CURVE_TO,e.x1=((e.relative?0:i)+2*n)/3,e.y1=((e.relative?0:a)+2*o)/3,e.x2=(e.x+2*n)/3,e.y2=(e.y+2*o)/3}else t=NaN,r=NaN;return e}))}function u(t){var r=0,e=0,i=NaN,a=NaN;return function(n){if(isNaN(i)&&!(n.type&_.MOVE_TO))throw new Error("path must start with moveto");var o=t(n,r,e,i,a);return n.type&_.CLOSE_PATH&&(r=i,e=a),void 0!==n.x&&(r=n.relative?r+n.x:n.x),void 0!==n.y&&(e=n.relative?e+n.y:n.y),n.type&_.MOVE_TO&&(i=r,a=e),o}}function O(t,r,e,i,n,o){return a(t,r,e,i,n,o),u((function(a,s,u,h){var c=a.x1,y=a.x2,p=a.relative&&!isNaN(h),m=void 0!==a.x?a.x:p?0:s,O=void 0!==a.y?a.y:p?0:u;function l(t){return t*t}a.type&_.HORIZ_LINE_TO&&0!==r&&(a.type=_.LINE_TO,a.y=a.relative?0:u),a.type&_.VERT_LINE_TO&&0!==e&&(a.type=_.LINE_TO,a.x=a.relative?0:s),void 0!==a.x&&(a.x=a.x*t+O*e+(p?0:n)),void 0!==a.y&&(a.y=m*r+a.y*i+(p?0:o)),void 0!==a.x1&&(a.x1=a.x1*t+a.y1*e+(p?0:n)),void 0!==a.y1&&(a.y1=c*r+a.y1*i+(p?0:o)),void 0!==a.x2&&(a.x2=a.x2*t+a.y2*e+(p?0:n)),void 0!==a.y2&&(a.y2=y*r+a.y2*i+(p?0:o));var T=t*i-r*e;if(void 0!==a.xRot&&(1!==t||0!==r||0!==e||1!==i))if(0===T)delete a.rX,delete a.rY,delete a.xRot,delete a.lArcFlag,delete a.sweepFlag,a.type=_.LINE_TO;else{var v=a.xRot*Math.PI/180,f=Math.sin(v),N=Math.cos(v),x=1/l(a.rX),d=1/l(a.rY),E=l(N)*x+l(f)*d,A=2*f*N*(x-d),C=l(f)*x+l(N)*d,M=E*i*i-A*r*i+C*r*r,R=A*(t*i+r*e)-2*(E*e*i+C*t*r),g=E*e*e-A*t*e+C*t*t,I=(Math.atan2(R,M-g)+Math.PI)%Math.PI/2,S=Math.sin(I),L=Math.cos(I);a.rX=Math.abs(T)/Math.sqrt(M*l(L)+R*S*L+g*l(S)),a.rY=Math.abs(T)/Math.sqrt(M*l(S)-R*S*L+g*l(L)),a.xRot=180*I/Math.PI}return void 0!==a.sweepFlag&&0>T&&(a.sweepFlag=+!a.sweepFlag),a}))}function l(){return function(t){var r={};for(var e in t)r[e]=t[e];return r}}t.ROUND=function(t){function r(r){return Math.round(r*t)/t}return void 0===t&&(t=1e13),a(t),function(t){return void 0!==t.x1&&(t.x1=r(t.x1)),void 0!==t.y1&&(t.y1=r(t.y1)),void 0!==t.x2&&(t.x2=r(t.x2)),void 0!==t.y2&&(t.y2=r(t.y2)),void 0!==t.x&&(t.x=r(t.x)),void 0!==t.y&&(t.y=r(t.y)),void 0!==t.rX&&(t.rX=r(t.rX)),void 0!==t.rY&&(t.rY=r(t.rY)),t}},t.TO_ABS=r,t.TO_REL=function(){return u((function(t,r,e){return t.relative||(void 0!==t.x1&&(t.x1-=r),void 0!==t.y1&&(t.y1-=e),void 0!==t.x2&&(t.x2-=r),void 0!==t.y2&&(t.y2-=e),void 0!==t.x&&(t.x-=r),void 0!==t.y&&(t.y-=e),t.relative=!0),t}))},t.NORMALIZE_HVZ=function(t,r,e){return void 0===t&&(t=!0),void 0===r&&(r=!0),void 0===e&&(e=!0),u((function(i,a,n,o,s){if(isNaN(o)&&!(i.type&_.MOVE_TO))throw new Error("path must start with moveto");return r&&i.type&_.HORIZ_LINE_TO&&(i.type=_.LINE_TO,i.y=i.relative?0:n),e&&i.type&_.VERT_LINE_TO&&(i.type=_.LINE_TO,i.x=i.relative?0:a),t&&i.type&_.CLOSE_PATH&&(i.type=_.LINE_TO,i.x=i.relative?o-a:o,i.y=i.relative?s-n:s),i.type&_.ARC&&(0===i.rX||0===i.rY)&&(i.type=_.LINE_TO,delete i.rX,delete i.rY,delete i.xRot,delete i.lArcFlag,delete i.sweepFlag),i}))},t.NORMALIZE_ST=e,t.QT_TO_C=n,t.INFO=u,t.SANITIZE=function(t){void 0===t&&(t=0),a(t);var r=NaN,e=NaN,i=NaN,n=NaN;return u((function(a,o,s,u,h){var c=Math.abs,y=!1,p=0,m=0;if(a.type&_.SMOOTH_CURVE_TO&&(p=isNaN(r)?0:o-r,m=isNaN(e)?0:s-e),a.type&(_.CURVE_TO|_.SMOOTH_CURVE_TO)?(r=a.relative?o+a.x2:a.x2,e=a.relative?s+a.y2:a.y2):(r=NaN,e=NaN),a.type&_.SMOOTH_QUAD_TO?(i=isNaN(i)?o:2*o-i,n=isNaN(n)?s:2*s-n):a.type&_.QUAD_TO?(i=a.relative?o+a.x1:a.x1,n=a.relative?s+a.y1:a.y2):(i=NaN,n=NaN),a.type&_.LINE_COMMANDS||a.type&_.ARC&&(0===a.rX||0===a.rY||!a.lArcFlag)||a.type&_.CURVE_TO||a.type&_.SMOOTH_CURVE_TO||a.type&_.QUAD_TO||a.type&_.SMOOTH_QUAD_TO){var O=void 0===a.x?0:a.relative?a.x:a.x-o,l=void 0===a.y?0:a.relative?a.y:a.y-s;p=isNaN(i)?void 0===a.x1?p:a.relative?a.x:a.x1-o:i-o,m=isNaN(n)?void 0===a.y1?m:a.relative?a.y:a.y1-s:n-s;var T=void 0===a.x2?0:a.relative?a.x:a.x2-o,v=void 0===a.y2?0:a.relative?a.y:a.y2-s;c(O)<=t&&c(l)<=t&&c(p)<=t&&c(m)<=t&&c(T)<=t&&c(v)<=t&&(y=!0)}return a.type&_.CLOSE_PATH&&c(o-u)<=t&&c(s-h)<=t&&(y=!0),y?[]:a}))},t.MATRIX=O,t.ROTATE=function(t,r,e){void 0===r&&(r=0),void 0===e&&(e=0),a(t,r,e);var i=Math.sin(t),n=Math.cos(t);return O(n,i,-i,n,r-r*n+e*i,e-r*i-e*n)},t.TRANSLATE=function(t,r){return void 0===r&&(r=0),a(t,r),O(1,0,0,1,t,r)},t.SCALE=function(t,r){return void 0===r&&(r=t),a(t,r),O(t,0,0,r,0,0)},t.SKEW_X=function(t){return a(t),O(1,0,Math.atan(t),1,0,0)},t.SKEW_Y=function(t){return a(t),O(1,Math.atan(t),0,1,0,0)},t.X_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),a(t),O(-1,0,0,1,t,0)},t.Y_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),a(t),O(1,0,0,-1,0,t)},t.A_TO_C=function(){return u((function(t,r,e){return _.ARC===t.type?function(t,r,e){var a,n,s,u;t.cX||o(t,r,e);for(var y=Math.min(t.phi1,t.phi2),p=Math.max(t.phi1,t.phi2)-y,m=Math.ceil(p/90),O=new Array(m),l=r,T=e,v=0;v<m;v++){var f=c(t.phi1,t.phi2,v/m),N=c(t.phi1,t.phi2,(v+1)/m),x=N-f,d=4/3*Math.tan(x*h/4),E=[Math.cos(f*h)-d*Math.sin(f*h),Math.sin(f*h)+d*Math.cos(f*h)],A=E[0],C=E[1],M=[Math.cos(N*h),Math.sin(N*h)],R=M[0],g=M[1],I=[R+d*Math.sin(N*h),g-d*Math.cos(N*h)],S=I[0],L=I[1];O[v]={relative:t.relative,type:_.CURVE_TO};var H=function(r,e){var a=i([r*t.rX,e*t.rY],t.xRot),n=a[0],o=a[1];return[t.cX+n,t.cY+o]};a=H(A,C),O[v].x1=a[0],O[v].y1=a[1],n=H(S,L),O[v].x2=n[0],O[v].y2=n[1],s=H(R,g),O[v].x=s[0],O[v].y=s[1],t.relative&&(O[v].x1-=l,O[v].y1-=T,O[v].x2-=l,O[v].y2-=T,O[v].x-=l,O[v].y-=T),l=(u=[O[v].x,O[v].y])[0],T=u[1]}return O}(t,t.relative?0:r,t.relative?0:e):t}))},t.ANNOTATE_ARCS=function(){return u((function(t,r,e){return t.relative&&(r=0,e=0),_.ARC===t.type&&o(t,r,e),t}))},t.CLONE=l,t.CALCULATE_BOUNDS=function(){var t=function(t){var r={};for(var e in t)r[e]=t[e];return r},i=r(),a=n(),h=e(),c=u((function(r,e,n){var u=h(a(i(t(r))));function O(t){t>c.maxX&&(c.maxX=t),t<c.minX&&(c.minX=t)}function l(t){t>c.maxY&&(c.maxY=t),t<c.minY&&(c.minY=t)}if(u.type&_.DRAWING_COMMANDS&&(O(e),l(n)),u.type&_.HORIZ_LINE_TO&&O(u.x),u.type&_.VERT_LINE_TO&&l(u.y),u.type&_.LINE_TO&&(O(u.x),l(u.y)),u.type&_.CURVE_TO){O(u.x),l(u.y);for(var T=0,v=p(e,u.x1,u.x2,u.x);T<v.length;T++){0<(w=v[T])&&1>w&&O(m(e,u.x1,u.x2,u.x,w))}for(var f=0,N=p(n,u.y1,u.y2,u.y);f<N.length;f++){0<(w=N[f])&&1>w&&l(m(n,u.y1,u.y2,u.y,w))}}if(u.type&_.ARC){O(u.x),l(u.y),o(u,e,n);for(var x=u.xRot/180*Math.PI,d=Math.cos(x)*u.rX,E=Math.sin(x)*u.rX,A=-Math.sin(x)*u.rY,C=Math.cos(x)*u.rY,M=u.phi1<u.phi2?[u.phi1,u.phi2]:-180>u.phi2?[u.phi2+360,u.phi1+360]:[u.phi2,u.phi1],R=M[0],g=M[1],I=function(t){var r=t[0],e=t[1],i=180*Math.atan2(e,r)/Math.PI;return i<R?i+360:i},S=0,L=s(A,-d,0).map(I);S<L.length;S++){(w=L[S])>R&&w<g&&O(y(u.cX,d,A,w))}for(var H=0,U=s(C,-E,0).map(I);H<U.length;H++){var w;(w=U[H])>R&&w<g&&l(y(u.cY,E,C,w))}}return r}));return c.minX=1/0,c.maxX=-1/0,c.minY=1/0,c.maxY=-1/0,c}}(u||(u={}));var SVGPathData_module_O,l=function(){function t(){}return t.prototype.round=function(t){return this.transform(u.ROUND(t))},t.prototype.toAbs=function(){return this.transform(u.TO_ABS())},t.prototype.toRel=function(){return this.transform(u.TO_REL())},t.prototype.normalizeHVZ=function(t,r,e){return this.transform(u.NORMALIZE_HVZ(t,r,e))},t.prototype.normalizeST=function(){return this.transform(u.NORMALIZE_ST())},t.prototype.qtToC=function(){return this.transform(u.QT_TO_C())},t.prototype.aToC=function(){return this.transform(u.A_TO_C())},t.prototype.sanitize=function(t){return this.transform(u.SANITIZE(t))},t.prototype.translate=function(t,r){return this.transform(u.TRANSLATE(t,r))},t.prototype.scale=function(t,r){return this.transform(u.SCALE(t,r))},t.prototype.rotate=function(t,r,e){return this.transform(u.ROTATE(t,r,e))},t.prototype.matrix=function(t,r,e,i,a,n){return this.transform(u.MATRIX(t,r,e,i,a,n))},t.prototype.skewX=function(t){return this.transform(u.SKEW_X(t))},t.prototype.skewY=function(t){return this.transform(u.SKEW_Y(t))},t.prototype.xSymmetry=function(t){return this.transform(u.X_AXIS_SYMMETRY(t))},t.prototype.ySymmetry=function(t){return this.transform(u.Y_AXIS_SYMMETRY(t))},t.prototype.annotateArcs=function(){return this.transform(u.ANNOTATE_ARCS())},t}(),T=function(t){return" "===t||"\t"===t||"\r"===t||"\n"===t},v=function(t){return"0".charCodeAt(0)<=t.charCodeAt(0)&&t.charCodeAt(0)<="9".charCodeAt(0)},f=function(t){function e(){var r=t.call(this)||this;return r.curNumber="",r.curCommandType=-1,r.curCommandRelative=!1,r.canParseCommandOrComma=!0,r.curNumberHasExp=!1,r.curNumberHasExpDigits=!1,r.curNumberHasDecimal=!1,r.curArgs=[],r}return r(e,t),e.prototype.finish=function(t){if(void 0===t&&(t=[]),this.parse(" ",t),0!==this.curArgs.length||!this.canParseCommandOrComma)throw new SyntaxError("Unterminated command at the path end.");return t},e.prototype.parse=function(t,r){var e=this;void 0===r&&(r=[]);for(var i=function(t){r.push(t),e.curArgs.length=0,e.canParseCommandOrComma=!0},a=0;a<t.length;a++){var n=t[a],o=!(this.curCommandType!==_.ARC||3!==this.curArgs.length&&4!==this.curArgs.length||1!==this.curNumber.length||"0"!==this.curNumber&&"1"!==this.curNumber),s=v(n)&&("0"===this.curNumber&&"0"===n||o);if(!v(n)||s)if("e"!==n&&"E"!==n)if("-"!==n&&"+"!==n||!this.curNumberHasExp||this.curNumberHasExpDigits)if("."!==n||this.curNumberHasExp||this.curNumberHasDecimal||o){if(this.curNumber&&-1!==this.curCommandType){var u=Number(this.curNumber);if(isNaN(u))throw new SyntaxError("Invalid number ending at "+a);if(this.curCommandType===_.ARC)if(0===this.curArgs.length||1===this.curArgs.length){if(0>u)throw new SyntaxError('Expected positive number, got "'+u+'" at index "'+a+'"')}else if((3===this.curArgs.length||4===this.curArgs.length)&&"0"!==this.curNumber&&"1"!==this.curNumber)throw new SyntaxError('Expected a flag, got "'+this.curNumber+'" at index "'+a+'"');this.curArgs.push(u),this.curArgs.length===N[this.curCommandType]&&(_.HORIZ_LINE_TO===this.curCommandType?i({type:_.HORIZ_LINE_TO,relative:this.curCommandRelative,x:u}):_.VERT_LINE_TO===this.curCommandType?i({type:_.VERT_LINE_TO,relative:this.curCommandRelative,y:u}):this.curCommandType===_.MOVE_TO||this.curCommandType===_.LINE_TO||this.curCommandType===_.SMOOTH_QUAD_TO?(i({type:this.curCommandType,relative:this.curCommandRelative,x:this.curArgs[0],y:this.curArgs[1]}),_.MOVE_TO===this.curCommandType&&(this.curCommandType=_.LINE_TO)):this.curCommandType===_.CURVE_TO?i({type:_.CURVE_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x2:this.curArgs[2],y2:this.curArgs[3],x:this.curArgs[4],y:this.curArgs[5]}):this.curCommandType===_.SMOOTH_CURVE_TO?i({type:_.SMOOTH_CURVE_TO,relative:this.curCommandRelative,x2:this.curArgs[0],y2:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.QUAD_TO?i({type:_.QUAD_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.ARC&&i({type:_.ARC,relative:this.curCommandRelative,rX:this.curArgs[0],rY:this.curArgs[1],xRot:this.curArgs[2],lArcFlag:this.curArgs[3],sweepFlag:this.curArgs[4],x:this.curArgs[5],y:this.curArgs[6]})),this.curNumber="",this.curNumberHasExpDigits=!1,this.curNumberHasExp=!1,this.curNumberHasDecimal=!1,this.canParseCommandOrComma=!0}if(!T(n))if(","===n&&this.canParseCommandOrComma)this.canParseCommandOrComma=!1;else if("+"!==n&&"-"!==n&&"."!==n)if(s)this.curNumber=n,this.curNumberHasDecimal=!1;else{if(0!==this.curArgs.length)throw new SyntaxError("Unterminated command at index "+a+".");if(!this.canParseCommandOrComma)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+". Command cannot follow comma");if(this.canParseCommandOrComma=!1,"z"!==n&&"Z"!==n)if("h"===n||"H"===n)this.curCommandType=_.HORIZ_LINE_TO,this.curCommandRelative="h"===n;else if("v"===n||"V"===n)this.curCommandType=_.VERT_LINE_TO,this.curCommandRelative="v"===n;else if("m"===n||"M"===n)this.curCommandType=_.MOVE_TO,this.curCommandRelative="m"===n;else if("l"===n||"L"===n)this.curCommandType=_.LINE_TO,this.curCommandRelative="l"===n;else if("c"===n||"C"===n)this.curCommandType=_.CURVE_TO,this.curCommandRelative="c"===n;else if("s"===n||"S"===n)this.curCommandType=_.SMOOTH_CURVE_TO,this.curCommandRelative="s"===n;else if("q"===n||"Q"===n)this.curCommandType=_.QUAD_TO,this.curCommandRelative="q"===n;else if("t"===n||"T"===n)this.curCommandType=_.SMOOTH_QUAD_TO,this.curCommandRelative="t"===n;else{if("a"!==n&&"A"!==n)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+".");this.curCommandType=_.ARC,this.curCommandRelative="a"===n}else r.push({type:_.CLOSE_PATH}),this.canParseCommandOrComma=!0,this.curCommandType=-1}else this.curNumber=n,this.curNumberHasDecimal="."===n}else this.curNumber+=n,this.curNumberHasDecimal=!0;else this.curNumber+=n;else this.curNumber+=n,this.curNumberHasExp=!0;else this.curNumber+=n,this.curNumberHasExpDigits=this.curNumberHasExp}return r},e.prototype.transform=function(t){return Object.create(this,{parse:{value:function(r,e){void 0===e&&(e=[]);for(var i=0,a=Object.getPrototypeOf(this).parse.call(this,r);i<a.length;i++){var n=a[i],o=t(n);Array.isArray(o)?e.push.apply(e,o):e.push(o)}return e}}})},e}(l),_=function(t){function i(r){var e=t.call(this)||this;return e.commands="string"==typeof r?i.parse(r):r,e}return r(i,t),i.prototype.encode=function(){return i.encode(this.commands)},i.prototype.getBounds=function(){var t=u.CALCULATE_BOUNDS();return this.transform(t),t},i.prototype.transform=function(t){for(var r=[],e=0,i=this.commands;e<i.length;e++){var a=t(i[e]);Array.isArray(a)?r.push.apply(r,a):r.push(a)}return this.commands=r,this},i.encode=function(t){return e(t)},i.parse=function(t){var r=new f,e=[];return r.parse(t,e),r.finish(e),e},i.CLOSE_PATH=1,i.MOVE_TO=2,i.HORIZ_LINE_TO=4,i.VERT_LINE_TO=8,i.LINE_TO=16,i.CURVE_TO=32,i.SMOOTH_CURVE_TO=64,i.QUAD_TO=128,i.SMOOTH_QUAD_TO=256,i.ARC=512,i.LINE_COMMANDS=i.LINE_TO|i.HORIZ_LINE_TO|i.VERT_LINE_TO,i.DRAWING_COMMANDS=i.HORIZ_LINE_TO|i.VERT_LINE_TO|i.LINE_TO|i.CURVE_TO|i.SMOOTH_CURVE_TO|i.QUAD_TO|i.SMOOTH_QUAD_TO|i.ARC,i}(l),N=((SVGPathData_module_O={})[_.MOVE_TO]=2,SVGPathData_module_O[_.LINE_TO]=2,SVGPathData_module_O[_.HORIZ_LINE_TO]=1,SVGPathData_module_O[_.VERT_LINE_TO]=1,SVGPathData_module_O[_.CLOSE_PATH]=0,SVGPathData_module_O[_.QUAD_TO]=4,SVGPathData_module_O[_.SMOOTH_QUAD_TO]=2,SVGPathData_module_O[_.CURVE_TO]=6,SVGPathData_module_O[_.SMOOTH_CURVE_TO]=4,SVGPathData_module_O[_.ARC]=7,SVGPathData_module_O);
+var t=function(r,e){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,r){t.__proto__=r}||function(t,r){for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])})(r,e)};function r(r,e){if("function"!=typeof e&&null!==e)throw new TypeError("Class extends value "+String(e)+" is not a constructor or null");function i(){this.constructor=r}t(r,e),r.prototype=null===e?Object.create(e):(i.prototype=e.prototype,new i)}function e(t){var r="";Array.isArray(t)||(t=[t]);for(var e=0;e<t.length;e++){var i=t[e];if(i.type===_.CLOSE_PATH)r+="z";else if(i.type===_.HORIZ_LINE_TO)r+=(i.relative?"h":"H")+i.x;else if(i.type===_.VERT_LINE_TO)r+=(i.relative?"v":"V")+i.y;else if(i.type===_.MOVE_TO)r+=(i.relative?"m":"M")+i.x+" "+i.y;else if(i.type===_.LINE_TO)r+=(i.relative?"l":"L")+i.x+" "+i.y;else if(i.type===_.CURVE_TO)r+=(i.relative?"c":"C")+i.x1+" "+i.y1+" "+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_CURVE_TO)r+=(i.relative?"s":"S")+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.QUAD_TO)r+=(i.relative?"q":"Q")+i.x1+" "+i.y1+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_QUAD_TO)r+=(i.relative?"t":"T")+i.x+" "+i.y;else{if(i.type!==_.ARC)throw new Error('Unexpected command type "'+i.type+'" at index '+e+".");r+=(i.relative?"a":"A")+i.rX+" "+i.rY+" "+i.xRot+" "+ +i.lArcFlag+" "+ +i.sweepFlag+" "+i.x+" "+i.y}}return r}function SVGPathData_module_i(t,r){var e=t[0],i=t[1];return[e*Math.cos(r)-i*Math.sin(r),e*Math.sin(r)+i*Math.cos(r)]}function SVGPathData_module_a(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];for(var e=0;e<t.length;e++)if("number"!=typeof t[e])throw new Error("assertNumbers arguments["+e+"] is not a number. "+typeof t[e]+" == typeof "+t[e]);return!0}var SVGPathData_module_n=Math.PI;function o(t,r,e){t.lArcFlag=0===t.lArcFlag?0:1,t.sweepFlag=0===t.sweepFlag?0:1;var a=t.rX,o=t.rY,s=t.x,u=t.y;a=Math.abs(t.rX),o=Math.abs(t.rY);var h=SVGPathData_module_i([(r-s)/2,(e-u)/2],-t.xRot/180*SVGPathData_module_n),c=h[0],y=h[1],p=Math.pow(c,2)/Math.pow(a,2)+Math.pow(y,2)/Math.pow(o,2);1<p&&(a*=Math.sqrt(p),o*=Math.sqrt(p)),t.rX=a,t.rY=o;var m=Math.pow(a,2)*Math.pow(y,2)+Math.pow(o,2)*Math.pow(c,2),O=(t.lArcFlag!==t.sweepFlag?1:-1)*Math.sqrt(Math.max(0,(Math.pow(a,2)*Math.pow(o,2)-m)/m)),l=a*y/o*O,T=-o*c/a*O,v=SVGPathData_module_i([l,T],t.xRot/180*SVGPathData_module_n);t.cX=v[0]+(r+s)/2,t.cY=v[1]+(e+u)/2,t.phi1=Math.atan2((y-T)/o,(c-l)/a),t.phi2=Math.atan2((-y-T)/o,(-c-l)/a),0===t.sweepFlag&&t.phi2>t.phi1&&(t.phi2-=2*SVGPathData_module_n),1===t.sweepFlag&&t.phi2<t.phi1&&(t.phi2+=2*SVGPathData_module_n),t.phi1*=180/SVGPathData_module_n,t.phi2*=180/SVGPathData_module_n}function SVGPathData_module_s(t,r,e){SVGPathData_module_a(t,r,e);var i=t*t+r*r-e*e;if(0>i)return[];if(0===i)return[[t*e/(t*t+r*r),r*e/(t*t+r*r)]];var n=Math.sqrt(i);return[[(t*e+r*n)/(t*t+r*r),(r*e-t*n)/(t*t+r*r)],[(t*e-r*n)/(t*t+r*r),(r*e+t*n)/(t*t+r*r)]]}var u,h=Math.PI/180;function c(t,r,e){return(1-e)*t+e*r}function y(t,r,e,i){return t+Math.cos(i/180*SVGPathData_module_n)*r+Math.sin(i/180*SVGPathData_module_n)*e}function SVGPathData_module_p(t,r,e,i){var a=1e-6,n=r-t,o=e-r,s=3*n+3*(i-e)-6*o,u=6*(o-n),h=3*n;return Math.abs(s)<a?[-h/u]:function(t,r,e){void 0===e&&(e=1e-6);var i=t*t/4-r;if(i<-e)return[];if(i<=e)return[-t/2];var a=Math.sqrt(i);return[-t/2-a,-t/2+a]}(u/s,h/s,a)}function SVGPathData_module_m(t,r,e,i,a){var n=1-a;return t*(n*n*n)+r*(3*n*n*a)+e*(3*n*a*a)+i*(a*a*a)}!function(t){function r(){return u((function(t,r,e){return t.relative&&(void 0!==t.x1&&(t.x1+=r),void 0!==t.y1&&(t.y1+=e),void 0!==t.x2&&(t.x2+=r),void 0!==t.y2&&(t.y2+=e),void 0!==t.x&&(t.x+=r),void 0!==t.y&&(t.y+=e),t.relative=!1),t}))}function e(){var t=NaN,r=NaN,e=NaN,i=NaN;return u((function(a,n,o){return a.type&_.SMOOTH_CURVE_TO&&(a.type=_.CURVE_TO,t=isNaN(t)?n:t,r=isNaN(r)?o:r,a.x1=a.relative?n-t:2*n-t,a.y1=a.relative?o-r:2*o-r),a.type&_.CURVE_TO?(t=a.relative?n+a.x2:a.x2,r=a.relative?o+a.y2:a.y2):(t=NaN,r=NaN),a.type&_.SMOOTH_QUAD_TO&&(a.type=_.QUAD_TO,e=isNaN(e)?n:e,i=isNaN(i)?o:i,a.x1=a.relative?n-e:2*n-e,a.y1=a.relative?o-i:2*o-i),a.type&_.QUAD_TO?(e=a.relative?n+a.x1:a.x1,i=a.relative?o+a.y1:a.y1):(e=NaN,i=NaN),a}))}function n(){var t=NaN,r=NaN;return u((function(e,i,a){if(e.type&_.SMOOTH_QUAD_TO&&(e.type=_.QUAD_TO,t=isNaN(t)?i:t,r=isNaN(r)?a:r,e.x1=e.relative?i-t:2*i-t,e.y1=e.relative?a-r:2*a-r),e.type&_.QUAD_TO){t=e.relative?i+e.x1:e.x1,r=e.relative?a+e.y1:e.y1;var n=e.x1,o=e.y1;e.type=_.CURVE_TO,e.x1=((e.relative?0:i)+2*n)/3,e.y1=((e.relative?0:a)+2*o)/3,e.x2=(e.x+2*n)/3,e.y2=(e.y+2*o)/3}else t=NaN,r=NaN;return e}))}function u(t){var r=0,e=0,i=NaN,a=NaN;return function(n){if(isNaN(i)&&!(n.type&_.MOVE_TO))throw new Error("path must start with moveto");var o=t(n,r,e,i,a);return n.type&_.CLOSE_PATH&&(r=i,e=a),void 0!==n.x&&(r=n.relative?r+n.x:n.x),void 0!==n.y&&(e=n.relative?e+n.y:n.y),n.type&_.MOVE_TO&&(i=r,a=e),o}}function O(t,r,e,i,n,o){return SVGPathData_module_a(t,r,e,i,n,o),u((function(a,s,u,h){var c=a.x1,y=a.x2,p=a.relative&&!isNaN(h),m=void 0!==a.x?a.x:p?0:s,O=void 0!==a.y?a.y:p?0:u;function l(t){return t*t}a.type&_.HORIZ_LINE_TO&&0!==r&&(a.type=_.LINE_TO,a.y=a.relative?0:u),a.type&_.VERT_LINE_TO&&0!==e&&(a.type=_.LINE_TO,a.x=a.relative?0:s),void 0!==a.x&&(a.x=a.x*t+O*e+(p?0:n)),void 0!==a.y&&(a.y=m*r+a.y*i+(p?0:o)),void 0!==a.x1&&(a.x1=a.x1*t+a.y1*e+(p?0:n)),void 0!==a.y1&&(a.y1=c*r+a.y1*i+(p?0:o)),void 0!==a.x2&&(a.x2=a.x2*t+a.y2*e+(p?0:n)),void 0!==a.y2&&(a.y2=y*r+a.y2*i+(p?0:o));var T=t*i-r*e;if(void 0!==a.xRot&&(1!==t||0!==r||0!==e||1!==i))if(0===T)delete a.rX,delete a.rY,delete a.xRot,delete a.lArcFlag,delete a.sweepFlag,a.type=_.LINE_TO;else{var v=a.xRot*Math.PI/180,f=Math.sin(v),N=Math.cos(v),x=1/l(a.rX),d=1/l(a.rY),E=l(N)*x+l(f)*d,A=2*f*N*(x-d),C=l(f)*x+l(N)*d,M=E*i*i-A*r*i+C*r*r,R=A*(t*i+r*e)-2*(E*e*i+C*t*r),g=E*e*e-A*t*e+C*t*t,I=(Math.atan2(R,M-g)+Math.PI)%Math.PI/2,S=Math.sin(I),L=Math.cos(I);a.rX=Math.abs(T)/Math.sqrt(M*l(L)+R*S*L+g*l(S)),a.rY=Math.abs(T)/Math.sqrt(M*l(S)-R*S*L+g*l(L)),a.xRot=180*I/Math.PI}return void 0!==a.sweepFlag&&0>T&&(a.sweepFlag=+!a.sweepFlag),a}))}function l(){return function(t){var r={};for(var e in t)r[e]=t[e];return r}}t.ROUND=function(t){function r(r){return Math.round(r*t)/t}return void 0===t&&(t=1e13),SVGPathData_module_a(t),function(t){return void 0!==t.x1&&(t.x1=r(t.x1)),void 0!==t.y1&&(t.y1=r(t.y1)),void 0!==t.x2&&(t.x2=r(t.x2)),void 0!==t.y2&&(t.y2=r(t.y2)),void 0!==t.x&&(t.x=r(t.x)),void 0!==t.y&&(t.y=r(t.y)),void 0!==t.rX&&(t.rX=r(t.rX)),void 0!==t.rY&&(t.rY=r(t.rY)),t}},t.TO_ABS=r,t.TO_REL=function(){return u((function(t,r,e){return t.relative||(void 0!==t.x1&&(t.x1-=r),void 0!==t.y1&&(t.y1-=e),void 0!==t.x2&&(t.x2-=r),void 0!==t.y2&&(t.y2-=e),void 0!==t.x&&(t.x-=r),void 0!==t.y&&(t.y-=e),t.relative=!0),t}))},t.NORMALIZE_HVZ=function(t,r,e){return void 0===t&&(t=!0),void 0===r&&(r=!0),void 0===e&&(e=!0),u((function(i,a,n,o,s){if(isNaN(o)&&!(i.type&_.MOVE_TO))throw new Error("path must start with moveto");return r&&i.type&_.HORIZ_LINE_TO&&(i.type=_.LINE_TO,i.y=i.relative?0:n),e&&i.type&_.VERT_LINE_TO&&(i.type=_.LINE_TO,i.x=i.relative?0:a),t&&i.type&_.CLOSE_PATH&&(i.type=_.LINE_TO,i.x=i.relative?o-a:o,i.y=i.relative?s-n:s),i.type&_.ARC&&(0===i.rX||0===i.rY)&&(i.type=_.LINE_TO,delete i.rX,delete i.rY,delete i.xRot,delete i.lArcFlag,delete i.sweepFlag),i}))},t.NORMALIZE_ST=e,t.QT_TO_C=n,t.INFO=u,t.SANITIZE=function(t){void 0===t&&(t=0),SVGPathData_module_a(t);var r=NaN,e=NaN,i=NaN,n=NaN;return u((function(a,o,s,u,h){var c=Math.abs,y=!1,p=0,m=0;if(a.type&_.SMOOTH_CURVE_TO&&(p=isNaN(r)?0:o-r,m=isNaN(e)?0:s-e),a.type&(_.CURVE_TO|_.SMOOTH_CURVE_TO)?(r=a.relative?o+a.x2:a.x2,e=a.relative?s+a.y2:a.y2):(r=NaN,e=NaN),a.type&_.SMOOTH_QUAD_TO?(i=isNaN(i)?o:2*o-i,n=isNaN(n)?s:2*s-n):a.type&_.QUAD_TO?(i=a.relative?o+a.x1:a.x1,n=a.relative?s+a.y1:a.y2):(i=NaN,n=NaN),a.type&_.LINE_COMMANDS||a.type&_.ARC&&(0===a.rX||0===a.rY||!a.lArcFlag)||a.type&_.CURVE_TO||a.type&_.SMOOTH_CURVE_TO||a.type&_.QUAD_TO||a.type&_.SMOOTH_QUAD_TO){var O=void 0===a.x?0:a.relative?a.x:a.x-o,l=void 0===a.y?0:a.relative?a.y:a.y-s;p=isNaN(i)?void 0===a.x1?p:a.relative?a.x:a.x1-o:i-o,m=isNaN(n)?void 0===a.y1?m:a.relative?a.y:a.y1-s:n-s;var T=void 0===a.x2?0:a.relative?a.x:a.x2-o,v=void 0===a.y2?0:a.relative?a.y:a.y2-s;c(O)<=t&&c(l)<=t&&c(p)<=t&&c(m)<=t&&c(T)<=t&&c(v)<=t&&(y=!0)}return a.type&_.CLOSE_PATH&&c(o-u)<=t&&c(s-h)<=t&&(y=!0),y?[]:a}))},t.MATRIX=O,t.ROTATE=function(t,r,e){void 0===r&&(r=0),void 0===e&&(e=0),SVGPathData_module_a(t,r,e);var i=Math.sin(t),n=Math.cos(t);return O(n,i,-i,n,r-r*n+e*i,e-r*i-e*n)},t.TRANSLATE=function(t,r){return void 0===r&&(r=0),SVGPathData_module_a(t,r),O(1,0,0,1,t,r)},t.SCALE=function(t,r){return void 0===r&&(r=t),SVGPathData_module_a(t,r),O(t,0,0,r,0,0)},t.SKEW_X=function(t){return SVGPathData_module_a(t),O(1,0,Math.atan(t),1,0,0)},t.SKEW_Y=function(t){return SVGPathData_module_a(t),O(1,Math.atan(t),0,1,0,0)},t.X_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),SVGPathData_module_a(t),O(-1,0,0,1,t,0)},t.Y_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),SVGPathData_module_a(t),O(1,0,0,-1,0,t)},t.A_TO_C=function(){return u((function(t,r,e){return _.ARC===t.type?function(t,r,e){var a,n,s,u;t.cX||o(t,r,e);for(var y=Math.min(t.phi1,t.phi2),p=Math.max(t.phi1,t.phi2)-y,m=Math.ceil(p/90),O=new Array(m),l=r,T=e,v=0;v<m;v++){var f=c(t.phi1,t.phi2,v/m),N=c(t.phi1,t.phi2,(v+1)/m),x=N-f,d=4/3*Math.tan(x*h/4),E=[Math.cos(f*h)-d*Math.sin(f*h),Math.sin(f*h)+d*Math.cos(f*h)],A=E[0],C=E[1],M=[Math.cos(N*h),Math.sin(N*h)],R=M[0],g=M[1],I=[R+d*Math.sin(N*h),g-d*Math.cos(N*h)],S=I[0],L=I[1];O[v]={relative:t.relative,type:_.CURVE_TO};var H=function(r,e){var a=SVGPathData_module_i([r*t.rX,e*t.rY],t.xRot),n=a[0],o=a[1];return[t.cX+n,t.cY+o]};a=H(A,C),O[v].x1=a[0],O[v].y1=a[1],n=H(S,L),O[v].x2=n[0],O[v].y2=n[1],s=H(R,g),O[v].x=s[0],O[v].y=s[1],t.relative&&(O[v].x1-=l,O[v].y1-=T,O[v].x2-=l,O[v].y2-=T,O[v].x-=l,O[v].y-=T),l=(u=[O[v].x,O[v].y])[0],T=u[1]}return O}(t,t.relative?0:r,t.relative?0:e):t}))},t.ANNOTATE_ARCS=function(){return u((function(t,r,e){return t.relative&&(r=0,e=0),_.ARC===t.type&&o(t,r,e),t}))},t.CLONE=l,t.CALCULATE_BOUNDS=function(){var t=function(t){var r={};for(var e in t)r[e]=t[e];return r},i=r(),a=n(),h=e(),c=u((function(r,e,n){var u=h(a(i(t(r))));function O(t){t>c.maxX&&(c.maxX=t),t<c.minX&&(c.minX=t)}function l(t){t>c.maxY&&(c.maxY=t),t<c.minY&&(c.minY=t)}if(u.type&_.DRAWING_COMMANDS&&(O(e),l(n)),u.type&_.HORIZ_LINE_TO&&O(u.x),u.type&_.VERT_LINE_TO&&l(u.y),u.type&_.LINE_TO&&(O(u.x),l(u.y)),u.type&_.CURVE_TO){O(u.x),l(u.y);for(var T=0,v=SVGPathData_module_p(e,u.x1,u.x2,u.x);T<v.length;T++){0<(w=v[T])&&1>w&&O(SVGPathData_module_m(e,u.x1,u.x2,u.x,w))}for(var f=0,N=SVGPathData_module_p(n,u.y1,u.y2,u.y);f<N.length;f++){0<(w=N[f])&&1>w&&l(SVGPathData_module_m(n,u.y1,u.y2,u.y,w))}}if(u.type&_.ARC){O(u.x),l(u.y),o(u,e,n);for(var x=u.xRot/180*Math.PI,d=Math.cos(x)*u.rX,E=Math.sin(x)*u.rX,A=-Math.sin(x)*u.rY,C=Math.cos(x)*u.rY,M=u.phi1<u.phi2?[u.phi1,u.phi2]:-180>u.phi2?[u.phi2+360,u.phi1+360]:[u.phi2,u.phi1],R=M[0],g=M[1],I=function(t){var r=t[0],e=t[1],i=180*Math.atan2(e,r)/Math.PI;return i<R?i+360:i},S=0,L=SVGPathData_module_s(A,-d,0).map(I);S<L.length;S++){(w=L[S])>R&&w<g&&O(y(u.cX,d,A,w))}for(var H=0,U=SVGPathData_module_s(C,-E,0).map(I);H<U.length;H++){var w;(w=U[H])>R&&w<g&&l(y(u.cY,E,C,w))}}return r}));return c.minX=1/0,c.maxX=-1/0,c.minY=1/0,c.maxY=-1/0,c}}(u||(u={}));var SVGPathData_module_O,l=function(){function t(){}return t.prototype.round=function(t){return this.transform(u.ROUND(t))},t.prototype.toAbs=function(){return this.transform(u.TO_ABS())},t.prototype.toRel=function(){return this.transform(u.TO_REL())},t.prototype.normalizeHVZ=function(t,r,e){return this.transform(u.NORMALIZE_HVZ(t,r,e))},t.prototype.normalizeST=function(){return this.transform(u.NORMALIZE_ST())},t.prototype.qtToC=function(){return this.transform(u.QT_TO_C())},t.prototype.aToC=function(){return this.transform(u.A_TO_C())},t.prototype.sanitize=function(t){return this.transform(u.SANITIZE(t))},t.prototype.translate=function(t,r){return this.transform(u.TRANSLATE(t,r))},t.prototype.scale=function(t,r){return this.transform(u.SCALE(t,r))},t.prototype.rotate=function(t,r,e){return this.transform(u.ROTATE(t,r,e))},t.prototype.matrix=function(t,r,e,i,a,n){return this.transform(u.MATRIX(t,r,e,i,a,n))},t.prototype.skewX=function(t){return this.transform(u.SKEW_X(t))},t.prototype.skewY=function(t){return this.transform(u.SKEW_Y(t))},t.prototype.xSymmetry=function(t){return this.transform(u.X_AXIS_SYMMETRY(t))},t.prototype.ySymmetry=function(t){return this.transform(u.Y_AXIS_SYMMETRY(t))},t.prototype.annotateArcs=function(){return this.transform(u.ANNOTATE_ARCS())},t}(),T=function(t){return" "===t||"\t"===t||"\r"===t||"\n"===t},v=function(t){return"0".charCodeAt(0)<=t.charCodeAt(0)&&t.charCodeAt(0)<="9".charCodeAt(0)},f=function(t){function e(){var r=t.call(this)||this;return r.curNumber="",r.curCommandType=-1,r.curCommandRelative=!1,r.canParseCommandOrComma=!0,r.curNumberHasExp=!1,r.curNumberHasExpDigits=!1,r.curNumberHasDecimal=!1,r.curArgs=[],r}return r(e,t),e.prototype.finish=function(t){if(void 0===t&&(t=[]),this.parse(" ",t),0!==this.curArgs.length||!this.canParseCommandOrComma)throw new SyntaxError("Unterminated command at the path end.");return t},e.prototype.parse=function(t,r){var e=this;void 0===r&&(r=[]);for(var i=function(t){r.push(t),e.curArgs.length=0,e.canParseCommandOrComma=!0},a=0;a<t.length;a++){var n=t[a],o=!(this.curCommandType!==_.ARC||3!==this.curArgs.length&&4!==this.curArgs.length||1!==this.curNumber.length||"0"!==this.curNumber&&"1"!==this.curNumber),s=v(n)&&("0"===this.curNumber&&"0"===n||o);if(!v(n)||s)if("e"!==n&&"E"!==n)if("-"!==n&&"+"!==n||!this.curNumberHasExp||this.curNumberHasExpDigits)if("."!==n||this.curNumberHasExp||this.curNumberHasDecimal||o){if(this.curNumber&&-1!==this.curCommandType){var u=Number(this.curNumber);if(isNaN(u))throw new SyntaxError("Invalid number ending at "+a);if(this.curCommandType===_.ARC)if(0===this.curArgs.length||1===this.curArgs.length){if(0>u)throw new SyntaxError('Expected positive number, got "'+u+'" at index "'+a+'"')}else if((3===this.curArgs.length||4===this.curArgs.length)&&"0"!==this.curNumber&&"1"!==this.curNumber)throw new SyntaxError('Expected a flag, got "'+this.curNumber+'" at index "'+a+'"');this.curArgs.push(u),this.curArgs.length===SVGPathData_module_N[this.curCommandType]&&(_.HORIZ_LINE_TO===this.curCommandType?i({type:_.HORIZ_LINE_TO,relative:this.curCommandRelative,x:u}):_.VERT_LINE_TO===this.curCommandType?i({type:_.VERT_LINE_TO,relative:this.curCommandRelative,y:u}):this.curCommandType===_.MOVE_TO||this.curCommandType===_.LINE_TO||this.curCommandType===_.SMOOTH_QUAD_TO?(i({type:this.curCommandType,relative:this.curCommandRelative,x:this.curArgs[0],y:this.curArgs[1]}),_.MOVE_TO===this.curCommandType&&(this.curCommandType=_.LINE_TO)):this.curCommandType===_.CURVE_TO?i({type:_.CURVE_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x2:this.curArgs[2],y2:this.curArgs[3],x:this.curArgs[4],y:this.curArgs[5]}):this.curCommandType===_.SMOOTH_CURVE_TO?i({type:_.SMOOTH_CURVE_TO,relative:this.curCommandRelative,x2:this.curArgs[0],y2:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.QUAD_TO?i({type:_.QUAD_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.ARC&&i({type:_.ARC,relative:this.curCommandRelative,rX:this.curArgs[0],rY:this.curArgs[1],xRot:this.curArgs[2],lArcFlag:this.curArgs[3],sweepFlag:this.curArgs[4],x:this.curArgs[5],y:this.curArgs[6]})),this.curNumber="",this.curNumberHasExpDigits=!1,this.curNumberHasExp=!1,this.curNumberHasDecimal=!1,this.canParseCommandOrComma=!0}if(!T(n))if(","===n&&this.canParseCommandOrComma)this.canParseCommandOrComma=!1;else if("+"!==n&&"-"!==n&&"."!==n)if(s)this.curNumber=n,this.curNumberHasDecimal=!1;else{if(0!==this.curArgs.length)throw new SyntaxError("Unterminated command at index "+a+".");if(!this.canParseCommandOrComma)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+". Command cannot follow comma");if(this.canParseCommandOrComma=!1,"z"!==n&&"Z"!==n)if("h"===n||"H"===n)this.curCommandType=_.HORIZ_LINE_TO,this.curCommandRelative="h"===n;else if("v"===n||"V"===n)this.curCommandType=_.VERT_LINE_TO,this.curCommandRelative="v"===n;else if("m"===n||"M"===n)this.curCommandType=_.MOVE_TO,this.curCommandRelative="m"===n;else if("l"===n||"L"===n)this.curCommandType=_.LINE_TO,this.curCommandRelative="l"===n;else if("c"===n||"C"===n)this.curCommandType=_.CURVE_TO,this.curCommandRelative="c"===n;else if("s"===n||"S"===n)this.curCommandType=_.SMOOTH_CURVE_TO,this.curCommandRelative="s"===n;else if("q"===n||"Q"===n)this.curCommandType=_.QUAD_TO,this.curCommandRelative="q"===n;else if("t"===n||"T"===n)this.curCommandType=_.SMOOTH_QUAD_TO,this.curCommandRelative="t"===n;else{if("a"!==n&&"A"!==n)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+".");this.curCommandType=_.ARC,this.curCommandRelative="a"===n}else r.push({type:_.CLOSE_PATH}),this.canParseCommandOrComma=!0,this.curCommandType=-1}else this.curNumber=n,this.curNumberHasDecimal="."===n}else this.curNumber+=n,this.curNumberHasDecimal=!0;else this.curNumber+=n;else this.curNumber+=n,this.curNumberHasExp=!0;else this.curNumber+=n,this.curNumberHasExpDigits=this.curNumberHasExp}return r},e.prototype.transform=function(t){return Object.create(this,{parse:{value:function(r,e){void 0===e&&(e=[]);for(var i=0,a=Object.getPrototypeOf(this).parse.call(this,r);i<a.length;i++){var n=a[i],o=t(n);Array.isArray(o)?e.push.apply(e,o):e.push(o)}return e}}})},e}(l),_=function(t){function i(r){var e=t.call(this)||this;return e.commands="string"==typeof r?i.parse(r):r,e}return r(i,t),i.prototype.encode=function(){return i.encode(this.commands)},i.prototype.getBounds=function(){var t=u.CALCULATE_BOUNDS();return this.transform(t),t},i.prototype.transform=function(t){for(var r=[],e=0,i=this.commands;e<i.length;e++){var a=t(i[e]);Array.isArray(a)?r.push.apply(r,a):r.push(a)}return this.commands=r,this},i.encode=function(t){return e(t)},i.parse=function(t){var r=new f,e=[];return r.parse(t,e),r.finish(e),e},i.CLOSE_PATH=1,i.MOVE_TO=2,i.HORIZ_LINE_TO=4,i.VERT_LINE_TO=8,i.LINE_TO=16,i.CURVE_TO=32,i.SMOOTH_CURVE_TO=64,i.QUAD_TO=128,i.SMOOTH_QUAD_TO=256,i.ARC=512,i.LINE_COMMANDS=i.LINE_TO|i.HORIZ_LINE_TO|i.VERT_LINE_TO,i.DRAWING_COMMANDS=i.HORIZ_LINE_TO|i.VERT_LINE_TO|i.LINE_TO|i.CURVE_TO|i.SMOOTH_CURVE_TO|i.QUAD_TO|i.SMOOTH_QUAD_TO|i.ARC,i}(l),SVGPathData_module_N=((SVGPathData_module_O={})[_.MOVE_TO]=2,SVGPathData_module_O[_.LINE_TO]=2,SVGPathData_module_O[_.HORIZ_LINE_TO]=1,SVGPathData_module_O[_.VERT_LINE_TO]=1,SVGPathData_module_O[_.CLOSE_PATH]=0,SVGPathData_module_O[_.QUAD_TO]=4,SVGPathData_module_O[_.SMOOTH_QUAD_TO]=2,SVGPathData_module_O[_.CURVE_TO]=6,SVGPathData_module_O[_.SMOOTH_CURVE_TO]=4,SVGPathData_module_O[_.ARC]=7,SVGPathData_module_O);
 //# sourceMappingURL=SVGPathData.module.js.map
 
 ;// ./node_modules/stackblur-canvas/dist/stackblur-es.js
@@ -116828,7 +117178,7 @@ function BlurStack() {
  * @param config.canvas - `node-canvas` exports.
  * @param config.fetch - WHATWG-compatible `fetch` function.
  * @returns Preset object.
- */ function node(param) {
+ */ function dist_node(param) {
     let { DOMParser , canvas , fetch  } = param;
     return {
         window: null,
@@ -116841,10 +117191,10 @@ function BlurStack() {
     };
 }
 
-var index = /*#__PURE__*/(/* unused pure expression or super */ null && (Object.freeze({
+var dist_index = /*#__PURE__*/(/* unused pure expression or super */ null && (Object.freeze({
   __proto__: null,
   offscreen: offscreen,
-  node: node
+  node: dist_node
 })));
 
 /**
@@ -123243,7 +123593,8 @@ class WebMap extends createWebMapBaseExtending((external_maplibregl_default()).E
       spec: v8_namespaceObject,
       L7Layer: L7Layer,
       L7: external_function_try_return_L7_catch_e_return_namespaceObject,
-      proj4: this._crsManager.getProj4()
+      proj4: this._crsManager.getProj4(),
+      webMapService: this.webMapService
     });
     switch (type) {
       case 'MapStyle':
@@ -123251,7 +123602,8 @@ class WebMap extends createWebMapBaseExtending((external_maplibregl_default()).E
       case 'WebMap3':
         return createWebMapV3Extending(createMapClassExtending((external_maplibregl_default()).Evented), {
           ...commonFactoryOptions,
-          l7LayerUtil
+          l7LayerUtil,
+          webMapService: this.webMapService
         });
       default:
         return createWebMapV2Extending(
@@ -152676,6 +153028,8 @@ class PaginationContainer extends TemplateBase {
 
 
 
+
+
 ;// ./src/common/index.all.js
 
 
@@ -152707,7 +153061,7 @@ SuperMap.Util = { ...SuperMap.Util, ...Util };
 SuperMap.Browser = Browser;
 SuperMap.INCHES_PER_UNIT = INCHES_PER_UNIT;
 SuperMap.METERS_PER_INCH = METERS_PER_INCH;
-SuperMap.DOTS_PER_INCH = DOTS_PER_INCH;
+SuperMap.DOTS_PER_INCH = (/* inlined export .DOTS_PER_INCH */96);
 SuperMap.IS_GECKO = IS_GECKO;
 
 // FetchRequest

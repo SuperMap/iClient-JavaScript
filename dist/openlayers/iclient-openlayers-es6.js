@@ -3,7 +3,7 @@
  *          iclient-openlayers
  *          Copyright© 2000 - 2026 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v12.1.0-r
+ *          version: v12.1.2
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -13787,17 +13787,17 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 /******/ 	});
 /************************************************************************/
 /******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
+/******/ 	const __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		const cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 		const module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
 /******/ 			loaded: false,
 /******/ 			exports: {}
@@ -13815,70 +13815,61 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = (module) => {
+/******/ 		const getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	})();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
+/******/ 	__webpack_require__.g = (function() {
+/******/ 		if (typeof globalThis === 'object') return globalThis;
+/******/ 		try {
+/******/ 			return this || new Function('return this')();
+/******/ 		} catch (e) {
+/******/ 			if (typeof window === 'object') return window;
+/******/ 		}
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
 /******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nmd = (module) => {
-/******/ 			module.paths = [];
-/******/ 			if (!module.children) module.children = [];
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
+/******/ 	__webpack_require__.nmd = (module) => {
+/******/ 		module.paths = [];
+/******/ 		if (!module.children) module.children = [];
+/******/ 		return module;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/set anonymous default export name */
-/******/ 	(() => {
-/******/ 		// set .name for anonymous default exports per ES spec
-/******/ 		__webpack_require__.dn = (x) => {
-/******/ 			(Object.getOwnPropertyDescriptor(x, "name") || {}).writable || Object.defineProperty(x, "name", { value: "default", configurable: true });
-/******/ 		};
-/******/ 	})();
+/******/ 	// set .name for anonymous default exports per ES spec
+/******/ 	// skipped when the property is non-configurable (pre-ES2015 engines),
+/******/ 	// where Object.defineProperty would throw
+/******/ 	__webpack_require__.dn = (x) => {
+/******/ 		var descriptor = Object.getOwnPropertyDescriptor(x, "name");
+/******/ 		if (!descriptor || (!descriptor.writable && descriptor.configurable)) Object.defineProperty(x, "name", { value: "default", configurable: true });
+/******/ 	};
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttachmentsParameters, AttributesPopContainer, BaiduMap, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartSettingS57, ChartType, ChartView, ChartViewModel, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, ColourModeChart, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DisplayModeChart, DropDownBox, EditAttachmentsParameters, EditFeaturesParameters, EditType, ElasticSearch, EncryptRequest, EngineType, EntityType, Event, Events, Exponent, FGB, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryAnalysis, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphMap, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HillshadeParameter, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, VideoFeature, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, decrypt, getMeterPerMapUnit, getServiceKey, getWrapNum, initMap, isCORS, lineMap, lineStyle, mapboxFilterToQueryFilter, pointMap, pointStyle, polygonMap, polygonStyle, setCORS, setRequestHeaders, terrainAnalystSetting, viewOptionsFromMapJSON
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttachmentsParameters, AttributesPopContainer, BaiduMap, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartSettingS57, ChartType, ChartView, ChartViewModel, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, ColourModeChart, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DisplayModeChart, DropDownBox, EditAttachmentsParameters, EditFeaturesParameters, EditType, ElasticSearch, EncryptRequest, EngineType, EntityType, Event, Events, Exponent, FGB, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryAnalysis, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphMap, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HillshadeParameter, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, VideoFeature, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, createSpriteLoadHandler, decrypt, flipImageVertically, getMeterPerMapUnit, getServiceKey, getWrapNum, initMap, isCORS, isMapVersionGreaterThan, lineMap, lineStyle, mapboxFilterToQueryFilter, pointMap, pointStyle, polygonMap, polygonStyle, setCORS, setRequestHeaders, terrainAnalystSetting, viewOptionsFromMapJSON
 
 ;// ./src/common/SuperMap.js
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
@@ -15540,9 +15531,9 @@ var ChartType = {
  * ```
  */
 var ClipAnalystMode = {
-    /** 裁剪分析操作。 */
+    /** 内部裁剪，保留落在裁剪区范围内的数据。 */
     CLIP: "clip",
-    /** 求交分析操作。 */
+    /** 外部裁剪，保留落在裁剪区范围外的数据。 */
     INTERSECT: "intersect"
 };
 
@@ -22605,7 +22596,6 @@ class PointWithMeasure extends Point {
  * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
- * @param {string} [options.type] - 数据类型，如："LINEM"。
  * @extends GeometryCollection
  * @usage
  */
@@ -22681,7 +22671,7 @@ class Route extends Collection {
          * @member {string} Route.prototype.type
          * @description 服务端几何对象类型。
          */
-        this.type = null;
+        this.type = "LINEM";
 
         /**
          * @member {Array.<string>} [Route.prototype.componentTypes=LineString]
@@ -30517,7 +30507,7 @@ class MappingParameters {
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围，默认为全图范围。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
@@ -31483,19 +31473,19 @@ class ChartQueryParameters {
  * @deprecatedclass SuperMap.GetFeaturesParametersBase
  * @category  iServer Data FeatureResults
  * @classdesc 要素查询参数基类。此类存储了进行要素查询的数据集列表以及一些通用的查询参数，
- * 包括：是否返回查询结果、查询结果的最大/最小索引号、动态投影的目标坐标系、聚合查询相关参数等。
+ * 包括：是否返回查询结果、查询结果的最大/最小索引号、查询结果的目标坐标系、聚合查询相关参数等。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于数据的原有坐标系统时， 系统会进行坐标转换，并返回坐标转换后的查询结果。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @usage
  */
@@ -31509,19 +31499,19 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {string} GetFeaturesParametersBase.prototype.targetEpsgCode
-         * @description 动态投影的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
+         * @description 查询结果的目标坐标系对应的 EPSG Code，使用时需设置 returnContent 参数为 true。
          */
         this.targetEpsgCode = null;
 
         /**
          * @member {Object} GetFeaturesParametersBase.prototype.targetPrj
-         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         * @description 查询结果的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
          */
         this.targetPrj = null;
 
         /**
          * @member {boolean} [GetFeaturesParametersBase.prototype.returnContent=true]
-         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
          *              如果为 true，则直接返回新创建资源，即查询结果的表述。
          *              如果为 false，则返回的是查询结果资源的 URI。
          */
@@ -31529,13 +31519,13 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.fromIndex=0]
-         * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+         * @description 查询结果的最小索引号，指定了返回结果的开始位置。如果该值大于查询结果的最大索引号，则查询结果为空。
          */
         this.fromIndex = 0;
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.toIndex=19]
-         * @description 查询结果的最大索引号。如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+         * @description 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
          */
         this.toIndex = 19;
 
@@ -31823,12 +31813,12 @@ class ChartWaterDepthParameter {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -31866,7 +31856,7 @@ class QueryParameters {
 
         /**
          * @member {QueryOption} [QueryParameters.prototype.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY]
-         * @description 查询结果类型。
+         * @description 查询结果选项对象，用于指定查询结果中包含的内容。
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */
@@ -31881,7 +31871,7 @@ class QueryParameters {
 
         /**
          * @member {number} [QueryParameters.prototype.startRecord=0]
-         * @description 查询起始记录号。
+         * @description 查询起始记录位置。
          */
         this.startRecord = 0;
 
@@ -33268,8 +33258,8 @@ class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} [options.onEachFeature] - 设置每个数据加载 popup 等。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - 排除字段。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
+ * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -33289,7 +33279,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
         /**
          * @member {GeoJSONObject} DataFlowService.prototype.geometry
-         * @description 指定几何范围，只有在该范围内的要素才能被订阅。
+         * @description 空间范围，只有在该范围内的要素才能被接收。
          */
         this.geometry = null;
 
@@ -33301,7 +33291,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
         /**
          * @member {Object} DataFlowService.prototype.excludeField
-         * @description 排除字段。
+         * @description 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
          */
         this.excludeField = null;
 
@@ -33381,8 +33371,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setExcludeField(excludeField) {
@@ -33393,8 +33383,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @description 设置空间范围，只有在该范围内的要素才能被接收。
+     * @param {GeoJSONObject} geometry - 空间范围。
      * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setGeometry(geometry) {
@@ -33673,12 +33663,12 @@ class OverlayAnalystParameters {
  * @param {string} options.operateDataset - 操作数据集的名称，即叠加对象数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：Neighbor_R@Jingjin。
  * @param {string} options.sourceDataset - 源数据集名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_R@Jingjin。
  * @param {Array.<string>} [options.operateDatasetFields] - 叠加分析中操作数据集保留在结果数据集中的字段名列表。
- * @param {FilterParameter} [options.operateDatasetFilter] - 设置操作数据集中空间对象过滤条件。
+ * @param {FilterParameter} [options.operateDatasetFilter] - 操作数据集的过滤条件，可以为 null。
  * @param {Array.<ModulePolygon>} [options.operateRegions] - 操作面对象集合，表示与这些面对象进行叠加分析。与 operateDataset 参数互斥，冲突时以 operateDataset 为准。
  * @param {Array.<string>} [options.sourceDatasetFields] - 叠加分析中源数据集保留在结果数据集中的字段名列表。
  * @param {FilterParameter} [options.sourceDatasetFilter] - 设置源数据集中空间对象过滤条件。设置了过滤参数后，只有满足条件的对象参与叠加分析。
- * @param {number} [options.tolerance=0] - 容限。
- * @param {OverlayOperationType} options.operation - 叠加操作枚举值。
+ * @param {number} [options.tolerance=0] - 叠加分析的容限值。
+ * @param {OverlayOperationType} options.operation - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -33702,7 +33692,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {FilterParameter} DatasetOverlayAnalystParameters.prototype.operateDatasetFilter
-         * @description 设置操作数据集中空间对象过滤条件。
+         * @description 操作数据集的过滤条件，可以为 null。
          */
         this.operateDatasetFilter = new FilterParameter();
 
@@ -33735,7 +33725,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
         /**
          * @member {number} [DatasetOverlayAnalystParameters.prototype.tolerance=0]
-         * @description 容限。
+         * @description 叠加分析的容限值。
          */
         this.tolerance = 0;
 
@@ -35623,8 +35613,8 @@ class FacilityAnalystTraceup3DService extends CommonServiceBase {
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。
- * @param {number} [options.edgeID] - 指定的弧段 ID。edgeID 与 nodeID 必须指定一个。
- * @param {number} [options.nodeID] - 指定的结点 ID。edgeID 与 edgeID 必须指定一个。
+ * @param {number} [options.edgeID] - 三维设施网络分析中指定的弧段 ID，nodeID 与 edgeID 两者不能同时存在。
+ * @param {number} [options.nodeID] - 三维设施网络分析中指定的节点 ID，nodeID 与 edgeID 两者不能同时存在。
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  * @usage
@@ -37753,7 +37743,7 @@ class GeoHashGridAggParameter extends BucketAggParameter {
  * @param {Object} options.sourceGeometry - 叠加分析的源几何对象。
  * @param {Array.<GeoJSONFeature>} [options.operateGeometries] - 批量叠加分析的操作几何对象数组。
  * @param {Array.<GeoJSONFeature>} [options.sourceGeometries] -批量叠加分析的源几何对象数组。
- * @param {OverlayOperationType} [options.operation] - 叠加操作枚举值。
+ * @param {OverlayOperationType} [options.operation] - 叠加方式，可选择 CLIP，ERASE，IDENTITY，INTERSECT，UNION，UPDATE，XOR 之一。
  * @extends {OverlayAnalystParameters}
  * @usage
  */
@@ -38167,8 +38157,8 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
  * @param {boolean} [options.isBorderInside] - 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
  * @param {boolean} [options.returnFeature] - 是否返回 Feature 信息。
  * @param {boolean} [options.returnGeoRelatedOnly=true] - 仅返回满足指定空间关系的空间对象。
- * @param {number} [options.startRecord=0] - 分析结果起始记录位置。
- * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足500条结果则返回所有分析结果。
+ * @param {number} [options.startRecord=0] - 空间关系分析结果起始记录位置。
+ * @param {number} [options.expectCount=500] - 空间关系分析期望返回结果记录数，如果实际不足 500 条结果则返回所有分析结果。
  * @usage
  */
 class GeoRelationAnalystParameters {
@@ -38219,7 +38209,7 @@ class GeoRelationAnalystParameters {
 
         /**
          * @member {number} [GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly=0]
-         * @description 分析结果起始记录位置。
+         * @description 空间关系分析结果起始记录位置。
          */
         this.startRecord = 0;
 
@@ -38494,17 +38484,17 @@ class DatasetService_DatasetService extends CommonServiceBase {
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
  * </div>
  * @param {Object} options - 参数。
- * @param {ModuleBounds} options.bounds - 查询的范围对象。
+ * @param {ModuleBounds} options.bounds - 查询的矩形坐标范围。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
- * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
+ * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。如果为 true，仅返回要素信息，以提升查询性能。如果为 false，返回完整的查询结果，包含查询结果的要素信息、数据集信息以及要素数量。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当此参数设置的坐标系统不同于数据的原有坐标系统时，系统会进行坐标转换，并返回坐标转换后的查询结果。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -38521,7 +38511,7 @@ class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {ModuleBounds} GetFeaturesByBoundsParameters.prototype.bounds
-         * @description 用于查询的范围对象。
+         * @description 查询的矩形坐标范围。
          *
          */
         this.bounds = null;
@@ -38676,13 +38666,13 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
-       * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
+       * @description 查询结果的最小索引号，指定了返回结果的开始位置。如果该值大于查询结果的最大索引号，则查询结果为空。
        */
       this.fromIndex = 0;
 
       /**
        * @member {number} [GetFeaturesServiceBase.prototype.toIndex=19]
-       * @description 查询结果的最大索引号。
+       * @description 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
        * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
        */
       this.toIndex = 19;
@@ -38901,12 +38891,12 @@ class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.attributeFilter] - 属性查询条件。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */
@@ -39075,7 +39065,7 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
  * @class GetFeaturesByGeometryParameters
  * @deprecatedclass SuperMap.GetFeaturesByGeometryParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询参数类。此类用于指定进行几何查询的数据集列表，设置查询的几何对象、属性过滤条件、空间查询模式以及一些通用的查询参数。
+ * @classdesc 数据集空间查询参数类。此类用于指定进行空间查询的数据集列表，设置查询的几何对象、属性过滤条件、空间查询模式以及一些通用的查询参数。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">推荐设置 returnFeaturesOnly 配置为 true 来提升性能，如果需要获取总数量与数据集信息，FeatureService 提供了 getFeaturesCount 和 getFeaturesDatasetInfo 方法</p>
@@ -39083,16 +39073,16 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
  * @param {Object} options - 参数。
  * @param {ModuleGeometry} options.geometry - 查询的几何对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
- * @param {string} [options.attributeFilter] - 几何查询属性过滤条件。
+ * @param {string} [options.attributeFilter] - 空间查询属性过滤条件。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.orderBy] - 查询排序的字段，orderBy 的字段须为数值型的。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -39102,7 +39092,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {string} GetFeaturesByGeometryParameters.prototype.getFeatureMode
-         * @description 数据集查询模式。几何查询有 "SPATIAL"，"SPATIAL_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 SPATIAL_ATTRIBUTEFILTER 访问服务。
+         * @description 数据集查询模式。空间查询有 "SPATIAL"，"SPATIAL_ATTRIBUTEFILTER" 两种，当用户设置 attributeFilter 时会自动切换到 SPATIAL_ATTRIBUTEFILTER 访问服务。
          */
         this.getFeatureMode = 'SPATIAL';
 
@@ -39120,7 +39110,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {string} GetFeaturesByGeometryParameters.prototype.attributeFilter
-         *  @description 几何查询属性过滤条件。
+         *  @description 空间查询属性过滤条件。
          */
         this.attributeFilter = null;
 
@@ -39236,7 +39226,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
  * @class GetFeaturesByGeometryService
  * @deprecatedclass SuperMap.GetFeaturesByGeometryService
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
+ * @classdesc 数据集空间查询服务类，查询与指定几何对象符合一定空间关系的矢量要素。
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
@@ -39269,7 +39259,7 @@ class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 
     /**
      * @function GetFeaturesByGeometryService.prototype.getJsonParameters
-     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @returns {Object} 转化后的 JSON 字符串。
@@ -39302,12 +39292,12 @@ class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
  * @param {Array.<number>} options.IDs - 指定查询的元素 ID 信息。
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -39470,12 +39460,12 @@ class GetFeaturesByIDsService extends GetFeaturesServiceBase {
  * @param {Object} options - 参数。
  * @param {FilterParameter} options.queryParameter - 查询过滤条件参数。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
- * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
- * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
- * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
- * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {number} [options.fromIndex=0] - 查询结果的最小索引号，指定了返回结果的开始位置。
+ * @param {number} [options.toIndex=19] - 查询结果的最大索引号，指定了返回结果的结束位置。例如 fromIndex=0&toIndex=2，表示仅返回前 3 条查询结果信息。如果该值大于预期查询结果的最大索引号，则以预期查询结果的最大索引号为实际查询结果的最大索引号。
+ * @param {string|number} [options.targetEpsgCode] - 查询结果的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
+ * @param {Object} [options.targetPrj] - 查询结果的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -39937,8 +39927,8 @@ class GetGridCellInfosService extends CommonServiceBase {
  * @aliasclass Theme
  * @deprecatedclass SuperMap.Theme
  * @category  iServer Map Theme
- * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
- * 专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
+ * @classdesc 专题图基类。单值专题图，标签专题图，范围分段专题图等都继承自该类。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @param {string} type - 专题图类型。
  * @param {Object} options - 可选参数。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -42651,7 +42641,7 @@ class ThemeRange extends Theme {
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
- * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
+ * @param {boolean} [options.visible=false] - 图层是否可见。true 表示此图层可见，false 表示图层不可见。
  * @usage
  */
 class UGCLayer {
@@ -42702,7 +42692,7 @@ class UGCLayer {
 
         /**
          * @member {boolean} UGCLayer.prototype.visible
-         * @description 地图对象在同一范围内时，是否重叠显示。
+         * @description 图层是否可见。true 表示此图层可见，false 表示图层不可见。
          */
         this.visible = null;
 
@@ -42774,8 +42764,8 @@ class UGCLayer {
  * @param {number} [options.opaqueRate] - 图层的不透明度。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {number} [options.symbolScale] - 图层符号缩放的基准比例尺。
- * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
- * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+ * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象，此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
  * @usage
  */
 class UGCMapLayer extends UGCLayer {
@@ -42826,13 +42816,14 @@ class UGCMapLayer extends UGCLayer {
 
         /**
          * @member {boolean} [UGCMapLayer.prototype.overlapDisplayed=false]
-         * @description 地图对象在同一范围内时，是否重叠显示。
+         * @description 地图对象在同一范围内时，是否重叠显示，如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
          */
         this.overlapDisplayed = null;
 
         /**
          * @member {OverlapDisplayedOptions} UGCMapLayer.prototype.overlapDisplayedOptions
-         * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+         * @description 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效。<br>
+         * 在文本或专题图元素显示较密集的区域，文本之间或专题元素之间会发生相互压盖的现象， 此选项可以分别控制各种类型的对象的压盖显示情况，以处理地图中各种类型对象的压盖显示问题。
          */
         this.overlapDisplayedOptions = null;
         
@@ -44569,13 +44560,13 @@ class InterpolationAnalystService extends SpatialAnalystBase {
  * @classdesc 此类用于设置核密度分析的数据集、分析范围、分析方法、权重、影响半径、分辨率、分析单位等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
+ * @param {string} options.datasetName - 进行核密度分析的点数据集或线数据集。
  * @param {string} options.fields - 权重索引。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
- * @param {number} [options.resolution=80] - 分辨率。
- * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
- * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
- * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {ModuleBounds} [options.query] - 核密度分析范围，默认为全图范围。
+ * @param {number} [options.resolution=80] - 核密度分析结果栅格数据的分辨率，即单个像元所对应的地面面积大小，单位与数据集单位一致。
+ * @param {number} [options.method=0] - 核密度分析方法。0 表示简单密度分析，1 表示核密度分析。
+ * @param {number} [options.meshType=0] - 核密度分析类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {number} [options.radius=300] - 核密度分析的影响半径。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
  * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
@@ -44591,7 +44582,7 @@ class KernelDensityJobParameter {
         }
         /**
          * @member {string} KernelDensityJobParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 进行核密度分析的点数据集或线数据集。
          */
         this.datasetName = "";
 
@@ -46225,13 +46216,13 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 是否返回查询结果的查询范围信息，当 returnContent=false 时有效。如果为 true，返回查询结果的查询范围信息。如果为 false，则不返回查询范围信息。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -46521,14 +46512,14 @@ class QueryByBoundsService extends QueryServiceBase {
  * @param {number} options.distance - 查询距离，单位与所查询图层对应的数据集单位相同。距离查询时，表示距离地物的距离。最近地物查询时，表示搜索的范围。此为必设参数。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
+ * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
  * @param {boolean} [options.isNearest=false] - 是否为最近距离查询。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -46676,21 +46667,21 @@ class QueryByDistanceService extends QueryServiceBase {
  * @class QueryByGeometryParameters
  * @deprecatedclass SuperMap.QueryByGeometryParameters
  * @category  iServer Map QueryResults
- * @classdesc 几何查询参数类。
+ * @classdesc 空间查询参数类。
  *            此类除了能够设置地图查询中通用的查询参数以外，还可以指定几何对象等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {Object} options.geometry - 查询的几何对象。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
  * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.INTERSECT] - 空间查询模式。
  * @usage
@@ -46787,8 +46778,8 @@ class QueryByGeometryService extends QueryServiceBase {
     /**
      * @function QueryByGeometryService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
-     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
-     * @param {QueryByGeometryParameters} params - 几何查询参数类。
+     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
+     * @param {QueryByGeometryParameters} params - 空间查询参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
@@ -46828,13 +46819,13 @@ class QueryByGeometryService extends QueryServiceBase {
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
- * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
- * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
- * @param {number} [options.startRecord=0] - 查询起始记录号。
+ * @param {number} [options.expectCount=100000] - 查询结果中期望返回的结果记录数，该值需大于 0。
+ * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。分为 POINT 点和 LINE 线两种类型。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果选项对象，用于指定查询结果中包含的内容。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
- * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
- * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。是否返回查询结果的 Bounds 信息，当 returnContent=false 时有效。如果为 true，返回查询结果的 Bounds 信息。如果为 false，则不返回 Bounds 信息。
+ * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。如果为 true，则直接返回新创建资源，即查询结果的表述。如果为 false，则返回的是查询结果资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
  * @usage
  */
@@ -48016,7 +48007,7 @@ class TerrainSlopeCalculationService extends SpatialAnalystBase {
   * @class TraceAnalystService
   * @deprecatedclass SuperMap.TraceAnalystService
   * @category iServer NetworkAnalyst TraceAnalystService
-  * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或节点的上游/下游弧段和结点。
+  * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或结点的上游/下游弧段和结点。
   * @version 11.1.1
   * @extends NetworkAnalystServiceBase
   * @param {string} url - 服务地址。请求网络分析服务，URL 应为：
@@ -48457,7 +48448,7 @@ class GetLayersLegendInfoService extends CommonServiceBase {
   * @class QueryService
   * @category  iServer Map QueryResults
   * @classdesc 地图查询服务类。
-  *            提供：范围查询，SQL 查询，几何查询，距离查询。
+  *            提供：范围查询，SQL 查询，空间查询，距离查询。
   * @extends {ServiceBase}
   * @param {string} url - 服务地址。
   * @param {Object} options - 参数。
@@ -48480,7 +48471,7 @@ class GetLayersLegendInfoService extends CommonServiceBase {
  
      /**
       * @function QueryService.prototype.queryByBounds
-      * @description 范围查询地图服务。
+      * @description 范围查询。查询指定矩形范围内的要素，以及外接矩形与指定范围相交的几何对象。
       * @param {QueryByBoundsParameters} params - 范围查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -48543,8 +48534,8 @@ class GetLayersLegendInfoService extends CommonServiceBase {
  
      /**
       * @function QueryService.prototype.queryByGeometry
-      * @description 地图几何查询服务。
-      * @param {QueryByGeometryParameters} params - 几何查询参数类。
+      * @description 空间查询。查询与指定的几何对象符合某种空间关系和查询条件的要素。
+      * @param {QueryByGeometryParameters} params - 空间查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -50246,14 +50237,14 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
  * @classdesc 点聚合分析任务参数类。此类用于设置点聚合分析的数据集、分析范围、权重索引、分析模式、分析类型、聚合类型等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
- * @param {ModuleBounds} [options.query] - 聚合分析范围（默认为全图范围）。
- * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
+ * @param {string} options.datasetName - 数据集名称，只支持点数据集。
+ * @param {string} [options.regionDataset ] - 指定输入数据需要聚合到的面数据集，比如行政区划面等。
+ * @param {ModuleBounds} [options.query] - 聚合分析范围，指定范围内的点参与聚合分析，默认为输入数据集的全幅范围。 
+ * @param {number} [options.fields] - 权重索引。指定待分析的点的权重值所在的字段名称集合。仅支持系统字段以外的整形、长整形、浮点型的字段。可以传递多个表示权重的字段索引，以逗号分隔，相当于对待分析的点进行多次操作，每次对应不同的权重值。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
  * @param {number} [options.meshType=0] - 聚合分析类型（聚合类型为网格面聚合时使用的参数）。0 表示四边形网格，1 表示六边形网格。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。指定聚合类型为网格面聚合，还是多边形聚合。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -50266,13 +50257,13 @@ class SummaryMeshJobParameter {
         }
         /**
          * @member {string} SummaryMeshJobParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 数据集名称，只支持点数据集。
          */
         this.datasetName = "";
 
         /**
          * @member {string} SummaryMeshJobParameter.prototype.regionDataset
-         * @description 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
+         * @description 指定输入数据需要聚合到的面数据集，比如行政区划面等。
          */
         this.regionDataset = "";
 
@@ -50494,20 +50485,20 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
  * @classdesc 区域汇总分析任务参数类。此类用于设置区域汇总分析的数据集、分析范围、标准属性字段、
  * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {string} options.datasetName - 数据集名称，只支持线数据集和面数据集。
+ * @param {string} [options.regionDataset] - 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
+ * @param {ModuleBounds} [options.query] - 区域汇总分析范围，默认为全图范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
- * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
- * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
- * @param {number} [options.resolution=100] - 网格大小。
- * @param {number} [options.meshType=0] - 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {boolean} [options.sumShape=true] - 如果源数据集是线数据集，则同时统计线的长度作为统计结果的一部分；如果源数据集是面数据集，则同时统计面的面积作为统计结果的一部分。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
+ * @param {number} [options.resolution=100] - 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
+ * @param {number} [options.meshType=0] - 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 汇总类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -50527,7 +50518,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {string} SummaryRegionJobParameter.prototype.regionDataset
-         * @description 汇总数据集（多边形汇总时用到的参数）。
+         * @description 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
          */
         this.regionDataset = "";
 
@@ -50545,7 +50536,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-         * @description 是否以标准属性字段统计。
+         * @description 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
          */
         this.standardSummaryFields = false;
 
@@ -50563,7 +50554,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
-         * @description 是否以权重字段统计。
+         * @description 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
          */
         this.weightedSummaryFields = false;
 
@@ -50581,13 +50572,13 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.meshType=0]
-         * @description 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+         * @description 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.resolution=100]
-         * @description 网格大小。
+         * @description 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
          */
         this.resolution = 100;
 
@@ -50599,7 +50590,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {SummaryType} [SummaryRegionJobParameter.prototype.type=SummaryType.SUMMARYMESH]
-         * @description 汇总类型。
+         * @description 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
          */
         this.type = SummaryType.SUMMARYMESH;
 
@@ -51848,7 +51839,7 @@ class ThemeLabelUniqueItem {
  * @deprecatedclass SuperMap.ThemeMemoryData
  * @category  iServer Map Theme
  * @classdesc 专题图内存数据类。制作专题图时，如果设置了内存数据，则会制作基于内存数据的专题图。
- * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。
+ * 具体实现为：在使用专题值制作专题图后，会用外部值代替原始值来制作相应的专题图。即使用外部传入的内存数据制作专题图，而非使用图层本身的数据。适用于在不改动源数据的情况下，灵活呈现不同业务场景下的专题数据。
  * @param {Array} srcData - 原始值数组。
  * @param {Array} targetData - 外部值数组。
  * @usage
@@ -51923,8 +51914,8 @@ class ThemeMemoryData {
  * @param {Array.<JoinItem>} [options.joinItems] - 专题图外部表的连接信息 JoinItem 数组。
  * @param {Array.<CommonTheme>} options.themes - 专题图对象列表。
  * @param {Array.<string>} [options.displayFilters] - 专题图属性过滤条件。
- * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。
- * @param {Object} [options.fieldValuesDisplayFilter] - 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
+ * @param {Array.<string>} [options.displayOrderBys] - 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
+ * @param {Object} [options.fieldValuesDisplayFilter] - 根据要素中的值来判断是否显示在地图中的过滤器。包含属性：values 待过滤的值、fieldName 待过滤的字段名称、fieldValuesDisplayMode 过滤模式。
  * @usage
  */
 class ThemeParameters {
@@ -51964,7 +51955,7 @@ class ThemeParameters {
 
         /**
          * @member {Array.<string>}  [ThemeParameters.prototype.displayOrderBys]
-         * @description 专题图对象生成符号叠加次序排序字段。
+         * @description 专题图对象生成符号叠加次序排序字段。当图层中的某些要素存在叠盖时，通过设置图层显示顺序字段可以自定义存在叠盖的元素的叠盖顺序。
          */
         this.displayOrderBys = null;
 
@@ -51972,7 +51963,7 @@ class ThemeParameters {
          * @member {Object} [ThemeParameters.prototype.fieldValuesDisplayFilter]
          * @property {Array.<number>} values - 待过滤的值。
          * @property {string} fieldName - 待过滤的字段名称，只支持数字类型的字段。
-         * @property {string} fieldValuesDisplayMode - 目前为 DISPLAY/DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素。
+         * @property {string} fieldValuesDisplayMode - 可选值为 DISPLAY / DISABLE。当为 DISPLAY 时，表示只显示以上设置的相应属性值的要素，当为 DISABLE 表示不显示以上设置的相应属性值的要素。
          */
         this.fieldValuesDisplayFilter = null;
 
@@ -52020,8 +52011,9 @@ class ThemeParameters {
  * @class ThemeService
  * @deprecatedclass SuperMap.ThemeService
  * @category  iServer Map Theme
- * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
- * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
+ * @classdesc 专题图服务类。该类可用于获取专题图的信息。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @extends {CommonServiceBase}
  * @example
  * var myThemeService = new ThemeService(url);
@@ -53648,10 +53640,10 @@ class UpdateDatasetParameters {
  * @classdesc 矢量裁剪分析任务参数类。此类用于设置矢量裁剪分析的数据集、裁剪分析模式、裁剪几何对象等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} options.datasetVectorClip - 裁剪对象数据集。
- * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
- * @param {string} [options.geometryClip] - 裁剪几何对象。
+ * @param {string} options.datasetName - 待裁剪数据集的名称。
+ * @param {string} options.datasetVectorClip - 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
+ * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
+ * @param {string} [options.geometryClip] - 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -53663,25 +53655,25 @@ class VectorClipJobsParameter {
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetName
-         * @description 数据集名称。
+         * @description 待裁剪数据集的名称。
          */
         this.datasetName = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
-         * @description 裁剪对象数据集。
+         * @description 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
          */
         this.datasetVectorClip = "";
 
         /**
          * @member {string} VectorClipJobsParameter.prototype.geometryClip
-         * @description 裁剪几何对象。
+         * @description 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
          */
         this.geometryClip = "";
 
         /**
          * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-         * @description 裁剪分析模式。
+         * @description 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
          */
         this.mode = ClipAnalystMode.CLIP;
 
@@ -56749,14 +56741,14 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
 /**
  * @class VideoFeature
  * @category iServer Data
- * @classdesc 视频要素类
+ * @classdesc 视频要素类，用于表示视频流及其空间范围等相关属性的要素。
  * @version 11.2.0
  * @param {Object} options - 参数。
  * @param {ModulePolygonAndBounds} options.geometry - 视频参数对应的视频视角空间范围，只支持矩形。
- * @param {string|number} [options.id] - 要素 ID。
+ * @param {string|number} [options.id] - 要素ID。
  * @param {string} [options.name] - 视频名称。
- * @param {string} [options.address] - 视频流地址。
- * @param {string} [options.attributes] - 描述要素的任意的可序列化属性。
+ * @param {string} [options.address] - 视频流地址。目前支持m3u8格式视频流。
+ * @param {string} [options.attributes] - 要素属性信息。
  * @usage
  */
 class VideoFeature {
@@ -56787,7 +56779,7 @@ class VideoFeature {
 
     /**
      * @member {Object} VideoFeature.prototype.attributes
-     * @description 描述要素的任意的可序列化属性。
+     * @description 要素属性信息
      */
     this.attributes = {};
     // ToDo
@@ -61615,18 +61607,19 @@ function conversionDegree(degrees) {
   * ```
  */
  function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22, baseScale) {
+  const dpiValue = dpi === '' || dpi === null || dpi === undefined ? 96 : dpi;
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
-      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+      resolutions.push(scaleToResolution(scales[i], dpiValue, mapUnit));
     }
   } else if (baseScale){
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
-    const baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    const baseRes = scaleToResolution(baseScale, dpiValue, mapUnit);
     let topRes = baseRes;
     for (let i = 0; i < level; i++) {
       const temp = baseRes * Math.pow(2, i);
-      if(Math.abs(temp,maxReolution)<= 1E-6 || temp>maxReolution){
+      if(Math.abs(temp - maxReolution) <= 1E-6 || temp > maxReolution){
         topRes = temp;
         break;
       }
@@ -84325,6 +84318,20 @@ let en = {
     'title_dataServiceQuery': 'Data Service Query',
     'title_searchCity':'Search city',
     'title_searchLayer':' Search layer',
+    'text_videoMapDrawPoint': 'Draw point',
+    'text_videoMapDrawLine': 'Draw line',
+    'text_videoMapDrawPolygon': 'Draw polygon',
+    'text_videoMapDeleteSelectedFeature': 'Delete selected feature',
+    'text_videoMapPlay': 'Play',
+    'text_videoMapPause': 'Pause',
+    'text_videoMapMeasurementStart': 'Start',
+    'text_videoMapMeasurementTotalDistance': 'Total distance: ',
+    'text_videoMapMeasurementArea': 'Area: ',
+    'text_videoMapUnitMeter': ' m',
+    'text_videoMapUnitKilometer': ' km',
+    'text_videoMapUnitSquareMeter': ' m²',
+    'text_videoMapUnitSquareKilometer': ' km²',
+    'msg_videoMapTimeRangeMissing': '[VideoMap] Time range not found, time=',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',
@@ -84449,6 +84456,20 @@ let zh = {
     'title_dataServiceQuery': '数据服务查询',
     'title_searchCity':'搜索城市',
     'title_searchLayer':'搜索图层',
+    'text_videoMapDrawPoint': '绘制点',
+    'text_videoMapDrawLine': '绘制线',
+    'text_videoMapDrawPolygon': '绘制面',
+    'text_videoMapDeleteSelectedFeature': '删除选中要素',
+    'text_videoMapPlay': '播放',
+    'text_videoMapPause': '暂停',
+    'text_videoMapMeasurementStart': '起点',
+    'text_videoMapMeasurementTotalDistance': '总距离：',
+    'text_videoMapMeasurementArea': '面积：',
+    'text_videoMapUnitMeter': '米',
+    'text_videoMapUnitKilometer': '千米',
+    'text_videoMapUnitSquareMeter': '平方米',
+    'text_videoMapUnitSquareKilometer': '平方千米',
+    'msg_videoMapTimeRangeMissing': '[VideoMap] 未找到时间范围，time=',
 
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
@@ -89798,10 +89819,2679 @@ function fittingStr(label, maxWidth, fontSize) {
   }
 }
 
+;// ./src/common/mapping/config/MunicipalCenter.json
+const MunicipalCenter_namespaceObject = /*#__PURE__*/JSON.parse('[{"name":"克拉玛依市","coord":[85.01486759299489,45.406422237230046]},{"name":"昌吉回族自治州","coord":[88.7154624754753,44.26991024636568]},{"name":"石河子市","coord":[86.0208600035924,44.239045558096805]},{"name":"霍林郭勒市","coord":[114.73479243733115,44.16058374713977]},{"name":"本溪市","coord":[124.64357865201586,41.177197783134275]},{"name":"嘉峪关市","coord":[98.16891560537093,39.76279786284264]},{"name":"莱芜市","coord":[117.65723565456207,36.27916499211527]},{"name":"神农架林区","coord":[110.48296222218153,31.581260143666697]},{"name":"天门市","coord":[113.00615321481195,30.64105781887143]},{"name":"鄂州市","coord":[114.94764081970385,30.325634953844585]},{"name":"潜江市","coord":[112.70703817700621,30.349210666019893]},{"name":"仙桃市","coord":[113.34688900729822,30.315951161935402]},{"name":"萍乡市","coord":[113.88072263074415,27.47193090553213]},{"name":"台湾省","coord":[120.14338943402045,23.596002465926095]},{"name":"东莞市","coord":[113.89443658529342,22.897826158636448]},{"name":"中山市","coord":[113.37118387764659,22.501478858616522]},{"name":"珠海市","coord":[113.21799258934986,22.23782602992192]},{"name":"北海市","coord":[109.18248083043899,21.695773689750148]},{"name":"香港","coord":[114.20689279508653,22.36016760139811]},{"name":"舟山市","coord":[122.22514712841459,30.338633120695956]},{"name":"克孜勒苏柯尔克孜","coord":[74.62910472637343,39.59886016069875]},{"name":"喀什地区","coord":[77.19899922143753,37.85462871211595]},{"name":"阿克苏地区","coord":[81.43930290016381,41.067304799230456]},{"name":"和田地区","coord":[80.69780509160952,36.95287032287055]},{"name":"阿里地区","coord":[82.536487505389,32.69566569631762]},{"name":"日喀则地区","coord":[86.5996831353606,29.54861754814263]},{"name":"那曲地区","coord":[88.32523292667608,33.20600450932715]},{"name":"玉树藏族自治州","coord":[95.2107128446203,33.90320387919257]},{"name":"迪庆藏族自治州","coord":[99.42465312188943,28.052797714348895]},{"name":"怒江傈傈族自治州","coord":[98.85737910439825,26.98345757528851]},{"name":"大理白族自治州","coord":[99.93934374816013,25.684737357453045]},{"name":"德宏傣族景颇族自","coord":[98.13830877778075,24.593421919561205]},{"name":"保山市","coord":[99.19031013453166,24.979380341662]},{"name":"临沧市","coord":[99.62483778975081,24.058807858948214]},{"name":"普洱市","coord":[100.94440267992684,23.44121660743221]},{"name":"西双版纳傣族自治","coord":[100.86105801845994,21.882475641324206]},{"name":"拉萨市","coord":[91.3684790613129,30.14176592960237]},{"name":"山南地区","coord":[92.11665242621062,28.33000201578789]},{"name":"林芝地区","coord":[94.9307847458166,29.125110156601963]},{"name":"昌都地区","coord":[97.33912235873476,30.48520825551814]},{"name":"丽江市","coord":[100.65713436205135,26.96190318191959]},{"name":"攀枝花市","coord":[101.73355913301131,26.714486678752795]},{"name":"凉山彝族自治州","coord":[102.08678551422615,27.683020519860396]},{"name":"楚雄彝族自治州","coord":[101.68264761198458,25.369603845264024]},{"name":"红河哈尼族彝族自","coord":[102.95101719613119,23.624860095239875]},{"name":"文山壮族苗族自治","coord":[104.8708359910614,23.579587266862504]},{"name":"百色市","coord":[106.69546907589859,23.98220841166522]},{"name":"崇左市","coord":[107.3277087317123,22.49769755349952]},{"name":"防城港市","coord":[107.88939931155171,21.94550204069006]},{"name":"南宁市","coord":[108.67078983716917,23.12207641861882]},{"name":"钦州市","coord":[108.8532307305186,22.157690108421384]},{"name":"玉林市","coord":[110.26918466489103,22.391823643610415]},{"name":"湛江市","coord":[109.93033457863683,21.086751055633457]},{"name":"茂名市","coord":[110.80336192333934,22.069184739040775]},{"name":"阳江市","coord":[111.70471342186183,22.108751366417575]},{"name":"江门市","coord":[112.53715618649149,22.297368082806777]},{"name":"广州市","coord":[113.4949302208309,23.28359314707863]},{"name":"清远市","coord":[113.10957368131268,24.334444053233856]},{"name":"肇庆市","coord":[112.11117530204233,23.60241158796112]},{"name":"梧州市","coord":[111.01709510772797,23.518132876753846]},{"name":"贺州市","coord":[111.50423061842756,24.4095096817199]},{"name":"桂林市","coord":[110.44046163393094,25.353966673735407]},{"name":"柳州市","coord":[109.34854449214147,24.972408051485047]},{"name":"河池市","coord":[107.81191841865586,24.649291651298164]},{"name":"黔东南苗族侗族自","coord":[108.39952601614591,26.429286420465576]},{"name":"贵阳市","coord":[106.59784062851153,26.797907456479816]},{"name":"安顺市","coord":[105.76161265300635,25.988644902171018]},{"name":"黔西南布依族苗族","coord":[105.5954078788574,25.404850939549405]},{"name":"曲靖市","coord":[103.9164335632742,25.697243690315265]},{"name":"六盘水市","coord":[104.77723228072432,26.15402255629164]},{"name":"毕节地区","coord":[105.03867422931839,27.077913968069666]},{"name":"昭通市","coord":[104.29730513046874,27.62418247971078]},{"name":"宜宾市","coord":[104.76748901448207,28.553501804266475]},{"name":"乐山市","coord":[103.56027669102787,29.160754519210577]},{"name":"自贡市","coord":[104.63272827056402,29.273152614922402]},{"name":"内江市","coord":[104.82644562304716,29.61272653799929]},{"name":"遵义市","coord":[106.82413636302059,28.191847588570702]},{"name":"达州市","coord":[107.59704170009518,31.32138258839703]},{"name":"遂宁市","coord":[105.48979445433736,30.677687821242678]},{"name":"广安市","coord":[106.56708164098042,30.43500706741521]},{"name":"泸州市","coord":[105.42591761727707,28.50277238478137]},{"name":"资阳市","coord":[104.97995126874034,30.154251886139654]},{"name":"雅安市","coord":[102.69931299964517,29.892630706195035]},{"name":"眉山市","coord":[104.07052881858888,29.894202166560405]},{"name":"甘孜藏族自治州","coord":[100.50721042614238,30.975216556269658]},{"name":"果洛藏族自治州","coord":[99.30775565051923,34.03539865224808]},{"name":"海南藏族自治州","coord":[100.39969108016373,35.90048272566899]},{"name":"黄南藏族自治州","coord":[101.5360706381689,35.10286360841902]},{"name":"赣南藏族自治州","coord":[102.97083885806067,34.326752803339026]},{"name":"陇南市","coord":[105.24780098912132,33.57031117443431]},{"name":"天水市","coord":[105.53503634660417,34.62320421368087]},{"name":"定西市","coord":[104.58787768541339,35.08900966621695]},{"name":"临夏回族自治州","coord":[103.2612870434902,35.591577124455235]},{"name":"西宁市","coord":[101.57680657999033,36.84800271717157]},{"name":"海东地区","coord":[102.30909850729282,36.287400615025646]},{"name":"海北藏族自治州","coord":[100.27122484450717,37.892557516083826]},{"name":"金昌市","coord":[102.02244049169511,38.497330414886164]},{"name":"酒泉市","coord":[95.94486678270127,40.56891536586272]},{"name":"海西蒙古族藏族自","coord":[94.67143298050689,36.022725148503724]},{"name":"巴音郭楞蒙古自治","coord":[88.18116214759745,39.556478810319916]},{"name":"哈密地区","coord":[93.84302392518026,42.95015211178875]},{"name":"叶鲁番地区","coord":[89.82035217277885,42.399368632283505]},{"name":"乌鲁木齐市","coord":[88.00048109561487,43.549986370786]},{"name":"阿勒泰地区","coord":[88.11213933257655,47.05593413019629]},{"name":"博尔塔拉蒙古自治","coord":[82.26402238163408,44.671135542630864]},{"name":"伊犁哈萨克自治州","coord":[82.80778717477179,43.53783381365267]},{"name":"阿拉善盟","coord":[103.29923966842289,40.10955801781495]},{"name":"武威市","coord":[102.73362058791429,37.94211141321436]},{"name":"兰州市","coord":[103.73793563506032,36.27379827886003]},{"name":"中卫市","coord":[105.6943786030716,37.20654236148948]},{"name":"银川市","coord":[106.20022174140034,38.52103167597483]},{"name":"石嘴山市","coord":[106.41544011793628,38.84054137571417]},{"name":"乌海市","coord":[106.8984175998405,39.54616572239788]},{"name":"鄂尔多斯市","coord":[108.43285571424619,39.24036799350715]},{"name":"巴彦淖尔市","coord":[107.45840392808307,41.30159860424196]},{"name":"包头市","coord":[110.46472193224272,41.48017783644221]},{"name":"呼和浩特市","coord":[111.48365173603975,40.498363056149884]},{"name":"乌兰察布市","coord":[112.61568977597707,41.75789561273154]},{"name":"大同市","coord":[113.7107192749083,39.898956799744184]},{"name":"朔州市","coord":[112.65428748167508,39.681772914701924]},{"name":"忻州市","coord":[112.36127575589583,38.88990233614568]},{"name":"榆林市","coord":[109.68473112169593,38.19921027134876]},{"name":"延安市","coord":[109.52425222161318,36.406522726136814]},{"name":"庆阳市","coord":[107.73052193155061,36.183821532624464]},{"name":"固原市","coord":[106.20191575442442,36.11634909496382]},{"name":"白银市","coord":[104.68634478137065,36.51582865625868]},{"name":"宝鸡市","coord":[107.33534779230747,34.3387216485855]},{"name":"汉中市","coord":[107.03534754266246,33.00142998064871]},{"name":"广元市","coord":[105.92928137563939,32.21872447205537]},{"name":"巴中市","coord":[107.03422410306194,31.99874720836291]},{"name":"南充市","coord":[106.32964805032347,31.156657700184095]},{"name":"绵阳市","coord":[104.58949560201106,31.88628780630976]},{"name":"德阳市","coord":[104.41542984932845,31.110558133718676]},{"name":"成都市","coord":[103.8852290010473,30.777258040348634]},{"name":"阿坝藏族羌族自治","coord":[102.26209319552814,32.45725845387284]},{"name":"安康市","coord":[109.14236501848015,32.77467694678074]},{"name":"十堰市","coord":[110.39934083416314,32.376209039347906]},{"name":"襄阳市","coord":[111.97539147094662,31.93399822417465]},{"name":"宜昌市","coord":[111.22204852395754,30.772457669035354]},{"name":"恩施市","coord":[109.42158366502872,30.260366574390105]},{"name":"张家界市","coord":[110.59760006538717,29.330107409240718]},{"name":"吉首市","coord":[109.72176899848378,28.681903937242495]},{"name":"铜仁地区","coord":[108.54247523485463,28.11736237519646]},{"name":"重庆市","coord":[107.86007108564992,30.186253395053196]},{"name":"怀化市","coord":[109.94325166787243,27.43919084801186]},{"name":"益阳市","coord":[112.43060358108062,28.75127294553697]},{"name":"娄底市","coord":[111.41891416951897,27.696312460064604]},{"name":"常德市","coord":[111.72571610131646,29.27189463838195]},{"name":"荆州市","coord":[112.65896596965268,30.05161542755362]},{"name":"荆门市","coord":[112.6586855902184,31.01267124474617]},{"name":"岳阳市","coord":[113.2595036144316,29.106247116930163]},{"name":"长沙市","coord":[113.15415586456598,28.222934680488425]},{"name":"湘潭市","coord":[112.51092596317824,27.69881544105668]},{"name":"株州市","coord":[113.49665538546823,27.03993794610501]},{"name":"衡阳市","coord":[112.48849636578527,26.783613569970782]},{"name":"邵阳市","coord":[110.6723832117475,26.81652287086792]},{"name":"永州市","coord":[111.8565364154186,25.768488267811968]},{"name":"韶关市","coord":[113.53420325850979,24.69848878771937]},{"name":"惠州市","coord":[114.32029589634925,23.25504544231892]},{"name":"佛山市","coord":[112.95925897403649,23.10116677189257]},{"name":"云浮市","coord":[111.78042514904234,22.840400494105687]},{"name":"深圳市","coord":[114.13138648919008,22.649563063468342]},{"name":"汕尾市","coord":[115.57412892884373,23.06989642104901]},{"name":"河源市","coord":[114.89746229844398,23.97971937124767]},{"name":"揭阳市","coord":[116.04290004239446,23.304802704715357]},{"name":"汕头市","coord":[116.7008461897183,23.35898625947344]},{"name":"潮州市","coord":[116.75405548481658,23.854381508863064]},{"name":"梅州市","coord":[116.13719397345734,24.15633544812716]},{"name":"漳州市","coord":[117.38279760543345,24.41111215459575]},{"name":"厦门市","coord":[118.04275971554665,24.675908246507944]},{"name":"龙岩市","coord":[116.69341144552507,25.20284542644492]},{"name":"泉州市","coord":[118.12035864630246,25.22984144365049]},{"name":"莆田市","coord":[118.82439690138142,25.439653480972687]},{"name":"福州市","coord":[119.1608285845262,25.99117532466728]},{"name":"三明市","coord":[117.51188176216434,26.318292906961602]},{"name":"南平市","coord":[118.16153136678187,27.306303151805437]},{"name":"抚州市","coord":[116.3455359885574,27.487043655935366]},{"name":"鹰潭市","coord":[117.01082360702333,28.241253742969946]},{"name":"吉安市","coord":[114.91377151807418,26.957486660664525]},{"name":"赣州市","coord":[115.046455717572,25.81565075681663]},{"name":"郴州市","coord":[113.1544526703492,25.871927095452524]},{"name":"新余市","coord":[114.94161795877827,27.79044654578371]},{"name":"宜春市","coord":[115.04574494880995,28.306428044943356]},{"name":"南昌市","coord":[115.9963824234495,28.664803351584705]},{"name":"九江市","coord":[115.53225905704193,29.362905920276297]},{"name":"上饶市","coord":[117.8595355766598,28.765755150094634]},{"name":"景德镇市","coord":[117.25387030721845,29.33426823662448]},{"name":"黄山市","coord":[117.85476357809696,29.969632034273722]},{"name":"池州市","coord":[117.34517113140791,30.208089337922335]},{"name":"铜陵市","coord":[117.93160431300694,30.926442655001676]},{"name":"安庆市","coord":[116.54307680610799,30.524265461641296]},{"name":"黄石市","coord":[115.02354597728443,29.924060229331015]},{"name":"咸宁市","coord":[114.26967602231792,29.652174021136048]},{"name":"黄冈市","coord":[115.2859016705373,30.65856897065683]},{"name":"武汉市","coord":[114.34552076948799,30.68836237966767]},{"name":"随州市","coord":[113.3850627838818,31.87891659924412]},{"name":"信阳市","coord":[114.81374730587638,32.0309685135914]},{"name":"驻马店市","coord":[114.07756451509235,32.896720987266114]},{"name":"商洛市","coord":[109.82044421310393,33.77403373563189]},{"name":"西安市","coord":[109.11839808451401,34.225257215515896]},{"name":"渭南市","coord":[109.75732444226935,35.025913644359306]},{"name":"铜川市","coord":[108.98695328111377,35.19235092947735]},{"name":"咸阳市","coord":[108.36398776446165,34.84311348287181]},{"name":"三门峡市","coord":[110.80049688104964,34.31818709571671]},{"name":"运城市","coord":[111.1736679525165,35.19010372283576]},{"name":"洛阳市","coord":[111.87577573098216,34.33379926109848]},{"name":"平顶山市","coord":[112.80931281928427,33.759895800153096]},{"name":"漯河市","coord":[113.83505724178012,33.70034266174508]},{"name":"许昌市","coord":[113.78762484088509,34.051835688452435]},{"name":"郑州市","coord":[113.49619951867594,34.61181797865449]},{"name":"焦作市","coord":[113.13404280173008,35.134167097471625]},{"name":"晋城市","coord":[112.7495732073233,35.63186423091449]},{"name":"长治市","coord":[112.85900842873183,36.45872910742828]},{"name":"临汾市","coord":[111.49379787924448,36.22810800777857]},{"name":"太原市","coord":[112.15628804033796,37.91704444063036]},{"name":"吕梁市","coord":[111.31901105774872,37.712740463356496]},{"name":"晋中市","coord":[113.08199599739676,37.36532613794343]},{"name":"邯郸市","coord":[114.41824047234618,36.530119932543315]},{"name":"安阳市","coord":[113.88883283163116,35.7797611183252]},{"name":"鹤壁市","coord":[114.3654094911545,35.75770487428472]},{"name":"新乡市","coord":[113.9184107718167,35.348471214026716]},{"name":"开封市","coord":[114.52801677500626,34.61371216679872]},{"name":"周口市","coord":[114.88509782391864,33.69999759722657]},{"name":"阜阳市","coord":[115.44595951398213,32.98060371610532]},{"name":"淮南市","coord":[116.68941991880993,32.79972275772595]},{"name":"蚌埠市","coord":[117.38594715783302,33.106729536033896]},{"name":"淮北市","coord":[116.69651711889378,33.69527529383458]},{"name":"宿州市","coord":[117.30175405886838,33.943330421260015]},{"name":"亳州市","coord":[116.12410804185097,33.46769392946132]},{"name":"商丘市","coord":[115.59575176872548,34.28339840831147]},{"name":"菏泽市","coord":[115.53631974831816,35.197319393220624]},{"name":"濮阳市","coord":[115.3070485514902,35.775883510964334]},{"name":"聊城市","coord":[115.8870069012884,36.40529594548765]},{"name":"邢台市","coord":[114.74259008644859,37.251396750084155]},{"name":"石家庄市","coord":[114.56923838363613,38.13141710980106]},{"name":"阳泉市","coord":[113.39216149668508,38.09075470547468]},{"name":"保定市","coord":[115.261524468934,39.09118520781398]},{"name":"衡水市","coord":[115.8182936677897,37.715661598187154]},{"name":"德州市","coord":[116.4582273790399,37.19372347888644]},{"name":"沧州市","coord":[116.76192710911863,38.20240042039232]},{"name":"廊坊市","coord":[116.50410772133856,39.27896741763884]},{"name":"天津市","coord":[117.31988934444873,39.37154482470619]},{"name":"北京市","coord":[116.59734730757869,40.237112944270976]},{"name":"张家口市","coord":[115.1823606483226,40.83732566607167]},{"name":"唐山市","coord":[117.8693184261954,39.71862889477249]},{"name":"秦皇岛市","coord":[119.30467355367742,39.990574652162564]},{"name":"承德市","coord":[117.16275671911026,41.36623845548547]},{"name":"葫芦岛市","coord":[119.9342336210531,40.5628822626519]},{"name":"朝阳市","coord":[120.11853493535794,41.471852354885755]},{"name":"赤峰市","coord":[118.50943546234379,43.25452976059767]},{"name":"锦州市","coord":[121.5167549323861,41.45933087433065]},{"name":"营口市","coord":[122.58571915054674,40.42093503997384]},{"name":"丹东市","coord":[124.33549382902183,40.46369290272115]},{"name":"辽阳市","coord":[123.34064798039414,41.152331397771356]},{"name":"盘锦市","coord":[122.06718005354679,41.05573599862555]},{"name":"阜新市","coord":[121.93889757908204,42.27641773244204]},{"name":"鞍山市","coord":[122.78904432242356,40.77781183142038]},{"name":"沈阳市","coord":[122.99508899709724,42.1162195010079]},{"name":"铁岭市","coord":[124.23100515588399,42.72666083611828]},{"name":"扶顺市","coord":[124.46027188217573,41.82955407638859]},{"name":"通辽市","coord":[122.0729370657937,43.90889130864869]},{"name":"兴安盟","coord":[120.79456431092532,45.92003249442161]},{"name":"白城市","coord":[123.10619907715235,45.25475749267784]},{"name":"齐齐哈尔市","coord":[124.5462214659102,47.55395009317394]},{"name":"大兴安岭地区","coord":[124.50992855161529,52.18438447846694]},{"name":"黑河市","coord":[127.14721400335922,49.25080134026901]},{"name":"大庆市","coord":[124.40329830095243,46.401048760966745]},{"name":"绥化市","coord":[126.5214484055605,46.76992452194825]},{"name":"松原市","coord":[124.21244334807682,44.75779381338502]},{"name":"四平市","coord":[124.27839350328821,43.52139065090318]},{"name":"通化市","coord":[125.67392830706305,41.91771808663852]},{"name":"辽源市","coord":[125.33529527643432,42.758340204944986]},{"name":"吉林市","coord":[126.83350281902375,43.60730120049175]},{"name":"长春市","coord":[125.53597875970374,44.24624314701737]},{"name":"白山市","coord":[127.16780160322108,42.093893880305075]},{"name":"哈尔滨市","coord":[127.39125008786029,45.36200668820575]},{"name":"鹤岗市","coord":[130.4703811258197,47.66520688940109]},{"name":"伊春市","coord":[128.91240831703635,47.93833794565277]},{"name":"七台河市","coord":[131.2677920224311,45.945099776108584]},{"name":"鸡西市","coord":[132.38059153660274,45.722934218318535]},{"name":"双鸭山市","coord":[132.3184817002743,46.65813679030265]},{"name":"佳木斯市","coord":[132.26174446608726,47.17569713691394]},{"name":"呼伦贝尔市","coord":[122.3210739998419,50.18176996070858]},{"name":"孝感市","coord":[113.83749892135485,31.11757234692128]},{"name":"贵港市","coord":[110.07354588052804,23.380735604767374]},{"name":"黔南布依族苗族自","coord":[107.30931767543106,26.2976919432269]},{"name":"宁德市","coord":[119.52482556634342,27.013151692716413]},{"name":"温州市","coord":[120.30037042732202,27.8699145504001]},{"name":"台州市","coord":[120.88886782713843,28.670799172772313]},{"name":"丽水市","coord":[119.56796851966463,28.170268394477755]},{"name":"衢州市","coord":[118.79479802644406,28.865874397158763]},{"name":"金华市","coord":[119.99381920686633,29.093455548185744]},{"name":"绍兴市","coord":[120.46546691682343,29.69382513836818]},{"name":"宁波市","coord":[121.42142987830871,29.70001162878972]},{"name":"杭州市","coord":[119.4405685790891,29.87218307296989]},{"name":"宣城市","coord":[118.68748382914703,30.628143499626418]},{"name":"湖州市","coord":[119.98261306633574,30.7945175862809]},{"name":"嘉兴市","coord":[120.83889215988998,30.67538495499343]},{"name":"上海市","coord":[121.37534147322967,31.25628247908459]},{"name":"苏州市","coord":[120.6906182622391,31.381280695137775]},{"name":"无锡市","coord":[120.32182300914366,31.54113306724517]},{"name":"常州市","coord":[119.61953292830165,31.611878565375576]},{"name":"南京市","coord":[118.71890548838064,31.910863187910323]},{"name":"镇江市","coord":[119.42349332902813,31.97942313430778]},{"name":"合肥市","coord":[117.30651975617157,31.79407863049138]},{"name":"六安市","coord":[116.24668220575353,31.820846193819513]},{"name":"滁州市","coord":[117.88422385307969,32.51792621904418]},{"name":"泰州市","coord":[120.03124303305091,32.56503102346783]},{"name":"南通市","coord":[120.85599446760912,32.18496706099728]},{"name":"盐城市","coord":[120.01812490612667,33.54219948734023]},{"name":"淮安市","coord":[119.0749424205415,33.39203631772854]},{"name":"宿迁市","coord":[118.45404943216346,33.666258719120265]},{"name":"徐州市","coord":[117.77482249295966,34.30847766157078]},{"name":"济宁市","coord":[116.74147276546373,35.27488504351119]},{"name":"枣庄市","coord":[117.43359942491492,34.884162021736]},{"name":"连云港市","coord":[119.01553213785074,34.54316517587849]},{"name":"临沂市","coord":[118.31478835349617,35.28173079028279]},{"name":"日照市","coord":[119.14265350444272,35.54479073199592]},{"name":"青岛市","coord":[120.27779044405756,36.3464117375903]},{"name":"威海市","coord":[122.12963327195605,37.13879077904251]},{"name":"烟台市","coord":[120.7689567423966,37.19772002195597]},{"name":"潍坊市","coord":[119.02178548592039,36.49292234053931]},{"name":"淄博市","coord":[117.92936024367185,36.60871347163638]},{"name":"泰安市","coord":[116.93810893944303,36.0423330118612]},{"name":"济南市","coord":[117.34560282551296,36.769574973846304]},{"name":"东营市","coord":[118.4915054457184,37.52194690335787]},{"name":"滨州市","coord":[117.67610299757533,37.4439597758601]},{"name":"昆明市","coord":[102.93100245594789,25.481300763922075]},{"name":"玉溪市","coord":[102.23080854291823,24.156168324611663]},{"name":"塔城地区","coord":[83.60908162840168,45.3721852373893]},{"name":"张掖市","coord":[100.47710030600572,38.704239320458385]},{"name":"南阳市","coord":[112.1400670951149,33.03033276715801]},{"name":"扬州市","coord":[119.48949608990988,32.80956776339646]},{"name":"延边朝鲜族自治州","coord":[129.3577692895626,43.24968794080283]},{"name":"牡丹江市","coord":[129.87240796405672,44.7073040108322]},{"name":"澳门","coord":[113.56289691515346,22.14602596262204]},{"name":"吴忠市","coord":[106.76894508116403,37.72566765880316]},{"name":"来宾市","coord":[109.25592217010114,23.86346274681084]},{"name":"平凉市","coord":[107.0708132782897,35.30329631658711]},{"name":"马鞍山市","coord":[118.27245878467022,31.657727937739004]},{"name":"芜湖市","coord":[118.32992684415504,31.081688223101658]},{"name":"澄迈县","coord":[110.04198076060266,19.694955078668105]},{"name":"保亭黎族苗族自治","coord":[109.6055304964257,18.6101488675304]},{"name":"乐东黎族自治县","coord":[109.04051999525574,18.643137437909203]},{"name":"儋州市","coord":[109.3431358337404,19.550974957403195]},{"name":"定安县","coord":[110.38744429685676,19.47557074114284]},{"name":"屯昌县","coord":[110.00574767630334,19.367175093044388]},{"name":"白沙黎族自治县","coord":[109.36860737761768,19.214416393082217]},{"name":"琼中黎族苗族自治","coord":[109.86691465937548,19.073671135862682]},{"name":"东方市","coord":[108.86903802405428,19.017352815445214]},{"name":"昌江黎族自治县","coord":[108.9686431884767,19.182594167127824]},{"name":"海口市","coord":[110.420654296875,19.806565564640795]},{"name":"济源市","coord":[112.38051465474433,35.07958362422394]},{"name":"五指山市","coord":[109.53595187364496,18.832908264613966]},{"name":"大连市","coord":[121.96662235866603,39.444150542439914]},{"name":"文昌市三沙市","coord":[110.81828537536748,19.756501444162936]},{"name":"三亚市","coord":[109.38424600793707,18.39186315877128]},{"name":"万宁市","coord":[110.28485046979574,18.860240588635115]},{"name":"陵水黎族自治县","coord":[109.95577603229562,18.594712684620465]},{"name":"临高县","coord":[109.71915395436967,19.79420403032508]},{"name":"琼海市","coord":[110.41650700703043,19.22315873149372]}]');
+;// ./src/common/mapping/config/ProvinceCenter.json
+const ProvinceCenter_namespaceObject = /*#__PURE__*/JSON.parse('[{"name":"黑龙江省","coord":[127.64559817675396,48.48668098449708]},{"name":"内蒙古自治区","coord":[118.34519572208615,45.370218276977525]},{"name":"新疆维吾尔自治区","coord":[87.13479065593184,41.75497055053711]},{"name":"吉林省","coord":[126.12985278813787,43.57983207702637]},{"name":"辽宁省","coord":[124.02494773936439,41.105743408203125]},{"name":"甘肃省","coord":[102.87785725633012,37.69582366943361]},{"name":"河北省","coord":[115.66327227481898,39.33383178710938]},{"name":"北京市","coord":[116.62199343603638,40.25053787231445]},{"name":"山西省","coord":[112.45180235808988,37.666561126708984]},{"name":"天津市","coord":[117.35711842642581,39.406789779663086]},{"name":"陕西省","coord":[109.56294003056632,35.64754199981689]},{"name":"宁夏回族自治区","coord":[105.96110877640074,37.3081169128418]},{"name":"青海省","coord":[96.07301048277901,35.44417190551758]},{"name":"山东省","coord":[118.03833752951093,36.29800605773925]},{"name":"西藏自治区","coord":[87.47361520439412,31.6703872680664]},{"name":"河南省","coord":[113.07832397097275,33.87751102447509]},{"name":"江苏省","coord":[119.93926538201052,32.945452690124505]},{"name":"安徽省","coord":[117.15146765881019,32.024482727050774]},{"name":"四川省","coord":[102.28998890142759,30.182161331176758]},{"name":"湖北省","coord":[112.87798261431585,31.157071113586426]},{"name":"重庆市","coord":[107.870126637831,30.188085556030266]},{"name":"上海市","coord":[121.42561166015514,31.276043891906745]},{"name":"浙江省","coord":[119.75337092707514,29.175934791564945]},{"name":"湖南省","coord":[111.52770282777405,27.38110256195069]},{"name":"江西省","coord":[115.51091280655628,27.283511161804206]},{"name":"云南省","coord":[101.27053825991308,25.19783210754396]},{"name":"贵州省","coord":[106.49672346773299,26.92267990112305]},{"name":"福建省","coord":[117.9976766946587,25.939599990844727]},{"name":"广西壮族自治区","coord":[108.98706831086302,23.891559600830078]},{"name":"台湾省","coord":[120.82468432537434,23.602651596069336]},{"name":"香港特别行政区","coord":[114.21036850371561,22.374858856201172]},{"name":"海南省","coord":[109.62792940960824,19.163116455078125]},{"name":"广东省","coord":[113.32127888266032,22.873867034912106]},{"name":"澳门特别行政区","coord":[113.56819996291901,22.160347992976]}]');
+;// ./src/common/mapping/utils/util.js
+
+ // eslint-disable-line import/extensions
+ // eslint-disable-line import/extensions
+
+function createLinesData(layerInfo, properties) {
+  const data = [];
+  if (properties && properties.length) {
+    // 重新获取数据
+    const from = layerInfo.from;
+    const to = layerInfo.to;
+    let fromCoord;
+    let toCoord;
+    if (from.type === 'XY_FIELD' && from.xField && from.yField && to.xField && to.yField) {
+      properties.forEach((property) => {
+        const fromX = property[from.xField];
+        const fromY = property[from.yField];
+        const toX = property[to.xField];
+        const toY = property[to.yField];
+        if (!fromX || !fromY || !toX || !toY) {
+          return;
+        }
+
+        fromCoord = [property[from.xField], property[from.yField]];
+        toCoord = [property[to.xField], property[to.yField]];
+        data.push({
+          coords: [fromCoord, toCoord]
+        });
+      });
+    } else if (from.type === 'PLACE_FIELD' && from.field && to.field) {
+      const centerDatas = ProvinceCenter_namespaceObject.concat(MunicipalCenter_namespaceObject);
+
+      properties.forEach((property) => {
+        const fromField = property[from.field];
+        const toField = property[to.field];
+        fromCoord = centerDatas.find((item) => {
+          return isMatchAdministrativeName(item.name, fromField);
+        });
+        toCoord = centerDatas.find((item) => {
+          return isMatchAdministrativeName(item.name, toField);
+        });
+        if (!fromCoord || !toCoord) {
+          return;
+        }
+        data.push({
+          coords: [fromCoord.coord, toCoord.coord]
+        });
+      });
+    }
+  }
+  return data;
+}
+
+function isMatchAdministrativeName(featureName, fieldName) {
+  if (isString(fieldName)) {
+    let shortName = featureName.substr(0, 2);
+    // 张家口市和张家界市 特殊处理
+    if (shortName === '张家') {
+      shortName = featureName.substr(0, 3);
+    }
+    return !!fieldName.match(new RegExp(shortName));
+  }
+  return false;
+}
+
+function transformServerUrl(serverUrl) {
+  return !serverUrl || serverUrl.slice(-1) === '/' ? serverUrl : `${serverUrl}/`;
+}
+
+ /**
+   * @description url 拼接代理或者凭证信息
+   * @param {string} point - 待转换的 url
+   * @returns {string} 转换后的 url
+   */
+ function transformUrl({ url, server, excludePortalProxyUrl, credentialValue, credentialKey }) {
+  let mapUrl = url.indexOf('.json') === -1 ? `${url}.json` : url;
+  let filter = 'getUrlResource.json?url=';
+  if (excludePortalProxyUrl && server.indexOf(filter) > -1) {
+    //大屏需求,或者有加上代理的
+    let urlArray = server.split(filter);
+    if (urlArray.length > 1) {
+      mapUrl = urlArray[0] + filter + mapUrl;
+    }
+  }
+  if (credentialValue && credentialKey) {
+    mapUrl += '?' + credentialKey + '=' + credentialValue;
+  }
+  return mapUrl;
+}
+
+ /**
+     * 检测数据是否为number
+     * @param value 值，未知数据类型
+     * @returns {boolean}
+     */
+ function isNumber(value) {
+  if (value === "") {
+      return false;
+  }
+  let mdata = Number(value);
+  if (mdata === 0) {
+      return true;
+  }
+  return !isNaN(mdata);
+}
+
+function mergeFeatures({ sourceId, features, mergeByField, map }) {
+  if (!(features instanceof Array)) {
+    return features;
+  }
+  features = features.map((feature, index) => {
+    if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
+      feature.properties.index = index;
+    }
+    return feature;
+  });
+  if (!features.length || !mergeByField && features[0].geometry) {
+    return features;
+  }
+  const source = map.getSource(sourceId);
+  if ((!source || !source._data.features) && features[0].geometry) {
+    return features;
+  }
+  const prevFeatures = source && source._data && source._data.features;
+  const nextFeatures = [];
+  if (!mergeByField && prevFeatures) {
+    return prevFeatures;
+  }
+  features.forEach((feature) => {
+    const prevFeature = prevFeatures.find((item) => {
+      if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
+        return (
+          JSON.stringify(item.properties[mergeByField] || '') ===
+          JSON.stringify(feature.properties[mergeByField] || '')
+        );
+      } else {
+        return +item.properties[mergeByField] === +feature.properties[mergeByField];
+      }
+    });
+    if (prevFeature) {
+      nextFeatures.push({
+        ...prevFeature,
+        ...feature
+      });
+    } else if (feature.geometry) {
+      nextFeatures.push(feature);
+    }
+  });
+  return nextFeatures;
+}
+
+function getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
+  const results = [];
+  for (let i = 0; i < catalogs.length; i++) {
+    const catalogType = catalogs[i][catalogTypeField];
+    if (catalogType !== 'group') {
+      results.push(catalogs[i]);
+      continue;
+    }
+    const { children } = catalogs[i];
+    if (children && children.length > 0) {
+      const result = getLayerInfosFromCatalogs(children, catalogTypeField);
+      results.push(...result);
+    }
+  }
+  return results;
+}
+
+function isSameRasterUrl(urlA, urlB) {
+  if (urlA === urlB) {
+    return true;
+  }
+  const uriA = new URL(urlA);
+  const uriB = new URL(urlB);
+  if (uriA.origin !== uriB.origin) {
+    return false;
+  }
+  const regex = /\/([^/?#]+\.\w+)$/;
+  const pathA = uriA.pathname.replace(regex, '');
+  const pathB = uriB.pathname.replace(regex, '');
+
+  // 3. 判断子路径关系
+  return pathA === pathB || pathA.startsWith(pathB + (pathB.endsWith('/') ? '' : '/'));
+}
+
+function isSameRasterLayer(sourceInfo, compareSource) {
+  const { type, tiles } = sourceInfo;
+  if (type === 'raster') {
+    return type === compareSource.type && tiles && compareSource.tiles && isSameRasterUrl(tiles[0], compareSource.tiles[0]);
+  }
+  return false;
+}
+
+function createAppreciableLayerId(layer) {
+  // 针对传入 layers
+  if (layer.layerInfo && layer.layerInfo.id) {
+    return layer.layerInfo.id;
+  }
+  // 往空地图上追加图层 且 只有一个webmap this.layers是空
+  if (layer.metadata && layer.metadata.SM_Layer_Id) {
+    return layer.metadata.SM_Layer_Id;
+  }
+  // 针对 MapboxStyle 或者其它额外的 layer
+  // type: background 和某些 overlaymanager layers 只有 id
+  return layer.sourceLayer || layer.source || layer.id;
+}
+
+function getLayerCatalogRenderLayers(parts, catalogId, layersOnMap) {
+  // ms 3.0.5以下的版本 layerCatalogs layersContent/parts 不包括自身的上图layerid 只包含复合图层的id
+  const renderLayers = layersOnMap.some(item => item.id === catalogId) ? [catalogId] : [];
+  if (parts) {
+    renderLayers.push(...parts);
+  }
+  return Array.from(new Set(renderLayers)).filter(item => !!item);
+}
+
+function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
+  const renderLayers = getLayerCatalogRenderLayers(layerParts, catalogId, layersOnMap);
+  return layersOnMap.find(item => item.id === renderLayers[0]);
+}
+
+// 按数字组件比较地图版本，避免 3.3.10 被误判为低于 3.3.7。
+function isMapVersionGreaterThan(mapVersion, referenceVersion) {
+  if (typeof mapVersion !== 'string' || typeof referenceVersion !== 'string') {
+    return false;
+  }
+  const mapVersionParts = mapVersion.split('.').map(Number);
+  const referenceVersionParts = referenceVersion.split('.').map(Number);
+  const partCount = Math.max(mapVersionParts.length, referenceVersionParts.length);
+  for (let index = 0; index < partCount; index++) {
+    const mapPart = mapVersionParts[index] || 0;
+    const referencePart = referenceVersionParts[index] || 0;
+    if (mapPart !== referencePart) {
+      return mapPart > referencePart;
+    }
+  }
+  return false;
+}
+
+// 垂直翻转 RGBA 图片，保持像素顺序并避免逐通道复制。
+function flipImageVertically(imageData, width, height) {
+  const sourceData = imageData.data || imageData;
+  const flipped = new Uint8Array(sourceData.length);
+  const rowSize = width * 4;
+
+  for (let row = 0; row < height; row++) {
+    const sourceRowStart = row * rowSize;
+    const targetRowStart = (height - row - 1) * rowSize;
+    flipped.set(sourceData.subarray(sourceRowStart, sourceRowStart + rowSize), targetRowStart);
+  }
+
+  return flipped;
+}
+
+;// ./src/common/mapping/utils/SourceModel.js
+class SourceModel {
+  constructor(options) {
+    this.dataSource = options.dataSource;
+    this.id = options.id;
+    this.title = options.title;
+    this.renderSource = options.renderSource;
+    this.renderLayers = [];
+    this.type = options.type;
+    this.themeSetting = options.themeSetting;
+    this.visible = options.visible;
+  }
+
+  addLayer(layer) {
+    if (layer.renderSource.sourceLayer) {
+      if (!this.children) {
+        this.children = [];
+        this.type = 'group';
+        this.renderSource = {};
+        this.dataSource = {};
+        this.themeSetting = {};
+      }
+      if (layer.visible || this.visible) {
+        this.visible = true;
+      } else {
+        this.visible = false;
+      }
+      this.children.push(layer);
+      return;
+    }
+    this.renderLayers.push(...layer.renderLayers);
+    if (layer.reused) {
+      this.reused = layer.reused;
+    }
+    if (layer.layerOrder) {
+      this.layerOrder = layer.layerOrder;
+    }
+  }
+}
+
+/* harmony default export */ const utils_SourceModel = (SourceModel);
+
+;// ./src/common/mapping/utils/AppreciableLayerBase.js
+
+
+
+
+
+class AppreciableLayerBase extends Events {
+  constructor(options = {}) {
+    super();
+    this.map = options.map;
+    this.appendLayers = options.appendLayers || false;
+    this.unexpectedSourceNames = [
+      'tdt-search-',
+      'tdt-route-',
+      'smmeasure',
+      'mapbox-gl-draw',
+      'maplibre-gl-draw',
+      /tracklayer-\d+-line/,
+      /graticuleLayer_\d+_line/
+    ];
+    this.uniqueId = +new Date();
+    this.layersVisibleMap = new Map();
+    this.eventTypes = ['layerupdatechanged'];
+    this._styleDataUpdatedHandler = this._styleDataUpdatedHandler.bind(this);
+    this.baseLayerInfoOnMap = null;
+    this.setLayers(options.layers);
+    this._initBaseLayerInfo(options.layers);
+  }
+
+  setLayers(layers = []) {
+    this.layers = layers;
+  }
+
+  setDefaultBaseLayerInfo(baseLayerInfo) {
+    this.baseLayerInfoOnMap = baseLayerInfo;
+  }
+
+  setBaseLayer() {
+    throw new Error('setBaseLayer is not implemented');
+  }
+
+  createLayerCatalogs() {
+    throw new Error('createLayerCatalogs is not implemented');
+  }
+
+  getSelfLayerIds() {
+    throw new Error('getSelfLayerIds is not implemented');
+  }
+
+  initLayers() {
+    throw new Error('initLayers is not implemented');
+  }
+
+  changeBaseLayer(layer) {
+    if (this.map) {
+      this._removeBaseLayer();
+      this._addBaseLayer(layer);
+      return lodash_clonedeep_default()(this.baseLayerInfoOnMap);
+    }
+  }
+
+  createAppreciableLayers() {
+    const detailLayers = this.initLayers();
+    return this._initAppreciableLayers(detailLayers);
+  }
+
+  getLayerCatalog() {
+    const layerCatalog = this.createLayerCatalogs();
+    this._updateLayerCatalogsVisible(layerCatalog);
+    return this._updateImmutableOrderLayers(layerCatalog);
+  }
+
+  getLayers(removeExtral = true) {
+    const layers = this.createAppreciableLayers();
+    removeExtral && this.removeLayerExtralFields(layers);
+    return this._updateImmutableOrderLayers(layers, true);
+  }
+
+  getSelfLayers(appreciableLayers = this.getLayers()) {
+    const selfLayerIds = this.getSelfLayerIds();
+    return appreciableLayers.filter((item) =>
+      item.renderLayers.some((id) => selfLayerIds.some((renderId) => renderId === id))
+    );
+  }
+
+  toggleLayerVisible(layer, visible) {
+    const visibility = visible ? 'visible' : 'none';
+    if (layer.type === 'group') {
+      const visbleId = this._getLayerVisibleId(layer);
+      this.layersVisibleMap.set(visbleId, visible);
+      const targetLayers = getLayerInfosFromCatalogs(layer.children);
+      if (!targetLayers.length) {
+        this.map.style.fire('data', { dataType: 'style' });
+      } else {
+        this.setLayersVisible(targetLayers, visibility);
+      }
+    } else {
+      this.setLayersVisible([layer], visibility);
+    }
+  }
+
+  setLayersVisible(layers, visibility, isSetVisible = true) {
+    layers.forEach((layer) => {
+      const visbleId = this._getLayerVisibleId(layer);
+      if (isSetVisible) {
+        this.layersVisibleMap.set(visbleId, visibility === 'visible');
+      }
+      if (layer.CLASS_INSTANCE && layer.CLASS_INSTANCE.show && layer.CLASS_INSTANCE.hide) {
+        visibility === 'visible' ? layer.CLASS_INSTANCE.show() : layer.CLASS_INSTANCE.hide();
+        this.map.style.fire('data', { dataType: 'style' });
+        return;
+      }
+      layer.renderLayers.forEach((layerId) => {
+        if (layer.CLASS_NAME !== 'L7Layer' || this.map.getLayer(layerId)) {
+          this.map.setLayoutProperty(layerId, 'visibility', visibility);
+        }
+      });
+    });
+  }
+
+  concatExpectLayers(selfLayers, selfLayerIds, layersOnMap) {
+    const extraLayers = layersOnMap.filter((layer) => !selfLayerIds.some((id) => id === layer.id));
+    return this._filterExpectedLayers(selfLayers.concat(extraLayers));
+  }
+
+  destroy() {
+    this.map.off('styledata', this._styleDataUpdatedHandler);
+  }
+
+  initDatas() {
+    if (!this.map) {
+      return;
+    }
+    this._styleDataUpdatedHandler();
+    this._registerMapEvent();
+  }
+
+  removeLayerExtralFields(layers) {
+    layers.forEach((layer) => {
+      delete layer.metadata;
+    });
+  }
+
+  _initAppreciableLayers(detailLayers) {
+    // dv 没有关联一个可感知图层对应对个渲染图层的关系，默认相同source的layer就是渲染图层
+    return detailLayers.reduce((layers, layer) => {
+      const layerId = createAppreciableLayerId(layer);
+      let matchLayer = layers.find((item) => {
+        return item.id === layerId;
+      });
+      if (!matchLayer) {
+        matchLayer = this._createCommonFields(layer, layerId);
+        layers.push(matchLayer);
+      }
+      const nextRenderLayers = matchLayer.renderLayers.concat(
+        layer.layerInfo ? layer.layerInfo.renderLayers : layer.id
+      );
+      matchLayer.renderLayers = Array.from(new Set(nextRenderLayers));
+      return layers;
+    }, []);
+  }
+
+  _initSourceList(detailLayers) {
+    const datas = detailLayers
+      .slice()
+      .reverse()
+      .reduce((sourceList, layer) => {
+        const id = layer.renderSource.sourceLayer ? `${layer.renderSource.id}_${this.uniqueId}` : layer.id;
+        const title = layer.metadata.SM_Layer_Title || (layer.renderSource.sourceLayer ? layer.renderSource.id : layer.title);
+        let matchItem = sourceList.find((item) => {
+          return item.id === id;
+        });
+        if (!matchItem) {
+          const sourceListItem = new utils_SourceModel({ ...layer, id, title });
+          sourceList.push(sourceListItem);
+          matchItem = sourceListItem;
+        }
+        matchItem.addLayer(layer);
+        return sourceList;
+      }, []);
+    return datas;
+  }
+
+  _filterExpectedLayers(layers) {
+    return layers.filter((layer) => this._excludeLayer(layer));
+  }
+
+  _excludeSource(key) {
+    for (let i = 0; i < this.unexpectedSourceNames.length; i++) {
+      if (key && key.match(this.unexpectedSourceNames[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  _excludeLayer(layer) {
+    return !layer.id.includes('-SM-') && this._excludeSource(layer.source);
+  }
+
+  _pickLayerFields(layer) {
+    let visibility = layer.visibility;
+    let sourceLayer = layer.sourceLayer;
+    if (!visibility && layer.layout && 'visibility' in layer.layout) {
+      visibility = layer.layout.visibility;
+    }
+    if (!sourceLayer && layer['source-layer']) {
+      sourceLayer = layer['source-layer'];
+    }
+    return {
+      id: layer.id,
+      type: layer.type,
+      visibility,
+      source: layer.source,
+      sourceLayer: sourceLayer,
+      metadata: layer.metadata,
+      layerInfo: layer.layerInfo
+    };
+  }
+
+  _getAllLayersOnMap() {
+    const layersOnMap = this.map.getStyle().layers.map((layer) => {
+      const mapLayer = this.map.getLayer(layer.id);
+      return this._pickLayerFields(mapLayer);
+    });
+    for (const layerId in this.map.overlayLayersManager) {
+      const overlayLayer = this.map.overlayLayersManager[layerId];
+      if (overlayLayer.id && !layersOnMap.some((item) => item.id === overlayLayer.id)) {
+        const visibility =
+          overlayLayer.visibility === 'visible' ||
+          overlayLayer.visibility ||
+          overlayLayer.visible ||
+          (!('visible' in overlayLayer) && !('visibility' in overlayLayer))
+            ? 'visible'
+            : 'none';
+        let source = overlayLayer.source || overlayLayer.sourceId;
+        if (typeof source === 'object') {
+          source = overlayLayer.id;
+        }
+        layersOnMap.push(
+          this._pickLayerFields({
+            id: overlayLayer.id,
+            type: overlayLayer.type,
+            visibility,
+            source,
+            metadata: overlayLayer.metadata
+          })
+        );
+      }
+    }
+    return layersOnMap;
+  }
+
+  _createCommonFields(layer, layerId) {
+    const layerInfo = layer.layerInfo || {};
+    // type: background overlaymanager layers 只有 id
+    const {
+      dataSource = {},
+      themeSetting = {},
+      name = layerId,
+      title = name,
+      visible = layer.visibility ? layer.visibility === 'visible' : true,
+      CLASS_NAME,
+      CLASS_INSTANCE,
+      reused,
+      metadata = layer.metadata || {},
+      filter
+    } = layerInfo;
+    const sourceOnMap = this.map.getSource(layer.source);
+    const fields = {
+      id: layerId,
+      title,
+      type: layer.type,
+      visible: this._getLayerVisible({ id: layerId, type: layer.type, visible }),
+      renderSource: sourceOnMap
+        ? {
+            id: layer.source,
+            type: sourceOnMap.type
+          }
+        : {},
+      renderLayers: [],
+      dataSource,
+      themeSetting,
+      metadata,
+      // top bottom auto
+      layerOrder: metadata.SM_Layer_Order || 'auto',
+      filter
+    };
+    if (layer.sourceLayer) {
+      fields.renderSource.sourceLayer = layer.sourceLayer;
+    }
+    if (CLASS_NAME) {
+      fields.CLASS_NAME = CLASS_NAME;
+    }
+    if (CLASS_INSTANCE) {
+      fields.CLASS_INSTANCE = CLASS_INSTANCE;
+    }
+    if (reused) {
+      fields.reused = reused;
+    }
+    return fields;
+  }
+
+  _findLayerCatalog(layerCatalogs, targetId) {
+    for (const layer of layerCatalogs) {
+      if (layer.id === targetId) {
+        return layer;
+      }
+      if (layer.children && layer.children.length > 0) {
+        const found = this._findLayerCatalog(layer.children, targetId);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  _getLayerVisibleId(layer) {
+    return `${layer.type}-${layer.id}`;
+  }
+
+  _getLayerVisible(layer) {
+    const id = this._getLayerVisibleId(layer);
+    return this.layersVisibleMap.has(id) ? this.layersVisibleMap.get(id) : layer.visible;
+  }
+
+  _updateLayerCatalogsVisible(catalogs) {
+    for (const data of catalogs) {
+      data.visible = this._getLayerVisible(data);
+      if (data.type === 'group') {
+        this._updateLayerCatalogsVisible(data.children);
+      }
+    }
+  }
+
+  _registerMapEvent() {
+    this.map.on('styledata', this._styleDataUpdatedHandler);
+  }
+
+  _styleDataUpdatedHandler() {
+    const layers = this.getLayers();
+    this.triggerEvent('layerupdatechanged', {
+      layers,
+      relevantLayers: this.getSelfLayers(layers),
+      layerCatalog: this.getLayerCatalog()
+    });
+  }
+
+  _updateImmutableOrderLayers(layers, revert) {
+    let topLayers = layers.filter(item => item.layerOrder && item.layerOrder.toLowerCase() === 'top');
+    const migrationLayers = topLayers.filter(item => item.type === 'MIGRATION');
+    const leftTopLayers = topLayers.filter(item => item.type !== 'MIGRATION');
+    topLayers = migrationLayers.concat(leftTopLayers);
+    const bottomLayers = layers.filter(item => item.layerOrder && item.layerOrder.toLowerCase() === 'bottom');
+    const autoLayers = layers.filter(item => !item.layerOrder || item.layerOrder.toLowerCase() === 'auto');
+    if (revert) {
+      return bottomLayers.concat(autoLayers, topLayers);
+    }
+    return topLayers.concat(autoLayers, bottomLayers);
+  }
+
+  _addBaseLayer(layerItem) {
+    const { layers, sources } = layerItem;
+    const renderSources = {};
+    Object.keys(sources).forEach(sourceId => {
+      let nextSourceId = sourceId;
+      if (this.map.getSource(sourceId)) {
+        renderSources[sourceId] = `${sourceId}_${+new Date()}`;
+        nextSourceId = renderSources[sourceId];
+      }
+      this.map.addSource(nextSourceId, sources[sourceId]);
+    });
+    const layersToAdd = [];
+    layers.forEach(layer => {
+      let { beforeId } = layer;
+      if (!beforeId) {
+        const styles = this.map.getStyle();
+        beforeId = styles.layers[0] && styles.layers[0].id;
+      }
+      const layerToAdd = Object.assign({}, layer);
+      delete layerToAdd.beforeId;
+      const sourceId = layerToAdd.source;
+      if (renderSources[sourceId]) {
+        layerToAdd.source = renderSources[sourceId];
+      }
+      if (this.map.getLayer(layerToAdd.id)) {
+        const nextLayerId = `${layerToAdd.id}_${layerToAdd.source || +new Date()}`;
+        layerToAdd.id = nextLayerId;
+      }
+      layersToAdd.push({
+        layer: layerToAdd,
+        beforeId
+      });
+    });
+    this.baseLayerInfoOnMap = {
+      ...layerItem,
+      layers: layersToAdd.map(item => Object.assign({}, item.layer)),
+      sources: Object.keys(layerItem.sources).reduce((sources, sourceId) => {
+        let source = sourceId;
+        if (renderSources[source]) {
+          source = renderSources[source];
+        }
+        sources[source] = renderSources[sourceId];
+        return sources;
+      }, {})
+    };
+    this.setBaseLayer({ ...this.baseLayerInfoOnMap });
+    layersToAdd.forEach(({ layer, beforeId }) => {
+      this.map.addLayer(layer, beforeId);
+    })
+  }
+  
+  _removeBaseLayer() {
+    if (this.baseLayerInfoOnMap) {
+      const { layers, sources } = this.baseLayerInfoOnMap;
+      const layersIds = layers.map(item => item.id);
+      const sourceIds = Object.keys(sources);
+      layersIds.forEach(layerId => {
+        if (this.map.getLayer(layerId)) {
+          this.map.removeLayer(layerId);
+        }
+      });
+      sourceIds.forEach(sourceId => {
+        if (this.map.getSource(sourceId)) {
+          this.map.removeSource(sourceId);
+        }
+      });
+    }
+  }
+
+  _initBaseLayerInfo(layers) {
+    if (layers && layers.length && !this.baseLayerInfoOnMap) {
+      const firstLayer = this.layers[0];
+      const baseLayer = firstLayer;
+      const layerList = this.map.getStyle().layers;
+      const baseLayersOnMap = baseLayer.renderLayers.map((layerId) => {
+        const nextLayer = layerList.find(item => item.id === layerId);
+        if (nextLayer) {
+          const layerIndex = layerList.findIndex(item => item.id === layerId);
+          const nextLayerIndex = layerIndex + 1;
+          if (layerList[nextLayerIndex]) {
+            nextLayer.beforeId = layerList[nextLayerIndex].id;
+          }
+          if (!nextLayer.metadata || !nextLayer.metadata.SM_Layer_Title) {
+            nextLayer.metadata = {
+              ...nextLayer.metadata,
+              SM_Layer_Title: baseLayer.title
+            };
+          }
+        }
+        return nextLayer;
+      }).filter(Boolean);
+      const sourcesMap = this.map.getStyle().sources;
+      this.setDefaultBaseLayerInfo({
+        id: `__default__${baseLayer.id}`,
+        title: baseLayer.title,
+        layers: baseLayersOnMap,
+        sources: baseLayersOnMap.reduce((sources, layer) => {
+          const sourceId = layer.source;
+          if (sourceId && !sources[sourceId]) {
+            sources[sourceId] = sourcesMap[sourceId];
+          }
+          return sources;
+        }, {})
+      });
+    }
+  }
+}
+
+;// ./src/common/mapping/utils/SourceListModelV3.js
+
+
+
+class SourceListModelV3 extends AppreciableLayerBase {
+  constructor(options = {}) {
+    super(options);
+    this._mapInfo = options.mapInfo;
+    this._mapResourceInfo = options.mapResourceInfo;
+    this._l7LayerUtil = options.l7LayerUtil;
+    this._legendList = options.legendList;
+    // chart 统计图表 point-extrusion 柱状图
+    this._immutableTopOrderLayers = ['chart', 'point-extrusion'];
+    const layerCatalogs = options.mapInfo.metadata.layerCatalog;
+    this.setLayerCatalog(layerCatalogs);
+    const layers = this._generateLayers();
+    this.setLayers(layers);
+    this.setDefaultBaseLayerInfo(this._generateBaseLayerInfo(layerCatalogs, layers));
+    this.initDatas();
+  }
+
+  setLayerCatalog(catalogs) {
+    this._layerCatalog = catalogs;
+  }
+
+  createLayerCatalogs() {
+    const appreciableLayers = this.getLayers(false);
+    const sourceList = this._createSourceCatalogs(this._layerCatalog, appreciableLayers);
+    const selfLayers = this.getSelfLayers();
+    const extraLayers = appreciableLayers.filter((item) => !selfLayers.some((sub) => sub.id === item.id));
+    const extraSourceList = this._initSourceList(extraLayers);
+    return extraSourceList.concat(sourceList);
+  }
+
+  getSelfLayerIds() {
+    return this.layers.reduce((ids, item) => ids.concat(item.layerInfo.renderLayers), []);
+  }
+
+  initLayers() {
+    const layersOnMap = this._getAllLayersOnMap();
+    let nextLayers = layersOnMap;
+    if (this.appendLayers) {
+      nextLayers = [];
+    }
+    const selfLayers = this.layers.map((item) => {
+      const layer = Object.assign({}, item);
+      if (item['source-layer']) {
+        layer.sourceLayer = item['source-layer'];
+      }
+      return this._pickLayerFields(layer);
+    });
+    const selfLayerIds = this.layers.reduce((ids, item) => ids.concat(item.layerInfo.renderLayers), []);
+    return this.concatExpectLayers(selfLayers, selfLayerIds, nextLayers);
+  }
+
+  setBaseLayer(layerItem) {
+    const nextLayers = this.layers.slice();
+    const nextLayerCatalog = this._layerCatalog.slice();
+    const originBaseLayerCatalog = nextLayerCatalog.pop();
+    this._removeBaseLayerRenderLayers(originBaseLayerCatalog, nextLayers);
+    const baseLayers = layerItem.layers.map((layer) => {
+      const title = layer.metadata && layer.metadata.title;
+      return {
+        ...layer,
+        layerInfo: {
+          id: layer.id,
+          title: title || layer.id,
+          renderLayers: [layer.id]
+        }
+      };
+    });
+    nextLayers.unshift(...baseLayers);
+    const firstLayer = layerItem.layers[0] || {};
+    const defaultId = firstLayer.id || '';
+    const baseLayerCatalog = {
+      id: defaultId,
+      title: layerItem.title || defaultId,
+      type: 'basic',
+      visible: true
+    };
+    if (layerItem.layers.length > 1) {
+      baseLayerCatalog.id = layerItem.id || defaultId;
+      baseLayerCatalog.type = 'group';
+      baseLayerCatalog.children = layerItem.layers.map((layer) => {
+        const title = layer.metadata && layer.metadata.title;
+        return {
+          id: layer.id,
+          title: title || layer.id,
+          type: 'basic',
+          visible: true
+        };
+      });
+    }
+    nextLayerCatalog.push(baseLayerCatalog);
+    this.setLayerCatalog(nextLayerCatalog);
+    this.setLayers(nextLayers);
+  }
+
+  _createSourceCatalogs(catalogs, appreciableLayers) {
+    const formatCatalogs = catalogs.map((catalog) => {
+      let formatItem;
+      const { id, title = id, type, visible, children, parts } = catalog;
+      if (type === 'group') {
+        formatItem = {
+          children: this._createSourceCatalogs(children, appreciableLayers),
+          id,
+          title,
+          type,
+          visible
+        };
+      } else {
+        const renderLayers = getLayerCatalogRenderLayers(parts, id, this.layers);
+        const matchLayer = appreciableLayers.find((layer) => layer.id === renderLayers[0]);
+        this.removeLayerExtralFields([matchLayer]);
+        formatItem = Object.assign({}, matchLayer);
+      }
+      return formatItem;
+    });
+    return formatCatalogs;
+  }
+
+  _generateLayers() {
+    const { catalogs = [], datas = [] } = this._mapResourceInfo;
+    const projectCataglogs = getLayerInfosFromCatalogs(catalogs, 'catalogType');
+    const metadataCatalogs = getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
+    const l7MarkerLayers = this._l7LayerUtil.getL7MarkerLayers();
+    const layerDatas = metadataCatalogs.map((layerCatalog) => {
+      const renderLayers = getLayerCatalogRenderLayers(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
+      const layer = getMainLayerFromCatalog(layerCatalog.parts, layerCatalog.id, this._mapInfo.layers);
+      const layerInfo = {
+        id: layer.id,
+        title: layerCatalog.title,
+        renderLayers,
+        reused: layer.metadata && layer.metadata.reused
+      };
+      const matchProjectCatalog = projectCataglogs.find((item) => item.id === layerCatalog.id) || {};
+      const { msDatasetId, relationMsDatasetId, filter, serviceLayerId } = matchProjectCatalog;
+      filter && (layerInfo.filter = filter);
+      let dataSource = {};
+      if (msDatasetId) {
+        for (const data of datas) {
+          const matchData = data.datasets && data.datasets.find((dataset) => dataset.msDatasetId === msDatasetId);
+          if (matchData) {
+            dataSource = {
+              serverId: matchData.datasetId,
+              type: data.sourceType
+            };
+            if (data.sourceType === 'REST_DATA') {
+              const [serverUrl, datasourceName] = data.url.split('/rest/data/datasources/');
+              dataSource.url = `${serverUrl}/rest/data`;
+              dataSource.dataSourceName = `${datasourceName}:${matchData.datasetName}`;
+              delete dataSource.serverId;
+            }
+            break;
+          }
+        }
+      }
+      if (relationMsDatasetId) {
+        const currentData = datas.find(data => data.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId));
+        const sourceType = currentData && currentData.sourceType;
+        if (sourceType === 'WFS') {
+          const withCredential = currentData.withCredential;
+          let url = currentData.url;
+          if (withCredential && withCredential.key && withCredential.value) {
+            const separator = url.includes('?') ? '&' : '?';
+            url = `${url}${separator}${withCredential.key}=${withCredential.value}`
+          }
+          const dataset = currentData.datasets.find(dataset => dataset.msDatasetId === relationMsDatasetId);
+          Object.assign(dataSource, {
+            type: 'WFS',
+            datasetName: dataset.datasetName,
+            url
+          });
+        }
+      }
+      const sourceOnMap = this.map.getSource(layer.source);
+      if (!Object.keys(dataSource).length && sourceOnMap && sourceOnMap.type === 'vector') {
+        const matchSource = this._mapInfo.sources[layer.source] || sourceOnMap;
+        if (matchSource.tiles && matchSource.tiles.length > 0) {
+          const tileUrl = matchSource.tiles[0];
+          switch (true) {
+            case tileUrl.includes('/rest/maps/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
+              const [mapName] = leftParts.split('/tileFeature');
+              dataSource.url = `${serverUrl}/rest/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'REST_MAP';
+              dataSource.layerName = serviceLayerId;
+              break;
+            }
+            case tileUrl.includes('/restjsr/v1/'): {
+              const [serverUrl, leftParts] = tileUrl.split('/restjsr/v1/');
+              const [mapName] = leftParts.split('/tiles/');
+              dataSource.url = `${serverUrl}/restjsr/v1/vectortile/maps`;
+              dataSource.mapName = mapName;
+              dataSource.type = 'RESTJSR';
+              break;
+            }
+            default: {
+              dataSource.url = tileUrl;
+              dataSource.type = 'VECTOR_OTHER';
+            }
+          }
+        }
+      }
+      layerInfo.dataSource = Object.assign(dataSource, { serviceLayerId });
+      if (this._l7LayerUtil.isL7Layer(layer)) {
+        layerInfo.CLASS_NAME = 'L7Layer';
+      }
+      if (l7MarkerLayers[layer.id]) {
+        layerInfo.CLASS_INSTANCE = l7MarkerLayers[layer.id];
+      }
+      const matchThemeFields = this._legendList
+        .filter((item) => item.layerId === layer.id)
+        .map((item) => item.themeField)
+        .filter((item) => !!item);
+      const validThemeFields = Array.from(new Set(matchThemeFields));
+      if (validThemeFields.length > 0) {
+        layerInfo.themeSetting = { themeField: validThemeFields };
+      }
+      if (this._immutableTopOrderLayers.some((type) => type === layer.type)) {
+        layerInfo.metadata = Object.assign({}, layer.metadata, { SM_Layer_Order: 'top' });
+      }
+      return Object.assign({}, layer, { layerInfo });
+    });
+    layerDatas.reverse();
+    return layerDatas;
+  }
+
+  _generateBaseLayerInfo(layerCatalog, layers) {
+    const nextLayerCatalog = layerCatalog.slice();
+    const originBaseLayerCatalog = nextLayerCatalog.pop();
+    if (!originBaseLayerCatalog) {
+      return;
+    }
+    const renderLayers = this._getBaseLayerRenderLayers(originBaseLayerCatalog, layers);
+    const baseLayersOnMap = renderLayers.map((layer) => {
+      const nextLayer = { ...layer };
+      delete nextLayer.layerInfo;
+      const layerIndex = layers.findIndex((item) => item.id === layer.id);
+      const nextLayerIndex = layerIndex + 1;
+      if (layers[nextLayerIndex]) {
+        nextLayer.beforeId = layers[nextLayerIndex].id;
+      }
+      return nextLayer;
+    });
+    const sourcesMap = this.map.getStyle().sources;
+    return {
+      id: `__default__${originBaseLayerCatalog.id}`,
+      title: originBaseLayerCatalog.title,
+      layers: baseLayersOnMap,
+      sources: baseLayersOnMap.reduce((sources, layer) => {
+        const sourceId = layer.source;
+        if (sourceId && !sources[sourceId]) {
+          sources[sourceId] = sourcesMap[sourceId];
+        }
+        return sources;
+      }, {})
+    };
+  }
+
+  _getBaseLayerRenderLayers(layerCatalog, layersOnMap) {
+    const uniqueSet = new Set();
+    const collectIds = (node) => {
+      if (node.children) {
+        node.children.forEach((child) => collectIds(child));
+      }
+      const parts = node.parts || [node.id];
+      parts.forEach(part => uniqueSet.add(part));
+    };
+    collectIds(layerCatalog);
+
+    return layersOnMap.filter(layer => uniqueSet.has(layer.id));
+  }
+
+  _removeBaseLayerRenderLayers(layerCatalog, layersOnMap) {
+    const deleteSet = new Set();
+    const collectIds = (node) => {
+      if (node.children) {
+        node.children.forEach((child) => collectIds(child));
+      }
+      const parts = node.parts || [node.id];
+      parts.forEach(part => deleteSet.add(part));
+    };
+    collectIds(layerCatalog);
+
+    let writeIndex = 0;
+    for (let i = 0; i < layersOnMap.length; i++) {
+      if (!deleteSet.has(layersOnMap[i].id)) {
+        layersOnMap[writeIndex++] = layersOnMap[i];
+      }
+    }
+    layersOnMap.length = writeIndex;
+  }
+}
+
+;// ./src/common/mapping/WebMapV3.js
+/* unused harmony import specifier */ var WebMapV3_FetchRequest;
+/* unused harmony import specifier */ var WebMapV3_isMapVersionGreaterThan;
+/* unused harmony import specifier */ var WebMapV3_flipImageVertically;
+/* unused harmony import specifier */ var WebMapV3_mergeFeatures;
+/* unused harmony import specifier */ var WebMapV3_transformUrl;
+/* unused harmony import specifier */ var WebMapV3_isSameRasterLayer;
+/* unused harmony import specifier */ var WebMapV3_getLayerCatalogRenderLayers;
+/* unused harmony import specifier */ var WebMapV3_getLayerInfosFromCatalogs;
+/* unused harmony import specifier */ var WebMapV3_getMainLayerFromCatalog;
+/* unused harmony import specifier */ var WebMapV3_SourceListModelV3;
+/* unused harmony import specifier */ var cloneDeep;
+/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+const LEGEND_RENDER_TYPE = {
+  TEXT: 'TEXT',
+  POINT: 'POINT',
+  LINE: 'LINE',
+  FILL: 'FILL',
+  FILLEXTRUSION: 'FILLEXTRUSION',
+  ANIMATEPOINT: 'ANIMATEPOINT',
+  ANIMATELINE: 'ANIMATELINE',
+  RADARPOINT: 'RADARPOINT',
+  BUILTINSYMBOL: 'BUILTINSYMBOL'
+};
+
+const LEGEND_SHAPE_TYPE = (/* unused pure expression or super */ null && ({
+  TEXT: 'TEXT',
+  POINT: 'POINT',
+  LINE: 'LINE',
+  RECTANGLE: 'RECTANGLE',
+  ANIMATEPOINT: 'ANIMATEPOINT',
+  ANIMATELINE: 'ANIMATELINE',
+  RADARPOINT: 'RADARPOINT',
+  HEXAGON: 'HEXAGON',
+  TRIANGLE: 'TRIANGLE',
+  LINEGRADIENT: 'LINEGRADIENT'
+}));
+
+const LEGEND_CSS_STATE_KEY = (/* unused pure expression or super */ null && ({
+  fontSize: 'size',
+  backgroundColor: 'color'
+}));
+
+const LEGEND_CSS_DEFAULT = {
+  [LEGEND_RENDER_TYPE.TEXT]: {
+    textSize: '16px',
+    textColor: '#FFFFFF',
+    textOpacity: 1,
+    textHaloColor: '#242424',
+    textHaloBlur: 1,
+    textHaloWidth: 1,
+    textFont: 'Microsoft YaHei'
+  },
+  [LEGEND_RENDER_TYPE.POINT]: {
+    fontSize: '8px',
+    color: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: {
+    fontSize: '12px',
+    color: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.LINE]: {
+    width: 20,
+    height: 8,
+    backgroundColor: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.FILL]: {
+    width: '20px',
+    height: '20px',
+    opacity: 1,
+    backgroundColor: '#FFFFFF',
+    marginLeft: '1px',
+    outlineStyle: 'none',
+    outlineColor: '#FFFFFF',
+    outlineWidth: '0.5px',
+    outlineOpacity: 1
+  },
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: {
+    width: '20px',
+    height: '20px',
+    opacity: 1,
+    backgroundColor: '#FFFFFF'
+  },
+  [LEGEND_RENDER_TYPE.ANIMATEPOINT]: {
+    size: 30, // UI 上显示直径
+    color: '#EE4D5A',
+    opacity: 0.9,
+    speed: 1,
+    rings: 3
+  },
+  [LEGEND_RENDER_TYPE.ANIMATELINE]: {
+    width: 20,
+    height: 8,
+    backgroundColor: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.RADARPOINT]: {
+    size: 60, // UI 上显示直径
+    color: '#EE4D5A',
+    opacity: 0.9,
+    speed: 3
+  }
+};
+const LegendTextDataDrivenStyleKey = [
+  'textSize',
+  'textColor',
+  'textOpacity',
+  'textHaloColor'
+];
+
+const LEGEND_STYLE_KEYS = {
+  [LEGEND_RENDER_TYPE.TEXT]: [...LegendTextDataDrivenStyleKey, 'symbolsContent', 'textField', 'textFont', 'textHaloBlur', 'textHaloWidth'],
+  [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
+  [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias', 'outline', 'outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.ANIMATEPOINT]: ['color', 'opacity', 'size', 'speed', 'rings'],
+  [LEGEND_RENDER_TYPE.ANIMATELINE]: ['color', 'opacity', 'width', 'textureBlend', 'symbolsContent', 'iconStep'],
+  [LEGEND_RENDER_TYPE.RADARPOINT]: ['color', 'opacity', 'size', 'speed']
+};
+
+const LEGEND_SYMBOL_DEFAULT = {
+  [LEGEND_RENDER_TYPE.POINT]: 'circle',
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: 'circle',
+  [LEGEND_RENDER_TYPE.FILL]: 'polygon-0',
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: 'polygon-0'
+};
+
+const LegendType = (/* unused pure expression or super */ null && ({
+  LINEAR: 'LINEAR',
+  UNIQUE: 'UNIQUE',
+  RANGE: 'RANGE',
+  CUSTOM: 'CUSTOM'
+}));
+
+const SymbolType = (/* unused pure expression or super */ null && ({
+  line: 'line',
+  point: 'point',
+  polygon: 'polygon'
+}));
+
+const MAP_LAYER_TYPE_2_SYMBOL_TYPE = (/* unused pure expression or super */ null && ({
+  circle: 'point',
+  line: 'line',
+  symbol: 'point',
+  fill: 'polygon',
+  'fill-extrusion': 'polygon',
+  heatmap: 'point',
+  // background: 'background',//无此符号类型
+  // L7
+  radar: 'point',
+  'point-extrusion': 'point',
+  'heatmap-extrusion': 'point',
+  'line-extrusion': 'line',
+  'line-curve': 'line',
+  'line-curve-extrusion': 'line'
+}));
+
+const LEGEND_LINE_WIDTH = 100;
+const LINE_WIDTH_KEY = 'line-width';
+
+const LEGEND_STYLE_TYPES = (/* unused pure expression or super */ null && ({
+  IMAGE: 'image',
+  STYLE: 'style'
+}));
+
+
+
+/**
+ * 按地图版本创建 Sprite 加载处理函数，供 WebMap 和外部 WebApp 共用。
+ * @param {string} mapVersion 地图版本号。
+ * @returns {Function|undefined} 旧版地图返回线符号处理函数，新版地图不需要额外处理。
+ */
+function createSpriteLoadHandler(mapVersion) {
+  // 3.3.7 及以前的地图线符号需要垂直翻转；新版本由地图数据自身保证方向。
+  if (WebMapV3_isMapVersionGreaterThan(mapVersion, '3.3.7')) {
+    return;
+  }
+  return (id, imageData, width, height) => {
+    // 翻转所有 line- 开头的图案
+    if (id && id.startsWith('line-')) {
+      return WebMapV3_flipImageVertically(imageData, width, height);
+    }
+
+    return null;
+  };
+}
+
+function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsManager, l7LayerUtil, webMapService }) {
+  return class WebMapV3 extends SuperClass {
+    constructor(mapId, options, mapOptions = {}) {
+    super();
+    this.mapId = mapId;
+    this.options = options;
+    this.mapOptions = mapOptions;
+    this._mapResourceInfo = {};
+    this._relatedInfo = options.relatedInfo || {};
+    this._sprite = '';
+    this._spriteDatas = {};
+    this._appendLayers = false;
+    this._baseProjection = '';
+  }
+
+  initializeMap(mapInfo, map) {
+    this._mapInfo = mapInfo;
+    this._baseProjection = this._registerMapCRS(mapInfo);
+    if (map) {
+      this.map = map;
+      if (!crsManager.isSameProjection(this.map, this._baseProjection)) {
+        this.fire('projectionnotmatch');
+        return;
+      }
+      this._appendLayers = true;
+       // 处理图层管理添加 sprite
+       const sprite = this._mapInfo.sprite;
+       if (sprite) {
+         this._sprite = sprite;
+         this.map.addStyle({
+          sprite
+         });
+       }
+      if (this.map.addLocalIdeographFontFamily) {
+        const fontFamilys = this._getLabelFontFamily(mapInfo);
+        this.map.addLocalIdeographFontFamily(fontFamilys);
+      }
+      this._initLayers();
+      return;
+    }
+    this._createMap();
+  }
+
+  cleanLayers(layers) {
+    super.cleanLayers(layers);
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
+    for (const layerId in l7MarkerLayers) {
+      l7LayerUtil.removeL7MarkerLayer(layerId, this.map.$l7scene);
+    }
+  }
+
+  clean(removeMap = true) {
+    if (this.map) {
+      if (this._sourceListModel) {
+        this._sourceListModel.destroy();
+        this._sourceListModel = null;
+      }
+      if (removeMap) {
+        const scene = this.map.$l7scene;
+        scene && scene.removeAllLayer();
+        this.map.remove();
+      }
+      this.map = null;
+      this._legendList = [];
+      this._mapResourceInfo = {};
+      this._sprite = '';
+      this._spriteDatas = {};
+      this.mapOptions = {};
+      this.options = {};
+    }
+  }
+
+  async copyLayer(id, layerInfo = {}) {
+    const matchLayer = this._mapInfo.layers.find(layer => layer.id === id);
+    if (!matchLayer || this._getLayerOnMap(layerInfo.id)) {
+      return;
+    }
+    const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
+    const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
+    if (l7LayerUtil.isL7Layer(copyLayer)) {
+      const layers = [copyLayer];
+      const params = this._getAddL7LayersParams(layers, this._mapInfo.sources, layers);
+      await l7LayerUtil.addL7Layers(params);
+    } else {
+      if (typeof copyLayer.source === 'object') {
+        this.map.addSource(copyLayer.id, copyLayer.source);
+        copyLayer.source = copyLayer.id;
+      }
+      this.map.addLayer(copyLayer);
+    }
+    return copyLayer;
+  }
+
+  updateOverlayLayer(layerInfo, features, mergeByField) {
+    if (layerInfo.renderSource.type === 'geojson') {
+      const sourceId = layerInfo.renderSource.id;
+      features = WebMapV3_mergeFeatures({ sourceId, features, mergeByField, map: this.map });
+      const featureCollection = {
+        type: 'FeatureCollection',
+        features
+      };
+      this.map.getSource(sourceId).setData(featureCollection);
+    }
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._createMap
+   * @description 创建地图。
+   */
+  _createMap() {
+    let {
+      name = '',
+      center = new mapRepo.LngLat(0, 0),
+      zoom = 0,
+      bearing = 0,
+      pitch = 0,
+      minzoom,
+      maxzoom,
+      sprite = ''
+    } = this._mapInfo;
+    center = this.mapOptions.center || center;
+    zoom = this.mapOptions.zoom || zoom;
+    bearing = this.mapOptions.bearing || bearing;
+    pitch = this.mapOptions.pitch || pitch;
+    const fontFamilys = this._getLabelFontFamily();
+    // 初始化 map
+    const mapOptions = {
+      ...this.mapOptions,
+      // 统一线图案方向，避免 Mapbox GL 默认方向与 WebMap 符号方向约定不一致；旧版资源翻转由 _getSpriteLoad 按地图版本处理。
+      linePatternOrientation: 'west-to-east',
+      onSpriteLoad: this._getSpriteLoad(),
+      transformRequest: this._getTransformRequest(),
+      container: this.options.target,
+      crs: this._baseProjection,
+      center,
+      zoom,
+      style: {
+        sprite,
+        name,
+        version: 8,
+        sources: {},
+        layers: []
+      },
+      minZoom: minzoom,
+      maxZoom: maxzoom,
+      bearing,
+      pitch,
+      localIdeographFontFamily: fontFamilys || ''
+    };
+    this.map = new MapManager(mapOptions);
+    this._sprite = sprite;
+    this.fire('mapinitialized', { map: this.map });
+    this.map.on('load', () => {
+      this._initLayers();
+    });
+  }
+
+  _getSpriteLoad() {
+    return createSpriteLoadHandler(this._mapInfo && this._mapInfo.version);
+  }
+
+  _getTransformRequest() {
+    if (this.mapOptions.transformRequest) {
+      return this.mapOptions.transformRequest;
+    }
+    return (url, resourceType) => {
+      const withCredentials = this.options.iportalServiceProxyUrlPrefix && url.indexOf(this.options.iportalServiceProxyUrlPrefix) >= 0 ? 'include' : undefined;
+      if (resourceType === 'Tile' || resourceType === 'Image') {
+        return {
+          url: url,
+          credentials: withCredentials,
+          ...(this.options.tileTransformRequest && this.options.tileTransformRequest(url))
+        };
+      }
+      return { url, credentials: withCredentials};
+    }
+  }
+
+  _registerMapCRS(mapInfo) {
+    const { crs } = mapInfo;
+    let epsgCode = crs;
+    if (typeof crs === 'object') {
+      crsManager.registerCRS(crs);
+      epsgCode = crs.name;
+    }
+    return epsgCode;
+  }
+  _getFieldCaption(msDatasetId) {
+    const { datas = [] } = this._mapResourceInfo;
+    let fieldCaptions = null;
+    datas.forEach(data => {
+      if (data.datasets) {
+        const index = data.datasets.findIndex(dataset => dataset.msDatasetId === msDatasetId);
+        if (index !== -1) {
+          fieldCaptions = data.datasets[index].fieldsCaptions;
+        }
+      }
+    });
+    return fieldCaptions;
+  }
+  _getPopupInfoContent(data, msDatasetId) {
+    const popupInfo = cloneDeep(data);
+    const fieldCaptions = this._getFieldCaption(msDatasetId);
+    if (fieldCaptions) {
+      popupInfo.elements = popupInfo.elements ? popupInfo.elements.map(item => {
+        if (item.type === 'FIELD') {
+          item.fieldCaption = fieldCaptions[item.fieldName] || item.fieldName;
+        }
+        return item;
+      }) : [];
+    }
+    return popupInfo;
+  }
+  _getPopupInfoByCatalog(catalog, res = []) {
+    const { catalogType, children } = catalog;
+    if(catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getPopupInfoByCatalog(child, res);
+      })
+    }
+    if (catalogType === 'layer') {
+      const { popupInfo, msDatasetId, title, layersContent } = catalog;
+      if (popupInfo) {
+        const popupInfoVal = this._getPopupInfoContent(popupInfo, msDatasetId);
+        if (popupInfoVal) {
+          res.push({...popupInfoVal, layerId: layersContent, title});
+        }
+      }
+    }
+  }
+  _getPopupInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getPopupInfoByCatalog(item, res);
+    })
+    return res;
+  }
+
+  _getLegendInfoByCatalog(catalog, res = []) {
+    const { catalogType, children, showLegend, title, id } = catalog;
+    if (catalogType === 'group' && children) {
+      children.forEach(child => {
+        this._getLegendInfoByCatalog(child, res);
+      });
+    }
+    if (catalogType === 'layer') {
+      res.push({
+        showLegend: showLegend === true,
+        id: id,
+        title: title
+      });
+    }
+  }
+
+  _getLegendInfos(_mapResourceInfo = this._mapResourceInfo) {
+    const { catalogs = [] } = _mapResourceInfo;
+    const res = [];
+    catalogs.forEach((item) => {
+      this._getLegendInfoByCatalog(item, res);
+    });
+    return res;
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._initLayers
+   * @description emit 图层加载成功事件。
+   */
+  async _initLayers() {
+    await this._getSpriteDatas();
+    if (Object.prototype.toString.call(this.mapId) === '[object Object]') {
+      this.mapParams = {
+        title: this._mapInfo.name,
+        description: this._relatedInfo.description
+      };
+      if (this._relatedInfo.projectInfo) {
+        this._mapResourceInfo = JSON.parse(this._relatedInfo.projectInfo);
+        this._changeMapInfoFilter();
+      }
+      this._createMapRelatedInfo();
+      this._addLayersToMap();
+      return;
+    }
+    this._getMapRelatedInfo()
+      .then((relatedInfo) => {
+        this.mapParams = {
+          title: this._mapInfo.name,
+          description: relatedInfo.description
+        };
+        this._mapResourceInfo = JSON.parse(relatedInfo.projectInfo);
+        this._changeMapInfoFilter();
+        this._createMapRelatedInfo();
+        this._addLayersToMap();
+      })
+      .catch((error) => {
+        this.fire('mapcreatefailed', { error: error });
+        console.error(error);
+      });
+  }
+  /**
+   * @private
+   * @function WebMapV3.prototype._changeMapInfoFilter
+   * @description 更新地图图层的过滤器， 将filter的内容 ['==', 'Ctype', '']转换为['==', ['get', 'Ctype'], 'label']
+   */
+ _changeMapInfoFilter() {
+    if (mapRepo && mapRepo.convertFilter) {
+      const { layers = [] } = this._mapInfo;
+      layers.forEach((layer) => {
+        if (layer.filter) {
+          layer.filter = mapRepo.convertFilter(layer.filter);
+        }
+      });
+      this._mapInfo = {
+        ...this._mapInfo,
+        layers
+      };
+    }
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._createMapRelatedInfo
+   * @description 创建地图相关资源。
+   */
+  _createMapRelatedInfo() {
+    const { glyphs } = this._mapInfo;
+    for (let key in glyphs) {
+      this.map.style.addGlyphs(key, glyphs[key]);
+    }
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._getMapRelatedInfo
+   * @description 获取地图关联信息的 JSON 信息。
+   */
+  _getMapRelatedInfo() {
+    const mapResourceUrl = WebMapV3_transformUrl(
+      Object.assign({ url: `${this.options.server}web/maps/${this.mapId}` }, this.options)
+    );
+    return WebMapV3_FetchRequest.get(mapResourceUrl, null, { withCredentials: webMapService.handleUrlWithCredentials(mapResourceUrl) }).then((response) =>
+      response.json()
+    );
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._addLayersToMap
+   * @description emit 图层加载成功事件。
+   */
+  async _addLayersToMap() {
+    try {
+      const { sources, layers, layerCatalog, catalogs } = this._setUniqueId(this._mapInfo, this._mapResourceInfo);
+      Object.assign(this._mapInfo, {
+        sources,
+        layers,
+        metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
+      });
+      Object.assign(this._mapResourceInfo, { catalogs });
+      const mapboxglLayers = layers.filter((layer) => !l7LayerUtil.isL7Layer(layer));
+      const mapboxSourceIds = mapboxglLayers.map((layer) => layer.source);
+      for(const sourceId of mapboxSourceIds) {
+        const source = sources[sourceId]; 
+        if(source && source.type === 'geojson' && source.data && source.data.type === 'supermap-rest-data') {
+          source.data = await l7LayerUtil.getRestDataGeojsonByWebMap(source.data, {iportalServiceProxyUrlPrefix: this.options.server, withoutFormatSuffix: true});
+        }
+      }
+      mapboxglLayers.forEach((layer) => {
+        if (layer.metadata && layer.metadata.reused) {
+          return;
+        }
+        layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
+        // L7才会用到此属性
+        if (layer.type === 'symbol' && layer.layout['text-z-offset'] === 0) {
+          delete layer.layout['text-z-offset'];
+        }
+        this.map.addLayer(layer);
+      });
+      const l7Layers = layers.filter((layer) => l7LayerUtil.isL7Layer(layer));
+      if (l7Layers.length > 0) {
+        const params = this._getAddL7LayersParams(layers, sources, l7Layers);
+        await l7LayerUtil.addL7Layers(params);
+      }
+      this._createLegendInfo();
+      this._sendMapToUser();
+    } catch (error) {
+      this.fire('mapcreatefailed', { error, map: this.map });
+      console.error(error);
+    }
+  }
+
+  _getAddL7LayersParams(layers, sources, l7Layers) {
+    return {
+      map: this.map,
+      webMapInfo: { ...this._mapInfo, layers, sources },
+      l7Layers,
+      spriteDatas: this._spriteDatas,
+      options: {
+        ...this.options,
+        emitterEvent: this.fire.bind(this),
+        transformRequest: this._getTransformRequest()
+      }
+    }
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._setUniqueId
+   * @description 返回唯一 id 的 sources 和 layers。
+   * @param {Object} mapInfo - map 信息。
+   */
+  _setUniqueId(style, projectInfo) {
+    const unspportedLayers = this._handleUnSupportedLayers(style);
+    const layersToMap = JSON.parse(JSON.stringify(style.layers)).filter((layer) => {
+      return !unspportedLayers.includes(layer.id);
+    });
+    const nextSources = {};
+    const sourcesIdChangedMap = {};
+    const layerIdToChange = [];
+    const timestamp = `_${+new Date()}`;
+    for (const sourceId in style.sources) {
+      let nextSourceId = sourceId;
+      if (this.map.getSource(sourceId)) {
+        nextSourceId = sourceId + timestamp;
+      }
+      sourcesIdChangedMap[nextSourceId] = sourceId;
+      nextSources[nextSourceId] = style.sources[sourceId];
+      for (const layer of layersToMap) {
+        if (layer.source === sourceId) {
+          layer.source = nextSourceId;
+        }
+      }
+    }
+    for (const layer of layersToMap) {
+      const originId = layer.id;
+      const existLayer = this._getLayerOnMap(layer.id);
+      if (existLayer) {
+        if (
+          this.options.checkSameLayer &&
+          WebMapV3_isSameRasterLayer(nextSources[layer.source], this.map.getSource(existLayer.source))
+        ) {
+          layer.metadata = layer.metadata || {};
+          layer.metadata.reused = true;
+          layer.source = sourcesIdChangedMap[layer.source];
+        } else {
+          const layerId = layer.id + timestamp;
+          layer.id = layerId;
+        }
+      }
+      layerIdToChange.push({ originId: originId, renderId: layer.id, id: originId });
+    }
+    const layerCatalogFromMapJson = JSON.parse(JSON.stringify(style.metadata.layerCatalog), 'parts');
+    this._updateLayerCatalogsId({
+      loopData: JSON.parse(JSON.stringify(layerCatalogFromMapJson)),
+      catalogs: layerCatalogFromMapJson,
+      layerIdMapList: layerIdToChange,
+      unspportedLayers
+    });
+    const catalogsFromProjectInfo = JSON.parse(JSON.stringify(projectInfo.catalogs || []));
+    this._updateLayerCatalogsId({
+      loopData: JSON.parse(JSON.stringify(catalogsFromProjectInfo)),
+      catalogs: catalogsFromProjectInfo,
+      layerIdMapList: layerIdToChange,
+      catalogTypeField: 'catalogType',
+      layerIdsField: 'layersContent',
+      unspportedLayers
+    });
+    return {
+      sources: nextSources,
+      layers: layersToMap,
+      layerCatalog: layerCatalogFromMapJson,
+      catalogs: catalogsFromProjectInfo
+    };
+  }
+
+  _getLayerOnMap(layerId) {
+    const overlayLayer = this.map.overlayLayersManager[layerId];
+    if (overlayLayer) {
+      return overlayLayer;
+    }
+    const l7MarkerLayers = l7LayerUtil.getL7MarkerLayers();
+    const l7MarkerLayer = l7MarkerLayers[layerId];
+    if (l7MarkerLayer) {
+      return l7MarkerLayer;
+    }
+    return this.map.getLayer(layerId);
+  }
+
+  _findLayerCatalog(items, id) {
+    for (const item of items) {
+      if (item.id === id) {
+        return item;
+      }
+      if (item.children) {
+        const found = this._findLayerCatalog(item.children, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null; 
+  }
+
+  _deleteLayerCatalog(catalogs, id) {
+    for (let index = 0; index < catalogs.length; index++) {
+      const catalog = catalogs[index];
+      if (catalog.id === id) {
+        catalogs.splice(index, 1);
+        break;
+      }
+      if (catalog.children) {
+        this._deleteLayerCatalog(catalog.children, id);
+      }
+    }
+  }
+
+  _updateLayerCatalogsId({
+    loopData,
+    catalogs,
+    layerIdMapList,
+    catalogTypeField = 'type',
+    layerIdsField = 'parts',
+    unspportedLayers
+  }) {
+    loopData.forEach((loopItem) => {
+      const { id, children } = loopItem;
+      if (loopItem[catalogTypeField] === 'group') {
+        this._updateLayerCatalogsId({
+          loopData: children,
+          catalogs,
+          layerIdMapList,
+          catalogTypeField,
+          layerIdsField,
+          unspportedLayers
+        });
+        return;
+      }
+      const renderLayers = WebMapV3_getLayerCatalogRenderLayers(loopItem[layerIdsField], id, layerIdMapList);
+      const matchLayer = layerIdMapList.find((item) => item.originId === renderLayers[0]);
+      if (matchLayer) {
+        const catalog = this._findLayerCatalog(catalogs, id);
+        catalog.id = matchLayer.renderId;
+        catalog.reused = matchLayer.reused;
+        if (catalog[layerIdsField]) {
+          catalog[layerIdsField] = this._renameLayerIdsContent(catalog[layerIdsField], layerIdMapList);
+        }
+        return;
+      }
+      if (unspportedLayers.includes(id) || renderLayers.some((layerId) => unspportedLayers.includes(layerId))) {
+        this._deleteLayerCatalog(catalogs, id);
+      }
+    });
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._sendMapToUser
+   * @description emit 图层加载成功事件。
+   */
+  _sendMapToUser() {
+    this._sourceListModel = new WebMapV3_SourceListModelV3({
+      map: this.map,
+      appendLayers: this._appendLayers,
+      mapInfo: this._mapInfo,
+      mapResourceInfo: this._mapResourceInfo,
+      legendList: this._legendList,
+      l7LayerUtil
+    });
+    this._sourceListModel.on({
+      layerupdatechanged: (params) => {
+        this.fire('layerupdatechanged', params);
+      }
+    });
+    this.fire('mapcreatesucceeded', { map: this.map, mapparams: this.mapParams, layers: this.getSelfAppreciableLayers() });
+  }
+
+  _renameLayerIdsContent(layerIds, layerIdRenameMapList) {
+    if (!layerIds) {
+      return layerIds;
+    }
+    return layerIds.map((id) => {
+      const matchItem = layerIdRenameMapList.find((item) => item.originId === id);
+      return matchItem.renderId;
+    });
+  }
+
+  _parseRendererStyleData(renderer) {
+    // 根据 map 的工程信息返回结果看，聚合图层的 renderer 是对象 其他图层是数组
+    if (renderer instanceof Array) {
+      return renderer;
+    }
+    return [renderer];
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._getLabelFontFamily
+   * @description 获取图层字体类型。
+   */
+  _getLabelFontFamily(mapInfo = this._mapInfo) {
+    const fonts = ['sans-serif'];
+    const layers = mapInfo.layers;
+    if (layers && layers.length > 0) {
+      layers.forEach((layer) => {
+        const textFont = (layer.layout && layer.layout['text-font']) || [];
+        fonts.push(...textFont);
+      });
+    }
+    const fontFamilys = fonts.join(',');
+    return fontFamilys;
+  }
+
+  /**
+   * @private
+   * @function WebMapV3.prototype._getSpriteDatas
+   * @description 获取雪碧图信息。
+   */
+  _getSpriteDatas() {
+    const sprite = this._sprite;
+    if (!sprite) {
+      return;
+    }
+
+    const spriteUrls = [];
+    if (typeof sprite === 'string') {
+      spriteUrls.push(sprite);
+    } else if (typeof sprite === 'object') {
+      Object.keys(sprite).forEach((sourceId) => {
+        spriteUrls.push(sprite[sourceId]);
+      });
+    }
+
+    return Promise.all(spriteUrls.map((url) => this._getSpriteData(url))).then((allResults) => {
+      allResults.forEach((result) => {
+        this._spriteDatas = {...this._spriteDatas, ...result};
+      });
+      return;
+    });
+  }
+
+  _getSpriteData(sprite) {
+    const url = sprite.replace(/.+(web\/maps\/.+)/, `${this.options.server}$1`);
+    return WebMapV3_FetchRequest.get(url, null, { withCredentials: webMapService.handleUrlWithCredentials(url) })
+      .then((response) => {
+        return response.json();
+      });
+  }
+
+  _createLegendInfo() {
+    const { catalogs = [] } = this._mapResourceInfo;
+    const originLayers = WebMapV3_getLayerInfosFromCatalogs(catalogs, 'catalogType');
+    for (const layer of originLayers) {
+      const { renderer, label } = layer.visualization || {};
+      if (!renderer) {
+        continue;
+      }
+      const layerFromMapInfo = WebMapV3_getMainLayerFromCatalog(layer.layersContent, layer.id, this._mapInfo.layers);
+      let themeField;
+      const sourceInfo = this._mapInfo.sources[layerFromMapInfo.source];
+      if ('clusterField' in sourceInfo) {
+        themeField = sourceInfo.clusterField;
+      }
+      const nextLayer = Object.assign({}, layerFromMapInfo, { title: layer.title, themeField });
+      const styleSettings = this._parseRendererStyleData(renderer);
+      // 线面文本标签
+      if (label) {
+        styleSettings.push({...label, type: 'text'});
+        if (label.symbolsContent && label.symbolsContent.value.symbolId) {
+          styleSettings.push({...label, type: 'symbol'});
+        }
+      }
+      // 点文本标签
+      if (styleSettings[0].textField && styleSettings[0].textField.value) {
+        styleSettings.push({
+          ...styleSettings[0],
+          type: 'text'
+        });
+      }
+      const layerLegends = styleSettings.reduce((legends, styleSetting) => {
+        const legendItems = this._createLayerLegendList(nextLayer, styleSetting);
+        legendItems && legends.push(...legendItems);
+        return legends;
+      }, []);
+      this._legendList.push(...layerLegends);
+    }
+  }
+
+  _getAliasKey(renderType, key) {
+    if (renderType === 'isoline3D' && key === 'dashArray') {
+      return 'lineDasharray';
+    }
+    return key;
+  }
+
+  _transStyleKeys(renderType, keys) {
+    return keys.map((key) => this._getAliasKey(renderType, key));
+  }
+
+  _transStyleSetting(renderType, styleSetting) {
+    for (const key in styleSetting) {
+      const aliasKey = this._getAliasKey(renderType, key);
+      if (aliasKey !== key) {
+        styleSetting[aliasKey] = styleSetting[key];
+      }
+    }
+  }
+
+  _getLegendSimpleStyle(styleSetting, keys) {
+    const simpleStyle = {};
+    if (keys) {
+      const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
+      simpleKeys.forEach((k) => {
+      const isOutlineKey = ['outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent'].includes(k);
+      const hasOutline =
+        styleSetting &&
+        (
+          (styleSetting.outline && styleSetting.outline.value === true) ||
+          (styleSetting.antialias && styleSetting.antialias.value === true)
+        );
+      if (isOutlineKey && !hasOutline) {
+        return;
+      }
+        simpleStyle[k] = (styleSetting[k] || {}).value;
+      });
+    }
+    return simpleStyle;
+  }
+
+  _getLegendRenderType(renderType) {
+    switch (renderType) {
+      case 'text':
+        return LEGEND_RENDER_TYPE.TEXT;
+      case 'circle':
+      case 'symbol':
+      case 'column':
+        return LEGEND_RENDER_TYPE.POINT;
+      case 'heatGrid':
+      case 'heatHexagon':
+      case 'heat3DGrid':
+      case 'heat3DHexagon':
+        return LEGEND_RENDER_TYPE.BUILTINSYMBOL;
+      case 'line':
+      case 'isoline3D':
+        return LEGEND_RENDER_TYPE.LINE;
+      case 'fill':
+        return LEGEND_RENDER_TYPE.FILL;
+      case 'fillExtrusion':
+        return LEGEND_RENDER_TYPE.FILLEXTRUSION;
+      case 'animatePoint':
+        return LEGEND_RENDER_TYPE.ANIMATEPOINT;
+      case 'line3D':
+      case 'animateLine':
+        return LEGEND_RENDER_TYPE.ANIMATELINE;
+      case 'radarPoint':
+        return LEGEND_RENDER_TYPE.RADARPOINT;
+    }
+  }
+
+  _getLegendShape(renderType, styleSetting) {
+    switch (renderType) {
+      case 'text':
+        return LEGEND_SHAPE_TYPE.TEXT;
+      case 'circle':
+      case 'symbol':
+        return LEGEND_SHAPE_TYPE.POINT;
+      case 'column': {
+        const symbolIds = {
+          cylinder: LEGEND_SHAPE_TYPE.POINT,
+          triangleColumn: LEGEND_SHAPE_TYPE.TRIANGLE,
+          squareColumn: LEGEND_SHAPE_TYPE.RECTANGLE,
+          hexagonColumn: LEGEND_SHAPE_TYPE.HEXAGON
+        };
+        return symbolIds[styleSetting.shape.value] || LEGEND_SHAPE_TYPE.POINT;
+      }
+      case 'heatHexagon':
+      case 'heat3DHexagon':
+        return LEGEND_SHAPE_TYPE.HEXAGON;
+      case 'line':
+      case 'isoline3D':
+        return LEGEND_SHAPE_TYPE.LINE;
+      case 'fill':
+      case 'heatGrid':
+      case 'heat3DGrid':
+      case 'fillExtrusion':
+        return LEGEND_SHAPE_TYPE.RECTANGLE;
+      case 'animatePoint':
+        return LEGEND_SHAPE_TYPE.ANIMATEPOINT;
+      case 'animateLine':
+      case 'line3D':
+        return LEGEND_SHAPE_TYPE.ANIMATELINE;
+      case 'radarPoint':
+        return LEGEND_SHAPE_TYPE.RADARPOINT;
+      case 'heat':
+      case 'heat3D':
+        return LEGEND_SHAPE_TYPE.LINEGRADIENT;
+    }
+  }
+
+  /**
+   * 1) 无数据驱动时；
+   * 2) 只有一个颜色数据驱动，且性线数据驱动时
+   * 以上两种情况图例中需要单独的显示符号项
+   * 是否显示图例单项
+   */
+  _isShowLegendSingleItem(dataKeys, isLinearColor) {
+    return dataKeys.length === 0 || (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor);
+  }
+
+  _isWebsymbolById(id){
+    const a = ['line-', 'polygon-', 'point-'];
+    return a.some((el) => id && id.startsWith(el));
+  }
+
+  /**
+   * 获取icon-image 的sdf状态
+   * 目前webSymbol为false， 基本符号为true， 雪碧图从json中获取sdf的状态
+   */
+  _getSymbolSDFStatus(id, spriteJson) {
+    if (this._isWebsymbolById(id)) {
+      return false;
+    }
+    if (this._getIconById(id)) {
+      return true;
+    }
+    return spriteJson[id] && spriteJson[id].sdf || false;
+  }
+
+  _isAllPicturePoint(symbolsContent, spriteJson) {
+      if (symbolsContent.type === 'simple') {
+        return !this._getSymbolSDFStatus(symbolsContent.value.symbolId, spriteJson);
+      } else {
+          return [...symbolsContent.values, { value: symbolsContent.defaultValue }]
+              .filter((v) => v.value.symbolId)
+              .every((v) => {
+                  return !this._getSymbolSDFStatus(v.value.symbolId, spriteJson);
+              });
+      }
+  }
+
+  _isAllPictureSymbolSaved(symbolType, symbolsContent, spriteJson) {
+    if (!symbolsContent) {
+      return false;
+    }
+    if (symbolType === 'point') {
+      return this._isAllPicturePoint(symbolsContent, spriteJson);
+    }
+    const currentType = symbolsContent.type;
+    if (currentType === 'simple') {
+      return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
+    }
+    if(currentType === 'custom') {
+      // 表达式暂不支持图例显示
+      return false;
+    }
+    const styles = symbolsContent.values.map((v) => v.value).concat(symbolsContent.defaultValue);
+    return styles.every((v) => {
+      return !!this._getImageIdFromValue(v.style, SymbolType[symbolType]).length;
+    });
+  }
+
+  _getDataDrivenStyleKeys(legendType, keys, styleSetting) {
+    const DataDrivenStyleKeyObj = {
+        [LEGEND_RENDER_TYPE.TEXT]: LegendTextDataDrivenStyleKey
+    };
+    const porpertyKeys = DataDrivenStyleKeyObj[legendType] || keys;
+    const dataKeys = porpertyKeys.filter(
+        (k) => styleSetting[k] && styleSetting[k].type !== 'simple'
+    );
+    return dataKeys;
+  }
+
+  _createLayerLegendList(layer, styleSetting) {
+    const layerId = layer.id;
+    const layerTitle = layer.title;
+    const textFieldName = styleSetting.type === 'text' && styleSetting.textField && styleSetting.textField.value.replace(/^\{|\}$/g, '');
+    const commonStyleOptions = {
+      themeField: layer.themeField || styleSetting.field,
+      layerId,
+      layerTitle
+    };
+    const renderType = styleSetting.type || layer.type;
+    const legendRenderType = this._getLegendRenderType(renderType);
+    const shape = this._getLegendShape(renderType, styleSetting);
+    if (['heat', 'heat3D'].includes(renderType)) {
+      const colorKeyMap = {
+        heat: 'heatmap-color',
+        heat3D: 'heatmap-extrusion-color'
+      };
+      const colors = this._heatColorToGradient((layer.paint || {})[colorKeyMap[renderType]]);
+      return [
+        {
+          ...commonStyleOptions,
+          styleGroup: [
+            {
+              style: {
+                type: LEGEND_STYLE_TYPES.STYLE,
+                shape,
+                colors
+              }
+            }
+          ]
+        }
+      ];
+    }
+    const styleKeys = LEGEND_STYLE_KEYS[legendRenderType];
+    if (!styleKeys) {
+      return;
+    }
+    const keys = this._transStyleKeys(renderType, styleKeys);
+    this._transStyleSetting(renderType, styleSetting);
+    const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
+    const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
+    let dataKeys = this._getDataDrivenStyleKeys(legendRenderType, keys, styleSetting);
+    // 3D线,动画线
+    if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE) {
+      // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
+      const isReplaceLineColor = styleSetting.textureBlend.value === 'replace';
+      const hasTexture = !!(styleSetting.symbolsContent.value && styleSetting.symbolsContent.value.symbolId);
+      if (isReplaceLineColor && hasTexture) {
+        dataKeys = dataKeys.filter((key) => key !== 'color')
+      }
+    } else {
+      // 其他
+      // isAllPic: 如果符号为图片，图例中将不再显示颜色
+      const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[layer.type];
+      const isAllPic = this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
+      if(isAllPic) {
+        dataKeys = dataKeys.filter((key) => key !== 'color')
+      }
+    }
+    const isLinearColor = styleSetting.color && styleSetting.color.interpolateInfo && styleSetting.color.interpolateInfo.type === 'linear';
+    const isShowSingleItem = this._isShowLegendSingleItem(dataKeys, isLinearColor);
+    const resultList = [];
+    if (isShowSingleItem) {
+      resultList.push({
+        ...commonStyleOptions,
+        styleGroup: [
+          {
+            fieldValue: textFieldName || layerTitle || layerId,
+            style: {
+              ...simpleResData,
+              shape
+            }
+          }
+        ]
+      });
+    }
+    return resultList.concat(
+      dataKeys.map((styleField) => {
+        const subStyleSetting = styleSetting[styleField];
+        const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
+        let styleGroup = [];
+        const custom = this._getSettingCustom(subStyleSetting);
+        const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
+        const params = {
+          legendRenderType,
+          styleField,
+          subStyleSetting,
+          simpleStyle,
+          defaultSetting,
+          custom,
+          interpolateInfo,
+          shape
+        };
+        switch (this._getLegendStyleType({ styleField, currentType: subStyleSetting.type, custom, interpolateInfo })) {
+          case LegendType.LINEAR:
+            styleGroup = this._parseLinearStyle(params);
+            break;
+          case LegendType.RANGE:
+            styleGroup = this._parseRangeStyle(params);
+            break;
+          case LegendType.UNIQUE:
+            styleGroup = this._parseUniqueStyle(params);
+            break;
+        }
+        const legendItem = {
+          ...commonStyleOptions,
+          themeField: (subStyleSetting.field || [])[0],
+          styleField: styleField,
+          styleGroup
+        };
+        return legendItem;
+      })
+    );
+  }
+
+  _heatColorToGradient(colors = []) {
+    const colorList = [];
+    colors.forEach((color, index) => {
+      if (index > 5 && index % 2 === 0) {
+        colorList.push({
+          value: color,
+          key: index === 6 ? 0 : colors[index - 1]
+        });
+      }
+    });
+    return colorList;
+  }
+
+  _getSettingCustom(setting) {
+    const { value, values } = setting;
+    return this._isLinear(setting) ? value : values;
+  }
+
+  _getSettingInterpolateInfo(setting) {
+    const { interpolateInfo = {} } = setting;
+    return this._isLinear(setting) ? { type: 'linear' } : interpolateInfo;
+  }
+
+  _isLinear(subStyleSetting) {
+    return subStyleSetting.type === 'linear';
+  }
+
+  _getLegendStyleType({ styleField, currentType, custom, interpolateInfo }) {
+    if (['unique', 'linear'].includes(currentType)) {
+      if (this._isColorAttr(styleField) && interpolateInfo.type === 'linear' && custom.length > 1) {
+        return LegendType.LINEAR;
+      }
+      return LegendType.UNIQUE;
+    }
+    if(currentType === 'custom') {
+      return LegendType.CUSTOM;
+    }
+    return LegendType.RANGE;
+  }
+
+  _isColorAttr(key) {
+    return ['color', 'textColor', 'outlineColor', 'textHaloColor'].includes(key);
+  }
+
+  _parseLinearStyle({ shape, custom }) {
+    const styleGroup = [
+      {
+        styleField: null,
+        style: {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          shape,
+          colors: custom
+        }
+      }
+    ];
+    return styleGroup;
+  }
+
+  _parseUniqueStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo, shape }) {
+    const styleGroup = custom.map((c) => {
+      const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
+      return {
+        fieldValue: c.key,
+        style: {
+          ...resData,
+          shape
+        }
+      };
+    });
+    if (!interpolateInfo.type || interpolateInfo.type === 'custom') {
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
+      styleGroup.push({
+        fieldValue: null,
+        style: {
+          ...resData,
+          shape
+        }
+      });
+    }
+    return styleGroup;
+  }
+
+  _parseRangeStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, shape }) {
+    const styleGroup = custom.map((c) => {
+      const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
+      return {
+        start: c.start,
+        end: c.end,
+        style: {
+          ...resData,
+          shape
+        }
+      };
+    });
+    const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
+    styleGroup.push({
+      start: null,
+      end: null,
+      style: {
+        ...resData,
+        shape
+      }
+    });
+    return styleGroup;
+  }
+
+  _getSettingStyle(styleField, value, simpleStyle) {
+    const itemStyle = Object.assign({}, simpleStyle);
+    itemStyle[styleField] = value;
+    return itemStyle;
+  }
+
+  _parseLegendtyle({ legendRenderType, customValue }) {
+    const cssStyle = { ...LEGEND_CSS_DEFAULT[legendRenderType] };
+    // 线不使用cssStyle，所以不需要重新赋值
+    Object.keys(cssStyle).forEach((k) => {
+      const updateValue = customValue[LEGEND_CSS_STATE_KEY[k] || k];
+      // 除了面其他参数都是必要参数
+      if (![LEGEND_RENDER_TYPE.FILL, LEGEND_RENDER_TYPE.FILLEXTRUSION].includes(legendRenderType) && !updateValue) {
+        return;
+      }
+      cssStyle[k] = updateValue;
+    });
+    let { symbolId = LEGEND_SYMBOL_DEFAULT[legendRenderType], style } = customValue.symbolsContent || {};
+    switch (legendRenderType) {
+      case LEGEND_RENDER_TYPE.TEXT: {
+        return {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          icon: 'supermapol-icons-text-layer',
+          ...cssStyle
+        }
+      }
+      case LEGEND_RENDER_TYPE.POINT: {
+        const icon = this._getIconById(symbolId);
+        const iconType = icon ? 'BASE' : 'SERVICE';
+        if (iconType === 'BASE') {
+          return {
+            type: LEGEND_STYLE_TYPES.STYLE,
+            ...cssStyle
+          };
+        }
+        return this._getSpriteStyle(symbolId, cssStyle);
+      }
+      case LEGEND_RENDER_TYPE.BUILTINSYMBOL: {
+        return {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...cssStyle
+        };
+      }
+      case LEGEND_RENDER_TYPE.ANIMATEPOINT:
+      case LEGEND_RENDER_TYPE.RADARPOINT: {
+        return {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...cssStyle
+        };
+      }
+      case LEGEND_RENDER_TYPE.LINE:
+      case LEGEND_RENDER_TYPE.ANIMATELINE: {
+        style = style || [];
+        const nextCustomValue = Object.assign({}, customValue);
+        delete nextCustomValue.symbolsContent;
+        const commonInfo = {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...nextCustomValue,
+          width: LEGEND_LINE_WIDTH
+        };
+        const defaultStyle = { ...LEGEND_CSS_DEFAULT['LINE'] };
+        const symbolStyles = style instanceof Array ? style : [style];
+        const hasImageLine = symbolStyles.some((v) => !!this._getImageIdByLegendType(v, legendRenderType));
+        // 图片线符号都是单图层(动画线符号的symbol也只有一个)
+        const imageLineSymbol = symbolStyles[0];
+        if (hasImageLine) {
+          const imageId = this._getImageIdByLegendType(imageLineSymbol, legendRenderType);
+          const styleOptions = { ...cssStyle, ...nextCustomValue, height: cssStyle.width, width: LEGEND_LINE_WIDTH };
+          if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && nextCustomValue.textureBlend === 'replace') {
+            styleOptions.backgroundColor = 'transparent';
+          }
+          return this._getSpriteStyle(imageId, styleOptions);
+        }
+        if (!customValue.symbolsContent || (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && !hasImageLine)) {
+          return {
+            ...commonInfo,
+            height: customValue.width || defaultStyle.height,
+            lineWidth: customValue.width || defaultStyle.width,
+            color: customValue.color || defaultStyle.backgroundColor
+          };
+        }
+        if (customValue.symbolsContent) {
+          const oldWidth = this._getLineWidth(symbolStyles);
+          const lineStyles = symbolStyles.map((l) =>
+            this._transformLineStyle({ oldWidth, symbol: l, defaultStyle, customValue })
+          );
+          return {
+            ...commonInfo,
+            lineStyles
+          };
+        }
+        return;
+      }
+      case LEGEND_RENDER_TYPE.FILL:
+      case LEGEND_RENDER_TYPE.FILLEXTRUSION: {
+        const backgroundColor = cssStyle.backgroundColor;
+        const paint = (style || {}).paint || {};
+        const color = paint['fill-color'];
+        const defaultStyle = { ...LEGEND_CSS_DEFAULT['FILL'] };
+        if (!backgroundColor) {
+          Object.assign(cssStyle, { backgroundColor: color });
+        }
+        // 缺少的必要参数使用默认值
+        Object.keys(cssStyle).forEach((key) => {
+          if (['backgroundColor', 'width', 'height', 'opacity'].includes(key) && !cssStyle[key]) {
+            cssStyle[key] = defaultStyle[key];
+          }
+        });
+        Object.assign(cssStyle, { outlineStyle: (customValue.antialias || customValue.outline) ? 'solid' : 'none'});
+        // 轮廓线符号与轮廓线宽平级，交由图例组件渲染
+        if (customValue.outlineSymbolsContent) {
+          cssStyle.outlineSymbolsContent = customValue.outlineSymbolsContent;
+          // 轮廓图片符号（line-pattern 连续纹理 / icon-image 图标点）的雪碧图信息，
+          // 按图片 id 附带在样式上，供图例组件直接裁剪轮廓图块
+          const outlineSprites = {};
+          [].concat(customValue.outlineSymbolsContent.style || []).forEach((outlineSymbol) => {
+            const outlinePaint = (outlineSymbol && outlineSymbol.paint) || {};
+            const outlineLayout = (outlineSymbol && outlineSymbol.layout) || {};
+            const outlineImageId = outlinePaint['line-pattern'] || outlineLayout['icon-image'];
+            if (outlineImageId && this._spriteDatas[outlineImageId]) {
+              outlineSprites[outlineImageId] = this._spriteDatas[outlineImageId];
+            }
+          });
+          if (Object.keys(outlineSprites).length) {
+            cssStyle.outlineSprites = outlineSprites;
+          }
+        }
+        if (this._spriteDatas[symbolId]) {
+          return this._getSpriteStyle(symbolId, { ...cssStyle, backgroundColor: 'transparent' });
+        }
+        // 纯色面填充 + 图片轮廓符号：样式仍走矢量渲染，附上雪碧图地址供图例组件加载并裁剪轮廓图块
+        const legendStyle = {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...cssStyle
+        };
+        if (customValue.outlineSymbolsContent && typeof this._sprite === 'string') {
+          legendStyle.url = `${this._sprite}.png`;
+        }
+        return legendStyle;
+      }
+    }
+  }
+
+  _getIconById(id, type = 'svg') {
+    if (type === 'image') {
+      return undefined;
+    }
+    const BaseIcons = [{ id: 'circle', name: 'circle' }];
+    return BaseIcons.find((icon) => icon.id === id);
+  }
+
+  _getImageIdFromValue(style, type){
+    const imageKeys = {
+        symbol: 'icon-image',
+        line: 'line-pattern',
+        fill: 'fill-pattern',
+        'fill-extrusion': 'fill-pattern'
+    };
+    const styles = Array.isArray(style) ? style : [style];
+    const imageKey = imageKeys[type];
+    if (type === 'symbol') {
+        const imageIds = styles.map((item) => item.layout && item.layout[imageKey]);
+        return imageIds.filter((id) => id);
+    }
+    // 'line' 'fill'  'fill-extrusion'
+    const imageIds = styles.map((item) => item.paint && item.paint[imageKey]);
+    return imageIds.filter((id) => id);
+}
+
+  _getImageIdByLegendType(symbol, legendType) {
+    const symbolTypes = {
+      ANIMATELINE: SymbolType.point,
+      LINE: SymbolType.line
+    };
+    const symbolType = symbolTypes[legendType];
+    const paint = symbol.paint || {};
+    if (symbolType === SymbolType.line) {
+      return paint['line-pattern'];
+    }
+    if (symbolType === SymbolType.polygon) {
+      return paint['fill-pattern'];
+    }
+    const layout = symbol.layout || {};
+    return layout['icon-image'];
+  }
+
+  _getSpriteStyle(symbolId, cssStyle) {
+    if (!this._spriteDatas[symbolId]) {
+      return;
+    }
+    const sprite = this._spriteDatas[symbolId];
+    if (!sprite.width || !sprite.height) {
+      return;
+    }
+    return {
+      type: LEGEND_STYLE_TYPES.IMAGE,
+      sprite,
+      ...cssStyle,
+      url: typeof this._sprite === 'string' ? `${this._sprite}.png` : ''
+    };
+  }
+
+  _transformLineStyle({ oldWidth, symbol, defaultStyle, customValue }) {
+    const { paint = {} } = symbol;
+    let newSymbol;
+    if (customValue.height !== undefined) {
+      newSymbol = this._updateSingleStyleByWidth(oldWidth, customValue.height, symbol);
+    }
+    return {
+      lineWidth: ((newSymbol || {}).paint || {})[LINE_WIDTH_KEY] || paint[LINE_WIDTH_KEY] || defaultStyle.height,
+      opacity: customValue.opacity || paint['line-opacity'] || defaultStyle.opacity,
+      color: customValue.color || paint['line-color'] || defaultStyle.backgroundColor,
+      lineDash: paint['line-dasharray'] || [],
+      lineOffset: paint['line-offset'] || 0
+    };
+  }
+
+  _updateSingleStyleByWidth(oldWidth, newWidth, style) {
+    if (oldWidth === newWidth) {
+      return style;
+    }
+
+    let newPaint = {};
+    const paint = (style || {}).paint || {};
+    if (oldWidth === 0) {
+      // 从0变成数值
+      newPaint = Object.assign({}, paint, {
+        'line-width': Number(newWidth.toFixed(2))
+      });
+      return {
+        paint: newPaint
+      };
+    }
+    const percent = newWidth / oldWidth;
+    const width = paint['line-width'],
+      offset = paint['line-offset'] || 0,
+      dasharray = paint['line-dasharray'] || [];
+    const newDasharray = this._updateDash(dasharray, percent);
+
+    newPaint = Object.assign({}, paint, {
+      'line-width': Number((width * percent).toFixed(2)),
+      'line-offset': Number((offset * percent).toFixed(2)),
+      'line-dasharray': newDasharray && newDasharray.map((v) => Number(v.toFixed(2)))
+    });
+    return {
+      paint: newPaint
+    };
+  }
+
+  // 根据比例，更新line-dash
+  _updateDash(oldDash, percent) {
+    if (!oldDash || oldDash.length === 0) {
+      return;
+    }
+    const result = oldDash.map((v) => {
+      return v / percent;
+    });
+    return result;
+  }
+
+  /**
+   * 获取线宽
+   * 多线返回整体线宽，单线返回线宽
+   */
+  _getLineWidth(symbolStyle) {
+    if (symbolStyle instanceof Array) {
+      return this._getWholeWidth(symbolStyle);
+    }
+    return (symbolStyle.paint || {})[LINE_WIDTH_KEY] || 0;
+  }
+
+  /**
+   * 计算多线符号的整体线宽
+   * 整体线宽
+   */
+  _getWholeWidth(styles) {
+    let topBoundary;
+    let bottomBoundary;
+    styles.forEach((el) => {
+      const paint = (el || {}).paint || {};
+      const width = paint['line-width'];
+      const offset = paint['line-offset'] || 0;
+      const top = offset + width / 2;
+      const bottom = offset - width / 2;
+      (top > topBoundary || topBoundary === undefined) && (topBoundary = top);
+      (bottom < bottomBoundary || bottomBoundary === undefined) && (bottomBoundary = bottom);
+    });
+    return Number((topBoundary - bottomBoundary).toFixed(2));
+  }
+
+  _handleUnSupportedLayers(mapInfo) {
+    const filterLayerIds = [];
+    const unSupportedMsg = 'layer are not supported yet';
+    const { interaction } = mapInfo;
+    if (interaction && interaction.drill) {
+      this.fire('layercreatefailed', { error: `drill ${unSupportedMsg}`, map: this.map, error_code: 'DRILL_LAYERS_NOT_SUPPORTED' });
+      interaction.drill.forEach((drillItem) => {
+        const drillLayerIds = drillItem.layerIds || drillItem.layers.reduce((ids, item) => ids.concat(item.layerIds), []);
+        filterLayerIds.push(...drillLayerIds);
+      });
+    }
+    return filterLayerIds;
+  }
+  } 
+}
+
 ;// ./src/common/index.common.js
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -89868,7 +92558,7 @@ SuperMap.Util = { ...SuperMap.Util, ...Util };
 SuperMap.Browser = Browser;
 SuperMap.INCHES_PER_UNIT = INCHES_PER_UNIT;
 SuperMap.METERS_PER_INCH = METERS_PER_INCH;
-SuperMap.DOTS_PER_INCH = DOTS_PER_INCH;
+SuperMap.DOTS_PER_INCH = (/* inlined export .DOTS_PER_INCH */96);
 SuperMap.IS_GECKO = IS_GECKO;
 
 // FetchRequest
@@ -90378,7 +93068,7 @@ var external_ol_Observable_default = /*#__PURE__*/__webpack_require__.n(external
  * @class ServiceBase
  * @category iServer Core
  * @classdesc ol.supermap 的服务基类。
- * @param {string} url - 服务地址。
+ * @param {string} url - 服务地址。具体地址类型由子类决定。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -90416,7 +93106,7 @@ class ServiceBase extends (external_ol_Observable_default()) {
  * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -91594,230 +94284,6 @@ var DeafultCanvasStyle = {
     }
 };
 
-;// ./src/common/mapping/config/MunicipalCenter.json
-const MunicipalCenter_namespaceObject = /*#__PURE__*/JSON.parse('[{"name":"克拉玛依市","coord":[85.01486759299489,45.406422237230046]},{"name":"昌吉回族自治州","coord":[88.7154624754753,44.26991024636568]},{"name":"石河子市","coord":[86.0208600035924,44.239045558096805]},{"name":"霍林郭勒市","coord":[114.73479243733115,44.16058374713977]},{"name":"本溪市","coord":[124.64357865201586,41.177197783134275]},{"name":"嘉峪关市","coord":[98.16891560537093,39.76279786284264]},{"name":"莱芜市","coord":[117.65723565456207,36.27916499211527]},{"name":"神农架林区","coord":[110.48296222218153,31.581260143666697]},{"name":"天门市","coord":[113.00615321481195,30.64105781887143]},{"name":"鄂州市","coord":[114.94764081970385,30.325634953844585]},{"name":"潜江市","coord":[112.70703817700621,30.349210666019893]},{"name":"仙桃市","coord":[113.34688900729822,30.315951161935402]},{"name":"萍乡市","coord":[113.88072263074415,27.47193090553213]},{"name":"台湾省","coord":[120.14338943402045,23.596002465926095]},{"name":"东莞市","coord":[113.89443658529342,22.897826158636448]},{"name":"中山市","coord":[113.37118387764659,22.501478858616522]},{"name":"珠海市","coord":[113.21799258934986,22.23782602992192]},{"name":"北海市","coord":[109.18248083043899,21.695773689750148]},{"name":"香港","coord":[114.20689279508653,22.36016760139811]},{"name":"舟山市","coord":[122.22514712841459,30.338633120695956]},{"name":"克孜勒苏柯尔克孜","coord":[74.62910472637343,39.59886016069875]},{"name":"喀什地区","coord":[77.19899922143753,37.85462871211595]},{"name":"阿克苏地区","coord":[81.43930290016381,41.067304799230456]},{"name":"和田地区","coord":[80.69780509160952,36.95287032287055]},{"name":"阿里地区","coord":[82.536487505389,32.69566569631762]},{"name":"日喀则地区","coord":[86.5996831353606,29.54861754814263]},{"name":"那曲地区","coord":[88.32523292667608,33.20600450932715]},{"name":"玉树藏族自治州","coord":[95.2107128446203,33.90320387919257]},{"name":"迪庆藏族自治州","coord":[99.42465312188943,28.052797714348895]},{"name":"怒江傈傈族自治州","coord":[98.85737910439825,26.98345757528851]},{"name":"大理白族自治州","coord":[99.93934374816013,25.684737357453045]},{"name":"德宏傣族景颇族自","coord":[98.13830877778075,24.593421919561205]},{"name":"保山市","coord":[99.19031013453166,24.979380341662]},{"name":"临沧市","coord":[99.62483778975081,24.058807858948214]},{"name":"普洱市","coord":[100.94440267992684,23.44121660743221]},{"name":"西双版纳傣族自治","coord":[100.86105801845994,21.882475641324206]},{"name":"拉萨市","coord":[91.3684790613129,30.14176592960237]},{"name":"山南地区","coord":[92.11665242621062,28.33000201578789]},{"name":"林芝地区","coord":[94.9307847458166,29.125110156601963]},{"name":"昌都地区","coord":[97.33912235873476,30.48520825551814]},{"name":"丽江市","coord":[100.65713436205135,26.96190318191959]},{"name":"攀枝花市","coord":[101.73355913301131,26.714486678752795]},{"name":"凉山彝族自治州","coord":[102.08678551422615,27.683020519860396]},{"name":"楚雄彝族自治州","coord":[101.68264761198458,25.369603845264024]},{"name":"红河哈尼族彝族自","coord":[102.95101719613119,23.624860095239875]},{"name":"文山壮族苗族自治","coord":[104.8708359910614,23.579587266862504]},{"name":"百色市","coord":[106.69546907589859,23.98220841166522]},{"name":"崇左市","coord":[107.3277087317123,22.49769755349952]},{"name":"防城港市","coord":[107.88939931155171,21.94550204069006]},{"name":"南宁市","coord":[108.67078983716917,23.12207641861882]},{"name":"钦州市","coord":[108.8532307305186,22.157690108421384]},{"name":"玉林市","coord":[110.26918466489103,22.391823643610415]},{"name":"湛江市","coord":[109.93033457863683,21.086751055633457]},{"name":"茂名市","coord":[110.80336192333934,22.069184739040775]},{"name":"阳江市","coord":[111.70471342186183,22.108751366417575]},{"name":"江门市","coord":[112.53715618649149,22.297368082806777]},{"name":"广州市","coord":[113.4949302208309,23.28359314707863]},{"name":"清远市","coord":[113.10957368131268,24.334444053233856]},{"name":"肇庆市","coord":[112.11117530204233,23.60241158796112]},{"name":"梧州市","coord":[111.01709510772797,23.518132876753846]},{"name":"贺州市","coord":[111.50423061842756,24.4095096817199]},{"name":"桂林市","coord":[110.44046163393094,25.353966673735407]},{"name":"柳州市","coord":[109.34854449214147,24.972408051485047]},{"name":"河池市","coord":[107.81191841865586,24.649291651298164]},{"name":"黔东南苗族侗族自","coord":[108.39952601614591,26.429286420465576]},{"name":"贵阳市","coord":[106.59784062851153,26.797907456479816]},{"name":"安顺市","coord":[105.76161265300635,25.988644902171018]},{"name":"黔西南布依族苗族","coord":[105.5954078788574,25.404850939549405]},{"name":"曲靖市","coord":[103.9164335632742,25.697243690315265]},{"name":"六盘水市","coord":[104.77723228072432,26.15402255629164]},{"name":"毕节地区","coord":[105.03867422931839,27.077913968069666]},{"name":"昭通市","coord":[104.29730513046874,27.62418247971078]},{"name":"宜宾市","coord":[104.76748901448207,28.553501804266475]},{"name":"乐山市","coord":[103.56027669102787,29.160754519210577]},{"name":"自贡市","coord":[104.63272827056402,29.273152614922402]},{"name":"内江市","coord":[104.82644562304716,29.61272653799929]},{"name":"遵义市","coord":[106.82413636302059,28.191847588570702]},{"name":"达州市","coord":[107.59704170009518,31.32138258839703]},{"name":"遂宁市","coord":[105.48979445433736,30.677687821242678]},{"name":"广安市","coord":[106.56708164098042,30.43500706741521]},{"name":"泸州市","coord":[105.42591761727707,28.50277238478137]},{"name":"资阳市","coord":[104.97995126874034,30.154251886139654]},{"name":"雅安市","coord":[102.69931299964517,29.892630706195035]},{"name":"眉山市","coord":[104.07052881858888,29.894202166560405]},{"name":"甘孜藏族自治州","coord":[100.50721042614238,30.975216556269658]},{"name":"果洛藏族自治州","coord":[99.30775565051923,34.03539865224808]},{"name":"海南藏族自治州","coord":[100.39969108016373,35.90048272566899]},{"name":"黄南藏族自治州","coord":[101.5360706381689,35.10286360841902]},{"name":"赣南藏族自治州","coord":[102.97083885806067,34.326752803339026]},{"name":"陇南市","coord":[105.24780098912132,33.57031117443431]},{"name":"天水市","coord":[105.53503634660417,34.62320421368087]},{"name":"定西市","coord":[104.58787768541339,35.08900966621695]},{"name":"临夏回族自治州","coord":[103.2612870434902,35.591577124455235]},{"name":"西宁市","coord":[101.57680657999033,36.84800271717157]},{"name":"海东地区","coord":[102.30909850729282,36.287400615025646]},{"name":"海北藏族自治州","coord":[100.27122484450717,37.892557516083826]},{"name":"金昌市","coord":[102.02244049169511,38.497330414886164]},{"name":"酒泉市","coord":[95.94486678270127,40.56891536586272]},{"name":"海西蒙古族藏族自","coord":[94.67143298050689,36.022725148503724]},{"name":"巴音郭楞蒙古自治","coord":[88.18116214759745,39.556478810319916]},{"name":"哈密地区","coord":[93.84302392518026,42.95015211178875]},{"name":"叶鲁番地区","coord":[89.82035217277885,42.399368632283505]},{"name":"乌鲁木齐市","coord":[88.00048109561487,43.549986370786]},{"name":"阿勒泰地区","coord":[88.11213933257655,47.05593413019629]},{"name":"博尔塔拉蒙古自治","coord":[82.26402238163408,44.671135542630864]},{"name":"伊犁哈萨克自治州","coord":[82.80778717477179,43.53783381365267]},{"name":"阿拉善盟","coord":[103.29923966842289,40.10955801781495]},{"name":"武威市","coord":[102.73362058791429,37.94211141321436]},{"name":"兰州市","coord":[103.73793563506032,36.27379827886003]},{"name":"中卫市","coord":[105.6943786030716,37.20654236148948]},{"name":"银川市","coord":[106.20022174140034,38.52103167597483]},{"name":"石嘴山市","coord":[106.41544011793628,38.84054137571417]},{"name":"乌海市","coord":[106.8984175998405,39.54616572239788]},{"name":"鄂尔多斯市","coord":[108.43285571424619,39.24036799350715]},{"name":"巴彦淖尔市","coord":[107.45840392808307,41.30159860424196]},{"name":"包头市","coord":[110.46472193224272,41.48017783644221]},{"name":"呼和浩特市","coord":[111.48365173603975,40.498363056149884]},{"name":"乌兰察布市","coord":[112.61568977597707,41.75789561273154]},{"name":"大同市","coord":[113.7107192749083,39.898956799744184]},{"name":"朔州市","coord":[112.65428748167508,39.681772914701924]},{"name":"忻州市","coord":[112.36127575589583,38.88990233614568]},{"name":"榆林市","coord":[109.68473112169593,38.19921027134876]},{"name":"延安市","coord":[109.52425222161318,36.406522726136814]},{"name":"庆阳市","coord":[107.73052193155061,36.183821532624464]},{"name":"固原市","coord":[106.20191575442442,36.11634909496382]},{"name":"白银市","coord":[104.68634478137065,36.51582865625868]},{"name":"宝鸡市","coord":[107.33534779230747,34.3387216485855]},{"name":"汉中市","coord":[107.03534754266246,33.00142998064871]},{"name":"广元市","coord":[105.92928137563939,32.21872447205537]},{"name":"巴中市","coord":[107.03422410306194,31.99874720836291]},{"name":"南充市","coord":[106.32964805032347,31.156657700184095]},{"name":"绵阳市","coord":[104.58949560201106,31.88628780630976]},{"name":"德阳市","coord":[104.41542984932845,31.110558133718676]},{"name":"成都市","coord":[103.8852290010473,30.777258040348634]},{"name":"阿坝藏族羌族自治","coord":[102.26209319552814,32.45725845387284]},{"name":"安康市","coord":[109.14236501848015,32.77467694678074]},{"name":"十堰市","coord":[110.39934083416314,32.376209039347906]},{"name":"襄阳市","coord":[111.97539147094662,31.93399822417465]},{"name":"宜昌市","coord":[111.22204852395754,30.772457669035354]},{"name":"恩施市","coord":[109.42158366502872,30.260366574390105]},{"name":"张家界市","coord":[110.59760006538717,29.330107409240718]},{"name":"吉首市","coord":[109.72176899848378,28.681903937242495]},{"name":"铜仁地区","coord":[108.54247523485463,28.11736237519646]},{"name":"重庆市","coord":[107.86007108564992,30.186253395053196]},{"name":"怀化市","coord":[109.94325166787243,27.43919084801186]},{"name":"益阳市","coord":[112.43060358108062,28.75127294553697]},{"name":"娄底市","coord":[111.41891416951897,27.696312460064604]},{"name":"常德市","coord":[111.72571610131646,29.27189463838195]},{"name":"荆州市","coord":[112.65896596965268,30.05161542755362]},{"name":"荆门市","coord":[112.6586855902184,31.01267124474617]},{"name":"岳阳市","coord":[113.2595036144316,29.106247116930163]},{"name":"长沙市","coord":[113.15415586456598,28.222934680488425]},{"name":"湘潭市","coord":[112.51092596317824,27.69881544105668]},{"name":"株州市","coord":[113.49665538546823,27.03993794610501]},{"name":"衡阳市","coord":[112.48849636578527,26.783613569970782]},{"name":"邵阳市","coord":[110.6723832117475,26.81652287086792]},{"name":"永州市","coord":[111.8565364154186,25.768488267811968]},{"name":"韶关市","coord":[113.53420325850979,24.69848878771937]},{"name":"惠州市","coord":[114.32029589634925,23.25504544231892]},{"name":"佛山市","coord":[112.95925897403649,23.10116677189257]},{"name":"云浮市","coord":[111.78042514904234,22.840400494105687]},{"name":"深圳市","coord":[114.13138648919008,22.649563063468342]},{"name":"汕尾市","coord":[115.57412892884373,23.06989642104901]},{"name":"河源市","coord":[114.89746229844398,23.97971937124767]},{"name":"揭阳市","coord":[116.04290004239446,23.304802704715357]},{"name":"汕头市","coord":[116.7008461897183,23.35898625947344]},{"name":"潮州市","coord":[116.75405548481658,23.854381508863064]},{"name":"梅州市","coord":[116.13719397345734,24.15633544812716]},{"name":"漳州市","coord":[117.38279760543345,24.41111215459575]},{"name":"厦门市","coord":[118.04275971554665,24.675908246507944]},{"name":"龙岩市","coord":[116.69341144552507,25.20284542644492]},{"name":"泉州市","coord":[118.12035864630246,25.22984144365049]},{"name":"莆田市","coord":[118.82439690138142,25.439653480972687]},{"name":"福州市","coord":[119.1608285845262,25.99117532466728]},{"name":"三明市","coord":[117.51188176216434,26.318292906961602]},{"name":"南平市","coord":[118.16153136678187,27.306303151805437]},{"name":"抚州市","coord":[116.3455359885574,27.487043655935366]},{"name":"鹰潭市","coord":[117.01082360702333,28.241253742969946]},{"name":"吉安市","coord":[114.91377151807418,26.957486660664525]},{"name":"赣州市","coord":[115.046455717572,25.81565075681663]},{"name":"郴州市","coord":[113.1544526703492,25.871927095452524]},{"name":"新余市","coord":[114.94161795877827,27.79044654578371]},{"name":"宜春市","coord":[115.04574494880995,28.306428044943356]},{"name":"南昌市","coord":[115.9963824234495,28.664803351584705]},{"name":"九江市","coord":[115.53225905704193,29.362905920276297]},{"name":"上饶市","coord":[117.8595355766598,28.765755150094634]},{"name":"景德镇市","coord":[117.25387030721845,29.33426823662448]},{"name":"黄山市","coord":[117.85476357809696,29.969632034273722]},{"name":"池州市","coord":[117.34517113140791,30.208089337922335]},{"name":"铜陵市","coord":[117.93160431300694,30.926442655001676]},{"name":"安庆市","coord":[116.54307680610799,30.524265461641296]},{"name":"黄石市","coord":[115.02354597728443,29.924060229331015]},{"name":"咸宁市","coord":[114.26967602231792,29.652174021136048]},{"name":"黄冈市","coord":[115.2859016705373,30.65856897065683]},{"name":"武汉市","coord":[114.34552076948799,30.68836237966767]},{"name":"随州市","coord":[113.3850627838818,31.87891659924412]},{"name":"信阳市","coord":[114.81374730587638,32.0309685135914]},{"name":"驻马店市","coord":[114.07756451509235,32.896720987266114]},{"name":"商洛市","coord":[109.82044421310393,33.77403373563189]},{"name":"西安市","coord":[109.11839808451401,34.225257215515896]},{"name":"渭南市","coord":[109.75732444226935,35.025913644359306]},{"name":"铜川市","coord":[108.98695328111377,35.19235092947735]},{"name":"咸阳市","coord":[108.36398776446165,34.84311348287181]},{"name":"三门峡市","coord":[110.80049688104964,34.31818709571671]},{"name":"运城市","coord":[111.1736679525165,35.19010372283576]},{"name":"洛阳市","coord":[111.87577573098216,34.33379926109848]},{"name":"平顶山市","coord":[112.80931281928427,33.759895800153096]},{"name":"漯河市","coord":[113.83505724178012,33.70034266174508]},{"name":"许昌市","coord":[113.78762484088509,34.051835688452435]},{"name":"郑州市","coord":[113.49619951867594,34.61181797865449]},{"name":"焦作市","coord":[113.13404280173008,35.134167097471625]},{"name":"晋城市","coord":[112.7495732073233,35.63186423091449]},{"name":"长治市","coord":[112.85900842873183,36.45872910742828]},{"name":"临汾市","coord":[111.49379787924448,36.22810800777857]},{"name":"太原市","coord":[112.15628804033796,37.91704444063036]},{"name":"吕梁市","coord":[111.31901105774872,37.712740463356496]},{"name":"晋中市","coord":[113.08199599739676,37.36532613794343]},{"name":"邯郸市","coord":[114.41824047234618,36.530119932543315]},{"name":"安阳市","coord":[113.88883283163116,35.7797611183252]},{"name":"鹤壁市","coord":[114.3654094911545,35.75770487428472]},{"name":"新乡市","coord":[113.9184107718167,35.348471214026716]},{"name":"开封市","coord":[114.52801677500626,34.61371216679872]},{"name":"周口市","coord":[114.88509782391864,33.69999759722657]},{"name":"阜阳市","coord":[115.44595951398213,32.98060371610532]},{"name":"淮南市","coord":[116.68941991880993,32.79972275772595]},{"name":"蚌埠市","coord":[117.38594715783302,33.106729536033896]},{"name":"淮北市","coord":[116.69651711889378,33.69527529383458]},{"name":"宿州市","coord":[117.30175405886838,33.943330421260015]},{"name":"亳州市","coord":[116.12410804185097,33.46769392946132]},{"name":"商丘市","coord":[115.59575176872548,34.28339840831147]},{"name":"菏泽市","coord":[115.53631974831816,35.197319393220624]},{"name":"濮阳市","coord":[115.3070485514902,35.775883510964334]},{"name":"聊城市","coord":[115.8870069012884,36.40529594548765]},{"name":"邢台市","coord":[114.74259008644859,37.251396750084155]},{"name":"石家庄市","coord":[114.56923838363613,38.13141710980106]},{"name":"阳泉市","coord":[113.39216149668508,38.09075470547468]},{"name":"保定市","coord":[115.261524468934,39.09118520781398]},{"name":"衡水市","coord":[115.8182936677897,37.715661598187154]},{"name":"德州市","coord":[116.4582273790399,37.19372347888644]},{"name":"沧州市","coord":[116.76192710911863,38.20240042039232]},{"name":"廊坊市","coord":[116.50410772133856,39.27896741763884]},{"name":"天津市","coord":[117.31988934444873,39.37154482470619]},{"name":"北京市","coord":[116.59734730757869,40.237112944270976]},{"name":"张家口市","coord":[115.1823606483226,40.83732566607167]},{"name":"唐山市","coord":[117.8693184261954,39.71862889477249]},{"name":"秦皇岛市","coord":[119.30467355367742,39.990574652162564]},{"name":"承德市","coord":[117.16275671911026,41.36623845548547]},{"name":"葫芦岛市","coord":[119.9342336210531,40.5628822626519]},{"name":"朝阳市","coord":[120.11853493535794,41.471852354885755]},{"name":"赤峰市","coord":[118.50943546234379,43.25452976059767]},{"name":"锦州市","coord":[121.5167549323861,41.45933087433065]},{"name":"营口市","coord":[122.58571915054674,40.42093503997384]},{"name":"丹东市","coord":[124.33549382902183,40.46369290272115]},{"name":"辽阳市","coord":[123.34064798039414,41.152331397771356]},{"name":"盘锦市","coord":[122.06718005354679,41.05573599862555]},{"name":"阜新市","coord":[121.93889757908204,42.27641773244204]},{"name":"鞍山市","coord":[122.78904432242356,40.77781183142038]},{"name":"沈阳市","coord":[122.99508899709724,42.1162195010079]},{"name":"铁岭市","coord":[124.23100515588399,42.72666083611828]},{"name":"扶顺市","coord":[124.46027188217573,41.82955407638859]},{"name":"通辽市","coord":[122.0729370657937,43.90889130864869]},{"name":"兴安盟","coord":[120.79456431092532,45.92003249442161]},{"name":"白城市","coord":[123.10619907715235,45.25475749267784]},{"name":"齐齐哈尔市","coord":[124.5462214659102,47.55395009317394]},{"name":"大兴安岭地区","coord":[124.50992855161529,52.18438447846694]},{"name":"黑河市","coord":[127.14721400335922,49.25080134026901]},{"name":"大庆市","coord":[124.40329830095243,46.401048760966745]},{"name":"绥化市","coord":[126.5214484055605,46.76992452194825]},{"name":"松原市","coord":[124.21244334807682,44.75779381338502]},{"name":"四平市","coord":[124.27839350328821,43.52139065090318]},{"name":"通化市","coord":[125.67392830706305,41.91771808663852]},{"name":"辽源市","coord":[125.33529527643432,42.758340204944986]},{"name":"吉林市","coord":[126.83350281902375,43.60730120049175]},{"name":"长春市","coord":[125.53597875970374,44.24624314701737]},{"name":"白山市","coord":[127.16780160322108,42.093893880305075]},{"name":"哈尔滨市","coord":[127.39125008786029,45.36200668820575]},{"name":"鹤岗市","coord":[130.4703811258197,47.66520688940109]},{"name":"伊春市","coord":[128.91240831703635,47.93833794565277]},{"name":"七台河市","coord":[131.2677920224311,45.945099776108584]},{"name":"鸡西市","coord":[132.38059153660274,45.722934218318535]},{"name":"双鸭山市","coord":[132.3184817002743,46.65813679030265]},{"name":"佳木斯市","coord":[132.26174446608726,47.17569713691394]},{"name":"呼伦贝尔市","coord":[122.3210739998419,50.18176996070858]},{"name":"孝感市","coord":[113.83749892135485,31.11757234692128]},{"name":"贵港市","coord":[110.07354588052804,23.380735604767374]},{"name":"黔南布依族苗族自","coord":[107.30931767543106,26.2976919432269]},{"name":"宁德市","coord":[119.52482556634342,27.013151692716413]},{"name":"温州市","coord":[120.30037042732202,27.8699145504001]},{"name":"台州市","coord":[120.88886782713843,28.670799172772313]},{"name":"丽水市","coord":[119.56796851966463,28.170268394477755]},{"name":"衢州市","coord":[118.79479802644406,28.865874397158763]},{"name":"金华市","coord":[119.99381920686633,29.093455548185744]},{"name":"绍兴市","coord":[120.46546691682343,29.69382513836818]},{"name":"宁波市","coord":[121.42142987830871,29.70001162878972]},{"name":"杭州市","coord":[119.4405685790891,29.87218307296989]},{"name":"宣城市","coord":[118.68748382914703,30.628143499626418]},{"name":"湖州市","coord":[119.98261306633574,30.7945175862809]},{"name":"嘉兴市","coord":[120.83889215988998,30.67538495499343]},{"name":"上海市","coord":[121.37534147322967,31.25628247908459]},{"name":"苏州市","coord":[120.6906182622391,31.381280695137775]},{"name":"无锡市","coord":[120.32182300914366,31.54113306724517]},{"name":"常州市","coord":[119.61953292830165,31.611878565375576]},{"name":"南京市","coord":[118.71890548838064,31.910863187910323]},{"name":"镇江市","coord":[119.42349332902813,31.97942313430778]},{"name":"合肥市","coord":[117.30651975617157,31.79407863049138]},{"name":"六安市","coord":[116.24668220575353,31.820846193819513]},{"name":"滁州市","coord":[117.88422385307969,32.51792621904418]},{"name":"泰州市","coord":[120.03124303305091,32.56503102346783]},{"name":"南通市","coord":[120.85599446760912,32.18496706099728]},{"name":"盐城市","coord":[120.01812490612667,33.54219948734023]},{"name":"淮安市","coord":[119.0749424205415,33.39203631772854]},{"name":"宿迁市","coord":[118.45404943216346,33.666258719120265]},{"name":"徐州市","coord":[117.77482249295966,34.30847766157078]},{"name":"济宁市","coord":[116.74147276546373,35.27488504351119]},{"name":"枣庄市","coord":[117.43359942491492,34.884162021736]},{"name":"连云港市","coord":[119.01553213785074,34.54316517587849]},{"name":"临沂市","coord":[118.31478835349617,35.28173079028279]},{"name":"日照市","coord":[119.14265350444272,35.54479073199592]},{"name":"青岛市","coord":[120.27779044405756,36.3464117375903]},{"name":"威海市","coord":[122.12963327195605,37.13879077904251]},{"name":"烟台市","coord":[120.7689567423966,37.19772002195597]},{"name":"潍坊市","coord":[119.02178548592039,36.49292234053931]},{"name":"淄博市","coord":[117.92936024367185,36.60871347163638]},{"name":"泰安市","coord":[116.93810893944303,36.0423330118612]},{"name":"济南市","coord":[117.34560282551296,36.769574973846304]},{"name":"东营市","coord":[118.4915054457184,37.52194690335787]},{"name":"滨州市","coord":[117.67610299757533,37.4439597758601]},{"name":"昆明市","coord":[102.93100245594789,25.481300763922075]},{"name":"玉溪市","coord":[102.23080854291823,24.156168324611663]},{"name":"塔城地区","coord":[83.60908162840168,45.3721852373893]},{"name":"张掖市","coord":[100.47710030600572,38.704239320458385]},{"name":"南阳市","coord":[112.1400670951149,33.03033276715801]},{"name":"扬州市","coord":[119.48949608990988,32.80956776339646]},{"name":"延边朝鲜族自治州","coord":[129.3577692895626,43.24968794080283]},{"name":"牡丹江市","coord":[129.87240796405672,44.7073040108322]},{"name":"澳门","coord":[113.56289691515346,22.14602596262204]},{"name":"吴忠市","coord":[106.76894508116403,37.72566765880316]},{"name":"来宾市","coord":[109.25592217010114,23.86346274681084]},{"name":"平凉市","coord":[107.0708132782897,35.30329631658711]},{"name":"马鞍山市","coord":[118.27245878467022,31.657727937739004]},{"name":"芜湖市","coord":[118.32992684415504,31.081688223101658]},{"name":"澄迈县","coord":[110.04198076060266,19.694955078668105]},{"name":"保亭黎族苗族自治","coord":[109.6055304964257,18.6101488675304]},{"name":"乐东黎族自治县","coord":[109.04051999525574,18.643137437909203]},{"name":"儋州市","coord":[109.3431358337404,19.550974957403195]},{"name":"定安县","coord":[110.38744429685676,19.47557074114284]},{"name":"屯昌县","coord":[110.00574767630334,19.367175093044388]},{"name":"白沙黎族自治县","coord":[109.36860737761768,19.214416393082217]},{"name":"琼中黎族苗族自治","coord":[109.86691465937548,19.073671135862682]},{"name":"东方市","coord":[108.86903802405428,19.017352815445214]},{"name":"昌江黎族自治县","coord":[108.9686431884767,19.182594167127824]},{"name":"海口市","coord":[110.420654296875,19.806565564640795]},{"name":"济源市","coord":[112.38051465474433,35.07958362422394]},{"name":"五指山市","coord":[109.53595187364496,18.832908264613966]},{"name":"大连市","coord":[121.96662235866603,39.444150542439914]},{"name":"文昌市三沙市","coord":[110.81828537536748,19.756501444162936]},{"name":"三亚市","coord":[109.38424600793707,18.39186315877128]},{"name":"万宁市","coord":[110.28485046979574,18.860240588635115]},{"name":"陵水黎族自治县","coord":[109.95577603229562,18.594712684620465]},{"name":"临高县","coord":[109.71915395436967,19.79420403032508]},{"name":"琼海市","coord":[110.41650700703043,19.22315873149372]}]');
-;// ./src/common/mapping/config/ProvinceCenter.json
-const ProvinceCenter_namespaceObject = /*#__PURE__*/JSON.parse('[{"name":"黑龙江省","coord":[127.64559817675396,48.48668098449708]},{"name":"内蒙古自治区","coord":[118.34519572208615,45.370218276977525]},{"name":"新疆维吾尔自治区","coord":[87.13479065593184,41.75497055053711]},{"name":"吉林省","coord":[126.12985278813787,43.57983207702637]},{"name":"辽宁省","coord":[124.02494773936439,41.105743408203125]},{"name":"甘肃省","coord":[102.87785725633012,37.69582366943361]},{"name":"河北省","coord":[115.66327227481898,39.33383178710938]},{"name":"北京市","coord":[116.62199343603638,40.25053787231445]},{"name":"山西省","coord":[112.45180235808988,37.666561126708984]},{"name":"天津市","coord":[117.35711842642581,39.406789779663086]},{"name":"陕西省","coord":[109.56294003056632,35.64754199981689]},{"name":"宁夏回族自治区","coord":[105.96110877640074,37.3081169128418]},{"name":"青海省","coord":[96.07301048277901,35.44417190551758]},{"name":"山东省","coord":[118.03833752951093,36.29800605773925]},{"name":"西藏自治区","coord":[87.47361520439412,31.6703872680664]},{"name":"河南省","coord":[113.07832397097275,33.87751102447509]},{"name":"江苏省","coord":[119.93926538201052,32.945452690124505]},{"name":"安徽省","coord":[117.15146765881019,32.024482727050774]},{"name":"四川省","coord":[102.28998890142759,30.182161331176758]},{"name":"湖北省","coord":[112.87798261431585,31.157071113586426]},{"name":"重庆市","coord":[107.870126637831,30.188085556030266]},{"name":"上海市","coord":[121.42561166015514,31.276043891906745]},{"name":"浙江省","coord":[119.75337092707514,29.175934791564945]},{"name":"湖南省","coord":[111.52770282777405,27.38110256195069]},{"name":"江西省","coord":[115.51091280655628,27.283511161804206]},{"name":"云南省","coord":[101.27053825991308,25.19783210754396]},{"name":"贵州省","coord":[106.49672346773299,26.92267990112305]},{"name":"福建省","coord":[117.9976766946587,25.939599990844727]},{"name":"广西壮族自治区","coord":[108.98706831086302,23.891559600830078]},{"name":"台湾省","coord":[120.82468432537434,23.602651596069336]},{"name":"香港特别行政区","coord":[114.21036850371561,22.374858856201172]},{"name":"海南省","coord":[109.62792940960824,19.163116455078125]},{"name":"广东省","coord":[113.32127888266032,22.873867034912106]},{"name":"澳门特别行政区","coord":[113.56819996291901,22.160347992976]}]');
-;// ./src/common/mapping/utils/util.js
-
- // eslint-disable-line import/extensions
- // eslint-disable-line import/extensions
-
-function createLinesData(layerInfo, properties) {
-  const data = [];
-  if (properties && properties.length) {
-    // 重新获取数据
-    const from = layerInfo.from;
-    const to = layerInfo.to;
-    let fromCoord;
-    let toCoord;
-    if (from.type === 'XY_FIELD' && from.xField && from.yField && to.xField && to.yField) {
-      properties.forEach((property) => {
-        const fromX = property[from.xField];
-        const fromY = property[from.yField];
-        const toX = property[to.xField];
-        const toY = property[to.yField];
-        if (!fromX || !fromY || !toX || !toY) {
-          return;
-        }
-
-        fromCoord = [property[from.xField], property[from.yField]];
-        toCoord = [property[to.xField], property[to.yField]];
-        data.push({
-          coords: [fromCoord, toCoord]
-        });
-      });
-    } else if (from.type === 'PLACE_FIELD' && from.field && to.field) {
-      const centerDatas = ProvinceCenter_namespaceObject.concat(MunicipalCenter_namespaceObject);
-
-      properties.forEach((property) => {
-        const fromField = property[from.field];
-        const toField = property[to.field];
-        fromCoord = centerDatas.find((item) => {
-          return isMatchAdministrativeName(item.name, fromField);
-        });
-        toCoord = centerDatas.find((item) => {
-          return isMatchAdministrativeName(item.name, toField);
-        });
-        if (!fromCoord || !toCoord) {
-          return;
-        }
-        data.push({
-          coords: [fromCoord.coord, toCoord.coord]
-        });
-      });
-    }
-  }
-  return data;
-}
-
-function isMatchAdministrativeName(featureName, fieldName) {
-  if (isString(fieldName)) {
-    let shortName = featureName.substr(0, 2);
-    // 张家口市和张家界市 特殊处理
-    if (shortName === '张家') {
-      shortName = featureName.substr(0, 3);
-    }
-    return !!fieldName.match(new RegExp(shortName));
-  }
-  return false;
-}
-
-function transformServerUrl(serverUrl) {
-  return !serverUrl || serverUrl.slice(-1) === '/' ? serverUrl : `${serverUrl}/`;
-}
-
- /**
-   * @description url 拼接代理或者凭证信息
-   * @param {string} point - 待转换的 url
-   * @returns {string} 转换后的 url
-   */
- function transformUrl({ url, server, excludePortalProxyUrl, credentialValue, credentialKey }) {
-  let mapUrl = url.indexOf('.json') === -1 ? `${url}.json` : url;
-  let filter = 'getUrlResource.json?url=';
-  if (excludePortalProxyUrl && server.indexOf(filter) > -1) {
-    //大屏需求,或者有加上代理的
-    let urlArray = server.split(filter);
-    if (urlArray.length > 1) {
-      mapUrl = urlArray[0] + filter + mapUrl;
-    }
-  }
-  if (credentialValue && credentialKey) {
-    mapUrl += '?' + credentialKey + '=' + credentialValue;
-  }
-  return mapUrl;
-}
-
- /**
-     * 检测数据是否为number
-     * @param value 值，未知数据类型
-     * @returns {boolean}
-     */
- function isNumber(value) {
-  if (value === "") {
-      return false;
-  }
-  let mdata = Number(value);
-  if (mdata === 0) {
-      return true;
-  }
-  return !isNaN(mdata);
-}
-
-function mergeFeatures({ sourceId, features, mergeByField, map }) {
-  if (!(features instanceof Array)) {
-    return features;
-  }
-  features = features.map((feature, index) => {
-    if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
-      feature.properties.index = index;
-    }
-    return feature;
-  });
-  if (!features.length || !mergeByField && features[0].geometry) {
-    return features;
-  }
-  const source = map.getSource(sourceId);
-  if ((!source || !source._data.features) && features[0].geometry) {
-    return features;
-  }
-  const prevFeatures = source && source._data && source._data.features;
-  const nextFeatures = [];
-  if (!mergeByField && prevFeatures) {
-    return prevFeatures;
-  }
-  features.forEach((feature) => {
-    const prevFeature = prevFeatures.find((item) => {
-      if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
-        return (
-          JSON.stringify(item.properties[mergeByField] || '') ===
-          JSON.stringify(feature.properties[mergeByField] || '')
-        );
-      } else {
-        return +item.properties[mergeByField] === +feature.properties[mergeByField];
-      }
-    });
-    if (prevFeature) {
-      nextFeatures.push({
-        ...prevFeature,
-        ...feature
-      });
-    } else if (feature.geometry) {
-      nextFeatures.push(feature);
-    }
-  });
-  return nextFeatures;
-}
-
-function getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
-  const results = [];
-  for (let i = 0; i < catalogs.length; i++) {
-    const catalogType = catalogs[i][catalogTypeField];
-    if (catalogType !== 'group') {
-      results.push(catalogs[i]);
-      continue;
-    }
-    const { children } = catalogs[i];
-    if (children && children.length > 0) {
-      const result = getLayerInfosFromCatalogs(children, catalogTypeField);
-      results.push(...result);
-    }
-  }
-  return results;
-}
-
-function isSameRasterUrl(urlA, urlB) {
-  if (urlA === urlB) {
-    return true;
-  }
-  const uriA = new URL(urlA);
-  const uriB = new URL(urlB);
-  if (uriA.origin !== uriB.origin) {
-    return false;
-  }
-  const regex = /\/([^/?#]+\.\w+)$/;
-  const pathA = uriA.pathname.replace(regex, '');
-  const pathB = uriB.pathname.replace(regex, '');
-
-  // 3. 判断子路径关系
-  return pathA === pathB || pathA.startsWith(pathB + (pathB.endsWith('/') ? '' : '/'));
-}
-
-function isSameRasterLayer(sourceInfo, compareSource) {
-  const { type, tiles } = sourceInfo;
-  if (type === 'raster') {
-    return type === compareSource.type && tiles && compareSource.tiles && isSameRasterUrl(tiles[0], compareSource.tiles[0]);
-  }
-  return false;
-}
-
-function createAppreciableLayerId(layer) {
-  // 针对传入 layers
-  if (layer.layerInfo && layer.layerInfo.id) {
-    return layer.layerInfo.id;
-  }
-  // 往空地图上追加图层 且 只有一个webmap this.layers是空
-  if (layer.metadata && layer.metadata.SM_Layer_Id) {
-    return layer.metadata.SM_Layer_Id;
-  }
-  // 针对 MapboxStyle 或者其它额外的 layer
-  // type: background 和某些 overlaymanager layers 只有 id
-  return layer.sourceLayer || layer.source || layer.id;
-}
-
-function getLayerCatalogRenderLayers(parts, catalogId, layersOnMap) {
-  // ms 3.0.5以下的版本 layerCatalogs layersContent/parts 不包括自身的上图layerid 只包含复合图层的id
-  const renderLayers = layersOnMap.some(item => item.id === catalogId) ? [catalogId] : [];
-  if (parts) {
-    renderLayers.push(...parts);
-  }
-  return Array.from(new Set(renderLayers)).filter(item => !!item);
-}
-
-function getMainLayerFromCatalog(layerParts, catalogId, layersOnMap) {
-  const renderLayers = getLayerCatalogRenderLayers(layerParts, catalogId, layersOnMap);
-  return layersOnMap.find(item => item.id === renderLayers[0]);
-}
 ;// external "ol.util"
 const external_ol_util_namespaceObject = ol.util;
 ;// external "ol.geom.Geometry"
@@ -98299,8 +100765,8 @@ class StyleUtils {
         var symbolParameters = {
           "transparent": true,
           "resourceType": "SYMBOLMARKER",
-          "picWidth": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
-          "picHeight": Math.ceil(shader.markerSize * DOTS_PER_INCH * INCHES_PER_UNIT["mm"]) || 13,
+          "picWidth": Math.ceil(shader.markerSize * (/* inlined export .DOTS_PER_INCH */96) * INCHES_PER_UNIT["mm"]) || 13,
+          "picHeight": Math.ceil(shader.markerSize * (/* inlined export .DOTS_PER_INCH */96) * INCHES_PER_UNIT["mm"]) || 13,
           "style": JSON.stringify(shader)
         };
         var imageUrl = Util.urlAppend(url + "/symbol.png", Util.getParameterString(symbolParameters));
@@ -98328,7 +100794,7 @@ class StyleUtils {
         style.fontWeight = shader.bold ? shader.fontWeight : "normal";
         //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
         //固定大小的时候单位是毫米
-        var text_h = shader.fontHeight * DOTS_PER_INCH * INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
+        var text_h = shader.fontHeight * (/* inlined export .DOTS_PER_INCH */96) * INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
         style.fontSize = text_h + "px";
 
         //设置文本字体类型
@@ -98404,7 +100870,7 @@ class StyleUtils {
               value = shader[attr];
               if (obj.unit) {
                 //将单位转换为像素单位
-                value = value * DOTS_PER_INCH * INCHES_PER_UNIT[obj.unit] * 2.5;
+                value = value * (/* inlined export .DOTS_PER_INCH */96) * INCHES_PER_UNIT[obj.unit] * 2.5;
               }
               style[canvasStyle] = value;
               break;
@@ -99746,6 +102212,16 @@ const external_ol_extent_namespaceObject = ol.extent;
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @deprecated {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
  * @param {string} [options.ratio=1.5] - 	请求图片大小比例。 1 表示请求图片大小和地图视窗范围一致，2 表示请求图片大小是地图视窗范围的2倍，以此类推。
@@ -99830,6 +102306,9 @@ class ImageSuperMapRest extends (external_ol_source_Image_default()) {
     }
     if (options.rasterfunction) {
       params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+    }
+    if (options.displayFilters) {
+      params['displayFilters'] = JSON.stringify(options.displayFilters);
     }
     //是否反走样地图,默认为false
     if (options.antialias !== undefined) {
@@ -100233,6 +102712,9 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
   }
 }
 
+;// external "ol.TileRange"
+const external_ol_TileRange_namespaceObject = ol.TileRange;
+var external_ol_TileRange_default = /*#__PURE__*/__webpack_require__.n(external_ol_TileRange_namespaceObject);
 ;// external "ol.size"
 const external_ol_size_namespaceObject = ol.size;
 ;// external "ol.tilegrid"
@@ -100252,15 +102734,54 @@ const external_ol_tilegrid_namespaceObject = ol.tilegrid;
 
 
 
+
+function getOverflowTileCount(overflowTiles) {
+  return Math.max(0, Math.floor(Number(overflowTiles) || 0));
+}
+
+function wrapTileGridWithOverflow(tileGrid, overflowTiles) {
+  const overflowTileCount = getOverflowTileCount(overflowTiles);
+  if (!tileGrid || !overflowTileCount) {
+    return tileGrid;
+  }
+
+  const wrappedTileGrid = Object.create(tileGrid);
+  wrappedTileGrid.overflowTiles = overflowTileCount;
+  wrappedTileGrid.getTileRangeForExtentAndZ = function (extent, z, tempTileRange) {
+    const tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z, tempTileRange);
+    if (!tileRange) {
+      return tileRange;
+    }
+    tileRange.minX -= overflowTileCount;
+    tileRange.maxX += overflowTileCount;
+    tileRange.minY -= overflowTileCount;
+    tileRange.maxY += overflowTileCount;
+    return tileRange;
+  };
+  wrappedTileGrid.getFullTileRange = function (z) {
+    const tileRange = tileGrid.getFullTileRange ? tileGrid.getFullTileRange(z) : null;
+    if (!tileRange) {
+      return tileRange;
+    }
+    return new (external_ol_TileRange_default())(
+      tileRange.minX - overflowTileCount,
+      tileRange.maxX + overflowTileCount,
+      tileRange.minY - overflowTileCount,
+      tileRange.maxY + overflowTileCount
+    );
+  };
+  return wrappedTileGrid;
+}
+
 /**
  * @class TileSuperMapRest
  * @browsernamespace ol.source
  * @category iServer Map Tile
  * @modulecategory Mapping
- * @classdesc SuperMap iServer TileImage 图层源。
+ * @classdesc 以地图瓦片的方式展示 SuperMap iServer 的 REST 地图服务的地图。它通过调用 TileImage 接口获取地图瓦片。
  * @param {Object} options - 参数。
- * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {Array.<string>} options.urls - 服务地址数组,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {string} options.url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Array.<string>} options.urls - 服务地址数组，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
@@ -100275,7 +102796,18 @@ const external_ol_tilegrid_namespaceObject = ol.tilegrid;
  * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {Object} [options.displayFilters] - 图层的显示过滤条件，利用该参数控制图层中可显示的要素。
+ * 参数结构：
+ * {
+ * "&lt;layerName1&gt;": "{displayFilter}",
+ * "&lt;layerName2&gt;": "{displayFilter}"
+ * }
+ * 其中，
+ * &lt;layerName&gt; 为地图中某图层名称，可从 layer 资源响应体参数 name 中获取；
+ * {displayFilter} 为属性过滤条件，仅对数据中存在的属性生效。
+ * 当前仅支持对工作空间数据源发布的地图进行属性过滤，支持对多图层同时过滤。
  * @param {ChartSettingS57|ChartSettingS100} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+ * @param {number} [options.overflowTiles = 0] - 在当前视口范围外额外渲染的瓦片圈数。为 1 时上下左右各多请求一圈瓦片，可用于缓解符号在图层范围边缘被裁切的问题。
  * @extends {ol.source.TileImage}
  * @usage
  */
@@ -100286,6 +102818,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         options.attributions || 'Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>';
 
       options.format = options.format ? options.format : 'png';
+      const tileGrid = wrapTileGridWithOverflow(options.tileGrid, options.overflowTiles);
 
       super({
         attributions: options.attributions,
@@ -100297,7 +102830,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         reprojectionErrorThreshold: options.reprojectionErrorThreshold,
         state: options.state,
         tileClass: options.tileClass,
-        tileGrid: options.tileGrid,
+        tileGrid: tileGrid,
         tileLoadFunction: options.tileLoadFunction,
         tilePixelRatio: options.tilePixelRatio,
         tileUrlFunction: options.tileUrlFunction || tileUrlFunction,
@@ -100308,10 +102841,12 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
       if (options.tileProxy) {
         this.tileProxy = options.tileProxy;
       }
+      options.tileGrid = tileGrid;
       this.options = options;
       //当前切片在切片集中的index
       this.tileSetsIndex = -1;
       this.tempIndex = -1;
+      this._paramsVersion = 0;
       this.dpi = this.options.dpi || 96;
       if (options.url) {
         this._urls = expandUrl(options.url);
@@ -100377,6 +102912,9 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         }
         if (options.rasterfunction) {
           params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+        }
+        if (options.displayFilters) {
+          params['displayFilters'] = JSON.stringify(options.displayFilters);
         }
         if (options.chartSetting) {
           params['chartSetting'] = JSON.stringify(options.chartSetting);
@@ -100458,19 +102996,25 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
       function tileUrlFunction(tileCoord, pixelRatio, projection) {
         if (!me.tileGrid) {
           if (options.extent) {
-            me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
+            me.tileGrid = wrapTileGridWithOverflow(TileSuperMapRest.createTileGrid(options.extent), options.overflowTiles);
             if (me.resolutions) {
               me.tileGrid.resolutions = me.resolutions;
             }
           } else {
             if (projection.getCode() === 'EPSG:3857') {
-              me.tileGrid = TileSuperMapRest.createTileGrid([
-                -20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892
-              ]);
+              me.tileGrid = wrapTileGridWithOverflow(
+                TileSuperMapRest.createTileGrid([
+                  -20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892
+                ]),
+                options.overflowTiles
+              );
               me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
             }
             if (projection.getCode() === 'EPSG:4326') {
-              me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+              me.tileGrid = wrapTileGridWithOverflow(
+                TileSuperMapRest.createTileGrid([-180, -90, 180, 90]),
+                options.overflowTiles
+              );
               me.extent = [-180, -90, 180, 90];
             }
           }
@@ -100654,8 +103198,12 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
      * @version 11.2.0
      */
     updateParams(params) {
-      Object.assign(this.requestParams, params);
+      Object.assign(this.options, params);
+      if (this.requestParams) {
+        Object.assign(this.requestParams, params);
+      }
       this._paramsChanged = true;
+      this.setKey(String(++this._paramsVersion));
       this.refresh();
     }
 }
@@ -100915,7 +103463,7 @@ __webpack_require__.dn(projString);
   return self;
 }
 
-;// ./node_modules/wkt-parser/PROJJSONBuilderBase.js
+;// ./node_modules/wkt-parser/PROJJSONBuilder.js
 class PROJJSONBuilderBase {
   static getId(node) {
     const idNode = node.find((child) => Array.isArray(child) && child[0] === 'ID');
@@ -101012,7 +103560,7 @@ class PROJJSONBuilderBase {
         const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         if (csNode) {
           result.coordinate_system = {
-            type: csNode[1],
+            subtype: csNode[1],
             axis: this.extractAxes(node),
           };
         }
@@ -101052,8 +103600,9 @@ class PROJJSONBuilderBase {
           }
         }
       
+        const geogCsNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         result.coordinate_system = {
-          type: 'ellipsoidal',
+          subtype: geogCsNode ? geogCsNode[1] : 'ellipsoidal',
           axis: this.extractAxes(node),
         };
       
@@ -101234,93 +103783,9 @@ class PROJJSONBuilderBase {
   }
 }
 
-/* harmony default export */ const wkt_parser_PROJJSONBuilderBase = (PROJJSONBuilderBase);
-;// ./node_modules/wkt-parser/PROJJSONBuilder2015.js
-
-
-class PROJJSONBuilder2015 extends wkt_parser_PROJJSONBuilderBase {
-  static convert(node, result = {}) {
-    super.convert(node, result);
-
-    // Skip `CS` and `USAGE` nodes for WKT2-2015
-    if (result.coordinate_system && result.coordinate_system.subtype === 'Cartesian') {
-      delete result.coordinate_system;
-    }
-    if (result.usage) {
-      delete result.usage;
-    }
-
-    return result;
-  }
-}
-
-/* harmony default export */ const wkt_parser_PROJJSONBuilder2015 = (PROJJSONBuilder2015);
-;// ./node_modules/wkt-parser/PROJJSONBuilder2019.js
-
-
-class PROJJSONBuilder2019 extends wkt_parser_PROJJSONBuilderBase {
-  static convert(node, result = {}) {
-    super.convert(node, result);
-
-    // Handle `CS` node for WKT2-2019
-    const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
-    if (csNode) {
-      result.coordinate_system = {
-        subtype: csNode[1],
-        axis: this.extractAxes(node),
-      };
-    }
-
-    // Handle `USAGE` node for WKT2-2019
-    const usageNode = node.find((child) => Array.isArray(child) && child[0] === 'USAGE');
-    if (usageNode) {
-      const scope = usageNode.find((child) => Array.isArray(child) && child[0] === 'SCOPE');
-      const area = usageNode.find((child) => Array.isArray(child) && child[0] === 'AREA');
-      const bbox = usageNode.find((child) => Array.isArray(child) && child[0] === 'BBOX');
-      result.usage = {};
-      if (scope) {
-        result.usage.scope = scope[1];
-      }
-      if (area) {
-        result.usage.area = area[1];
-      }
-      if (bbox) {
-        result.usage.bbox = bbox.slice(1);
-      }
-    }
-
-    return result;
-  }
-}
-
-/* harmony default export */ const wkt_parser_PROJJSONBuilder2019 = (PROJJSONBuilder2019);
+/* harmony default export */ const PROJJSONBuilder = (PROJJSONBuilderBase);
 ;// ./node_modules/wkt-parser/buildPROJJSON.js
 
-
-
-/**
- * Detects the WKT2 version based on the structure of the WKT.
- * @param {Array} root The root WKT array node.
- * @returns {string} The detected version ("2015" or "2019").
- */
-function detectWKT2Version(root) {
-  // Check for WKT2-2019-specific nodes
-  if (root.find((child) => Array.isArray(child) && child[0] === 'USAGE')) {
-    return '2019'; // `USAGE` is specific to WKT2-2019
-  }
-
-  // Check for WKT2-2015-specific nodes
-  if (root.find((child) => Array.isArray(child) && child[0] === 'CS')) {
-    return '2015'; // `CS` is valid in both, but default to 2015 unless `USAGE` is present
-  }
-
-  if (root[0] === 'BOUNDCRS' || root[0] === 'PROJCRS' || root[0] === 'GEOGCRS') {
-    return '2015'; // These are valid in both, but default to 2015
-  }
-
-  // Default to WKT2-2015 if no specific indicators are found
-  return '2015';
-}
 
 /**
  * Builds a PROJJSON object from a WKT array structure.
@@ -101328,9 +103793,7 @@ function detectWKT2Version(root) {
  * @returns {Object} The PROJJSON object.
  */
 function buildPROJJSON(root) {
-  const version = detectWKT2Version(root);
-  const builder = version === '2019' ? wkt_parser_PROJJSONBuilder2019 : wkt_parser_PROJJSONBuilder2015;
-  return builder.convert(root);
+  return PROJJSONBuilder.convert(root);
 }
 
 ;// ./node_modules/wkt-parser/detectWKTVersion.js
@@ -101884,6 +104347,11 @@ function transformPROJJSON(projjson, result = {}) {
         break;
     }
   });
+
+  // Geographic and geodetic CRSs have no base_crs, so use their own id as datumCode
+  if (!result.datumCode && (projjson.type === 'GeographicCRS' || projjson.type === 'GeodeticCRS') && projjson.id) {
+    result.datumCode = projjson.id.authority + '_' + projjson.id.code;
+  }
 
   // Additional calculated properties
   if (result.latitude_of_false_origin !== undefined) {
@@ -108761,7 +111229,7 @@ var sinu_names = ['Sinusoidal', 'sinu'];
 ;// ./node_modules/proj4/lib/projections/moll.js
 
 function moll_init() {}
-
+;
 /* Mollweide forward equations--mapping lat,long to x,y
     ---------------------------------------------------- */
 function moll_forward(p) {
@@ -110903,10 +113371,10 @@ var external_ol_geom_Point_default = /*#__PURE__*/__webpack_require__.n(external
  * @class QueryService
  * @category  iServer Map QueryResults
  * @classdesc 地图查询服务类。
- *            提供：范围查询，SQL 查询，几何查询，距离查询。
+ *            提供：范围查询，SQL 查询，空间查询，距离查询。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -110928,7 +113396,7 @@ class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByBounds
-     * @description 范围查询地图服务。
+     * @description 范围查询。查询指定矩形范围内的要素，以及外接矩形与指定范围相交的几何对象。
      * @param {QueryByBoundsParameters} params - 范围查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -110967,8 +113435,8 @@ class QueryService extends ServiceBase {
 
     /**
      * @function QueryService.prototype.queryByGeometry
-     * @description 地图几何查询服务。
-     * @param {QueryByGeometryParameters} params - 几何查询参数类。
+     * @description 空间查询。查询与指定的几何对象符合某种空间关系和查询条件的要素。
+     * @param {QueryByGeometryParameters} params - 空间查询参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -111031,7 +113499,7 @@ const FEATURE_SERVICE_MAP = {
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑，要素附件查询、添加、删除等方法。
+ * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，空间查询，缓冲区查询，地物编辑，要素附件查询、添加、删除等方法。
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -111138,8 +113606,8 @@ class FeatureService_FeatureService {
 
   /**
    * @function FeatureService.prototype.getFeaturesByGeometry
-   * @description 数据集几何查询服务类。
-   * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+   * @description 数据集空间查询服务类。
+   * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
    * @returns {Promise} Promise 对象。
@@ -111326,13 +113794,13 @@ var external_ol_geom_Polygon_default = /*#__PURE__*/__webpack_require__.n(extern
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL查询，空间查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
  * @modulecategory Services
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -111401,8 +113869,8 @@ class FeatureService extends ServiceBase {
 
   /**
    * @function FeatureService.prototype.getFeaturesByGeometry
-   * @description 数据集几何查询服务类。
-   * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+   * @description 数据集空间查询服务类。
+   * @param {GetFeaturesByGeometryParameters} params - 数据集空间查询参数类。
    * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
    * @returns {Promise} Promise 对象。
@@ -111763,14 +114231,14 @@ function Util_isArray(obj) {
  *      new DataFlowService(url).queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据流服务地址，如 ws://{ip}:{port}/iserver/services/dataflowTest/dataflow 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - 排除字段。
+ * @param {GeoJSONObject} [options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
+ * @param {Object} [options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @usage
  */
 class DataFlowService extends ServiceBase {
@@ -111825,8 +114293,8 @@ class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -111836,8 +114304,8 @@ class DataFlowService extends ServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @description 设置空间范围，只有在该范围内的要素才能被接收。
+     * @param {GeoJSONObject} geometry - 空间范围。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -111882,9 +114350,9 @@ class DataFlowService extends ServiceBase {
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.ws - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
  * @param {string} [opt_options.idField = 'id'] - 要素属性中表示唯一标识的字段。
- * @param {GeoJSONObject} [opt_options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [opt_options.geometry] - 空间范围，只有在该范围内的要素才能被接收。
  * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
- * @param {Object} [opt_options.excludeField] - 排除字段。
+ * @param {Object} [opt_options.excludeField] - 过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
  * @extends {ol.source.Vector}
  * @example
  * var source = new DataFlow({
@@ -111938,8 +114406,8 @@ class DataFlow extends (external_ol_source_Vector_default()) {
 
     /**
      * @function DataFlow.prototype.setExcludeField
-     * @description 设置唯一字段。
-     * @param {Object} excludeField - 排除字段。
+     * @description 设置过滤字段。传入此参数，接收到的信息将不包含过滤掉的字段。
+     * @param {Object} excludeField - 过滤字段。
      */
     setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);
@@ -112055,7 +114523,7 @@ var external_ol_source_ImageCanvas_default = /*#__PURE__*/__webpack_require__.n(
  * @class Theme
  * @browsernamespace ol.source
  * @category Visualization Theme
- * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。<br>
  * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * 调用建议：使用其子类实现该类。
  * @modulecategory Overlay
@@ -118719,12 +121187,6 @@ var geometry_type_GeometryType;
   GeometryType[GeometryType["TIN"] = 16] = "TIN";
   GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
 })(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
-;// ./node_modules/flatbuffers/mjs/constants.js
-const SIZEOF_SHORT = 2;
-const SIZEOF_INT = 4;
-const FILE_IDENTIFIER_LENGTH = 4;
-const SIZE_PREFIX_LENGTH = 4;
-
 ;// ./node_modules/flatbuffers/mjs/utils.js
 const int32 = new Int32Array(2);
 const float32 = new Float32Array(int32.buffer);
@@ -118866,13 +121328,13 @@ class ByteBuffer {
      * start of a the root vtable).
      */
     getBufferIdentifier() {
-        if (this.bytes_.length < this.position_ + SIZEOF_INT +
-            FILE_IDENTIFIER_LENGTH) {
+        if (this.bytes_.length < this.position_ + (/* inlined export .SIZEOF_INT */4) +
+            (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
             throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
         }
         let result = "";
-        for (let i = 0; i < FILE_IDENTIFIER_LENGTH; i++) {
-            result += String.fromCharCode(this.readInt8(this.position_ + SIZEOF_INT + i));
+        for (let i = 0; i < (/* inlined export .FILE_IDENTIFIER_LENGTH */4); i++) {
+            result += String.fromCharCode(this.readInt8(this.position_ + (/* inlined export .SIZEOF_INT */4) + i));
         }
         return result;
     }
@@ -118906,7 +121368,7 @@ class ByteBuffer {
     __string(offset, opt_encoding) {
         offset += this.readInt32(offset);
         const length = this.readInt32(offset);
-        offset += SIZEOF_INT;
+        offset += (/* inlined export .SIZEOF_INT */4);
         const utf8bytes = this.bytes_.subarray(offset, offset + length);
         if (opt_encoding === Encoding.UTF8_BYTES)
             return utf8bytes;
@@ -118936,7 +121398,7 @@ class ByteBuffer {
      * Get the start of data of a vector whose offset is stored at "offset" in this object.
      */
     __vector(offset) {
-        return offset + this.readInt32(offset) + SIZEOF_INT; // data starts after the length
+        return offset + this.readInt32(offset) + (/* inlined export .SIZEOF_INT */4); // data starts after the length
     }
     /**
      * Get the length of a vector whose offset is stored at "offset" in this object.
@@ -118945,12 +121407,12 @@ class ByteBuffer {
         return this.readInt32(offset + this.readInt32(offset));
     }
     __has_identifier(ident) {
-        if (ident.length != FILE_IDENTIFIER_LENGTH) {
+        if (ident.length != (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
             throw new Error('FlatBuffers: file identifier must be length ' +
-                FILE_IDENTIFIER_LENGTH);
+                (/* inlined export .FILE_IDENTIFIER_LENGTH */4));
         }
-        for (let i = 0; i < FILE_IDENTIFIER_LENGTH; i++) {
-            if (ident.charCodeAt(i) != this.readInt8(this.position() + SIZEOF_INT + i)) {
+        for (let i = 0; i < (/* inlined export .FILE_IDENTIFIER_LENGTH */4); i++) {
+            if (ident.charCodeAt(i) != this.readInt8(this.position() + (/* inlined export .SIZEOF_INT */4) + i)) {
                 return false;
             }
         }
@@ -118989,10 +121451,7 @@ class ByteBuffer {
 
 ;// ./node_modules/flatbuffers/mjs/builder.js
 /* unused harmony import specifier */ var builder_ByteBuffer;
-/* unused harmony import specifier */ var builder_SIZEOF_INT;
-/* unused harmony import specifier */ var builder_SIZEOF_SHORT;
-/* unused harmony import specifier */ var builder_SIZE_PREFIX_LENGTH;
-/* unused harmony import specifier */ var builder_FILE_IDENTIFIER_LENGTH;
+/* unused harmony import specifier */ var SIZEOF_SHORT;
 
 
 class Builder {
@@ -119279,8 +121738,8 @@ class Builder {
      * @param offset The offset to add.
      */
     addOffset(offset) {
-        this.prep(builder_SIZEOF_INT, 0); // Ensure alignment is already done.
-        this.writeInt32(this.offset() - offset + builder_SIZEOF_INT);
+        this.prep((/* inlined export .SIZEOF_INT */4), 0); // Ensure alignment is already done.
+        this.writeInt32(this.offset() - offset + (/* inlined export .SIZEOF_INT */4));
     }
     /**
      * Start encoding a new object in the buffer.  Users will not usually need to
@@ -119322,7 +121781,7 @@ class Builder {
         }
         const standard_fields = 2; // The fields below:
         this.addInt16(vtableloc - this.object_start);
-        const len = (trimmed_size + standard_fields) * builder_SIZEOF_SHORT;
+        const len = (trimmed_size + standard_fields) * SIZEOF_SHORT;
         this.addInt16(len);
         // Search for an existing vtable that matches the current one.
         let existing_vtable = 0;
@@ -119330,7 +121789,7 @@ class Builder {
         outer_loop: for (i = 0; i < this.vtables.length; i++) {
             const vt2 = this.bb.capacity() - this.vtables[i];
             if (len == this.bb.readInt16(vt2)) {
-                for (let j = builder_SIZEOF_SHORT; j < len; j += builder_SIZEOF_SHORT) {
+                for (let j = SIZEOF_SHORT; j < len; j += SIZEOF_SHORT) {
                     if (this.bb.readInt16(vt1 + j) != this.bb.readInt16(vt2 + j)) {
                         continue outer_loop;
                     }
@@ -119360,20 +121819,20 @@ class Builder {
      * Finalize a buffer, poiting to the given `root_table`.
      */
     finish(root_table, opt_file_identifier, opt_size_prefix) {
-        const size_prefix = opt_size_prefix ? builder_SIZE_PREFIX_LENGTH : 0;
+        const size_prefix = opt_size_prefix ? (/* inlined export .SIZE_PREFIX_LENGTH */4) : 0;
         if (opt_file_identifier) {
             const file_identifier = opt_file_identifier;
-            this.prep(this.minalign, builder_SIZEOF_INT +
-                builder_FILE_IDENTIFIER_LENGTH + size_prefix);
-            if (file_identifier.length != builder_FILE_IDENTIFIER_LENGTH) {
+            this.prep(this.minalign, (/* inlined export .SIZEOF_INT */4) +
+                (/* inlined export .FILE_IDENTIFIER_LENGTH */4) + size_prefix);
+            if (file_identifier.length != (/* inlined export .FILE_IDENTIFIER_LENGTH */4)) {
                 throw new TypeError('FlatBuffers: file identifier must be length ' +
-                    builder_FILE_IDENTIFIER_LENGTH);
+                    (/* inlined export .FILE_IDENTIFIER_LENGTH */4));
             }
-            for (let i = builder_FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
+            for (let i = (/* inlined export .FILE_IDENTIFIER_LENGTH */4) - 1; i >= 0; i--) {
                 this.writeInt8(file_identifier.charCodeAt(i));
             }
         }
-        this.prep(this.minalign, builder_SIZEOF_INT + size_prefix);
+        this.prep(this.minalign, (/* inlined export .SIZEOF_INT */4) + size_prefix);
         this.addOffset(root_table);
         if (size_prefix) {
             this.addInt32(this.bb.capacity() - this.space);
@@ -119412,7 +121871,7 @@ class Builder {
     startVector(elem_size, num_elems, alignment) {
         this.notNested();
         this.vector_num_elems = num_elems;
-        this.prep(builder_SIZEOF_INT, elem_size * num_elems);
+        this.prep((/* inlined export .SIZEOF_INT */4), elem_size * num_elems);
         this.prep(alignment, elem_size * num_elems); // Just in case alignment > int.
     }
     /**
@@ -119530,8 +121989,8 @@ function geometry_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeEr
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == geometry_typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != geometry_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != geometry_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function _toPrimitive(t, e) { if ("object" != geometry_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != geometry_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 var geometry_Geometry = /*#__PURE__*/function () {
   function Geometry() {
@@ -119674,7 +122133,7 @@ var geometry_Geometry = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsGeometry",
     value: function getSizePrefixedRootAsGeometry(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -119852,7 +122311,7 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 function buildGeometry(builder, parsedGeometry) {
   var xy = parsedGeometry.xy,
@@ -120110,8 +122569,8 @@ function column_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function column_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, column_toPropertyKey(o.key), o); } }
 function column_createClass(e, r, t) { return r && column_defineProperties(e.prototype, r), t && column_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function column_toPropertyKey(t) { var i = column_toPrimitive(t, "string"); return "symbol" == column_typeof(i) ? i : i + ""; }
-function column_toPrimitive(t, r) { if ("object" != column_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function column_toPrimitive(t, e) { if ("object" != column_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 var Column = /*#__PURE__*/function () {
   function Column() {
@@ -120200,7 +122659,7 @@ var Column = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsColumn",
     value: function getSizePrefixedRootAsColumn(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -120295,8 +122754,8 @@ function feature_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function feature_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, feature_toPropertyKey(o.key), o); } }
 function feature_createClass(e, r, t) { return r && feature_defineProperties(e.prototype, r), t && feature_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function feature_toPropertyKey(t) { var i = feature_toPrimitive(t, "string"); return "symbol" == feature_typeof(i) ? i : i + ""; }
-function feature_toPrimitive(t, r) { if ("object" != feature_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function feature_toPrimitive(t, e) { if ("object" != feature_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 var feature_Feature = /*#__PURE__*/function () {
@@ -120356,7 +122815,7 @@ var feature_Feature = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsFeature",
     value: function getSizePrefixedRootAsFeature(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -120778,8 +123237,8 @@ function crs_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("
 function crs_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, crs_toPropertyKey(o.key), o); } }
 function crs_createClass(e, r, t) { return r && crs_defineProperties(e.prototype, r), t && crs_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function crs_toPropertyKey(t) { var i = crs_toPrimitive(t, "string"); return "symbol" == crs_typeof(i) ? i : i + ""; }
-function crs_toPrimitive(t, r) { if ("object" != crs_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function crs_toPrimitive(t, e) { if ("object" != crs_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 var Crs = /*#__PURE__*/function () {
   function Crs() {
     crs_classCallCheck(this, Crs);
@@ -120837,7 +123296,7 @@ var Crs = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsCrs",
     value: function getSizePrefixedRootAsCrs(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -120901,8 +123360,8 @@ function header_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function header_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, header_toPropertyKey(o.key), o); } }
 function header_createClass(e, r, t) { return r && header_defineProperties(e.prototype, r), t && header_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function header_toPropertyKey(t) { var i = header_toPrimitive(t, "string"); return "symbol" == header_typeof(i) ? i : i + ""; }
-function header_toPrimitive(t, r) { if ("object" != header_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function header_toPrimitive(t, e) { if ("object" != header_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 
@@ -121029,7 +123488,7 @@ var Header = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsHeader",
     value: function getSizePrefixedRootAsHeader(bb, obj) {
-      bb.setPosition(bb.position() + SIZE_PREFIX_LENGTH);
+      bb.setPosition(bb.position() + (/* inlined export .SIZE_PREFIX_LENGTH */4));
       return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -122119,7 +124578,7 @@ function config_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function config_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, config_toPropertyKey(o.key), o); } }
 function config_createClass(e, r, t) { return r && config_defineProperties(e.prototype, r), t && config_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function config_toPropertyKey(t) { var i = config_toPrimitive(t, "string"); return "symbol" == config_typeof(i) ? i : i + ""; }
-function config_toPrimitive(t, r) { if ("object" != config_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function config_toPrimitive(t, e) { if ("object" != config_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var config_Config = /*#__PURE__*/function () {
   function Config() {
     config_classCallCheck(this, Config);
@@ -122148,7 +124607,7 @@ function logger_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function logger_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, logger_toPropertyKey(o.key), o); } }
 function logger_createClass(e, r, t) { return r && logger_defineProperties(e.prototype, r), t && logger_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function logger_toPropertyKey(t) { var i = logger_toPrimitive(t, "string"); return "symbol" == logger_typeof(i) ? i : i + ""; }
-function logger_toPrimitive(t, r) { if ("object" != logger_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function logger_toPrimitive(t, e) { if ("object" != logger_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var LogLevel;
 (function (LogLevel) {
   LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -122247,13 +124706,13 @@ function packedrtree_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function packedrtree_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, packedrtree_toPropertyKey(o.key), o); } }
 function packedrtree_createClass(e, r, t) { return r && packedrtree_defineProperties(e.prototype, r), t && packedrtree_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function packedrtree_toPropertyKey(t) { var i = packedrtree_toPrimitive(t, "string"); return "symbol" == packedrtree_typeof(i) ? i : i + ""; }
-function packedrtree_toPrimitive(t, r) { if ("object" != packedrtree_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function packedrtree_toPrimitive(t, e) { if ("object" != packedrtree_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function _awaitAsyncGenerator(e) { return new _OverloadYield(e, 0); }
 function _wrapAsyncGenerator(e) { return function () { return new AsyncGenerator(e.apply(this, arguments)); }; }
 function AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof _OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function _OverloadYield(e, d) { this.v = e, this.k = d; }
-
+;
 
 var NODE_ITEM_BYTE_LEN = 8 * 4 + 8;
 var NODE_ITEM_LEN = (/* unused pure expression or super */ null && (NODE_ITEM_BYTE_LEN));
@@ -122508,7 +124967,7 @@ function http_reader_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function http_reader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, http_reader_toPropertyKey(o.key), o); } }
 function http_reader_createClass(e, r, t) { return r && http_reader_defineProperties(e.prototype, r), t && http_reader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function http_reader_toPropertyKey(t) { var i = http_reader_toPrimitive(t, "string"); return "symbol" == http_reader_typeof(i) ? i : i + ""; }
-function http_reader_toPrimitive(t, r) { if ("object" != http_reader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function http_reader_toPrimitive(t, e) { if ("object" != http_reader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function http_reader_wrapAsyncGenerator(e) { return function () { return new http_reader_AsyncGenerator(e.apply(this, arguments)); }; }
 function http_reader_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof http_reader_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 http_reader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, http_reader_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, http_reader_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, http_reader_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
@@ -122517,7 +124976,7 @@ function _asyncGeneratorDelegate(t) { var e = {}, n = !1; function pump(e, r) { 
 function http_reader_OverloadYield(e, d) { this.v = e, this.k = d; }
 function _asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(r); }
-
+;
 
 
 
@@ -122922,7 +125381,7 @@ var HttpRangeClient = /*#__PURE__*/function () {
 function header_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = header_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function header_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return header_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? header_arrayLikeToArray(r, a) : void 0; } }
 function header_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 function featureGeomType(feature) {
   if (feature.getGeometry) {
@@ -122983,7 +125442,7 @@ function featurecollection_wrapAsyncGenerator(e) { return function () { return n
 function featurecollection_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof featurecollection_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 featurecollection_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, featurecollection_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, featurecollection_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, featurecollection_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function featurecollection_OverloadYield(e, d) { this.v = e, this.k = d; }
-
+;
 
 
 
@@ -123335,7 +125794,7 @@ function introspectHeaderMeta(features) {
 function geojson_featurecollection_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = geojson_featurecollection_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function geojson_featurecollection_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return geojson_featurecollection_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? geojson_featurecollection_arrayLikeToArray(r, a) : void 0; } }
 function geojson_featurecollection_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-
+;
 
 
 
@@ -123438,13 +125897,13 @@ function FGB_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("
 function FGB_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, FGB_toPropertyKey(o.key), o); } }
 function FGB_createClass(e, r, t) { return r && FGB_defineProperties(e.prototype, r), t && FGB_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function FGB_toPropertyKey(t) { var i = FGB_toPrimitive(t, "string"); return "symbol" == FGB_typeof(i) ? i : i + ""; }
-function FGB_toPrimitive(t, r) { if ("object" != FGB_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != FGB_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function FGB_toPrimitive(t, e) { if ("object" != FGB_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != FGB_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function FGB_asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new FGB_AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function FGB_AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return FGB_AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, FGB_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new FGB_AsyncFromSyncIterator(r); }
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
+;
 
 
 
@@ -123740,7 +126199,7 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
  *     //doSomething
  * })
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。
+ * @param {string} url - 知识图谱服务地址，如 http://{ip}:{port}/iserver/services/knowledgeGraph-test/restjsr/graph 。
  * @param {Object} options -参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -124860,7 +127319,7 @@ var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 地址匹配服务地址，如 http://{ip}:{port}/iserver/services/addressmatch-Address/restjsr/v1/address 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -125239,36 +127698,58 @@ var earthRadius = 63710088e-1;
 var factors = {
   centimeters: earthRadius * 100,
   centimetres: earthRadius * 100,
+  cm: earthRadius * 100,
   degrees: 360 / (2 * Math.PI),
+  deg: 360 / (2 * Math.PI),
   feet: earthRadius * 3.28084,
+  ft: earthRadius * 3.28084,
   inches: earthRadius * 39.37,
+  in: earthRadius * 39.37,
   kilometers: earthRadius / 1e3,
   kilometres: earthRadius / 1e3,
+  km: earthRadius / 1e3,
   meters: earthRadius,
   metres: earthRadius,
+  m: earthRadius,
   miles: earthRadius / 1609.344,
+  mi: earthRadius / 1609.344,
   millimeters: earthRadius * 1e3,
   millimetres: earthRadius * 1e3,
+  mm: earthRadius * 1e3,
   nauticalmiles: earthRadius / 1852,
+  nmi: earthRadius / 1852,
   radians: 1,
-  yards: earthRadius * 1.0936
+  rad: 1,
+  yards: earthRadius * 1.0936,
+  yd: earthRadius * 1.0936
 };
 var areaFactors = (/* unused pure expression or super */ null && ({
   acres: 247105e-9,
+  ac: 247105e-9,
   centimeters: 1e4,
   centimetres: 1e4,
+  cm: 1e4,
   feet: 10.763910417,
+  ft: 10.763910417,
   hectares: 1e-4,
+  ha: 1e-4,
   inches: 1550.003100006,
+  in: 1550.003100006,
   kilometers: 1e-6,
   kilometres: 1e-6,
+  km: 1e-6,
   meters: 1,
   metres: 1,
+  m: 1,
   miles: 386e-9,
+  mi: 386e-9,
   nauticalmiles: 29155334959812285e-23,
+  nmi: 29155334959812285e-23,
   millimeters: 1e6,
   millimetres: 1e6,
-  yards: 1.195990046
+  mm: 1e6,
+  yards: 1.195990046,
+  yd: 1.195990046
 }));
 function feature(geom, properties, options = {}) {
   const feat = { type: "Feature" };
@@ -125487,6 +127968,16 @@ function dist_esm_isNumber(num) {
 }
 function esm_isObject(input) {
   return input !== null && typeof input === "object" && !Array.isArray(input);
+}
+function removeBbox(geojson) {
+  delete geojson.bbox;
+  if (geojson.type === "Feature") {
+    if (geojson.geometry) removeBbox(geojson.geometry);
+  } else if (geojson.type === "FeatureCollection") {
+    geojson.features.forEach(removeBbox);
+  } else if (geojson.type === "GeometryCollection") {
+    geojson.geometries.forEach(removeBbox);
+  }
 }
 function validateBBox(bbox) {
   if (!bbox) {
@@ -125950,7 +128441,7 @@ var index_default = (/* unused pure expression or super */ null && (distance));
  * }).queryChart(param,function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址，如 http://{ip}:{port}/iserver/services/map-chart/rest/maps/GB4X0000_52000 。
  * @param {string} [dataUrl] - 数据服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -126203,7 +128694,7 @@ class FieldService_FieldService {
  *           //doSomething
  *      });
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -126256,7 +128747,7 @@ class FieldService extends ServiceBase {
  * @category  iServer Data Dataset
  * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -126279,7 +128770,7 @@ class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 根据数据源名称查询该数据源下所有数据集的信息。
      * @param {string} datasourceName - 数据源名称。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
@@ -126293,7 +128784,7 @@ class DatasetService extends ServiceBase {
 
     /**
      * @function DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -126361,7 +128852,7 @@ class DatasetService extends ServiceBase {
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。提供方法：查询数据源集合、查询指定数据源信息、设置指定数据源信息。可以获取的数据源信息包括数据源名称、数据源描述、引擎类型、距离单位、坐标单位、投影信息等。
  * @modulecategory Services
- * @param {string} url - 服务地址。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -126384,7 +128875,7 @@ class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集合查询服务。
+     * @description 获取当前服务下所有数据源信息。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getDatasources(callback) {
@@ -126393,7 +128884,7 @@ class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasource
-     * @description 数据源信息查询服务。
+     * @description 根据数据源名称获取指定数据源的信息。
      * @param {string} datasourceName - 数据源名称。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
@@ -126445,8 +128936,7 @@ class DatasourceService extends ServiceBase {
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 服务地址。请求地图服务，URL 应为：
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World。
+ * @param {string} url - 数据服务地址，如 http://{ip}:{port}/iserver/services/data-world/rest/data 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -126510,7 +129000,7 @@ class GridCellInfosService extends ServiceBase {
        console.log(serverResult);
      });
    })
- * @param {string} url - 服务地址。
+ * @param {string} url - 处理自动化服务地址，如 http://{ip}:{port}/iserver/services/geoprocessing/restjsr/gp/v2 。
  * @param {Object} options - 参数。
  * @usage
  */
@@ -126656,7 +129146,7 @@ class GeoprocessingService extends ServiceBase {
  *      new LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
- * @param {string} url - 服务地址。请求地图服务，URL 应为：
+ * @param {string} url - 地图服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -126741,7 +129231,7 @@ class LayerInfoService extends ServiceBase {
  * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {string} url -  地图服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options -  参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -126954,9 +129444,7 @@ class MeasureService extends ServiceBase {
  *      new NetworkAnalyst3DService(url).sinksFacilityAnalyst(params,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL 应为：
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
- *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param {string} url - 三维网络分析服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -127145,7 +129633,7 @@ class NetworkAnalystService_NetworkAnalystService {
     /**
      * @function NetworkAnalystService.prototype.traceAnalyst
      * @description 上游/下游 追踪分析服务。<br>
-     * 查找给定弧段或节点的上游/下游弧段和结点。
+     * 查找给定弧段或结点的上游/下游弧段和结点。
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -127373,9 +129861,7 @@ class NetworkAnalystService_NetworkAnalystService {
  *      new NetworkAnalystService(url).findPath(params,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 网络分析服务地址。请求网络分析服务，URL 应为:
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
- *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
+ * @param {string} url - 网络分析服务地址，如 http://{ip}:{port}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -127433,7 +129919,7 @@ class NetworkAnalystService extends ServiceBase {
     /**
      * @function NetworkAnalystService.prototype.traceAnalyst
      * @description 上游/下游 追踪分析服务。<br>
-     * 查找给定弧段或节点的上游/下游弧段和结点。
+     * 查找给定弧段或结点的上游/下游弧段和结点。
      * @version 11.1.1
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -128400,7 +130886,7 @@ class NetworkAnalystService extends ServiceBase {
  *      new ProcessingService(url,options).getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 分布式分析服务地址，如 http://{ip}:{port}/iserver/services/distributedanalyst/rest/v1/jobs 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -129395,7 +131881,7 @@ class SpatialAnalystService_SpatialAnalystService {
  *      new SpatialAnalystService(url).bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 空间分析服务地址，如 http://{ip}:{port}/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -129845,7 +132331,8 @@ class SpatialAnalystService extends ServiceBase {
 /**
  * @class ThemeService
  * @category  iServer Map Theme
- * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
+ * @classdesc 专题图服务类。该类可用于获取专题图的信息。<br>
+ * 地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @example
@@ -129854,7 +132341,7 @@ class SpatialAnalystService extends ServiceBase {
  *      }).getThemeInfo(params,function(result){
  *           //doSomething
  *      });
- * @param {string} url - 服务地址。
+ * @param {string} url - 地图服务地址。如 http://{ip}:{port}/iserver/services/map-world/rest/maps/World
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -130000,7 +132487,7 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
  *      new TrafficTransferAnalystService(url).queryStop(params,function(result){
  *           //doSomething
  *      })
- * @param {string} url - 服务地址。
+ * @param {string} url - 交通换乘分析服务地址，如 http://{ip}:{port}/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun 。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -130091,7 +132578,7 @@ class TrafficTransferAnalystService extends ServiceBase {
  *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @modulecategory Services
  * @extends {ServiceBase}
- * @param {string} url - 服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+ * @param {string} url - Web 打印服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 服务交互时所需的可选参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -130208,7 +132695,7 @@ class WebPrintingJobService extends ServiceBase {
  *      ImageService(url,options).getCollections(function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials] - 请求是否携带凭据。默认情况下，仅同源请求包含凭据。
@@ -130279,7 +132766,7 @@ class ImageService extends ServiceBase {
  *      new ImageCollectionService(url,options).getLegend(queryParams,function(result){
  *          //doSomething
  *      })
- * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
+ * @param {string} url - 影像服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
  * @param {Object} options - 参数。
  * @param {string} options.collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -130467,7 +132954,7 @@ var DANGEROUS_PROPERTY_NAMES = [
 var criticalProperties = ["__proto__", "constructor", "prototype"];
 ;// ./node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 function OptionsBuilder_typeof(o) { "@babel/helpers - typeof"; return OptionsBuilder_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OptionsBuilder_typeof(o); }
-
+;
 var defaultOnDangerousProperty = function defaultOnDangerousProperty(name) {
   if (DANGEROUS_PROPERTY_NAMES.includes(name)) {
     return "__" + name;
@@ -130647,7 +133134,7 @@ function xmlNode_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function xmlNode_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, xmlNode_toPropertyKey(o.key), o); } }
 function xmlNode_createClass(e, r, t) { return r && xmlNode_defineProperties(e.prototype, r), t && xmlNode_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function xmlNode_toPropertyKey(t) { var i = xmlNode_toPrimitive(t, "string"); return "symbol" == xmlNode_typeof(i) ? i : i + ""; }
-function xmlNode_toPrimitive(t, r) { if ("object" != xmlNode_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function xmlNode_toPrimitive(t, e) { if ("object" != xmlNode_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 var METADATA_SYMBOL;
 if (typeof Symbol !== "function") {
   METADATA_SYMBOL = "@@xmlMetadata";
@@ -130707,8 +133194,8 @@ function DocTypeReader_classCallCheck(a, n) { if (!(a instanceof n)) throw new T
 function DocTypeReader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DocTypeReader_toPropertyKey(o.key), o); } }
 function DocTypeReader_createClass(e, r, t) { return r && DocTypeReader_defineProperties(e.prototype, r), t && DocTypeReader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function DocTypeReader_toPropertyKey(t) { var i = DocTypeReader_toPrimitive(t, "string"); return "symbol" == DocTypeReader_typeof(i) ? i : i + ""; }
-function DocTypeReader_toPrimitive(t, r) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function DocTypeReader_toPrimitive(t, e) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 var DocTypeReader = /*#__PURE__*/function () {
   function DocTypeReader(options) {
     DocTypeReader_classCallCheck(this, DocTypeReader);
@@ -131289,7 +133776,7 @@ function anynum(str) {
     if ((cc >= CHAR_0 && cc <= CHAR_9) || cc === CHAR_MINUS) continue;
 
     // Below first unicode digit script — check minus variants only
-    if (cc < TABLE_OFFSET) {
+    if (cc < (/* inlined export .TABLE_OFFSET */1632)) {
       if (MINUS_SET.has(cc)) { firstHit = i; break; }
       continue;
     }
@@ -131307,7 +133794,7 @@ function anynum(str) {
     }
 
     // BMP non-surrogate: flat table lookup; also check minus variants in this range
-    if (TABLE[cc - TABLE_OFFSET] !== NOT_DIGIT || MINUS_SET.has(cc)) {
+    if (TABLE[cc - (/* inlined export .TABLE_OFFSET */1632)] !== (/* inlined export .NOT_DIGIT */255) || MINUS_SET.has(cc)) {
       firstHit = i;
       break;
     }
@@ -131331,7 +133818,7 @@ function anynum(str) {
     }
 
     // Below TABLE_OFFSET — check minus variants, else pass through
-    if (cc < TABLE_OFFSET) {
+    if (cc < (/* inlined export .TABLE_OFFSET */1632)) {
       chars.push(MINUS_SET.has(cc) ? '-' : str[i]);
       continue;
     }
@@ -131359,8 +133846,8 @@ function anynum(str) {
       chars.push('-');
       continue;
     }
-    const d = TABLE[cc - TABLE_OFFSET];
-    chars.push(d !== NOT_DIGIT ? String.fromCharCode(d + 48) : str[i]);
+    const d = TABLE[cc - (/* inlined export .TABLE_OFFSET */1632)];
+    chars.push(d !== (/* inlined export .NOT_DIGIT */255) ? String.fromCharCode(d + 48) : str[i]);
   }
 
   return chars.join('');
@@ -131408,8 +133895,10 @@ function toNumber(str, options = {}) {
         return parse_int(trimmedStr, 2);
     } else if (options.octal && octRegex.test(trimmedStr)) {
         return parse_int(trimmedStr, 8);
-    } else if (!isFinite(trimmedStr)) { //Infinity
-        return handleInfinity(str, Number(trimmedStr), options);
+    } else if (!isFinite(trimmedStr)) { //Infinity or not a number
+        const num = Number(trimmedStr);
+        if (Number.isNaN(num)) return str; //not a number: always the original string
+        return handleInfinity(str, num, options); //only +/-Infinity reaches here
     } else if (trimmedStr.includes('e') || trimmedStr.includes('E')) { //eNotation
         return resolveEnotation(str, trimmedStr, options);
     } else {
@@ -131421,8 +133910,8 @@ function toNumber(str, options = {}) {
             const leadingZeros = match[2];
             let numTrimmedByZeros = trimZeros(match[3]); //complete num without leading zeros
             const decimalAdjacentToLeadingZeros = sign ? // 0., -00., 000.
-                str[leadingZeros.length + 1] === "."
-                : str[leadingZeros.length] === ".";
+                trimmedStr[leadingZeros.length + 1] === "."
+                : trimmedStr[leadingZeros.length] === ".";
 
             //trim ending zeros for floating number
             if (!options.leadingZeros //leading zeros are not allowed
@@ -131470,8 +133959,8 @@ function resolveEnotation(str, trimmedStr, options) {
         const eChar = notation[3].indexOf("e") === -1 ? "E" : "e";
         const leadingZeros = notation[2];
         const eAdjacentToLeadingZeros = sign ? // 0E.
-            str[leadingZeros.length + 1] === eChar
-            : str[leadingZeros.length] === eChar;
+            trimmedStr[leadingZeros.length + 1] === eChar
+            : trimmedStr[leadingZeros.length] === eChar;
 
         if (leadingZeros.length > 1 && eAdjacentToLeadingZeros) return str;
         else if (leadingZeros.length === 1
@@ -131480,8 +133969,7 @@ function resolveEnotation(str, trimmedStr, options) {
         } else if (leadingZeros.length > 0) {
             // Has leading zeros — only accept if leadingZeros option allows it
             if (options.leadingZeros && !eAdjacentToLeadingZeros) {
-                trimmedStr = (notation[1] || "") + notation[3];
-                return Number(trimmedStr);
+                return Number(trimmedStr); // Number() accepts leading zeros; stripping can leave a mantissa-less ".e0"
             } else return str;
         } else {
             // No leading zeros — always valid e-notation, parse it
@@ -131499,7 +133987,11 @@ function resolveEnotation(str, trimmedStr, options) {
  */
 function trimZeros(numStr) {
     if (numStr && numStr.indexOf(".") !== -1) {//float
-        numStr = numStr.replace(/0+$/, ""); //remove ending zeros
+        //remove ending zeros without the O(n^2) backtracking that /0+$/ hits
+        //when the string doesn't end in 0 but has a long internal zero-run
+        let end = numStr.length;
+        while (end > 0 && numStr.charCodeAt(end - 1) === 48 /* '0' */) end--;
+        numStr = numStr.slice(0, end);
         if (numStr === ".") numStr = "0";
         else if (numStr[0] === ".") numStr = "0" + numStr;
         else if (numStr[numStr.length - 1] === ".") numStr = numStr.substring(0, numStr.length - 1);
@@ -131540,6 +134032,7 @@ function handleInfinity(str, num, options) {
             return str; // Return original string like "1e1000"
     }
 }
+
 ;// ./node_modules/fast-xml-parser/src/ignoreAttributes.js
 function ignoreAttributes_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = ignoreAttributes_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ignoreAttributes_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return ignoreAttributes_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? ignoreAttributes_arrayLikeToArray(r, a) : void 0; } }
@@ -131578,15 +134071,12 @@ function Matcher_typeof(o) { "@babel/helpers - typeof"; return Matcher_typeof = 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { Matcher_defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function Matcher_defineProperty(e, r, t) { return (r = Matcher_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function Matcher_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = Matcher_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function Matcher_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return Matcher_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? Matcher_arrayLikeToArray(r, a) : void 0; } }
-function Matcher_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function Matcher_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function Matcher_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Matcher_toPropertyKey(o.key), o); } }
 function Matcher_createClass(e, r, t) { return r && Matcher_defineProperties(e.prototype, r), t && Matcher_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Matcher_toPropertyKey(t) { var i = Matcher_toPrimitive(t, "string"); return "symbol" == Matcher_typeof(i) ? i : i + ""; }
-function Matcher_toPrimitive(t, r) { if ("object" != Matcher_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function Matcher_toPrimitive(t, e) { if ("object" != Matcher_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 /**
  * MatcherView - A lightweight read-only view over a Matcher's internal state.
@@ -131674,6 +134164,30 @@ var MatcherView = /*#__PURE__*/function () {
       if (path.length === 0) return false;
       var current = path[path.length - 1];
       return current.values !== undefined && attrName in current.values;
+    }
+
+    /**
+     * Get the value of a "kept" attribute from the nearest ancestor (or
+     * current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {*}
+     */
+  }, {
+    key: "getAnyParentAttr",
+    value: function getAnyParentAttr(attrName) {
+      return this._matcher.getAnyParentAttr(attrName);
+    }
+
+    /**
+     * Check whether any ancestor (or the current node) kept the given
+     * attribute via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {boolean}
+     */
+  }, {
+    key: "hasAnyParentAttr",
+    value: function hasAnyParentAttr(attrName) {
+      return this._matcher.hasAnyParentAttr(attrName);
     }
 
     /**
@@ -131808,6 +134322,9 @@ var Matcher = /*#__PURE__*/function () {
     // Each siblingStacks entry: Map<tagName, count> tracking occurrences at each level
     this._pathStringCache = null;
     this._view = new MatcherView(this);
+
+    // Kept-attribute stack: only populated when push() is called with options.keep.
+    this._keptAttrs = [];
   }
 
   /**
@@ -131815,12 +134332,15 @@ var Matcher = /*#__PURE__*/function () {
    * @param {string} tagName
    * @param {Object|null} [attrValues=null]
    * @param {string|null} [namespace=null]
+   * @param {Object|null} [options=null]
+   * @param {string[]} [options.keep] - Names of attributes (from attrValues)
    */
   return Matcher_createClass(Matcher, [{
     key: "push",
     value: function push(tagName) {
       var attrValues = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var namespace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
       this._pathStringCache = null;
 
       // Remove values from previous current node (now becoming ancestor)
@@ -131830,34 +134350,32 @@ var Matcher = /*#__PURE__*/function () {
 
       // Get or create sibling tracking for current level
       var currentLevel = this.path.length;
-      if (!this.siblingStacks[currentLevel]) {
-        this.siblingStacks[currentLevel] = new Map();
+      var level = this.siblingStacks[currentLevel];
+      if (!level) {
+        // `counts` tells same-name siblings apart (the "counter" — nth <item>
+        // among other <item>s). `total` is every child seen at this level so
+        // far, kept as a running number instead of re-added from `counts` on
+        // every push — a parent with many differently-named children would
+        // otherwise cost more per child the more distinct names it has.
+        level = {
+          counts: new Map(),
+          total: 0
+        };
+        this.siblingStacks[currentLevel] = level;
       }
-      var siblings = this.siblingStacks[currentLevel];
 
       // Create a unique key for sibling tracking that includes namespace
       var siblingKey = namespace ? "".concat(namespace, ":").concat(tagName) : tagName;
 
       // Calculate counter (how many times this tag appeared at this level)
-      var counter = siblings.get(siblingKey) || 0;
+      var counter = level.counts.get(siblingKey) || 0;
 
-      // Calculate position (total children at this level so far)
-      var position = 0;
-      var _iterator = Matcher_createForOfIteratorHelper(siblings.values()),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var count = _step.value;
-          position += count;
-        }
+      // Position = total children at this level seen before this one.
+      var position = level.total;
 
-        // Update sibling count for this tag
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      siblings.set(siblingKey, counter + 1);
+      // Update sibling count for this tag, and the level's running total.
+      level.counts.set(siblingKey, counter + 1);
+      level.total++;
 
       // Create new node
       var node = {
@@ -131872,6 +134390,28 @@ var Matcher = /*#__PURE__*/function () {
         node.values = attrValues;
       }
       this.path.push(node);
+
+      // Depth of the node we just pushed (1-based, matches this.path.length)
+      var depth = this.path.length;
+
+      // Copy only the requested attributes into the kept-attrs stack. This is
+      // the one part of push() whose cost scales with input (O(keep.length))
+      // rather than being O(1) — by design, since the caller is explicitly
+      // opting in for specific attribute names. No options/keep => zero added
+      // cost beyond the two property reads below.
+      var keep = options !== null ? options.keep : null;
+      if (keep !== null && keep !== undefined && keep.length > 0 && attrValues) {
+        for (var i = 0; i < keep.length; i++) {
+          var name = keep[i];
+          if (attrValues[name] !== undefined) {
+            this._keptAttrs.push({
+              depth: depth,
+              name: name,
+              value: attrValues[name]
+            });
+          }
+        }
+      }
     }
 
     /**
@@ -131886,6 +134426,15 @@ var Matcher = /*#__PURE__*/function () {
       var node = this.path.pop();
       if (this.siblingStacks.length > this.path.length + 1) {
         this.siblingStacks.length = this.path.length + 1;
+      }
+
+      // Drop any kept attributes that belonged to the popped node (or deeper).
+      // _keptAttrs is depth-ordered (push only ever appends increasing depths),
+      // so this is a backward scan that stops at the first surviving entry —
+      // typically O(1) since kept attrs are rare by design.
+      var poppedDepth = this.path.length + 1;
+      while (this._keptAttrs.length > 0 && this._keptAttrs[this._keptAttrs.length - 1].depth >= poppedDepth) {
+        this._keptAttrs.pop();
       }
       return node;
     }
@@ -131950,6 +134499,42 @@ var Matcher = /*#__PURE__*/function () {
       if (this.path.length === 0) return false;
       var current = this.path[this.path.length - 1];
       return current.values !== undefined && attrName in current.values;
+    }
+
+    /**
+     * Get the value of a "kept" attribute from the nearest ancestor (or
+     * current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+     * Unlike getAttrValue(), this works regardless of how deep the path has
+     * gone since the attribute was pushed — but only for attribute names that
+     * were explicitly marked with `keep` at push time. Cost is proportional to
+     * the number of currently-kept attributes (typically 0-3), not path depth.
+     * @param {string} attrName
+     * @returns {*} the value, or undefined if no ancestor kept this attribute
+     */
+  }, {
+    key: "getAnyParentAttr",
+    value: function getAnyParentAttr(attrName) {
+      var kept = this._keptAttrs;
+      for (var i = kept.length - 1; i >= 0; i--) {
+        if (kept[i].name === attrName) return kept[i].value;
+      }
+      return undefined;
+    }
+
+    /**
+     * Check whether any ancestor (or the current node) kept the given
+     * attribute via `push(tag, attrs, ns, { keep: [...] })`.
+     * @param {string} attrName
+     * @returns {boolean}
+     */
+  }, {
+    key: "hasAnyParentAttr",
+    value: function hasAnyParentAttr(attrName) {
+      var kept = this._keptAttrs;
+      for (var i = kept.length - 1; i >= 0; i--) {
+        if (kept[i].name === attrName) return true;
+      }
+      return false;
     }
 
     /**
@@ -132045,6 +134630,7 @@ var Matcher = /*#__PURE__*/function () {
       this._pathStringCache = null;
       this.path = [];
       this.siblingStacks = [];
+      this._keptAttrs = [];
     }
 
     /**
@@ -132189,8 +134775,14 @@ var Matcher = /*#__PURE__*/function () {
         path: this.path.map(function (node) {
           return _objectSpread({}, node);
         }),
-        siblingStacks: this.siblingStacks.map(function (map) {
-          return new Map(map);
+        siblingStacks: this.siblingStacks.map(function (level) {
+          return level ? {
+            counts: new Map(level.counts),
+            total: level.total
+          } : level;
+        }),
+        keptAttrs: this._keptAttrs.map(function (entry) {
+          return _objectSpread({}, entry);
         })
       };
     }
@@ -132206,8 +134798,14 @@ var Matcher = /*#__PURE__*/function () {
       this.path = snapshot.path.map(function (node) {
         return _objectSpread({}, node);
       });
-      this.siblingStacks = snapshot.siblingStacks.map(function (map) {
-        return new Map(map);
+      this.siblingStacks = snapshot.siblingStacks.map(function (level) {
+        return level ? {
+          counts: new Map(level.counts),
+          total: level.total
+        } : level;
+      });
+      this._keptAttrs = (snapshot.keptAttrs || []).map(function (entry) {
+        return _objectSpread({}, entry);
       });
     }
 
@@ -132241,7 +134839,7 @@ function Expression_classCallCheck(a, n) { if (!(a instanceof n)) throw new Type
 function Expression_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Expression_toPropertyKey(o.key), o); } }
 function Expression_createClass(e, r, t) { return r && Expression_defineProperties(e.prototype, r), t && Expression_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Expression_toPropertyKey(t) { var i = Expression_toPrimitive(t, "string"); return "symbol" == Expression_typeof(i) ? i : i + ""; }
-function Expression_toPrimitive(t, r) { if ("object" != Expression_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function Expression_toPrimitive(t, e) { if ("object" != Expression_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 /**
  * Expression - Parses and stores a tag pattern expression
  * 
@@ -132502,9 +135100,9 @@ function OrderedObjParser_typeof(o) { "@babel/helpers - typeof"; return OrderedO
 function OrderedObjParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OrderedObjParser_toPropertyKey(o.key), o); } }
 function OrderedObjParser_createClass(e, r, t) { return r && OrderedObjParser_defineProperties(e.prototype, r), t && OrderedObjParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function OrderedObjParser_toPropertyKey(t) { var i = OrderedObjParser_toPrimitive(t, "string"); return "symbol" == OrderedObjParser_typeof(i) ? i : i + ""; }
-function OrderedObjParser_toPrimitive(t, r) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function OrderedObjParser_toPrimitive(t, e) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
 function OrderedObjParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-
+;
 
 
 
@@ -133388,7 +135986,7 @@ function sanitizeName(name, options) {
 
 
 function node2json_typeof(o) { "@babel/helpers - typeof"; return node2json_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, node2json_typeof(o); }
-
+;
 
 var node2json_METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 
@@ -133916,8 +136514,8 @@ function XMLParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeE
 function XMLParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, XMLParser_toPropertyKey(o.key), o); } }
 function XMLParser_createClass(e, r, t) { return r && XMLParser_defineProperties(e.prototype, r), t && XMLParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function XMLParser_toPropertyKey(t) { var i = XMLParser_toPrimitive(t, "string"); return "symbol" == XMLParser_typeof(i) ? i : i + ""; }
-function XMLParser_toPrimitive(t, r) { if ("object" != XMLParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
+function XMLParser_toPrimitive(t, e) { if ("object" != XMLParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+;
 
 
 
@@ -134106,6 +136704,7 @@ const WMTS_ARRAY_NODE_PATHS = [
  * @param {function} [options.mapSetting.controls] - 地图的控件。
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数。
  * @param {number} [options.restDataSingleRequestCount=1000] - 自定义 restData 分批请求，单次请求数量。
+ * @param {number} [options.overflowTiles=0] - RestMap 栅格图层瓦片范围向外扩大的圈数。
  * @extends {ol.Observable}
  * @usage
  */
@@ -134137,6 +136736,7 @@ class WebMap extends (external_ol_Observable_default()) {
     this.webMap = options.webMap;
     this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
     this.restDataSingleRequestCount = options.restDataSingleRequestCount || 1000;
+    this.overflowTiles = typeof options.overflowTiles === 'undefined' ? 1 : options.overflowTiles;
     this.tileRequestParameters = options.tileRequestParameters;
     this.createMap(options.mapSetting);
     if (this.webMap) {
@@ -135309,6 +137909,10 @@ class WebMap extends (external_ol_Observable_default()) {
     ) {
       options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
     }
+    if(this.overflowTiles) {
+      options.overflowTiles = this.overflowTiles;
+      layerInfo.restMapExtentExpanded = true;
+    }
     let source = new TileSuperMapRest(options);
     SecurityManager[`register${keyfix}`](layerInfo.url);
     return source;
@@ -135396,7 +138000,11 @@ class WebMap extends (external_ol_Observable_default()) {
   getLayerOtherOptions(layerInfo) {
     const { layerType, extent, minZoom, maxZoom } = layerInfo;
     const extentVal = layerType === 'ZXY_TILE' ? this._getZXYTileMapBounds(layerInfo) : extent;
-    const options = { extent: extentVal };
+    const options = {};
+    if (!layerInfo.restMapExtentExpanded) {
+      // 扩大 RestMap 栅格图层的 tileGrid 后，不再向图层传递 extent
+      options.extent = extentVal;
+    }
     if (typeof minZoom === 'number' && minZoom !== 0) {
       options.minZoom = minZoom - 1;
     }
@@ -139702,7 +142310,7 @@ class WebMap extends (external_ol_Observable_default()) {
  * @param {Array.<string>} [options.names] 返回影像集合中指定名称影像的瓦片资源。影像名称包含文件后缀，如 S-60-45.tif。
  * @param {string} [options.format='png'] - 瓦片表述类型，瓦片格式目前支持 png、jpg 和 webp 三种格式。
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。默认透明。
- * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
+ * @param {boolean} [options.cacheEnabled=true] - 是否缓存到本地。为 true 时，访问发布的服务时就可以在本地生成地图瓦片，从而可以提高后续服务浏览访问的速度。
  * @param {string} [options.tileProxy] -  代理地址。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @extends {ol.source.XYZ}
