@@ -524,6 +524,81 @@ describe('WebMapV3 - legend symbol/style helpers', () => {
     });
   });
 
+  describe('_isShowLegendSingleItem', () => {
+    it('无数据驱动时显示单项', () => {
+      expect(instance._isShowLegendSingleItem([], false)).toBe(true);
+    });
+
+    it('color 为线性数据驱动时显示单项', () => {
+      expect(instance._isShowLegendSingleItem(['color'], true)).toBe(true);
+    });
+
+    it('color 非线性数据驱动时不显示单项', () => {
+      expect(instance._isShowLegendSingleItem(['color'], false)).toBe(false);
+    });
+
+    it('面与轮廓都数据驱动时不显示单项，避免重复的面图例', () => {
+      expect(instance._isShowLegendSingleItem(['color', 'outlineColor'], true)).toBe(false);
+    });
+
+    it('只有轮廓色数据驱动时需要显示面的单项（面 + 轮廓色专题图）', () => {
+      expect(instance._isShowLegendSingleItem(['outlineColor'], false)).toBe(true);
+    });
+
+    it('只有轮廓符号或轮廓宽/透明度数据驱动时需要显示面的单项', () => {
+      expect(instance._isShowLegendSingleItem(['outlineSymbolsContent'], false)).toBe(true);
+      expect(instance._isShowLegendSingleItem(['outlineWidth'], false)).toBe(true);
+      expect(instance._isShowLegendSingleItem(['outlineOpacity'], false)).toBe(true);
+    });
+
+    it('填充符号数据驱动时不显示单项，符号分组本身即为面图例', () => {
+      expect(instance._isShowLegendSingleItem(['symbolsContent'], false)).toBe(false);
+    });
+
+    it('轮廓属性与非轮廓属性混合驱动时不显示单项', () => {
+      expect(instance._isShowLegendSingleItem(['symbolsContent', 'outlineColor'], false)).toBe(false);
+    });
+  });
+
+  describe('_createLayerLegendList 面 + 轮廓色', () => {
+    it('轮廓色为单值专题图时，图例同时包含面单项与轮廓色分组', () => {
+      const layer = { id: 'beijing', title: 'beijing', type: 'fill' };
+      const styleSetting = {
+        type: 'fill',
+        color: { type: 'simple', value: '#826DBA' },
+        opacity: { type: 'simple', value: 0.9 },
+        outline: { type: 'simple', value: true },
+        outlineWidth: { type: 'simple', value: 0.5 },
+        outlineColor: {
+          type: 'unique',
+          field: ['smpid'],
+          defaultValue: '#ffffff',
+          values: [
+            { value: '#d53e4f', key: 1 },
+            { value: '#3288bd', key: 18 }
+          ]
+        },
+        styleRenderMode: 'mapboxgl'
+      };
+
+      const result = instance._createLayerLegendList(layer, styleSetting);
+
+      // 第一项为面：带上填充底色与轮廓
+      expect(result.length).toBe(2);
+      expect(result[0].styleField).toBeUndefined();
+      expect(result[0].styleGroup.length).toBe(1);
+      expect(result[0].styleGroup[0].style.backgroundColor).toBe('#826DBA');
+      expect(result[0].styleGroup[0].style.outlineStyle).toBe('solid');
+      expect(result[0].styleGroup[0].style.shape).toBe('RECTANGLE');
+
+      // 第二项为轮廓色专题图分组，且每个分组样式保留面的填充底色
+      expect(result[1].styleField).toBe('outlineColor');
+      expect(result[1].styleGroup.length).toBeGreaterThan(1);
+      expect(result[1].styleGroup[0].style.outlineColor).toBe('#d53e4f');
+      expect(result[1].styleGroup[0].style.backgroundColor).toBe('#826DBA');
+    });
+  });
+
   describe('_getLegendStyleType', () => {
     it('should return CUSTOM when currentType is custom', () => {
       const result = instance._getLegendStyleType({

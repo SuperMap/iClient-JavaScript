@@ -36,6 +36,9 @@ const LEGEND_CSS_STATE_KEY = {
   backgroundColor: 'color'
 };
 
+// 轮廓相关的图例样式属性：这些属性被数据驱动时，面的图例仍然需要单独展示
+const LEGEND_OUTLINE_KEYS = ['outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent'];
+
 const LEGEND_CSS_DEFAULT = {
   [LEGEND_RENDER_TYPE.TEXT]: {
     textSize: '16px',
@@ -899,16 +902,16 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     if (keys) {
       const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
       simpleKeys.forEach((k) => {
-      const isOutlineKey = ['outlineColor', 'outlineWidth', 'outlineOpacity', 'outlineSymbolsContent'].includes(k);
-      const hasOutline =
-        styleSetting &&
-        (
-          (styleSetting.outline && styleSetting.outline.value === true) ||
-          (styleSetting.antialias && styleSetting.antialias.value === true)
-        );
-      if (isOutlineKey && !hasOutline) {
-        return;
-      }
+        const isOutlineKey = LEGEND_OUTLINE_KEYS.includes(k);
+        const hasOutline =
+          styleSetting &&
+          (
+            (styleSetting.outline && styleSetting.outline.value === true) ||
+            (styleSetting.antialias && styleSetting.antialias.value === true)
+          );
+        if (isOutlineKey && !hasOutline) {
+          return;
+        }
         simpleStyle[k] = (styleSetting[k] || {}).value;
       });
     }
@@ -987,12 +990,18 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
 
   /**
    * 1) 无数据驱动时；
-   * 2) 只有一个颜色数据驱动，且性线数据驱动时
-   * 以上两种情况图例中需要单独的显示符号项
+   * 2) 只有一个颜色数据驱动，且性线数据驱动时；
+   * 3) 只有轮廓相关属性被数据驱动时（面 + 轮廓色/轮廓符号专题图）
+   * 以上三种情况图例中需要单独的显示符号项，否则「面」的图例会缺失
    * 是否显示图例单项
    */
   _isShowLegendSingleItem(dataKeys, isLinearColor) {
-    return dataKeys.length === 0 || (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor);
+    const isOnlyOutlineDriven = dataKeys.length > 0 && dataKeys.every((key) => LEGEND_OUTLINE_KEYS.includes(key));
+    return (
+      dataKeys.length === 0 ||
+      (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor) ||
+      isOnlyOutlineDriven
+    );
   }
 
   _isWebsymbolById(id){
