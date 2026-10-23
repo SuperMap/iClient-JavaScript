@@ -1760,6 +1760,10 @@ describe('WebMapV3 - legend render type and shape', () => {
     expect(instance._getLegendRenderType('circle')).toBe('POINT');
     expect(instance._getLegendRenderType('symbol')).toBe('POINT');
     expect(instance._getLegendRenderType('column')).toBe('POINT');
+    expect(instance._getLegendRenderType('point')).toBe('POINT');
+    expect(instance._getLegendRenderType('point-cluster')).toBe('POINT');
+    expect(instance._getLegendRenderType('pointCluster')).toBe('POINT');
+    expect(instance._getLegendRenderType('point-3d')).toBe('POINT');
     expect(instance._getLegendRenderType('heatGrid')).toBe('BUILTINSYMBOL');
     expect(instance._getLegendRenderType('heatHexagon')).toBe('BUILTINSYMBOL');
     expect(instance._getLegendRenderType('heat3DGrid')).toBe('BUILTINSYMBOL');
@@ -1785,6 +1789,10 @@ describe('WebMapV3 - legend render type and shape', () => {
     expect(instance._getLegendShape('column', { shape: { value: 'squareColumn' } })).toBe('RECTANGLE');
     expect(instance._getLegendShape('column', { shape: { value: 'hexagonColumn' } })).toBe('HEXAGON');
     expect(instance._getLegendShape('column', { shape: { value: 'other' } })).toBe('POINT');
+    expect(instance._getLegendShape('point')).toBe('POINT');
+    expect(instance._getLegendShape('point-cluster')).toBe('POINT');
+    expect(instance._getLegendShape('pointCluster')).toBe('POINT');
+    expect(instance._getLegendShape('point-3d')).toBe('POINT');
     expect(instance._getLegendShape('heatHexagon')).toBe('HEXAGON');
     expect(instance._getLegendShape('heat3DHexagon')).toBe('HEXAGON');
     expect(instance._getLegendShape('line')).toBe('LINE');

@@ -145,6 +145,11 @@ const MAP_LAYER_TYPE_2_SYMBOL_TYPE = {
   circle: 'point',
   line: 'line',
   symbol: 'point',
+  // 聚合点图层渲染为 symbol，符号是图标而不是颜色
+  'point-cluster': 'point',
+  pointCluster: 'point',
+  point: 'point',
+  'point-3d': 'point',
   fill: 'polygon',
   'fill-extrusion': 'polygon',
   heatmap: 'point',
@@ -922,9 +927,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     switch (renderType) {
       case 'text':
         return LEGEND_RENDER_TYPE.TEXT;
+      // 聚合点图层（矢量和图片符号都可能）按点图例处理
       case 'circle':
       case 'symbol':
       case 'column':
+      case 'point':
+      case 'point-cluster':
+      case 'pointCluster':
+      case 'point-3d':
         return LEGEND_RENDER_TYPE.POINT;
       case 'heatGrid':
       case 'heatHexagon':
@@ -952,8 +962,13 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     switch (renderType) {
       case 'text':
         return LEGEND_SHAPE_TYPE.TEXT;
+      // 聚合点图层（矢量和图片符号都可能）按点图例处理
       case 'circle':
       case 'symbol':
+      case 'point':
+      case 'point-cluster':
+      case 'pointCluster':
+      case 'point-3d':
         return LEGEND_SHAPE_TYPE.POINT;
       case 'column': {
         const symbolIds = {
@@ -962,7 +977,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
           squareColumn: LEGEND_SHAPE_TYPE.RECTANGLE,
           hexagonColumn: LEGEND_SHAPE_TYPE.HEXAGON
         };
-        return symbolIds[styleSetting.shape.value] || LEGEND_SHAPE_TYPE.POINT;
+        const columnShape = (styleSetting.shape || {}).value;
+        return symbolIds[columnShape] || LEGEND_SHAPE_TYPE.POINT;
       }
       case 'heatHexagon':
       case 'heat3DHexagon':
@@ -1077,8 +1093,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       layerTitle
     };
     const renderType = styleSetting.type || layer.type;
-    const legendRenderType = this._getLegendRenderType(renderType);
-    const shape = this._getLegendShape(renderType, styleSetting);
+    // renderer 的 type 可能比地图图层类型更细（如聚合点 point-cluster），
+    // 未匹配到时回退到图层类型，避免整层图例被丢弃
+    const legendRenderType = this._getLegendRenderType(renderType) || this._getLegendRenderType(layer.type);
+    const shape = this._getLegendShape(renderType, styleSetting) || this._getLegendShape(layer.type, styleSetting);
     if (['heat', 'heat3D'].includes(renderType)) {
       const colorKeyMap = {
         heat: 'heatmap-color',
@@ -1171,9 +1189,11 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
             styleGroup = this._parseUniqueStyle(params);
             break;
         }
+        const settingField = subStyleSetting.field;
         const legendItem = {
           ...commonStyleOptions,
-          themeField: (subStyleSetting.field || [])[0],
+          // field 可能是字符串（如线性 size 专题图）也可能是数组，字符串时不能取首字符
+          themeField: (Array.isArray(settingField) ? settingField[0] : settingField) || commonStyleOptions.themeField,
           styleField: styleField,
           styleGroup
         };
@@ -1325,7 +1345,12 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
             ...cssStyle
           };
         }
-        return this._getSpriteStyle(symbolId, cssStyle);
+        // 雪碧图未加载完成或符号不在雪碧图中时退化为矢量圆点，
+        // 否则样式为空对象，图例项会整块空白
+        return this._getSpriteStyle(symbolId, cssStyle) || {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...cssStyle
+        };
       }
       case LEGEND_RENDER_TYPE.BUILTINSYMBOL: {
         return {
