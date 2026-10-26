@@ -1,8 +1,8 @@
 import { L7LayerUtil, getL7Filter } from '../../../../src/common/mapping/utils/L7LayerUtil';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import * as mockL7 from '../../../tool/mock_l7';
-import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
-import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
+import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
+import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 
 describe('L7LayerUtil', () => {
   const L7 = {
@@ -724,7 +724,8 @@ describe('L7LayerUtil', () => {
     const expr = ['any', ['all', ['==', ['get', 'smpid'], 5], ['==', ['get', '新建字段'], '']]];
     const result = getL7Filter(expr, featureFilter);
     expect(result.field).toEqual(['smpid', '新建字段']);
-    expect(result.values).not.toBeUndefined();
+    expect(result.values(5, '')).toBe(true);
+    expect(result.values(6, '')).toBe(false);
   });
 
   it('add mvt source and requestParameters', (done) => {
