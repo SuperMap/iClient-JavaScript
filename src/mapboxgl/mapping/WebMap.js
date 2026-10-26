@@ -6,8 +6,8 @@ import { createMapClassExtending } from '@supermapgis/iclient-common/mapping/Map
 import { createMapStyleExtending } from '@supermapgis/iclient-common/mapping/MapStyle';
 import { createWebMapV2BaseExtending } from '@supermapgis/iclient-common/mapping/WebMapV2Base';
 import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
-import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
-import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
+import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
+import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 import { L7Layer, L7 } from '../overlay/L7Layer';
 import MapManager from './webmap/MapManager';
 import { CRSManager } from './webmap/CRSManager';
