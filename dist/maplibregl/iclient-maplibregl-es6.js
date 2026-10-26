@@ -3,7 +3,7 @@
  *          iclient-maplibregl
  *          Copyright© 2000 - 2026 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v12.1.2
+ *          version: v12.1.3
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -8163,6 +8163,576 @@ module.exports.polyfill = function(object) {
 
 /***/ },
 
+/***/ 519
+(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = rbush;
+module.exports["default"] = rbush;
+
+var quickselect = __webpack_require__(261);
+
+function rbush(maxEntries, format) {
+    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
+
+    // max entries in a node is 9 by default; min node fill is 40% for best performance
+    this._maxEntries = Math.max(4, maxEntries || 9);
+    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+
+    if (format) {
+        this._initFormat(format);
+    }
+
+    this.clear();
+}
+
+rbush.prototype = {
+
+    all: function () {
+        return this._all(this.data, []);
+    },
+
+    search: function (bbox) {
+
+        var node = this.data,
+            result = [],
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return result;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf) result.push(child);
+                    else if (contains(bbox, childBBox)) this._all(child, result);
+                    else nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return result;
+    },
+
+    collides: function (bbox) {
+
+        var node = this.data,
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return false;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf || contains(bbox, childBBox)) return true;
+                    nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return false;
+    },
+
+    load: function (data) {
+        if (!(data && data.length)) return this;
+
+        if (data.length < this._minEntries) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                this.insert(data[i]);
+            }
+            return this;
+        }
+
+        // recursively build the tree with the given data from scratch using OMT algorithm
+        var node = this._build(data.slice(), 0, data.length - 1, 0);
+
+        if (!this.data.children.length) {
+            // save as is if tree is empty
+            this.data = node;
+
+        } else if (this.data.height === node.height) {
+            // split root if trees have the same height
+            this._splitRoot(this.data, node);
+
+        } else {
+            if (this.data.height < node.height) {
+                // swap trees if inserted one is bigger
+                var tmpNode = this.data;
+                this.data = node;
+                node = tmpNode;
+            }
+
+            // insert the small tree into the large tree at appropriate level
+            this._insert(node, this.data.height - node.height - 1, true);
+        }
+
+        return this;
+    },
+
+    insert: function (item) {
+        if (item) this._insert(item, this.data.height - 1);
+        return this;
+    },
+
+    clear: function () {
+        this.data = createNode([]);
+        return this;
+    },
+
+    remove: function (item, equalsFn) {
+        if (!item) return this;
+
+        var node = this.data,
+            bbox = this.toBBox(item),
+            path = [],
+            indexes = [],
+            i, parent, index, goingUp;
+
+        // depth-first iterative tree traversal
+        while (node || path.length) {
+
+            if (!node) { // go up
+                node = path.pop();
+                parent = path[path.length - 1];
+                i = indexes.pop();
+                goingUp = true;
+            }
+
+            if (node.leaf) { // check current node
+                index = findItem(item, node.children, equalsFn);
+
+                if (index !== -1) {
+                    // item found, remove the item and condense tree upwards
+                    node.children.splice(index, 1);
+                    path.push(node);
+                    this._condense(path);
+                    return this;
+                }
+            }
+
+            if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
+                path.push(node);
+                indexes.push(i);
+                i = 0;
+                parent = node;
+                node = node.children[0];
+
+            } else if (parent) { // go right
+                i++;
+                node = parent.children[i];
+                goingUp = false;
+
+            } else node = null; // nothing found
+        }
+
+        return this;
+    },
+
+    toBBox: function (item) { return item; },
+
+    compareMinX: compareNodeMinX,
+    compareMinY: compareNodeMinY,
+
+    toJSON: function () { return this.data; },
+
+    fromJSON: function (data) {
+        this.data = data;
+        return this;
+    },
+
+    _all: function (node, result) {
+        var nodesToSearch = [];
+        while (node) {
+            if (node.leaf) result.push.apply(result, node.children);
+            else nodesToSearch.push.apply(nodesToSearch, node.children);
+
+            node = nodesToSearch.pop();
+        }
+        return result;
+    },
+
+    _build: function (items, left, right, height) {
+
+        var N = right - left + 1,
+            M = this._maxEntries,
+            node;
+
+        if (N <= M) {
+            // reached leaf level; return leaf
+            node = createNode(items.slice(left, right + 1));
+            calcBBox(node, this.toBBox);
+            return node;
+        }
+
+        if (!height) {
+            // target height of the bulk-loaded tree
+            height = Math.ceil(Math.log(N) / Math.log(M));
+
+            // target number of root entries to maximize storage utilization
+            M = Math.ceil(N / Math.pow(M, height - 1));
+        }
+
+        node = createNode([]);
+        node.leaf = false;
+        node.height = height;
+
+        // split the items into M mostly square tiles
+
+        var N2 = Math.ceil(N / M),
+            N1 = N2 * Math.ceil(Math.sqrt(M)),
+            i, j, right2, right3;
+
+        multiSelect(items, left, right, N1, this.compareMinX);
+
+        for (i = left; i <= right; i += N1) {
+
+            right2 = Math.min(i + N1 - 1, right);
+
+            multiSelect(items, i, right2, N2, this.compareMinY);
+
+            for (j = i; j <= right2; j += N2) {
+
+                right3 = Math.min(j + N2 - 1, right2);
+
+                // pack each entry recursively
+                node.children.push(this._build(items, j, right3, height - 1));
+            }
+        }
+
+        calcBBox(node, this.toBBox);
+
+        return node;
+    },
+
+    _chooseSubtree: function (bbox, node, level, path) {
+
+        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
+
+        while (true) {
+            path.push(node);
+
+            if (node.leaf || path.length - 1 === level) break;
+
+            minArea = minEnlargement = Infinity;
+
+            for (i = 0, len = node.children.length; i < len; i++) {
+                child = node.children[i];
+                area = bboxArea(child);
+                enlargement = enlargedArea(bbox, child) - area;
+
+                // choose entry with the least area enlargement
+                if (enlargement < minEnlargement) {
+                    minEnlargement = enlargement;
+                    minArea = area < minArea ? area : minArea;
+                    targetNode = child;
+
+                } else if (enlargement === minEnlargement) {
+                    // otherwise choose one with the smallest area
+                    if (area < minArea) {
+                        minArea = area;
+                        targetNode = child;
+                    }
+                }
+            }
+
+            node = targetNode || node.children[0];
+        }
+
+        return node;
+    },
+
+    _insert: function (item, level, isNode) {
+
+        var toBBox = this.toBBox,
+            bbox = isNode ? item : toBBox(item),
+            insertPath = [];
+
+        // find the best node for accommodating the item, saving all nodes along the path too
+        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
+
+        // put the item into the node
+        node.children.push(item);
+        extend(node, bbox);
+
+        // split on node overflow; propagate upwards if necessary
+        while (level >= 0) {
+            if (insertPath[level].children.length > this._maxEntries) {
+                this._split(insertPath, level);
+                level--;
+            } else break;
+        }
+
+        // adjust bboxes along the insertion path
+        this._adjustParentBBoxes(bbox, insertPath, level);
+    },
+
+    // split overflowed node into two
+    _split: function (insertPath, level) {
+
+        var node = insertPath[level],
+            M = node.children.length,
+            m = this._minEntries;
+
+        this._chooseSplitAxis(node, m, M);
+
+        var splitIndex = this._chooseSplitIndex(node, m, M);
+
+        var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
+        newNode.height = node.height;
+        newNode.leaf = node.leaf;
+
+        calcBBox(node, this.toBBox);
+        calcBBox(newNode, this.toBBox);
+
+        if (level) insertPath[level - 1].children.push(newNode);
+        else this._splitRoot(node, newNode);
+    },
+
+    _splitRoot: function (node, newNode) {
+        // split root node
+        this.data = createNode([node, newNode]);
+        this.data.height = node.height + 1;
+        this.data.leaf = false;
+        calcBBox(this.data, this.toBBox);
+    },
+
+    _chooseSplitIndex: function (node, m, M) {
+
+        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
+
+        minOverlap = minArea = Infinity;
+
+        for (i = m; i <= M - m; i++) {
+            bbox1 = distBBox(node, 0, i, this.toBBox);
+            bbox2 = distBBox(node, i, M, this.toBBox);
+
+            overlap = intersectionArea(bbox1, bbox2);
+            area = bboxArea(bbox1) + bboxArea(bbox2);
+
+            // choose distribution with minimum overlap
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                index = i;
+
+                minArea = area < minArea ? area : minArea;
+
+            } else if (overlap === minOverlap) {
+                // otherwise choose distribution with minimum area
+                if (area < minArea) {
+                    minArea = area;
+                    index = i;
+                }
+            }
+        }
+
+        return index;
+    },
+
+    // sorts node children by the best axis for split
+    _chooseSplitAxis: function (node, m, M) {
+
+        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
+            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
+            xMargin = this._allDistMargin(node, m, M, compareMinX),
+            yMargin = this._allDistMargin(node, m, M, compareMinY);
+
+        // if total distributions margin value is minimal for x, sort by minX,
+        // otherwise it's already sorted by minY
+        if (xMargin < yMargin) node.children.sort(compareMinX);
+    },
+
+    // total margin of all possible split distributions where each node is at least m full
+    _allDistMargin: function (node, m, M, compare) {
+
+        node.children.sort(compare);
+
+        var toBBox = this.toBBox,
+            leftBBox = distBBox(node, 0, m, toBBox),
+            rightBBox = distBBox(node, M - m, M, toBBox),
+            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
+            i, child;
+
+        for (i = m; i < M - m; i++) {
+            child = node.children[i];
+            extend(leftBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(leftBBox);
+        }
+
+        for (i = M - m - 1; i >= m; i--) {
+            child = node.children[i];
+            extend(rightBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(rightBBox);
+        }
+
+        return margin;
+    },
+
+    _adjustParentBBoxes: function (bbox, path, level) {
+        // adjust bboxes along the given tree path
+        for (var i = level; i >= 0; i--) {
+            extend(path[i], bbox);
+        }
+    },
+
+    _condense: function (path) {
+        // go through the path, removing empty nodes and updating bboxes
+        for (var i = path.length - 1, siblings; i >= 0; i--) {
+            if (path[i].children.length === 0) {
+                if (i > 0) {
+                    siblings = path[i - 1].children;
+                    siblings.splice(siblings.indexOf(path[i]), 1);
+
+                } else this.clear();
+
+            } else calcBBox(path[i], this.toBBox);
+        }
+    },
+
+    _initFormat: function (format) {
+        // data format (minX, minY, maxX, maxY accessors)
+
+        // uses eval-type function compilation instead of just accepting a toBBox function
+        // because the algorithms are very sensitive to sorting functions performance,
+        // so they should be dead simple and without inner calls
+
+        var compareArr = ['return a', ' - b', ';'];
+
+        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
+        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
+
+        this.toBBox = new Function('a',
+            'return {minX: a' + format[0] +
+            ', minY: a' + format[1] +
+            ', maxX: a' + format[2] +
+            ', maxY: a' + format[3] + '};');
+    }
+};
+
+function findItem(item, items, equalsFn) {
+    if (!equalsFn) return items.indexOf(item);
+
+    for (var i = 0; i < items.length; i++) {
+        if (equalsFn(item, items[i])) return i;
+    }
+    return -1;
+}
+
+// calculate node's bbox from bboxes of its children
+function calcBBox(node, toBBox) {
+    distBBox(node, 0, node.children.length, toBBox, node);
+}
+
+// min bounding rectangle of node children from k to p-1
+function distBBox(node, k, p, toBBox, destNode) {
+    if (!destNode) destNode = createNode(null);
+    destNode.minX = Infinity;
+    destNode.minY = Infinity;
+    destNode.maxX = -Infinity;
+    destNode.maxY = -Infinity;
+
+    for (var i = k, child; i < p; i++) {
+        child = node.children[i];
+        extend(destNode, node.leaf ? toBBox(child) : child);
+    }
+
+    return destNode;
+}
+
+function extend(a, b) {
+    a.minX = Math.min(a.minX, b.minX);
+    a.minY = Math.min(a.minY, b.minY);
+    a.maxX = Math.max(a.maxX, b.maxX);
+    a.maxY = Math.max(a.maxY, b.maxY);
+    return a;
+}
+
+function compareNodeMinX(a, b) { return a.minX - b.minX; }
+function compareNodeMinY(a, b) { return a.minY - b.minY; }
+
+function bboxArea(a)   { return (a.maxX - a.minX) * (a.maxY - a.minY); }
+function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
+
+function enlargedArea(a, b) {
+    return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
+           (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
+}
+
+function intersectionArea(a, b) {
+    var minX = Math.max(a.minX, b.minX),
+        minY = Math.max(a.minY, b.minY),
+        maxX = Math.min(a.maxX, b.maxX),
+        maxY = Math.min(a.maxY, b.maxY);
+
+    return Math.max(0, maxX - minX) *
+           Math.max(0, maxY - minY);
+}
+
+function contains(a, b) {
+    return a.minX <= b.minX &&
+           a.minY <= b.minY &&
+           b.maxX <= a.maxX &&
+           b.maxY <= a.maxY;
+}
+
+function intersects(a, b) {
+    return b.minX <= a.maxX &&
+           b.minY <= a.maxY &&
+           b.maxX >= a.minX &&
+           b.maxY >= a.minY;
+}
+
+function createNode(children) {
+    return {
+        children: children,
+        height: 1,
+        leaf: true,
+        minX: Infinity,
+        minY: Infinity,
+        maxX: -Infinity,
+        maxY: -Infinity
+    };
+}
+
+// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
+// combines selection algorithm with binary divide & conquer approach
+
+function multiSelect(arr, left, right, n, compare) {
+    var stack = [left, right],
+        mid;
+
+    while (stack.length) {
+        right = stack.pop();
+        left = stack.pop();
+
+        if (right - left <= n) continue;
+
+        mid = left + Math.ceil((right - left) / n / 2) * n;
+        quickselect(arr, mid, left, right, compare);
+
+        stack.push(left, mid, mid, right);
+    }
+}
+
+
+/***/ },
+
 /***/ 261
 (module) {
 
@@ -11920,70 +12490,77 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.0 by @mathia
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = (module) => {
-/******/ 		const getter = module && module.__esModule ?
-/******/ 			() => (module['default']) :
-/******/ 			() => (module);
-/******/ 		__webpack_require__.d(getter, { a: getter });
-/******/ 		return getter;
-/******/ 	};
-/******/ 	
-/******/ 	/* webpack/runtime/concatenation wrap */
-/******/ 	// wrap a concatenated module body as a lazy, memoized accessor; mod is
-/******/ 	// set before the body runs so re-entrant calls (require cycles) observe
-/******/ 	// the partial exports like Node.js
-/******/ 	__webpack_require__.cw = (body) => {
-/******/ 		var mod;
-/******/ 		return () => {
-/******/ 			if (body) {
-/******/ 				var fn = body;
-/******/ 				body = 0;
-/******/ 				mod = { exports: {} };
-/******/ 				fn.call(mod.exports, mod, mod.exports);
-/******/ 			}
-/******/ 			return mod.exports;
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			const getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
-/******/ 	};
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	// define getter/value functions for harmony exports
-/******/ 	__webpack_require__.d = (exports, definition) => {
-/******/ 		for(var key in definition) {
-/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 	(() => {
+/******/ 		// define getter/value functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
+/******/ 				}
 /******/ 			}
-/******/ 		}
-/******/ 	};
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	__webpack_require__.g = (function() {
-/******/ 		if (typeof globalThis === 'object') return globalThis;
-/******/ 		try {
-/******/ 			return this || new Function('return this')();
-/******/ 		} catch (e) {
-/******/ 			if (typeof window === 'object') return window;
-/******/ 		}
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
-/******/ 	__webpack_require__.nmd = (module) => {
-/******/ 		module.paths = [];
-/******/ 		if (!module.children) module.children = [];
-/******/ 		return module;
-/******/ 	};
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/set anonymous default export name */
-/******/ 	// set .name for anonymous default exports per ES spec
-/******/ 	// skipped when the property is non-configurable (pre-ES2015 engines),
-/******/ 	// where Object.defineProperty would throw
-/******/ 	__webpack_require__.dn = (x) => {
-/******/ 		var descriptor = Object.getOwnPropertyDescriptor(x, "name");
-/******/ 		if (!descriptor || (!descriptor.writable && descriptor.configurable)) Object.defineProperty(x, "name", { value: "default", configurable: true });
-/******/ 	};
+/******/ 	(() => {
+/******/ 		// set .name for anonymous default exports per ES spec
+/******/ 		__webpack_require__.dn = (x) => {
+/******/ 			(Object.getOwnPropertyDescriptor(x, "name") || {}).writable || Object.defineProperty(x, "name", { value: "default", configurable: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 let __webpack_exports__ = {};
@@ -11992,578 +12569,6 @@ let __webpack_exports__ = {};
 "use strict";
 
 // UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttachmentsParameters, AttributesPopContainer, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartSettingS57, ChartType, ChartView, ChartViewModel, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, ColourModeChart, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DisplayModeChart, DropDownBox, EditAttachmentsParameters, EditFeaturesParameters, EditType, ElasticSearch, EncryptRequest, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryAnalysis, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, GraphAxesTextDisplayMode, GraphMap, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, L7Layer, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, RangeMode, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, ThemeDotDensity, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VideoFeature, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, WebSymbol, conversionDegree, createSpriteLoadHandler, decrypt, flipImageVertically, getMeterPerMapUnit, getServiceKey, getWrapNum, initMap, isCORS, isMapVersionGreaterThan, mapboxFilterToQueryFilter, setCORS, setRequestHeaders, terrainAnalystSetting
-
-// MODULE: ./node_modules/rbush/index.js
-var rbush_namespaceFn = /*#__PURE__*/__webpack_require__.cw((module) => {
-
-
-module.exports = rbush;
-module.exports["default"] = rbush;
-
-var quickselect = (quickselect_namespaceFn());
-
-function rbush(maxEntries, format) {
-    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
-
-    // max entries in a node is 9 by default; min node fill is 40% for best performance
-    this._maxEntries = Math.max(4, maxEntries || 9);
-    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
-
-    if (format) {
-        this._initFormat(format);
-    }
-
-    this.clear();
-}
-
-rbush.prototype = {
-
-    all: function () {
-        return this._all(this.data, []);
-    },
-
-    search: function (bbox) {
-
-        var node = this.data,
-            result = [],
-            toBBox = this.toBBox;
-
-        if (!intersects(bbox, node)) return result;
-
-        var nodesToSearch = [],
-            i, len, child, childBBox;
-
-        while (node) {
-            for (i = 0, len = node.children.length; i < len; i++) {
-
-                child = node.children[i];
-                childBBox = node.leaf ? toBBox(child) : child;
-
-                if (intersects(bbox, childBBox)) {
-                    if (node.leaf) result.push(child);
-                    else if (contains(bbox, childBBox)) this._all(child, result);
-                    else nodesToSearch.push(child);
-                }
-            }
-            node = nodesToSearch.pop();
-        }
-
-        return result;
-    },
-
-    collides: function (bbox) {
-
-        var node = this.data,
-            toBBox = this.toBBox;
-
-        if (!intersects(bbox, node)) return false;
-
-        var nodesToSearch = [],
-            i, len, child, childBBox;
-
-        while (node) {
-            for (i = 0, len = node.children.length; i < len; i++) {
-
-                child = node.children[i];
-                childBBox = node.leaf ? toBBox(child) : child;
-
-                if (intersects(bbox, childBBox)) {
-                    if (node.leaf || contains(bbox, childBBox)) return true;
-                    nodesToSearch.push(child);
-                }
-            }
-            node = nodesToSearch.pop();
-        }
-
-        return false;
-    },
-
-    load: function (data) {
-        if (!(data && data.length)) return this;
-
-        if (data.length < this._minEntries) {
-            for (var i = 0, len = data.length; i < len; i++) {
-                this.insert(data[i]);
-            }
-            return this;
-        }
-
-        // recursively build the tree with the given data from scratch using OMT algorithm
-        var node = this._build(data.slice(), 0, data.length - 1, 0);
-
-        if (!this.data.children.length) {
-            // save as is if tree is empty
-            this.data = node;
-
-        } else if (this.data.height === node.height) {
-            // split root if trees have the same height
-            this._splitRoot(this.data, node);
-
-        } else {
-            if (this.data.height < node.height) {
-                // swap trees if inserted one is bigger
-                var tmpNode = this.data;
-                this.data = node;
-                node = tmpNode;
-            }
-
-            // insert the small tree into the large tree at appropriate level
-            this._insert(node, this.data.height - node.height - 1, true);
-        }
-
-        return this;
-    },
-
-    insert: function (item) {
-        if (item) this._insert(item, this.data.height - 1);
-        return this;
-    },
-
-    clear: function () {
-        this.data = createNode([]);
-        return this;
-    },
-
-    remove: function (item, equalsFn) {
-        if (!item) return this;
-
-        var node = this.data,
-            bbox = this.toBBox(item),
-            path = [],
-            indexes = [],
-            i, parent, index, goingUp;
-
-        // depth-first iterative tree traversal
-        while (node || path.length) {
-
-            if (!node) { // go up
-                node = path.pop();
-                parent = path[path.length - 1];
-                i = indexes.pop();
-                goingUp = true;
-            }
-
-            if (node.leaf) { // check current node
-                index = findItem(item, node.children, equalsFn);
-
-                if (index !== -1) {
-                    // item found, remove the item and condense tree upwards
-                    node.children.splice(index, 1);
-                    path.push(node);
-                    this._condense(path);
-                    return this;
-                }
-            }
-
-            if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
-                path.push(node);
-                indexes.push(i);
-                i = 0;
-                parent = node;
-                node = node.children[0];
-
-            } else if (parent) { // go right
-                i++;
-                node = parent.children[i];
-                goingUp = false;
-
-            } else node = null; // nothing found
-        }
-
-        return this;
-    },
-
-    toBBox: function (item) { return item; },
-
-    compareMinX: compareNodeMinX,
-    compareMinY: compareNodeMinY,
-
-    toJSON: function () { return this.data; },
-
-    fromJSON: function (data) {
-        this.data = data;
-        return this;
-    },
-
-    _all: function (node, result) {
-        var nodesToSearch = [];
-        while (node) {
-            if (node.leaf) result.push.apply(result, node.children);
-            else nodesToSearch.push.apply(nodesToSearch, node.children);
-
-            node = nodesToSearch.pop();
-        }
-        return result;
-    },
-
-    _build: function (items, left, right, height) {
-
-        var N = right - left + 1,
-            M = this._maxEntries,
-            node;
-
-        if (N <= M) {
-            // reached leaf level; return leaf
-            node = createNode(items.slice(left, right + 1));
-            calcBBox(node, this.toBBox);
-            return node;
-        }
-
-        if (!height) {
-            // target height of the bulk-loaded tree
-            height = Math.ceil(Math.log(N) / Math.log(M));
-
-            // target number of root entries to maximize storage utilization
-            M = Math.ceil(N / Math.pow(M, height - 1));
-        }
-
-        node = createNode([]);
-        node.leaf = false;
-        node.height = height;
-
-        // split the items into M mostly square tiles
-
-        var N2 = Math.ceil(N / M),
-            N1 = N2 * Math.ceil(Math.sqrt(M)),
-            i, j, right2, right3;
-
-        multiSelect(items, left, right, N1, this.compareMinX);
-
-        for (i = left; i <= right; i += N1) {
-
-            right2 = Math.min(i + N1 - 1, right);
-
-            multiSelect(items, i, right2, N2, this.compareMinY);
-
-            for (j = i; j <= right2; j += N2) {
-
-                right3 = Math.min(j + N2 - 1, right2);
-
-                // pack each entry recursively
-                node.children.push(this._build(items, j, right3, height - 1));
-            }
-        }
-
-        calcBBox(node, this.toBBox);
-
-        return node;
-    },
-
-    _chooseSubtree: function (bbox, node, level, path) {
-
-        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
-
-        while (true) {
-            path.push(node);
-
-            if (node.leaf || path.length - 1 === level) break;
-
-            minArea = minEnlargement = Infinity;
-
-            for (i = 0, len = node.children.length; i < len; i++) {
-                child = node.children[i];
-                area = bboxArea(child);
-                enlargement = enlargedArea(bbox, child) - area;
-
-                // choose entry with the least area enlargement
-                if (enlargement < minEnlargement) {
-                    minEnlargement = enlargement;
-                    minArea = area < minArea ? area : minArea;
-                    targetNode = child;
-
-                } else if (enlargement === minEnlargement) {
-                    // otherwise choose one with the smallest area
-                    if (area < minArea) {
-                        minArea = area;
-                        targetNode = child;
-                    }
-                }
-            }
-
-            node = targetNode || node.children[0];
-        }
-
-        return node;
-    },
-
-    _insert: function (item, level, isNode) {
-
-        var toBBox = this.toBBox,
-            bbox = isNode ? item : toBBox(item),
-            insertPath = [];
-
-        // find the best node for accommodating the item, saving all nodes along the path too
-        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
-
-        // put the item into the node
-        node.children.push(item);
-        extend(node, bbox);
-
-        // split on node overflow; propagate upwards if necessary
-        while (level >= 0) {
-            if (insertPath[level].children.length > this._maxEntries) {
-                this._split(insertPath, level);
-                level--;
-            } else break;
-        }
-
-        // adjust bboxes along the insertion path
-        this._adjustParentBBoxes(bbox, insertPath, level);
-    },
-
-    // split overflowed node into two
-    _split: function (insertPath, level) {
-
-        var node = insertPath[level],
-            M = node.children.length,
-            m = this._minEntries;
-
-        this._chooseSplitAxis(node, m, M);
-
-        var splitIndex = this._chooseSplitIndex(node, m, M);
-
-        var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
-        newNode.height = node.height;
-        newNode.leaf = node.leaf;
-
-        calcBBox(node, this.toBBox);
-        calcBBox(newNode, this.toBBox);
-
-        if (level) insertPath[level - 1].children.push(newNode);
-        else this._splitRoot(node, newNode);
-    },
-
-    _splitRoot: function (node, newNode) {
-        // split root node
-        this.data = createNode([node, newNode]);
-        this.data.height = node.height + 1;
-        this.data.leaf = false;
-        calcBBox(this.data, this.toBBox);
-    },
-
-    _chooseSplitIndex: function (node, m, M) {
-
-        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
-
-        minOverlap = minArea = Infinity;
-
-        for (i = m; i <= M - m; i++) {
-            bbox1 = distBBox(node, 0, i, this.toBBox);
-            bbox2 = distBBox(node, i, M, this.toBBox);
-
-            overlap = intersectionArea(bbox1, bbox2);
-            area = bboxArea(bbox1) + bboxArea(bbox2);
-
-            // choose distribution with minimum overlap
-            if (overlap < minOverlap) {
-                minOverlap = overlap;
-                index = i;
-
-                minArea = area < minArea ? area : minArea;
-
-            } else if (overlap === minOverlap) {
-                // otherwise choose distribution with minimum area
-                if (area < minArea) {
-                    minArea = area;
-                    index = i;
-                }
-            }
-        }
-
-        return index;
-    },
-
-    // sorts node children by the best axis for split
-    _chooseSplitAxis: function (node, m, M) {
-
-        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
-            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
-            xMargin = this._allDistMargin(node, m, M, compareMinX),
-            yMargin = this._allDistMargin(node, m, M, compareMinY);
-
-        // if total distributions margin value is minimal for x, sort by minX,
-        // otherwise it's already sorted by minY
-        if (xMargin < yMargin) node.children.sort(compareMinX);
-    },
-
-    // total margin of all possible split distributions where each node is at least m full
-    _allDistMargin: function (node, m, M, compare) {
-
-        node.children.sort(compare);
-
-        var toBBox = this.toBBox,
-            leftBBox = distBBox(node, 0, m, toBBox),
-            rightBBox = distBBox(node, M - m, M, toBBox),
-            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
-            i, child;
-
-        for (i = m; i < M - m; i++) {
-            child = node.children[i];
-            extend(leftBBox, node.leaf ? toBBox(child) : child);
-            margin += bboxMargin(leftBBox);
-        }
-
-        for (i = M - m - 1; i >= m; i--) {
-            child = node.children[i];
-            extend(rightBBox, node.leaf ? toBBox(child) : child);
-            margin += bboxMargin(rightBBox);
-        }
-
-        return margin;
-    },
-
-    _adjustParentBBoxes: function (bbox, path, level) {
-        // adjust bboxes along the given tree path
-        for (var i = level; i >= 0; i--) {
-            extend(path[i], bbox);
-        }
-    },
-
-    _condense: function (path) {
-        // go through the path, removing empty nodes and updating bboxes
-        for (var i = path.length - 1, siblings; i >= 0; i--) {
-            if (path[i].children.length === 0) {
-                if (i > 0) {
-                    siblings = path[i - 1].children;
-                    siblings.splice(siblings.indexOf(path[i]), 1);
-
-                } else this.clear();
-
-            } else calcBBox(path[i], this.toBBox);
-        }
-    },
-
-    _initFormat: function (format) {
-        // data format (minX, minY, maxX, maxY accessors)
-
-        // uses eval-type function compilation instead of just accepting a toBBox function
-        // because the algorithms are very sensitive to sorting functions performance,
-        // so they should be dead simple and without inner calls
-
-        var compareArr = ['return a', ' - b', ';'];
-
-        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
-        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
-
-        this.toBBox = new Function('a',
-            'return {minX: a' + format[0] +
-            ', minY: a' + format[1] +
-            ', maxX: a' + format[2] +
-            ', maxY: a' + format[3] + '};');
-    }
-};
-
-function findItem(item, items, equalsFn) {
-    if (!equalsFn) return items.indexOf(item);
-
-    for (var i = 0; i < items.length; i++) {
-        if (equalsFn(item, items[i])) return i;
-    }
-    return -1;
-}
-
-// calculate node's bbox from bboxes of its children
-function calcBBox(node, toBBox) {
-    distBBox(node, 0, node.children.length, toBBox, node);
-}
-
-// min bounding rectangle of node children from k to p-1
-function distBBox(node, k, p, toBBox, destNode) {
-    if (!destNode) destNode = createNode(null);
-    destNode.minX = Infinity;
-    destNode.minY = Infinity;
-    destNode.maxX = -Infinity;
-    destNode.maxY = -Infinity;
-
-    for (var i = k, child; i < p; i++) {
-        child = node.children[i];
-        extend(destNode, node.leaf ? toBBox(child) : child);
-    }
-
-    return destNode;
-}
-
-function extend(a, b) {
-    a.minX = Math.min(a.minX, b.minX);
-    a.minY = Math.min(a.minY, b.minY);
-    a.maxX = Math.max(a.maxX, b.maxX);
-    a.maxY = Math.max(a.maxY, b.maxY);
-    return a;
-}
-
-function compareNodeMinX(a, b) { return a.minX - b.minX; }
-function compareNodeMinY(a, b) { return a.minY - b.minY; }
-
-function bboxArea(a)   { return (a.maxX - a.minX) * (a.maxY - a.minY); }
-function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
-
-function enlargedArea(a, b) {
-    return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
-           (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
-}
-
-function intersectionArea(a, b) {
-    var minX = Math.max(a.minX, b.minX),
-        minY = Math.max(a.minY, b.minY),
-        maxX = Math.min(a.maxX, b.maxX),
-        maxY = Math.min(a.maxY, b.maxY);
-
-    return Math.max(0, maxX - minX) *
-           Math.max(0, maxY - minY);
-}
-
-function contains(a, b) {
-    return a.minX <= b.minX &&
-           a.minY <= b.minY &&
-           b.maxX <= a.maxX &&
-           b.maxY <= a.maxY;
-}
-
-function intersects(a, b) {
-    return b.minX <= a.maxX &&
-           b.minY <= a.maxY &&
-           b.maxX >= a.minX &&
-           b.maxY >= a.minY;
-}
-
-function createNode(children) {
-    return {
-        children: children,
-        height: 1,
-        leaf: true,
-        minX: Infinity,
-        minY: Infinity,
-        maxX: -Infinity,
-        maxY: -Infinity
-    };
-}
-
-// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
-// combines selection algorithm with binary divide & conquer approach
-
-function multiSelect(arr, left, right, n, compare) {
-    var stack = [left, right],
-        mid;
-
-    while (stack.length) {
-        right = stack.pop();
-        left = stack.pop();
-
-        if (right - left <= n) continue;
-
-        mid = left + Math.ceil((right - left) / n / 2) * n;
-        quickselect(arr, mid, left, right, compare);
-
-        stack.push(left, mid, mid, right);
-    }
-}
-
-});
-
-// EXTERNAL MODULE: ./node_modules/rbush/node_modules/quickselect/quickselect.js
-var quickselect_namespaceFn = () => {
-	return __webpack_require__(261);
-};
 
 ;// external "maplibregl"
 const external_maplibregl_namespaceObject = maplibregl;
@@ -23210,7 +23215,7 @@ function createMapExtendExtending(product) {
   const originMapProto = (external_maplibregl_default()).Map.prototype;
 
   if (!originMapProto._inherit) {
-    ;(external_maplibregl_default()).Map = class MapEnhance extends createMapExtendExtending((external_maplibregl_default())) {
+    (external_maplibregl_default()).Map = class MapEnhance extends createMapExtendExtending((external_maplibregl_default())) {
       constructor(options) {
         super(options);
       }
@@ -34162,58 +34167,36 @@ var earthRadius = 63710088e-1;
 var factors = {
   centimeters: earthRadius * 100,
   centimetres: earthRadius * 100,
-  cm: earthRadius * 100,
   degrees: 360 / (2 * Math.PI),
-  deg: 360 / (2 * Math.PI),
   feet: earthRadius * 3.28084,
-  ft: earthRadius * 3.28084,
   inches: earthRadius * 39.37,
-  in: earthRadius * 39.37,
   kilometers: earthRadius / 1e3,
   kilometres: earthRadius / 1e3,
-  km: earthRadius / 1e3,
   meters: earthRadius,
   metres: earthRadius,
-  m: earthRadius,
   miles: earthRadius / 1609.344,
-  mi: earthRadius / 1609.344,
   millimeters: earthRadius * 1e3,
   millimetres: earthRadius * 1e3,
-  mm: earthRadius * 1e3,
   nauticalmiles: earthRadius / 1852,
-  nmi: earthRadius / 1852,
   radians: 1,
-  rad: 1,
-  yards: earthRadius * 1.0936,
-  yd: earthRadius * 1.0936
+  yards: earthRadius * 1.0936
 };
 var areaFactors = (/* unused pure expression or super */ null && ({
   acres: 247105e-9,
-  ac: 247105e-9,
   centimeters: 1e4,
   centimetres: 1e4,
-  cm: 1e4,
   feet: 10.763910417,
-  ft: 10.763910417,
   hectares: 1e-4,
-  ha: 1e-4,
   inches: 1550.003100006,
-  in: 1550.003100006,
   kilometers: 1e-6,
   kilometres: 1e-6,
-  km: 1e-6,
   meters: 1,
   metres: 1,
-  m: 1,
   miles: 386e-9,
-  mi: 386e-9,
   nauticalmiles: 29155334959812285e-23,
-  nmi: 29155334959812285e-23,
   millimeters: 1e6,
   millimetres: 1e6,
-  mm: 1e6,
-  yards: 1.195990046,
-  yd: 1.195990046
+  yards: 1.195990046
 }));
 function feature(geom, properties, options = {}) {
   const feat = { type: "Feature" };
@@ -34432,16 +34415,6 @@ function dist_esm_isNumber(num) {
 }
 function esm_isObject(input) {
   return input !== null && typeof input === "object" && !Array.isArray(input);
-}
-function removeBbox(geojson) {
-  delete geojson.bbox;
-  if (geojson.type === "Feature") {
-    if (geojson.geometry) removeBbox(geojson.geometry);
-  } else if (geojson.type === "FeatureCollection") {
-    geojson.features.forEach(removeBbox);
-  } else if (geojson.type === "GeometryCollection") {
-    geojson.geometries.forEach(removeBbox);
-  }
 }
 function validateBBox(bbox) {
   if (!bbox) {
@@ -58283,7 +58256,7 @@ function getDpi(scale, resolution, mapUnit) {
  * @param {Array} extent2 范围 2。
  * @return {boolean} 范围是否相交。
  */
- function MapCalculateUtil_intersects(extent1, extent2) {
+ function intersects(extent1, extent2) {
   return (
     extent1[0] <= extent2[2] &&
     extent1[2] >= extent2[0] &&
@@ -58302,7 +58275,7 @@ function getDpi(scale, resolution, mapUnit) {
  */
  function getIntersection(extent1, extent2) {
   const intersection = [];
-  if (MapCalculateUtil_intersects(extent1, extent2)) {
+  if (intersects(extent1, extent2)) {
     if (extent1[0] > extent2[0]) {
       intersection[0] = extent1[0];
     } else {
@@ -64051,8 +64024,8 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, e) { if ("object" != _typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 var geometry_Geometry = /*#__PURE__*/function () {
   function Geometry() {
@@ -64373,7 +64346,7 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-;
+
 
 function buildGeometry(builder, parsedGeometry) {
   var xy = parsedGeometry.xy,
@@ -64631,8 +64604,8 @@ function column_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function column_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, column_toPropertyKey(o.key), o); } }
 function column_createClass(e, r, t) { return r && column_defineProperties(e.prototype, r), t && column_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function column_toPropertyKey(t) { var i = column_toPrimitive(t, "string"); return "symbol" == column_typeof(i) ? i : i + ""; }
-function column_toPrimitive(t, e) { if ("object" != column_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function column_toPrimitive(t, r) { if ("object" != column_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != column_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 var Column = /*#__PURE__*/function () {
   function Column() {
@@ -64816,8 +64789,8 @@ function feature_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function feature_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, feature_toPropertyKey(o.key), o); } }
 function feature_createClass(e, r, t) { return r && feature_defineProperties(e.prototype, r), t && feature_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function feature_toPropertyKey(t) { var i = feature_toPrimitive(t, "string"); return "symbol" == feature_typeof(i) ? i : i + ""; }
-function feature_toPrimitive(t, e) { if ("object" != feature_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function feature_toPrimitive(t, r) { if ("object" != feature_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != feature_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 
 var feature_Feature = /*#__PURE__*/function () {
@@ -65193,7 +65166,7 @@ function feature_fromFeature(feature, header) {
   return geoJsonfeature;
 }
 ;// ./node_modules/slice-source/empty.js
-/* harmony default export */ const slice_source_empty = (new Uint8Array(0));
+/* harmony default export */ const empty = (new Uint8Array(0));
 
 ;// ./node_modules/slice-source/cancel.js
 __webpack_require__.dn(slice_source_cancel);
@@ -65219,7 +65192,7 @@ __webpack_require__.dn(read);
 /* harmony default export */ function read() {
   var that = this, array = that._array.subarray(that._index);
   return that._source.read().then(function(result) {
-    that._array = slice_source_empty;
+    that._array = empty;
     that._index = 0;
     return result.done ? (array.length > 0
         ? {done: false, value: array}
@@ -65250,7 +65223,7 @@ __webpack_require__.dn(slice);
       // When done, it’s possible the request wasn’t fully fullfilled!
       // If so, the pre-allocated array is too big and needs slicing.
       if (result.done) {
-        that._array = slice_source_empty;
+        that._array = empty;
         that._index = 0;
         return index > 0 ? array.subarray(0, index) : null;
       }
@@ -65285,7 +65258,7 @@ function slice_source_slice(source) {
 
 function SliceSource(source) {
   this._source = source;
-  this._array = slice_source_empty;
+  this._array = empty;
   this._index = 0;
 }
 
@@ -65299,8 +65272,8 @@ function crs_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("
 function crs_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, crs_toPropertyKey(o.key), o); } }
 function crs_createClass(e, r, t) { return r && crs_defineProperties(e.prototype, r), t && crs_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function crs_toPropertyKey(t) { var i = crs_toPrimitive(t, "string"); return "symbol" == crs_typeof(i) ? i : i + ""; }
-function crs_toPrimitive(t, e) { if ("object" != crs_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function crs_toPrimitive(t, r) { if ("object" != crs_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != crs_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 var Crs = /*#__PURE__*/function () {
   function Crs() {
     crs_classCallCheck(this, Crs);
@@ -65422,8 +65395,8 @@ function header_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function header_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, header_toPropertyKey(o.key), o); } }
 function header_createClass(e, r, t) { return r && header_defineProperties(e.prototype, r), t && header_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function header_toPropertyKey(t) { var i = header_toPrimitive(t, "string"); return "symbol" == header_typeof(i) ? i : i + ""; }
-function header_toPrimitive(t, e) { if ("object" != header_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function header_toPrimitive(t, r) { if ("object" != header_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != header_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 
 
@@ -66640,7 +66613,7 @@ function config_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function config_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, config_toPropertyKey(o.key), o); } }
 function config_createClass(e, r, t) { return r && config_defineProperties(e.prototype, r), t && config_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function config_toPropertyKey(t) { var i = config_toPrimitive(t, "string"); return "symbol" == config_typeof(i) ? i : i + ""; }
-function config_toPrimitive(t, e) { if ("object" != config_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function config_toPrimitive(t, r) { if ("object" != config_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != config_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var Config = /*#__PURE__*/function () {
   function Config() {
     config_classCallCheck(this, Config);
@@ -66669,7 +66642,7 @@ function logger_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErro
 function logger_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, logger_toPropertyKey(o.key), o); } }
 function logger_createClass(e, r, t) { return r && logger_defineProperties(e.prototype, r), t && logger_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function logger_toPropertyKey(t) { var i = logger_toPrimitive(t, "string"); return "symbol" == logger_typeof(i) ? i : i + ""; }
-function logger_toPrimitive(t, e) { if ("object" != logger_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function logger_toPrimitive(t, r) { if ("object" != logger_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != logger_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var LogLevel;
 (function (LogLevel) {
   LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -66768,13 +66741,13 @@ function packedrtree_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function packedrtree_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, packedrtree_toPropertyKey(o.key), o); } }
 function packedrtree_createClass(e, r, t) { return r && packedrtree_defineProperties(e.prototype, r), t && packedrtree_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function packedrtree_toPropertyKey(t) { var i = packedrtree_toPrimitive(t, "string"); return "symbol" == packedrtree_typeof(i) ? i : i + ""; }
-function packedrtree_toPrimitive(t, e) { if ("object" != packedrtree_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function packedrtree_toPrimitive(t, r) { if ("object" != packedrtree_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != packedrtree_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _awaitAsyncGenerator(e) { return new _OverloadYield(e, 0); }
 function _wrapAsyncGenerator(e) { return function () { return new AsyncGenerator(e.apply(this, arguments)); }; }
 function AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof _OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function _OverloadYield(e, d) { this.v = e, this.k = d; }
-;
+
 
 var NODE_ITEM_BYTE_LEN = 8 * 4 + 8;
 var NODE_ITEM_LEN = (/* unused pure expression or super */ null && (NODE_ITEM_BYTE_LEN));
@@ -67029,7 +67002,7 @@ function http_reader_classCallCheck(a, n) { if (!(a instanceof n)) throw new Typ
 function http_reader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, http_reader_toPropertyKey(o.key), o); } }
 function http_reader_createClass(e, r, t) { return r && http_reader_defineProperties(e.prototype, r), t && http_reader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function http_reader_toPropertyKey(t) { var i = http_reader_toPrimitive(t, "string"); return "symbol" == http_reader_typeof(i) ? i : i + ""; }
-function http_reader_toPrimitive(t, e) { if ("object" != http_reader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function http_reader_toPrimitive(t, r) { if ("object" != http_reader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != http_reader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function http_reader_wrapAsyncGenerator(e) { return function () { return new http_reader_AsyncGenerator(e.apply(this, arguments)); }; }
 function http_reader_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof http_reader_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 http_reader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, http_reader_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, http_reader_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, http_reader_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
@@ -67038,7 +67011,7 @@ function _asyncGeneratorDelegate(t) { var e = {}, n = !1; function pump(e, r) { 
 function http_reader_OverloadYield(e, d) { this.v = e, this.k = d; }
 function _asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(r); }
-;
+
 
 
 
@@ -67443,7 +67416,7 @@ var HttpRangeClient = /*#__PURE__*/function () {
 function header_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = header_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function header_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return header_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? header_arrayLikeToArray(r, a) : void 0; } }
 function header_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-;
+
 
 function featureGeomType(feature) {
   if (feature.getGeometry) {
@@ -67504,7 +67477,7 @@ function featurecollection_wrapAsyncGenerator(e) { return function () { return n
 function featurecollection_AsyncGenerator(e) { var t, n; function resume(t, n) { try { var r = e[t](n), o = r.value, u = o instanceof featurecollection_OverloadYield; Promise.resolve(u ? o.v : o).then(function (n) { if (u) { var i = "return" === t && o.k ? t : "next"; if (!o.k || n.done) return resume(i, n); n = e[i](n).value; } settle(!!r.done, n); }, function (e) { resume("throw", e); }); } catch (e) { settle(2, e); } } function settle(e, r) { 2 === e ? t.reject(r) : t.resolve({ value: r, done: e }), (t = t.next) ? resume(t.key, t.arg) : n = null; } this._invoke = function (e, r) { return new Promise(function (o, u) { var i = { key: e, arg: r, resolve: o, reject: u, next: null }; n ? n = n.next = i : (t = n = i, resume(e, r)); }); }, "function" != typeof e["return"] && (this["return"] = void 0); }
 featurecollection_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, featurecollection_AsyncGenerator.prototype.next = function (e) { return this._invoke("next", e); }, featurecollection_AsyncGenerator.prototype["throw"] = function (e) { return this._invoke("throw", e); }, featurecollection_AsyncGenerator.prototype["return"] = function (e) { return this._invoke("return", e); };
 function featurecollection_OverloadYield(e, d) { this.v = e, this.k = d; }
-;
+
 
 
 
@@ -67856,7 +67829,7 @@ function introspectHeaderMeta(features) {
 function geojson_featurecollection_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = geojson_featurecollection_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function geojson_featurecollection_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return geojson_featurecollection_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? geojson_featurecollection_arrayLikeToArray(r, a) : void 0; } }
 function geojson_featurecollection_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-;
+
 
 
 
@@ -67940,10 +67913,9 @@ function geojson_deserialize(input, rect, headerMetaFn) {
   var nocache = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   if (input instanceof Uint8Array) return featurecollection_deserialize(input, headerMetaFn);else if (input instanceof ReadableStream) return featurecollection_deserializeStream(input, headerMetaFn);else return featurecollection_deserializeFiltered(input, rect, headerMetaFn, nocache);
 }
-;// ./node_modules/rbush/index.js
-rbush_namespaceFn();
-
-function rbush_default() { return rbush_default.c || (rbush_default.c = __webpack_require__.n(rbush_namespaceFn())); }
+// EXTERNAL MODULE: ./node_modules/rbush/index.js
+var rbush = __webpack_require__(519);
+var rbush_default = /*#__PURE__*/__webpack_require__.n(rbush);
 ;// ./src/common/overlay/fgb/FGBLayerRenderer.js
 function FGBLayerRenderer_typeof(o) { "@babel/helpers - typeof"; return FGBLayerRenderer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, FGBLayerRenderer_typeof(o); }
 function FGBLayerRenderer_regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return FGBLayerRenderer_regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (FGBLayerRenderer_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, FGBLayerRenderer_regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, FGBLayerRenderer_regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), FGBLayerRenderer_regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", FGBLayerRenderer_regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), FGBLayerRenderer_regeneratorDefine2(u), FGBLayerRenderer_regeneratorDefine2(u, o, "Generator"), FGBLayerRenderer_regeneratorDefine2(u, n, function () { return this; }), FGBLayerRenderer_regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (FGBLayerRenderer_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
@@ -67954,14 +67926,14 @@ function FGBLayerRenderer_classCallCheck(a, n) { if (!(a instanceof n)) throw ne
 function FGBLayerRenderer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, FGBLayerRenderer_toPropertyKey(o.key), o); } }
 function FGBLayerRenderer_createClass(e, r, t) { return r && FGBLayerRenderer_defineProperties(e.prototype, r), t && FGBLayerRenderer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function FGBLayerRenderer_toPropertyKey(t) { var i = FGBLayerRenderer_toPrimitive(t, "string"); return "symbol" == FGBLayerRenderer_typeof(i) ? i : i + ""; }
-function FGBLayerRenderer_toPrimitive(t, e) { if ("object" != FGBLayerRenderer_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != FGBLayerRenderer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function FGBLayerRenderer_toPrimitive(t, r) { if ("object" != FGBLayerRenderer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != FGBLayerRenderer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function FGBLayerRenderer_asyncIterator(r) { var n, t, o, e = 2; for ("undefined" != typeof Symbol && (t = Symbol.asyncIterator, o = Symbol.iterator); e--;) { if (t && null != (n = r[t])) return n.call(r); if (o && null != (n = r[o])) return new FGBLayerRenderer_AsyncFromSyncIterator(n.call(r)); t = "@@asyncIterator", o = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function FGBLayerRenderer_AsyncFromSyncIterator(r) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var n = r.done; return Promise.resolve(r.value).then(function (r) { return { value: r, done: n }; }); } return FGBLayerRenderer_AsyncFromSyncIterator = function AsyncFromSyncIterator(r) { this.s = r, this.n = r.next; }, FGBLayerRenderer_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(r) { var n = this.s["return"]; return void 0 === n ? Promise.resolve({ value: r, done: !0 }) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); }, "throw": function _throw(r) { var n = this.s["return"]; return void 0 === n ? Promise.reject(r) : AsyncFromSyncIteratorContinuation(n.apply(this.s, arguments)); } }, new FGBLayerRenderer_AsyncFromSyncIterator(r); }
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-;
+
 
 
 
@@ -68011,7 +67983,7 @@ var FGBLayerRenderer = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       if (this.strategy === 'bbox') {
-        this.loadedExtentsRtree_ = new (rbush_default()())();
+        this.loadedExtentsRtree_ = new (rbush_default())();
       }
     }
   }, {
@@ -68204,7 +68176,7 @@ function FGBLayer_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeEr
 function FGBLayer_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, FGBLayer_toPropertyKey(o.key), o); } }
 function FGBLayer_createClass(e, r, t) { return r && FGBLayer_defineProperties(e.prototype, r), t && FGBLayer_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function FGBLayer_toPropertyKey(t) { var i = FGBLayer_toPrimitive(t, "string"); return "symbol" == FGBLayer_typeof(i) ? i : i + ""; }
-function FGBLayer_toPrimitive(t, e) { if ("object" != FGBLayer_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != FGBLayer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function FGBLayer_toPrimitive(t, r) { if ("object" != FGBLayer_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != FGBLayer_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
@@ -68215,7 +68187,7 @@ function FGBLayer_toPrimitive(t, e) { if ("object" != FGBLayer_typeof(t) || !t) 
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
-;
+
 
 
 
@@ -70177,7 +70149,7 @@ class WebSymbol {
    * @param {string} [config.basePath] - 指定符号资源路径
    */
   init(config) {
-    ;(external_maplibregl_default()).Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
+    (external_maplibregl_default()).Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
     symbol_MapExtendSymbol();
   }
 }
@@ -71235,7 +71207,7 @@ function findPoint(geojson, options) {
 ;// ./node_modules/@turf/bbox/dist/esm/index.js
 // index.ts
 
-function esm_bbox(geojson, options = {}) {
+function bbox(geojson, options = {}) {
   if (geojson.bbox != null && true !== options.recompute) {
     return geojson.bbox;
   }
@@ -71256,7 +71228,7 @@ function esm_bbox(geojson, options = {}) {
   });
   return result;
 }
-var esm_index_default = (/* unused pure expression or super */ null && (esm_bbox));
+var esm_index_default = (/* unused pure expression or super */ null && (bbox));
 
 //# sourceMappingURL=index.js.map
 ;// ./node_modules/@turf/center/dist/esm/index.js
@@ -71264,7 +71236,7 @@ var esm_index_default = (/* unused pure expression or super */ null && (esm_bbox
 
 
 function center(geojson, options = {}) {
-  const ext = esm_bbox(geojson);
+  const ext = bbox(geojson);
   const x = (ext[0] + ext[2]) / 2;
   const y = (ext[1] + ext[3]) / 2;
   return point([x, y], options.properties, options);
@@ -72116,7 +72088,7 @@ __webpack_require__.dn(projString);
   return self;
 }
 
-;// ./node_modules/wkt-parser/PROJJSONBuilder.js
+;// ./node_modules/wkt-parser/PROJJSONBuilderBase.js
 class PROJJSONBuilderBase {
   static getId(node) {
     const idNode = node.find((child) => Array.isArray(child) && child[0] === 'ID');
@@ -72213,7 +72185,7 @@ class PROJJSONBuilderBase {
         const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         if (csNode) {
           result.coordinate_system = {
-            subtype: csNode[1],
+            type: csNode[1],
             axis: this.extractAxes(node),
           };
         }
@@ -72253,9 +72225,8 @@ class PROJJSONBuilderBase {
           }
         }
       
-        const geogCsNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
         result.coordinate_system = {
-          subtype: geogCsNode ? geogCsNode[1] : 'ellipsoidal',
+          type: 'ellipsoidal',
           axis: this.extractAxes(node),
         };
       
@@ -72436,9 +72407,93 @@ class PROJJSONBuilderBase {
   }
 }
 
-/* harmony default export */ const PROJJSONBuilder = (PROJJSONBuilderBase);
+/* harmony default export */ const wkt_parser_PROJJSONBuilderBase = (PROJJSONBuilderBase);
+;// ./node_modules/wkt-parser/PROJJSONBuilder2015.js
+
+
+class PROJJSONBuilder2015 extends wkt_parser_PROJJSONBuilderBase {
+  static convert(node, result = {}) {
+    super.convert(node, result);
+
+    // Skip `CS` and `USAGE` nodes for WKT2-2015
+    if (result.coordinate_system && result.coordinate_system.subtype === 'Cartesian') {
+      delete result.coordinate_system;
+    }
+    if (result.usage) {
+      delete result.usage;
+    }
+
+    return result;
+  }
+}
+
+/* harmony default export */ const wkt_parser_PROJJSONBuilder2015 = (PROJJSONBuilder2015);
+;// ./node_modules/wkt-parser/PROJJSONBuilder2019.js
+
+
+class PROJJSONBuilder2019 extends wkt_parser_PROJJSONBuilderBase {
+  static convert(node, result = {}) {
+    super.convert(node, result);
+
+    // Handle `CS` node for WKT2-2019
+    const csNode = node.find((child) => Array.isArray(child) && child[0] === 'CS');
+    if (csNode) {
+      result.coordinate_system = {
+        subtype: csNode[1],
+        axis: this.extractAxes(node),
+      };
+    }
+
+    // Handle `USAGE` node for WKT2-2019
+    const usageNode = node.find((child) => Array.isArray(child) && child[0] === 'USAGE');
+    if (usageNode) {
+      const scope = usageNode.find((child) => Array.isArray(child) && child[0] === 'SCOPE');
+      const area = usageNode.find((child) => Array.isArray(child) && child[0] === 'AREA');
+      const bbox = usageNode.find((child) => Array.isArray(child) && child[0] === 'BBOX');
+      result.usage = {};
+      if (scope) {
+        result.usage.scope = scope[1];
+      }
+      if (area) {
+        result.usage.area = area[1];
+      }
+      if (bbox) {
+        result.usage.bbox = bbox.slice(1);
+      }
+    }
+
+    return result;
+  }
+}
+
+/* harmony default export */ const wkt_parser_PROJJSONBuilder2019 = (PROJJSONBuilder2019);
 ;// ./node_modules/wkt-parser/buildPROJJSON.js
 
+
+
+/**
+ * Detects the WKT2 version based on the structure of the WKT.
+ * @param {Array} root The root WKT array node.
+ * @returns {string} The detected version ("2015" or "2019").
+ */
+function detectWKT2Version(root) {
+  // Check for WKT2-2019-specific nodes
+  if (root.find((child) => Array.isArray(child) && child[0] === 'USAGE')) {
+    return '2019'; // `USAGE` is specific to WKT2-2019
+  }
+
+  // Check for WKT2-2015-specific nodes
+  if (root.find((child) => Array.isArray(child) && child[0] === 'CS')) {
+    return '2015'; // `CS` is valid in both, but default to 2015 unless `USAGE` is present
+  }
+
+  if (root[0] === 'BOUNDCRS' || root[0] === 'PROJCRS' || root[0] === 'GEOGCRS') {
+    return '2015'; // These are valid in both, but default to 2015
+  }
+
+  // Default to WKT2-2015 if no specific indicators are found
+  return '2015';
+}
 
 /**
  * Builds a PROJJSON object from a WKT array structure.
@@ -72446,7 +72501,9 @@ class PROJJSONBuilderBase {
  * @returns {Object} The PROJJSON object.
  */
 function buildPROJJSON(root) {
-  return PROJJSONBuilder.convert(root);
+  const version = detectWKT2Version(root);
+  const builder = version === '2019' ? wkt_parser_PROJJSONBuilder2019 : wkt_parser_PROJJSONBuilder2015;
+  return builder.convert(root);
 }
 
 ;// ./node_modules/wkt-parser/detectWKTVersion.js
@@ -73001,11 +73058,6 @@ function transformPROJJSON(projjson, result = {}) {
     }
   });
 
-  // Geographic and geodetic CRSs have no base_crs, so use their own id as datumCode
-  if (!result.datumCode && (projjson.type === 'GeographicCRS' || projjson.type === 'GeodeticCRS') && projjson.id) {
-    result.datumCode = projjson.id.authority + '_' + projjson.id.code;
-  }
-
   // Additional calculated properties
   if (result.latitude_of_false_origin !== undefined) {
     result.lat0 = result.latitude_of_false_origin; // Already in radians
@@ -73419,8 +73471,8 @@ function parse(code) {
 /* harmony default export */ const parseCode = (parse);
 
 ;// ./node_modules/proj4/lib/extend.js
-__webpack_require__.dn(lib_extend);
-/* harmony default export */ function lib_extend(destination, source) {
+__webpack_require__.dn(extend);
+/* harmony default export */ function extend(destination, source) {
   destination = destination || {};
   var value, property;
   if (!source) {
@@ -75525,8 +75577,8 @@ function Proj_Projection(srsCode, callback) {
   var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2,
     nadgrids);
 
-  lib_extend(this, json); // transfer everything over from the projection because we don't know what we'll need
-  lib_extend(this, ourProj); // transfer all the methods from the projection
+  extend(this, json); // transfer everything over from the projection because we don't know what we'll need
+  extend(this, ourProj); // transfer all the methods from the projection
 
   // copy the 4 things over we calculated in deriveConstants.sphere
   this.a = sphere_.a;
@@ -79882,7 +79934,7 @@ var sinu_names = ['Sinusoidal', 'sinu'];
 ;// ./node_modules/proj4/lib/projections/moll.js
 
 function moll_init() {}
-;
+
 /* Mollweide forward equations--mapping lat,long to x,y
     ---------------------------------------------------- */
 function moll_forward(p) {
@@ -81392,7 +81444,7 @@ var A1 = 1.340264,
   A2 = -0.081106,
   A3 = 0.000893,
   A4 = 0.003796,
-  eqearth_M = Math.sqrt(3) / 2.0;
+  M = Math.sqrt(3) / 2.0;
 
 function eqearth_init() {
   this.es = 0;
@@ -81402,11 +81454,11 @@ function eqearth_init() {
 function eqearth_forward(p) {
   var lam = adjust_lon(p.x - this.long0);
   var phi = p.y;
-  var paramLat = Math.asin(eqearth_M * Math.sin(phi)),
+  var paramLat = Math.asin(M * Math.sin(phi)),
     paramLatSq = paramLat * paramLat,
     paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
   p.x = lam * Math.cos(paramLat)
-    / (eqearth_M * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq)));
+    / (M * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq)));
   p.y = paramLat * (A1 + A2 * paramLatSq + paramLatPow6 * (A3 + A4 * paramLatSq));
 
   p.x = this.a * p.x + this.x0;
@@ -81435,9 +81487,9 @@ function eqearth_inverse(p) {
   }
   paramLatSq = paramLat * paramLat;
   paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
-  p.x = eqearth_M * p.x * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq))
+  p.x = M * p.x * (A1 + 3 * A2 * paramLatSq + paramLatPow6 * (7 * A3 + 9 * A4 * paramLatSq))
     / Math.cos(paramLat);
-  p.y = Math.asin(Math.sin(paramLat) / eqearth_M);
+  p.y = Math.asin(Math.sin(paramLat) / M);
 
   p.x = adjust_lon(p.x + this.long0);
   return p;
@@ -87596,7 +87648,7 @@ const ColorArrayType = { kind: 'colorArray' };
 const NumberArrayType = { kind: 'numberArray' };
 const ResolvedImageType = { kind: 'resolvedImage' };
 const VariableAnchorOffsetCollectionType = { kind: 'variableAnchorOffsetCollection' };
-function dist_array(itemType, N) {
+function array(itemType, N) {
     return {
         kind: 'array',
         itemType,
@@ -87623,7 +87675,7 @@ const valueMemberTypes = [
     ProjectionDefinitionType,
     FormattedType,
     ObjectType,
-    dist_array(ValueType),
+    array(ValueType),
     PaddingType,
     NumberArrayType,
     ColorArrayType,
@@ -88715,7 +88767,7 @@ function typeOf(value) {
                 break;
             }
         }
-        return dist_array(itemType || ValueType, length);
+        return array(itemType || ValueType, length);
     }
     else {
         return ObjectType;
@@ -88809,7 +88861,7 @@ class Assertion {
                 N = args[2];
                 i++;
             }
-            type = dist_array(itemType, N);
+            type = array(itemType, N);
         }
         else {
             if (!types$1[name])
@@ -89251,7 +89303,7 @@ class At {
         if (args.length !== 3)
             return context.error(`Expected 2 arguments, but found ${args.length - 1} instead.`);
         const index = context.parse(args[1], 1, NumberType);
-        const input = context.parse(args[2], 2, dist_array(context.expectedType || ValueType));
+        const input = context.parse(args[2], 2, array(context.expectedType || ValueType));
         if (!index || !input)
             return null;
         const t = input.type;
@@ -89540,7 +89592,7 @@ class Slice {
         const beginIndex = context.parse(args[2], 2, NumberType);
         if (!input || !beginIndex)
             return null;
-        if (!isValidType(input.type, [dist_array(ValueType), StringType, ValueType])) {
+        if (!isValidType(input.type, [array(ValueType), StringType, ValueType])) {
             return context.error(`Expected first argument to be of type array or string, but found ${typeToString(input.type)} instead`);
         }
         if (args.length === 4) {
@@ -89879,7 +89931,7 @@ class Interpolate {
             !verifyType(outputType, NumberArrayType) &&
             !verifyType(outputType, ColorArrayType) &&
             !verifyType(outputType, VariableAnchorOffsetCollectionType) &&
-            !verifyType(outputType, dist_array(NumberType))) {
+            !verifyType(outputType, array(NumberType))) {
             return context.error(`Type ${typeToString(outputType)} is not interpolatable.`);
         }
         return new Interpolate(outputType, operator, interpolation, input, stops);
@@ -90361,7 +90413,7 @@ class FormatExpression {
                 }
                 let font = null;
                 if (arg['text-font']) {
-                    font = context.parse(arg['text-font'], 1, dist_array(StringType));
+                    font = context.parse(arg['text-font'], 1, array(StringType));
                     if (!font)
                         return null;
                 }
@@ -90904,7 +90956,7 @@ class TinyQueue {
  * @param {number} [right=arr.length-1] right index
  * @param {(a: T, b: T) => number} [compare = (a, b) => a - b] compare function
  */
-function dist_quickselect(arr, k, left = 0, right = arr.length - 1, compare = defaultCompare) {
+function quickselect(arr, k, left = 0, right = arr.length - 1, compare = defaultCompare) {
 
     while (right > left) {
         if (right - left > 600) {
@@ -90915,7 +90967,7 @@ function dist_quickselect(arr, k, left = 0, right = arr.length - 1, compare = de
             const sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
             const newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
             const newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
-            dist_quickselect(arr, k, newLeft, newRight, compare);
+            quickselect(arr, k, newLeft, newRight, compare);
         }
 
         const t = arr[k];
@@ -90923,21 +90975,21 @@ function dist_quickselect(arr, k, left = 0, right = arr.length - 1, compare = de
         /** @type {number} */
         let j = right;
 
-        dist_swap(arr, left, k);
-        if (compare(arr[right], t) > 0) dist_swap(arr, left, right);
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
 
         while (i < j) {
-            dist_swap(arr, i, j);
+            swap(arr, i, j);
             i++;
             j--;
             while (compare(arr[i], t) < 0) i++;
             while (compare(arr[j], t) > 0) j--;
         }
 
-        if (compare(arr[left], t) === 0) dist_swap(arr, left, j);
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
         else {
             j++;
-            dist_swap(arr, j, right);
+            swap(arr, j, right);
         }
 
         if (j <= k) left = j + 1;
@@ -90951,7 +91003,7 @@ function dist_quickselect(arr, k, left = 0, right = arr.length - 1, compare = de
  * @param {number} i
  * @param {number} j
  */
-function dist_swap(arr, i, j) {
+function swap(arr, i, j) {
     const tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
@@ -91004,7 +91056,7 @@ function classifyRings(rings, maxRings) {
         for (let j = 0; j < polygons.length; j++) {
             if (polygons[j].length <= maxRings)
                 continue;
-            dist_quickselect(polygons[j], maxRings, 1, polygons[j].length - 1, compareAreas);
+            quickselect(polygons[j], maxRings, 1, polygons[j].length - 1, compareAreas);
             polygons[j] = polygons[j].slice(0, maxRings);
         }
     }
@@ -91836,7 +91888,7 @@ CompoundExpression.register(expressions$1, {
         (ctx, [v]) => typeToString(typeOf(v.evaluate(ctx)))
     ],
     'to-rgba': [
-        dist_array(NumberType, 4),
+        array(NumberType, 4),
         [ColorType],
         (ctx, [v]) => {
             const [r, g, b, a] = v.evaluate(ctx).rgb;
@@ -92171,23 +92223,23 @@ CompoundExpression.register(expressions$1, {
     ],
     'filter-type-in': [
         BooleanType,
-        [dist_array(StringType)],
+        [array(StringType)],
         (ctx, [v]) => v.value.indexOf(ctx.geometryType()) >= 0
     ],
     'filter-id-in': [
         BooleanType,
-        [dist_array(ValueType)],
+        [array(ValueType)],
         (ctx, [v]) => v.value.indexOf(ctx.id()) >= 0
     ],
     'filter-in-small': [
         BooleanType,
-        [StringType, dist_array(ValueType)],
+        [StringType, array(ValueType)],
         // assumes v is an array literal
         (ctx, [k, v]) => v.value.indexOf(ctx.properties()[k.value]) >= 0
     ],
     'filter-in-large': [
         BooleanType,
-        [StringType, dist_array(ValueType)],
+        [StringType, array(ValueType)],
         // assumes v is a array literal with values sorted in ascending order and of a single type
         (ctx, [k, v]) => binarySearch(ctx.properties()[k.value], v.value, 0, v.value.length - 1)
     ],
@@ -92947,7 +92999,7 @@ function getExpectedType(spec) {
         variableAnchorOffsetCollection: VariableAnchorOffsetCollectionType
     };
     if (spec.type === 'array') {
-        return dist_array(types[spec.value] || ValueType, spec.length);
+        return array(types[spec.value] || ValueType, spec.length);
     }
     return types[spec.type];
 }
@@ -93051,7 +93103,7 @@ function featureFilter(filter) {
     }
 }
 // Comparison function to sort numbers and strings
-function dist_compare(a, b) {
+function compare(a, b) {
     return a < b ? -1 : a > b ? 1 : 0;
 }
 function geometryNeeded(filter) {
@@ -93111,7 +93163,7 @@ function convertInOp$1(property, values) {
             return ['filter-id-in', ['literal', values]];
         default:
             if (values.length > 200 && !values.some(v => typeof v !== typeof values[0])) {
-                return ['filter-in-large', property, ['literal', values.sort(dist_compare)]];
+                return ['filter-in-large', property, ['literal', values.sort(compare)]];
             }
             else {
                 return ['filter-in-small', property, ['literal', values]];
@@ -95190,7 +95242,7 @@ function sortKeysBy(obj, reference) {
  * fs.writeFileSync('./dest.json', format(style));
  * fs.writeFileSync('./dest.min.json', format(style, 0));
  */
-function dist_format(style, space = 2) {
+function format(style, space = 2) {
     style = sortKeysBy(style, v8Spec.$root);
     if (style.layers) {
         style.layers = style.layers.map((layer) => sortKeysBy(layer, v8Spec.layer));
@@ -96237,7 +96289,7 @@ var DANGEROUS_PROPERTY_NAMES = [
 var criticalProperties = ["__proto__", "constructor", "prototype"];
 ;// ./node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 function OptionsBuilder_typeof(o) { "@babel/helpers - typeof"; return OptionsBuilder_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, OptionsBuilder_typeof(o); }
-;
+
 var defaultOnDangerousProperty = function defaultOnDangerousProperty(name) {
   if (DANGEROUS_PROPERTY_NAMES.includes(name)) {
     return "__" + name;
@@ -96417,7 +96469,7 @@ function xmlNode_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeErr
 function xmlNode_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, xmlNode_toPropertyKey(o.key), o); } }
 function xmlNode_createClass(e, r, t) { return r && xmlNode_defineProperties(e.prototype, r), t && xmlNode_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function xmlNode_toPropertyKey(t) { var i = xmlNode_toPrimitive(t, "string"); return "symbol" == xmlNode_typeof(i) ? i : i + ""; }
-function xmlNode_toPrimitive(t, e) { if ("object" != xmlNode_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function xmlNode_toPrimitive(t, r) { if ("object" != xmlNode_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != xmlNode_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var METADATA_SYMBOL;
 if (typeof Symbol !== "function") {
   METADATA_SYMBOL = "@@xmlMetadata";
@@ -96477,8 +96529,8 @@ function DocTypeReader_classCallCheck(a, n) { if (!(a instanceof n)) throw new T
 function DocTypeReader_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, DocTypeReader_toPropertyKey(o.key), o); } }
 function DocTypeReader_createClass(e, r, t) { return r && DocTypeReader_defineProperties(e.prototype, r), t && DocTypeReader_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function DocTypeReader_toPropertyKey(t) { var i = DocTypeReader_toPrimitive(t, "string"); return "symbol" == DocTypeReader_typeof(i) ? i : i + ""; }
-function DocTypeReader_toPrimitive(t, e) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function DocTypeReader_toPrimitive(t, r) { if ("object" != DocTypeReader_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != DocTypeReader_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 var DocTypeReader = /*#__PURE__*/function () {
   function DocTypeReader(options) {
     DocTypeReader_classCallCheck(this, DocTypeReader);
@@ -97178,10 +97230,8 @@ function toNumber(str, options = {}) {
         return parse_int(trimmedStr, 2);
     } else if (options.octal && octRegex.test(trimmedStr)) {
         return parse_int(trimmedStr, 8);
-    } else if (!isFinite(trimmedStr)) { //Infinity or not a number
-        const num = Number(trimmedStr);
-        if (Number.isNaN(num)) return str; //not a number: always the original string
-        return handleInfinity(str, num, options); //only +/-Infinity reaches here
+    } else if (!isFinite(trimmedStr)) { //Infinity
+        return handleInfinity(str, Number(trimmedStr), options);
     } else if (trimmedStr.includes('e') || trimmedStr.includes('E')) { //eNotation
         return resolveEnotation(str, trimmedStr, options);
     } else {
@@ -97193,8 +97243,8 @@ function toNumber(str, options = {}) {
             const leadingZeros = match[2];
             let numTrimmedByZeros = trimZeros(match[3]); //complete num without leading zeros
             const decimalAdjacentToLeadingZeros = sign ? // 0., -00., 000.
-                trimmedStr[leadingZeros.length + 1] === "."
-                : trimmedStr[leadingZeros.length] === ".";
+                str[leadingZeros.length + 1] === "."
+                : str[leadingZeros.length] === ".";
 
             //trim ending zeros for floating number
             if (!options.leadingZeros //leading zeros are not allowed
@@ -97242,8 +97292,8 @@ function resolveEnotation(str, trimmedStr, options) {
         const eChar = notation[3].indexOf("e") === -1 ? "E" : "e";
         const leadingZeros = notation[2];
         const eAdjacentToLeadingZeros = sign ? // 0E.
-            trimmedStr[leadingZeros.length + 1] === eChar
-            : trimmedStr[leadingZeros.length] === eChar;
+            str[leadingZeros.length + 1] === eChar
+            : str[leadingZeros.length] === eChar;
 
         if (leadingZeros.length > 1 && eAdjacentToLeadingZeros) return str;
         else if (leadingZeros.length === 1
@@ -97252,7 +97302,8 @@ function resolveEnotation(str, trimmedStr, options) {
         } else if (leadingZeros.length > 0) {
             // Has leading zeros — only accept if leadingZeros option allows it
             if (options.leadingZeros && !eAdjacentToLeadingZeros) {
-                return Number(trimmedStr); // Number() accepts leading zeros; stripping can leave a mantissa-less ".e0"
+                trimmedStr = (notation[1] || "") + notation[3];
+                return Number(trimmedStr);
             } else return str;
         } else {
             // No leading zeros — always valid e-notation, parse it
@@ -97270,11 +97321,7 @@ function resolveEnotation(str, trimmedStr, options) {
  */
 function trimZeros(numStr) {
     if (numStr && numStr.indexOf(".") !== -1) {//float
-        //remove ending zeros without the O(n^2) backtracking that /0+$/ hits
-        //when the string doesn't end in 0 but has a long internal zero-run
-        let end = numStr.length;
-        while (end > 0 && numStr.charCodeAt(end - 1) === 48 /* '0' */) end--;
-        numStr = numStr.slice(0, end);
+        numStr = numStr.replace(/0+$/, ""); //remove ending zeros
         if (numStr === ".") numStr = "0";
         else if (numStr[0] === ".") numStr = "0" + numStr;
         else if (numStr[numStr.length - 1] === ".") numStr = numStr.substring(0, numStr.length - 1);
@@ -97315,7 +97362,6 @@ function handleInfinity(str, num, options) {
             return str; // Return original string like "1e1000"
     }
 }
-
 ;// ./node_modules/fast-xml-parser/src/ignoreAttributes.js
 function ignoreAttributes_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = ignoreAttributes_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ignoreAttributes_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return ignoreAttributes_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? ignoreAttributes_arrayLikeToArray(r, a) : void 0; } }
@@ -97354,12 +97400,15 @@ function Matcher_typeof(o) { "@babel/helpers - typeof"; return Matcher_typeof = 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { Matcher_defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function Matcher_defineProperty(e, r, t) { return (r = Matcher_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function Matcher_createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = Matcher_unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function Matcher_unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return Matcher_arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? Matcher_arrayLikeToArray(r, a) : void 0; } }
+function Matcher_arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function Matcher_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function Matcher_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Matcher_toPropertyKey(o.key), o); } }
 function Matcher_createClass(e, r, t) { return r && Matcher_defineProperties(e.prototype, r), t && Matcher_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Matcher_toPropertyKey(t) { var i = Matcher_toPrimitive(t, "string"); return "symbol" == Matcher_typeof(i) ? i : i + ""; }
-function Matcher_toPrimitive(t, e) { if ("object" != Matcher_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function Matcher_toPrimitive(t, r) { if ("object" != Matcher_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Matcher_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 /**
  * MatcherView - A lightweight read-only view over a Matcher's internal state.
@@ -97633,32 +97682,34 @@ var Matcher = /*#__PURE__*/function () {
 
       // Get or create sibling tracking for current level
       var currentLevel = this.path.length;
-      var level = this.siblingStacks[currentLevel];
-      if (!level) {
-        // `counts` tells same-name siblings apart (the "counter" — nth <item>
-        // among other <item>s). `total` is every child seen at this level so
-        // far, kept as a running number instead of re-added from `counts` on
-        // every push — a parent with many differently-named children would
-        // otherwise cost more per child the more distinct names it has.
-        level = {
-          counts: new Map(),
-          total: 0
-        };
-        this.siblingStacks[currentLevel] = level;
+      if (!this.siblingStacks[currentLevel]) {
+        this.siblingStacks[currentLevel] = new Map();
       }
+      var siblings = this.siblingStacks[currentLevel];
 
       // Create a unique key for sibling tracking that includes namespace
       var siblingKey = namespace ? "".concat(namespace, ":").concat(tagName) : tagName;
 
       // Calculate counter (how many times this tag appeared at this level)
-      var counter = level.counts.get(siblingKey) || 0;
+      var counter = siblings.get(siblingKey) || 0;
 
-      // Position = total children at this level seen before this one.
-      var position = level.total;
+      // Calculate position (total children at this level so far)
+      var position = 0;
+      var _iterator = Matcher_createForOfIteratorHelper(siblings.values()),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var count = _step.value;
+          position += count;
+        }
 
-      // Update sibling count for this tag, and the level's running total.
-      level.counts.set(siblingKey, counter + 1);
-      level.total++;
+        // Update sibling count for this tag
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      siblings.set(siblingKey, counter + 1);
 
       // Create new node
       var node = {
@@ -98058,11 +98109,8 @@ var Matcher = /*#__PURE__*/function () {
         path: this.path.map(function (node) {
           return _objectSpread({}, node);
         }),
-        siblingStacks: this.siblingStacks.map(function (level) {
-          return level ? {
-            counts: new Map(level.counts),
-            total: level.total
-          } : level;
+        siblingStacks: this.siblingStacks.map(function (map) {
+          return new Map(map);
         }),
         keptAttrs: this._keptAttrs.map(function (entry) {
           return _objectSpread({}, entry);
@@ -98081,11 +98129,8 @@ var Matcher = /*#__PURE__*/function () {
       this.path = snapshot.path.map(function (node) {
         return _objectSpread({}, node);
       });
-      this.siblingStacks = snapshot.siblingStacks.map(function (level) {
-        return level ? {
-          counts: new Map(level.counts),
-          total: level.total
-        } : level;
+      this.siblingStacks = snapshot.siblingStacks.map(function (map) {
+        return new Map(map);
       });
       this._keptAttrs = (snapshot.keptAttrs || []).map(function (entry) {
         return _objectSpread({}, entry);
@@ -98122,7 +98167,7 @@ function Expression_classCallCheck(a, n) { if (!(a instanceof n)) throw new Type
 function Expression_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Expression_toPropertyKey(o.key), o); } }
 function Expression_createClass(e, r, t) { return r && Expression_defineProperties(e.prototype, r), t && Expression_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function Expression_toPropertyKey(t) { var i = Expression_toPrimitive(t, "string"); return "symbol" == Expression_typeof(i) ? i : i + ""; }
-function Expression_toPrimitive(t, e) { if ("object" != Expression_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function Expression_toPrimitive(t, r) { if ("object" != Expression_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Expression_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /**
  * Expression - Parses and stores a tag pattern expression
  * 
@@ -98383,9 +98428,9 @@ function OrderedObjParser_typeof(o) { "@babel/helpers - typeof"; return OrderedO
 function OrderedObjParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, OrderedObjParser_toPropertyKey(o.key), o); } }
 function OrderedObjParser_createClass(e, r, t) { return r && OrderedObjParser_defineProperties(e.prototype, r), t && OrderedObjParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function OrderedObjParser_toPropertyKey(t) { var i = OrderedObjParser_toPrimitive(t, "string"); return "symbol" == OrderedObjParser_typeof(i) ? i : i + ""; }
-function OrderedObjParser_toPrimitive(t, e) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
+function OrderedObjParser_toPrimitive(t, r) { if ("object" != OrderedObjParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != OrderedObjParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function OrderedObjParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-;
+
 
 
 
@@ -99269,7 +99314,7 @@ function sanitizeName(name, options) {
 
 
 function node2json_typeof(o) { "@babel/helpers - typeof"; return node2json_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, node2json_typeof(o); }
-;
+
 
 var node2json_METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 
@@ -99797,8 +99842,8 @@ function XMLParser_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeE
 function XMLParser_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, XMLParser_toPropertyKey(o.key), o); } }
 function XMLParser_createClass(e, r, t) { return r && XMLParser_defineProperties(e.prototype, r), t && XMLParser_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function XMLParser_toPropertyKey(t) { var i = XMLParser_toPrimitive(t, "string"); return "symbol" == XMLParser_typeof(i) ? i : i + ""; }
-function XMLParser_toPrimitive(t, e) { if ("object" != XMLParser_typeof(t) || !t) return t; var r; if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) { var i = r.call(t, e || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === e ? String : Number)(t); }
-;
+function XMLParser_toPrimitive(t, r) { if ("object" != XMLParser_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != XMLParser_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 
 
@@ -116493,7 +116538,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-var t=function(r,e){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,r){t.__proto__=r}||function(t,r){for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])})(r,e)};function r(r,e){if("function"!=typeof e&&null!==e)throw new TypeError("Class extends value "+String(e)+" is not a constructor or null");function i(){this.constructor=r}t(r,e),r.prototype=null===e?Object.create(e):(i.prototype=e.prototype,new i)}function e(t){var r="";Array.isArray(t)||(t=[t]);for(var e=0;e<t.length;e++){var i=t[e];if(i.type===_.CLOSE_PATH)r+="z";else if(i.type===_.HORIZ_LINE_TO)r+=(i.relative?"h":"H")+i.x;else if(i.type===_.VERT_LINE_TO)r+=(i.relative?"v":"V")+i.y;else if(i.type===_.MOVE_TO)r+=(i.relative?"m":"M")+i.x+" "+i.y;else if(i.type===_.LINE_TO)r+=(i.relative?"l":"L")+i.x+" "+i.y;else if(i.type===_.CURVE_TO)r+=(i.relative?"c":"C")+i.x1+" "+i.y1+" "+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_CURVE_TO)r+=(i.relative?"s":"S")+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.QUAD_TO)r+=(i.relative?"q":"Q")+i.x1+" "+i.y1+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_QUAD_TO)r+=(i.relative?"t":"T")+i.x+" "+i.y;else{if(i.type!==_.ARC)throw new Error('Unexpected command type "'+i.type+'" at index '+e+".");r+=(i.relative?"a":"A")+i.rX+" "+i.rY+" "+i.xRot+" "+ +i.lArcFlag+" "+ +i.sweepFlag+" "+i.x+" "+i.y}}return r}function SVGPathData_module_i(t,r){var e=t[0],i=t[1];return[e*Math.cos(r)-i*Math.sin(r),e*Math.sin(r)+i*Math.cos(r)]}function SVGPathData_module_a(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];for(var e=0;e<t.length;e++)if("number"!=typeof t[e])throw new Error("assertNumbers arguments["+e+"] is not a number. "+typeof t[e]+" == typeof "+t[e]);return!0}var SVGPathData_module_n=Math.PI;function o(t,r,e){t.lArcFlag=0===t.lArcFlag?0:1,t.sweepFlag=0===t.sweepFlag?0:1;var a=t.rX,o=t.rY,s=t.x,u=t.y;a=Math.abs(t.rX),o=Math.abs(t.rY);var h=SVGPathData_module_i([(r-s)/2,(e-u)/2],-t.xRot/180*SVGPathData_module_n),c=h[0],y=h[1],p=Math.pow(c,2)/Math.pow(a,2)+Math.pow(y,2)/Math.pow(o,2);1<p&&(a*=Math.sqrt(p),o*=Math.sqrt(p)),t.rX=a,t.rY=o;var m=Math.pow(a,2)*Math.pow(y,2)+Math.pow(o,2)*Math.pow(c,2),O=(t.lArcFlag!==t.sweepFlag?1:-1)*Math.sqrt(Math.max(0,(Math.pow(a,2)*Math.pow(o,2)-m)/m)),l=a*y/o*O,T=-o*c/a*O,v=SVGPathData_module_i([l,T],t.xRot/180*SVGPathData_module_n);t.cX=v[0]+(r+s)/2,t.cY=v[1]+(e+u)/2,t.phi1=Math.atan2((y-T)/o,(c-l)/a),t.phi2=Math.atan2((-y-T)/o,(-c-l)/a),0===t.sweepFlag&&t.phi2>t.phi1&&(t.phi2-=2*SVGPathData_module_n),1===t.sweepFlag&&t.phi2<t.phi1&&(t.phi2+=2*SVGPathData_module_n),t.phi1*=180/SVGPathData_module_n,t.phi2*=180/SVGPathData_module_n}function SVGPathData_module_s(t,r,e){SVGPathData_module_a(t,r,e);var i=t*t+r*r-e*e;if(0>i)return[];if(0===i)return[[t*e/(t*t+r*r),r*e/(t*t+r*r)]];var n=Math.sqrt(i);return[[(t*e+r*n)/(t*t+r*r),(r*e-t*n)/(t*t+r*r)],[(t*e-r*n)/(t*t+r*r),(r*e+t*n)/(t*t+r*r)]]}var u,h=Math.PI/180;function c(t,r,e){return(1-e)*t+e*r}function y(t,r,e,i){return t+Math.cos(i/180*SVGPathData_module_n)*r+Math.sin(i/180*SVGPathData_module_n)*e}function SVGPathData_module_p(t,r,e,i){var a=1e-6,n=r-t,o=e-r,s=3*n+3*(i-e)-6*o,u=6*(o-n),h=3*n;return Math.abs(s)<a?[-h/u]:function(t,r,e){void 0===e&&(e=1e-6);var i=t*t/4-r;if(i<-e)return[];if(i<=e)return[-t/2];var a=Math.sqrt(i);return[-t/2-a,-t/2+a]}(u/s,h/s,a)}function SVGPathData_module_m(t,r,e,i,a){var n=1-a;return t*(n*n*n)+r*(3*n*n*a)+e*(3*n*a*a)+i*(a*a*a)}!function(t){function r(){return u((function(t,r,e){return t.relative&&(void 0!==t.x1&&(t.x1+=r),void 0!==t.y1&&(t.y1+=e),void 0!==t.x2&&(t.x2+=r),void 0!==t.y2&&(t.y2+=e),void 0!==t.x&&(t.x+=r),void 0!==t.y&&(t.y+=e),t.relative=!1),t}))}function e(){var t=NaN,r=NaN,e=NaN,i=NaN;return u((function(a,n,o){return a.type&_.SMOOTH_CURVE_TO&&(a.type=_.CURVE_TO,t=isNaN(t)?n:t,r=isNaN(r)?o:r,a.x1=a.relative?n-t:2*n-t,a.y1=a.relative?o-r:2*o-r),a.type&_.CURVE_TO?(t=a.relative?n+a.x2:a.x2,r=a.relative?o+a.y2:a.y2):(t=NaN,r=NaN),a.type&_.SMOOTH_QUAD_TO&&(a.type=_.QUAD_TO,e=isNaN(e)?n:e,i=isNaN(i)?o:i,a.x1=a.relative?n-e:2*n-e,a.y1=a.relative?o-i:2*o-i),a.type&_.QUAD_TO?(e=a.relative?n+a.x1:a.x1,i=a.relative?o+a.y1:a.y1):(e=NaN,i=NaN),a}))}function n(){var t=NaN,r=NaN;return u((function(e,i,a){if(e.type&_.SMOOTH_QUAD_TO&&(e.type=_.QUAD_TO,t=isNaN(t)?i:t,r=isNaN(r)?a:r,e.x1=e.relative?i-t:2*i-t,e.y1=e.relative?a-r:2*a-r),e.type&_.QUAD_TO){t=e.relative?i+e.x1:e.x1,r=e.relative?a+e.y1:e.y1;var n=e.x1,o=e.y1;e.type=_.CURVE_TO,e.x1=((e.relative?0:i)+2*n)/3,e.y1=((e.relative?0:a)+2*o)/3,e.x2=(e.x+2*n)/3,e.y2=(e.y+2*o)/3}else t=NaN,r=NaN;return e}))}function u(t){var r=0,e=0,i=NaN,a=NaN;return function(n){if(isNaN(i)&&!(n.type&_.MOVE_TO))throw new Error("path must start with moveto");var o=t(n,r,e,i,a);return n.type&_.CLOSE_PATH&&(r=i,e=a),void 0!==n.x&&(r=n.relative?r+n.x:n.x),void 0!==n.y&&(e=n.relative?e+n.y:n.y),n.type&_.MOVE_TO&&(i=r,a=e),o}}function O(t,r,e,i,n,o){return SVGPathData_module_a(t,r,e,i,n,o),u((function(a,s,u,h){var c=a.x1,y=a.x2,p=a.relative&&!isNaN(h),m=void 0!==a.x?a.x:p?0:s,O=void 0!==a.y?a.y:p?0:u;function l(t){return t*t}a.type&_.HORIZ_LINE_TO&&0!==r&&(a.type=_.LINE_TO,a.y=a.relative?0:u),a.type&_.VERT_LINE_TO&&0!==e&&(a.type=_.LINE_TO,a.x=a.relative?0:s),void 0!==a.x&&(a.x=a.x*t+O*e+(p?0:n)),void 0!==a.y&&(a.y=m*r+a.y*i+(p?0:o)),void 0!==a.x1&&(a.x1=a.x1*t+a.y1*e+(p?0:n)),void 0!==a.y1&&(a.y1=c*r+a.y1*i+(p?0:o)),void 0!==a.x2&&(a.x2=a.x2*t+a.y2*e+(p?0:n)),void 0!==a.y2&&(a.y2=y*r+a.y2*i+(p?0:o));var T=t*i-r*e;if(void 0!==a.xRot&&(1!==t||0!==r||0!==e||1!==i))if(0===T)delete a.rX,delete a.rY,delete a.xRot,delete a.lArcFlag,delete a.sweepFlag,a.type=_.LINE_TO;else{var v=a.xRot*Math.PI/180,f=Math.sin(v),N=Math.cos(v),x=1/l(a.rX),d=1/l(a.rY),E=l(N)*x+l(f)*d,A=2*f*N*(x-d),C=l(f)*x+l(N)*d,M=E*i*i-A*r*i+C*r*r,R=A*(t*i+r*e)-2*(E*e*i+C*t*r),g=E*e*e-A*t*e+C*t*t,I=(Math.atan2(R,M-g)+Math.PI)%Math.PI/2,S=Math.sin(I),L=Math.cos(I);a.rX=Math.abs(T)/Math.sqrt(M*l(L)+R*S*L+g*l(S)),a.rY=Math.abs(T)/Math.sqrt(M*l(S)-R*S*L+g*l(L)),a.xRot=180*I/Math.PI}return void 0!==a.sweepFlag&&0>T&&(a.sweepFlag=+!a.sweepFlag),a}))}function l(){return function(t){var r={};for(var e in t)r[e]=t[e];return r}}t.ROUND=function(t){function r(r){return Math.round(r*t)/t}return void 0===t&&(t=1e13),SVGPathData_module_a(t),function(t){return void 0!==t.x1&&(t.x1=r(t.x1)),void 0!==t.y1&&(t.y1=r(t.y1)),void 0!==t.x2&&(t.x2=r(t.x2)),void 0!==t.y2&&(t.y2=r(t.y2)),void 0!==t.x&&(t.x=r(t.x)),void 0!==t.y&&(t.y=r(t.y)),void 0!==t.rX&&(t.rX=r(t.rX)),void 0!==t.rY&&(t.rY=r(t.rY)),t}},t.TO_ABS=r,t.TO_REL=function(){return u((function(t,r,e){return t.relative||(void 0!==t.x1&&(t.x1-=r),void 0!==t.y1&&(t.y1-=e),void 0!==t.x2&&(t.x2-=r),void 0!==t.y2&&(t.y2-=e),void 0!==t.x&&(t.x-=r),void 0!==t.y&&(t.y-=e),t.relative=!0),t}))},t.NORMALIZE_HVZ=function(t,r,e){return void 0===t&&(t=!0),void 0===r&&(r=!0),void 0===e&&(e=!0),u((function(i,a,n,o,s){if(isNaN(o)&&!(i.type&_.MOVE_TO))throw new Error("path must start with moveto");return r&&i.type&_.HORIZ_LINE_TO&&(i.type=_.LINE_TO,i.y=i.relative?0:n),e&&i.type&_.VERT_LINE_TO&&(i.type=_.LINE_TO,i.x=i.relative?0:a),t&&i.type&_.CLOSE_PATH&&(i.type=_.LINE_TO,i.x=i.relative?o-a:o,i.y=i.relative?s-n:s),i.type&_.ARC&&(0===i.rX||0===i.rY)&&(i.type=_.LINE_TO,delete i.rX,delete i.rY,delete i.xRot,delete i.lArcFlag,delete i.sweepFlag),i}))},t.NORMALIZE_ST=e,t.QT_TO_C=n,t.INFO=u,t.SANITIZE=function(t){void 0===t&&(t=0),SVGPathData_module_a(t);var r=NaN,e=NaN,i=NaN,n=NaN;return u((function(a,o,s,u,h){var c=Math.abs,y=!1,p=0,m=0;if(a.type&_.SMOOTH_CURVE_TO&&(p=isNaN(r)?0:o-r,m=isNaN(e)?0:s-e),a.type&(_.CURVE_TO|_.SMOOTH_CURVE_TO)?(r=a.relative?o+a.x2:a.x2,e=a.relative?s+a.y2:a.y2):(r=NaN,e=NaN),a.type&_.SMOOTH_QUAD_TO?(i=isNaN(i)?o:2*o-i,n=isNaN(n)?s:2*s-n):a.type&_.QUAD_TO?(i=a.relative?o+a.x1:a.x1,n=a.relative?s+a.y1:a.y2):(i=NaN,n=NaN),a.type&_.LINE_COMMANDS||a.type&_.ARC&&(0===a.rX||0===a.rY||!a.lArcFlag)||a.type&_.CURVE_TO||a.type&_.SMOOTH_CURVE_TO||a.type&_.QUAD_TO||a.type&_.SMOOTH_QUAD_TO){var O=void 0===a.x?0:a.relative?a.x:a.x-o,l=void 0===a.y?0:a.relative?a.y:a.y-s;p=isNaN(i)?void 0===a.x1?p:a.relative?a.x:a.x1-o:i-o,m=isNaN(n)?void 0===a.y1?m:a.relative?a.y:a.y1-s:n-s;var T=void 0===a.x2?0:a.relative?a.x:a.x2-o,v=void 0===a.y2?0:a.relative?a.y:a.y2-s;c(O)<=t&&c(l)<=t&&c(p)<=t&&c(m)<=t&&c(T)<=t&&c(v)<=t&&(y=!0)}return a.type&_.CLOSE_PATH&&c(o-u)<=t&&c(s-h)<=t&&(y=!0),y?[]:a}))},t.MATRIX=O,t.ROTATE=function(t,r,e){void 0===r&&(r=0),void 0===e&&(e=0),SVGPathData_module_a(t,r,e);var i=Math.sin(t),n=Math.cos(t);return O(n,i,-i,n,r-r*n+e*i,e-r*i-e*n)},t.TRANSLATE=function(t,r){return void 0===r&&(r=0),SVGPathData_module_a(t,r),O(1,0,0,1,t,r)},t.SCALE=function(t,r){return void 0===r&&(r=t),SVGPathData_module_a(t,r),O(t,0,0,r,0,0)},t.SKEW_X=function(t){return SVGPathData_module_a(t),O(1,0,Math.atan(t),1,0,0)},t.SKEW_Y=function(t){return SVGPathData_module_a(t),O(1,Math.atan(t),0,1,0,0)},t.X_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),SVGPathData_module_a(t),O(-1,0,0,1,t,0)},t.Y_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),SVGPathData_module_a(t),O(1,0,0,-1,0,t)},t.A_TO_C=function(){return u((function(t,r,e){return _.ARC===t.type?function(t,r,e){var a,n,s,u;t.cX||o(t,r,e);for(var y=Math.min(t.phi1,t.phi2),p=Math.max(t.phi1,t.phi2)-y,m=Math.ceil(p/90),O=new Array(m),l=r,T=e,v=0;v<m;v++){var f=c(t.phi1,t.phi2,v/m),N=c(t.phi1,t.phi2,(v+1)/m),x=N-f,d=4/3*Math.tan(x*h/4),E=[Math.cos(f*h)-d*Math.sin(f*h),Math.sin(f*h)+d*Math.cos(f*h)],A=E[0],C=E[1],M=[Math.cos(N*h),Math.sin(N*h)],R=M[0],g=M[1],I=[R+d*Math.sin(N*h),g-d*Math.cos(N*h)],S=I[0],L=I[1];O[v]={relative:t.relative,type:_.CURVE_TO};var H=function(r,e){var a=SVGPathData_module_i([r*t.rX,e*t.rY],t.xRot),n=a[0],o=a[1];return[t.cX+n,t.cY+o]};a=H(A,C),O[v].x1=a[0],O[v].y1=a[1],n=H(S,L),O[v].x2=n[0],O[v].y2=n[1],s=H(R,g),O[v].x=s[0],O[v].y=s[1],t.relative&&(O[v].x1-=l,O[v].y1-=T,O[v].x2-=l,O[v].y2-=T,O[v].x-=l,O[v].y-=T),l=(u=[O[v].x,O[v].y])[0],T=u[1]}return O}(t,t.relative?0:r,t.relative?0:e):t}))},t.ANNOTATE_ARCS=function(){return u((function(t,r,e){return t.relative&&(r=0,e=0),_.ARC===t.type&&o(t,r,e),t}))},t.CLONE=l,t.CALCULATE_BOUNDS=function(){var t=function(t){var r={};for(var e in t)r[e]=t[e];return r},i=r(),a=n(),h=e(),c=u((function(r,e,n){var u=h(a(i(t(r))));function O(t){t>c.maxX&&(c.maxX=t),t<c.minX&&(c.minX=t)}function l(t){t>c.maxY&&(c.maxY=t),t<c.minY&&(c.minY=t)}if(u.type&_.DRAWING_COMMANDS&&(O(e),l(n)),u.type&_.HORIZ_LINE_TO&&O(u.x),u.type&_.VERT_LINE_TO&&l(u.y),u.type&_.LINE_TO&&(O(u.x),l(u.y)),u.type&_.CURVE_TO){O(u.x),l(u.y);for(var T=0,v=SVGPathData_module_p(e,u.x1,u.x2,u.x);T<v.length;T++){0<(w=v[T])&&1>w&&O(SVGPathData_module_m(e,u.x1,u.x2,u.x,w))}for(var f=0,N=SVGPathData_module_p(n,u.y1,u.y2,u.y);f<N.length;f++){0<(w=N[f])&&1>w&&l(SVGPathData_module_m(n,u.y1,u.y2,u.y,w))}}if(u.type&_.ARC){O(u.x),l(u.y),o(u,e,n);for(var x=u.xRot/180*Math.PI,d=Math.cos(x)*u.rX,E=Math.sin(x)*u.rX,A=-Math.sin(x)*u.rY,C=Math.cos(x)*u.rY,M=u.phi1<u.phi2?[u.phi1,u.phi2]:-180>u.phi2?[u.phi2+360,u.phi1+360]:[u.phi2,u.phi1],R=M[0],g=M[1],I=function(t){var r=t[0],e=t[1],i=180*Math.atan2(e,r)/Math.PI;return i<R?i+360:i},S=0,L=SVGPathData_module_s(A,-d,0).map(I);S<L.length;S++){(w=L[S])>R&&w<g&&O(y(u.cX,d,A,w))}for(var H=0,U=SVGPathData_module_s(C,-E,0).map(I);H<U.length;H++){var w;(w=U[H])>R&&w<g&&l(y(u.cY,E,C,w))}}return r}));return c.minX=1/0,c.maxX=-1/0,c.minY=1/0,c.maxY=-1/0,c}}(u||(u={}));var SVGPathData_module_O,l=function(){function t(){}return t.prototype.round=function(t){return this.transform(u.ROUND(t))},t.prototype.toAbs=function(){return this.transform(u.TO_ABS())},t.prototype.toRel=function(){return this.transform(u.TO_REL())},t.prototype.normalizeHVZ=function(t,r,e){return this.transform(u.NORMALIZE_HVZ(t,r,e))},t.prototype.normalizeST=function(){return this.transform(u.NORMALIZE_ST())},t.prototype.qtToC=function(){return this.transform(u.QT_TO_C())},t.prototype.aToC=function(){return this.transform(u.A_TO_C())},t.prototype.sanitize=function(t){return this.transform(u.SANITIZE(t))},t.prototype.translate=function(t,r){return this.transform(u.TRANSLATE(t,r))},t.prototype.scale=function(t,r){return this.transform(u.SCALE(t,r))},t.prototype.rotate=function(t,r,e){return this.transform(u.ROTATE(t,r,e))},t.prototype.matrix=function(t,r,e,i,a,n){return this.transform(u.MATRIX(t,r,e,i,a,n))},t.prototype.skewX=function(t){return this.transform(u.SKEW_X(t))},t.prototype.skewY=function(t){return this.transform(u.SKEW_Y(t))},t.prototype.xSymmetry=function(t){return this.transform(u.X_AXIS_SYMMETRY(t))},t.prototype.ySymmetry=function(t){return this.transform(u.Y_AXIS_SYMMETRY(t))},t.prototype.annotateArcs=function(){return this.transform(u.ANNOTATE_ARCS())},t}(),T=function(t){return" "===t||"\t"===t||"\r"===t||"\n"===t},v=function(t){return"0".charCodeAt(0)<=t.charCodeAt(0)&&t.charCodeAt(0)<="9".charCodeAt(0)},f=function(t){function e(){var r=t.call(this)||this;return r.curNumber="",r.curCommandType=-1,r.curCommandRelative=!1,r.canParseCommandOrComma=!0,r.curNumberHasExp=!1,r.curNumberHasExpDigits=!1,r.curNumberHasDecimal=!1,r.curArgs=[],r}return r(e,t),e.prototype.finish=function(t){if(void 0===t&&(t=[]),this.parse(" ",t),0!==this.curArgs.length||!this.canParseCommandOrComma)throw new SyntaxError("Unterminated command at the path end.");return t},e.prototype.parse=function(t,r){var e=this;void 0===r&&(r=[]);for(var i=function(t){r.push(t),e.curArgs.length=0,e.canParseCommandOrComma=!0},a=0;a<t.length;a++){var n=t[a],o=!(this.curCommandType!==_.ARC||3!==this.curArgs.length&&4!==this.curArgs.length||1!==this.curNumber.length||"0"!==this.curNumber&&"1"!==this.curNumber),s=v(n)&&("0"===this.curNumber&&"0"===n||o);if(!v(n)||s)if("e"!==n&&"E"!==n)if("-"!==n&&"+"!==n||!this.curNumberHasExp||this.curNumberHasExpDigits)if("."!==n||this.curNumberHasExp||this.curNumberHasDecimal||o){if(this.curNumber&&-1!==this.curCommandType){var u=Number(this.curNumber);if(isNaN(u))throw new SyntaxError("Invalid number ending at "+a);if(this.curCommandType===_.ARC)if(0===this.curArgs.length||1===this.curArgs.length){if(0>u)throw new SyntaxError('Expected positive number, got "'+u+'" at index "'+a+'"')}else if((3===this.curArgs.length||4===this.curArgs.length)&&"0"!==this.curNumber&&"1"!==this.curNumber)throw new SyntaxError('Expected a flag, got "'+this.curNumber+'" at index "'+a+'"');this.curArgs.push(u),this.curArgs.length===SVGPathData_module_N[this.curCommandType]&&(_.HORIZ_LINE_TO===this.curCommandType?i({type:_.HORIZ_LINE_TO,relative:this.curCommandRelative,x:u}):_.VERT_LINE_TO===this.curCommandType?i({type:_.VERT_LINE_TO,relative:this.curCommandRelative,y:u}):this.curCommandType===_.MOVE_TO||this.curCommandType===_.LINE_TO||this.curCommandType===_.SMOOTH_QUAD_TO?(i({type:this.curCommandType,relative:this.curCommandRelative,x:this.curArgs[0],y:this.curArgs[1]}),_.MOVE_TO===this.curCommandType&&(this.curCommandType=_.LINE_TO)):this.curCommandType===_.CURVE_TO?i({type:_.CURVE_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x2:this.curArgs[2],y2:this.curArgs[3],x:this.curArgs[4],y:this.curArgs[5]}):this.curCommandType===_.SMOOTH_CURVE_TO?i({type:_.SMOOTH_CURVE_TO,relative:this.curCommandRelative,x2:this.curArgs[0],y2:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.QUAD_TO?i({type:_.QUAD_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.ARC&&i({type:_.ARC,relative:this.curCommandRelative,rX:this.curArgs[0],rY:this.curArgs[1],xRot:this.curArgs[2],lArcFlag:this.curArgs[3],sweepFlag:this.curArgs[4],x:this.curArgs[5],y:this.curArgs[6]})),this.curNumber="",this.curNumberHasExpDigits=!1,this.curNumberHasExp=!1,this.curNumberHasDecimal=!1,this.canParseCommandOrComma=!0}if(!T(n))if(","===n&&this.canParseCommandOrComma)this.canParseCommandOrComma=!1;else if("+"!==n&&"-"!==n&&"."!==n)if(s)this.curNumber=n,this.curNumberHasDecimal=!1;else{if(0!==this.curArgs.length)throw new SyntaxError("Unterminated command at index "+a+".");if(!this.canParseCommandOrComma)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+". Command cannot follow comma");if(this.canParseCommandOrComma=!1,"z"!==n&&"Z"!==n)if("h"===n||"H"===n)this.curCommandType=_.HORIZ_LINE_TO,this.curCommandRelative="h"===n;else if("v"===n||"V"===n)this.curCommandType=_.VERT_LINE_TO,this.curCommandRelative="v"===n;else if("m"===n||"M"===n)this.curCommandType=_.MOVE_TO,this.curCommandRelative="m"===n;else if("l"===n||"L"===n)this.curCommandType=_.LINE_TO,this.curCommandRelative="l"===n;else if("c"===n||"C"===n)this.curCommandType=_.CURVE_TO,this.curCommandRelative="c"===n;else if("s"===n||"S"===n)this.curCommandType=_.SMOOTH_CURVE_TO,this.curCommandRelative="s"===n;else if("q"===n||"Q"===n)this.curCommandType=_.QUAD_TO,this.curCommandRelative="q"===n;else if("t"===n||"T"===n)this.curCommandType=_.SMOOTH_QUAD_TO,this.curCommandRelative="t"===n;else{if("a"!==n&&"A"!==n)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+".");this.curCommandType=_.ARC,this.curCommandRelative="a"===n}else r.push({type:_.CLOSE_PATH}),this.canParseCommandOrComma=!0,this.curCommandType=-1}else this.curNumber=n,this.curNumberHasDecimal="."===n}else this.curNumber+=n,this.curNumberHasDecimal=!0;else this.curNumber+=n;else this.curNumber+=n,this.curNumberHasExp=!0;else this.curNumber+=n,this.curNumberHasExpDigits=this.curNumberHasExp}return r},e.prototype.transform=function(t){return Object.create(this,{parse:{value:function(r,e){void 0===e&&(e=[]);for(var i=0,a=Object.getPrototypeOf(this).parse.call(this,r);i<a.length;i++){var n=a[i],o=t(n);Array.isArray(o)?e.push.apply(e,o):e.push(o)}return e}}})},e}(l),_=function(t){function i(r){var e=t.call(this)||this;return e.commands="string"==typeof r?i.parse(r):r,e}return r(i,t),i.prototype.encode=function(){return i.encode(this.commands)},i.prototype.getBounds=function(){var t=u.CALCULATE_BOUNDS();return this.transform(t),t},i.prototype.transform=function(t){for(var r=[],e=0,i=this.commands;e<i.length;e++){var a=t(i[e]);Array.isArray(a)?r.push.apply(r,a):r.push(a)}return this.commands=r,this},i.encode=function(t){return e(t)},i.parse=function(t){var r=new f,e=[];return r.parse(t,e),r.finish(e),e},i.CLOSE_PATH=1,i.MOVE_TO=2,i.HORIZ_LINE_TO=4,i.VERT_LINE_TO=8,i.LINE_TO=16,i.CURVE_TO=32,i.SMOOTH_CURVE_TO=64,i.QUAD_TO=128,i.SMOOTH_QUAD_TO=256,i.ARC=512,i.LINE_COMMANDS=i.LINE_TO|i.HORIZ_LINE_TO|i.VERT_LINE_TO,i.DRAWING_COMMANDS=i.HORIZ_LINE_TO|i.VERT_LINE_TO|i.LINE_TO|i.CURVE_TO|i.SMOOTH_CURVE_TO|i.QUAD_TO|i.SMOOTH_QUAD_TO|i.ARC,i}(l),SVGPathData_module_N=((SVGPathData_module_O={})[_.MOVE_TO]=2,SVGPathData_module_O[_.LINE_TO]=2,SVGPathData_module_O[_.HORIZ_LINE_TO]=1,SVGPathData_module_O[_.VERT_LINE_TO]=1,SVGPathData_module_O[_.CLOSE_PATH]=0,SVGPathData_module_O[_.QUAD_TO]=4,SVGPathData_module_O[_.SMOOTH_QUAD_TO]=2,SVGPathData_module_O[_.CURVE_TO]=6,SVGPathData_module_O[_.SMOOTH_CURVE_TO]=4,SVGPathData_module_O[_.ARC]=7,SVGPathData_module_O);
+var t=function(r,e){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,r){t.__proto__=r}||function(t,r){for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])})(r,e)};function r(r,e){if("function"!=typeof e&&null!==e)throw new TypeError("Class extends value "+String(e)+" is not a constructor or null");function i(){this.constructor=r}t(r,e),r.prototype=null===e?Object.create(e):(i.prototype=e.prototype,new i)}function e(t){var r="";Array.isArray(t)||(t=[t]);for(var e=0;e<t.length;e++){var i=t[e];if(i.type===_.CLOSE_PATH)r+="z";else if(i.type===_.HORIZ_LINE_TO)r+=(i.relative?"h":"H")+i.x;else if(i.type===_.VERT_LINE_TO)r+=(i.relative?"v":"V")+i.y;else if(i.type===_.MOVE_TO)r+=(i.relative?"m":"M")+i.x+" "+i.y;else if(i.type===_.LINE_TO)r+=(i.relative?"l":"L")+i.x+" "+i.y;else if(i.type===_.CURVE_TO)r+=(i.relative?"c":"C")+i.x1+" "+i.y1+" "+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_CURVE_TO)r+=(i.relative?"s":"S")+i.x2+" "+i.y2+" "+i.x+" "+i.y;else if(i.type===_.QUAD_TO)r+=(i.relative?"q":"Q")+i.x1+" "+i.y1+" "+i.x+" "+i.y;else if(i.type===_.SMOOTH_QUAD_TO)r+=(i.relative?"t":"T")+i.x+" "+i.y;else{if(i.type!==_.ARC)throw new Error('Unexpected command type "'+i.type+'" at index '+e+".");r+=(i.relative?"a":"A")+i.rX+" "+i.rY+" "+i.xRot+" "+ +i.lArcFlag+" "+ +i.sweepFlag+" "+i.x+" "+i.y}}return r}function i(t,r){var e=t[0],i=t[1];return[e*Math.cos(r)-i*Math.sin(r),e*Math.sin(r)+i*Math.cos(r)]}function a(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];for(var e=0;e<t.length;e++)if("number"!=typeof t[e])throw new Error("assertNumbers arguments["+e+"] is not a number. "+typeof t[e]+" == typeof "+t[e]);return!0}var n=Math.PI;function o(t,r,e){t.lArcFlag=0===t.lArcFlag?0:1,t.sweepFlag=0===t.sweepFlag?0:1;var a=t.rX,o=t.rY,s=t.x,u=t.y;a=Math.abs(t.rX),o=Math.abs(t.rY);var h=i([(r-s)/2,(e-u)/2],-t.xRot/180*n),c=h[0],y=h[1],p=Math.pow(c,2)/Math.pow(a,2)+Math.pow(y,2)/Math.pow(o,2);1<p&&(a*=Math.sqrt(p),o*=Math.sqrt(p)),t.rX=a,t.rY=o;var m=Math.pow(a,2)*Math.pow(y,2)+Math.pow(o,2)*Math.pow(c,2),O=(t.lArcFlag!==t.sweepFlag?1:-1)*Math.sqrt(Math.max(0,(Math.pow(a,2)*Math.pow(o,2)-m)/m)),l=a*y/o*O,T=-o*c/a*O,v=i([l,T],t.xRot/180*n);t.cX=v[0]+(r+s)/2,t.cY=v[1]+(e+u)/2,t.phi1=Math.atan2((y-T)/o,(c-l)/a),t.phi2=Math.atan2((-y-T)/o,(-c-l)/a),0===t.sweepFlag&&t.phi2>t.phi1&&(t.phi2-=2*n),1===t.sweepFlag&&t.phi2<t.phi1&&(t.phi2+=2*n),t.phi1*=180/n,t.phi2*=180/n}function s(t,r,e){a(t,r,e);var i=t*t+r*r-e*e;if(0>i)return[];if(0===i)return[[t*e/(t*t+r*r),r*e/(t*t+r*r)]];var n=Math.sqrt(i);return[[(t*e+r*n)/(t*t+r*r),(r*e-t*n)/(t*t+r*r)],[(t*e-r*n)/(t*t+r*r),(r*e+t*n)/(t*t+r*r)]]}var u,h=Math.PI/180;function c(t,r,e){return(1-e)*t+e*r}function y(t,r,e,i){return t+Math.cos(i/180*n)*r+Math.sin(i/180*n)*e}function p(t,r,e,i){var a=1e-6,n=r-t,o=e-r,s=3*n+3*(i-e)-6*o,u=6*(o-n),h=3*n;return Math.abs(s)<a?[-h/u]:function(t,r,e){void 0===e&&(e=1e-6);var i=t*t/4-r;if(i<-e)return[];if(i<=e)return[-t/2];var a=Math.sqrt(i);return[-t/2-a,-t/2+a]}(u/s,h/s,a)}function m(t,r,e,i,a){var n=1-a;return t*(n*n*n)+r*(3*n*n*a)+e*(3*n*a*a)+i*(a*a*a)}!function(t){function r(){return u((function(t,r,e){return t.relative&&(void 0!==t.x1&&(t.x1+=r),void 0!==t.y1&&(t.y1+=e),void 0!==t.x2&&(t.x2+=r),void 0!==t.y2&&(t.y2+=e),void 0!==t.x&&(t.x+=r),void 0!==t.y&&(t.y+=e),t.relative=!1),t}))}function e(){var t=NaN,r=NaN,e=NaN,i=NaN;return u((function(a,n,o){return a.type&_.SMOOTH_CURVE_TO&&(a.type=_.CURVE_TO,t=isNaN(t)?n:t,r=isNaN(r)?o:r,a.x1=a.relative?n-t:2*n-t,a.y1=a.relative?o-r:2*o-r),a.type&_.CURVE_TO?(t=a.relative?n+a.x2:a.x2,r=a.relative?o+a.y2:a.y2):(t=NaN,r=NaN),a.type&_.SMOOTH_QUAD_TO&&(a.type=_.QUAD_TO,e=isNaN(e)?n:e,i=isNaN(i)?o:i,a.x1=a.relative?n-e:2*n-e,a.y1=a.relative?o-i:2*o-i),a.type&_.QUAD_TO?(e=a.relative?n+a.x1:a.x1,i=a.relative?o+a.y1:a.y1):(e=NaN,i=NaN),a}))}function n(){var t=NaN,r=NaN;return u((function(e,i,a){if(e.type&_.SMOOTH_QUAD_TO&&(e.type=_.QUAD_TO,t=isNaN(t)?i:t,r=isNaN(r)?a:r,e.x1=e.relative?i-t:2*i-t,e.y1=e.relative?a-r:2*a-r),e.type&_.QUAD_TO){t=e.relative?i+e.x1:e.x1,r=e.relative?a+e.y1:e.y1;var n=e.x1,o=e.y1;e.type=_.CURVE_TO,e.x1=((e.relative?0:i)+2*n)/3,e.y1=((e.relative?0:a)+2*o)/3,e.x2=(e.x+2*n)/3,e.y2=(e.y+2*o)/3}else t=NaN,r=NaN;return e}))}function u(t){var r=0,e=0,i=NaN,a=NaN;return function(n){if(isNaN(i)&&!(n.type&_.MOVE_TO))throw new Error("path must start with moveto");var o=t(n,r,e,i,a);return n.type&_.CLOSE_PATH&&(r=i,e=a),void 0!==n.x&&(r=n.relative?r+n.x:n.x),void 0!==n.y&&(e=n.relative?e+n.y:n.y),n.type&_.MOVE_TO&&(i=r,a=e),o}}function O(t,r,e,i,n,o){return a(t,r,e,i,n,o),u((function(a,s,u,h){var c=a.x1,y=a.x2,p=a.relative&&!isNaN(h),m=void 0!==a.x?a.x:p?0:s,O=void 0!==a.y?a.y:p?0:u;function l(t){return t*t}a.type&_.HORIZ_LINE_TO&&0!==r&&(a.type=_.LINE_TO,a.y=a.relative?0:u),a.type&_.VERT_LINE_TO&&0!==e&&(a.type=_.LINE_TO,a.x=a.relative?0:s),void 0!==a.x&&(a.x=a.x*t+O*e+(p?0:n)),void 0!==a.y&&(a.y=m*r+a.y*i+(p?0:o)),void 0!==a.x1&&(a.x1=a.x1*t+a.y1*e+(p?0:n)),void 0!==a.y1&&(a.y1=c*r+a.y1*i+(p?0:o)),void 0!==a.x2&&(a.x2=a.x2*t+a.y2*e+(p?0:n)),void 0!==a.y2&&(a.y2=y*r+a.y2*i+(p?0:o));var T=t*i-r*e;if(void 0!==a.xRot&&(1!==t||0!==r||0!==e||1!==i))if(0===T)delete a.rX,delete a.rY,delete a.xRot,delete a.lArcFlag,delete a.sweepFlag,a.type=_.LINE_TO;else{var v=a.xRot*Math.PI/180,f=Math.sin(v),N=Math.cos(v),x=1/l(a.rX),d=1/l(a.rY),E=l(N)*x+l(f)*d,A=2*f*N*(x-d),C=l(f)*x+l(N)*d,M=E*i*i-A*r*i+C*r*r,R=A*(t*i+r*e)-2*(E*e*i+C*t*r),g=E*e*e-A*t*e+C*t*t,I=(Math.atan2(R,M-g)+Math.PI)%Math.PI/2,S=Math.sin(I),L=Math.cos(I);a.rX=Math.abs(T)/Math.sqrt(M*l(L)+R*S*L+g*l(S)),a.rY=Math.abs(T)/Math.sqrt(M*l(S)-R*S*L+g*l(L)),a.xRot=180*I/Math.PI}return void 0!==a.sweepFlag&&0>T&&(a.sweepFlag=+!a.sweepFlag),a}))}function l(){return function(t){var r={};for(var e in t)r[e]=t[e];return r}}t.ROUND=function(t){function r(r){return Math.round(r*t)/t}return void 0===t&&(t=1e13),a(t),function(t){return void 0!==t.x1&&(t.x1=r(t.x1)),void 0!==t.y1&&(t.y1=r(t.y1)),void 0!==t.x2&&(t.x2=r(t.x2)),void 0!==t.y2&&(t.y2=r(t.y2)),void 0!==t.x&&(t.x=r(t.x)),void 0!==t.y&&(t.y=r(t.y)),void 0!==t.rX&&(t.rX=r(t.rX)),void 0!==t.rY&&(t.rY=r(t.rY)),t}},t.TO_ABS=r,t.TO_REL=function(){return u((function(t,r,e){return t.relative||(void 0!==t.x1&&(t.x1-=r),void 0!==t.y1&&(t.y1-=e),void 0!==t.x2&&(t.x2-=r),void 0!==t.y2&&(t.y2-=e),void 0!==t.x&&(t.x-=r),void 0!==t.y&&(t.y-=e),t.relative=!0),t}))},t.NORMALIZE_HVZ=function(t,r,e){return void 0===t&&(t=!0),void 0===r&&(r=!0),void 0===e&&(e=!0),u((function(i,a,n,o,s){if(isNaN(o)&&!(i.type&_.MOVE_TO))throw new Error("path must start with moveto");return r&&i.type&_.HORIZ_LINE_TO&&(i.type=_.LINE_TO,i.y=i.relative?0:n),e&&i.type&_.VERT_LINE_TO&&(i.type=_.LINE_TO,i.x=i.relative?0:a),t&&i.type&_.CLOSE_PATH&&(i.type=_.LINE_TO,i.x=i.relative?o-a:o,i.y=i.relative?s-n:s),i.type&_.ARC&&(0===i.rX||0===i.rY)&&(i.type=_.LINE_TO,delete i.rX,delete i.rY,delete i.xRot,delete i.lArcFlag,delete i.sweepFlag),i}))},t.NORMALIZE_ST=e,t.QT_TO_C=n,t.INFO=u,t.SANITIZE=function(t){void 0===t&&(t=0),a(t);var r=NaN,e=NaN,i=NaN,n=NaN;return u((function(a,o,s,u,h){var c=Math.abs,y=!1,p=0,m=0;if(a.type&_.SMOOTH_CURVE_TO&&(p=isNaN(r)?0:o-r,m=isNaN(e)?0:s-e),a.type&(_.CURVE_TO|_.SMOOTH_CURVE_TO)?(r=a.relative?o+a.x2:a.x2,e=a.relative?s+a.y2:a.y2):(r=NaN,e=NaN),a.type&_.SMOOTH_QUAD_TO?(i=isNaN(i)?o:2*o-i,n=isNaN(n)?s:2*s-n):a.type&_.QUAD_TO?(i=a.relative?o+a.x1:a.x1,n=a.relative?s+a.y1:a.y2):(i=NaN,n=NaN),a.type&_.LINE_COMMANDS||a.type&_.ARC&&(0===a.rX||0===a.rY||!a.lArcFlag)||a.type&_.CURVE_TO||a.type&_.SMOOTH_CURVE_TO||a.type&_.QUAD_TO||a.type&_.SMOOTH_QUAD_TO){var O=void 0===a.x?0:a.relative?a.x:a.x-o,l=void 0===a.y?0:a.relative?a.y:a.y-s;p=isNaN(i)?void 0===a.x1?p:a.relative?a.x:a.x1-o:i-o,m=isNaN(n)?void 0===a.y1?m:a.relative?a.y:a.y1-s:n-s;var T=void 0===a.x2?0:a.relative?a.x:a.x2-o,v=void 0===a.y2?0:a.relative?a.y:a.y2-s;c(O)<=t&&c(l)<=t&&c(p)<=t&&c(m)<=t&&c(T)<=t&&c(v)<=t&&(y=!0)}return a.type&_.CLOSE_PATH&&c(o-u)<=t&&c(s-h)<=t&&(y=!0),y?[]:a}))},t.MATRIX=O,t.ROTATE=function(t,r,e){void 0===r&&(r=0),void 0===e&&(e=0),a(t,r,e);var i=Math.sin(t),n=Math.cos(t);return O(n,i,-i,n,r-r*n+e*i,e-r*i-e*n)},t.TRANSLATE=function(t,r){return void 0===r&&(r=0),a(t,r),O(1,0,0,1,t,r)},t.SCALE=function(t,r){return void 0===r&&(r=t),a(t,r),O(t,0,0,r,0,0)},t.SKEW_X=function(t){return a(t),O(1,0,Math.atan(t),1,0,0)},t.SKEW_Y=function(t){return a(t),O(1,Math.atan(t),0,1,0,0)},t.X_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),a(t),O(-1,0,0,1,t,0)},t.Y_AXIS_SYMMETRY=function(t){return void 0===t&&(t=0),a(t),O(1,0,0,-1,0,t)},t.A_TO_C=function(){return u((function(t,r,e){return _.ARC===t.type?function(t,r,e){var a,n,s,u;t.cX||o(t,r,e);for(var y=Math.min(t.phi1,t.phi2),p=Math.max(t.phi1,t.phi2)-y,m=Math.ceil(p/90),O=new Array(m),l=r,T=e,v=0;v<m;v++){var f=c(t.phi1,t.phi2,v/m),N=c(t.phi1,t.phi2,(v+1)/m),x=N-f,d=4/3*Math.tan(x*h/4),E=[Math.cos(f*h)-d*Math.sin(f*h),Math.sin(f*h)+d*Math.cos(f*h)],A=E[0],C=E[1],M=[Math.cos(N*h),Math.sin(N*h)],R=M[0],g=M[1],I=[R+d*Math.sin(N*h),g-d*Math.cos(N*h)],S=I[0],L=I[1];O[v]={relative:t.relative,type:_.CURVE_TO};var H=function(r,e){var a=i([r*t.rX,e*t.rY],t.xRot),n=a[0],o=a[1];return[t.cX+n,t.cY+o]};a=H(A,C),O[v].x1=a[0],O[v].y1=a[1],n=H(S,L),O[v].x2=n[0],O[v].y2=n[1],s=H(R,g),O[v].x=s[0],O[v].y=s[1],t.relative&&(O[v].x1-=l,O[v].y1-=T,O[v].x2-=l,O[v].y2-=T,O[v].x-=l,O[v].y-=T),l=(u=[O[v].x,O[v].y])[0],T=u[1]}return O}(t,t.relative?0:r,t.relative?0:e):t}))},t.ANNOTATE_ARCS=function(){return u((function(t,r,e){return t.relative&&(r=0,e=0),_.ARC===t.type&&o(t,r,e),t}))},t.CLONE=l,t.CALCULATE_BOUNDS=function(){var t=function(t){var r={};for(var e in t)r[e]=t[e];return r},i=r(),a=n(),h=e(),c=u((function(r,e,n){var u=h(a(i(t(r))));function O(t){t>c.maxX&&(c.maxX=t),t<c.minX&&(c.minX=t)}function l(t){t>c.maxY&&(c.maxY=t),t<c.minY&&(c.minY=t)}if(u.type&_.DRAWING_COMMANDS&&(O(e),l(n)),u.type&_.HORIZ_LINE_TO&&O(u.x),u.type&_.VERT_LINE_TO&&l(u.y),u.type&_.LINE_TO&&(O(u.x),l(u.y)),u.type&_.CURVE_TO){O(u.x),l(u.y);for(var T=0,v=p(e,u.x1,u.x2,u.x);T<v.length;T++){0<(w=v[T])&&1>w&&O(m(e,u.x1,u.x2,u.x,w))}for(var f=0,N=p(n,u.y1,u.y2,u.y);f<N.length;f++){0<(w=N[f])&&1>w&&l(m(n,u.y1,u.y2,u.y,w))}}if(u.type&_.ARC){O(u.x),l(u.y),o(u,e,n);for(var x=u.xRot/180*Math.PI,d=Math.cos(x)*u.rX,E=Math.sin(x)*u.rX,A=-Math.sin(x)*u.rY,C=Math.cos(x)*u.rY,M=u.phi1<u.phi2?[u.phi1,u.phi2]:-180>u.phi2?[u.phi2+360,u.phi1+360]:[u.phi2,u.phi1],R=M[0],g=M[1],I=function(t){var r=t[0],e=t[1],i=180*Math.atan2(e,r)/Math.PI;return i<R?i+360:i},S=0,L=s(A,-d,0).map(I);S<L.length;S++){(w=L[S])>R&&w<g&&O(y(u.cX,d,A,w))}for(var H=0,U=s(C,-E,0).map(I);H<U.length;H++){var w;(w=U[H])>R&&w<g&&l(y(u.cY,E,C,w))}}return r}));return c.minX=1/0,c.maxX=-1/0,c.minY=1/0,c.maxY=-1/0,c}}(u||(u={}));var SVGPathData_module_O,l=function(){function t(){}return t.prototype.round=function(t){return this.transform(u.ROUND(t))},t.prototype.toAbs=function(){return this.transform(u.TO_ABS())},t.prototype.toRel=function(){return this.transform(u.TO_REL())},t.prototype.normalizeHVZ=function(t,r,e){return this.transform(u.NORMALIZE_HVZ(t,r,e))},t.prototype.normalizeST=function(){return this.transform(u.NORMALIZE_ST())},t.prototype.qtToC=function(){return this.transform(u.QT_TO_C())},t.prototype.aToC=function(){return this.transform(u.A_TO_C())},t.prototype.sanitize=function(t){return this.transform(u.SANITIZE(t))},t.prototype.translate=function(t,r){return this.transform(u.TRANSLATE(t,r))},t.prototype.scale=function(t,r){return this.transform(u.SCALE(t,r))},t.prototype.rotate=function(t,r,e){return this.transform(u.ROTATE(t,r,e))},t.prototype.matrix=function(t,r,e,i,a,n){return this.transform(u.MATRIX(t,r,e,i,a,n))},t.prototype.skewX=function(t){return this.transform(u.SKEW_X(t))},t.prototype.skewY=function(t){return this.transform(u.SKEW_Y(t))},t.prototype.xSymmetry=function(t){return this.transform(u.X_AXIS_SYMMETRY(t))},t.prototype.ySymmetry=function(t){return this.transform(u.Y_AXIS_SYMMETRY(t))},t.prototype.annotateArcs=function(){return this.transform(u.ANNOTATE_ARCS())},t}(),T=function(t){return" "===t||"\t"===t||"\r"===t||"\n"===t},v=function(t){return"0".charCodeAt(0)<=t.charCodeAt(0)&&t.charCodeAt(0)<="9".charCodeAt(0)},f=function(t){function e(){var r=t.call(this)||this;return r.curNumber="",r.curCommandType=-1,r.curCommandRelative=!1,r.canParseCommandOrComma=!0,r.curNumberHasExp=!1,r.curNumberHasExpDigits=!1,r.curNumberHasDecimal=!1,r.curArgs=[],r}return r(e,t),e.prototype.finish=function(t){if(void 0===t&&(t=[]),this.parse(" ",t),0!==this.curArgs.length||!this.canParseCommandOrComma)throw new SyntaxError("Unterminated command at the path end.");return t},e.prototype.parse=function(t,r){var e=this;void 0===r&&(r=[]);for(var i=function(t){r.push(t),e.curArgs.length=0,e.canParseCommandOrComma=!0},a=0;a<t.length;a++){var n=t[a],o=!(this.curCommandType!==_.ARC||3!==this.curArgs.length&&4!==this.curArgs.length||1!==this.curNumber.length||"0"!==this.curNumber&&"1"!==this.curNumber),s=v(n)&&("0"===this.curNumber&&"0"===n||o);if(!v(n)||s)if("e"!==n&&"E"!==n)if("-"!==n&&"+"!==n||!this.curNumberHasExp||this.curNumberHasExpDigits)if("."!==n||this.curNumberHasExp||this.curNumberHasDecimal||o){if(this.curNumber&&-1!==this.curCommandType){var u=Number(this.curNumber);if(isNaN(u))throw new SyntaxError("Invalid number ending at "+a);if(this.curCommandType===_.ARC)if(0===this.curArgs.length||1===this.curArgs.length){if(0>u)throw new SyntaxError('Expected positive number, got "'+u+'" at index "'+a+'"')}else if((3===this.curArgs.length||4===this.curArgs.length)&&"0"!==this.curNumber&&"1"!==this.curNumber)throw new SyntaxError('Expected a flag, got "'+this.curNumber+'" at index "'+a+'"');this.curArgs.push(u),this.curArgs.length===N[this.curCommandType]&&(_.HORIZ_LINE_TO===this.curCommandType?i({type:_.HORIZ_LINE_TO,relative:this.curCommandRelative,x:u}):_.VERT_LINE_TO===this.curCommandType?i({type:_.VERT_LINE_TO,relative:this.curCommandRelative,y:u}):this.curCommandType===_.MOVE_TO||this.curCommandType===_.LINE_TO||this.curCommandType===_.SMOOTH_QUAD_TO?(i({type:this.curCommandType,relative:this.curCommandRelative,x:this.curArgs[0],y:this.curArgs[1]}),_.MOVE_TO===this.curCommandType&&(this.curCommandType=_.LINE_TO)):this.curCommandType===_.CURVE_TO?i({type:_.CURVE_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x2:this.curArgs[2],y2:this.curArgs[3],x:this.curArgs[4],y:this.curArgs[5]}):this.curCommandType===_.SMOOTH_CURVE_TO?i({type:_.SMOOTH_CURVE_TO,relative:this.curCommandRelative,x2:this.curArgs[0],y2:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.QUAD_TO?i({type:_.QUAD_TO,relative:this.curCommandRelative,x1:this.curArgs[0],y1:this.curArgs[1],x:this.curArgs[2],y:this.curArgs[3]}):this.curCommandType===_.ARC&&i({type:_.ARC,relative:this.curCommandRelative,rX:this.curArgs[0],rY:this.curArgs[1],xRot:this.curArgs[2],lArcFlag:this.curArgs[3],sweepFlag:this.curArgs[4],x:this.curArgs[5],y:this.curArgs[6]})),this.curNumber="",this.curNumberHasExpDigits=!1,this.curNumberHasExp=!1,this.curNumberHasDecimal=!1,this.canParseCommandOrComma=!0}if(!T(n))if(","===n&&this.canParseCommandOrComma)this.canParseCommandOrComma=!1;else if("+"!==n&&"-"!==n&&"."!==n)if(s)this.curNumber=n,this.curNumberHasDecimal=!1;else{if(0!==this.curArgs.length)throw new SyntaxError("Unterminated command at index "+a+".");if(!this.canParseCommandOrComma)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+". Command cannot follow comma");if(this.canParseCommandOrComma=!1,"z"!==n&&"Z"!==n)if("h"===n||"H"===n)this.curCommandType=_.HORIZ_LINE_TO,this.curCommandRelative="h"===n;else if("v"===n||"V"===n)this.curCommandType=_.VERT_LINE_TO,this.curCommandRelative="v"===n;else if("m"===n||"M"===n)this.curCommandType=_.MOVE_TO,this.curCommandRelative="m"===n;else if("l"===n||"L"===n)this.curCommandType=_.LINE_TO,this.curCommandRelative="l"===n;else if("c"===n||"C"===n)this.curCommandType=_.CURVE_TO,this.curCommandRelative="c"===n;else if("s"===n||"S"===n)this.curCommandType=_.SMOOTH_CURVE_TO,this.curCommandRelative="s"===n;else if("q"===n||"Q"===n)this.curCommandType=_.QUAD_TO,this.curCommandRelative="q"===n;else if("t"===n||"T"===n)this.curCommandType=_.SMOOTH_QUAD_TO,this.curCommandRelative="t"===n;else{if("a"!==n&&"A"!==n)throw new SyntaxError('Unexpected character "'+n+'" at index '+a+".");this.curCommandType=_.ARC,this.curCommandRelative="a"===n}else r.push({type:_.CLOSE_PATH}),this.canParseCommandOrComma=!0,this.curCommandType=-1}else this.curNumber=n,this.curNumberHasDecimal="."===n}else this.curNumber+=n,this.curNumberHasDecimal=!0;else this.curNumber+=n;else this.curNumber+=n,this.curNumberHasExp=!0;else this.curNumber+=n,this.curNumberHasExpDigits=this.curNumberHasExp}return r},e.prototype.transform=function(t){return Object.create(this,{parse:{value:function(r,e){void 0===e&&(e=[]);for(var i=0,a=Object.getPrototypeOf(this).parse.call(this,r);i<a.length;i++){var n=a[i],o=t(n);Array.isArray(o)?e.push.apply(e,o):e.push(o)}return e}}})},e}(l),_=function(t){function i(r){var e=t.call(this)||this;return e.commands="string"==typeof r?i.parse(r):r,e}return r(i,t),i.prototype.encode=function(){return i.encode(this.commands)},i.prototype.getBounds=function(){var t=u.CALCULATE_BOUNDS();return this.transform(t),t},i.prototype.transform=function(t){for(var r=[],e=0,i=this.commands;e<i.length;e++){var a=t(i[e]);Array.isArray(a)?r.push.apply(r,a):r.push(a)}return this.commands=r,this},i.encode=function(t){return e(t)},i.parse=function(t){var r=new f,e=[];return r.parse(t,e),r.finish(e),e},i.CLOSE_PATH=1,i.MOVE_TO=2,i.HORIZ_LINE_TO=4,i.VERT_LINE_TO=8,i.LINE_TO=16,i.CURVE_TO=32,i.SMOOTH_CURVE_TO=64,i.QUAD_TO=128,i.SMOOTH_QUAD_TO=256,i.ARC=512,i.LINE_COMMANDS=i.LINE_TO|i.HORIZ_LINE_TO|i.VERT_LINE_TO,i.DRAWING_COMMANDS=i.HORIZ_LINE_TO|i.VERT_LINE_TO|i.LINE_TO|i.CURVE_TO|i.SMOOTH_CURVE_TO|i.QUAD_TO|i.SMOOTH_QUAD_TO|i.ARC,i}(l),N=((SVGPathData_module_O={})[_.MOVE_TO]=2,SVGPathData_module_O[_.LINE_TO]=2,SVGPathData_module_O[_.HORIZ_LINE_TO]=1,SVGPathData_module_O[_.VERT_LINE_TO]=1,SVGPathData_module_O[_.CLOSE_PATH]=0,SVGPathData_module_O[_.QUAD_TO]=4,SVGPathData_module_O[_.SMOOTH_QUAD_TO]=2,SVGPathData_module_O[_.CURVE_TO]=6,SVGPathData_module_O[_.SMOOTH_CURVE_TO]=4,SVGPathData_module_O[_.ARC]=7,SVGPathData_module_O);
 //# sourceMappingURL=SVGPathData.module.js.map
 
 ;// ./node_modules/stackblur-canvas/dist/stackblur-es.js
@@ -117178,7 +117223,7 @@ function BlurStack() {
  * @param config.canvas - `node-canvas` exports.
  * @param config.fetch - WHATWG-compatible `fetch` function.
  * @returns Preset object.
- */ function dist_node(param) {
+ */ function node(param) {
     let { DOMParser , canvas , fetch  } = param;
     return {
         window: null,
@@ -117191,10 +117236,10 @@ function BlurStack() {
     };
 }
 
-var dist_index = /*#__PURE__*/(/* unused pure expression or super */ null && (Object.freeze({
+var index = /*#__PURE__*/(/* unused pure expression or super */ null && (Object.freeze({
   __proto__: null,
   offscreen: offscreen,
-  node: dist_node
+  node: node
 })));
 
 /**

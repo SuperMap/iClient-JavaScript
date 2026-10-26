@@ -10261,9 +10261,9 @@ var ChartType = (/* unused pure expression or super */ null && ({
  * ```
  */
 var ClipAnalystMode = {
-  /** 裁剪分析操作。 */
+  /** 内部裁剪，保留落在裁剪区范围内的数据。 */
   CLIP: "clip",
-  /** 求交分析操作。 */
+  /** 外部裁剪，保留落在裁剪区范围外的数据。 */
   INTERSECT: "intersect"
 };
 
@@ -11403,13 +11403,13 @@ function KernelDensityJobParameter_toPrimitive(t, r) { if ("object" != KernelDen
  * @classdesc 此类用于设置核密度分析的数据集、分析范围、分析方法、权重、影响半径、分辨率、分析单位等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
+ * @param {string} options.datasetName - 进行核密度分析的点数据集或线数据集。
  * @param {string} options.fields - 权重索引。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
- * @param {number} [options.resolution=80] - 分辨率。
- * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
- * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
- * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {ModuleBounds} [options.query] - 核密度分析范围，默认为全图范围。
+ * @param {number} [options.resolution=80] - 核密度分析结果栅格数据的分辨率，即单个像元所对应的地面面积大小，单位与数据集单位一致。
+ * @param {number} [options.method=0] - 核密度分析方法。0 表示简单密度分析，1 表示核密度分析。
+ * @param {number} [options.meshType=0] - 核密度分析类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {number} [options.radius=300] - 核密度分析的影响半径。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
  * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
@@ -11425,7 +11425,7 @@ var KernelDensityJobParameter = /*#__PURE__*/function () {
     }
     /**
      * @member {string} KernelDensityJobParameter.prototype.datasetName
-     * @description 数据集名称。
+     * @description 进行核密度分析的点数据集或线数据集。
      */
     this.datasetName = "";
 
@@ -11830,14 +11830,14 @@ function SummaryMeshJobParameter_toPrimitive(t, r) { if ("object" != SummaryMesh
  * @classdesc 点聚合分析任务参数类。此类用于设置点聚合分析的数据集、分析范围、权重索引、分析模式、分析类型、聚合类型等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
- * @param {ModuleBounds} [options.query] - 聚合分析范围（默认为全图范围）。
- * @param {number} options.fields - 权重索引。选填。仅支持系统字段以外的整形、长整形、浮点型的字段。
+ * @param {string} options.datasetName - 数据集名称，只支持点数据集。
+ * @param {string} [options.regionDataset ] - 指定输入数据需要聚合到的面数据集，比如行政区划面等。
+ * @param {ModuleBounds} [options.query] - 聚合分析范围，指定范围内的点参与聚合分析，默认为输入数据集的全幅范围。 
+ * @param {number} [options.fields] - 权重索引。指定待分析的点的权重值所在的字段名称集合。仅支持系统字段以外的整形、长整形、浮点型的字段。可以传递多个表示权重的字段索引，以逗号分隔，相当于对待分析的点进行多次操作，每次对应不同的权重值。
  * @param {number} [options.resolution=100] - 分辨率。
  * @param {StatisticAnalystMode} [options.statisticModes=StatisticAnalystMode.AVERAGE] - 统计模式，“统计模式”个数应与“权重值字段”个数一致。
  * @param {number} [options.meshType=0] - 聚合分析类型（聚合类型为网格面聚合时使用的参数）。0 表示四边形网格，1 表示六边形网格。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 聚合类型。指定聚合类型为网格面聚合，还是多边形聚合。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -11850,13 +11850,13 @@ var SummaryMeshJobParameter = /*#__PURE__*/function () {
     }
     /**
      * @member {string} SummaryMeshJobParameter.prototype.datasetName
-     * @description 数据集名称。
+     * @description 数据集名称，只支持点数据集。
      */
     this.datasetName = "";
 
     /**
      * @member {string} SummaryMeshJobParameter.prototype.regionDataset
-     * @description 聚合面数据集（聚合类型为多边形聚合时使用的参数）。
+     * @description 指定输入数据需要聚合到的面数据集，比如行政区划面等。
      */
     this.regionDataset = "";
 
@@ -12007,20 +12007,20 @@ function SummaryRegionJobParameter_toPrimitive(t, r) { if ("object" != SummaryRe
  * @classdesc 区域汇总分析任务参数类。此类用于设置区域汇总分析的数据集、分析范围、标准属性字段、
  * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
- * @param {ModuleBounds} [options.query] - 缓冲区分析范围（默认为全图范围）。
+ * @param {string} options.datasetName - 数据集名称，只支持线数据集和面数据集。
+ * @param {string} [options.regionDataset] - 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
+ * @param {ModuleBounds} [options.query] - 区域汇总分析范围，默认为全图范围。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
- * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
- * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
- * @param {number} [options.resolution=100] - 网格大小。
- * @param {number} [options.meshType=0] - 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+ * @param {boolean} [options.sumShape=true] - 如果源数据集是线数据集，则同时统计线的长度作为统计结果的一部分；如果源数据集是面数据集，则同时统计面的面积作为统计结果的一部分。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
+ * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
+ * @param {number} [options.resolution=100] - 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
+ * @param {number} [options.meshType=0] - 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
- * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 汇总类型。
+ * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -12040,7 +12040,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
 
     /**
      * @member {string} SummaryRegionJobParameter.prototype.regionDataset
-     * @description 汇总数据集（多边形汇总时用到的参数）。
+     * @description 汇总数据集，在多边形汇总时需指定的参数，只支持面数据集。
      */
     this.regionDataset = "";
 
@@ -12058,7 +12058,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
 
     /**
      * @member {boolean} [SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-     * @description 是否以标准属性字段统计。
+     * @description 是否以标准属性字段统计。即对通过网格单元内的线或面对象的原有属性字段信息进行统计。
      */
     this.standardSummaryFields = false;
 
@@ -12076,7 +12076,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
 
     /**
      * @member {boolean} [SummaryRegionJobParameter.prototype.weightedSummaryFields=false]
-     * @description 是否以权重字段统计。
+     * @description 是否以权重字段统计。即对通过网格单元内的线或面对象与网格单元相交部分的对象属性信息进行统计，相交部分的属性信息由标准属性字段的值加权计算得出。
      */
     this.weightedSummaryFields = false;
 
@@ -12094,13 +12094,13 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
 
     /**
      * @member {number} [SummaryRegionJobParameter.prototype.meshType=0]
-     * @description 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
+     * @description 指定网格面汇总类型，当 type 为网格面汇总时必选，0 表示四边形网格，1 表示六边形网格。
      */
     this.meshType = 0;
 
     /**
      * @member {number} [SummaryRegionJobParameter.prototype.resolution=100]
-     * @description 网格大小。
+     * @description 指定网格大小，当 type 为网格面汇总时必选，对于四边形网格为网格的边长；对于六边形网格为六边形顶点到中心点的距离。
      */
     this.resolution = 100;
 
@@ -12112,7 +12112,7 @@ var SummaryRegionJobParameter = /*#__PURE__*/function () {
 
     /**
      * @member {SummaryType} [SummaryRegionJobParameter.prototype.type=SummaryType.SUMMARYMESH]
-     * @description 汇总类型。
+     * @description 区域汇总分析的类型，包括 SUMMARYMESH 网格面汇总，SUMMARYREGION 多边形汇总。
      */
     this.type = SummaryType.SUMMARYMESH;
 
@@ -12361,7 +12361,7 @@ function BuffersAnalystJobsParameter_toPrimitive(t, r) { if ("object" != Buffers
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
+ * @param {ModuleBounds} [options.bounds] - 缓冲区分析范围，默认为全图范围。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
  * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
@@ -12819,10 +12819,10 @@ function VectorClipJobsParameter_toPrimitive(t, r) { if ("object" != VectorClipJ
  * @classdesc 矢量裁剪分析任务参数类。此类用于设置矢量裁剪分析的数据集、裁剪分析模式、裁剪几何对象等参数，
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名称。
- * @param {string} options.datasetVectorClip - 裁剪对象数据集。
- * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
- * @param {string} [options.geometryClip] - 裁剪几何对象。
+ * @param {string} options.datasetName - 待裁剪数据集的名称。
+ * @param {string} options.datasetVectorClip - 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
+ * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
+ * @param {string} [options.geometryClip] - 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -12834,25 +12834,25 @@ var VectorClipJobsParameter = /*#__PURE__*/function () {
 
     /**
      * @member {string} VectorClipJobsParameter.prototype.datasetName
-     * @description 数据集名称。
+     * @description 待裁剪数据集的名称。
      */
     this.datasetName = "";
 
     /**
      * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
-     * @description 裁剪对象数据集。
+     * @description 当采用数据集进行裁剪时，需指定用于裁剪的裁剪对象数据集，仅支持面数据集，若数据集中有多个对象时，默认选择第一个对象。
      */
     this.datasetVectorClip = "";
 
     /**
      * @member {string} VectorClipJobsParameter.prototype.geometryClip
-     * @description 裁剪几何对象。
+     * @description 当采用几何对象进行裁剪时，需指定用于裁剪的几何对象。
      */
     this.geometryClip = "";
 
     /**
      * @member {ClipAnalystMode} [VectorClipJobsParameter.prototype.mode=ClipAnalystMode.CLIP]
-     * @description 裁剪分析模式。
+     * @description 裁剪分析模式，包含 CLIP 内部裁剪，INTERSECT 外部裁剪。
      */
     this.mode = ClipAnalystMode.CLIP;
 
@@ -13113,18 +13113,19 @@ function conversionDegree(degrees) {
 function scalesToResolutions(scales, bounds, dpi, mapUnit) {
   var level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 22;
   var baseScale = arguments.length > 5 ? arguments[5] : undefined;
+  var dpiValue = dpi === '' || dpi === null || dpi === undefined ? 96 : dpi;
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (var i = 0; i < scales.length; i++) {
-      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+      resolutions.push(scaleToResolution(scales[i], dpiValue, mapUnit));
     }
   } else if (baseScale) {
     var maxReolution = Math.abs(bounds.left - bounds.right) / 256;
-    var baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    var baseRes = scaleToResolution(baseScale, dpiValue, mapUnit);
     var topRes = baseRes;
     for (var _i = 0; _i < level; _i++) {
       var temp = baseRes * Math.pow(2, _i);
-      if (Math.abs(temp, maxReolution) <= 1E-6 || temp > maxReolution) {
+      if (Math.abs(temp - maxReolution) <= 1E-6 || temp > maxReolution) {
         topRes = temp;
         break;
       }
@@ -15333,7 +15334,7 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
 
   /**
    * @function SuperMap.REST.DatasetService.prototype.getDatasets
-   * @description 数据集集合查询服务。
+   * @description 根据数据源名称查询该数据源下所有数据集的信息。
    * @example
    *   new SuperMap.REST.DatasetService(url).getDatasets(datasourceName,function(result){
    *     //doSomething
@@ -15354,7 +15355,7 @@ var DatasetService = /*#__PURE__*/function (_CommonServiceBase) {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDataset
-     * @description 数据集信息查询服务。
+     * @description 根据数据源名称、数据集名称查询该数据集的信息。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething
@@ -15676,7 +15677,7 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
 
   /**
    * @function SuperMap.REST.DatasourceService.prototype.getDatasources
-   * @description 数据源集合查询服务。
+   * @description 获取当前服务下所有数据源信息。
    * @example
    *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
    *     //doSomething
@@ -15693,7 +15694,7 @@ var DatasourceService = /*#__PURE__*/function (_CommonServiceBase) {
 
     /**
      * @function SuperMap.REST.DatasourceService.prototype.getDatasource
-     * @description 数据源信息查询服务。
+     * @description 根据数据源名称获取指定数据源的信息。
      * @example
      *   new SuperMap.REST.DatasourceService(url).getDatasource(datasourceName,function(result){
      *     //doSomething
@@ -20074,11 +20075,26 @@ module.exports = parent;
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
+/******/ 		// define getter/value functions for harmony exports
 /******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
 /******/ 				}
 /******/ 			}
 /******/ 		};
