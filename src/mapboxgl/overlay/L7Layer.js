@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import * as L7 from './L7/l7-render';
 import { Scene, Mapbox } from './L7/l7-render';
 import { getL7Filter } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
-import { featureFilter } from '@mapbox/mapbox-gl-style-spec';
+import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
 
 
 /**

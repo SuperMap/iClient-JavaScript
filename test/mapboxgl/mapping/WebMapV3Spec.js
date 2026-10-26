@@ -5,8 +5,8 @@ import { createMapClassExtending } from '@supermapgis/iclient-common/mapping/Map
 import { L7LayerUtil } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/mapboxgl/mapping/webmap/MapManager';
-import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
-import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
+import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
+import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 import { L7, L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 import * as mockL7 from '../../tool/mock_l7';
 import mbglmap, { CRS } from '../../tool/mock_mapboxgl_map';

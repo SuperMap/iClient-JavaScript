@@ -47,8 +47,7 @@ module.exports = function (config) {
               '../src/mapboxgl/overlay/L7/l7-render.js',
               '../src/maplibregl/overlay/L7/l7-render.js',
               '../node_modules/video.js/dist/video.cjs.js',
-              '../src/common/util/UGCWasmAll.js',
-              '../node_modules/@mapbox/mapbox-gl-style-spec'
+              '../src/common/util/UGCWasmAll.js'
               
             ],
             plugins: ['istanbul', '@babel/plugin-transform-runtime']
