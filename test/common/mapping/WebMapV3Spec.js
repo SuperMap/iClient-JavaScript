@@ -1669,6 +1669,75 @@ describe('WebMapV3 - _createLegendInfo', () => {
     expect(instance._legendList[0].themeField).toBe('CLUSTER_COUNT');
   });
 
+  ['line', 'fill'].forEach((layerType) => {
+    ['unique', 'range', 'simple', 'empty', 'custom'].forEach((symbolMode) => {
+      it(`should preserve ${layerType} legends with ${symbolMode} label symbols`, () => {
+        const { instance } = createTestContext();
+        const symbol = { symbolId: 'shape1', style: { layout: { 'icon-image': 'shape1' } } };
+        const symbolsContent = symbolMode === 'unique' || symbolMode === 'range' ? {
+          type: symbolMode,
+          field: ['smpid'],
+          defaultValue: symbol,
+          values: symbolMode === 'unique'
+            ? [{ key: 1, value: symbol }, { key: 10, value: symbol }]
+            : [{ start: 0, end: 10, value: symbol }, { start: 10, end: 20, value: symbol }],
+          interpolateInfo: { type: 'custom' }
+        } : symbolMode === 'custom'
+          ? { type: 'custom', value: ['get', 'symbol'] }
+          : { type: 'simple', value: symbolMode === 'empty' ? { symbolId: '' } : symbol };
+        const renderer = [{
+          color: { type: 'simple', value: '#4CC8A3' },
+          opacity: { type: 'simple', value: 0 },
+          width: { type: 'simple', value: 2 }
+        }];
+        const label = {
+          symbolsContent,
+          textField: { type: 'simple', value: '标准名称' },
+          textColor: { type: 'simple', value: '#FFFFFF' },
+          textSize: { type: 'simple', value: 16 },
+          color: { type: 'simple', value: '#EE4D5A' },
+          size: { type: 'simple', value: 8 },
+          opacity: { type: 'simple', value: 0.9 }
+        };
+        instance._legendList = [];
+        instance._mapInfo = {
+          layers: [{ id: 'l1', type: layerType, source: 's1' }],
+          sources: { s1: {} }
+        };
+        instance._mapResourceInfo = { catalogs: [legendCatalog(renderer, { visualization: { renderer, label } })] };
+        instance._spriteDatas = { shape1: { x: 0, y: 0, width: 20, height: 20, sdf: false } };
+        instance._sprite = 'http://localhost/sprite';
+
+        instance._createLegendInfo();
+
+        const legends = instance._legendList;
+        expect(legends[0].styleGroup[0].style.shape).toBe(layerType === 'line' ? 'LINE' : 'RECTANGLE');
+        expect(legends.some((item) => item.styleGroup.some((entry) => entry.style.shape === 'TEXT'))).toBe(true);
+        if (symbolMode === 'unique' || symbolMode === 'range') {
+          const symbolLegend = legends.find((item) => item.styleField === 'symbolsContent');
+          expect(symbolLegend.themeField).toBe('smpid');
+          expect(symbolLegend.styleGroup.length).toBe(3);
+          expect(symbolLegend.styleGroup.every((entry) => entry.style.shape === 'POINT')).toBe(true);
+          if (symbolMode === 'unique') {
+            expect(symbolLegend.styleGroup.map((entry) => entry.fieldValue)).toEqual([1, 10, null]);
+          } else {
+            expect(symbolLegend.styleGroup.map((entry) => [entry.start, entry.end])).toEqual([[0, 10], [10, 20], [null, null]]);
+          }
+        } else if (symbolMode === 'simple') {
+          expect(legends.some((item) => item.styleGroup.some((entry) => entry.style.shape === 'POINT'))).toBe(true);
+        } else {
+          expect(legends.some((item) => item.styleGroup.some((entry) => entry.style.shape === 'POINT'))).toBe(false);
+          expect(legends.some((item) => item.styleField === 'symbolsContent')).toBe(false);
+        }
+        // Rebuilding legends must not append label settings to the saved renderer.
+        expect(renderer.length).toBe(1);
+        instance._legendList = [];
+        instance._createLegendInfo();
+        expect(instance._legendList).toEqual(legends);
+      });
+    });
+  });
+
   it('should append text style for point renderer with text field', () => {
     const { instance } = createTestContext();
     instance._legendList = [];
@@ -2129,6 +2198,30 @@ describe('WebMapV3 - setting style helpers', () => {
   it('_getSettingStyle should merge simple style and set field value', () => {
     const { instance } = createTestContext();
     expect(instance._getSettingStyle('size', 8, { color: 'red' })).toEqual({ color: 'red', size: 8 });
+  });
+});
+
+describe('WebMapV3 - _transformLineStyle', () => {
+  it('应保留图层自身的 0 不透明度，不回退成符号的不透明度', () => {
+    const { instance } = createTestContext();
+    const result = instance._transformLineStyle({
+      oldWidth: 2,
+      symbol: { paint: { 'line-width': 2, 'line-color': '#FF0000', 'line-opacity': 0.8 } },
+      defaultStyle: { height: 8, opacity: 1, backgroundColor: '#FFFFFF' },
+      customValue: { opacity: 0 }
+    });
+    expect(result.opacity).toBe(0);
+  });
+
+  it('图层未设置不透明度时回退到符号自身的 line-opacity', () => {
+    const { instance } = createTestContext();
+    const result = instance._transformLineStyle({
+      oldWidth: 2,
+      symbol: { paint: { 'line-width': 2, 'line-color': '#FF0000', 'line-opacity': 0.8 } },
+      defaultStyle: { height: 8, opacity: 1, backgroundColor: '#FFFFFF' },
+      customValue: {}
+    });
+    expect(result.opacity).toBe(0.8);
   });
 });
 

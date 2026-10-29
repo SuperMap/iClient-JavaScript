@@ -858,11 +858,15 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         themeField = sourceInfo.clusterField;
       }
       const nextLayer = Object.assign({}, layerFromMapInfo, { title: layer.title, themeField });
-      const styleSettings = this._parseRendererStyleData(renderer);
+      // 图例附加的标签样式不能写回工程中的 renderer。
+      const styleSettings = [...this._parseRendererStyleData(renderer)];
       // 线面文本标签
       if (label) {
         styleSettings.push({...label, type: 'text'});
-        if (label.symbolsContent && label.symbolsContent.value.symbolId) {
+        // 数据驱动符号使用 values/defaultValue，不存在普通符号的 value。
+        const { symbolsContent } = label;
+        if (symbolsContent && symbolsContent.type !== 'custom' &&
+            (symbolsContent.type !== 'simple' || (symbolsContent.value && symbolsContent.value.symbolId))) {
           styleSettings.push({...label, type: 'symbol'});
         }
       }
@@ -1052,7 +1056,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   }
 
   _isAllPictureSymbolSaved(symbolType, symbolsContent, spriteJson) {
-    if (!symbolsContent) {
+    if (!symbolsContent || symbolsContent.type === 'custom') {
+      // 自定义表达式无法静态判断是否全部为图片符号。
       return false;
     }
     if (symbolType === 'point') {
@@ -1061,10 +1066,6 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     const currentType = symbolsContent.type;
     if (currentType === 'simple') {
       return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
-    }
-    if(currentType === 'custom') {
-      // 表达式暂不支持图例显示
-      return false;
     }
     const styles = symbolsContent.values.map((v) => v.value).concat(symbolsContent.defaultValue);
     return styles.every((v) => {
@@ -1138,8 +1139,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     } else {
       // 其他
       // isAllPic: 如果符号为图片，图例中将不再显示颜色
-      const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[layer.type];
-      const isAllPic = this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
+      // 线面标签中的图标按点符号处理；文本不参与图片符号判断。
+      const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[renderType];
+      const isAllPic = legendRenderType !== LEGEND_RENDER_TYPE.TEXT &&
+        this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
       if(isAllPic) {
         dataKeys = dataKeys.filter((key) => key !== 'color')
       }
@@ -1525,7 +1528,8 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
     return {
       lineWidth: ((newSymbol || {}).paint || {})[LINE_WIDTH_KEY] || paint[LINE_WIDTH_KEY] || defaultStyle.height,
-      opacity: customValue.opacity || paint['line-opacity'] || defaultStyle.opacity,
+      // 0 是合法的线不透明度，用 ?? 而不是 ||，避免透明线被回退成不透明
+      opacity: customValue.opacity ?? paint['line-opacity'] ?? defaultStyle.opacity,
       color: customValue.color || paint['line-color'] || defaultStyle.backgroundColor,
       lineDash: paint['line-dasharray'] || [],
       lineOffset: paint['line-offset'] || 0
