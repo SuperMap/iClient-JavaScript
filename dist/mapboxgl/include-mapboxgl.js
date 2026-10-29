@@ -116,7 +116,7 @@
       inputScript(libsurl + '/three/0.121.1/build/three.js');
     }
     if (inArray(includes, 'xlsx')) {
-      inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
+      inputScript(libsurl + '/xlsx/0.20.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
       inputScript(libsurl + '/proj4/2.17.0/proj4.min.js');

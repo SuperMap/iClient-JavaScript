@@ -133,7 +133,7 @@
           inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
+            inputScript(libsurl + '/xlsx/0.20.3/xlsx.core.min.js');
         }
         if (inArray(includes, 'lodash')) {
           inputScript(libsurl + '/lodash/4.18.1/lodash.min.js');
