@@ -2046,10 +2046,10 @@ describe('WebMapV3 - _createLayerLegendList', () => {
     const result = instance._createLayerLegendList(layer, styleSetting);
     const colorLegend = result.find((item) => item.styleField === 'color');
 
-    expect(result).toHaveLength(2);
+    expect(result.length).toBe(2);
     expect(result.some((item) => !item.styleField)).toBe(true);
     expect(colorLegend).toBeDefined();
-    expect(colorLegend.styleGroup).toHaveLength(1);
+    expect(colorLegend.styleGroup.length).toBe(1);
     expect(colorLegend.styleGroup[0].style.colors).toEqual([
       { key: 'sourceColor', value: '#4A90E2' },
       { key: 'targetColor', value: '#7ED321' }
@@ -2119,7 +2119,7 @@ describe('WebMapV3 - _createLayerLegendList', () => {
     const symbolLegend = result.find((item) => item.styleField === 'symbolsContent');
     expect(symbolLegend).toBeDefined();
     expect(symbolLegend.themeField).toBe('TYPE');
-    expect(symbolLegend.styleGroup).toHaveLength(3);
+    expect(symbolLegend.styleGroup.length).toBe(3);
     expect(symbolLegend.styleGroup.map((item) => item.fieldValue)).toEqual(['A', 'B', null]);
   });
 
