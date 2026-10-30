@@ -2028,6 +2028,101 @@ describe('WebMapV3 - _createLayerLegendList', () => {
     expect(linearLegend.styleGroup[0].style.colors).toEqual(['#FF0000', '#0000FF']);
   });
 
+  it('should create gradient legend for column source and target colors', () => {
+    const { instance } = createTestContext();
+    // Column symbols contain symbolId, not the style.paint used by line/fill symbols.
+    spyOn(instance, '_getImageIdFromValue').and.callThrough();
+    const layer = { id: 'column1', title: 'Column', type: 'point-extrusion' };
+    const styleSetting = {
+      type: 'column',
+      color: { type: 'simple', value: '#EE4D5A' },
+      sourceColor: { type: 'simple', value: '#4A90E2' },
+      targetColor: { type: 'simple', value: '#7ED321' },
+      size: { type: 'simple', value: 12 },
+      opacity: { type: 'simple', value: 1 },
+      shape: { type: 'simple', value: 'cylinder' }
+    };
+
+    const result = instance._createLayerLegendList(layer, styleSetting);
+    const colorLegend = result.find((item) => item.styleField === 'color');
+
+    expect(result).toHaveLength(2);
+    expect(result.some((item) => !item.styleField)).toBe(true);
+    expect(colorLegend).toBeDefined();
+    expect(colorLegend.styleGroup).toHaveLength(1);
+    expect(colorLegend.styleGroup[0].style.colors).toEqual([
+      { key: 'sourceColor', value: '#4A90E2' },
+      { key: 'targetColor', value: '#7ED321' }
+    ]);
+    expect(instance._getImageIdFromValue).not.toHaveBeenCalled();
+  });
+
+  it('should keep the column gradient legend when size is data driven', () => {
+    const { instance } = createTestContext();
+    const layer = { id: 'column3', title: 'Column', type: 'point-extrusion' };
+    const styleSetting = {
+      type: 'column',
+      color: { type: 'simple', value: 'rgba(34,3,6,1)' },
+      sourceColor: { type: 'simple', value: '#D53E4F' },
+      targetColor: { type: 'simple', value: '#3288BD' },
+      size: {
+        type: 'unique',
+        field: ['smpid'],
+        defaultValue: 12,
+        values: [
+          { key: 1, value: 1 },
+          { key: 136, value: 136 }
+        ],
+        interpolateInfo: { type: 'linear' }
+      },
+      opacity: { type: 'simple', value: 0.9 },
+      shape: { type: 'simple', value: 'cylinder' }
+    };
+
+    const result = instance._createLayerLegendList(layer, styleSetting);
+    const colorLegend = result.find((item) => item.styleField === 'color');
+    const sizeLegend = result.find((item) => item.styleField === 'size');
+
+    expect(colorLegend).toBeDefined();
+    expect(colorLegend.styleGroup[0].style.colors).toEqual([
+      { key: 'sourceColor', value: '#D53E4F' },
+      { key: 'targetColor', value: '#3288BD' }
+    ]);
+    expect(sizeLegend).toBeDefined();
+  });
+
+  it('should expose data driven column shapes as symbolsContent legends', () => {
+    const { instance } = createTestContext();
+    const layer = { id: 'column2', title: 'Column', type: 'point-extrusion' };
+    const styleSetting = {
+      type: 'column',
+      color: { type: 'simple', value: '#4A90E2' },
+      size: { type: 'simple', value: 12 },
+      opacity: { type: 'simple', value: 1 },
+      shape: {
+        type: 'unique',
+        field: ['TYPE'],
+        values: [
+          { key: 'A', value: 'triangleColumn' },
+          { key: 'B', value: 'squareColumn' }
+        ],
+        defaultValue: 'cylinder',
+        interpolateInfo: { type: 'custom' }
+      }
+    };
+
+    const normalized = instance._normalizeColumnStyleSetting(styleSetting);
+    expect(normalized.symbolsContent.values.map((item) => item.value.symbolId)).toEqual(['triangle', 'rectangle']);
+    expect(normalized.symbolsContent.defaultValue).toEqual({ symbolId: 'circle' });
+
+    const result = instance._createLayerLegendList(layer, styleSetting);
+    const symbolLegend = result.find((item) => item.styleField === 'symbolsContent');
+    expect(symbolLegend).toBeDefined();
+    expect(symbolLegend.themeField).toBe('TYPE');
+    expect(symbolLegend.styleGroup).toHaveLength(3);
+    expect(symbolLegend.styleGroup.map((item) => item.fieldValue)).toEqual(['A', 'B', null]);
+  });
+
   it('should create range style groups for non-color data driven field', () => {
     const { instance } = createTestContext();
     const layer = { id: 'l1', title: 'Layer', type: 'circle' };

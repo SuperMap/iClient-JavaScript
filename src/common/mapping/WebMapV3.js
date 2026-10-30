@@ -150,6 +150,7 @@ const MAP_LAYER_TYPE_2_SYMBOL_TYPE = {
   pointCluster: 'point',
   point: 'point',
   'point-3d': 'point',
+  column: 'point',
   fill: 'polygon',
   'fill-extrusion': 'polygon',
   heatmap: 'point',
@@ -906,6 +907,53 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     }
   }
 
+  _normalizeColumnStyleSetting(styleSetting) {
+    if (!styleSetting || styleSetting.type !== 'column') {
+      return styleSetting;
+    }
+    const normalizedStyleSetting = { ...styleSetting };
+    const symbolIds = {
+      cylinder: 'circle',
+      triangleColumn: 'triangle',
+      squareColumn: 'rectangle',
+      hexagonColumn: 'hexagon'
+    };
+    const toSymbol = (value) => ({ symbolId: value ? symbolIds[value] || 'circle' : 'circle' });
+    const shape = styleSetting.shape;
+    if (shape && shape.type === 'simple') {
+      normalizedStyleSetting.symbolsContent = {
+        ...shape,
+        value: toSymbol(shape.value)
+      };
+    } else if (shape && ['unique', 'range'].includes(shape.type)) {
+      normalizedStyleSetting.symbolsContent = {
+        ...shape,
+        defaultValue: toSymbol(shape.defaultValue),
+        values: Array.isArray(shape.values)
+          ? shape.values.map((item) => ({ ...item, value: toSymbol(item.value) }))
+          : []
+      };
+    }
+
+    const sourceColor = styleSetting.sourceColor && styleSetting.sourceColor.value;
+    const targetColor = styleSetting.targetColor && styleSetting.targetColor.value;
+    if (sourceColor && targetColor) {
+      normalizedStyleSetting.color = {
+        type: 'unique',
+        field: '',
+        defaultCustomFields: [],
+        values: [
+          { key: 'sourceColor', value: sourceColor },
+          { key: 'targetColor', value: targetColor }
+        ],
+        defaultValue: sourceColor,
+        interpolateInfo: { type: 'linear' },
+        ribbon: [sourceColor, targetColor]
+      };
+    }
+    return normalizedStyleSetting;
+  }
+
   _getLegendSimpleStyle(styleSetting, keys) {
     const simpleStyle = {};
     if (keys) {
@@ -1085,6 +1133,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   }
 
   _createLayerLegendList(layer, styleSetting) {
+    styleSetting = this._normalizeColumnStyleSetting(styleSetting);
     const layerId = layer.id;
     const layerTitle = layer.title;
     const textFieldName = styleSetting.type === 'text' && styleSetting.textField && styleSetting.textField.value.replace(/^\{|\}$/g, '');
