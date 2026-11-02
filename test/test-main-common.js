@@ -234,6 +234,7 @@ import './common/lang/LangSpec.js';
 import './common/util/EncryptRequestSpec';
 import './common/util/MapCalculateUtilSpec';
 import './common/util/GeometryAnalysisSpec.js';
+import './common/util/RequestcryptUtilSpec.js';
 
 import './common/mapping/utils/AppreciableLayerBaseSpec.js'
 import './common/mapping/utils/L7LayerUtilSpec';
