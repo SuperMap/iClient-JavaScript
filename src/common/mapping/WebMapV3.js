@@ -165,6 +165,7 @@ const MAP_LAYER_TYPE_2_SYMBOL_TYPE = {
 };
 
 const LEGEND_LINE_WIDTH = 100;
+const LEGEND_LINE_IMAGE_HEIGHT = 10;
 const LINE_WIDTH_KEY = 'line-width';
 
 export const LEGEND_STYLE_TYPES = {
@@ -1434,7 +1435,9 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         const imageLineSymbol = symbolStyles[0];
         if (hasImageLine) {
           const imageId = this._getImageIdByLegendType(imageLineSymbol, legendRenderType);
-          const styleOptions = { ...cssStyle, ...nextCustomValue, height: cssStyle.width, width: LEGEND_LINE_WIDTH };
+          // 普通线图层的图片符号高度统一，动画线保持原来逻辑
+          const imageHeight = legendRenderType === LEGEND_RENDER_TYPE.LINE ? LEGEND_LINE_IMAGE_HEIGHT : cssStyle.width;
+          const styleOptions = { ...cssStyle, ...nextCustomValue, height: imageHeight, width: LEGEND_LINE_WIDTH };
           if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && nextCustomValue.textureBlend === 'replace') {
             styleOptions.backgroundColor = 'transparent';
           }

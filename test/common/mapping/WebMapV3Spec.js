@@ -2396,19 +2396,39 @@ describe('WebMapV3 - _parseLegendtyle types', () => {
     expect(result.lineStyles[0].color).toBe('red');
   });
 
-  it('LINE with image symbol should return sprite image style', () => {
+  it('LINE with image symbol should return sprite image style with unified height', () => {
     const { instance } = createTestContext();
     instance._sprite = 'http://localhost:8190/iportal/web/maps/1/sprites/sprite';
     instance._spriteDatas = { 'line-tex': { width: 8, height: 4 } };
     const result = instance._parseLegendtyle({
       legendRenderType: 'LINE',
       customValue: {
+        width: 6,
         symbolsContent: { style: [{ paint: { 'line-pattern': 'line-tex' } }] }
       }
     });
     expect(result.type).toBe('image');
     expect(result.sprite).toEqual({ width: 8, height: 4 });
     expect(result.url).toBe('http://localhost:8190/iportal/web/maps/1/sprites/sprite.png');
+    // 普通线图层图片符号高度统一为 10、宽度 100，不使用线宽或图片尺寸
+    expect(result.height).toBe(10);
+    expect(result.width).toBe(100);
+  });
+
+  it('ANIMATELINE with image symbol should keep original height logic', () => {
+    const { instance } = createTestContext();
+    instance._sprite = 'http://localhost:8190/iportal/web/maps/1/sprites/sprite';
+    instance._spriteDatas = { 'anim-tex': { width: 8, height: 8 } };
+    const result = instance._parseLegendtyle({
+      legendRenderType: 'ANIMATELINE',
+      customValue: {
+        symbolsContent: { style: [{ layout: { 'icon-image': 'anim-tex' } }] }
+      }
+    });
+    expect(result.type).toBe('image');
+    expect(result.width).toBe(100);
+    // 动画线图片符号高度保持 cssStyle.width 的原逻辑，不使用统一高度
+    expect(result.height).toBe(20);
   });
 
   it('ANIMATELINE replacing color should return transparent background image', () => {
@@ -2424,6 +2444,7 @@ describe('WebMapV3 - _parseLegendtyle types', () => {
     });
     expect(result.type).toBe('image');
     expect(result.backgroundColor).toBe('transparent');
+    expect(result.height).toBe(20);
   });
 
   it('FILL simple solid color should be vector style without url', () => {
