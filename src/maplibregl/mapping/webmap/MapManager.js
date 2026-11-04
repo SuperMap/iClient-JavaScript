@@ -1,5 +1,5 @@
 import '../../core/Base';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 export default class MapManager extends maplibregl.Map {
   loadImage(url, callback) {

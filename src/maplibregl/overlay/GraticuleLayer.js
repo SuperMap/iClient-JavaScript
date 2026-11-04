@@ -11,7 +11,7 @@
 
 import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { GraticuleLayerRenderer } from '@supermapgis/iclient-common/overlay/graticule/GraticuleLayerRenderer';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 /**
  * @class GraticuleLayer
  * @category Visualization GraticuleLayer

@@ -8,7 +8,7 @@
  * Apache Licene 2.0
  * thanks maptalks
  */
-import maplibregl from "maplibre-gl";
+import * as maplibregl from 'maplibre-gl';
 import { ThreeLayerRenderer } from "@supermapgis/iclient-common/overlay/threejs/ThreeLayerRenderer";
 
 /**

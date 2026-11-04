@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
-import maplibregl from 'maplibre-gl';
+import * as maplibreglNamespace from 'maplibre-gl';
 import { Logo } from './control';
 import { Util } from './core';
 import {
@@ -53,6 +53,9 @@ import {
   SuperMap,
   Transform
 } from '@supermapgis/iclient-common/namespace';
+
+// v6 ESM 命名空间只读，本文件需要向其挂载 supermap，这里在文件内部复制一份可变对象使用
+const maplibregl = { ...maplibreglNamespace };
 
 export * from './index';
 

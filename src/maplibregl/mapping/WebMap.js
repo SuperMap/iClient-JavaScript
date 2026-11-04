@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { createWebMapBaseExtending } from '@supermapgis/iclient-common/mapping/WebMapBase';
 import { createWebMapV2Extending } from '@supermapgis/iclient-common/mapping/WebMapV2';
 import { createWebMapV3Extending } from '@supermapgis/iclient-common/mapping/WebMapV3';
