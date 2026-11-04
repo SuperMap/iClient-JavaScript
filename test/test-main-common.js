@@ -232,6 +232,7 @@ import './common/util/FetchRequestSpec';
 import './common/util/FilterConditionSpec';
 import './common/lang/LangSpec.js';
 import './common/util/EncryptRequestSpec';
+import './common/util/FastXmlParserUpgradeSpec';
 import './common/util/MapCalculateUtilSpec';
 import './common/util/GeometryAnalysisSpec.js';
 import './common/util/RequestcryptUtilSpec.js';
