@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import "../core/Base";
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { Bounds } from "@supermapgis/iclient-common/commontypes/Bounds";
 import { Point as GeometryPoint } from "@supermapgis/iclient-common/commontypes/geometry/Point";
 import { Polygon } from "@supermapgis/iclient-common/commontypes/geometry/Polygon";

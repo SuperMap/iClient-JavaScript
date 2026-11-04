@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../services/MapService';
 import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';

@@ -1,8 +1,28 @@
 
 import { CustomOverlayLayer } from '../overlay/Base';
 
-export function createMapExtendExtending(product) { 
-  const originMapProto = product.Map.prototype;
+export function createMapExtendExtending(product) {
+  // 将扩展方法所委托的原始方法在此固化，避免扩展方法被直接拷贝到 Map.prototype 后，
+  // 闭包通过原型链取回的是扩展方法自身导致递归调用。
+  const mapProto = product.Map.prototype;
+  const originMapProto = [
+    'addLayer',
+    'getPaintProperty',
+    'getLayoutProperty',
+    'getFilter',
+    'setFilter',
+    'queryRenderedFeatures',
+    'querySourceFeatures',
+    'getSource',
+    'removeSource',
+    'isSourceLoaded',
+    'on',
+    'once',
+    'off'
+  ].reduce((holder, name) => {
+    holder[name] = mapProto[name];
+    return holder;
+  }, {});
   return class MapExtend extends product.Map {
     constructor(options) {
       super(options);

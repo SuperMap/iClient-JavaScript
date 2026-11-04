@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { DeckglLayerBase } from '@supermapgis/iclient-common/overlay/deckgl/DeckglLayerBase';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 /**
  * @class DeckglLayer
  * @category  Visualization DeckGL
