@@ -32,6 +32,37 @@ describe('GetLayersLegendInfoService', () => {
         getLayersLegendInfoService.destroy();
     });
 
+    it('mergeFlagIndex_unset', () => {
+        var params = new GetLayersLegendInfoParameters({ layers: 'show:Countries@World' });
+        expect(params.mergeFlagIndex).toBeNull();
+        expect(FetchRequest._getParameterString(params)).not.toContain('mergeFlagIndex');
+        params.destroy();
+    });
+
+    [true, false].forEach((mergeFlagIndex) => {
+        it('processAsync_mergeFlagIndex_' + mergeFlagIndex, (done) => {
+            var service = initGetLayersLegendInfoService(GlobeParameter.worldMapURL);
+            var params = new GetLayersLegendInfoParameters({
+                layers: 'show:Countries@World',
+                mergeFlagIndex: mergeFlagIndex
+            });
+            spyOn(FetchRequest, 'commit').and.callFake((method, url, requestParams) => {
+                expect(method).toBe('GET');
+                expect(url).toBe(GlobeParameter.worldMapURL + '/legend');
+                expect(requestParams.mergeFlagIndex).toBe(mergeFlagIndex);
+                expect(FetchRequest._getParameterString(requestParams)).toContain('mergeFlagIndex=' + mergeFlagIndex);
+                return Promise.resolve(new Response(JSON.stringify(legendInfo)));
+            });
+            service.processAsync(params).then((result) => {
+                expect(result.result.layerLegends[0].legends[0].url).not.toBeUndefined();
+                params.destroy();
+                expect(params.mergeFlagIndex).toBeNull();
+                service.destroy();
+                done();
+            }).catch(done.fail);
+        });
+    });
+
     it('processAsync_success', (done) => {
       var worldMapURL = GlobeParameter.worldMapURL;
       var getLegendFailed = (serviceFailedEventArgs) => {
