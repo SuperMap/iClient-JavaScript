@@ -17,6 +17,7 @@ import {Util} from '../commontypes/Util';
  * @param {boolean} [options.returnVisibleOnly=false] - 是否只返回当前地图范围内可见要素的图例。<br>如果只传 returnVisibleOnly=true，则仅返回可见图层的图例; <br>如果传了 returnVisibleOnly=true 并且 mapScale 也设置了值，则返回可见图层，指定的比例尺在可见比例尺范围里的图层的图例; <br>如果传了 returnVisibleOnly=true, mapScale= *, bbox= *，则返回可见图层，指定的比例尺在可见比例尺范围里，且在 bbox 范围内有要素的图层的图例。
  * @param {number} [options.width=16] - 返回图例的宽度。单位为像素。
  * @param {number} [options.height=16] - 返回图例的高度。单位为像素。
+ * @param {boolean} [options.mergeFlagIndex] - 是否合并单值专题图中同一分组的图例项。为 true 时，同一分组只显示一项图例；为 false 时，各专题值的图例分别显示。
 
  * @usage
  */
@@ -66,6 +67,12 @@ export class GetLayersLegendInfoParameters {
          * @description  返回图例的高度。单位为像素。
          */
         this.height = null;
+
+        /**
+         * @member {boolean} GetLayersLegendInfoParameters.prototype.mergeFlagIndex
+         * @description 是否合并单值专题图中同一分组的图例项。为 true 时，同一分组只显示一项图例；为 false 时，各专题值的图例分别显示。
+         */
+        this.mergeFlagIndex = null;
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetLayersLegendInfoParameters";
@@ -85,6 +92,7 @@ export class GetLayersLegendInfoParameters {
         me.returnVisibleOnly = null;
         me.width = null;
         me.height = null;
+        me.mergeFlagIndex = null;
     }
 
 }

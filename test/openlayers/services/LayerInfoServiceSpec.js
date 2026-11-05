@@ -229,32 +229,31 @@ describe('openlayers_LayerInfoService', () => {
         });
     });
 
-    // 获取图例
-    it('getLayersLegend', (done) => {
-      var layerService = new LayerInfoService(url);
-      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
-        expect(method).toBe("GET");
-        expect(testUrl).toBe(url+"/legend");
-        return Promise.resolve(new Response(JSON.stringify(legendInfo)));
-      });
-      var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
-        bbox: "-180,90,180,90",
-        width: 18,
-        height: 18
-      })
-      layerService.getLayersLegendInfo(getLayersLegendInfoParams, (serviceResult) => {
-        try {
-          expect(serviceResult).not.toBeNull();
-          expect(serviceResult.type).toEqual("processCompleted");
-          expect(serviceResult.result.succeed).toEqual(true);
-          expect(serviceResult.result.layerLegends[0].legends[0].url).not.toBeUndefined();
-          done();
-        } catch (e) {
-            console.log("'getLayersLegend'案例失败" + e.name + ":" + e.message);
-            service.destroy();
-            expect(false).toBeTruthy();
-            done();
-          }
-        })
-    })
+    // 获取图例，验证布尔参数的两种取值均可传递到请求。
+    [true, false].forEach((mergeFlagIndex) => {
+        it('getLayersLegend_mergeFlagIndex_' + mergeFlagIndex, (done) => {
+            var layerService = new LayerInfoService(url);
+            spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+                expect(method).toBe('GET');
+                expect(testUrl).toBe(url + '/legend');
+                expect(params.mergeFlagIndex).toBe(mergeFlagIndex);
+                expect(FetchRequest._getParameterString(params)).toContain('mergeFlagIndex=' + mergeFlagIndex);
+                return Promise.resolve(new Response(JSON.stringify(legendInfo)));
+            });
+            var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
+                bbox: '-180,90,180,90',
+                width: 18,
+                height: 18,
+                mergeFlagIndex: mergeFlagIndex
+            });
+            layerService.getLayersLegendInfo(getLayersLegendInfoParams, (serviceResult) => {
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toEqual('processCompleted');
+                expect(serviceResult.result.succeed).toEqual(true);
+                expect(serviceResult.result.layerLegends[0].legends[0].url).not.toBeUndefined();
+                getLayersLegendInfoParams.destroy();
+                done();
+            }).catch(done.fail);
+        });
+    });
 });

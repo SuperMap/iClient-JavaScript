@@ -43,6 +43,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function LayerInfoService.prototype.getLayersLegendInfo
      * @description 获取地图的图例信息。
+     * @param {GetLayersLegendInfoParameters} params - 图例参数。
      * @version 11.1.1
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
