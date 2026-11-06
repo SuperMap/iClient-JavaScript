@@ -36,6 +36,12 @@ export const ANGLE_SNAP_THRESHOLD = 45;
 export const HEADING_SWEEP_WINDOW = 2;
 /** 快转过程中保持起点姿态的时间比例，接近终点再切到 B。 */
 export const HEADING_SWEEP_HOLD_RATIO = 0.95;
+/**
+ * 单步航向跳变达到该角度时才按快转吸附处理（度）。
+ * 密集采样（如 10Hz SEI）下每步只转一两度，累计角度超阈值说明是在平稳转向，
+ * 吸附会让画面停住近 2 秒再跳；此时应直接走插值。
+ */
+export const HEADING_STEP_JUMP_THRESHOLD = 20;
 const YAW_EPS = 0.5;
 
 export function shortestAngleDelta(from, to) {
@@ -76,6 +82,8 @@ export function findParamIndexAtTime(params, time) {
 /**
  * 从当前关键帧向前后扩展，找出同一方向上的短时大角度航向变化。
  * 用于避免 A→B 快转时用中间朝向把 B 侧要素提前投进画面。
+ * 累计角度超过 minDelta 只是必要条件：窗口内还必须出现至少一步达到
+ * {@link HEADING_STEP_JUMP_THRESHOLD} 的跳变，连续的等速转向交给插值处理。
  */
 export function findHeadingSweep(params, index, maxWindow = HEADING_SWEEP_WINDOW, minDelta = ANGLE_SNAP_THRESHOLD) {
   if (!params || !params.length || index < 0 || index >= params.length) {
@@ -121,6 +129,19 @@ export function findHeadingSweep(params, index, maxWindow = HEADING_SWEEP_WINDOW
   if (end <= start) {
     return null;
   }
+  // 累计角度大不代表是跳变：逐帧连续转向在 2 秒窗口内很容易累计到 45° 以上。
+  // 只有窗口内出现单步大角度跳变（量化关键帧 / 相机瞬间换向）才做吸附，
+  // 否则 10Hz SEI 这类密集数据会被判成快转，画面停住再跳。
+  let maxStep = 0;
+  for (let i = start; i < end; i++) {
+    const step = Math.abs(stepDelta(i));
+    if (step > maxStep) {
+      maxStep = step;
+    }
+  }
+  if (maxStep < HEADING_STEP_JUMP_THRESHOLD) {
+    return null;
+  }
   const delta = shortestAngleDelta(params[start].yaw, params[end].yaw);
   const span = params[end].time - params[start].time;
   if (Math.abs(delta) < minDelta || span <= 0 || span > maxWindow) {
@@ -157,6 +178,7 @@ export function interpolateCameraPose(prev, next, ratio) {
  * 解析当前时间应使用的相机姿态。
  * 若处于短时大角度航向快转中，在接近终点前始终使用起点 A。
  * 不能按相邻 20°/45° 关键帧成对切换，否则画面只转到约 20° 就会用到下一帧朝向。
+ * 等速连续转向（每步角度很小）不视为快转，直接插值。
  */
 export function resolveCameraPose(params, time) {
   if (!params || !params.length) {

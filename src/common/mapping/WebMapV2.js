@@ -2706,13 +2706,16 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
       };
 
       const commonStyleGroupMapping = (styleGroup, layerInfo) => {
+        // 基础图层的 style 可能是数组（如道路、铁路的双线样式），统一取首个样式生成图例，
+        // 避免样式类型（type）取不到导致图例图标渲染异常
+        const style = Array.isArray(styleGroup.style) ? styleGroup.style[0] || {} : styleGroup.style || {};
         let newStyleGroup = {
           style: {
             shape: this._getShape(layerInfo.featureType),
-            type: this._getType(styleGroup.style.type)
+            type: this._getType(style.type)
           }
         };
-        this._addProps(newStyleGroup, styleGroup);
+        this._addProps(newStyleGroup, { ...styleGroup, style });
         return newStyleGroup;
       };
 
@@ -2805,7 +2808,8 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
           width: 20,
           lineStyles: [
             {
-              color: styleGroup.color,
+              // color 为空时回退取描边色，避免图例线颜色缺失被渲染成白色
+              color: styleGroup.color || styleGroup.style.strokeColor,
               lineDash: [],
               lineOffset: 0,
               lineWidth: 2,

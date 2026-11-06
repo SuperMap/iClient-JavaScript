@@ -611,4 +611,26 @@ describe('VideoMap focused coverage', () => {
     expect(videoMap._pixelToGroundSpatial).toHaveBeenCalledTimes(24);
     expect(videoMap._pixelToGroundSpatial.calls.argsFor(0)[0][1]).toBeLessThan(100);
   });
+
+  it('rebuilds the sei hls session when restartHls is called', () => {
+    const videoMap = createVideoMapForCoverage();
+    videoMap.url = 'http://example.com/live.m3u8';
+    videoMap.seiHlsSource = { destroy: jasmine.createSpy('destroy') };
+    videoMap.seiTimeline = { clear: jasmine.createSpy('clear') };
+    videoMap.parametersReady = true;
+    videoMap._startSeiHls = jasmine.createSpy('_startSeiHls');
+    expect(videoMap.restartHls()).toBe(videoMap);
+    expect(videoMap.seiHlsSource).toBeNull();
+    expect(videoMap.seiTimeline.clear).toHaveBeenCalled();
+    expect(videoMap.parametersReady).toBe(false);
+    expect(videoMap._startSeiHls).toHaveBeenCalledWith('http://example.com/live.m3u8');
+  });
+
+  it('ignores restartHls when no sei hls session exists', () => {
+    const videoMap = createVideoMapForCoverage();
+    videoMap.seiHlsSource = null;
+    videoMap._startSeiHls = jasmine.createSpy('_startSeiHls');
+    expect(videoMap.restartHls()).toBe(videoMap);
+    expect(videoMap._startSeiHls).not.toHaveBeenCalled();
+  });
 });

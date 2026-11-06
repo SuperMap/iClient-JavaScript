@@ -29,6 +29,7 @@ let en = {
     'text_videoMapUnitSquareMeter': ' m²',
     'text_videoMapUnitSquareKilometer': ' km²',
     'msg_videoMapTimeRangeMissing': '[VideoMap] Time range not found, time=',
+    'msg_videoMapSeiPosePrjMismatch': '[VideoMap] SEI camera coordinates must be EPSG:3857, current value looks like lng/lat. Check the SEI produced by the server, x,y=',
 
     'text_input_value_inputDataFlowUrl': 'Please enter the data stream service address such as: ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': 'Display feature information',

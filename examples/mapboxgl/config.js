@@ -1902,6 +1902,20 @@ var exampleConfig = {
                     version: '12.1.1',
                     thumbnail: 'videoMapWithTimeDraw.png',
                     fileName: 'videoMapWithTimeDraw'
+                  },
+                  {
+                    name: '直播流 SEI 视频叠加矢量（数据服务取地址）',
+                    name_en: 'Live SEI Video Map (address from data service)',
+                    version: '12.1.2',
+                    thumbnail: 'videoMapWithLiveSei.png',
+                    fileName: 'videoMapWithLiveSei'
+                  },
+                  {
+                    name: '直播流 SEI 无人机视频投放（数据服务取地址）',
+                    name_en: 'Live SEI UAV Video Layer (address from data service)',
+                    version: '12.1.2',
+                    thumbnail: 'videoLayerWithLiveSei.png',
+                    fileName: 'videoLayerWithLiveSei'
                   }
                 ]
             }

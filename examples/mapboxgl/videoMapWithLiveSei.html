@@ -1,0 +1,475 @@
+﻿<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-13/mapbox-gl-enhance.js)
+* Turf (https://github.com/Turfjs/turf/)
+* proj4js (https://github.com/proj4js/proj4js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoMapWithLiveSei"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      #panel {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 300px;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 4px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+        font: 12px/1.6 "Microsoft YaHei", Arial, sans-serif;
+        color: #333;
+        z-index: 10;
+      }
+      #panel h4 { margin: 0 0 6px; font-size: 13px; }
+      #panel .row { display: flex; justify-content: space-between; }
+      #panel .label { color: #888; flex: none; }
+      #panel .value { color: #111; text-align: right; word-break: break-all; }
+      #panel .value.warn { color: #d9534f; font-weight: 600; }
+      #panel .value.ok { color: #2a9d3f; }
+      #panel .tip { margin-top: 6px; color: #999; font-size: 11px; }
+      #panel input[type="text"] { width: 100%; box-sizing: border-box; margin-top: 6px; }
+      #panel input[type="number"] { width: 70px; }
+      #panel .actions { margin-top: 8px; }
+      #panel button { margin-right: 6px; }
+      #panel hr { border: none; border-top: 1px solid #eee; margin: 8px 0; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="panel">
+      <h4>直播流 SEI 参数视频地图</h4>
+      <div class="row"><span class="label">状态</span><span class="value" id="status">初始化…</span></div>
+      <div class="row"><span class="label">播放状态</span><span class="value" id="playState">-</span></div>
+      <div class="row"><span class="label">SEI 回调次数</span><span class="value" id="fragCount">0</span></div>
+      <div class="row"><span class="label">参数条数</span><span class="value" id="paramCount">0</span></div>
+      <div class="row"><span class="label">播放时间</span><span class="value" id="mediaTime">-</span></div>
+      <div class="row"><span class="label">最新参数时间</span><span class="value" id="latestTime">-</span></div>
+      <div class="row"><span class="label">参数滞后</span><span class="value" id="paramLag">-</span></div>
+      <div class="row"><span class="label">相机经纬度</span><span class="value" id="camLngLat">-</span></div>
+      <div class="row"><span class="label">相机姿态</span><span class="value" id="camPose">-</span></div>
+      <div class="row"><span class="label">时间轴偏移</span><span class="value" id="offsetValue">-</span></div>
+      <div class="row"><span class="label">直播延迟</span><span class="value" id="liveLatency">-</span></div>
+      <div class="row">
+        <span class="label">同步微调 (s)</span>
+        <input type="number" id="offset" step="0.1" value="0" />
+      </div>
+      <div class="actions">
+        <button id="btn-recal">重新校准</button>
+      </div>
+      <div class="actions">
+        <button id="btn-live">跳到直播点</button>
+      </div>
+      <hr />
+      <div class="tip">
+        播放地址从数据服务 datasets/DJI_09304 的 address 属性获取。相机参数全部来自分片 SEI，
+        TS 分片内已带时间信息，示例不再构造时间轴。左下角的圆形按钮由
+        VideoPlayControl 提供，复用地图上的同一个视频做播放/暂停。
+      </div>
+    </div>
+
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance,proj4,turf,videojs,hls,opencv" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <!--
+      hls.js 和 video.js 一样是固定的外部库，由 include 列表引入（全局 Hls），iClient 内部固定使用该版本：
+      SEI + m3u8 时 iClient 会自行创建 hls 实例、挂载 <video>、loadSource 并监听 FRAG_PARSING_USERDATA，
+      业务只传 url + parametersSource:'sei' 即可。
+    -->
+    <script type="text/javascript">
+      (function () {
+        'use strict';
+
+        /* ============================== 配置 ============================== */
+
+        // 播放地址来自 iServer 数据服务：数据集记录的 address 属性就是服务端转出的 HLS(m3u8) 地址
+        // 对应 REST 地址：http://10.10.4.202:8090/iserver/services/data-demo/rest/data/datasources/VideoData/datasets/DJI_09304
+        var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-demo/rest/data';
+        var DATASOURCE_NAME = 'VideoData';
+        var DATASET_NAME = 'DJI_09304';
+        // 手工指定的播放地址，留空表示从数据服务的 address 属性取
+        var STREAM_ADDRESS = '';
+        var VECTOR_DATA_URL = 'https://iserver.supermap.io/iserver/services/data-video/rest/data';
+        var VECTOR_DATASOURCE_NAME = 'TFxinqu';
+        var VECTOR_DATASET_NAMES = ['trafficGuideLine', 'road', 'building', 'landuse'];
+        // 参数时间落后于播放时间的阈值（秒），超过即认为 SEI 跟不上画面
+        var LAG_WARN_SECONDS = 1;
+
+        /* ============================== 状态 ============================== */
+
+        var videoMap = null;
+        var streamAddress = '';
+        var printedSei = false;
+        var fragCount = 0;
+
+        /* ============================ DOM 引用 ============================ */
+
+        var elStatus = document.getElementById('status');
+        var elPlayState = document.getElementById('playState');
+        var elFragCount = document.getElementById('fragCount');
+        var elParamCount = document.getElementById('paramCount');
+        var elMediaTime = document.getElementById('mediaTime');
+        var elLatestTime = document.getElementById('latestTime');
+        var elParamLag = document.getElementById('paramLag');
+        var elCamLngLat = document.getElementById('camLngLat');
+        var elCamPose = document.getElementById('camPose');
+        var elOffsetValue = document.getElementById('offsetValue');
+        var elLiveLatency = document.getElementById('liveLatency');
+        var elOffsetInput = document.getElementById('offset');
+        function setStatus(text) {
+          elStatus.textContent = text;
+        }
+
+        function formatTime(value) {
+          return typeof value === 'number' && isFinite(value) ? value.toFixed(3) + ' s' : '-';
+        }
+
+        function toLngLat(coord) {
+          return window.proj4 ? proj4('EPSG:3857', 'EPSG:4326', coord) : coord;
+        }
+
+        /* ============================== 播放控制 ============================== */
+
+        function seekToLiveEdge() {
+          var video = videoMap && videoMap.getVideoElement();
+          if (!video) {
+            return;
+          }
+          // 内部接管的 hls.js 会给出推荐同步位置，拿不到时退化为缓冲末尾
+          var target = videoMap.getSeiLiveSyncPosition();
+          if (target === null) {
+            if (video.buffered && video.buffered.length) {
+              target = video.buffered.end(video.buffered.length - 1) - 0.5;
+            }
+          }
+          if (target === null) {
+            return;
+          }
+          video.currentTime = Math.max(0, target);
+          setStatus('已跳到直播点');
+        }
+
+        /* ========================== 数据服务取播放地址 ========================== */
+
+        // 视频数据集里一条记录就是一路流：address 是服务端转出的 HLS(m3u8) 地址，
+        // 相机参数全部来自分片 SEI，这里只取播放地址。
+        function queryStreamAddress() {
+          if (STREAM_ADDRESS) {
+            return Promise.resolve(STREAM_ADDRESS);
+          }
+          var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: DATASET_NAME + '@' + DATASOURCE_NAME,
+              attributeFilter: 'SMID > 0'
+            },
+            datasetNames: [DATASOURCE_NAME + ':' + DATASET_NAME]
+          });
+          return new mapboxgl.supermap.FeatureService(DATA_URL)
+            .getFeaturesBySQL(sqlParam)
+            .then(function (serviceResult) {
+              var collection = serviceResult && serviceResult.result && serviceResult.result.features;
+              var features = collection && (collection.features || (Array.isArray(collection) ? collection : null));
+              if (!features || !features.length) {
+                throw new Error('数据集 ' + DATASET_NAME + '@' + DATASOURCE_NAME + ' 中没有视频记录');
+              }
+              for (var i = features.length - 1; i >= 0; i--) {
+                var address = features[i].properties && features[i].properties.address;
+                if (address && /\.m3u8(\?|#|$)/i.test(address)) {
+                  return address;
+                }
+              }
+              throw new Error('视频记录的 address 属性不是 .m3u8 地址');
+            });
+        }
+
+        /* ============================== 直播流 ============================== */
+
+        // 浏览器 MSE 能力、hls.js 是否可用都由 iClient 内部检测：不可用时 iClient 会 console.warn
+        // 并退化为 video.js 直接播放，业务侧不需要重复判断
+
+        /* ============================== VideoMap ============================== */
+
+        function describePose(pose) {
+          if (!pose || typeof pose.x !== 'number') {
+            elCamLngLat.textContent = '-';
+            elCamPose.textContent = '等待首个 SEI 参数…';
+            return;
+          }
+          var lngLat = toLngLat([pose.x, pose.y]);
+          elCamLngLat.textContent = lngLat[0].toFixed(6) + ', ' + lngLat[1].toFixed(6);
+          elCamPose.textContent =
+            'yaw ' + pose.yaw.toFixed(1) + '° · pitch ' + pose.pitch.toFixed(1) + '° · roll ' +
+            pose.roll.toFixed(1) + '° · z ' + pose.z.toFixed(1) + 'm';
+        }
+
+        function createVideoMap() {
+          if (!window.cv || !window.cv.Mat) {
+            // opencv.js 由 include-mapboxgl.js 异步加载，就绪后才能创建 VideoMap
+            setTimeout(createVideoMap, 200);
+            return;
+          }
+          setStatus('创建视频地图…');
+          fragCount = 0;
+          videoMap = new mapboxgl.supermap.VideoMap({
+            container: 'map',
+            // SEI 参数源 + m3u8：iClient 内部用页面引入的 hls.js 接管拉流并解析 SEI，业务只需传 url
+            url: streamAddress,
+            parametersSource: 'sei',
+            interval: 0.1,
+            // 直播不能循环，结尾重播会得到一段没有参数的画面
+            // loop: false,
+            // hls.js 的直播追帧与缓冲策略，按需覆盖
+            hlsConfig: {
+              lowLatencyMode: false,
+              liveSyncDurationCount: 3,
+              liveMaxLatencyDurationCount: 10,
+              backBufferLength: 90
+            }
+          });
+
+          videoMap.on('load', function () {
+            VECTOR_DATASET_NAMES.forEach(addVectorDataset);
+            videoMap.addControl(new mapboxgl.supermap.VideoPlayControl(), 'bottom-left');
+          });
+
+          // 内部 hls.js 解析完播放列表、直播流就绪
+          videoMap.on('seistreamready', function () {
+            setStatus('直播流已就绪，等待 SEI');
+          });
+
+          // 内部 hls.js 报错，致命错误已由 iClient 自动重连
+          videoMap.on('seistreamerror', function (e) {
+            if (!e || !e.fatal) {
+              return;
+            }
+            console.error('[SEI] hls.js 致命错误', e);
+            setStatus('播放异常：' + e.details + '，正在自动重连…');
+          });
+
+          // 首个有效 SEI 到达、投影矩阵初始化完成后触发，此后矢量叠加开始实时校正
+          videoMap.on('videoparameterready', function (e) {
+            setStatus('配准参数就绪（' + e.videoWidth + '×' + e.videoHeight + '），矢量叠加开始实时校正');
+          });
+
+          videoMap.on('videoparametersei', function (e) {
+            fragCount++;
+            if (!printedSei && e.poses && e.poses.length) {
+              printedSei = true;
+              console.log('[SEI] 首个解析成功的相机参数', e.poses[0]);
+            }
+            if(e.poses && e.poses.length){
+              console.log('[SEI]相机参数', e.poses[e.poses.length - 1])
+            }
+          });
+
+          videoMap.on('seiinvalid', function (e) {
+            console.warn('[SEI] 解析失败', e.reason, e.sample);
+          });
+
+          // 播放/暂停由 VideoPlayControl 触发，这里只同步面板上的状态提示
+          videoMap.on('play', function () {
+            setStatus('播放中');
+          });
+
+          videoMap.on('pause', function () {
+            setStatus('已暂停，直播延迟会持续增大，恢复后可点「跳到直播点」追帧');
+          });
+        }
+
+        /* ============================ 业务矢量叠加 ============================ */
+
+        function queryVectorFeatures(datasetName) {
+          var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: datasetName + '@' + VECTOR_DATASOURCE_NAME,
+              attributeFilter: 'SMID > 0'
+            },
+            targetEpsgCode: '4326',
+            datasetNames: [VECTOR_DATASOURCE_NAME + ':' + datasetName]
+          });
+          return new mapboxgl.supermap.FeatureService(VECTOR_DATA_URL).getFeaturesBySQL(sqlParam);
+        }
+
+        function getVectorLayerType(geometryType) {
+          if (geometryType === 'Point' || geometryType === 'MultiPoint') {
+            return 'circle';
+          }
+          if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
+            return 'line';
+          }
+          return 'fill';
+        }
+
+        function getVectorLayerPaint(layerType) {
+          if (layerType === 'circle') {
+            return {
+              'circle-radius': 5,
+              'circle-color': '#ff5a36',
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#ffffff'
+            };
+          }
+          if (layerType === 'line') {
+            return { 'line-width': 4, 'line-color': '#ff9f1c' };
+          }
+          return { 'fill-color': '#48cae4', 'fill-opacity': 0.55 };
+        }
+
+        function addVectorDataset(datasetName) {
+          queryVectorFeatures(datasetName).then(
+            function (serviceResult) {
+              var collection = serviceResult && serviceResult.result && serviceResult.result.features;
+              var features = collection && collection.features;
+              if (!features || !features.length || !features[0].geometry) {
+                console.warn('[Vector overlay] 数据集为空或不包含有效几何：' + datasetName);
+                return;
+              }
+              var sourceId = 'vector-overlay-source-' + datasetName;
+              var layerId = 'vector-overlay-layer-' + datasetName;
+              if (videoMap.getSource(sourceId)) {
+                return;
+              }
+              var layerType = getVectorLayerType(features[0].geometry.type);
+              videoMap.addSource(sourceId, { type: 'geojson', data: collection });
+              videoMap.addLayer({
+                id: layerId,
+                type: layerType,
+                source: sourceId,
+                paint: getVectorLayerPaint(layerType)
+              });
+            },
+            function (error) {
+              console.error('[Vector overlay] 加载数据集失败：' + datasetName, error);
+            }
+          );
+        }
+
+        /* ============================== 统计面板 ============================== */
+
+        function getTimeline() {
+          return videoMap ? videoMap.getSeiTimeline() : null;
+        }
+
+        function getVideo() {
+          return videoMap ? videoMap.getVideoElement() : null;
+        }
+
+        function updateLiveLatency(video) {
+          var latency = videoMap ? videoMap.getSeiLatency() : null;
+          if (latency === null && video && video.buffered && video.buffered.length) {
+            latency = video.buffered.end(video.buffered.length - 1) - video.currentTime;
+          }
+          elLiveLatency.textContent =
+            typeof latency === 'number' && isFinite(latency) && latency >= 0 ? latency.toFixed(2) + ' s' : '-';
+        }
+
+        function updateStats() {
+          var timeline = getTimeline();
+          var video = getVideo();
+          var snapshot = timeline ? timeline.snapshot() : null;
+          var currentTime = video && typeof video.currentTime === 'number' ? video.currentTime : 0;
+          var latestTime = snapshot ? snapshot.last : null;
+
+          elFragCount.textContent = fragCount;
+          elParamCount.textContent = snapshot ? snapshot.size : 0;
+          elMediaTime.textContent = formatTime(video ? currentTime : null);
+          elLatestTime.textContent = formatTime(latestTime);
+          elOffsetValue.textContent =
+            snapshot && snapshot.calibrated ? snapshot.mediaOffset.toFixed(3) + ' s' : '标定中…';
+
+          if (latestTime === null) {
+            elParamLag.textContent = '-';
+            elParamLag.className = 'value';
+          } else {
+            var lag = latestTime - currentTime;
+            elParamLag.textContent = lag.toFixed(2) + ' s';
+            elParamLag.className = 'value ' + (lag < -LAG_WARN_SECONDS ? 'warn' : 'ok');
+          }
+
+          if (video) {
+            if (video.ended) {
+              elPlayState.textContent = '已结束';
+            } else if (video.paused) {
+              elPlayState.textContent = '暂停';
+            } else {
+              elPlayState.textContent = '播放中';
+            }
+          }
+
+          var pose = null;
+          if (timeline) {
+            var resolved = timeline.resolve(currentTime);
+            if (resolved) {
+              pose = resolved.ratio > 0.5 ? resolved.next : resolved.prev;
+            }
+          }
+          if (pose) {
+            describePose(pose);
+          }
+
+          updateLiveLatency(video);
+        }
+
+        /* ============================== 交互 ============================== */
+
+        function connect() {
+          setStatus('正在获取播放地址…');
+          queryStreamAddress().then(
+            function (address) {
+              streamAddress = address;
+              setStatus('播放地址就绪，正在创建视频地图…');
+              createVideoMap();
+            },
+            function (error) {
+              console.error('[SEI] 获取播放地址失败', error);
+              setStatus('获取播放地址失败：' + (error && error.message ? error.message : error));
+            }
+          );
+        }
+
+        document.getElementById('btn-recal').onclick = function () {
+          var timeline = getTimeline();
+          var video = getVideo();
+          if (!timeline || !video || !video.buffered || !video.buffered.length) {
+            setStatus('暂无可用于标定的缓冲数据');
+            return;
+          }
+          // 媒体时间 = 播放列表时间 - 偏移量，这里用缓冲起点重新标定
+          timeline.recalibrate(video.buffered.start(0));
+          videoMap.setSeiOffset(0);
+          elOffsetInput.value = 0;
+          setStatus('已重新标定时间轴');
+        };
+
+        document.getElementById('btn-live').onclick = seekToLiveEdge;
+
+        elOffsetInput.onchange = function () {
+          if (!videoMap) {
+            return;
+          }
+          // SEI 姿态比播放头提前到达，端到端时延用该偏移做微调
+          videoMap.setSeiOffset(parseFloat(elOffsetInput.value) || 0);
+        };
+
+        window.addEventListener('beforeunload', function () {
+          if (videoMap) {
+            // destroy() 内部会销毁 iClient 托管的 hls.js 实例
+            videoMap.destroy();
+            videoMap = null;
+          }
+        });
+
+        setInterval(updateStats, 300);
+        connect();
+      })();
+    </script>
+  </body>
+</html>

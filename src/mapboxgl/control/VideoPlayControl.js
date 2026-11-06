@@ -129,15 +129,20 @@ export class VideoPlayControl {
     return this.options.position;
   }
 
+  /**
+   * @private
+   * @description 切换播放/暂停。点击属于用户手势，自动播放拦截的拒绝通常不会出现，但仍把 Promise 返回给调用方。
+   * @returns {Promise|undefined} 播放 Promise；暂停或无播放目标时返回 `undefined`。
+   */
   _toggle() {
     if (!this.target) {
-      return;
+      return undefined;
     }
     if (this.target.paused()) {
-      this.target.play();
-    } else {
-      this.target.pause();
+      return this.target.play();
     }
+    this.target.pause();
+    return undefined;
   }
 
   _renderContent() {

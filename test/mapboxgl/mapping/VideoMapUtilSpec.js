@@ -13,7 +13,8 @@ import {
   fovYToFy,
   ANGLE_SNAP_THRESHOLD,
   HEADING_SWEEP_WINDOW,
-  HEADING_SWEEP_HOLD_RATIO
+  HEADING_SWEEP_HOLD_RATIO,
+  HEADING_STEP_JUMP_THRESHOLD
 } from '../../../src/mapboxgl/mapping/utils/VideoMapUtil';
 
 function makePose(time, yaw, extra = {}) {
@@ -81,6 +82,25 @@ describe('VideoMapUtil camera pose interpolation', () => {
     expect(resolveCameraPose(params, 0.16).yaw).toBe(0);
     expect(resolveCameraPose(params, 0.32).yaw).toBe(0);
     expect(resolveCameraPose(params, 0.35).yaw).toBe(180);
+  });
+
+  it('dense 10Hz sweep should interpolate instead of snapping', () => {
+    // 10Hz SEI：每步 0.1s 转 5°，2 秒窗口内累计 100°，但没有任何单步跳变
+    const params = [];
+    for (let i = 0; i <= 20; i++) {
+      params.push(makePose(i * 0.1, i * 5, { x: i * 5 }));
+    }
+    expect(HEADING_STEP_JUMP_THRESHOLD).toBe(20);
+    expect(findHeadingSweep(params, findParamIndexAtTime(params, 0.5))).toBeNull();
+    // 0.45s 落在 0.4s(20°) 与 0.5s(25°) 之间，应线性插值到 22.5° 而不是停在 20°
+    const pose = resolveCameraPose(params, 0.45);
+    expect(pose.yaw).toBeCloseTo(22.5, 5);
+    expect(pose.x).toBeCloseTo(22.5, 5);
+  });
+
+  it('dense sampling with a real 45deg jump should still snap', () => {
+    const params = [0, 45, 90, 135, 180].map((yaw, i) => makePose(i * 0.1, yaw));
+    expect(findHeadingSweep(params, findParamIndexAtTime(params, 0.2)).start.yaw).toBe(0);
   });
 
   it('findHeadingSweep should reject invalid, noisy and opposing input', () => {

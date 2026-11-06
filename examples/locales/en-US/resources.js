@@ -745,6 +745,8 @@ window.examplesResources = {
         "title_videoMapDraw":"Video Map Draw Compare",
         "title_videoMapWithTime":"Dynamic Video Map",
         "title_videoMapWithTimeDraw":"Dynamic Video Map Draw Compare",
+        "title_videoMapWithLiveSei":"Live SEI Video Map (address from data service)",
+        "title_videoLayerWithLiveSei":"Live SEI UAV Video Layer (address from data service)",
         "title_videoMapWithTime_qingdao":"Dynamic Video Map - Qingdao",
         "title_videoMapWithTime_huainan":"Dynamic Video Map - Huainan",
         "title_videoMapWithTime_huainanDraw":"Dynamic Video Map Draw Compare - Huainan",

@@ -1,0 +1,396 @@
+﻿<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-13/mapbox-gl-enhance.js)
+* Turf (https://github.com/Turfjs/turf/)
+* proj4js (https://github.com/proj4js/proj4js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoLayerWithLiveSei"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      #panel {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 300px;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 4px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+        font: 12px/1.6 "Microsoft YaHei", Arial, sans-serif;
+        color: #333;
+        z-index: 10;
+      }
+      #panel h4 { margin: 0 0 6px; font-size: 13px; }
+      #panel .row { display: flex; justify-content: space-between; }
+      #panel .label { color: #888; flex: none; }
+      #panel .value { color: #111; text-align: right; word-break: break-all; }
+      #panel .value.warn { color: #d9534f; font-weight: 600; }
+      #panel .value.ok { color: #2a9d3f; }
+      #panel .tip { margin-top: 6px; color: #999; font-size: 11px; }
+      #panel input[type="text"] { width: 100%; box-sizing: border-box; margin-top: 6px; }
+      #panel input[type="number"] { width: 70px; }
+      #panel .actions { margin-top: 8px; }
+      #panel button { margin-right: 6px; }
+      #panel hr { border: none; border-top: 1px solid #eee; margin: 8px 0; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="panel">
+      <h4>直播流 SEI 参数视频投放</h4>
+      <div class="row"><span class="label">状态</span><span class="value" id="status">初始化…</span></div>
+      <div class="row"><span class="label">播放状态</span><span class="value" id="playState">-</span></div>
+      <div class="row"><span class="label">参数条数</span><span class="value" id="paramCount">0</span></div>
+      <div class="row"><span class="label">播放时间</span><span class="value" id="mediaTime">-</span></div>
+      <div class="row"><span class="label">参数滞后</span><span class="value" id="paramLag">-</span></div>
+      <div class="row"><span class="label">相机经纬度</span><span class="value" id="camLngLat">-</span></div>
+      <div class="row"><span class="label">相机姿态</span><span class="value" id="camPose">-</span></div>
+      <div class="row"><span class="label">时间轴偏移</span><span class="value" id="offsetValue">-</span></div>
+      <div class="row"><span class="label">直播延迟</span><span class="value" id="liveLatency">-</span></div>
+      <div class="actions">
+        <button id="btn-recal">重新校准</button>
+      </div>
+      <div class="actions">
+        <button id="btn-locate">定位到相机</button>
+        <button id="btn-live">跳到直播点</button>
+      </div>
+      <div class="tip">
+        视频投放的相机参数与裁剪范围（clipRegion）全部来自分片 SEI；播放地址从数据服务 datasets/DJI_09304 的 address 属性获取。<br />
+      </div>
+    </div>
+
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance,proj4,turf,videojs,hls,opencv" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <!--
+      hls.js 和 video.js 一样是固定的外部库，由 include 列表引入（全局 Hls），iClient 内部固定使用该版本：
+      SEI + m3u8 时 iClient 会自行创建 hls 实例、挂载 <video>、loadSource 并监听 FRAG_PARSING_USERDATA，
+      业务只传 url + parametersSource:'sei' 即可，不需要传 hls 实例、hlsFactory 或 hlsCtor。
+    -->
+    <script type="text/javascript">
+      (function () {
+        'use strict';
+
+        /* ============================== 配置 ============================== */
+
+        // 播放地址来自 iServer 数据服务：数据集记录的 address 属性就是服务端转出的 HLS(m3u8) 地址
+        // 对应 REST 地址：http://10.10.4.202:8090/iserver/services/data-demo/rest/data/datasources/VideoData/datasets/DJI_09304
+        var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-demo/rest/data';
+        var DATASOURCE_NAME = 'VideoData';
+        var DATASET_NAME = 'DJI_09304';
+        // 手工指定的播放地址，留空表示从数据服务的 address 属性取
+        var STREAM_ADDRESS = '';
+        // 参数时间落后于播放时间的阈值（秒），超过即认为 SEI 跟不上画面
+        var LAG_WARN_SECONDS = 1;
+
+        /* ============================== 状态 ============================== */
+
+        var map = null;
+        var videoLayer = null;
+        var streamAddress = '';
+        var printedSei = false;
+        var located = false;
+
+        /* ============================ DOM 引用 ============================ */
+
+        var elStatus = document.getElementById('status');
+        var elPlayState = document.getElementById('playState');
+        var elParamCount = document.getElementById('paramCount');
+        var elMediaTime = document.getElementById('mediaTime');
+        var elParamLag = document.getElementById('paramLag');
+        var elCamLngLat = document.getElementById('camLngLat');
+        var elCamPose = document.getElementById('camPose');
+        var elOffsetValue = document.getElementById('offsetValue');
+        var elLiveLatency = document.getElementById('liveLatency');
+        function setStatus(text) {
+          elStatus.textContent = text;
+        }
+
+        function formatTime(value) {
+          return typeof value === 'number' && isFinite(value) ? value.toFixed(3) + ' s' : '-';
+        }
+
+        function toLngLat(coord) {
+          return window.proj4 ? proj4('EPSG:3857', 'EPSG:4326', coord) : coord;
+        }
+
+        /* ============================== 播放控制 ============================== */
+
+        function getVideo() {
+          return videoLayer ? videoLayer.getVideoElement() : null;
+        }
+
+        function seekToLiveEdge() {
+          var video = getVideo();
+          if (!video) {
+            return;
+          }
+          var target = videoLayer ? videoLayer.getSeiLiveSyncPosition() : null;
+          if (target === null && video.buffered && video.buffered.length) {
+            target = video.buffered.end(video.buffered.length - 1) - 0.5;
+          }
+          if (target === null) {
+            return;
+          }
+          video.currentTime = Math.max(0, target);
+          setStatus('已跳到直播点');
+        }
+
+        /* ========================== 数据服务取播放地址 ========================== */
+
+        // 视频数据集里一条记录就是一路流：address 是服务端转出的 HLS(m3u8) 地址，
+        // 相机参数和裁剪范围都来自分片 SEI，这里只取播放地址。
+        function queryStreamAddress() {
+          if (STREAM_ADDRESS) {
+            return Promise.resolve(STREAM_ADDRESS);
+          }
+          var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: DATASET_NAME + '@' + DATASOURCE_NAME,
+              attributeFilter: 'SMID > 0'
+            },
+            datasetNames: [DATASOURCE_NAME + ':' + DATASET_NAME]
+          });
+          return new mapboxgl.supermap.FeatureService(DATA_URL)
+            .getFeaturesBySQL(sqlParam)
+            .then(function (serviceResult) {
+              var collection = serviceResult && serviceResult.result && serviceResult.result.features;
+              var features = collection && (collection.features || (Array.isArray(collection) ? collection : null));
+              if (!features || !features.length) {
+                throw new Error('数据集 ' + DATASET_NAME + '@' + DATASOURCE_NAME + ' 中没有视频记录');
+              }
+              for (var i = features.length - 1; i >= 0; i--) {
+                var address = features[i].properties && features[i].properties.address;
+                if (address && /\.m3u8(\?|#|$)/i.test(address)) {
+                  return address;
+                }
+              }
+              throw new Error('视频记录的 address 属性不是 .m3u8 地址');
+            });
+        }
+
+        function connect() {
+          setStatus('正在获取播放地址…');
+          queryStreamAddress().then(
+            function (address) {
+              streamAddress = address;
+              setStatus('播放地址就绪，正在创建视频图层…');
+              createVideoLayer();
+            },
+            function (error) {
+              console.error('[SEI] 获取播放地址失败', error);
+              setStatus('获取播放地址失败：' + (error && error.message ? error.message : error));
+            }
+          );
+        }
+
+        /* ============================== 直播流 ============================== */
+
+        // url 在创建 VideoLayer 时传入即可：SEI + m3u8 场景下 iClient 用页面引入的 hls.js（全局 Hls）自行接管，
+        // attachMedia、loadSource、hlsFragParsingUserdata / hlsFragBuffered 监听、致命错误重连都在内部完成。
+        // 浏览器 MSE 能力、hls.js 是否可用也由 iClient 内部检测，业务侧不需要重复判断。
+
+        /* ============================== VideoLayer ============================== */
+
+        function locateToCamera() {
+          var timeline = videoLayer && videoLayer.getSeiTimeline();
+          var head = timeline && timeline.firstPoses(1);
+          if (!head || !head.length) {
+            setStatus('尚未收到 SEI 参数，无法定位');
+            return;
+          }
+          var lngLat = toLngLat([head[0].x, head[0].y]);
+          map.easeTo({ center: lngLat, zoom: Math.max(map.getZoom(), 17) });
+          setStatus('已定位到相机位置');
+        }
+
+        function createVideoLayer() {
+          // SEI 参数源 + m3u8：iClient 内部用页面引入的 hls.js 接管拉流并解析 SEI，业务只需传 url；
+          // 相机参数和裁剪范围都由分片 SEI 提供，clipRegion 也不用传
+          videoLayer = new mapboxgl.supermap.VideoLayer({
+            url: streamAddress,
+            parametersSource: 'sei',
+            loop: false,
+            // hls.js 的直播追帧与缓冲策略，按需覆盖
+            hlsConfig: {
+              lowLatencyMode: false,
+              liveSyncDurationCount: 3,
+              liveMaxLatencyDurationCount: 10,
+              backBufferLength: 90
+            }
+          });
+
+          videoLayer.on('parametersready', function (e) {
+            setStatus('配准参数就绪（' + e.videoWidth + '×' + e.videoHeight + '），视频开始按 SEI 实时投放');
+            if (!located) {
+              located = true;
+              setTimeout(locateToCamera, 0);
+            }
+          });
+
+          // 内部 hls.js 解析完播放列表、直播流就绪
+          videoLayer.on('seistreamready', function () {
+            setStatus('直播流已就绪，等待 SEI');
+          });
+
+          // 内部 hls.js 报错，致命错误已由 iClient 自动重连
+          videoLayer.on('seistreamerror', function (e) {
+            if (!e || !e.fatal) {
+              return;
+            }
+            console.error('[SEI] hls.js 致命错误', e);
+            setStatus('播放异常：' + e.details + '，正在自动重连…');
+          });
+
+          videoLayer.on('seiinvalid', function (e) {
+            console.warn('[SEI] 解析失败', e.reason, e.sample);
+          });
+
+          map.addLayer(videoLayer);
+          map.addControl(new mapboxgl.supermap.VideoPlayControl({ target: videoLayer }), 'bottom-left');
+        }
+
+        function createMap() {
+          map = new mapboxgl.Map({
+            container: 'map',
+            renderWorldCopies: false,
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tileSize: 256,
+                  tiles: [
+                    'https://t4.tianditu.gov.cn/img_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311'
+                  ]
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles',
+                  minzoom: 0,
+                  maxzoom: 22
+                }
+              ]
+            },
+            center: [121.2595, 31.3368],
+            zoom: 17
+          });
+          map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+          map.addControl(new mapboxgl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+        }
+
+        /* ============================== 统计面板 ============================== */
+
+        function updateLiveLatency(video) {
+          var latency = videoLayer ? videoLayer.getSeiLatency() : null;
+          if (latency === null && video && video.buffered && video.buffered.length) {
+            latency = video.buffered.end(video.buffered.length - 1) - video.currentTime;
+          }
+          elLiveLatency.textContent =
+            typeof latency === 'number' && isFinite(latency) && latency >= 0 ? latency.toFixed(2) + ' s' : '-';
+        }
+
+        function updateStats() {
+          if (!videoLayer) {
+            return;
+          }
+          var timeline = videoLayer.getSeiTimeline();
+          var video = getVideo();
+          var snapshot = timeline ? timeline.snapshot() : null;
+          var currentTime = video && typeof video.currentTime === 'number' ? video.currentTime : 0;
+          var latestTime = snapshot ? snapshot.last : null;
+
+          elParamCount.textContent = snapshot ? snapshot.size : 0;
+          elMediaTime.textContent = formatTime(video ? currentTime : null);
+          elOffsetValue.textContent =
+            snapshot && snapshot.calibrated ? snapshot.mediaOffset.toFixed(3) + ' s' : '标定中…';
+
+          if (latestTime === null) {
+            elParamLag.textContent = '-';
+            elParamLag.className = 'value';
+          } else {
+            var lag = latestTime - currentTime;
+            elParamLag.textContent = lag.toFixed(2) + ' s';
+            elParamLag.className = 'value ' + (lag < -LAG_WARN_SECONDS ? 'warn' : 'ok');
+          }
+
+          if (video) {
+            if (video.ended) {
+              elPlayState.textContent = '已结束';
+            } else if (video.paused) {
+              elPlayState.textContent = '暂停';
+            } else {
+              elPlayState.textContent = '播放中';
+            }
+          }
+
+          var resolved = timeline ? timeline.resolve(currentTime) : null;
+          var pose = resolved ? (resolved.ratio > 0.5 ? resolved.next : resolved.prev) : null;
+          if (pose) {
+            var lngLat = toLngLat([pose.x, pose.y]);
+            elCamLngLat.textContent = lngLat[0].toFixed(6) + ', ' + lngLat[1].toFixed(6);
+            elCamPose.textContent =
+              'yaw ' + pose.yaw.toFixed(1) + '° · pitch ' + pose.pitch.toFixed(1) + '° · roll ' +
+              pose.roll.toFixed(1) + '° · z ' + pose.z.toFixed(1) + 'm';
+          }
+
+          updateLiveLatency(video);
+        }
+
+        /* ============================== 交互 ============================== */
+
+        document.getElementById('btn-recal').onclick = function () {
+          var timeline = videoLayer && videoLayer.getSeiTimeline();
+          var video = getVideo();
+          if (!timeline || !video || !video.buffered || !video.buffered.length) {
+            setStatus('暂无可用于标定的缓冲数据');
+            return;
+          }
+          // 媒体时间 = 播放列表时间 - 偏移量，这里用缓冲起点重新标定
+          timeline.recalibrate(video.buffered.start(0));
+          setStatus('已重新标定时间轴');
+        };
+
+        document.getElementById('btn-locate').onclick = locateToCamera;
+
+        document.getElementById('btn-live').onclick = seekToLiveEdge;
+
+        window.addEventListener('beforeunload', function () {
+          if (videoLayer && map) {
+            // 移除图层会销毁 iClient 托管的 hls.js 实例
+            map.removeLayer(videoLayer);
+            videoLayer = null;
+          }
+        });
+
+        function start() {
+          if (!window.cv || !window.cv.Mat) {
+            // opencv.js 由 include-mapboxgl.js 异步加载，就绪后才能创建 VideoLayer
+            setTimeout(start, 200);
+            return;
+          }
+          setStatus('创建地图…');
+          createMap();
+          map.on('load', function () {
+            connect();
+          });
+          setInterval(updateStats, 300);
+        }
+
+        start();
+      })();
+    </script>
+  </body>
+</html>

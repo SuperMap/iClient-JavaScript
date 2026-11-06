@@ -44,6 +44,21 @@ describe('VideoLayer focused coverage', () => {
     expect(layer._contain([11, 5], [0, 0, 10, 10])).toBe(false);
   });
 
+  it('rebuilds the sei hls session when restartHls is called', () => {
+    const layer = createLayer();
+    layer.url = 'http://example.com/live.m3u8';
+    layer.seiHlsSource = { destroy: jasmine.createSpy('destroy') };
+    layer._startSeiHls = jasmine.createSpy('_startSeiHls');
+    expect(layer.restartHls()).toBe(layer);
+    expect(layer.seiHlsSource).toBeNull();
+    expect(layer._startSeiHls).toHaveBeenCalledWith('http://example.com/live.m3u8');
+  });
+
+  it('ignores restartHls when no sei hls session exists', () => {
+    const layer = createLayer();
+    expect(layer.restartHls()).toBe(layer);
+  });
+
   it('handles empty parameters and creates a mask from origin bounds', () => {
     const layer = createLayer();
     expect(layer._initParameters({})).toBeUndefined();

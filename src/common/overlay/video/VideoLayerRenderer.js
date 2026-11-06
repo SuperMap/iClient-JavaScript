@@ -5,6 +5,7 @@
 import videojs from 'video.js';
 import 'flv.js';
 import 'videojs-flvjs-es6';
+import { VideoPlayerAdapter } from './VideoPlayerAdapter';
 
 /**
  * @private
@@ -13,9 +14,10 @@ import 'videojs-flvjs-es6';
  * @version 11.2.0
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 图层 ID。
- * @param {string} [options.url] - 视频地址。
+ * @param {string} [options.url] - 视频地址。SEI 直播场景下 MediaSource 由 hls.js 接管，可不传。
  * @param {boolean} [options.autoplay =true] - 自动播放。
  * @param {boolean} [options.loop =true] - 循环播放。
+ * @param {Object|HTMLVideoElement} [options.player] - 外部播放器（video.js 实例）或 video 元素。传入时不再创建 video.js 容器。
  * @usage
  */
 
@@ -26,6 +28,8 @@ export class VideoLayerRenderer {
     this.layerId = options.id;
     this.autoplay = options.autoplay !== undefined ? options.autoplay : true;
     this.loop = options.loop !== undefined ? options.loop : true;
+    this.externalPlayer = options.player || null;
+    this.isExternal = false;
   }
 
   _createVideoElement() {
@@ -42,6 +46,11 @@ export class VideoLayerRenderer {
    * @description 创建videojs 实例。
    */
   createVideo() {
+    if (this.externalPlayer) {
+      this.isExternal = true;
+      this.video = VideoPlayerAdapter.wrap(this.externalPlayer);
+      return this.video;
+    }
     this._createVideoElement();
     let options = this._getVideoOptions();
     this.video = videojs(this.layerId, options, () => { });
@@ -49,14 +58,16 @@ export class VideoLayerRenderer {
   }
 
   _getVideoOptions() {
-    if (!this.url) {
-      return;
-    }
     let options = {
       autoplay: this.autoplay,
       muted: true,
       loop: this.loop
     };
+    if (!this.url) {
+      // SEI 直播：MediaSource 被 iClient 内部的 hls.js 独占（VHS 不解析 SEI，且同一 <video> 只能挂一个 MSE），
+      // 所以这里不配 sources，video.js 只当 UI 外壳
+      return options;
+    }
     if (this.url.includes('mp4') || this.url.includes('MP4')) {
       options['sources'] = [
         {
@@ -97,20 +108,41 @@ export class VideoLayerRenderer {
   /**
    * @function VideoLayerRenderer.prototype.getVideoDomId
    * @description 获取创建的 video 元素的 DOM id。
+   * SEI 直播场景下 url 可为空（MediaSource 由 hls.js 接管），因此这里不再依赖 url 判断。
    */
   getVideoDomId() {
-    if (!this.url) {
-      return;
-    }
-    let videoDomId;
-    if (this.url.includes('flv')) {
+    if (this.url && this.url.includes('flv') && !this.isExternal) {
       let videoWrap = document.querySelector(`#${this.layerId}`);
-      videoDomId = `${this.layerId}_flvjs_api`;
-      videoWrap.style.position = 'fixed';
-      videoWrap.style.left = '-200%';
-    } else {
-      videoDomId = this.video.el_.firstChild.id;
+      if (videoWrap) {
+        videoWrap.style.position = 'fixed';
+        videoWrap.style.left = '-200%';
+      }
+      return `${this.layerId}_flvjs_api`;
     }
-    return videoDomId;
+    const videoElement = this._getVideoElement();
+    if (!videoElement) {
+      return undefined;
+    }
+    if (!videoElement.id) {
+      videoElement.id = `${this.layerId}_video`;
+    }
+    return videoElement.id;
+  }
+
+  _getVideoElement() {
+    const video = this.video;
+    if (!video) {
+      return null;
+    }
+    if (typeof video.tech === 'function') {
+      const tech = video.tech();
+      if (tech && typeof tech.el === 'function') {
+        return tech.el();
+      }
+    }
+    if (video.nodeType === 1) {
+      return video;
+    }
+    return null;
   }
 }

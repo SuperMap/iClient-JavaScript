@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
+import { silencePlayRejection } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
 
 /**
  * @class VideoMapLayer
@@ -25,14 +26,20 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   /**
    * @function VideoMapLayer.prototype.add
    * @description  添加视频图层。
-   * @param {string} address - 视频地址。
+   * @param {string} [address] - 视频地址。SEI 直播场景下不传，由内部 hls.js 接管 MediaSource。
    */
   add(address) {
     this.address = address;
-    if (!this.address) {
+    const needsVideoElementOnly = !!this.videoMap && this.videoMap.parametersSource === 'sei';
+    if (!this.address && !needsVideoElementOnly) {
       return;
     }
-    this.renderer = new VideoLayerRenderer({ url: this.address, id: this.id, loop: this.loop, autoplay: this.autoplay });
+    this.renderer = new VideoLayerRenderer({
+      url: this.address,
+      id: this.id,
+      loop: this.loop,
+      autoplay: this.autoplay
+    });
     this.video = this.renderer.createVideo();
     this.videoDomId = this.renderer.getVideoDomId();
     this._bindPlaybackEvents();
@@ -42,10 +49,24 @@ export default class VideoMapLayer extends mapboxgl.Evented {
       }
     });
     this.video.one('canplay', () => {
-      this.videoWidth = this.video.videoWidth();
-      this.videoHeight = this.video.videoHeight();
-      this._addVideoLayer(this.map);
+      this._onVideoReady();
     });
+  }
+
+  _onVideoReady() {
+    if (this._videoReady) {
+      return;
+    }
+    const width = this.video.videoWidth();
+    const height = this.video.videoHeight();
+    if (!width || !height) {
+      return;
+    }
+    this._videoReady = true;
+    this.videoWidth = width;
+    this.videoHeight = height;
+    this.videoDomId = this.videoDomId || this.renderer.getVideoDomId();
+    this._addVideoLayer(this.map);
   }
 
   _createVideoElement() {
@@ -179,15 +200,18 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   /**
    * @function VideoMapLayer.prototype.play
    * @description  播放视频。
+   * @returns {Promise|undefined} 播放 Promise，自动播放被浏览器拦截时以 `NotAllowedError` 拒绝；播放器尚未创建时返回 `undefined`。
    */
   play() {
+    let promise;
     if (this.video && typeof this.video.play === 'function') {
-      this.video.play();
+      promise = this.video.play();
     }
     const source = this._getVideoSource();
     if (source && typeof source.play === 'function') {
       source.play();
     }
+    return silencePlayRejection(promise);
   }
   /**
    * @function VideoMapLayer.prototype.pause
@@ -240,12 +264,25 @@ export default class VideoMapLayer extends mapboxgl.Evented {
       if (videoElement && this.frameCallbackId && videoElement.cancelVideoFrameCallback) {
         videoElement.cancelVideoFrameCallback(this.frameCallbackId);
       }
-      if (this.timeUpdateHandler) {
+      if (this.timeUpdateHandler && this.video) {
         this.video.off('timeupdate', this.timeUpdateHandler);
       }
-      this.map.removeLayer(this.id);
-      this.map.removeSource(this.id);
-      document.body.removeChild(document.getElementById(this.id));
+      if (this.renderer && this.renderer.isExternal) {
+        if (this.video && typeof this.video.dispose === 'function') {
+          this.video.dispose();
+        }
+      } else {
+        const wrapper = document.getElementById(this.id);
+        if (wrapper && wrapper.parentNode) {
+          wrapper.parentNode.removeChild(wrapper);
+        }
+      }
+      if (this.map && this.map.getLayer && this.map.getLayer(this.id)) {
+        this.map.removeLayer(this.id);
+      }
+      if (this.map && this.map.getSource && this.map.getSource(this.id)) {
+        this.map.removeSource(this.id);
+      }
     }
   }
 }

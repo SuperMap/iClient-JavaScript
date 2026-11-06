@@ -724,7 +724,12 @@ export function createWebMapV2BaseExtending(SuperClass = Events, fireField = 'tr
     }
 
     getVectorStyleGroup(layerInfo) {
-      const color = layerInfo.style.fillColor || layerInfo.style.strokeColor;
+      // 基础图层的 style 可能是数组（如道路、铁路的双线样式），颜色需要从子样式中取，
+      // 否则 color 为 undefined，图例会渲染成白色线（浅色背景下不可见）
+      const styleArray = Array.isArray(layerInfo.style) ? layerInfo.style : [layerInfo.style];
+      const primaryStyle = styleArray[0] || {};
+      const color =
+        primaryStyle.fillColor || primaryStyle.strokeColor || layerInfo.style.fillColor || layerInfo.style.strokeColor;
       const styleGroup = [{ 
         color: color,
         style: layerInfo.style,

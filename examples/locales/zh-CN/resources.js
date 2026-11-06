@@ -720,6 +720,8 @@ window.examplesResources = {
         "title_videoMapDraw":"视频地图标绘对比",
         "title_videoMapWithTime":"动态视频地图",
         "title_videoMapWithTimeDraw":"动态视频地图标绘对比",
+        "title_videoMapWithLiveSei":"直播流 SEI 视频叠加矢量（数据服务取地址）",
+        "title_videoLayerWithLiveSei":"直播流 SEI 无人机视频投放（数据服务取地址）",
         "title_videoMapWithTime_qingdao":"动态视频地图 - 青岛",
         "title_videoMapWithTime_huainan":"动态视频地图 - 淮南",
         "title_videoMapWithTime_huainanDraw":"动态视频地图标绘对比 - 淮南",

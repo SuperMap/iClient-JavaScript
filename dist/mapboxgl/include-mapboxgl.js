@@ -189,6 +189,10 @@
       inputCSS(libsurl + '/video-js/7.10.2/video-js.min.css');
       inputScript(libsurl + '/video-js/7.10.2/video.min.js');
     }
+    if (inArray(includes, 'hls')) {
+      // inputScript(libsurl + '/hls/1.7.4/hls.min.js');
+      inputScript('https://cdn.jsdelivr.net/npm/hls.js@1.7.4/dist/hls.min.js');
+    }
     if (inArray(includes, 'flvjs')) {
       inputScript(libsurl + '/flvjs/1.6.2/flv.js');
       inputScript(libsurl + '/videojs-flvjs-es6/1.0.1/videojs-flvjs-es6.js');

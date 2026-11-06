@@ -29,6 +29,7 @@ let zh = {
     'text_videoMapUnitSquareMeter': '平方米',
     'text_videoMapUnitSquareKilometer': '平方千米',
     'msg_videoMapTimeRangeMissing': '[VideoMap] 未找到时间范围，time=',
+    'msg_videoMapSeiPosePrjMismatch': '[VideoMap] SEI 相机坐标须为 EPSG:3857，当前值疑似经纬度，请检查服务端 SEI 输出，x,y=',
 
     'text_input_value_inputDataFlowUrl': '请输入数据流服务地址如:ws://{serviceRoot}/{dataFlowName}/dataflow/subscribe',
     'text_displayFeaturesInfo': '显示要素信息',
