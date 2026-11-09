@@ -1754,6 +1754,60 @@ describe('WebMapV3 - _createLegendInfo', () => {
     const textLegend = instance._legendList.find((item) => item.styleGroup[0].style.icon === 'supermapol-icons-text-layer');
     expect(textLegend).toBeTruthy();
   });
+
+  ['circle', 'fill'].forEach((layerType) => {
+    ['color', 'textColor', 'textSize'].forEach((drivenKey) => {
+      it(`should retain the ${layerType} label field legend alongside driven ${drivenKey}`, () => {
+        const { instance } = createTestContext();
+        const renderer = circleRenderer();
+        renderer.type = layerType;
+        if (layerType === 'fill') {
+          renderer.symbolsContent.value = { symbolId: 'polygon-0', style: { paint: { 'fill-color': '#FF0000' } } };
+        }
+        const label = {
+          textField: { type: 'simple', value: '{NAME}' },
+          textColor: { type: 'simple', value: '#FFFFFF' },
+          textSize: { type: 'simple', value: 16 }
+        };
+        const drivenSetting = {
+          type: 'unique', field: ['VALUE'], defaultValue: drivenKey === 'textSize' ? 12 : '#0000FF',
+          values: drivenKey === 'textSize'
+            ? [{ key: 1, value: 14 }, { key: 2, value: 24 }]
+            : [{ key: 1, value: '#FF0000' }, { key: 2, value: '#00FF00' }],
+          interpolateInfo: { type: 'custom' }
+        };
+        if (drivenKey === 'color') {
+          renderer.color = drivenSetting;
+        } else {
+          label[drivenKey] = drivenSetting;
+        }
+        if (layerType === 'circle') {
+          Object.assign(renderer, label);
+        }
+        instance._legendList = [];
+        instance._mapInfo = {
+          layers: [{ id: 'l1', type: layerType, source: 's1' }],
+          sources: { s1: {} }
+        };
+        instance._mapResourceInfo = {
+          catalogs: [legendCatalog([renderer], {
+            visualization: { renderer: [renderer], ...(layerType === 'fill' ? { label } : {}) }
+          })]
+        };
+
+        instance._createLegendInfo();
+
+        const textLegend = instance._legendList.find((item) => !item.styleField &&
+          item.styleGroup.some((entry) => entry.style.icon === 'supermapol-icons-text-layer'));
+        expect(textLegend).toBeDefined();
+        if (textLegend) {
+          expect(textLegend.styleGroup[0].fieldValue).toBe('NAME');
+        }
+        const drivenLegend = instance._legendList.find((item) => item.styleField === drivenKey);
+        expect(drivenLegend.styleGroup.length).toBe(3);
+      });
+    });
+  });
 });
 
 describe('WebMapV3 - style key translation', () => {
@@ -1955,6 +2009,282 @@ describe('WebMapV3 - symbol and data driven helpers', () => {
 });
 
 describe('WebMapV3 - _createLayerLegendList', () => {
+  ['line3D', 'animateLine'].forEach((type) => {
+    function createTextureContext() {
+      const { instance } = createTestContext();
+      instance._spriteDatas = { 'anim-tex': { width: 8, height: 8 } };
+      const layer = { id: type, type };
+      const setting = {
+        type,
+        textureBlend: { type: 'simple', value: 'normal' },
+        symbolsContent: { type: 'simple', value: {
+          symbolId: 'anim-tex', style: { layout: { 'icon-image': 'anim-tex' } }
+        } },
+        color: {
+          type: 'unique', field: ['VALUE'], defaultValue: '#0000FF',
+          values: [{ key: 1, value: '#FF0000' }, { key: 2, value: '#00FF00' }],
+          interpolateInfo: { type: 'linear' }
+        }
+      };
+      return { instance, layer, setting };
+    }
+
+    it(`should keep ${type} texture backgrounds transparent alongside the color gradient`, () => {
+      const { instance, layer, setting } = createTextureContext();
+      const legends = instance._createLayerLegendList(layer, setting);
+      const style = legends.find((item) => !item.styleField).styleGroup[0].style;
+      expect(style.type).toBe('image');
+      expect(style.backgroundColor).toBe('transparent');
+      expect(legends.find((item) => item.styleField === 'color').styleGroup[0].style.colors).toEqual(setting.color.values);
+      expect(setting.color.defaultValue).toBe('#0000FF');
+      expect(setting.textureBlend.value).toBe('normal');
+    });
+
+    ['unique', 'range'].forEach((colorType) => {
+      it(`should separate ${type} opacity symbols from ${colorType} color values`, () => {
+        const { instance, layer, setting } = createTextureContext();
+        setting.opacity = { type: 'unique', field: ['OPACITY'], values: [{ key: 'A', value: 0.5 }], defaultValue: 1 };
+        setting.color = { type: colorType, field: ['VALUE'], defaultValue: '#0000FF',
+          values: colorType === 'unique' ? [{ key: 'A', value: '#FF0000' }] : [{ start: 0, end: 10, value: '#FF0000' }] };
+        const legends = instance._createLayerLegendList(layer, setting);
+        expect(legends.find((item) => item.styleField === 'opacity').styleGroup.map((item) => item.style.backgroundColor))
+          .toEqual(['transparent', 'transparent']);
+        expect(legends.find((item) => item.styleField === 'color').styleGroup.map((item) => item.style.backgroundColor))
+          .toEqual(['#FF0000', '#0000FF']);
+      });
+    });
+
+    it(`should retain fixed ${type} line colors in normal blend mode`, () => {
+      const { instance, layer, setting } = createTextureContext();
+      setting.color = { type: 'simple', value: '#123456' };
+      const legends = instance._createLayerLegendList(layer, setting);
+      expect(legends[0].styleGroup[0].style.backgroundColor).toBe('#123456');
+    });
+
+    it(`should omit ${type} colors in replace mode`, () => {
+      const { instance, layer, setting } = createTextureContext();
+      setting.textureBlend.value = 'replace';
+      const legends = instance._createLayerLegendList(layer, setting);
+      expect(legends.length).toBe(1);
+      expect(legends[0].styleField).toBeUndefined();
+      expect(legends[0].styleGroup[0].style.backgroundColor).toBe('transparent');
+    });
+
+    it(`should keep the ${type} line visible when there is no texture`, () => {
+      const { instance, layer, setting } = createTextureContext();
+      setting.symbolsContent.value = { symbolId: '', style: {} };
+      const legends = instance._createLayerLegendList(layer, setting);
+      const style = legends.find((item) => !item.styleField).styleGroup[0].style;
+      expect(style.type).toBe('style');
+      expect(style.color).not.toBe('transparent');
+    });
+  });
+
+  const lineSymbols = [
+    { symbolId: 'line-0', style: { paint: { 'line-width': 2, 'line-color': '#4CC8A3' } } },
+    {
+      symbolId: 'line-vector',
+      style: [
+        { paint: { 'line-width': 6, 'line-color': '#FF0000' } },
+        { paint: { 'line-width': 2, 'line-color': '#00FF00' } }
+      ]
+    }
+  ];
+
+  lineSymbols.forEach((symbol) => {
+    it(`should use neutral ${symbol.symbolId} colors alongside the color gradient`, () => {
+      const { instance } = createTestContext();
+      const styleSetting = {
+        type: 'line',
+        symbolsContent: { type: 'simple', value: symbol },
+        color: {
+          type: 'unique', field: ['VALUE'], defaultValue: '#0000FF',
+          values: [{ key: 1, value: '#FF0000' }, { key: 2, value: '#00FF00' }],
+          interpolateInfo: { type: 'linear' }
+        }
+      };
+      const result = instance._createLayerLegendList({ id: 'line', type: 'line' }, styleSetting);
+      const single = result.find((item) => !item.styleField);
+      const colors = result.find((item) => item.styleField === 'color');
+      expect(single.styleGroup[0].style.lineStyles.every((line) => line.color === '#FFFFFF')).toBe(true);
+      expect(colors.styleGroup[0].style.colors).toEqual(styleSetting.color.values);
+      const sourceStyles = Array.isArray(symbol.style) ? symbol.style : [symbol.style];
+      expect(sourceStyles[0].paint['line-color']).not.toBe('#FFFFFF');
+    });
+  });
+
+  ['unique', 'range'].forEach((type) => {
+    it(`should keep ${type} color values separate from driven line symbols`, () => {
+      const { instance } = createTestContext();
+      const values = type === 'unique'
+        ? [{ key: 'A', value: '#FF0000' }]
+        : [{ start: 0, end: 10, value: '#FF0000' }];
+      const result = instance._createLayerLegendList({ id: 'line', type: 'line' }, {
+        type: 'line',
+        symbolsContent: {
+          type: 'unique', field: ['TYPE'], defaultValue: lineSymbols[0],
+          values: [{ key: 'A', value: lineSymbols[1] }]
+        },
+        color: { type, field: ['VALUE'], defaultValue: '#0000FF', values }
+      });
+      const symbols = result.find((item) => item.styleField === 'symbolsContent');
+      expect(symbols.styleGroup.every((item) => item.style.lineStyles.every((line) => line.color === '#FFFFFF'))).toBe(true);
+      const colors = result.find((item) => item.styleField === 'color');
+      expect(colors.styleGroup.map((item) => item.style.color)).toEqual(['#FF0000', '#0000FF']);
+    });
+  });
+
+  it('should retain vector line colors when color is not data driven', () => {
+    const { instance } = createTestContext();
+    const layer = { id: 'line', type: 'line' };
+    const styleSetting = { type: 'line', symbolsContent: { type: 'simple', value: lineSymbols[1] } };
+    const intrinsic = instance._createLayerLegendList(layer, styleSetting);
+    expect(intrinsic[0].styleGroup[0].style.lineStyles.map((line) => line.color)).toEqual(['#FF0000', '#00FF00']);
+    const fixed = instance._createLayerLegendList(layer, {
+      ...styleSetting, color: { type: 'simple', value: '#123456' }
+    });
+    expect(fixed[0].styleGroup[0].style.lineStyles.map((line) => line.color)).toEqual(['#123456', '#123456']);
+  });
+
+  ['fill', 'fillExtrusion'].forEach((type) => {
+    it(`should use neutral ${type} symbols alongside the color gradient`, () => {
+      const { instance } = createTestContext();
+      const values = [{ key: 1, value: '#FF0000' }, { key: 2, value: '#00FF00' }];
+      const setting = {
+        type,
+        symbolsContent: {
+          type: 'simple', value: { symbolId: 'polygon-0', style: { paint: { 'fill-color': '#4CC8A3' } } }
+        },
+        color: { type: 'unique', field: ['VALUE'], defaultValue: '#0000FF', values, interpolateInfo: { type: 'linear' } }
+      };
+      const layer = { id: type, type: type === 'fill' ? 'fill' : 'fill-extrusion' };
+      const legends = instance._createLayerLegendList(layer, setting);
+      expect(legends.find((item) => !item.styleField).styleGroup[0].style.backgroundColor).toBe('#FFFFFF');
+      expect(legends.find((item) => item.styleField === 'color').styleGroup[0].style.colors).toEqual(values);
+      expect(setting.symbolsContent.value.style.paint['fill-color']).toBe('#4CC8A3');
+      const fixed = instance._createLayerLegendList(layer, { ...setting, color: { type: 'simple', value: '#123456' } });
+      expect(fixed[0].styleGroup[0].style.backgroundColor).toBe('#123456');
+    });
+  });
+
+  it('should neutralize driven fill symbols without losing color range values', () => {
+    const { instance } = createTestContext();
+    const symbol = { symbolId: 'polygon-0', style: { paint: { 'fill-color': '#4CC8A3' } } };
+    const legends = instance._createLayerLegendList({ id: 'fill', type: 'fill' }, {
+      type: 'fill',
+      symbolsContent: { type: 'unique', field: ['TYPE'], values: [{ key: 'A', value: symbol }], defaultValue: symbol },
+      color: { type: 'range', field: ['VALUE'], values: [{ start: 0, end: 10, value: '#FF0000' }], defaultValue: '#0000FF' }
+    });
+    expect(legends.find((item) => item.styleField === 'symbolsContent').styleGroup.map((item) => item.style.backgroundColor))
+      .toEqual(['#FFFFFF', '#FFFFFF']);
+    expect(legends.find((item) => item.styleField === 'color').styleGroup.map((item) => item.style.backgroundColor))
+      .toEqual(['#FF0000', '#0000FF']);
+  });
+
+  ['unique', 'range'].forEach((symbolType) => {
+    ['unique', 'range'].forEach((widthType) => {
+      it(`should reset ${symbolType} line symbols from width 30 when ${widthType} width driving starts`, () => {
+        const { instance } = createTestContext();
+        const symbol = { symbolId: 'line-wide', style: [
+          { paint: { 'line-width': 30, 'line-color': '#FF0000' } },
+          { paint: { 'line-width': 10, 'line-color': '#00FF00' } }
+        ] };
+        const defaultSymbol = { symbolId: 'line-0', style: { paint: { 'line-width': 30 } } };
+        const symbolsContent = { type: symbolType, field: ['TYPE'], defaultValue: defaultSymbol,
+          values: symbolType === 'unique' ? [{ key: 'A', value: symbol }] : [{ start: 0, end: 10, value: symbol }] };
+        const layer = { id: 'line', type: 'line' };
+        const setting = { type: 'line', symbolsContent, width: { type: 'simple', value: 30 } };
+        const fixed = instance._createLayerLegendList(layer, setting);
+        expect(fixed.find((item) => item.styleField === 'symbolsContent').styleGroup[0].style.lineStyles[0].lineWidth).toBe(30);
+
+        setting.width = { type: widthType, field: ['WIDTH'], defaultValue: 6,
+          values: widthType === 'unique' ? [{ key: 'A', value: 4 }, { key: 'B', value: 12 }]
+            : [{ start: 0, end: 10, value: 4 }, { start: 10, end: 20, value: 12 }] };
+        const legends = instance._createLayerLegendList(layer, setting);
+        const symbols = legends.find((item) => item.styleField === 'symbolsContent');
+        expect(symbols.styleGroup.map((item) => item.style.lineStyles[0].lineWidth)).toEqual([2, 2]);
+        expect(symbols.styleGroup[0].style.lineStyles[1].lineWidth).toBeCloseTo(2 / 3, 2);
+        const widths = legends.find((item) => item.styleField === 'width');
+        expect(widths.styleGroup.map((item) => item.style.lineWidth)).toEqual([4, 12, 6]);
+        expect(symbol.style[0].paint['line-width']).toBe(30);
+        expect(defaultSymbol.style.paint['line-width']).toBe(30);
+        const restored = instance._createLayerLegendList(layer, { ...setting, width: { type: 'simple', value: 30 } });
+        expect(restored.find((item) => item.styleField === 'symbolsContent').styleGroup[0].style.lineStyles[0].lineWidth).toBe(30);
+      });
+    });
+  });
+
+  it('should apply width segments and their default to a fixed vector line symbol', () => {
+    const { instance } = createTestContext();
+    const symbol = { symbolId: 'line-0', style: { paint: { 'line-width': 30 } } };
+    const legends = instance._createLayerLegendList({ id: 'line', type: 'line' }, {
+      type: 'line', symbolsContent: { type: 'simple', value: symbol },
+      width: { type: 'unique', field: ['WIDTH'], values: [{ key: 'A', value: 4 }, { key: 'B', value: 12 }], defaultValue: 6 }
+    });
+    expect(legends.find((item) => item.styleField === 'width').styleGroup.map((item) => item.style.lineStyles[0].lineWidth))
+      .toEqual([4, 12, 6]);
+  });
+
+  ['unique', 'range'].forEach((mode) => {
+    it(`should reset mixed ${mode} line symbols to image width 10 or vector width 2`, () => {
+      const { instance } = createTestContext();
+      instance._sprite = 'http://localhost/sprite';
+      instance._spriteDatas = { 'line-tex': { width: 20, height: 10 } };
+      const image = { symbolId: 'line-tex', style: { paint: { 'line-pattern': 'line-tex', 'line-width': 30 } } };
+      const vector = { symbolId: 'line-0', style: { paint: { 'line-width': 30 } } };
+      const setting = {
+        type: 'line',
+        symbolsContent: { type: mode, field: ['TYPE'], defaultValue: image,
+          values: mode === 'unique' ? [{ key: 'A', value: image }, { key: 'B', value: vector }]
+            : [{ start: 0, end: 10, value: image }, { start: 10, end: 20, value: vector }] },
+        width: { type: mode, field: ['WIDTH'], defaultValue: 6,
+          values: mode === 'unique' ? [{ key: 'A', value: 4 }, { key: 'B', value: 12 }]
+            : [{ start: 0, end: 10, value: 4 }, { start: 10, end: 20, value: 12 }] }
+      };
+      const legends = instance._createLayerLegendList({ id: 'line', type: 'line' }, setting);
+      const styles = legends.find((item) => item.styleField === 'symbolsContent').styleGroup.map((item) => item.style);
+      expect(styles[0].height).toBe(10);
+      expect(styles[1].lineStyles[0].lineWidth).toBe(2);
+      expect(styles[2].height).toBe(10);
+      expect(legends.find((item) => item.styleField === 'width').styleGroup.map((item) => item.style.lineWidth))
+        .toEqual([4, 12, 6]);
+      expect(image.style.paint['line-width']).toBe(30);
+      expect(vector.style.paint['line-width']).toBe(30);
+    });
+
+    it(`should retain image width 10 in other groups while using ${mode} driven width values`, () => {
+      const { instance } = createTestContext();
+      instance._sprite = 'http://localhost/sprite';
+      instance._spriteDatas = { 'line-tex': { width: 20, height: 10 } };
+      const legends = instance._createLayerLegendList({ id: 'line', type: 'line' }, {
+        type: 'line',
+        symbolsContent: { type: 'simple', value: {
+          symbolId: 'line-tex', style: { paint: { 'line-pattern': 'line-tex', 'line-width': 30 } }
+        } },
+        width: { type: mode, field: ['WIDTH'], defaultValue: 6,
+          values: mode === 'unique' ? [{ key: 'A', value: 4 }, { key: 'B', value: 12 }]
+            : [{ start: 0, end: 10, value: 4 }, { start: 10, end: 20, value: 12 }] },
+        opacity: { type: 'unique', field: ['OPACITY'], defaultValue: 1, values: [{ key: 'A', value: 0.5 }] }
+      });
+      expect(legends.find((item) => item.styleField === 'opacity').styleGroup.map((item) => item.style.height))
+        .toEqual([10, 10]);
+      const widths = legends.find((item) => item.styleField === 'width').styleGroup.map((item) => item.style);
+      expect(widths.map((style) => style.height)).toEqual([4, 12, 6]);
+    });
+  });
+
+  it('should rescale line offsets with driven widths', () => {
+    const { instance } = createTestContext();
+    const result = instance._parseLegendtyle({ legendRenderType: 'LINE', customValue: {
+      width: 2, symbolsContent: { symbolId: 'line-offset', style: { paint: {
+        'line-width': 30, 'line-offset': 15, 'line-dasharray': [2, 1]
+      } } }
+    } });
+    expect(result.lineStyles[0].lineWidth).toBe(2);
+    expect(result.lineStyles[0].lineOffset).toBe(1);
+    expect(result.lineStyles[0].lineDash).toEqual([30, 15]);
+  });
+
   it('should build gradient legend for heat layers', () => {
     const { instance } = createTestContext();
     const stops = ['interpolate', 'linear', ['heatmap-density'], 0, 'c0', 0.2, 'c1', 0.4, 'c2', 0.6, 'c3', 0.8, 'c4', 1, 'c5'];
@@ -2121,6 +2451,76 @@ describe('WebMapV3 - _createLayerLegendList', () => {
     expect(symbolLegend.themeField).toBe('TYPE');
     expect(symbolLegend.styleGroup.length).toBe(3);
     expect(symbolLegend.styleGroup.map((item) => item.fieldValue)).toEqual(['A', 'B', null]);
+    expect(symbolLegend.styleGroup.map((item) => item.style.shape)).toEqual(['TRIANGLE', 'RECTANGLE', 'POINT']);
+    expect(symbolLegend.styleGroup.every((item) => item.style.color === '#4A90E2')).toBe(true);
+    expect(styleSetting.shape.values[0].value).toBe('triangleColumn');
+    expect(styleSetting.symbolsContent).toBeUndefined();
+  });
+
+  it('should use each range column shape and the default shape without sprite data', () => {
+    const { instance } = createTestContext();
+    const result = instance._createLayerLegendList({ id: 'columnRange', type: 'point-extrusion' }, {
+      type: 'column',
+      color: { type: 'simple', value: '#4A90E2' },
+      opacity: { type: 'simple', value: 0.7 },
+      shape: {
+        type: 'range',
+        field: ['COUNT'],
+        values: [
+          { start: 0, end: 10, value: 'cylinder' },
+          { start: 10, end: 20, value: 'triangleColumn' },
+          { start: 20, end: 30, value: 'squareColumn' }
+        ],
+        defaultValue: 'hexagonColumn'
+      }
+    });
+    const symbolLegend = result.find((item) => item.styleField === 'symbolsContent');
+
+    expect(symbolLegend.themeField).toBe('COUNT');
+    expect(symbolLegend.styleGroup.map((item) => item.style.shape)).toEqual(['POINT', 'TRIANGLE', 'RECTANGLE', 'HEXAGON']);
+    expect(symbolLegend.styleGroup.map((item) => [item.start, item.end])).toEqual([[0, 10], [10, 20], [20, 30], [null, null]]);
+    expect(symbolLegend.styleGroup.every((item) => item.style.type === 'style' && item.style.opacity === 0.7)).toBe(true);
+  });
+
+  it('should preserve the color legend when every column shape is non-circular', () => {
+    const { instance } = createTestContext();
+    const result = instance._createLayerLegendList({ id: 'columnColor', type: 'point-extrusion' }, {
+      type: 'column',
+      color: {
+        type: 'unique',
+        field: ['COLOR'],
+        values: [{ key: 'red', value: '#FF0000' }],
+        defaultValue: '#4A90E2'
+      },
+      shape: {
+        type: 'unique',
+        field: ['TYPE'],
+        values: [{ key: 'A', value: 'triangleColumn' }],
+        defaultValue: 'hexagonColumn'
+      }
+    });
+
+    const symbolLegend = result.find((item) => item.styleField === 'symbolsContent');
+    const colorLegend = result.find((item) => item.styleField === 'color');
+    expect(symbolLegend.styleGroup.map((item) => item.style.shape)).toEqual(['TRIANGLE', 'HEXAGON']);
+    expect(colorLegend.styleGroup.map((item) => item.style.color)).toEqual(['#FF0000', '#4A90E2']);
+  });
+
+  it('should retain a simple column shape in color and size legends', () => {
+    const { instance } = createTestContext();
+    const result = instance._createLayerLegendList({ id: 'columnSimple', type: 'point-extrusion' }, {
+      type: 'column',
+      color: {
+        type: 'unique', field: ['COLOR'], values: [{ key: 'A', value: '#FF0000' }], defaultValue: '#4A90E2'
+      },
+      size: {
+        type: 'range', field: ['SIZE'], values: [{ start: 0, end: 10, value: 12 }], defaultValue: 8
+      },
+      shape: { type: 'simple', value: 'triangleColumn' }
+    });
+
+    expect(result.map((item) => item.styleField)).toEqual(['size', 'color']);
+    expect(result.every((item) => item.styleGroup.every((entry) => entry.style.shape === 'TRIANGLE'))).toBe(true);
   });
 
   it('should create range style groups for non-color data driven field', () => {

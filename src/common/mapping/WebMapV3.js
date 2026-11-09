@@ -166,6 +166,7 @@ const MAP_LAYER_TYPE_2_SYMBOL_TYPE = {
 
 const LEGEND_LINE_WIDTH = 100;
 const LEGEND_LINE_IMAGE_HEIGHT = 10;
+const LEGEND_LINE_DEFAULT_WIDTH = 2;
 const LINE_WIDTH_KEY = 'line-width';
 
 export const LEGEND_STYLE_TYPES = {
@@ -1176,13 +1177,16 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     const keys = this._transStyleKeys(renderType, styleKeys);
     this._transStyleSetting(renderType, styleSetting);
     const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
-    const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
     let dataKeys = this._getDataDrivenStyleKeys(legendRenderType, keys, styleSetting);
     // 3D线,动画线
     if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE) {
       // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
       const isReplaceLineColor = styleSetting.textureBlend.value === 'replace';
       const hasTexture = !!(styleSetting.symbolsContent.value && styleSetting.symbolsContent.value.symbolId);
+      // 与 MS 一致：颜色由数据驱动图例表达，符号项的纹理背景保持透明。
+      if (hasTexture && dataKeys.includes('color')) {
+        simpleStyle.color = 'transparent';
+      }
       if (isReplaceLineColor && hasTexture) {
         dataKeys = dataKeys.filter((key) => key !== 'color')
       }
@@ -1190,15 +1194,24 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       // 其他
       // isAllPic: 如果符号为图片，图例中将不再显示颜色
       // 线面标签中的图标按点符号处理；文本不参与图片符号判断。
+      // 柱体形状是内置矢量符号，不依赖雪碧图，也不能屏蔽颜色专题图例。
       const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[renderType];
-      const isAllPic = legendRenderType !== LEGEND_RENDER_TYPE.TEXT &&
+      const isAllPic = renderType !== 'column' && legendRenderType !== LEGEND_RENDER_TYPE.TEXT &&
         this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
       if(isAllPic) {
         dataKeys = dataKeys.filter((key) => key !== 'color')
       }
     }
+    // 颜色由数据驱动图例表达，线面符号及其它属性分组使用中性色，避免回退到符号内置颜色。
+    if ([LEGEND_RENDER_TYPE.LINE, LEGEND_RENDER_TYPE.FILL, LEGEND_RENDER_TYPE.FILLEXTRUSION].includes(legendRenderType) && dataKeys.includes('color')) {
+      simpleStyle.color = LEGEND_CSS_DEFAULT[legendRenderType].backgroundColor;
+    }
+    // 宽度独立驱动时，在生成每个图例项时按其实际符号类型选择默认宽度。
+    const lineWidthDriven = legendRenderType === LEGEND_RENDER_TYPE.LINE && dataKeys.includes('width');
+    const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle, lineWidthDriven });
     const isLinearColor = styleSetting.color && styleSetting.color.interpolateInfo && styleSetting.color.interpolateInfo.type === 'linear';
-    const isShowSingleItem = this._isShowLegendSingleItem(dataKeys, isLinearColor);
+    // 与 MS 一致：文本标签始终保留「T + 字段」，数据驱动属性另外分组展示。
+    const isShowSingleItem = legendRenderType === LEGEND_RENDER_TYPE.TEXT || this._isShowLegendSingleItem(dataKeys, isLinearColor);
     const resultList = [];
     if (isShowSingleItem) {
       resultList.push({
@@ -1222,7 +1235,9 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
         const custom = this._getSettingCustom(subStyleSetting);
         const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
         const params = {
+          renderType,
           legendRenderType,
+          lineWidthDriven,
           styleField,
           subStyleSetting,
           simpleStyle,
@@ -1313,51 +1328,65 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     return styleGroup;
   }
 
-  _parseUniqueStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo, shape }) {
+  _getLegendItemShape(renderType, styleField, itemStyle, shape) {
+    if (renderType !== 'column' || styleField !== 'symbolsContent') {
+      return shape;
+    }
+    // 形状数据驱动使用每一项（含默认项）的符号，不能复用整层的默认形状。
+    const symbolShapes = {
+      circle: LEGEND_SHAPE_TYPE.POINT,
+      triangle: LEGEND_SHAPE_TYPE.TRIANGLE,
+      rectangle: LEGEND_SHAPE_TYPE.RECTANGLE,
+      hexagon: LEGEND_SHAPE_TYPE.HEXAGON
+    };
+    return symbolShapes[(itemStyle.symbolsContent || {}).symbolId] || shape;
+  }
+
+  _parseUniqueStyle({ renderType, legendRenderType, lineWidthDriven, styleField, simpleStyle, defaultSetting, custom, interpolateInfo, shape }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
-      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle, lineWidthDriven, styleField });
       return {
         fieldValue: c.key,
         style: {
           ...resData,
-          shape
+          shape: this._getLegendItemShape(renderType, styleField, itemStyle, shape)
         }
       };
     });
     if (!interpolateInfo.type || interpolateInfo.type === 'custom') {
-      const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting, lineWidthDriven, styleField });
       styleGroup.push({
         fieldValue: null,
         style: {
           ...resData,
-          shape
+          shape: this._getLegendItemShape(renderType, styleField, defaultSetting, shape)
         }
       });
     }
     return styleGroup;
   }
 
-  _parseRangeStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, shape }) {
+  _parseRangeStyle({ renderType, legendRenderType, lineWidthDriven, styleField, simpleStyle, defaultSetting, custom, shape }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
-      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle, lineWidthDriven, styleField });
       return {
         start: c.start,
         end: c.end,
         style: {
           ...resData,
-          shape
+          shape: this._getLegendItemShape(renderType, styleField, itemStyle, shape)
         }
       };
     });
-    const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
+    const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting, lineWidthDriven, styleField });
     styleGroup.push({
       start: null,
       end: null,
       style: {
         ...resData,
-        shape
+        shape: this._getLegendItemShape(renderType, styleField, defaultSetting, shape)
       }
     });
     return styleGroup;
@@ -1369,7 +1398,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     return itemStyle;
   }
 
-  _parseLegendtyle({ legendRenderType, customValue }) {
+  _parseLegendtyle({ legendRenderType, customValue, lineWidthDriven = false, styleField }) {
     const cssStyle = { ...LEGEND_CSS_DEFAULT[legendRenderType] };
     // 线不使用cssStyle，所以不需要重新赋值
     Object.keys(cssStyle).forEach((k) => {
@@ -1421,6 +1450,16 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
       case LEGEND_RENDER_TYPE.LINE:
       case LEGEND_RENDER_TYPE.ANIMATELINE: {
         style = style || [];
+        const defaultStyle = { ...LEGEND_CSS_DEFAULT['LINE'] };
+        const symbolStyles = style instanceof Array ? style : [style];
+        const hasImageLine = symbolStyles.some((v) => !!this._getImageIdByLegendType(v, legendRenderType));
+        // 非宽度分组按当前项的符号类型回退：图片 10、矢量 2；宽度分组保留驱动值。
+        if (lineWidthDriven && styleField !== 'width') {
+          customValue = {
+            ...customValue,
+            width: hasImageLine ? LEGEND_LINE_IMAGE_HEIGHT : LEGEND_LINE_DEFAULT_WIDTH
+          };
+        }
         const nextCustomValue = Object.assign({}, customValue);
         delete nextCustomValue.symbolsContent;
         const commonInfo = {
@@ -1428,15 +1467,14 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
           ...nextCustomValue,
           width: LEGEND_LINE_WIDTH
         };
-        const defaultStyle = { ...LEGEND_CSS_DEFAULT['LINE'] };
-        const symbolStyles = style instanceof Array ? style : [style];
-        const hasImageLine = symbolStyles.some((v) => !!this._getImageIdByLegendType(v, legendRenderType));
         // 图片线符号都是单图层(动画线符号的symbol也只有一个)
         const imageLineSymbol = symbolStyles[0];
         if (hasImageLine) {
           const imageId = this._getImageIdByLegendType(imageLineSymbol, legendRenderType);
-          // 普通线图层的图片符号高度统一，动画线保持原来逻辑
-          const imageHeight = legendRenderType === LEGEND_RENDER_TYPE.LINE ? LEGEND_LINE_IMAGE_HEIGHT : cssStyle.width;
+          // 普通图片线宽度独立驱动时使用当前项的宽度，其余场景统一高度 10；动画线保持原逻辑。
+          const imageHeight = legendRenderType === LEGEND_RENDER_TYPE.LINE
+            ? (lineWidthDriven ? customValue.width ?? LEGEND_LINE_IMAGE_HEIGHT : LEGEND_LINE_IMAGE_HEIGHT)
+            : cssStyle.width;
           const styleOptions = { ...cssStyle, ...nextCustomValue, height: imageHeight, width: LEGEND_LINE_WIDTH };
           if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && nextCustomValue.textureBlend === 'replace') {
             styleOptions.backgroundColor = 'transparent';
@@ -1574,17 +1612,19 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
 
   _transformLineStyle({ oldWidth, symbol, defaultStyle, customValue }) {
     const { paint = {} } = symbol;
+    const width = customValue.width ?? customValue.height;
     let newSymbol;
-    if (customValue.height !== undefined) {
-      newSymbol = this._updateSingleStyleByWidth(oldWidth, customValue.height, symbol);
+    if (width !== undefined) {
+      newSymbol = this._updateSingleStyleByWidth(oldWidth, width, symbol);
     }
+    const nextPaint = (newSymbol || {}).paint || paint;
     return {
-      lineWidth: ((newSymbol || {}).paint || {})[LINE_WIDTH_KEY] || paint[LINE_WIDTH_KEY] || defaultStyle.height,
+      lineWidth: nextPaint[LINE_WIDTH_KEY] ?? defaultStyle.height,
       // 0 是合法的线不透明度，用 ?? 而不是 ||，避免透明线被回退成不透明
       opacity: customValue.opacity ?? paint['line-opacity'] ?? defaultStyle.opacity,
       color: customValue.color || paint['line-color'] || defaultStyle.backgroundColor,
-      lineDash: paint['line-dasharray'] || [],
-      lineOffset: paint['line-offset'] || 0
+      lineDash: nextPaint['line-dasharray'] || [],
+      lineOffset: nextPaint['line-offset'] || 0
     };
   }
 
