@@ -4,6 +4,7 @@
 import L from "leaflet";
 import '../core/Base';
 import * as echarts from "echarts";
+import { ComponentModel, ComponentView } from "echarts";
 import Attributions from '../core/Attributions'
 
 /**
@@ -86,97 +87,104 @@ export const EchartsLayer = L.Layer.extend({
         !me.options.loadWhileAnimating && map.on("movestart", function () {
             me._disableEchartsContainer();
         });
-        echarts.registerAction({
-            type: 'LeafletMapLayout',
-            event: 'LeafletMapLayout',
-            update: 'updateLayout'
-        }, function (payload ) { // eslint-disable-line no-unused-vars
-        });
-        echarts.registerCoordinateSystem(
-            'leaflet', LeafletMapCoordSys
-        );
-        echarts.extendComponentModel({
-            type: 'LeafletMap',
-            getBMap: function () {
-                return this.__LeafletMap;
-            },
-            defaultOption: {
+        echarts.use(function (registers) {
+            registers.registerAction({
+                type: 'LeafletMapLayout',
+                event: 'LeafletMapLayout',
+                update: 'updateLayout'
+            }, function (payload ) { // eslint-disable-line no-unused-vars
+            });
+            registers.registerCoordinateSystem(
+                'leaflet', LeafletMapCoordSys
+            );
+
+            const LeafletMapModel = class extends ComponentModel {
+                getBMap() {
+                    return this.__LeafletMap;
+                }
+            };
+            LeafletMapModel.type = 'LeafletMap';
+            LeafletMapModel.defaultOption = {
                 roam: false
-            }
-        });
-        echarts.extendComponentView({
-            type: 'LeafletMap',
-            render: function (LeafletMapModel, ecModel, api) {
-                let rendering = true;
-                let leafletMap = ecModel.scheduler.ecInstance.leafletMap;
-                const viewportRoot = api.getZr().painter.getViewportRoot();
+            };
 
-                const animated = leafletMap.options.zoomAnimation && L.Browser.any3d;
-                viewportRoot.className = ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide') + ' echarts-layer';
+            const LeafletMapView = class extends ComponentView {
+                render(LeafletMapModel, ecModel, api) {
+                    let rendering = true;
+                    let leafletMap = ecModel.scheduler.ecInstance.leafletMap;
+                    const viewportRoot = api.getZr().painter.getViewportRoot();
 
-                const originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
-                viewportRoot.style[originProp] = '50% 50%';
+                    const animated = leafletMap.options.zoomAnimation && L.Browser.any3d;
+                    viewportRoot.className = ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide') + ' echarts-layer';
 
-                const coordSys = LeafletMapModel.coordinateSystem;
+                    const originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+                    viewportRoot.style[originProp] = '50% 50%';
 
-                const ecLayers = api.getZr().painter.getLayers();
-                _setCanvasPosition(me._map, viewportRoot);
-                const moveHandler = function () {
-                    if (rendering) {
-                        return;
-                    }
-                    const mapOffset = _setCanvasPosition(me._map, viewportRoot);
+                    const coordSys = LeafletMapModel.coordinateSystem;
 
-                    if (!me.options.loadWhileAnimating) {
-                        for (let item in ecLayers) {
-                            if (!ecLayers.hasOwnProperty(item)) {
-                                continue;
-                            }
-                            ecLayers[item] && clearContext(ecLayers[item].ctx);
+                    const ecLayers = api.getZr().painter.getLayers();
+                    _setCanvasPosition(me._map, viewportRoot);
+                    const moveHandler = function () {
+                        if (rendering) {
+                            return;
                         }
+                        const mapOffset = _setCanvasPosition(me._map, viewportRoot);
+
+                        if (!me.options.loadWhileAnimating) {
+                            for (let item in ecLayers) {
+                                if (!ecLayers.hasOwnProperty(item)) {
+                                    continue;
+                                }
+                                ecLayers[item] && clearContext(ecLayers[item].ctx);
+                            }
+                            me._enableEchartsContainer();
+                        }
+
+                        coordSys.setMapOffset(mapOffset);
+                        LeafletMapModel.__mapOffset = mapOffset;
+
+                        api.dispatchAction({
+                            type: 'LeafletMapLayout'
+                        });
+
+
+                    };
+
+                    function clearContext(context) {
+                        context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+                    }
+
+                    function zoomEndHandler() {
+                        if (rendering) {
+                            return;
+                        }
+
+                        api.dispatchAction({
+                            type: 'LeafletMapLayout'
+                        });
                         me._enableEchartsContainer();
                     }
 
-                    coordSys.setMapOffset(mapOffset);
-                    LeafletMapModel.__mapOffset = mapOffset;
+                    if (me._oldMoveHandler) {
+                        leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', me._oldMoveHandler);
 
-                    api.dispatchAction({
-                        type: 'LeafletMapLayout'
-                    });
+                    }
+                    if (me._oldZoomEndHandler) {
+                        leafletMap.off('zoomend', me._oldZoomEndHandler);
 
-
-                };
-
-                function clearContext(context) {
-                    context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-                }
-
-                function zoomEndHandler() {
-                    if (rendering) {
-                        return;
                     }
 
-                    api.dispatchAction({
-                        type: 'LeafletMapLayout'
-                    });
-                    me._enableEchartsContainer();
+                    leafletMap.on(me.options.loadWhileAnimating ? 'move' : 'moveend', moveHandler);
+                    leafletMap.on('zoomend', zoomEndHandler);
+                    me._oldMoveHandler = moveHandler;
+                    me._oldZoomEndHandler = zoomEndHandler;
+                    rendering = false;
                 }
+            };
+            LeafletMapView.type = 'LeafletMap';
 
-                if (me._oldMoveHandler) {
-                    leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', me._oldMoveHandler);
-
-                }
-                if (me._oldZoomEndHandler) {
-                    leafletMap.off('zoomend', me._oldZoomEndHandler);
-
-                }
-
-                leafletMap.on(me.options.loadWhileAnimating ? 'move' : 'moveend', moveHandler);
-                leafletMap.on('zoomend', zoomEndHandler);
-                me._oldMoveHandler = moveHandler;
-                me._oldZoomEndHandler = zoomEndHandler;
-                rendering = false;
-            }
+            registers.registerComponentModel(LeafletMapModel);
+            registers.registerComponentView(LeafletMapView);
         });
         this._ec.setOption(this._echartsOptions);
     },

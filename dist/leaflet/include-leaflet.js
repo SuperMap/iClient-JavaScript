@@ -108,7 +108,7 @@
             inputScript(libsurl + '/turf/7.2.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-          inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
+          inputScript(libsurl + '/echarts/6.1.0/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
             inputScript(libsurl + '/elasticsearch/16.7.3/elasticsearch.min.js');

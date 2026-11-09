@@ -100,7 +100,7 @@
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
     }
     if (inArray(includes, 'echarts')) {
-      inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
+      inputScript(libsurl + '/echarts/6.1.0/echarts.min.js');
       inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
