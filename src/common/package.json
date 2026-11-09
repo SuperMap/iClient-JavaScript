@@ -43,6 +43,6 @@
     "three": "0.150.1",
     "video.js": "^7.21.6",
     "videojs-flvjs-es6": "^1.0.1",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+    "xlsx": "https://iclient.supermap.io/libs/xlsx/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }
