@@ -1119,7 +1119,24 @@ describe('maplibregl-webmap3.0', () => {
     mapstudioWebmap.on('mapcreatesucceeded', ({ map }) => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
-      expect(webMapV3.getLegends().length).toBe(9);
+      const legends = webMapV3.getLegends();
+      // 颜色/字号数据驱动后仍保留默认文本项：面、线、3D 面各新增一项。
+      expect(legends.length).toBe(12);
+      [
+        { layerId: 'ms_未命名数据(8)_1721356340655_87', field: 'name', styleField: 'textColor', count: 3 },
+        { layerId: '未命名数据(6)', field: 'smpid', styleField: 'textColor', count: 4 },
+        { layerId: '未命名数据(8)', field: 'smpid', styleField: 'textSize', count: 3 }
+      ].forEach(({ layerId, field, styleField, count }) => {
+        const layerLegends = legends.filter((item) => item.layerId === layerId);
+        expect(layerLegends.length).toBe(count);
+        const textLegends = layerLegends.filter((item) => !item.styleField &&
+          item.styleGroup[0].style.icon === 'supermapol-icons-text-layer');
+        expect(textLegends.length).toBe(1);
+        expect(textLegends[0].styleGroup[0].fieldValue).toBe(field);
+        const drivenLegend = layerLegends.find((item) => item.styleField === styleField);
+        expect(drivenLegend).toBeDefined();
+        expect(drivenLegend.styleGroup.length).toBe(styleField === 'textColor' ? 1 : 2);
+      });
       mbglmap.prototype.getL7Scene = undefined;
       spyTest.calls.reset();
       done();
