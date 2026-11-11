@@ -8,7 +8,6 @@ import {
 import {
     MessageBox
 } from "../messagebox/MessageBox";
-import 'echarts/theme/v5';
 
 /**
  * @class ChartView
@@ -139,7 +138,7 @@ export class ChartView {
      * @param {Object} data - 图表数据。
      */
     _createChart(data) {
-        this.echart = echarts.init(document.getElementById(this.domID), 'v5', {
+        this.echart = echarts.init(document.getElementById(this.domID), 'v5',{
           renderer: 'canvas'
         });
         let options = this.viewModel._createChartOptions(data);

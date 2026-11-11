@@ -311,9 +311,12 @@ export class ChartViewModel {
                 splitLine: {
                     show: false
                 },
+                axisLabel: {
+                    color: '#fff'
+                },
                 axisLine: {
                     lineStyle: {
-                        color: '#eee'
+                        color: '#fff'
                     }
                 }
             }
@@ -328,9 +331,13 @@ export class ChartViewModel {
                 splitLine: {
                     show: false
                 },
+                axisLabel: {
+                    color: '#fff'
+                },
                 axisLine: {
+                    show: true,
                     lineStyle: {
-                        color: '#eee'
+                        color: '#fff'
                     }
                 }
             }
