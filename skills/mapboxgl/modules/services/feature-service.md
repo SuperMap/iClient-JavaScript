@@ -205,4 +205,4 @@ new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam).t
 
 ## 参数详情
 
-> 详见 metadata：[@GetFeaturesBySQLParameters](../../metadata/iclient-mapboxgl/GetFeaturesBySQLParameters.json)、[@GetFeaturesByGeometryParameters](../../metadata/iclient-mapboxgl/GetFeaturesByGeometryParameters.json)、[@GetFeaturesByBufferParameters](../../metadata/iclient-mapboxgl/GetFeaturesByBufferParameters.json)
+> 详见 SQLite FTS5 API 索引：`node scripts/query-api.mjs get GetFeaturesBySQLParameters`、`get GetFeaturesByGeometryParameters`、`get GetFeaturesByBufferParameters`

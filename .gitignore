@@ -1,10 +1,11 @@
 # Package Files #
-/node_modules
+node_modules
 /.idea
 /.vscode
 /test/testcoverage
 /.history
 /docs
+/docs-json
 /examples-test/reports
 /web/
 /package-lock.json

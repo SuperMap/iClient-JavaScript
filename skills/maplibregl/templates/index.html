@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SuperMap iClient MapLibreGL 示例</title>
+    <script src="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.1/maplibre-gl-enhance.js"></script>
+    <link href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.1/maplibre-gl-enhance.css" rel="stylesheet">
+    <script src="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js"></script>
+    <link href="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css" rel="stylesheet">
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        #status {
+            position: absolute;
+            z-index: 1;
+            top: 12px;
+            left: 12px;
+            max-width: min(440px, calc(100% - 48px));
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            font: 14px/1.5 sans-serif;
+        }
+
+        #status[hidden] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" aria-label="交互式地图"></div>
+    <div id="status" role="status" aria-live="polite">正在加载地图...</div>
+    <script>
+        (function() {
+            var status = document.getElementById('status');
+            var mapUrl = 'https://iserver.supermap.io/iserver/services/map-world/rest/maps/World';
+
+            function showError(error) {
+                var message = error && error.message ? error.message : String(error);
+                status.hidden = false;
+                status.textContent = '地图加载失败：' + message;
+                console.error(error);
+            }
+
+            maplibregl.supermap.initMap(mapUrl, {
+                mapOptions: {
+                    container: 'map',
+                    center: [0, 0],
+                    zoom: 2
+                }
+            }).then(function(result) {
+                var map = result.map;
+                map.addControl(new maplibregl.NavigationControl(), 'top-left');
+                map.once('load', function() {
+                    map.addSource('sample-point', {
+                        type: 'geojson',
+                        data: {
+                            type: 'Feature',
+                            properties: { name: '可编辑示例点' },
+                            geometry: { type: 'Point', coordinates: [0, 0] }
+                        }
+                    });
+                    map.addLayer({
+                        id: 'sample-point',
+                        type: 'circle',
+                        source: 'sample-point',
+                        paint: {
+                            'circle-radius': 7,
+                            'circle-color': '#e34a33',
+                            'circle-stroke-color': '#ffffff',
+                            'circle-stroke-width': 1
+                        }
+                    });
+                    map.on('click', 'sample-point', function(event) {
+                        new maplibregl.Popup()
+                            .setLngLat(event.lngLat)
+                            .setText('可编辑示例点')
+                            .addTo(map);
+                    });
+                    status.hidden = true;
+                });
+                map.on('error', function(event) {
+                    if (event && event.error) {
+                        showError(event.error);
+                    }
+                });
+            }).catch(showError);
+        })();
+    </script>
+</body>
+</html>

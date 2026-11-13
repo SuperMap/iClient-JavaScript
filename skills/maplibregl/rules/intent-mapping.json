@@ -1,0 +1,62 @@
+{
+  "LOAD_REST_MAP": {
+    "description": "根据 SuperMap iServer REST Map 服务初始化地图",
+    "module": "core/init-map",
+    "keywords": ["加载地图", "iServer地图", "REST Map", "底图", "地图服务"]
+  },
+  "CREATE_CUSTOM_MAP": {
+    "description": "根据用户提供的样式创建 MapLibre 地图",
+    "module": "core/empty-map",
+    "keywords": ["自定义底图", "地图样式", "空白地图", "MapLibre地图"]
+  },
+  "ADD_DATA": {
+    "subIntents": {
+      "GEOJSON": {
+        "module": "mapping/add-geojson",
+        "keywords": ["GeoJSON", "geojson图层", "本地JSON"]
+      },
+      "VECTOR_TILE": {
+        "module": "mapping/vector-tile",
+        "keywords": ["矢量瓦片", "MVT", "MVT图层", "tileFeature.mvt"]
+      },
+      "WMTS": {
+        "module": "mapping/WMTS",
+        "keywords": ["WMTS", "WMTS瓦片", "瓦片地图服务"]
+      },
+      "WMS": {
+        "module": "mapping/WMS",
+        "keywords": ["WMS", "WMS图层", "网络地图服务"]
+      }
+    },
+    "keywords": ["添加图层", "叠加数据", "添加数据"]
+  },
+  "QUERY": {
+    "subIntents": {
+      "REST_DATA": {
+        "module": "services/feature-service",
+        "keywords": ["REST Data", "FeatureService", "数据集查询", "要素查询"]
+      },
+      "REST_DATA_FGB": {
+        "module": "utils/rest-data-vector",
+        "keywords": ["FGB查询", "FGB图层", "FeatureService FGB"]
+      },
+      "REST_MAP": {
+        "module": "services/query-service",
+        "keywords": ["REST Map查询", "QueryService", "地图查询"]
+      }
+    },
+    "keywords": ["查询", "SQL查询", "空间查询", "筛选"]
+  },
+  "SPATIAL_ANALYSIS": {
+    "module": "services/buffer-analysis",
+    "keywords": ["缓冲区分析", "SpatialAnalystService", "空间分析"]
+  },
+  "OGC_CAPABILITIES": {
+    "module": "utils/ogc-capabilities",
+    "keywords": ["GetCapabilities", "Capabilities解析", "解析WMTS", "解析WMS"]
+  },
+  "MAP_INTERACTION": {
+    "description": "使用 MapLibre 原生 API 管理控件、视角、事件和图层样式",
+    "keywords": ["控件", "flyTo", "缩放", "地图事件", "图层样式", "交互"]
+  }
+}

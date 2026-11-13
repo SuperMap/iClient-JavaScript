@@ -1,0 +1,39 @@
+{
+  "mapOptions": {
+    "container": "map",
+    "center": [0, 0],
+    "zoom": 2
+  },
+  "initMap": {
+    "defaultType": "raster",
+    "note": "initMap 返回地图实例后，添加自定义数据源和图层前应等待地图 load 事件"
+  },
+  "emptyStyle": {
+    "version": 8,
+    "sources": {},
+    "layers": []
+  },
+  "vectorTile": {
+    "sourceType": "vector",
+    "tileWidth": 512,
+    "tileHeight": 512,
+    "note": "source-layer 和瓦片坐标模板必须按对应 MapLibreGL 示例及服务元数据确认"
+  },
+  "ogcRaster": {
+    "sourceType": "raster",
+    "layerType": "raster",
+    "wmsTileSize": 256,
+    "defaultCRS": "EPSG:3857",
+    "wmtsTileSize": "从 Capabilities 的 TileWidth/TileHeight 读取",
+    "note": "WMTS/WMS 的 URL、图层、矩阵级别、格式和边界优先从 Capabilities 读取；不支持的投影或矩阵映射必须报错"
+  },
+  "geojsonStyle": {
+    "defaultCircleRadius": 7,
+    "defaultLineWidth": 3,
+    "defaultFillOpacity": 0.5
+  },
+  "featureService": {
+    "fgbFormat": "FGB",
+    "note": "FGB 查询结果通过 result.newResourceLocation 返回，使用前确认服务支持"
+  }
+}

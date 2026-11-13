@@ -15,7 +15,7 @@
 
 ## 查找策略
 
-1. **优先检索 metadata/** → 在 `metadata/iclient-mapboxgl/` 中按类名或关键词查找 JSON，获取精确的参数名、类型、返回值结构
+1. **优先使用 SQLite FTS5 API 检索 CLI** → 运行 `node scripts/query-api.mjs search "<关键词>"`，或按需运行 `node scripts/query-api.mjs get <类名> [--member <成员名>]`，获取精确的参数名、类型、返回值结构。命令只返回匹配的 API 记录；不要读取整份大型 JSDoc JSON
 2. **补充参考 modules/** → 获取模板、最佳实践、完整可运行示例
 3. **业务规则校验** → 检查 `rules/` 下的坐标系规则、URL 格式等
 
@@ -64,7 +64,7 @@ map.on('load', function() { ... });
 | 查询数据（REST Data） | `FeatureService.getFeaturesBySQL/Geometry/Buffer()` |
 | 查询地图（REST Map） | `QueryService.queryBySQL/Bounds/Geometry/Distance()` |
 | 缓冲区分析 | `SpatialAnalystService.bufferAnalysis()` |
-| 其他分析 | `SpatialAnalystService.{method}()` — 从 metadata 检索可用方法 |
+| 其他分析 | `SpatialAnalystService.{method}()` — 通过 API 检索 CLI 查询可用方法 |
 
 ### 4. QueryService 与 FeatureService 的区别
 
@@ -74,15 +74,17 @@ map.on('load', function() { ... });
 | 图层/数据集名称 | `LayerName@DataSource` | `DataSource:DatasetName` |
 | 结果路径 | `result.recordsets[0].features` | `result.features` |
 
-## 元数据检索指南
+## API 检索指南
 
-### iclient-mapboxgl
+### iClient MapboxGL API 索引
 
-每个文件以类名命名（如 `FeatureService.json`），结构为数组：第一项是类定义（`kind:"class"`），后续是成员方法（`kind:"function"`）。
+SDK API 索引包含全部类型及成员，通过 SQLite FTS5 API 检索 CLI 查询。
+
+查询和索引构建使用 Node.js 22.5.0 或更高版本的内置 SQLite，无需安装 npm 依赖。
 
 检索方式：
-1. **按类名**：直接读取 `metadata/iclient-mapboxgl/{ClassName}.json`
-2. **按关键字**：搜索文件名（如 `Buffer`、`Overlay`、`Interpolation`、`Measure`）
+1. **按类名或成员名**：`node scripts/query-api.mjs get FeatureService`、`node scripts/query-api.mjs get HeatMapLayer --member addFeatures`
+2. **按关键词/中文场景**：`node scripts/query-api.mjs search "热力图专题图"` 或 `node scripts/query-api.mjs search "buffer overlay interpolation"`
 3. **按功能**：
 
 ```
@@ -98,7 +100,7 @@ map.on('load', function() { ... });
 
 | 场景 | 数据来源 |
 |------|----------|
-| iClient 业务 API（FeatureService、QueryService 等） | `metadata/iclient-mapboxgl/` |
+| iClient 业务 API（FeatureService、QueryService 等） | SQLite FTS5 API 检索 CLI |
 | Mapbox GL 原生 API + enhance 扩展（Map、Source、Layer、多坐标系等） | `metadata/mapbox-gl-enhance/`（含 `index.d.ts` 和 `style-spec.json`） |
 
 当用户请求涉及坐标系转换或多坐标系支持时，优先检索 `metadata/mapbox-gl-enhance/`。
@@ -108,7 +110,7 @@ map.on('load', function() { ... });
 场景：用户要执行叠加分析（modules 未覆盖）：
 
 ```
-1. 查找 metadata: GeometryOverlayAnalystParameters.json 或 DatasetOverlayAnalystParameters.json
+1. 用 `node scripts/query-api.mjs get GeometryOverlayAnalystParameters` 或 `DatasetOverlayAnalystParameters` 查询参数定义
 2. 提取参数: sourceGeometry, operateGeometry, operation (CLIP/INTERSECT/UNION/ERASE)
 3. 参考 modules/services/buffer-analysis.md 的 SpatialAnalystService 调用模式
 4. 生成代码

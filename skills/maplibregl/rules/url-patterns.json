@@ -1,0 +1,60 @@
+{
+  "iserver": {
+    "restMap": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/maps/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World",
+      "services": ["initMap（加载地图）", "MapService（地图信息）", "QueryService（地图查询）"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "补全为 /rest/maps/{mapName}",
+          "endsWithRest": "补全为 maps/{mapName}",
+          "needsMapName": "向用户询问地图名称"
+        }
+      }
+    },
+    "restData": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/data",
+      "example": "https://iserver.supermap.io/iserver/services/data-world/rest/data",
+      "services": ["FeatureService（数据查询与编辑）", "DatasetService（数据集管理）"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "补全为 /rest/data"
+        }
+      }
+    },
+    "mapVectorTile": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/maps/{mapName}/tileFeature.mvt",
+      "example": "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China/tileFeature.mvt?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}",
+      "services": ["MapLibre vector source（地图服务矢量瓦片）"],
+      "note": "source-layer 名称应从对应服务或样式元数据中确认"
+    },
+    "wmts": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/wmts100",
+      "capabilitiesPattern": "https?://{host}:{port}/iserver/services/{serviceName}/wmts100?SERVICE=WMTS&REQUEST=GetCapabilities",
+      "services": ["WMTS Capabilities（瓦片服务元数据）", "MapLibre raster source（栅格瓦片）"],
+      "note": "使用模块工具读取 Capabilities；图层、矩阵集和矩阵标识符必须由服务元数据确认"
+    },
+    "wms": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/ogc/wms/{mapName}",
+      "capabilitiesPattern": "https?://{host}:{port}/iserver/services/{serviceName}/ogc/wms/{mapName}?SERVICE=WMS&REQUEST=GetCapabilities",
+      "services": ["WMS Capabilities（地图服务元数据）", "MapLibre raster source（栅格图像）"],
+      "note": "WMS 图层、版本、样式、格式和 CRS 必须由服务元数据确认"
+    },
+    "restDataFgb": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/data",
+      "example": "https://iserver.supermap.io/iserver/services/data-world/rest/data",
+      "services": ["FeatureService（FGB 查询结果）"],
+      "note": "查询结果通过 result.newResourceLocation 提供 FGB 资源地址"
+    }
+  },
+  "urlToService": {
+    "/rest/maps/": "使用 initMap、MapService 或 QueryService",
+    "/rest/data": "使用 FeatureService 或 DatasetService",
+    "/tileFeature.mvt": "使用 MapLibre vector source，并核对 source-layer",
+    "/wmts100": "使用 WMTS Capabilities 工具，并将瓦片作为 MapLibre raster source 加载",
+    "/ogc/wms/": "使用 WMS Capabilities 工具，并将地图图像作为 MapLibre raster source 加载",
+    "SERVICE=WMTS": "使用 WMTS Capabilities 工具解析服务元数据",
+    "SERVICE=WMS": "使用 WMS Capabilities 工具解析服务元数据",
+    "FGB": "使用 FeatureService 查询并从结果中读取 FGB 资源地址"
+  }
+}

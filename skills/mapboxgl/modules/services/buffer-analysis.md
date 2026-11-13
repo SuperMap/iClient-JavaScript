@@ -59,7 +59,7 @@ new mapboxgl.supermap.SpatialAnalystService(serviceUrl)
 - 缓冲距离单位为米（左距离 + 右距离 = 总宽度）
 
 ## 类参考
-详细参数说明请参考 JSDoc 元数据：`metadata/iclient-mapboxgl/*.json`
+详细参数说明请运行 `node scripts/query-api.mjs get <类名>` 查询 SQLite FTS5 API 索引。
 - `GeometryBufferAnalystParameters`: kind=class
 - `SpatialAnalystService.bufferAnalysis`: kind=function
 - `BufferSetting`, `BufferDistance`, `BufferEndType`: kind=class

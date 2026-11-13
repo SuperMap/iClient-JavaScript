@@ -201,4 +201,4 @@ new mapboxgl.supermap.QueryService(mapUrl)
 
 ## 参数详情
 
-> 详见 metadata：[@QueryBySQLParameters](../../metadata/iclient-mapboxgl/QueryBySQLParameters.json)、[@QueryByBoundsParameters](../../metadata/iclient-mapboxgl/QueryByBoundsParameters.json)、[@QueryByGeometryParameters](../../metadata/iclient-mapboxgl/QueryByGeometryParameters.json)、[@QueryByDistanceParameters](../../metadata/iclient-mapboxgl/QueryByDistanceParameters.json)
+> 详见 SQLite FTS5 API 索引：`node scripts/query-api.mjs get QueryBySQLParameters`、`get QueryByBoundsParameters`、`get QueryByGeometryParameters`、`get QueryByDistanceParameters`

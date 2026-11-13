@@ -224,23 +224,23 @@ new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(param)
 
 ---
 
-## 校验规则（优先级: JSDoc JSON + url-patterns.json + modules）
+## 校验规则（优先级: SQLite FTS5 API 索引 + url-patterns.json + modules）
 
 ### 校验优先级
 
 | 校验内容 | 数据来源 | 说明 |
 |---------|---------|-----|
-| 类名/方法名 | `metadata/iclient-mapboxgl/*.json` | JSDoc 中 kind=class/member |
-| 参数名 | `metadata/iclient-mapboxgl/*.json` | JSDoc 中 properties 数组 |
+| 类名/方法名 | SQLite FTS5 API 检索 CLI | 从 API 索引按类名/成员名查询 |
+| 参数名 | SQLite FTS5 API 检索 CLI | 查询匹配 API 记录中的参数定义 |
 | URL 路径格式 | `rules/url-patterns.json` | **不是** JSDoc（JSDoc 只有 string 类型） |
 | 参数具体值 | `modules/*.md` | 结合业务场景 |
 
 ### 1. 类名/方法名校验
 
-**数据来源**：`metadata/iclient-mapboxgl/*.json`
+**数据来源**：SQLite FTS5 API 检索 CLI
 
 ```
-校验方法: 搜索 "name": "类名", "kind": "class"
+校验方法: `node scripts/query-api.mjs get <类名>`，需要时指定 `--member <成员名>`
 ```
 
 | 错误写法 | 正确写法 | 说明 |
@@ -264,7 +264,7 @@ JSDoc JSON 中 URL 参数类型是 `string`，无法区分具体路径格式。
 
 ### 3. 参数值校验
 
-**数据来源**：`modules/*.md` + `metadata/iclient-mapboxgl/*.json`
+**数据来源**：`modules/*.md` + SQLite FTS5 API 检索 CLI
 
 ```
 JSDoc 参数类型 (string, Object) → modules 中的具体业务值
@@ -281,7 +281,7 @@ JSDoc 参数类型 (string, Object) → modules 中的具体业务值
 **触发条件**：用户描述模糊时
 
 **操作步骤**：
-1. 从 `metadata/iclient-mapboxgl/*.json` 提取类的 `properties` 数组
+1. 使用 `node scripts/query-api.mjs get <类名>` 查询类的 `properties` 参数定义
 2. 从 `modules/*.md` 提取该场景的必需参数
 3. 向用户确认缺失参数
 
