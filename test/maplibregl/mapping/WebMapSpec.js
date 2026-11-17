@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';

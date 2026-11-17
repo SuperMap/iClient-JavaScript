@@ -1,5 +1,5 @@
-import maplibregl from 'maplibre-gl';
-import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
+﻿﻿import * as maplibregl from 'maplibre-gl';
+import mbglmap, { revertCRS, ensureOverlayLayersManager } from '../../tool/mock_maplibregl_map';
 import '../../../src/maplibregl/core/MapExtend';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { CustomOverlayLayer } from '../../../src/common/overlay/Base';
@@ -111,6 +111,7 @@ describe('maplibregl MapExtend', () => {
   });
 
   afterEach(() => {
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = {};
     revertCRS();
   })
@@ -124,6 +125,7 @@ describe('maplibregl MapExtend', () => {
     map.style._order = ['raster', 'fill-1', 'circle-1', 'l7_layer_1'];
     const mockLayer = { recalculate: () => {}, isHidden: () => true, setEventedParent: () => {}, is3D: () => false,hasOffscreenPass:()=>false,hasTransition:()=>false };
     map.style._layers = { raster: mockLayer, 'fill-1': mockLayer, 'circle-1': mockLayer, l7_layer_1: mockLayer };
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
     const layers = map.listLayers();
     expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
@@ -272,6 +274,7 @@ describe('maplibregl MapExtend', () => {
       for (const key in options) {
         spyOn(l7_layer_1, key).and.callThrough();
       }
+      ensureOverlayLayersManager(map);
       map.overlayLayersManager = {
         l7_layer_1,
         heatmap_1: { id: 'heatmap_1' }

@@ -17,14 +17,14 @@
 在 HTML 文件中引入 CSS  文件
 
 ```
-<link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+<link href='https://unpkg.com/maplibre-gl@6.14.0/dist/maplibre-gl.css' rel='stylesheet' />
 
 ```
 
 在 JS 文件中加入如下代码
 
 ```
-import maplibre from 'maplibre-gl';
+import * as maplibre from 'maplibre-gl';
 import {Logo, QueryByBoundsParameters, QueryService} from '@supermapgis/iclient-maplibregl';
 
 var map, host = "https://iserver.supermap.io";

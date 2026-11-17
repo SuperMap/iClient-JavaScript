@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { Point } from '../../../src/common/commontypes/geometry/Point';
 import { LineString } from '../../../src/common/commontypes/geometry/LineString';

@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import mbglmap from '../../tool/mock_maplibregl_map';
 import { initMap } from '../../../src/maplibregl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';

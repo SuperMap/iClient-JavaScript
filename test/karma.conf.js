@@ -7,6 +7,21 @@ const testPath = ['./test'];
 const testFilePattern = 'Spec.js';
 const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
 
+// maplibre-gl v6 仅以 ESM 发布，自包含的 mjs 里有两处 import.meta.url（仅用于推导 worker 地址）。
+// 测试由 browserify 打成经典脚本，ESM 的 import.meta 在经典脚本中非法，这里替换为 { url: "" }，
+// 真实 worker 地址改由 test-main-maplibregl.js 中的 setWorkerUrl 指定。
+function importMetaToEmptyObject({ types: t }) {
+  return {
+    visitor: {
+      MetaProperty(p) {
+        if (p.node.meta.name === 'import' && p.node.property.name === 'meta') {
+          p.replaceWith(t.objectExpression([t.objectProperty(t.identifier('url'), t.stringLiteral(''))]));
+        }
+      }
+    }
+  };
+}
+
 program.option('--single-run').option('--no-auto-watch').option('--server <server>');
 const testServer = program.parse(process.argv).opts().server || 'http://localhost:8090/iserver';
 console.log('testServer',testServer);
@@ -28,6 +43,24 @@ module.exports = function (config) {
 
     browserify: {
       debug: false,
+      cache: {},
+      packageCache: {},
+      // maplibre-gl v6 无 CommonJS 入口（package.json 仅 exports import 到 .mjs），browserify 无法直接解析裸名。
+      // 将裸名 'maplibre-gl' 别名到官方自包含的生产 mjs，由 babelify 转译为 CJS 打进 bundle。
+      configure(bundle) {
+        bundle.exclude('maplibre-gl');
+        const maplibreMjs = require.resolve('../node_modules/maplibre-gl/dist/maplibre-gl.mjs');
+        bundle.require(maplibreMjs, { expose: 'maplibre-gl' });
+        // 给 maplibre-gl 的 mjs 单独挂一个轻量 babel transform：
+        // 只做 ESM→CJS（preset-env）+ import.meta.url 替换，
+        // 不带 istanbul 覆盖率统计和 @babel/plugin-transform-runtime。
+        bundle.transform(require('babelify'), {
+          global: true,
+          only: [maplibreMjs],
+          presets: ['@babel/preset-env'],
+          plugins: [importMetaToEmptyObject]
+        });
+      },
       transform: [
         [
           require('babelify'),
@@ -139,7 +172,7 @@ module.exports = function (config) {
       '../src/mapboxgl/**/!(index).js': ['browserify'],
       // './mapboxgl/**/*Spec.js': ['browserify'],
       './test-main-mapboxgl.js': ['browserify'],
-      '../node_modules/maplibre-gl/dist/maplibre-gl-dev.js': ['browserify'],
+      // maplibre-gl v6 无 .js 入口，configure(bundle) 中已处理 mjs 别名，此处不直接预处理器
       '../src/maplibregl/**/!(index).js': ['browserify'],
       './test-main-maplibregl.js': ['browserify']
     },

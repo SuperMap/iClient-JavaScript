@@ -4,6 +4,7 @@
 import { WebMapService } from './WebMapService';
 import { transformServerUrl } from './utils/util';
 import cloneDeep from 'lodash.clonedeep';
+import { getMapTransform } from '../util/getMapTransform';
 
 const WORLD_WIDTH = 360;
 
@@ -717,7 +718,7 @@ export function createWebMapBaseExtending(SuperClass, { mapRepo }) {
 
       Object.assign(source, options);
       this.map.style.sourceCaches[sourceId].clearTiles();
-      this.map.style.sourceCaches[sourceId].update(this.map.transform);
+      this.map.style.sourceCaches[sourceId].update(getMapTransform(this.map));
       this.map.triggerRepaint();
     }
 

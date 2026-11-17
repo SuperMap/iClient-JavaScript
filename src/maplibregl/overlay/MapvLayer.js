@@ -7,6 +7,7 @@ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util
 import {
   getMeterPerMapUnit
 } from '@supermapgis/iclient-common/util/MapCalculateUtil';
+import { getMapTransform } from '@supermapgis/iclient-common/util/getMapTransform';
 /**
  * @class MapvLayer
  * @category  Visualization MapV
@@ -49,7 +50,7 @@ export class MapvLayer {
       getResolution: this._getResolution,
       validZoom: this._validZoom.bind(this)
     }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
-    this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+    this.mapContainer.style.perspective = getMapTransform(this.map).cameraToCenterDistance + 'px';
     this._bindEvent();
   }
 /**
@@ -112,7 +113,9 @@ export class MapvLayer {
     var centerPx = map.project(center);
     var self = this;
     return function (coordinate) {
-      if (map.transform.rotationMatrix || self.context === '2d') {
+      // v6 起 Transform 不再公开 rotationMatrix，改用 getBearing/getPitch 判断是否有旋转或倾斜
+      var hasRotation = map.getBearing() !== 0 || map.getPitch() !== 0;
+      if (hasRotation || self.context === '2d') {
         var worldPoint = map.project(new maplibregl.LngLat(coordinate[0], coordinate[1]));
         return [worldPoint.x, worldPoint.y];
       }

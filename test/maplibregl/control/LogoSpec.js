@@ -1,5 +1,5 @@
-import {Logo} from '../../../src/maplibregl/control/Logo';
-import maplibregl from 'maplibre-gl';
+﻿import {Logo} from '../../../src/maplibregl/control/Logo';
+import * as maplibregl from 'maplibre-gl';
 
 describe('maplibregl_Logo', () => {
     var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';

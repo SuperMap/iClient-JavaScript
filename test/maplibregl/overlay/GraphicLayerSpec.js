@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { GraphicLayer } from '../../../src/maplibregl/overlay/GraphicLayer';
 import { Graphic } from '../../../src/maplibregl/overlay/graphic';

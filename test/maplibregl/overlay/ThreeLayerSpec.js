@@ -1,6 +1,6 @@
-import THREE, {MeshPhongMaterial, Mesh, PointLight, BoxBufferGeometry} from 'three';
+﻿import THREE, {MeshPhongMaterial, Mesh, PointLight, BoxBufferGeometry} from 'three';
 import {ThreeLayer} from '../../../src/maplibregl/overlay/ThreeLayer';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 
 maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';

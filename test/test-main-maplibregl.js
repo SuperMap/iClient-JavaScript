@@ -1,4 +1,10 @@
 
+import * as maplibregl from 'maplibre-gl';
+
+// maplibre-gl v6 的 worker 地址由 import.meta.url 推导，经 browserify 打包后会被替换为空，
+// 这里显式指向 karma 托管的 worker 文件（test/libs/workers 下），避免真实 Map 加载样式时 worker 报错。
+maplibregl.setWorkerUrl('/base/libs/workers/maplibre-gl-worker.mjs');
+
 import './maplibregl/core/MapExtendSpec.js';
 import './maplibregl/core/UtilSpec.js';
 

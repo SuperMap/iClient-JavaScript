@@ -6,7 +6,18 @@
     "SuperMap",
     "maplibregl"
   ],
-  "main": "namespace.js",
+  "main": "index.js",
+  "module": "index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/iclient-maplibregl.mjs",
+      "module": "./dist/iclient-maplibregl.mjs",
+      "default": "./index.js"
+    },
+    "./dist/*": "./dist/*",
+    "./resources/*": "./resources/*",
+    "./*": "./*"
+  },
   "homepage": "https://iclient.supermap.io",
   "repository": {
     "type": "git",
@@ -16,9 +27,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@maplibre/maplibre-gl-style-spec": "^23.3.0",
-    "@supermapgis/iclient-common": "12.1.1",
+    "@supermapgis/iclient-common": "12.2.0",
     "lodash.clonedeep": "^4.5.0",
-    "maplibre-gl": "6.14",
+    "maplibre-gl": "6.14.0",
     "proj4": "2.17.0"
   }
 }

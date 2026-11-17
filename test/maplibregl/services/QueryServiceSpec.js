@@ -1,9 +1,9 @@
-import {QueryService} from '../../../src/maplibregl/services/QueryService';
+﻿import {QueryService} from '../../../src/maplibregl/services/QueryService';
 import {QueryByBoundsParameters} from '../../../src/common/iServer/QueryByBoundsParameters';
 import {QueryByDistanceParameters} from '../../../src/common/iServer/QueryByDistanceParameters';
 import {QueryBySQLParameters} from '../../../src/common/iServer/QueryBySQLParameters';
 import {QueryByGeometryParameters} from '../../../src/common/iServer/QueryByGeometryParameters';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.WorldURL;

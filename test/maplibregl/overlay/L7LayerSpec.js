@@ -1,5 +1,5 @@
-import maplibregl from 'maplibre-gl';
-import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
+﻿﻿import * as maplibregl from 'maplibre-gl';
+import mbglmap, { revertCRS, ensureOverlayLayersManager } from '../../tool/mock_maplibregl_map';
 import * as L7 from '../../../src/maplibregl/overlay/L7/l7-render';
 import * as mockL7 from '../../tool/mock_l7';
 import { L7Layer } from '../../../src/maplibregl/overlay/L7Layer';
@@ -265,6 +265,7 @@ describe('maplibregl_L7Layer', () => {
     map.style.fire = () => {};
     map.style.setLayoutProperty = () => {};
 
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { [layer.id]: layer };
     expect(l7Layer).not.toBeNull();
     map.setLayoutProperty = setLayoutProperty;
@@ -305,6 +306,7 @@ describe('maplibregl_L7Layer', () => {
     map.style.fire = () => {};
     map.style.setLayoutProperty = () => {};
 
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { [layer.id]: layer };
     expect(l7Layer).not.toBeNull();
     map.setLayoutProperty = setLayoutProperty;
@@ -390,6 +392,7 @@ describe('maplibregl_L7Layer', () => {
     map.style.fire = () => {};
     map.style.setLayoutProperty = () => {};
 
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { [layer.id]: layer };
     expect(layer.sourceId).toBe(layer.id);
     const layerSource = layer.getSource(layer.id);
@@ -423,6 +426,7 @@ describe('maplibregl_L7Layer', () => {
     map.addLayer(layer);
     expect(layer.isSourceLoaded()).toBeFalsy();
 
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { [layer.id]: layer };
     l7Layer.rawConfig.name = 'empty-test';
     expect(layer.querySourceFeatures().length).toBe(0);
@@ -464,6 +468,7 @@ describe('maplibregl_L7Layer', () => {
     l7Layer.source(geoData).shape('circle').color('#4cfd47');
     map.addLayer(layer);
     map.style.fire = () => {};
+    ensureOverlayLayersManager(map);
     map.overlayLayersManager = { [layer.id]: layer };
     const layerOnMap = layer.getLayer(layer.id);
     expect(layerOnMap.minzoom).toBe(options.minzoom);

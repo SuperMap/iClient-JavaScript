@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { createWebMapV3Extending } from '../../../src/common/mapping/WebMapV3';
 import { createMapClassExtending } from '../../../src/common/mapping/MapBase';
@@ -10,7 +10,7 @@ import { featureFilter, expression } from '@maplibre/maplibre-gl-style-spec';
 import spec from '@maplibre/maplibre-gl-style-spec/src/reference/v8';
 import { L7, L7Layer } from '../../../src/maplibregl/overlay/L7Layer';
 import * as mockL7 from '../../tool/mock_l7';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
+import mbglmap, { CRS, proj4, ensureOverlayLayersManager } from '../../tool/mock_maplibregl_map';
 import '../../resources/WebMapV3.js';
 import '../../resources/WebMapV5.js';
 
@@ -28,7 +28,7 @@ describe('maplibregl-webmap3.0', () => {
     mapRepo: maplibregl,
     crsManager: new CRSManager(),
     l7LayerUtil,
-    webMapService: mockWebMapService
+    webMapService: mocice
   };
   const WebMapV3 = createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), extendOptions);
   beforeEach(() => {
@@ -42,7 +42,8 @@ describe('maplibregl-webmap3.0', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    maplibregl.Map.prototype.overlayLayersManager = {};
+    // overlayLayersManager 在 maplibre-gl v6 的 Map.prototype 上是惰性 getter（无 setter），
+    // 不能再直接给原型赋值，实例会在首次读取时自行初始化。
     mbglmap.prototype.getL7Scene = maplibregl.Map.prototype.getL7Scene;
     maplibregl.CRS = CRS;
     maplibregl.proj4 = proj4;
@@ -74,7 +75,7 @@ describe('maplibregl-webmap3.0', () => {
         return Promise.resolve(new Response(appInfo));
       }
       return Promise.resolve();
-    });
+    });kWebMapServ
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
@@ -359,6 +360,7 @@ describe('maplibregl-webmap3.0', () => {
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(mapstudioWebmap.getLegends().length).toBe(0);
+      ensureOverlayLayersManager(map);
       map.overlayLayersManager = {
         GraticuleLayer: {
           id: 'GraticuleLayer',
