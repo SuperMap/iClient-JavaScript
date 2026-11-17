@@ -48,18 +48,16 @@ import {
 
 import { initMap, WebMap } from './mapping';
 
-import {
-  CommonUtil,
-  SuperMap,
-  Transform
-} from '@supermapgis/iclient-common/namespace';
+import { CommonUtil, SuperMap, Transform } from '@supermapgis/iclient-common/namespace';
 
-// v6 ESM 命名空间只读，本文件需要向其挂载 supermap，这里在文件内部复制一份可变对象使用
+// v6 ESM 命名空间只读，不能直接向其挂载 supermap，这里复制一份可变副本，
+// 仅供本文件组装 supermap 及挂回 window.maplibregl 使用，不对外导出；
+// npm 场景请直接 import * as maplibregl from 'maplibre-gl'
 const maplibregl = { ...maplibreglNamespace };
 
 export * from './index';
 
-maplibregl.supermap = {...SuperMap, ...maplibregl.supermap};
+maplibregl.supermap = { ...SuperMap, ...maplibregl.supermap };
 maplibregl.supermap.Graphic = Graphic;
 maplibregl.supermap.Transform = Transform;
 maplibregl.supermap.AddressMatchService = AddressMatchService;
@@ -102,3 +100,10 @@ maplibregl.supermap.L7Layer = L7Layer;
 maplibregl.supermap.initMap = initMap;
 maplibregl.supermap.WebMap = WebMap;
 maplibregl.supermap.WebSymbol = WebSymbol;
+
+// 兼容 UMD 产物及 external / 全局核心的用法：核心库（标准版 maplibre-gl 或 maplibre-gl-enhance）
+// 由页面先行加载提供 window.maplibregl（webpack externals 将 'maplibre-gl' 指向该全局），
+// 这里把 supermap 挂回该全局
+if (typeof window !== 'undefined' && window.maplibregl) {
+  window.maplibregl.supermap = maplibregl.supermap;
+}

@@ -1,7 +1,7 @@
-import { HeatMapLayer } from '../../../src/maplibregl/overlay/HeatMapLayer';
+﻿import { HeatMapLayer } from '../../../src/maplibregl/overlay/HeatMapLayer';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 import {LonLat} from '../../../src/common/commontypes/LonLat';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { truncate } from '@turf/turf';
 
 var url = GlobeParameter.worldMapURL;

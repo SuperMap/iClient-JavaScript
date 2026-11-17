@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿import * as maplibregl from 'maplibre-gl';
 import { GraticuleLayer } from '../../../src/maplibregl/overlay/GraticuleLayer';
 
 describe('maplibregl_GraticuleLayer', () => {

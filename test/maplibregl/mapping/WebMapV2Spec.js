@@ -1,5 +1,5 @@
-import maplibregl from 'maplibre-gl';
-import mbglmap, { CRS, proj4 } from '../../tool/mock_maplibregl_map';
+﻿import * as maplibregl from 'maplibre-gl';
+import mbglmap, { CRS, proj4, ensureOverlayLayersManager } from '../../tool/mock_maplibregl_map';
 import { WebMap } from '../../../src/maplibregl/mapping/WebMap';
 import * as MapManagerUtil from '../../../src/maplibregl/mapping/webmap/MapManager';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
@@ -2104,6 +2104,7 @@ describe('maplibregl_WebMapV2', () => {
       const appreciableLayers1 = datavizWebmap.getLayers();
       expect(appreciableLayers1.length).toBe(uniqueLayer_polygon.layers.length + 1);
       expect(appreciableLayers1.length).toBeGreaterThanOrEqual(data.layers.length);
+      ensureOverlayLayersManager(data.map);
       data.map.overlayLayersManager = {
         GraticuleLayer: {
           id: 'GraticuleLayer',

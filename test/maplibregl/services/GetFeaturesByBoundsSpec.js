@@ -1,9 +1,9 @@
-import { FeatureService } from '../../../src/maplibregl/services/FeatureService';
+﻿import { FeatureService } from '../../../src/maplibregl/services/FeatureService';
 import { GetFeaturesByBoundsParameters } from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
 import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
 import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 var url = 'http://supermap:8090/iserver/services/data-world/rest/data';
 

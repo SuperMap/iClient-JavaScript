@@ -1,5 +1,6 @@
 import { Util as CommonUtil } from '../../commontypes/Util';
 import { CustomOverlayLayer } from '../Base';
+import { getMapTransform } from '../../util/getMapTransform';
 
 /**
  * @class L7LayerBase
@@ -326,9 +327,10 @@ export class L7LayerBase extends CustomOverlayLayer {
       const cb = (result = []) => {
         datas = result;
       };
+      const transform = getMapTransform(this.map);
       const bounds = [
         [0, 0],
-        [this.map.transform.width - 1, this.map.transform.height - 1] // -1 是解决报错问题
+        [transform.width - 1, transform.height - 1] // -1 是解决报错问题
       ];
       this.queryRenderedFeatures(bounds, { layerCapture: false }, cb);
     }

@@ -25,6 +25,7 @@ module.exports = {
   resolve: configBase.resolve,
 
   externals: Object.assign({}, configBase.externals, {
+    //核心库（标准版 maplibre-gl 或 maplibre-gl-enhance）由页面先行加载，提供 window.maplibregl
     'maplibre-gl': 'maplibregl',
     three: 'function(){try{return THREE}catch(e){return {}}}()',
     'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
@@ -38,7 +39,6 @@ module.exports = {
   }),
 
   module: {
-    noParse: /[\/\\]node_modules[\/\\]maplibre-gl[\/\\]dist[\/\\]maplibre-gl\.js$/,
     rules: (function () {
       let moduleRules = [];
       moduleRules.push(configBase.module.rules.img);

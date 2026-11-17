@@ -9,6 +9,7 @@ import { ArrayStatistic } from '../util/ArrayStatistic';
 import { FetchRequest } from '../util/FetchRequest';
 import { SourceListModelV2 } from './utils/SourceListModelV2';
 import { isSameRasterLayer, mergeFeatures } from './utils/util';
+import { getMapTransform } from '../util/getMapTransform';
 
 const INTERNET_MAP_BOUNDS = {
   TIANDITU: [-180, -90, 180, 90],
@@ -3211,7 +3212,7 @@ export function createWebMapV2Extending(SuperClass, { MapManager, mapRepo, crsMa
 
       Object.assign(source, options);
       this.map.style.sourceCaches[sourceId].clearTiles();
-      this.map.style.sourceCaches[sourceId].update(this.map.transform);
+      this.map.style.sourceCaches[sourceId].update(getMapTransform(this.map));
       this.map.triggerRepaint();
     }
 

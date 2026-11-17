@@ -11,6 +11,7 @@
 
 import * as THREE from "three";
 import { Transform } from "./Transform";
+import { getMapTransform } from "../../util/getMapTransform";
 
 const projection = Transform.projection;
 const {
@@ -185,7 +186,7 @@ export class ThreeLayerRenderer {
 
     let size = this.getMapSize();
     let scale = Math.pow(2, projection.nativeMaxZoom - map.getZoom() - 1);
-    let fovRatio = Math.tan(map.transform.fov / 2 * RADIAN);
+    let fovRatio = Math.tan(getMapTransform(map).fov / 2 * RADIAN);
 
     let camera = this.camera;
 
@@ -472,7 +473,7 @@ export class ThreeLayerRenderer {
     context.canvas = this.canvas;
     this.context = context;
 
-    let fov = map.transform.fov;
+    let fov = getMapTransform(map).fov;
     let fovRatio = Math.tan(fov / 2 * RADIAN);
     let maxScale = this.getScale(projection.minZoom) / this.getScale(projection.nativeMaxZoom);
     let far = maxScale * size.height / 2 / fovRatio;

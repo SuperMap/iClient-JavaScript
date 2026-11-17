@@ -1,4 +1,4 @@
-import {ProcessingService} from '../../../src/maplibregl/services/ProcessingService';
+﻿import {ProcessingService} from '../../../src/maplibregl/services/ProcessingService';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
 import {SecurityManager} from '../../../src/common/security/SecurityManager';
 import {KernelDensityJobParameter} from '../../../src/common/iServer/KernelDensityJobParameter';
@@ -12,7 +12,7 @@ import {TopologyValidatorJobsParameter} from '../../../src/common/iServer/Topolo
 import {SummaryAttributesJobsParameter} from '../../../src/common/iServer/SummaryAttributesJobsParameter';
 import {OutputSetting} from '../../../src/common/iServer/OutputSetting';
 import {DatasourceConnectionInfo} from '../../../src/common/iServer/DatasourceConnectionInfo';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 describe('maplibregl_ProcessingService', () => {
     var token, url, processingService;

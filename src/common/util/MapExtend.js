@@ -1,5 +1,6 @@
 
 import { CustomOverlayLayer } from '../overlay/Base';
+import { getMapTransform } from './getMapTransform';
 
 export function createMapExtendExtending(product) {
   // 将扩展方法所委托的原始方法在此固化，避免扩展方法被直接拷贝到 Map.prototype 后，
@@ -129,7 +130,7 @@ export function createMapExtendExtending(product) {
     }
     
     updateTransform(units, originX, originY, centerX, centerY, width, height) {
-      this.transform.units = units;
+      getMapTransform(this).units = units;
       const mercatorZfromAltitude = this.mercatorZfromAltitude;
       product.MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
         altitude = altitude || 0;
@@ -228,7 +229,8 @@ export function createMapExtendExtending(product) {
         overlayLayers = options.layers.filter(item => this.overlayLayersManager[item]);
         layersOnMap = options.layers.filter(item => !this.overlayLayersManager[item]);
       }
-      const nextGeometry = geometry || [[0, 0], [this.transform.width, this.transform.height]];
+      const transform = getMapTransform(this);
+      const nextGeometry = geometry || [[0, 0], [transform.width, transform.height]];
       const nextOptions  = options || {};
       delete nextOptions.layers;
       const resultOnOverlayerLayers = overlayLayers.reduce((result, item) => {

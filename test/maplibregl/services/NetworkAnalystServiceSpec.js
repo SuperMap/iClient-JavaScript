@@ -1,4 +1,4 @@
-import { NetworkAnalystService } from '../../../src/maplibregl/services/NetworkAnalystService';
+﻿import { NetworkAnalystService } from '../../../src/maplibregl/services/NetworkAnalystService';
 import { BurstPipelineAnalystParameters } from '../../../src/common/iServer/BurstPipelineAnalystParameters';
 import { ComputeWeightMatrixParameters } from '../../../src/common/iServer/ComputeWeightMatrixParameters';
 import { FindClosestFacilitiesParameters } from '../../../src/common/iServer/FindClosestFacilitiesParameters';
@@ -16,7 +16,7 @@ import { TraceAnalystParameters } from '../../../src/common/iServer/TraceAnalyst
 import { ConnectedEdgesAnalystParameters } from '../../../src/common/iServer/ConnectedEdgesAnalystParameters';
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var url = GlobeParameter.networkAnalystURL;

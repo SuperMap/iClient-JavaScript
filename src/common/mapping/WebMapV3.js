@@ -1613,6 +1613,7 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
   _transformLineStyle({ oldWidth, symbol, defaultStyle, customValue }) {
     const { paint = {} } = symbol;
     const width = customValue.width ?? customValue.height;
+    const lineOpacity = paint['line-opacity'];
     let newSymbol;
     if (width !== undefined) {
       newSymbol = this._updateSingleStyleByWidth(oldWidth, width, symbol);
@@ -1621,7 +1622,10 @@ export function createWebMapV3Extending(SuperClass, { MapManager, mapRepo, crsMa
     return {
       lineWidth: nextPaint[LINE_WIDTH_KEY] ?? defaultStyle.height,
       // 0 是合法的线不透明度，用 ?? 而不是 ||，避免透明线被回退成不透明
-      opacity: customValue.opacity ?? paint['line-opacity'] ?? defaultStyle.opacity,
+      opacity:
+        customValue.opacity != null
+          ? customValue.opacity
+          : lineOpacity != null ? lineOpacity : defaultStyle.opacity,
       color: customValue.color || paint['line-color'] || defaultStyle.backgroundColor,
       lineDash: nextPaint['line-dasharray'] || [],
       lineOffset: nextPaint['line-offset'] || 0

@@ -1,9 +1,9 @@
-import { FeatureService } from '../../../src/maplibregl/services/FeatureService';
+﻿import { FeatureService } from '../../../src/maplibregl/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
 import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
 import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 var url = GlobeParameter.dataServiceURL;
 describe('maplibregl_FeatureService_getFeaturesByGeometry', () => {

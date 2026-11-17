@@ -1,4 +1,4 @@
-import maplibregl from 'maplibre-gl';
+﻿﻿import * as maplibregl from 'maplibre-gl';
 import proj4 from 'proj4';
 
 class VectorTileSource {
@@ -18,6 +18,25 @@ function functor(x) {
   return function () {
     return x;
   };
+}
+
+/**
+ * 确保 map 实例拥有可写的 overlayLayersManager 属性。
+ * maplibre-gl v6 中该属性在 Map.prototype 上是惰性 getter（没有 setter），
+ * 直接赋值会抛错，需要先读取以触发 getter 在实例上生成可写属性。
+ * @param {Object} map 地图实例
+ * @returns {Object} overlayLayersManager
+ */
+export function ensureOverlayLayersManager(map) {
+  if (!map.overlayLayersManager) {
+    Object.defineProperty(map, 'overlayLayersManager', {
+      value: {},
+      writable: true,
+      configurable: true,
+      enumerable: true
+    });
+  }
+  return map.overlayLayersManager;
 }
 
 const Map = function (options) {
@@ -188,7 +207,7 @@ const Map = function (options) {
     return this;
   };
 
-  this.overlayLayersManager = {};
+  ensureOverlayLayersManager(this);
 
   this.addSource = function (name, source) {
     if (source && source.drawImageCallback) {
@@ -491,6 +510,7 @@ class CRS {
   
   static set(crs) {
     const key = crs.getEpsgCode().replace(":", "").toUpperCase();
+    keyCache.push(key);
     CRS[key] = crs;
   }
 }
@@ -500,9 +520,21 @@ CRS.defaultWKTs = {
   'EPSG:4214': 'GEOGCS["Beijing 1954",DATUM["Beijing_1954",SPHEROID["Krassowsky 1940",6378245,298.3],TOWGS84[15.8,-154.4,-82.3,0,0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4214"]]',
   'EPSG:4610': 'GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]]'
 };
+let keyCache = [];
 CRS.EPSG3857 = new CRS('EPSG:3857', [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
 CRS.EPSG4326 = new CRS('EPSG:4326', [-180, -90, 180, 90]);
 
+function revertCRS() {
+  keyCache.forEach((key) => {
+    if (['EPSG4490', 'EPSG4214', 'EPSG4610', 'EPSG3857', 'EPSG4326'].indexOf(key) === -1) {
+      if (CRS.hasOwnProperty(key)) {
+        delete CRS[key];
+      }
+    }
+  });
+  keyCache = [];
+}
+
 export default Map;
 var maplibreglMock = { Map };
-export { maplibreglMock, CRS, proj4 };
+export { maplibreglMock, CRS, proj4, revertCRS };
