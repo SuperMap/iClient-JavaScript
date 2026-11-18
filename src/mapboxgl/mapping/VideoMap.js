@@ -16,7 +16,7 @@ import GeojsonSource from './GeojsonSource';
 import VideoMapDraw from './VideoMapDraw';
 import { SeiPoseTimeline } from './utils/SeiPoseTimeline';
 import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessage } from './utils/SeiHlsSource';
-import { normalizeSeiPose } from './utils/seiParser';
+import { normalizeSeiPose, normalizeSeiProjection } from './utils/seiParser';
 import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 const MAP_EVENTS = [
@@ -96,9 +96,9 @@ const MAP_EVENTS = [
 /**
  * @version 12.1.2
  * @typedef {function} VideoMap.SeiParser
- * @description 自定义 SEI 解析函数。入参为 hls.js 提供的单个 SEI sample 与上下文，返回相机参数，返回 `null` 表示该样本无效。
+ * @description 自定义 SEI 解析函数。入参为 hls.js 提供的单个 SEI sample 与上下文，返回内部坐标约定下的相机参数（相机 x/y 为 EPSG:3857，extent 为 EPSG:4326），返回 `null` 表示该样本无效。
  * @param {Object} sample - SEI 样本，形如 `{payloadType, pts, userData, userDataBytes, uuid}`。
- * @param {Object} context - 上下文，含 `{frag, sample, videoWidth, videoHeight}`。
+ * @param {Object} context - 上下文，含 `{frag, sample, videoWidth, videoHeight, seiProjection}`。自定义解析器返回值仍需使用内部坐标约定。
  * @returns {VideoMap.VideoParameters|null}
  */
 
@@ -120,6 +120,7 @@ const MAP_EVENTS = [
  * @param {boolean} [options.loop=true] - 视频是否循环播放。
  * @param {number} [options.interval=0.1] - 动态配准参数的时间重采样间隔，单位秒。仅当 videoParameters 为数组时生效：对原始相机参数序列按该间隔做插值或抽稀，决定相机位置随时间变化的精度。
  * @param {string} [options.parametersSource='videoParameters'] - 配准参数来源。`'videoParameters'` 使用构造参数；`'sei'` 使用视频流 SEI 实时下发的相机参数。
+ * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`；内部相机坐标统一为 EPSG:3857，extent 统一为 EPSG:4326。
  * @param {VideoMap.SeiParser} [options.seiParser] - 自定义 SEI 解析函数，仅 `parametersSource` 为 `'sei'` 时生效。
  * @param {number} [options.seiOffset=0] - SEI 时间轴与视频播放头的同步偏移，单位秒。SEI 姿态会比播放头提前到达，该值用于微调两者对齐关系。
  * @param {Object} [options.hlsConfig] - hls.js 实例配置，会原样传入 `new Hls(config)`，用于覆盖默认直播参数（`liveSyncDurationCount`、`backBufferLength` 等）。这里只放 hls.js 认识的键，iClient 自身的播放策略不在此配置。hls.js 与 video.js 一样由页面引入固定版本（全局 `Hls`），实例固定由 iClient 内部创建，业务无需传入。
@@ -175,6 +176,7 @@ export class VideoMap extends mapboxgl.Evented {
       styleOptions,
       interval,
       parametersSource,
+      seiProjection,
       seiParser,
       seiOffset,
       hlsConfig,
@@ -194,6 +196,7 @@ export class VideoMap extends mapboxgl.Evented {
     }
     this.parametersSource = parametersSource || 'videoParameters';
     this.isSeiSource = this.parametersSource === 'sei';
+    this.seiProjection = normalizeSeiProjection(seiProjection);
     this.seiParser = typeof seiParser === 'function' ? seiParser : undefined;
     this.seiOffset = seiOffset || 0;
     this.url = url;
@@ -987,7 +990,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @function VideoMap.prototype.pushSeiParameters
    * @version 12.1.2
    * @description 手动写入相机参数，用于不走 hls.js 的场景（如 WebSocket 推送 SEI、服务端解析等）。
-   * 相机坐标要求直接给出 EPSG:3857（与 `videoParameters` 一致），`extent` 归一化为 EPSG:4326。
+   * 输入相机坐标与 extent 按构造参数 `seiProjection` 指定的源投影解析；内部相机坐标为 EPSG:3857、extent 为 EPSG:4326。
    * @param {Array<Object>|Object} items - 相机参数，每项需带 `time`（与视频播放时间一致，单位秒）。
    * @returns {Array<Object>} 本次新增的姿态。
    */
@@ -998,7 +1001,7 @@ export class VideoMap extends mapboxgl.Evented {
     const list = Array.isArray(items) ? items : [items];
     const normalized = [];
     for (let i = 0; i < list.length; i++) {
-      const pose = normalizeSeiPose(list[i]);
+      const pose = normalizeSeiPose(list[i], this.seiProjection);
       if (pose) {
         pose.time = list[i].time;
         normalized.push(pose);
@@ -1515,7 +1518,8 @@ export class VideoMap extends mapboxgl.Evented {
     const added = this.seiTimeline.ingest(data, {
       parser: this.seiParser,
       videoWidth: this.videoWidth,
-      videoHeight: this.videoHeight
+      videoHeight: this.videoHeight,
+      seiProjection: this.seiProjection
     });
     /**
      * @version 12.1.2

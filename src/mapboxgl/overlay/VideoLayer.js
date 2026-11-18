@@ -10,7 +10,7 @@ import { silencePlayRejection } from '@supermapgis/iclient-common/overlay/video/
  import { fovXToFx, fovYToFy, smartTimeProcessor, FastRangeSearcher } from '../mapping/utils/VideoMapUtil';
  import { SeiPoseTimeline } from '../mapping/utils/SeiPoseTimeline';
  import proj4 from 'proj4';
-import { normalizeSeiPose } from '../mapping/utils/seiParser';
+import { normalizeSeiPose, normalizeSeiProjection } from '../mapping/utils/seiParser';
 import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessage } from '../mapping/utils/SeiHlsSource';
  
  /**
@@ -58,6 +58,8 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
   * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
   * @param {Array} [options.clipRegion] - 裁剪范围，视频像素坐标下的四角点 `[[x, y], ...]`。SEI 模式下不传时自动取首个 SEI 参数中的 `clipRegion`，两者都没有时按整帧裁剪。
   * @param {string} [options.parametersSource='videoParameters'] - 配准参数来源。`videoParameters` 表示使用 `videoParameters` 静态/数组参数；`sei` 表示使用视频流 TS 分片内携带的 SEI 参数（此时 `videoParameters` 可不传）。
+  * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`；内部相机坐标统一为 EPSG:3857，extent 统一为 EPSG:4326。
+  * @param {Function} [options.seiParser] - 自定义 SEI 解析函数；接收 SEI sample 与上下文，返回内部坐标约定下的相机参数（相机 x/y 为 EPSG:3857，extent 为 EPSG:4326）。
   * @param {VideoLayer.SeiPoseTimeline} [options.parametersTimeline] - SEI 参数时间轴，传入 VideoMap 的 `getSeiTimeline()` 可与 VideoMap 共享同一份 SEI 数据；不传则 VideoLayer 内部自建时间轴。
   * @param {number} [options.maxCachedPoses=30] - SEI 模式下缓存的最大配准结果数量，超出后按时间顺序淘汰。
   * SEI 只能由 hls.js 解析：video.js 内置的 VHS 在 Worker 内 transmux，SEI 被丢弃且不外抛事件，因此 SEI + m3u8 时地址不会交给 video.js，而由 hls.js 实例接管。hls.js 为外部固定三方库，由页面通过 `script` 引入（全局 `Hls`），iClient 内部固定创建实例。
@@ -104,6 +106,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      }
      this.parametersSource = this.options.parametersSource || 'videoParameters';
      this.isSeiSource = this.parametersSource === 'sei';
+     this.seiProjection = normalizeSeiProjection(this.options.seiProjection);
      this.maxCachedPoses = Math.max(1, this.options.maxCachedPoses || 30);
      if (!this.videoParameters && !this.isSeiSource) {
        throw new Error('videoParameters must be set!');
@@ -949,7 +952,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @version 12.1.2
     * @function VideoLayer.prototype.pushSeiParameters
     * @description 手动推送已解析的 SEI 配准参数（如通过 WebSocket 自行接收 SEI 时使用）。
-    * 相机坐标要求直接给出 EPSG:3857（与 `videoParameters` 一致），`extent` 归一化为 EPSG:4326。
+    * 输入相机坐标与 extent 按构造参数 `seiProjection` 指定的源投影解析；内部相机坐标为 EPSG:3857、extent 为 EPSG:4326。
     * @param {Array<Object>} items - 配准参数数组，每项需包含 `time`、`pitch`、`roll`、`yaw`、`x`、`y`、`z`、`fovX`、`fovY`、`centerX`、`centerY`。
     * @returns {VideoLayer} 当前图层。
     */
@@ -970,7 +973,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     _normalizeSeiPoses(items) {
       const list = [];
       for (let i = 0; i < items.length; i++) {
-        const pose = normalizeSeiPose(items[i]);
+        const pose = normalizeSeiPose(items[i], this.seiProjection);
         if (pose) {
           pose.time = items[i].time;
           list.push(pose);
@@ -1093,7 +1096,8 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      this.seiTimeline.ingest(data, {
        parser: typeof this.options.seiParser === 'function' ? this.options.seiParser : undefined,
        videoWidth: this.videoWidth,
-       videoHeight: this.videoHeight
+       videoHeight: this.videoHeight,
+       seiProjection: this.seiProjection
      });
    }
 

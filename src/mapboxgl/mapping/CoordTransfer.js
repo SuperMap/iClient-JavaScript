@@ -218,7 +218,7 @@ export default class CoordTransfer {
       return null;
     }
     const depth = camera[2];
-    if (!(depth > zNear)) {
+    if (!(depth >= zNear)) {
       return null;
     }
     return [

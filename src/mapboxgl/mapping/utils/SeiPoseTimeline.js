@@ -16,8 +16,9 @@ import { parseSeiSample } from './seiParser';
  * 时间换算：
  *   媒体时间 = PTS（当 PTS 与 frag.start 同轴时）或 分片起点 + 分片内 PTS 偏移，再减去 mediaOffset。
  *   PTS 的单位（秒 / 90kHz）与时间轴（绝对 / 分片内相对）由 toSeconds 结合 frag.start 自动判定；
- *   mediaOffset 由 FRAG_BUFFERED 时的 buffered.start(0) 与最早分片起点标定，
- *   用于补偿 MSE 时间轴与播放列表时间轴的差值。
+ * sample 没有 PTS 且分片起点、时长有效时，按样本序号均匀落在分片内各等分区间中心；
+ * mediaOffset 由 FRAG_BUFFERED 时的 buffered.start(0) 与最早分片起点标定，
+ * 用于补偿 MSE 时间轴与播放列表时间轴的差值。
  */
 
 const SAME_TIME_EPSILON = 1e-4;
@@ -43,6 +44,9 @@ const SEI_POSE_WINDOW = 10;
  * @returns {Object} `{value, absolute}`，value 为秒值，absolute 表示是否与 frag.start 同轴。
  */
 function toSeconds(pts, fragStart) {
+  if (pts === null || pts === undefined || pts === '') {
+    return { value: undefined, absolute: false };
+  }
   const num = Number(pts);
   if (!Number.isFinite(num)) {
     return { value: undefined, absolute: false };
@@ -133,6 +137,14 @@ export class SeiPoseTimeline {
 
   get size() {
     return this._poses.length;
+  }
+
+  /**
+   * @description 已写入姿态中最早的分片起点（播放列表时间，秒）。尚未写入时为 `undefined`。
+   * @returns {number|undefined}
+   */
+  get earliestFragStart() {
+    return this._earliestFragStart;
   }
 
   /**
@@ -243,6 +255,7 @@ export class SeiPoseTimeline {
    * @param {Function} [options.parser] - 自定义 SEI 解析函数 `(sample, ctx) => pose|null`。
    * @param {number} [options.videoWidth] - 视频宽度。
    * @param {number} [options.videoHeight] - 视频高度。
+   * @param {string} [options.seiProjection='EPSG:3857'] - 内置解析器使用的 SEI 坐标源投影。
    * @returns {Array<Object>} 本次新增的姿态（媒体时间）。
    */
   ingest(data, options) {
@@ -254,7 +267,14 @@ export class SeiPoseTimeline {
     const frag = data.frag || {};
     const fragSn = frag.sn !== undefined ? frag.sn : '';
     const rawFragStart = Number(frag.start);
-    const hasFragStart = Number.isFinite(rawFragStart);
+    const hasFragStart = Number.isFinite(rawFragStart) && frag.start !== null && frag.start !== '';
+    const rawFragDuration = Number(frag.duration);
+    const hasFragTiming =
+      hasFragStart &&
+      Number.isFinite(rawFragDuration) &&
+      frag.duration !== null &&
+      frag.duration !== '' &&
+      rawFragDuration > 0;
     let fragStart = rawFragStart;
     if (!hasFragStart) {
       // 没有分片起点时退化为在上一帧基础上顺延，避免整段数据被丢弃
@@ -270,7 +290,7 @@ export class SeiPoseTimeline {
     let isAbsolute = false;
     let detected = false;
     for (let i = 0; i < samples.length; i++) {
-      const info = toSeconds(samples[i] && samples[i].pts, rawFragStart);
+      const info = toSeconds(samples[i] && samples[i].pts, hasFragStart ? rawFragStart : undefined);
       if (info.value === undefined) {
         continue;
       }
@@ -284,12 +304,21 @@ export class SeiPoseTimeline {
     }
 
     const added = [];
-    samples.forEach((sample) => {
+    samples.forEach((sample, sampleIndex) => {
       if (!sample) {
         return;
       }
-      const pts = toSeconds(sample.pts, rawFragStart).value;
-      const key = `${fragSn}:${pts === undefined ? 'na' : pts.toFixed(3)}`;
+      const pts = toSeconds(sample.pts, hasFragStart ? rawFragStart : undefined).value;
+      const fallbackTime =
+        pts === undefined && hasFragTiming
+          ? rawFragStart + ((sampleIndex + 0.5) * rawFragDuration) / samples.length
+          : undefined;
+      const key =
+        pts !== undefined
+          ? `${fragSn}:${pts.toFixed(3)}`
+          : fallbackTime !== undefined
+          ? `${fragSn}:${rawFragStart}:fallback:${sampleIndex}`
+          : `${fragSn}:${hasFragStart ? rawFragStart : ''}:na`;
       if (this._seen.has(key)) {
         return;
       }
@@ -301,7 +330,8 @@ export class SeiPoseTimeline {
           frag,
           sample,
           videoWidth: opts.videoWidth,
-          videoHeight: opts.videoHeight
+          videoHeight: opts.videoHeight,
+          seiProjection: opts.seiProjection
         });
       } catch (e) {
         pose = null;
@@ -312,7 +342,14 @@ export class SeiPoseTimeline {
       }
       const ptsDelta = pts !== undefined && basePts !== undefined ? pts - basePts : 0;
       // 与 frag.start 同轴时直接用 PTS 作为媒体时间，避免不同分片的 PTS 起始偏移造成跳变
-      const rawTime = pts !== undefined && (isAbsolute || !hasFragStart) ? pts : fragStart + ptsDelta;
+      const rawTime =
+        pts !== undefined
+          ? isAbsolute || !hasFragStart
+            ? pts
+            : fragStart + ptsDelta
+          : fallbackTime !== undefined
+          ? fallbackTime
+          : fragStart;
       const entry = Object.assign({}, pose, { rawTime });
       if (this._insert(entry)) {
         added.push(Object.assign({}, entry, { time: entry.rawTime - this.mediaOffset }));

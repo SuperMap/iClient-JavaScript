@@ -22,8 +22,8 @@
  * `userData` 可能是 JSON 字符串，也可能是已经反序列化好的对象，两种都要兼容。
  *
  * 输出统一为 iClient 内部约定的空间：相机 `x`/`y` 为 EPSG:3857（投影平面，与 `z` 的米制单位一致），
- * `extent` 为 EPSG:4326（经纬度，供 `map.project` 使用）。相机坐标与 `videoParameters` 保持一致，
- * 要求 SEI 直接下发 EPSG:3857；`extent` 则按数值范围自动识别并归一化到 EPSG:4326。
+ * `extent` 为 EPSG:4326（经纬度，供 `map.project` 使用）。SEI 坐标源投影由 `seiProjection` 指定，
+ * 默认 EPSG:3857。
  */
 
 import proj4 from 'proj4';
@@ -31,6 +31,8 @@ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 const DEFAULT_VIDEO_WIDTH = 1920;
 const DEFAULT_VIDEO_HEIGHT = 1080;
+const DEFAULT_SEI_PROJECTION = 'EPSG:3857';
+const SUPPORTED_SEI_PROJECTIONS = [DEFAULT_SEI_PROJECTION, 'EPSG:4326'];
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -86,13 +88,27 @@ function parseUserData(userData) {
 
 /**
  * @private
- * @description 判断坐标是否落在经纬度范围内，用于区分 EPSG:4326 与 EPSG:3857 的 SEI 数据。
+ * @description 判断坐标是否落在经纬度范围内，用于提示 EPSG:3857 配置下疑似误传的经纬度。
  * @param {number} x - 横坐标。
  * @param {number} y - 纵坐标。
  * @returns {boolean} 是否为经纬度。
  */
 export function isLngLatCoordinate(x, y) {
   return Math.abs(x) <= 180 && Math.abs(y) <= 90;
+}
+
+/**
+ * @private
+ * @description 校验 SEI 坐标源投影。
+ * @param {string} projection - SEI 坐标源投影。
+ * @returns {string} 有效的投影代码。
+ */
+export function normalizeSeiProjection(projection) {
+  const sourceProjection = projection === undefined ? DEFAULT_SEI_PROJECTION : projection;
+  if (SUPPORTED_SEI_PROJECTIONS.indexOf(sourceProjection) < 0) {
+    throw new RangeError(`Unsupported SEI projection: ${sourceProjection}. Supported projections are EPSG:3857 and EPSG:4326.`);
+  }
+  return sourceProjection;
 }
 
 let _warnedPosePrjMismatch = false;
@@ -162,15 +178,16 @@ export function formatSeiClipRegion(clipRegion) {
 
 /**
  * @private
- * @description 把相机参数归一化为 iClient 内部使用的空间：`x`/`y` 保持 EPSG:3857，`extent` 转为 EPSG:4326。
- * 与 `videoParameters` 一致，相机坐标要求直接给出 EPSG:3857；`extent` 允许经纬度或 EPSG:3857，按数值范围自动识别。
+ * @description 把相机参数按指定源投影归一化为 iClient 内部使用的空间：`x`/`y` 转为 EPSG:3857，`extent` 转为 EPSG:4326。
  * @param {Object} pose - 相机参数。
+ * @param {string} [projection='EPSG:3857'] - SEI 坐标源投影。
  * @returns {Object|null} 归一化后的相机参数。
  */
-export function normalizeSeiPose(pose) {
+export function normalizeSeiPose(pose, projection) {
   if (!pose) {
     return null;
   }
+  const sourceProjection = normalizeSeiProjection(projection);
   const x = toFiniteNumber(pose.x);
   const y = toFiniteNumber(pose.y);
   if (x === undefined || y === undefined) {
@@ -179,13 +196,20 @@ export function normalizeSeiPose(pose) {
   const normalized = Object.assign({}, pose);
   normalized.x = x;
   normalized.y = y;
-  if (isLngLatCoordinate(x, y)) {
+  if (sourceProjection === 'EPSG:4326') {
+    const projected = proj4('EPSG:4326', 'EPSG:3857', [x, y]);
+    if (!Number.isFinite(projected[0]) || !Number.isFinite(projected[1])) {
+      return null;
+    }
+    normalized.x = projected[0];
+    normalized.y = projected[1];
+  } else if (isLngLatCoordinate(x, y)) {
     warnPosePrjMismatch(x, y);
     return null;
   }
   const corners = formatSeiExtent(normalized.extent);
   if (corners) {
-    normalized.extent = isLngLatCoordinate(corners[0][0], corners[0][1])
+    normalized.extent = sourceProjection === 'EPSG:4326'
       ? corners
       : corners.map((corner) => {
         const lngLat = proj4('EPSG:3857', 'EPSG:4326', [corner[0], corner[1]]);
@@ -202,6 +226,7 @@ export function normalizeSeiPose(pose) {
  * @param {Object} [context] - 上下文。
  * @param {number} [context.videoWidth] - 视频宽度，用于补全 fov 与主点。
  * @param {number} [context.videoHeight] - 视频高度，用于补全 fov 与主点。
+ * @param {string} [context.seiProjection='EPSG:3857'] - SEI 坐标源投影。
  * @returns {Object|null} 相机参数，无法解析时返回 null。
  */
 export function parseSeiSample(sample, context) {
@@ -276,7 +301,8 @@ export function parseSeiSample(sample, context) {
       centerY: centerY !== undefined ? centerY : videoHeight / 2,
       extent,
       clipRegion
-    }
+    },
+    ctx.seiProjection
   );
 }
 
