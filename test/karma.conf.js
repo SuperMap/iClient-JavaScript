@@ -57,7 +57,7 @@ module.exports = function (config) {
         bundle.transform(require('babelify'), {
           global: true,
           only: [maplibreMjs],
-          presets: ['@babel/preset-env'],
+          presets: [['@babel/preset-env', { targets: { chrome: '79' } }]],
           plugins: [importMetaToEmptyObject]
         });
       },
@@ -66,7 +66,7 @@ module.exports = function (config) {
           require('babelify'),
           {
             global: true,
-            presets: ['@babel/preset-env'],
+            presets: [['@babel/preset-env', { targets: { chrome: '79' } }]],
             ignore: [
               '../src/classic/libs/**',
               '../test/libs/**',
@@ -135,6 +135,7 @@ module.exports = function (config) {
       /**测试文件**/
       './test-main-mapboxgl.js',
       { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
+      { pattern: './libs/workers/maplibre-gl-worker.mjs', included: false },
       '../src/maplibregl/**/!(index).js',
       /**测试文件**/
       './test-main-maplibregl.js'
