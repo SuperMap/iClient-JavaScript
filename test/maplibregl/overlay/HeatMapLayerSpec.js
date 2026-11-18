@@ -81,9 +81,11 @@ describe('maplibregl_HeatMapLayer', () => {
     });
     afterAll(() => {
         window.document.body.removeChild(testDiv);
-        map.removeLayer('heatmap');
-        if(map.getLayer('heatmap_2')) {
-          map.removeLayer('heatmap_2');
+        if (map.getLayer('heatmap')) {
+            map.removeLayer('heatmap');
+        }
+        if (map.getLayer('heatmap_2')) {
+            map.removeLayer('heatmap_2');
         }
     });
 

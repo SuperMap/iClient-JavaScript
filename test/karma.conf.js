@@ -57,7 +57,7 @@ module.exports = function (config) {
         bundle.transform(require('babelify'), {
           global: true,
           only: [maplibreMjs],
-          presets: [['@babel/preset-env', { targets: { chrome: '79' } }]],
+          presets: ['@babel/preset-env'],
           plugins: [importMetaToEmptyObject]
         });
       },
@@ -66,7 +66,7 @@ module.exports = function (config) {
           require('babelify'),
           {
             global: true,
-            presets: [['@babel/preset-env', { targets: { chrome: '79' } }]],
+            presets: ['@babel/preset-env'],
             ignore: [
               '../src/classic/libs/**',
               '../test/libs/**',
