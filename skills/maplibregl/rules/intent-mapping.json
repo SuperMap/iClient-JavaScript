@@ -57,6 +57,7 @@
   },
   "MAP_INTERACTION": {
     "description": "使用 MapLibre 原生 API 管理控件、视角、事件和图层样式",
+    "note": "Use native MapLibreGL API — search metadata/maplibre-gl-enhance/ on demand (index.d.ts for API types and signatures; style-spec.json for style definitions). Do not read either metadata file in full.",
     "keywords": ["控件", "flyTo", "缩放", "地图事件", "图层样式", "交互"]
   }
 }

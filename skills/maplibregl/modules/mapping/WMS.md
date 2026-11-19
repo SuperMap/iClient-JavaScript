@@ -60,9 +60,33 @@ map.once('load', function() {
 
 要指定其他服务样式或图像格式，可通过 `buildWMSRasterUrl()` 重新生成 `tiles` URL，并从 Capabilities 返回的 `styles`、`formats` 中选择。不要传入服务未声明的值。
 
+## 手动 URL 方式（WMS 1.3.0）
+
+无法读取 Capabilities 时，可在用户明确提供版本、图层名和坐标参考系的前提下手写 GetMap 模板。WMS 1.3.0 使用 `CRS`，1.1.x 使用 `SRS`：
+
+```javascript
+map.addSource('wms-source', {
+    type: 'raster',
+    tiles: [
+        'https://iserver.supermap.io/iserver/services/map-world/ogc/wms/World' +
+        '?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap' +
+        '&LAYERS=World&STYLES=&FORMAT=image/png' +
+        '&TRANSPARENT=true&CRS=EPSG:3857' +
+        '&WIDTH=256&HEIGHT=256' +
+        '&BBOX={bbox-epsg-3857}'
+    ],
+    tileSize: 256
+});
+map.addLayer({ id: 'wms-layer', type: 'raster', source: 'wms-source' });
+```
+
+`FORMAT`、`LAYERS`、`CRS` 必须来自服务声明；手写 URL 时不要省略这些参数，也不要假定服务支持 PNG 或 EPSG:3857。
+
 ## 版本与坐标系
 
 * 工具根据 Capabilities 返回的版本自动使用 WMS 1.3.0 的 `CRS` 或 1.1.x 的 `SRS` 参数。
 * 当前 URL 模板使用 `{bbox-epsg-3857}`，因此仅接受明确支持 EPSG:3857 的图层。若服务只支持其他坐标系，不要把该模板直接套用；需另行实现并验证 BBOX 坐标和轴顺序。
+* WMS 1.3.0 将 `EPSG:4326` 的 BBOX 定义为纬度在前（`minLat,minLon,maxLat,maxLon`），与 MapLibre 的 `{bbox-epsg-3857}` 顺序不同。只有服务声明支持 EPSG:3857 时才可直接使用该模板；使用 4326 时必须自行核对轴顺序，不能用 `{bbox-epsg-4326}` 直接替代。
+* 1.1.1 使用 `SRS` 而非 `CRS`，且 4326 的 BBOX 为经度在前。切换版本时两处都要改。
 * 浏览器必须能跨域请求 GetCapabilities 和 GetMap。失败时检查服务 CORS、认证和网络策略。
 

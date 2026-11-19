@@ -1,17 +1,17 @@
 ---
-name: maplibregl
+name: supermap-iclient-maplibregl-skills
 description: "为 SuperMap iClient 的 MapLibreGL 生成可直接运行的完整 HTML 页面和 JavaScript 代码。适用于 MapLibreGL 地图、iServer REST 服务、GeoJSON、MVT 矢量瓦片、WMTS、WMS、FGB 查询、数据查询、空间分析、控件和图层样式等场景。"
 ---
 
 # SuperMap iClient 的 MapLibreGL 技能
 
-生成用户可以保存、运行和继续扩展的独立 HTML；只有用户明确要求时才仅生成 JavaScript 代码片段。使用本仓库中的 MapLibreGL API 和示例；MapboxGL 示例不作为本技能的依据。
+生成用户可以保存、运行和继续扩展的独立 HTML；只有用户明确要求时才仅生成 JavaScript 代码片段。使用本仓库中的 MapLibreGL API 和示例；
 
 ## 必须遵循的工作流程
 
 1. 判断用户需要完整页面还是代码片段。需要页面时，以 [HTML 起始模板](./templates/index.html) 作为文档结构。
 2. 判断数据或服务类型，并确认 URL 格式。缺少必要的 URL、数据集或操作信息时，参考[补充问题](./prompts/fallback-questions.md)；否则使用模板中的公开 World REST 地图作为可运行的默认底图。
-3. 先使用下方的 API 检索命令查找相关类或成员，再从 `examples/maplibregl/`、`src/maplibregl/` 和 `src/common/` 核实调用方式、参数和结果结构。检索结果不足时，只查看 `build/jsdocs/maplibregl/docs.json` 中相关 API，不要一次性读取完整文件。
+3. 先使用下方的 API 检索命令查找相关类或成员，再从 `examples/maplibregl/`、`src/maplibregl/` 和 `src/common/` 核实调用方式、参数和结果结构。涉及原生 MapLibreGL API、样式规范或多坐标系扩展时，按需定向检索 `metadata/maplibre-gl-enhance/index.d.ts` 与 `metadata/maplibre-gl-enhance/style-spec.json`；不得一次性读取完整文件。检索结果不足时，只查看 `build/jsdocs/maplibregl/docs.json` 中相关 API，不要一次性读取完整文件。
 4. 遵循[意图映射](./rules/intent-mapping.json)、[URL 格式规则](./rules/url-patterns.json)、[参数默认值](./rules/param-defaults.json)、[坐标系规则](./rules/coordinate-system.md)和[错误处理规则](./rules/error-handling.md)。WMTS/WMS 使用[Capabilities 工具](./modules/utils/ogc-capabilities.md)在生成页面中按需读取服务元数据，并使用 MapLibre 原生栅格数据源。
 5. 用户要求完整页面时，在一个代码块中提供完整 HTML。确保包含完整文档结构、依赖加载、全屏地图容器、明确的初始化代码和可见的错误提示。除非必须由用户填写服务专属信息，否则不要使用伪代码或未替换的占位符；需要填写时应明确标注。
 6. 简要说明如何保存和运行页面、需要替换的值，以及相关服务和跨域（CORS）要求。代码应结构清晰、命名明确，便于用户继续扩展。
@@ -39,8 +39,9 @@ node skills/maplibregl/scripts/query-api.mjs get FeatureService --member getFeat
 | WMTS 栅格瓦片 | [WMTS.md](./modules/mapping/WMTS.md) |
 | WMS 栅格图层 | [WMS.md](./modules/mapping/WMS.md) |
 | WMTS/WMS Capabilities 解析 | [ogc-capabilities.md](./modules/utils/ogc-capabilities.md) |
+| REST Data 矢量瓦片 | [rest-data-vector.md](./modules/utils/rest-data-vector.md) |
 | REST Data 查询 | [feature-service.md](./modules/services/feature-service.md) |
-| REST Data FGB 查询 | [rest-data-vector.md](./modules/utils/rest-data-vector.md) |
+| REST Data FGB 查询结果 | [rest-data-fgb.md](./modules/utils/rest-data-fgb.md) |
 | REST Map 查询 | [query-service.md](./modules/services/query-service.md) |
 | 缓冲区分析 | [buffer-analysis.md](./modules/services/buffer-analysis.md) |
 
@@ -53,16 +54,20 @@ node skills/maplibregl/scripts/query-api.mjs get FeatureService --member getFeat
 * [查询 REST Data 并加载 FGB](./prompts/few-shot-examples/rest-data-fgb.md)
 * [加载 WMTS 栅格瓦片](./prompts/few-shot-examples/load-wmts.md)
 * [加载 WMS 栅格图层](./prompts/few-shot-examples/load-wms.md)
+* [缓冲区分析与空间查询](./prompts/few-shot-examples/buffer-analysis-query.md)
 
 ## 已核实的依赖加载方式
 
-独立页面应加载仓库发布的 MapLibreGL 资源加载器。该加载器会加载匹配的 MapLibre GL JS、iClient JavaScript 及对应 CSS：
+独立页面固定使用已核实的 MapLibre GL JS `5.6.0`、maplibre-gl-enhance `5.9.0-2` 和当前 iClient MapLibreGL 包：
 
 ```html
-<script src="https://iclient.supermap.io/dist/maplibregl/include-maplibregl.js"></script>
+<script src="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js"></script>
+<link href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css" rel="stylesheet">
+<script src="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js"></script>
+<link href="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css" rel="stylesheet">
 ```
 
-该加载器当前配置 MapLibre GL JS 5.6.0 和 MapLibreGL iClient 包。默认使用此加载器，不要猜测 CDN 地址或版本。不要混用 MapboxGL 资源包、`mapboxgl` 命名空间或 Mapbox 专属 API。如果功能需要 `maplibre-gl-enhance` 或其他扩展，添加前应对照 `dist/maplibregl/include-maplibregl.js` 和匹配的 MapLibreGL 示例核实加载方式与版本。
+发布加载器 `dist/maplibregl/include-maplibregl.js` 已核实使用上述版本组合；技能生成的独立页面采用显式依赖标签以保持版本固定。不要猜测或更改 CDN 地址与版本，不要混用 MapboxGL 资源包、`mapboxgl` 命名空间或 Mapbox 专属 API。仅当已核实的功能确实需要时，才加载 enhance 资源。
 
 ## 地图与 API 规则
 
