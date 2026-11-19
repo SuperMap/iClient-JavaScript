@@ -82,7 +82,7 @@
     <!--
       hls.js 和 video.js 一样是固定的外部库，由 include 列表引入（全局 Hls），iClient 内部固定使用该版本：
       SEI + m3u8 时 iClient 会自行创建 hls 实例、挂载 <video>、loadSource 并监听 FRAG_PARSING_USERDATA，
-      业务只传 url + parametersSource:'sei' 即可。
+      业务只传 url + parametersSource:'SEI' 即可。
     -->
     <script type="text/javascript">
       (function () {
@@ -92,14 +92,28 @@
 
         // 播放地址来自 iServer 数据服务：数据集记录的 address 属性就是服务端转出的 HLS(m3u8) 地址
         // 对应 REST 地址：http://10.10.4.202:8090/iserver/services/data-demo/rest/data/datasources/VideoData/datasets/DJI_09304
+        // var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-rtspvideo/rest/data';
+        // var DATASOURCE_NAME = 'rtsp';
+        // var DATASET_NAME = 'rtsp';
+        // var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-rtspvideo-3/rest/data';
+        // var DATASOURCE_NAME = 'rtsp';
+        // var DATASET_NAME = 'rtsp';
+        // var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-demo/rest/data';
+        // var DATASOURCE_NAME = 'VideoData';
+        // var DATASET_NAME = 'DJI_09304';
         var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-demo/rest/data';
         var DATASOURCE_NAME = 'VideoData';
         var DATASET_NAME = 'DJI_09304';
+        var STREAM_ADDRESS = ''
         // 手工指定的播放地址，留空表示从数据服务的 address 属性取
-        var STREAM_ADDRESS = '';
-        var VECTOR_DATA_URL = 'https://iserver.supermap.io/iserver/services/data-video/rest/data';
+        // var STREAM_ADDRESS = '';
+        var VECTOR_DATA_URL = 'http://172.16.14.44:8090/iserver/services/data-video/rest/data';
         var VECTOR_DATASOURCE_NAME = 'TFxinqu';
         var VECTOR_DATASET_NAMES = ['trafficGuideLine', 'road', 'building', 'landuse'];
+        // var STREAM_ADDRESS = 'http://10.10.4.202:8090/iserver/services/holowits/restjsr/hls/stream/rtsp-rtsp/1/index.m3u8';
+        // var VECTOR_DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-rtspvideo/rest/data';
+        // var VECTOR_DATASOURCE_NAME = 'rtsp';
+        // var VECTOR_DATASET_NAMES = ['rtsp'];
         // 参数时间落后于播放时间的阈值（秒），超过即认为 SEI 跟不上画面
         var LAG_WARN_SECONDS = 1;
 
@@ -107,7 +121,6 @@
 
         var videoMap = null;
         var streamAddress = '';
-        var printedSei = false;
         var fragCount = 0;
 
         /* ============================ DOM 引用 ============================ */
@@ -220,19 +233,12 @@
           fragCount = 0;
           videoMap = new mapboxgl.supermap.VideoMap({
             container: 'map',
-            // SEI 参数源 + m3u8：iClient 内部用页面引入的 hls.js 接管拉流并解析 SEI，业务只需传 url
             url: streamAddress,
-            parametersSource: 'sei',
+            parametersSource: 'SEI',
+            seiProjection: 'EPSG:3857',
             interval: 0.1,
             // 直播不能循环，结尾重播会得到一段没有参数的画面
-            // loop: false,
-            // hls.js 的直播追帧与缓冲策略，按需覆盖
-            hlsConfig: {
-              lowLatencyMode: false,
-              liveSyncDurationCount: 3,
-              liveMaxLatencyDurationCount: 10,
-              backBufferLength: 90
-            }
+            loop: false,
           });
 
           videoMap.on('load', function () {
@@ -259,15 +265,8 @@
             setStatus('配准参数就绪（' + e.videoWidth + '×' + e.videoHeight + '），矢量叠加开始实时校正');
           });
 
-          videoMap.on('videoparametersei', function (e) {
+          videoMap.on('videoparametersei', function () {
             fragCount++;
-            if (!printedSei && e.poses && e.poses.length) {
-              printedSei = true;
-              console.log('[SEI] 首个解析成功的相机参数', e.poses[0]);
-            }
-            if(e.poses && e.poses.length){
-              console.log('[SEI]相机参数', e.poses[e.poses.length - 1])
-            }
           });
 
           videoMap.on('seiinvalid', function (e) {

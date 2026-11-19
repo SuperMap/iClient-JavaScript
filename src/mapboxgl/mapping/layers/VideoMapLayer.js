@@ -30,7 +30,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    */
   add(address) {
     this.address = address;
-    const needsVideoElementOnly = !!this.videoMap && this.videoMap.parametersSource === 'sei';
+    const needsVideoElementOnly = !!this.videoMap && this.videoMap.parametersSource === 'SEI';
     if (!this.address && !needsVideoElementOnly) {
       return;
     }

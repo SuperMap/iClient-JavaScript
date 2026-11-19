@@ -35,6 +35,29 @@ describe('VideoLayer focused coverage', () => {
     expect(layer.interval).toBe(0.5);
   });
 
+  it('uses the parameter source values and rejects unsupported values', () => {
+    expect(createLayer().parametersSource).toBe('custom');
+    const seiLayer = createLayer({ parametersSource: 'SEI' });
+    expect(seiLayer.parametersSource).toBe('SEI');
+    expect(seiLayer.isSeiSource).toBe(true);
+    expect(() => createLayer({ parametersSource: 'sei' })).toThrowError(
+      'parametersSource must be "custom" or "SEI".'
+    );
+  });
+
+  it('creates its own sei timeline instead of accepting an external timeline', () => {
+    const externalTimeline = {
+      on: jasmine.createSpy('on')
+    };
+    const layer = createLayer({
+      parametersSource: 'SEI',
+      parametersTimeline: externalTimeline
+    });
+
+    expect(layer.getSeiTimeline()).not.toBe(externalTimeline);
+    expect(externalTimeline.on).not.toHaveBeenCalled();
+  });
+
   it('calculates pixel bounds and checks inclusive containment', () => {
     const layer = createLayer();
     expect(layer._getPixelBbox([10, 20, 30, 40])).toEqual([0, 0, 20, 20]);

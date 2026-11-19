@@ -74,7 +74,7 @@
     <!--
       hls.js 和 video.js 一样是固定的外部库，由 include 列表引入（全局 Hls），iClient 内部固定使用该版本：
       SEI + m3u8 时 iClient 会自行创建 hls 实例、挂载 <video>、loadSource 并监听 FRAG_PARSING_USERDATA，
-      业务只传 url + parametersSource:'sei' 即可，不需要传 hls 实例、hlsFactory 或 hlsCtor。
+      业务只传 url + parametersSource:'SEI' 即可，不需要传 hls 实例、hlsFactory 或 hlsCtor。
     -->
     <script type="text/javascript">
       (function () {
@@ -214,19 +214,10 @@
         }
 
         function createVideoLayer() {
-          // SEI 参数源 + m3u8：iClient 内部用页面引入的 hls.js 接管拉流并解析 SEI，业务只需传 url；
-          // 相机参数和裁剪范围都由分片 SEI 提供，clipRegion 也不用传
           videoLayer = new mapboxgl.supermap.VideoLayer({
             url: streamAddress,
-            parametersSource: 'sei',
-            loop: false,
-            // hls.js 的直播追帧与缓冲策略，按需覆盖
-            hlsConfig: {
-              lowLatencyMode: false,
-              liveSyncDurationCount: 3,
-              liveMaxLatencyDurationCount: 10,
-              backBufferLength: 90
-            }
+            parametersSource: 'SEI',
+            loop: false
           });
 
           videoLayer.on('parametersready', function (e) {

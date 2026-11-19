@@ -50,21 +50,16 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
   * @modulecategory Overlay
   * @version 11.2.0
   * @param {Object} options - 构造参数。
-  * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。`parametersSource` 为 `'sei'` 且链接为 m3u8 时，由 iClient 内部用 hls.js 接管拉流与 SEI 解析，该地址不会透传给 video.js（video.js 内置的 VHS 不解析也不外抛 SEI）。
+  * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。`parametersSource` 为 `'SEI'` 且链接为 m3u8 时，由 iClient 内部用 hls.js 接管拉流与 SEI 解析，该地址不会透传给 video.js（video.js 内置的 VHS 不解析也不外抛 SEI）。
   * @param {VideoLayer.VideoParameters|Array<VideoLayer.VideoTimeParameters>} options.videoParameters - 视频配准参数，当传入类型为数组时，支持非定点视频。
   * @param {Array} [options.extent] - 视频范围。
   * @param {Object} [options.opencv] - opencv.js 实例, 未传入时将去 window.cv 获取。
   * @param {number} [options.interval=0.1] 非定点视频参数间隔，单位秒，当视频参数为数组时，会根据该参数将 VideoTimeParameters.time 处理成均匀间隔的视频参数，默认为 0.1 秒，最小值为 0.001 秒。
   * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
   * @param {Array} [options.clipRegion] - 裁剪范围，视频像素坐标下的四角点 `[[x, y], ...]`。SEI 模式下不传时自动取首个 SEI 参数中的 `clipRegion`，两者都没有时按整帧裁剪。
-  * @param {string} [options.parametersSource='videoParameters'] - 配准参数来源。`videoParameters` 表示使用 `videoParameters` 静态/数组参数；`sei` 表示使用视频流 TS 分片内携带的 SEI 参数（此时 `videoParameters` 可不传）。
-  * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`；内部相机坐标统一为 EPSG:3857，extent 统一为 EPSG:4326。
-  * @param {Function} [options.seiParser] - 自定义 SEI 解析函数；接收 SEI sample 与上下文，返回内部坐标约定下的相机参数（相机 x/y 为 EPSG:3857，extent 为 EPSG:4326）。
-  * @param {VideoLayer.SeiPoseTimeline} [options.parametersTimeline] - SEI 参数时间轴，传入 VideoMap 的 `getSeiTimeline()` 可与 VideoMap 共享同一份 SEI 数据；不传则 VideoLayer 内部自建时间轴。
-  * @param {number} [options.maxCachedPoses=30] - SEI 模式下缓存的最大配准结果数量，超出后按时间顺序淘汰。
-  * SEI 只能由 hls.js 解析：video.js 内置的 VHS 在 Worker 内 transmux，SEI 被丢弃且不外抛事件，因此 SEI + m3u8 时地址不会交给 video.js，而由 hls.js 实例接管。hls.js 为外部固定三方库，由页面通过 `script` 引入（全局 `Hls`），iClient 内部固定创建实例。
-  * @param {Object} [options.hlsConfig] - hls.js 初始化配置，会与 iClient 的 SEI 默认配置合并后原样传入 `new Hls(config)`。这里只放 hls.js 认识的键，iClient 自身的播放策略不在此配置。实例始终由 iClient 内部创建，业务无需传入。
-  * @param {boolean} [options.hlsAutoRecover=true] - **iClient 的恢复策略，不是 hls.js 的配置项**，因此与 `hlsConfig` 并列而非放在其内部。内部接管的 hls.js 遇到致命错误时是否自动恢复（网络错误重拉流，解码错误先 `recoverMediaError()` / `swapAudioCodec()`，仍失败则按指数退避重建实例）；传 `false` 时只抛出 `seistreamerror`，业务可在该回调中调用 {@link VideoLayer#restartHls} 自行重建。
+  * @param {string} [options.parametersSource='custom'] - 配准参数来源。`custom` 表示使用 `videoParameters` 静态/数组参数；`SEI` 表示使用视频流 TS 分片内携带的 SEI 参数（此时 `videoParameters` 可不传）。
+  * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`。
+  * @param {Function} [options.seiParser] - 自定义 SEI 解析函数，仅 `parametersSource` 为 `'SEI'` 时生效。
   * @fires VideoLayer#play
   * @fires VideoLayer#pause
   * @fires VideoLayer#parametersready
@@ -104,8 +99,11 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      if (!this.cv) {
        throw new Error('opencv.js instance is not existed!');
      }
-     this.parametersSource = this.options.parametersSource || 'videoParameters';
-     this.isSeiSource = this.parametersSource === 'sei';
+     this.parametersSource = this.options.parametersSource === undefined ? 'custom' : this.options.parametersSource;
+     if (this.parametersSource !== 'custom' && this.parametersSource !== 'SEI') {
+       throw new Error('parametersSource must be "custom" or "SEI".');
+     }
+     this.isSeiSource = this.parametersSource === 'SEI';
      this.seiProjection = normalizeSeiProjection(this.options.seiProjection);
      this.maxCachedPoses = Math.max(1, this.options.maxCachedPoses || 30);
      if (!this.videoParameters && !this.isSeiSource) {
@@ -140,8 +138,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
        this.finder = new FastRangeSearcher(timeArr);
      }
      if (this.isSeiSource) {
-       this._ownsTimeline = !this.options.parametersTimeline;
-       this.seiTimeline = this.options.parametersTimeline || new SeiPoseTimeline();
+       this.seiTimeline = new SeiPoseTimeline();
        this._onTimelineAdd = () => this._ensureSeiBaseEntry();
        this._onTimelineInvalid = (payload) => this.fire('seiinvalid', payload);
        this._onTimelineReset = () => this._clearPoseCache();
@@ -1012,7 +1009,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @function VideoLayer.prototype.restartHls
     * @description 重建 SEI 直播会话：销毁当前 hls.js 实例并重新拉流，同时清空姿态缓存与 SEI 时间轴。
     * `hlsAutoRecover` 为 `false` 时，收到 `seistreamerror` 后可调用本方法自行恢复。
-    * 仅在 iClient 内部接管拉流（`parametersSource` 为 `'sei'` 且地址为 m3u8）且会话存在时生效，其余情况不做处理。
+    * 仅在 iClient 内部接管拉流（`parametersSource` 为 `'SEI'` 且地址为 m3u8）且会话存在时生效，其余情况不做处理。
     * @returns {VideoLayer} 当前图层。
     */
    restartHls() {

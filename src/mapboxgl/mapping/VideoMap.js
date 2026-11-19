@@ -109,8 +109,8 @@ const MAP_EVENTS = [
  * @version 11.2.0
  * @modulecategory Mapping
  * @param {Object} options - 参数
- * @param {string} [options.url] - 视频 或 流链接。支持 flv, m3u8, mp4 格式。`parametersSource` 为 `'sei'` 且为 m3u8 地址时，iClient 内部会用 hls.js 接管 MediaSource 并解析 SEI：SEI 只能由 hls.js 解析，video.js 内置的 VHS 在 Worker 内 transmux 会把 SEI 丢弃且不外抛事件，因此该地址不会交给 video.js。
- * @param {VideoMap.VideoParameters|Array<VideoMap.VideoTimeParameters>} [options.videoParameters] - 视频地图配准参数。传入对象时为静态配准（相机位置固定）；传入数组时为动态配准，按视频时间动态更新相机参数。`parametersSource` 为 `'sei'` 时可不传，参数由 SEI 实时提供。
+ * @param {string} [options.url] - 视频 或 流链接。支持 flv, m3u8, mp4 格式。`parametersSource` 为 `'SEI'` 且为 m3u8 地址时，iClient 内部会用 hls.js 接管 MediaSource 并解析 SEI：SEI 只能由 hls.js 解析，video.js 内置的 VHS 在 Worker 内 transmux 会把 SEI 丢弃且不外抛事件，因此该地址不会交给 video.js。
+ * @param {VideoMap.VideoParameters|Array<VideoMap.VideoTimeParameters>} [options.videoParameters] - 视频地图配准参数。传入对象时为静态配准（相机位置固定）；传入数组时为动态配准，按视频时间动态更新相机参数。`parametersSource` 为 `'SEI'` 时可不传，参数由 SEI 实时提供。
  * @param {string|HTMLElement} [options.container='map'] - 地图容器 id 或 DOM 元素。
  * @param {Object} [options.opencv] - opencv.js 实例。未传入时取 window.cv；若均不存在将抛出异常。
  * @param {number} [options.videoWidth] - 视频宽度，单位像素。未设置时默认读取视频实际宽度。
@@ -119,12 +119,9 @@ const MAP_EVENTS = [
  * @param {boolean} [options.autoplay=true] - 视频是否自动播放。
  * @param {boolean} [options.loop=true] - 视频是否循环播放。
  * @param {number} [options.interval=0.1] - 动态配准参数的时间重采样间隔，单位秒。仅当 videoParameters 为数组时生效：对原始相机参数序列按该间隔做插值或抽稀，决定相机位置随时间变化的精度。
- * @param {string} [options.parametersSource='videoParameters'] - 配准参数来源。`'videoParameters'` 使用构造参数；`'sei'` 使用视频流 SEI 实时下发的相机参数。
- * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`；内部相机坐标统一为 EPSG:3857，extent 统一为 EPSG:4326。
- * @param {VideoMap.SeiParser} [options.seiParser] - 自定义 SEI 解析函数，仅 `parametersSource` 为 `'sei'` 时生效。
- * @param {number} [options.seiOffset=0] - SEI 时间轴与视频播放头的同步偏移，单位秒。SEI 姿态会比播放头提前到达，该值用于微调两者对齐关系。
- * @param {Object} [options.hlsConfig] - hls.js 实例配置，会原样传入 `new Hls(config)`，用于覆盖默认直播参数（`liveSyncDurationCount`、`backBufferLength` 等）。这里只放 hls.js 认识的键，iClient 自身的播放策略不在此配置。hls.js 与 video.js 一样由页面引入固定版本（全局 `Hls`），实例固定由 iClient 内部创建，业务无需传入。
- * @param {boolean} [options.hlsAutoRecover=true] - **iClient 的恢复策略，不是 hls.js 的配置项**，因此与 `hlsConfig` 并列而非放在其内部。hls 致命错误（网络 / 解码）时是否由 iClient 接管恢复：网络错误调用 `startLoad()`，解码错误先 `recoverMediaError()` / `swapAudioCodec()`，仍失败则按指数退避重建播放会话。传 `false` 时只抛出 `seistreamerror`，业务可在该回调中调用 {@link VideoMap#restartHls} 自行重建。
+ * @param {string} [options.parametersSource='custom'] - 配准参数来源。`'custom'` 使用构造参数；`'SEI'` 使用视频流 SEI 实时下发的相机参数。
+ * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`。
+ * @param {VideoMap.SeiParser} [options.seiParser] - 自定义 SEI 解析函数，仅 `parametersSource` 为 `'SEI'` 时生效。
  * @fires VideoMap#load
  * @fires VideoMap#videoparameterupdate
  * @fires VideoMap#videoparameterready
@@ -194,8 +191,11 @@ export class VideoMap extends mapboxgl.Evented {
     if (!this.cv) {
       throw new Error('opencv.js instance is not existed!');
     }
-    this.parametersSource = parametersSource || 'videoParameters';
-    this.isSeiSource = this.parametersSource === 'sei';
+    this.parametersSource = parametersSource === undefined ? 'custom' : parametersSource;
+    if (this.parametersSource !== 'custom' && this.parametersSource !== 'SEI') {
+      throw new Error('parametersSource must be "custom" or "SEI".');
+    }
+    this.isSeiSource = this.parametersSource === 'SEI';
     this.seiProjection = normalizeSeiProjection(seiProjection);
     this.seiParser = typeof seiParser === 'function' ? seiParser : undefined;
     this.seiOffset = seiOffset || 0;
@@ -949,7 +949,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @version 12.2.0
    * @description 重建 SEI 直播会话：销毁当前 hls.js 实例并重新拉流，同时清空 SEI 姿态时间轴并把 `isParametersReady()` 重置为 `false`。
    * `hlsAutoRecover` 为 `false` 时，收到 `seistreamerror` 后可调用本方法自行恢复。
-   * 仅在 iClient 内部接管拉流（`parametersSource` 为 `'sei'` 且地址为 m3u8）且会话存在时生效，其余情况不做处理。
+   * 仅在 iClient 内部接管拉流（`parametersSource` 为 `'SEI'` 且地址为 m3u8）且会话存在时生效，其余情况不做处理。
    * @returns {VideoMap} this。
    */
   restartHls() {
