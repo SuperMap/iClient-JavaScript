@@ -75,7 +75,7 @@ describe('maplibregl-webmap3.0', () => {
         return Promise.resolve(new Response(appInfo));
       }
       return Promise.resolve();
-    });kWebMapServ
+    });
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
