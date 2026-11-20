@@ -47,8 +47,6 @@ describe('maplibregl-webmap3.0', () => {
     mbglmap.prototype.getL7Scene = maplibregl.Map.prototype.getL7Scene;
     maplibregl.CRS = CRS;
     maplibregl.proj4 = proj4;
-    // 所有测试统一 mock maplibregl.Map，避免用真实 Map 实例引发 WebGL 初始化挂起
-    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
@@ -286,6 +284,7 @@ describe('maplibregl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const nextMapInfo = {
       ...mapInfo,
@@ -1044,6 +1043,7 @@ describe('maplibregl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const crsInfo = {
       name: 'EPSG:4490',
@@ -1174,6 +1174,7 @@ describe('maplibregl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     mapInfo.sprite = {
       rectangle: 'http://localhost:9876/base/resources/data/sprite/rectangle',
