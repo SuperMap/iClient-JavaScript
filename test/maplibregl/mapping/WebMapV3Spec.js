@@ -28,7 +28,7 @@ describe('maplibregl-webmap3.0', () => {
     mapRepo: maplibregl,
     crsManager: new CRSManager(),
     l7LayerUtil,
-    webMapService: mocice
+    webMapService: mockWebMapService
   };
   const WebMapV3 = createWebMapV3Extending(createMapClassExtending(maplibregl.Evented), extendOptions);
   beforeEach(() => {
