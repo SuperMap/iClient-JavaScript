@@ -17,6 +17,8 @@ import './leaflet/mapping/WebMapSpec.js';
 import './leaflet/mapping/TiandituTileLayerSpec';
 import './leaflet/mapping/ImageTileLayerSpec';
 import './leaflet/mapping/initMapSpec.js';
+import './leaflet/mapping/VideoMapSpec.js';
+import './leaflet/VideoLifecycleSpec.js';
 /*leaflet -- overlay*/
 
 import './leaflet/overlay/EchartsLayerSpec.js';
@@ -27,6 +29,7 @@ import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
 import './leaflet/overlay/LabelThemeLayerSpec.js';
 import './leaflet/overlay/MapVLayerSpec.js';
+import './leaflet/overlay/VideoLayerSpec.js';
 import './leaflet/overlay/RangeThemeLayerSpec.js';
 import './leaflet/overlay/RankSymbolThemeLayerSpec.js';
 // import './leaflet/overlay/TiledVectorLayerSpec.js';

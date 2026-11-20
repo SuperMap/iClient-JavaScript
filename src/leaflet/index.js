@@ -43,6 +43,7 @@ import {
     initMap,
     crsFromMapJSON
 } from './mapping';
+import { VideoMap, videoMap } from './mapping/VideoMap';
 import {
     DataFlowLayer,
     dataFlowLayer,
@@ -60,6 +61,8 @@ import {
     labelThemeLayer,
     MapVLayer,
     mapVLayer,
+    VideoLayer,
+    videoLayer,
     NormalRenderer,
     RangeThemeLayer,
     rangeThemeLayer,
@@ -207,6 +210,7 @@ export {
 };
 
 export * from '@supermapgis/iclient-common/index.common';
+export { VideoMap, videoMap };
 export { Logo, logo, ChangeTileVersion, changeTileVersion };
 export {
     CommontypesConversion,
@@ -264,6 +268,8 @@ export {
     labelThemeLayer,
     MapVLayer,
     mapVLayer,
+    VideoLayer,
+    videoLayer,
     NormalRenderer,
     RangeThemeLayer,
     rangeThemeLayer,

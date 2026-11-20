@@ -1,6 +1,9 @@
 import { VideoMap } from '../../../src/mapboxgl/mapping/VideoMap';
 import mapboxgl from 'mapbox-gl';
 import mbglmap, { revertCRS } from '../../tool/mock_mapboxgl_map';
+import { SeiHlsSource } from '../../../src/common/overlay/video/SeiHlsSource';
+import CoordTransfer from '../../../src/common/overlay/video/CoordTransfer';
+import { createVideojsPlayer } from '../../tool/VideoPlayerMock';
 var videoUrl = 'base/resources/data/test.mp4';
 describe('mapboxgl_videoMap', () => {
   var originalTimeout;
@@ -613,24 +616,153 @@ describe('VideoMap focused coverage', () => {
   });
 
   it('rebuilds the sei hls session when restartHls is called', () => {
-    const videoMap = createVideoMapForCoverage();
-    videoMap.url = 'http://example.com/live.m3u8';
-    videoMap.seiHlsSource = { destroy: jasmine.createSpy('destroy') };
-    videoMap.seiTimeline = { clear: jasmine.createSpy('clear') };
+    spyOn(VideoMap.prototype, '_createMap').and.returnValue(new Promise(() => {}));
+    spyOn(SeiHlsSource.prototype, 'start').and.returnValue(true);
+    const videoMap = new VideoMap({ opencv: {}, parametersSource: 'SEI', url: 'http://example.com/live.m3u8' });
+    videoMap._sei.start();
+    const source = videoMap._sei.source;
+    videoMap.pushSeiParameters(makeCoveragePose(0, 0));
+    spyOn(source, 'destroy').and.callThrough();
     videoMap.parametersReady = true;
-    videoMap._startSeiHls = jasmine.createSpy('_startSeiHls');
     expect(videoMap.restartHls()).toBe(videoMap);
-    expect(videoMap.seiHlsSource).toBeNull();
-    expect(videoMap.seiTimeline.clear).toHaveBeenCalled();
+    expect(source.destroy).toHaveBeenCalled();
+    expect(videoMap.getSeiTimeline().size).toBe(0);
     expect(videoMap.parametersReady).toBe(false);
-    expect(videoMap._startSeiHls).toHaveBeenCalledWith('http://example.com/live.m3u8');
+    expect(videoMap._sei.source).not.toBe(source);
+    expect(videoMap._sei.source.url).toBe('http://example.com/live.m3u8');
+    expect(SeiHlsSource.prototype.start.calls.count()).toBe(2);
+    videoMap._sei.stop();
   });
 
   it('ignores restartHls when no sei hls session exists', () => {
-    const videoMap = createVideoMapForCoverage();
-    videoMap.seiHlsSource = null;
-    videoMap._startSeiHls = jasmine.createSpy('_startSeiHls');
+    spyOn(VideoMap.prototype, '_createMap').and.returnValue(new Promise(() => {}));
+    spyOn(SeiHlsSource.prototype, 'start').and.returnValue(true);
+    const videoMap = new VideoMap({ opencv: {}, parametersSource: 'SEI' });
     expect(videoMap.restartHls()).toBe(videoMap);
-    expect(videoMap._startSeiHls).not.toHaveBeenCalled();
+    expect(SeiHlsSource.prototype.start).not.toHaveBeenCalled();
+    videoMap._sei.stop();
+  });
+});
+
+describe('mapboxgl video map player lifecycle', () => {
+  let owner, map;
+  beforeEach(() => {
+    map = new mapboxgl.Evented();
+    Object.assign(map, {
+      getSource: () => null,
+      getLayer: () => null,
+      getStyle: () => ({ layers: [] }),
+      unproject: (point) => ({ lng: point[0], lat: point[1] }),
+      addSource: jasmine.createSpy('addSource'),
+      addLayer: jasmine.createSpy('addLayer'),
+      fitBounds: jasmine.createSpy('fitBounds'),
+      remove: jasmine.createSpy('remove')
+    });
+    spyOn(VideoMap.prototype, '_createMap').and.callFake(function () {
+      this.width = 400;
+      this.height = 300;
+      return Promise.resolve(map);
+    });
+    spyOn(CoordTransfer.prototype, 'init').and.callFake(function () { return Promise.resolve(this); });
+  });
+  afterEach(() => { if (owner) { owner.destroy(); owner = null; } });
+
+  [false, true].forEach((useVideojs) => {
+    it('keeps load listeners and initializes preloaded external media: videojs=' + useVideojs, async () => {
+      const external = createVideojsPlayer();
+      owner = new VideoMap({ opencv: {}, videoParameters: makeCoveragePose(0, 0), player: useVideojs ? external.player : external.video, autoplay: false });
+      const loaded = jasmine.createSpy('load');
+      owner.on('load', loaded);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(owner.getVideoElement()).toBe(external.video);
+      expect(owner.videoWidth).toBe(320);
+      expect(owner.videoHeight).toBe(180);
+      expect(owner.coordTransfer).toBeDefined();
+      expect(loaded.calls.count()).toBe(1);
+      external.events.dispatchEvent(new Event('canplay'));
+      external.video.dispatchEvent(new Event('canplay'));
+      expect(loaded.calls.count()).toBe(1);
+      owner.destroy();
+      owner = null;
+      expect(external.player.dispose).not.toHaveBeenCalled();
+      expect(external.video.cancelVideoFrameCallback).toHaveBeenCalled();
+    });
+  });
+
+  it('destroys safely before the asynchronous map and ready callbacks complete', async () => {
+    owner = new VideoMap({ opencv: {}, videoParameters: makeCoveragePose(0, 0), player: createVideojsPlayer().player });
+    owner.destroy();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(map.addSource).not.toHaveBeenCalled();
+    expect(map.remove.calls.count()).toBe(1);
+    expect(owner.getVideoElement()).toBeNull();
+  });
+
+  it('discards a superseded SEI camera and releases the current camera on destroy', async () => {
+    const cameras = [];
+    const finishes = [];
+    CoordTransfer.prototype.init.and.callFake(function () {
+      cameras.push(this);
+      spyOn(this, 'dispose').and.callThrough();
+      return new Promise((resolve) => finishes.push(() => resolve(this)));
+    });
+    owner = new VideoMap({ opencv: {}, parametersSource: 'SEI', player: createVideojsPlayer().player, autoplay: false });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    owner.getSeiTimeline().push(makeCoveragePose(0, 0));
+    owner.getSeiTimeline().clear();
+    owner.getSeiTimeline().push(makeCoveragePose(0, 1));
+    finishes[0]();
+    await Promise.resolve();
+    expect(cameras[0].dispose).toHaveBeenCalled();
+    expect(owner.isParametersReady()).toBe(false);
+    finishes[1]();
+    await Promise.resolve();
+    expect(owner.coordTransfer).toBe(cameras[1]);
+    expect(owner.isParametersReady()).toBe(true);
+    owner.destroy();
+    owner = null;
+    expect(cameras[1].dispose).toHaveBeenCalled();
+  });
+
+  it('releases a custom camera that finishes initialization after destroy', async () => {
+    let finish, camera;
+    CoordTransfer.prototype.init.and.callFake(function () {
+      camera = this;
+      spyOn(camera, 'dispose').and.callThrough();
+      return new Promise((resolve) => { finish = () => resolve(camera); });
+    });
+    owner = new VideoMap({ opencv: {}, videoParameters: makeCoveragePose(0, 0), player: createVideojsPlayer().player, autoplay: false });
+    const loaded = jasmine.createSpy('load');
+    owner.on('load', loaded);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    owner.destroy();
+    finish();
+    await Promise.resolve();
+    expect(camera.dispose).toHaveBeenCalled();
+    expect(owner.coordTransfer).toBeUndefined();
+    expect(loaded).not.toHaveBeenCalled();
+  });
+
+  it('does not notify a queued vector update after destroy or SEI reset', async () => {
+    spyOn(CoordTransfer.prototype, 'setCameraLocation');
+    owner = new VideoMap({ opencv: {}, parametersSource: 'SEI', player: createVideojsPlayer().player, autoplay: false });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    owner.getSeiTimeline().push(makeCoveragePose(0, 0));
+    await Promise.resolve();
+    let update;
+    spyOn(window, 'requestAnimationFrame').and.callFake((callback) => { update = callback; return 1; });
+    const notified = jasmine.createSpy('videoparameterupdate');
+    owner.on('videoparameterupdate', notified);
+    owner.applyCameraPose(makeCoveragePose(0, 0));
+    owner.getSeiTimeline().clear();
+    update();
+    expect(notified).not.toHaveBeenCalled();
+    expect(owner.pendingVectorUpdate).toBe(false);
+    owner.getSeiTimeline().push(makeCoveragePose(0, 1));
+    await Promise.resolve();
+    owner.applyCameraPose(makeCoveragePose(0, 1));
+    owner.destroy();
+    update();
+    expect(notified).not.toHaveBeenCalled();
   });
 });

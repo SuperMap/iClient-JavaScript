@@ -1,0 +1,117 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Leaflet (https://iclient.supermap.io/web/libs/leaflet/1.9.4/leaflet.js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoLayerWithTime"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      .video-play-btn { position: absolute; left: 10px; bottom: 10px; z-index: 1000; box-sizing: border-box; appearance: none; -webkit-appearance: none; width: 56px; height: 56px; padding: 0; border: 2px solid rgba(255,255,255,0.92); border-radius: 50%; background: rgba(0,0,0,0.45); box-shadow: 0 2px 10px rgba(0,0,0,0.28); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+      .video-play-svg { width: 54%; height: 54%; fill: currentColor; display: none; }
+      .video-play-btn.is-paused .video-play-svg--play { display: block; margin-left: 6%; }
+      .video-play-btn.is-playing .video-play-svg--pause { display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <button id="play" type="button" class="video-play-btn is-paused" data-i18n="[title]resources.text_videoLayerWithTime_play;[aria-label]resources.text_videoLayerWithTime_play" title="播放" aria-label="播放" disabled>
+      <svg viewBox="0 0 24 24" class="video-play-svg video-play-svg--play" aria-hidden="true"><path d="M8 5.14v13.72L19 12 8 5.14z" /></svg>
+      <svg viewBox="0 0 24 24" class="video-play-svg video-play-svg--pause" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" /></svg>
+    </button>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/video-js/7.10.2/video.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/opencv/3.4/opencv.js"></script>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var map, videoLayer;
+      var videoTexts = window.resources || window.examplesResources.resources;
+      var dataUrl = 'https://iserver.supermap.io/iserver/services/data-video/rest/data';
+      var datasourceName = 'VideoData';
+      var datasetName = 'DJI_09304';
+      // Leaflet 的世界像素基准为 256，zoom 加 1 与 MapboxGL 的 512 像素基准保持相同比例。
+      map = L.map('map', { crs: L.CRS.EPSG3857 }).setView([30.491810619411483, 104.0685393316582], 18);
+      L.tileLayer('https://t4.tianditu.gov.cn/img_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311', {
+        maxZoom: 19,
+        // 天地图影像最高原生级别为 18，继续放大时复用该级瓦片。
+        maxNativeZoom: 18,
+        attribution: '© 天地图'
+      }).addTo(map);
+      var playButton = document.getElementById('play');
+      function syncPlayButton() {
+        var paused = !videoLayer || videoLayer.paused();
+        playButton.disabled = !videoLayer;
+        playButton.classList.toggle('is-paused', paused);
+        playButton.classList.toggle('is-playing', !paused);
+        var key = paused ? 'text_videoLayerWithTime_play' : 'text_videoLayerWithTime_pause';
+        playButton.title = videoTexts[key];
+        playButton.setAttribute('data-i18n', '[title]resources.' + key + ';[aria-label]resources.' + key);
+        playButton.setAttribute('aria-label', playButton.title);
+      }
+      playButton.onclick = function () {
+        videoLayer.paused() ? videoLayer.play() : videoLayer.pause();
+      };
+
+      function query() {
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: datasetName + '@' + datasourceName,
+            attributeFilter: 'SMID > 0'
+          },
+          datasetNames: [datasourceName + ':' + datasetName]
+        });
+        new L.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          var features = serviceResult.result && serviceResult.result.features && serviceResult.result.features.features;
+          if (!features || !features.length) {
+            throw new Error(serviceResult.error && serviceResult.error.errorMsg || '未返回视频记录');
+          }
+          var properties = features[0].properties;
+          var sourceParameters = properties.videoParameters.videoParameterList;
+          var timeData = sourceParameters.map(function (param) {
+            var coordinates = param.extent.points.map(function (coord) {
+              var latlng = L.CRS.EPSG3857.unproject(L.point(coord.x, coord.y));
+              return [latlng.lng, latlng.lat];
+            });
+            var calibrationModel = param.calibrationModel;
+            var cameraLocation = calibrationModel.cameraLocation;
+            return {
+              time: param.time,
+              extent: [coordinates[3], coordinates[2], coordinates[1], coordinates[0]],
+              fovX: calibrationModel.fovX,
+              fovY: calibrationModel.fovY,
+              centerX: calibrationModel.centerX,
+              centerY: calibrationModel.centerY,
+              pitch: cameraLocation.cameraPitch,
+              roll: cameraLocation.cameraRoll,
+              yaw: cameraLocation.cameraYaw,
+              x: cameraLocation.cameraX,
+              y: cameraLocation.cameraY,
+              z: cameraLocation.cameraZ
+            };
+          });
+          var url = new URL(properties.address, dataUrl).href;
+          var clipRegionPoints = sourceParameters[0].clipRegion.points;
+          videoLayer = L.supermap.videoLayer({
+            url: url,
+            videoParameters: timeData,
+            clipRegion: clipRegionPoints.slice(0, 4).map(function (point) { return [point.x, point.y]; })
+          });
+          videoLayer.on('load play pause', syncPlayButton);
+          videoLayer.on('error', function (e) { console.error(e.error); });
+          videoLayer.addTo(map);
+          syncPlayButton();
+        }).catch(function (error) { console.error(error); });
+      }
+
+      map.whenReady(query);
+    </script>
+  </body>
+</html>

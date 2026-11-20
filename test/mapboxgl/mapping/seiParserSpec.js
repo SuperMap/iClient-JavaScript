@@ -102,13 +102,14 @@ describe('SEI projection normalization', () => {
         })
       }]
     };
-    const map = Object.create(VideoMap.prototype);
-    map.seiProjection = 'EPSG:4326';
-    map.seiParser = undefined;
-    map.videoWidth = 1920;
-    map.videoHeight = 1080;
-    map.seiTimeline = new SeiPoseTimeline();
-    map.fire = jasmine.createSpy('fire');
+    spyOn(VideoMap.prototype, '_createMap').and.returnValue(new Promise(() => {}));
+    const map = new VideoMap({
+      opencv: {},
+      parametersSource: 'SEI',
+      seiProjection: 'EPSG:4326',
+      videoWidth: 1920,
+      videoHeight: 1080
+    });
     map._handleSeiPayload(data);
 
     const layer = new VideoLayer({
@@ -203,10 +204,8 @@ describe('SEI projection normalization', () => {
   });
 
   it('applies the configured projection to manual VideoMap and VideoLayer parameters', () => {
-    const map = Object.create(VideoMap.prototype);
-    map.isSeiSource = true;
-    map.seiProjection = 'EPSG:4326';
-    map.seiTimeline = new SeiPoseTimeline();
+    spyOn(VideoMap.prototype, '_createMap').and.returnValue(new Promise(() => {}));
+    const map = new VideoMap({ opencv: {}, parametersSource: 'SEI', seiProjection: 'EPSG:4326' });
     const mapAdded = map.pushSeiParameters(createPose(120, 30, LON_LAT_EXTENT));
 
     const layer = new VideoLayer({

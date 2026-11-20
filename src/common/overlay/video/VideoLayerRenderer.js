@@ -5,7 +5,7 @@
 import videojs from 'video.js';
 import 'flv.js';
 import 'videojs-flvjs-es6';
-import { VideoPlayerAdapter } from './VideoPlayerAdapter';
+import { VideoPlayerAdapter, getVideoElement } from './VideoPlayerAdapter';
 
 /**
  * @private
@@ -55,6 +55,35 @@ export class VideoLayerRenderer {
     let options = this._getVideoOptions();
     this.video = videojs(this.layerId, options, () => { });
     return this.video;
+  }
+
+  /** @private 媒体尺寸有效后通知一次；兼容预加载视频，并让调用方先完成事件绑定。 */
+  onVideoReady(callback) {
+    const video = this.video;
+    let active = true;
+    const cancel = () => {
+      if (active) {
+        active = false;
+        video.off('canplay', ready);
+      }
+    };
+    const ready = () => {
+      if (active && video.videoWidth() > 0 && video.videoHeight() > 0) {
+        cancel();
+        callback();
+      }
+    };
+    video.on('canplay', ready);
+    Promise.resolve().then(() => {
+      if (!active) {
+        return;
+      }
+      const element = this._getVideoElement();
+      if (element && element.readyState >= 2) {
+        ready();
+      }
+    });
+    return cancel;
   }
 
   _getVideoOptions() {
@@ -130,19 +159,6 @@ export class VideoLayerRenderer {
   }
 
   _getVideoElement() {
-    const video = this.video;
-    if (!video) {
-      return null;
-    }
-    if (typeof video.tech === 'function') {
-      const tech = video.tech();
-      if (tech && typeof tech.el === 'function') {
-        return tech.el();
-      }
-    }
-    if (video.nodeType === 1) {
-      return video;
-    }
-    return null;
+    return getVideoElement(this.video);
   }
 }

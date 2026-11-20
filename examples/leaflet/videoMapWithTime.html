@@ -1,0 +1,139 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Leaflet (https://iclient.supermap.io/web/libs/leaflet/1.9.4/leaflet.js)
+* video.js (https://github.com/videojs/video.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoMapWithTime"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      .feature-properties { max-height: 300px; overflow: auto; min-width: 160px; }
+      .feature-properties h4 { margin: 0 0 8px; font-size: 13px; }
+      .feature-properties table { border-collapse: collapse; font-size: 12px; }
+      .feature-properties td { padding: 2px 0; vertical-align: top; }
+      .feature-properties td:first-child { padding-right: 12px; color: #888; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/video-js/7.10.2/video.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/opencv/3.4/opencv.js"></script>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var host = 'https://iserver.supermap.io';
+      var dataUrl = host + '/iserver/services/data-video/rest/data';
+      var datasourceName = 'VideoData';
+      var datasetName = 'DJI_09304';
+      var vectorDatasourceName = 'TFxinqu';
+      var vectorDatasetNames = ['trafficGuideLine', 'road', 'building', 'landuse'];
+      var videoMap;
+      var vectorLayers = [];
+
+      function queryFeatures(datasetName, dataSourceName) {
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: datasetName + '@' + dataSourceName,
+            attributeFilter: 'SMID > 0'
+          },
+          targetEpsgCode: '4326',
+          datasetNames: [dataSourceName + ':' + datasetName]
+        });
+        return new L.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+          if (!serviceResult.result || !serviceResult.result.features) {
+            throw new Error(datasetName + '：' + (serviceResult.error && serviceResult.error.errorMsg || '未返回要素'));
+          }
+          return serviceResult;
+        });
+      }
+
+      function propertyContent(datasetName, properties) {
+        var content = document.createElement('div');
+        content.className = 'feature-properties';
+        var title = document.createElement('h4');
+        title.textContent = datasetName;
+        content.appendChild(title);
+        var table = document.createElement('table');
+        // 属性按文本写入，避免把服务字段作为 HTML 执行。
+        Object.keys(properties || {}).forEach(function (key) {
+          var row = table.insertRow();
+          row.insertCell().textContent = key;
+          row.insertCell().textContent = String(properties[key]);
+        });
+        content.appendChild(table);
+        return content;
+      }
+
+      function addVectorDataset(datasetName) {
+        return queryFeatures(datasetName, vectorDatasourceName).then(function (serviceResult) {
+          var features = serviceResult.result.features;
+          var layer = videoMap.addGeoJSON(features, {
+            pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, { radius: 5 }); },
+            style: function (feature) {
+              var type = feature.geometry.type;
+              return type.indexOf('Point') >= 0
+                ? { color: '#ffffff', weight: 1, fillColor: '#ff5a36', fillOpacity: 1 }
+                : type.indexOf('LineString') >= 0
+                  ? { color: '#ff9f1c', weight: 4 }
+                  : { color: '#48cae4', weight: 1, fillColor: '#48cae4', fillOpacity: 0.55 };
+            }
+          });
+          layer.on('click', function (e) {
+            if (e.latlng) {
+              videoMap.openPopup(propertyContent(datasetName, e.layer.feature.properties), e.latlng, { autoPan: false });
+            }
+          });
+          layer.on('mouseover', function () { videoMap.map.getContainer().style.cursor = 'pointer'; });
+          layer.on('mouseout', function () { videoMap.map.getContainer().style.cursor = ''; });
+          vectorLayers.push({ name: datasetName, layer: layer });
+        });
+      }
+
+      function createVideoMap() {
+        queryFeatures(datasetName, datasourceName).then(function (serviceResult) {
+          var feature = serviceResult.result.features.features[0];
+          var parameters = feature.properties.videoParameters.videoParameterList.map(function (item) {
+            var calibration = item.calibrationModel;
+            var camera = calibration.cameraLocation;
+            return {
+              time: item.time,
+              fovX: calibration.fovX,
+              fovY: calibration.fovY,
+              centerX: calibration.centerX,
+              centerY: calibration.centerY,
+              pitch: camera.cameraPitch,
+              roll: camera.cameraRoll,
+              yaw: camera.cameraYaw,
+              x: camera.cameraX,
+              y: camera.cameraY,
+              z: camera.cameraZ
+            };
+          });
+          videoMap = L.supermap.videoMap({
+            container: 'map',
+            url: new URL(feature.properties.address, dataUrl).href,
+            videoParameters: parameters,
+            interval: 0.1
+          });
+          videoMap.on('click', function (e) {
+            if (e.latlng) { console.log('地图点击坐标（EPSG:4326）', [e.latlng.lng, e.latlng.lat]); }
+          });
+          videoMap.on('load', function () {
+            Promise.all(vectorDatasetNames.map(addVectorDataset)).catch(function (error) { console.error(error); });
+          });
+          videoMap.on('error', function (e) { console.error(e.error); });
+        }).catch(function (error) { console.error(error); });
+      }
+
+      createVideoMap();
+    </script>
+  </body>
+</html>

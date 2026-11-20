@@ -51,6 +51,7 @@ import {
   initMap,
   crsFromMapJSON
 } from './mapping';
+import { VideoMap, videoMap } from './mapping/VideoMap';
 
 import {
   DataFlowLayer,
@@ -69,6 +70,8 @@ import {
   labelThemeLayer,
   MapVLayer,
   mapVLayer,
+  VideoLayer,
+  videoLayer,
   RangeThemeLayer,
   rangeThemeLayer,
   RankSymbolThemeLayer,
@@ -340,6 +343,10 @@ L.supermap.labelThemeLayer = labelThemeLayer;
 L.supermap.LabelThemeLayer = LabelThemeLayer;
 L.supermap.mapVLayer = mapVLayer;
 L.supermap.MapVLayer = MapVLayer;
+L.supermap.VideoLayer = VideoLayer;
+L.supermap.VideoMap = VideoMap;
+L.supermap.videoMap = videoMap;
+L.supermap.videoLayer = videoLayer;
 L.supermap.rangeThemeLayer = rangeThemeLayer;
 L.supermap.RangeThemeLayer = RangeThemeLayer;
 L.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;

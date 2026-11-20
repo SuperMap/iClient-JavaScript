@@ -1,0 +1,203 @@
+<!--********************************************************************
+* Copyright© 2000 - 2026 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Leaflet (https://iclient.supermap.io/web/libs/leaflet/1.9.4/leaflet.js)
+* video.js (https://github.com/videojs/video.js)
+* hls.js (https://github.com/video-dev/hls.js)
+* opencv (https://github.com/opencv/opencv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="resources.title_videoMapWithLiveSei"></title>
+    <style>
+      body { margin: 0; padding: 0; }
+      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+      .video-play-btn { position: absolute; left: 10px; bottom: 10px; z-index: 1000; box-sizing: border-box; appearance: none; -webkit-appearance: none; width: 56px; height: 56px; padding: 0; border: 2px solid rgba(255,255,255,0.92); border-radius: 50%; background: rgba(0,0,0,0.45); box-shadow: 0 2px 10px rgba(0,0,0,0.28); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+      .video-play-svg { width: 54%; height: 54%; fill: currentColor; display: none; }
+      .video-play-btn.is-paused .video-play-svg--play { display: block; margin-left: 6%; }
+      .video-play-btn.is-playing .video-play-svg--pause { display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <button id="play" type="button" class="video-play-btn is-paused" data-i18n="[title]resources.text_videoLayerWithTime_play;[aria-label]resources.text_videoLayerWithTime_play" title="播放" aria-label="播放" disabled>
+      <svg viewBox="0 0 24 24" class="video-play-svg video-play-svg--play" aria-hidden="true"><path d="M8 5.14v13.72L19 12 8 5.14z" /></svg>
+      <svg viewBox="0 0 24 24" class="video-play-svg video-play-svg--pause" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" /></svg>
+    </button>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/video-js/7.10.2/video.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@1.7.4/dist/hls.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/opencv/3.4/opencv.js"></script>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      (function () {
+        'use strict';
+
+        // 与 MapboxGL 播放控件一致，仅复用现有的播放和暂停翻译。
+        var resources = window.resources || window.examplesResources.resources;
+
+        // 播放地址来自 iServer 数据服务：数据集记录的 address 属性就是服务端转出的 HLS(m3u8) 地址
+        // 对应 REST 地址：http://10.10.4.202:8090/iserver/services/data-demo/rest/data/datasources/VideoData/datasets/DJI_09304
+        var DATA_URL = 'http://10.10.4.202:8090/iserver/services/data-demo/rest/data';
+        var DATASOURCE_NAME = 'VideoData';
+        var DATASET_NAME = 'DJI_09304';
+        // 手工指定的播放地址，留空表示从数据服务的 address 属性取
+        var STREAM_ADDRESS = '';
+        var VECTOR_DATA_URL = DATA_URL;
+        var VECTOR_DATASOURCE_NAME = 'TFxinqu';
+        var VECTOR_DATASET_NAMES = ['trafficGuideLine', 'road', 'building', 'landuse'];
+
+        var videoMap = null;
+        var streamAddress = '';
+
+        var playButton = document.getElementById('play');
+
+        function syncPlayButton() {
+          var paused = !videoMap || videoMap.paused();
+          playButton.disabled = !videoMap;
+          playButton.classList.toggle('is-paused', paused);
+          playButton.classList.toggle('is-playing', !paused);
+          var key = paused ? 'text_videoLayerWithTime_play' : 'text_videoLayerWithTime_pause';
+          playButton.title = resources[key];
+          playButton.setAttribute('data-i18n', '[title]resources.' + key + ';[aria-label]resources.' + key);
+          playButton.setAttribute('aria-label', playButton.title);
+        }
+        playButton.onclick = function () {
+          videoMap.paused() ? videoMap.play() : videoMap.pause();
+        };
+
+        // 视频数据集里一条记录就是一路流：address 是服务端转出的 HLS(m3u8) 地址，
+        // 相机参数全部来自分片 SEI，这里只取播放地址。
+        function queryStreamAddress() {
+          if (STREAM_ADDRESS) {
+            return Promise.resolve(new URL(STREAM_ADDRESS, DATA_URL).href);
+          }
+          var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: DATASET_NAME + '@' + DATASOURCE_NAME,
+              attributeFilter: 'SMID > 0'
+            },
+            datasetNames: [DATASOURCE_NAME + ':' + DATASET_NAME]
+          });
+          return new L.supermap.FeatureService(DATA_URL)
+            .getFeaturesBySQL(sqlParam)
+            .then(function (serviceResult) {
+              var collection = serviceResult && serviceResult.result && serviceResult.result.features;
+              var features = collection && (collection.features || (Array.isArray(collection) ? collection : null));
+              if (!features || !features.length) {
+                throw new Error('数据集 ' + DATASET_NAME + '@' + DATASOURCE_NAME + ' 中没有视频记录');
+              }
+              for (var i = features.length - 1; i >= 0; i--) {
+                var address = features[i].properties && features[i].properties.address;
+                if (address && /\.m3u8(\?|#|$)/i.test(address)) {
+                  return new URL(address, DATA_URL).href;
+                }
+              }
+              throw new Error('视频记录的 address 属性不是 .m3u8 地址');
+            });
+        }
+
+        // 浏览器 MSE 能力、hls.js 是否可用都由 iClient 内部检测：不可用时 iClient 会 console.warn
+        // 并退化为 video.js 直接播放，业务侧不需要重复判断
+
+        function createVideoMap() {
+          if (!window.cv || !window.cv.Mat) {
+            // OpenCV.js 的 WASM 初始化完成后再创建 VideoMap。
+            setTimeout(createVideoMap, 200);
+            return;
+          }
+          videoMap = L.supermap.videoMap({
+            container: 'map',
+            // SEI 参数源 + m3u8：iClient 内部用页面引入的 hls.js 接管拉流并解析 SEI，业务只需传 url
+            url: streamAddress,
+            parametersSource: 'SEI',
+            seiProjection: 'EPSG:3857',
+            interval: 0.1,
+            // 直播不能循环，结尾重播会得到一段没有参数的画面
+            loop: false
+          });
+
+          videoMap.on('play pause', syncPlayButton);
+          videoMap.on('click', function (e) {
+            if (e.latlng) { console.log('地图点击坐标（EPSG:4326）', [e.latlng.lng, e.latlng.lat]); }
+          });
+          videoMap.on('load', function () {
+            VECTOR_DATASET_NAMES.forEach(addVectorDataset);
+            syncPlayButton();
+          });
+
+          // 内部 hls.js 报错，致命错误已由 iClient 自动重连
+          videoMap.on('seistreamerror', function (e) {
+            if (!e || !e.fatal) {
+              return;
+            }
+            console.error('[SEI] hls.js 致命错误', e);
+          });
+
+          videoMap.on('seiinvalid', function (e) {
+            console.warn('[SEI] 解析失败', e.reason, e.sample);
+          });
+
+        }
+
+        function queryVectorFeatures(datasetName) {
+          var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: datasetName + '@' + VECTOR_DATASOURCE_NAME,
+              attributeFilter: 'SMID > 0'
+            },
+            targetEpsgCode: '4326',
+            datasetNames: [VECTOR_DATASOURCE_NAME + ':' + datasetName]
+          });
+          return new L.supermap.FeatureService(VECTOR_DATA_URL).getFeaturesBySQL(sqlParam);
+        }
+
+        function addVectorDataset(datasetName) {
+          queryVectorFeatures(datasetName).then(function (serviceResult) {
+            if (!serviceResult.result || !serviceResult.result.features) {
+              throw new Error(datasetName + '：未返回要素');
+            }
+            videoMap.addGeoJSON(serviceResult.result.features, {
+              pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, { radius: 5 }); },
+              style: function (feature) {
+                var type = feature.geometry.type;
+                return type.indexOf('Point') >= 0
+                  ? { color: '#ffffff', weight: 1, fillColor: '#ff5a36', fillOpacity: 1 }
+                  : type.indexOf('LineString') >= 0
+                    ? { color: '#ff9f1c', weight: 4 }
+                    : { color: '#48cae4', weight: 1, fillColor: '#48cae4', fillOpacity: 0.55 };
+              }
+            });
+          }).catch(function (error) { console.error('[Vector overlay] 加载数据集失败：' + datasetName, error); });
+        }
+
+        function connect() {
+          queryStreamAddress().then(
+            function (address) {
+              streamAddress = address;
+              createVideoMap();
+            },
+            function (error) {
+              console.error('[SEI] 获取播放地址失败', error);
+            }
+          );
+        }
+
+        window.addEventListener('beforeunload', function () {
+          if (videoMap) {
+            // destroy() 内部会销毁 iClient 托管的 hls.js 实例
+            videoMap.destroy();
+            videoMap = null;
+          }
+        });
+
+        connect();
+      })();
+    </script>
+  </body>
+</html>

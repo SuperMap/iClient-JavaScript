@@ -1,3 +1,8 @@
+/**common -- overlay**/
+import './common/overlay/VideoFrameProcessorSpec.js';
+import './common/overlay/VideoSeiSpec.js';
+import './common/overlay/VideoPlayerAdapterSpec.js';
+
 /**common -- iServer**/
 import './common/iServer/KnowledgeGraphServiceSpec.js';
 import './common/iServer/KnowledgeGraphEdgeParameterSpec.js';

@@ -4,14 +4,12 @@
  import mapboxgl from 'mapbox-gl';
  import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
  import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
-import { silencePlayRejection } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
+import { silencePlayRejection, getVideoElement } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
  import { bbox, polygon } from '@turf/turf';
  import CoordTransfer from '../mapping/CoordTransfer';
- import { fovXToFx, fovYToFy, smartTimeProcessor, FastRangeSearcher } from '../mapping/utils/VideoMapUtil';
- import { SeiPoseTimeline } from '../mapping/utils/SeiPoseTimeline';
+ import { smartTimeProcessor, FastRangeSearcher } from '../mapping/utils/VideoMapUtil';
+ import { VideoSei } from '@supermapgis/iclient-common/overlay/video/VideoSei';
  import proj4 from 'proj4';
-import { normalizeSeiPose, normalizeSeiProjection } from '../mapping/utils/seiParser';
-import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessage } from '../mapping/utils/SeiHlsSource';
  
  /**
   * @typedef {Object} VideoLayer.VideoParameters - 视频配准参数。
@@ -60,6 +58,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
   * @param {string} [options.parametersSource='custom'] - 配准参数来源。`custom` 表示使用 `videoParameters` 静态/数组参数；`SEI` 表示使用视频流 TS 分片内携带的 SEI 参数（此时 `videoParameters` 可不传）。
   * @param {string} [options.seiProjection='EPSG:3857'] - SEI 相机坐标与 extent 的源投影，仅支持 `EPSG:3857` 和 `EPSG:4326`。
   * @param {Function} [options.seiParser] - 自定义 SEI 解析函数，仅 `parametersSource` 为 `'SEI'` 时生效。
+  * @param {Object|HTMLVideoElement} [options.player] - 外部 video.js 播放器或原生 video，所有权由调用方保留。
   * @fires VideoLayer#play
   * @fires VideoLayer#pause
   * @fires VideoLayer#parametersready
@@ -99,12 +98,18 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      if (!this.cv) {
        throw new Error('opencv.js instance is not existed!');
      }
-     this.parametersSource = this.options.parametersSource === undefined ? 'custom' : this.options.parametersSource;
-     if (this.parametersSource !== 'custom' && this.parametersSource !== 'SEI') {
-       throw new Error('parametersSource must be "custom" or "SEI".');
-     }
-     this.isSeiSource = this.parametersSource === 'SEI';
-     this.seiProjection = normalizeSeiProjection(this.options.seiProjection);
+     this._sei = new VideoSei(this.options, {
+       getVideoElement: () => this._getVideoElement(),
+       getVideoSize: () => ({ videoWidth: this.videoWidth, videoHeight: this.videoHeight }),
+       emit: (type, event) => this.fire(type, event),
+       onUpdate: () => this._ensureSeiBaseEntry(),
+       onReset: () => this._clearPoseCache(),
+       onCalibrate: () => this._clearPoseCache()
+     });
+     this.parametersSource = this._sei.parametersSource;
+     this.isSeiSource = this._sei.isSeiSource;
+     this.seiProjection = this._sei.projection;
+     this.seiTimeline = this._sei.timeline;
      this.maxCachedPoses = Math.max(1, this.options.maxCachedPoses || 30);
      if (!this.videoParameters && !this.isSeiSource) {
        throw new Error('videoParameters must be set!');
@@ -124,11 +129,6 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      this._buildingLayer = false;
      this._layerAdded = false;
      this._frameCallbackId = null;
-     this.hlsConfig = this.options.hlsConfig || null;
-     this.hlsAutoRecover = this.options.hlsAutoRecover !== false;
-     this.seiHlsSource = null;
-     this._seiHlsManaged = false;
-     this._warnedSeiUnavailable = false;
      if (Array.isArray(this.videoParameters)) {
        this.videoParameters = smartTimeProcessor(this.interval, this.videoParameters, ['yaw', 'pitch', 'roll', 'x', 'y', 'z', 'extent']);
        const timeArr = this.videoParameters.map((item) => {
@@ -136,16 +136,6 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
        })
        this.beginIndex = timeArr[0];
        this.finder = new FastRangeSearcher(timeArr);
-     }
-     if (this.isSeiSource) {
-       this.seiTimeline = new SeiPoseTimeline();
-       this._onTimelineAdd = () => this._ensureSeiBaseEntry();
-       this._onTimelineInvalid = (payload) => this.fire('seiinvalid', payload);
-       this._onTimelineReset = () => this._clearPoseCache();
-       this.seiTimeline.on('add', this._onTimelineAdd);
-       this.seiTimeline.on('invalid', this._onTimelineInvalid);
-       this.seiTimeline.on('reset', this._onTimelineReset);
-       this.seiTimeline.on('calibrate', this._onTimelineReset);
      }
    }
 
@@ -155,119 +145,52 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @param {mapboxgl.Map} map - 地图实例。
     */
    onAdd(map) {
+     this._session = {};
      this.map = map;
-     const managed = this._shouldManageSeiHls(this.url);
      // SEI + m3u8：MediaSource 由 hls.js 接管，不能把 m3u8 交给 video.js，否则 VHS 会抢占 MediaSource
-     this.renderer = new VideoLayerRenderer({ url: managed ? undefined : this.url, id: this.layerId });
+     this.renderer = new VideoLayerRenderer({ url: this._sei.managed ? undefined : this.url, player: this.options.player, id: this.layerId });
      this.video = this.renderer.createVideo();
      this.videoDomId = this.renderer.getVideoDomId();
      this._bindPlaybackEvents();
  
      this.video.one('firstplay', () => {
-       silencePlayRejection(this.video.play());
+       this._sei.play(this.video);
      });
-     this.video.one('canplay', () => {
+     this._cancelVideoReady = this.renderer.onVideoReady(() => {
        this._onVideoReady();
      });
-     if (managed) {
-       this._startSeiHls(this.url);
-     }
+     this._sei.start();
    }
 
-   /**
-    * @private
-    * @description 判断 SEI 模式下是否需要由 iClient 内部创建 hls.js 并接管播放，只处理 SEI + m3u8 场景。
-    * @param {string} [url] - 视频地址。
-    * @returns {boolean}
-    */
-   _shouldManageSeiHls(url) {
-     if (!this.isSeiSource || !isHlsStreamUrl(url)) {
-       return false;
-     }
-     if (!isSeiHlsAvailable()) {
-       this._warnSeiUnavailable();
-       return false;
-     }
-     return true;
-   }
-
-   /**
-    * @private
-    * @description 浏览器 MSE 能力或 hls.js 缺失导致 SEI 参数无法解析时给出提示，只提示一次。
-    */
-   _warnSeiUnavailable() {
-     if (this._warnedSeiUnavailable) {
-       return;
-     }
-     this._warnedSeiUnavailable = true;
-     console.warn('[VideoLayer] ' + getSeiUnavailableMessage());
-   }
-
-   /**
-    * @private
-    * @description 创建内部 hls.js 源并开始拉流。
-    * @param {string} url - HLS(m3u8) 地址。
-    */
-   _startSeiHls(url) {
-     this._seiHlsManaged = true;
-     this.seiHlsSource = new SeiHlsSource({
-       url,
-       hlsConfig: this.hlsConfig,
-       autoRecover: this.hlsAutoRecover,
-       getVideoElement: () => this._getVideoElement(),
-       onUserData: (data) => this._handleSeiPayload(data),
-       onFragBuffered: () => this._calibrateSeiTimeline(),
-       onMediaAttached: () => {
-         if (this.video) {
-           silencePlayRejection(this.video.play());
-         }
-       },
-       onManifestParsed: () => {
-         this.fire('seistreamready', {});
-       },
-       onReconnect: () => {
-         // 重连是一次新的播放会话，旧姿态必须清空后重新标定
-         this._clearPoseCache();
-         if (this.seiTimeline) {
-           this.seiTimeline.clear();
-         }
-       },
-       onError: (data) => {
-         this.fire('seistreamerror', Object.assign({}, data, { data, hlsType: data && data.type }));
-       }
-     });
-     this.seiHlsSource.start();
-   }
- 
    /**
     * @function VideoLayer.prototype.onRemove
     * @description 移除该图层，释放 opencv 矩阵、视频帧回调与事件监听。
     * @param {mapboxgl.Map} map - 地图实例。
     */
    onRemove(map) {
-     this.unbindHls();
+     this._session = null;
+     if (this._cancelVideoReady) {
+       this._cancelVideoReady();
+     }
+     this._sei.stop();
+     if (this._disposeFrameResources) {
+       this._disposeFrameResources();
+       this._disposeFrameResources = null;
+     }
      const videoEl = this._getVideoElement();
      if (videoEl && this._frameCallbackId !== null && typeof videoEl.cancelVideoFrameCallback === 'function') {
        videoEl.cancelVideoFrameCallback(this._frameCallbackId);
        this._frameCallbackId = null;
      }
-     if (this.seiTimeline) {
-       if (this._onTimelineAdd) {
-         this.seiTimeline.off('add', this._onTimelineAdd);
-       }
-       if (this._onTimelineInvalid) {
-         this.seiTimeline.off('invalid', this._onTimelineInvalid);
-       }
-       if (this._onTimelineReset) {
-         this.seiTimeline.off('reset', this._onTimelineReset);
-         this.seiTimeline.off('calibrate', this._onTimelineReset);
-       }
-     }
      this._clearPoseCache();
-     if (this.baseEntry && this.baseEntry.dstTri && this.baseEntry.dstTri.delete) {
-       this.baseEntry.dstTri.delete();
-       this.baseEntry.dstTri = null;
-     }
+     // 时序参数的每条配准都持有矩阵；基准项可能在表中，去重后统一释放。
+     new Set([this.baseEntry, ...Object.values(this.timeParams || {})]).forEach((entry) => {
+       if (entry && entry.dstTri && entry.dstTri.delete) {
+         entry.dstTri.delete();
+         entry.dstTri = null;
+       }
+     });
+     this.timeParams = null;
      if (this.clipMat && this.clipMat.delete) {
        this.clipMat.delete();
        this.clipMat = null;
@@ -277,28 +200,41 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
        this.dst1 = null;
      }
      const targetMap = map || this.map;
-     if (targetMap && typeof targetMap.getSource === 'function' && targetMap.getSource(this.layerId) &&
-       typeof targetMap.getLayer === 'function' && !targetMap.getLayer(this.layerId)) {
+     // 移除由视频图层创建的栅格层及源，避免重加时残留旧画面或重复注册同名源。
+     if (targetMap && typeof targetMap.getLayer === 'function' && targetMap.getLayer(this.layerId)) {
+       targetMap.removeLayer(this.layerId);
+     }
+     if (targetMap && typeof targetMap.getSource === 'function' && targetMap.getSource(this.layerId)) {
        targetMap.removeSource(this.layerId);
      }
      if (this.renderer) {
-       if (this.renderer.isExternal) {
-         // 外部播放器由调用方持有：只解绑适配器上的监听，不销毁播放器本身
-         if (this.video && typeof this.video.dispose === 'function') {
-           this.video.dispose();
-         }
-       } else {
+       // 自建播放器销毁全部监听；外部播放器只释放适配器，保留调用方播放器。
+       if (this.video && typeof this.video.dispose === 'function') {
+         this.video.dispose();
+       }
+       if (!this.renderer.isExternal) {
          const dom = document.getElementById(this.layerId) || document.getElementById(this.id);
          if (dom && dom.parentNode) {
            dom.parentNode.removeChild(dom);
          }
        }
      }
+     this.video = null;
+     this.renderer = null;
      this.map = null;
      this._videoReady = false;
      this._buildingLayer = false;
      this._layerAdded = false;
      this.baseEntry = null;
+     this.baseRatio = undefined;
+     if (this.coordTransfer) {
+       this.coordTransfer.dispose();
+       this.coordTransfer = null;
+     }
+     if (this.isSeiSource) {
+       this.extent = this.options.extent;
+       this.clipRegion = this.options.clipRegion || [];
+     }
    }
  
    /**
@@ -316,6 +252,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      }
      this.videoWidth = width;
      this.videoHeight = height;
+     this.videoDomId = this.videoDomId || this.renderer.getVideoDomId();
      this._videoReady = true;
      if (this.isSeiSource) {
        this._ensureSeiBaseEntry();
@@ -328,7 +265,12 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      if (!Array.isArray(this.videoParameters)) {
        this.videoParameters = [this.videoParameters];
      }
+     const session = this._session;
      this._initParameters(this.videoParameters[0]).then((coordTransfer) => {
+       if (this._session !== session || !this.map) {
+         coordTransfer.dispose();
+         return;
+       }
        this.coordTransfer = coordTransfer;
        this.timeParams = {};
        this.videoParameters.forEach((dataItem) => {
@@ -381,7 +323,13 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
        }
      }
      this._buildingLayer = true;
+     const session = this._session;
      this._initParameters(head[0]).then((coordTransfer) => {
+       // OpenCV 初始化可能跨越移除、重加，旧会话不能恢复画面或覆盖新相机。
+       if (this._session !== session || !this.map) {
+         coordTransfer.dispose();
+         return;
+       }
        this.coordTransfer = coordTransfer;
        const entry = this._computePoseEntry(head[0]);
        this._buildingLayer = false;
@@ -422,16 +370,11 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      if (!dataItem || !this.coordTransfer || !this.map) {
        return null;
      }
-     const { pitch, roll, yaw, x, y, z, fovX, fovY, centerX, centerY } = dataItem;
      const formatExtent = this._getFormatExtent(dataItem);
      if (!formatExtent) {
        return null;
      }
-     const fx = fovXToFx(fovX, this.videoWidth);
-     const fy = fovYToFy(fovY, this.videoHeight);
-     this.coordTransfer.setCameraLocation({
-       pitch, roll, yaw, x, y, z, fx, fy, centerX, centerY
-     });
+     this.coordTransfer.setCameraLocation(CoordTransfer.getCameraParameters(dataItem, this.videoWidth, this.videoHeight));
      const result = bbox(polygon([
        [...formatExtent, formatExtent[0]]
      ]));
@@ -530,9 +473,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      if (parameters && !Object.keys(parameters).length) {
        return;
      }
-     parameters.fx = fovXToFx(parameters.fovX, this.videoWidth);
-     parameters.fy = fovYToFy(parameters.fovY, this.videoHeight);
-     return new CoordTransfer(this.cv, parameters).init();
+     return CoordTransfer.fromVideoParameters(this.cv, parameters, this.videoWidth, this.videoHeight).init();
    }
  
    _addVideoLayer(map) {
@@ -543,6 +484,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      const extent = this.extent || this.baseEntry.extent;
      this.extent = extent;
      let that = this;
+     const session = this._session;
      let srcPixelCoords = [0, 0, that.videoWidth, 0, that.videoWidth, that.videoHeight, 0, that.videoHeight];
      if (this.clipRegion.length) {
        srcPixelCoords = [];
@@ -584,6 +526,9 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      let current = 0;
      if (timeVarying && videoEle && videoEle.requestVideoFrameCallback) {
        const updateCanvas = (now, metadata) => {
+         if (that._session !== session) {
+           return;
+         }
          current = metadata.mediaTime;
          that._frameCallbackId = videoEle.requestVideoFrameCallback(updateCanvas);
        };
@@ -595,11 +540,24 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      // 报 enableAttributes undefined，视频闪现。这里改为 rAF（帧间隙执行）+ 50ms 节流
      // （位置更新 20Hz 足够平滑）+ 变化阈值，把调用频率和时机收敛到安全范围。
      let coordRafId = 0;
+     // 源回调闭包持有的矩阵也需要随图层释放，重复添加不能累积 WASM 内存。
+     this._disposeFrameResources = () => {
+       if (coordRafId) {
+         cancelAnimationFrame(coordRafId);
+       }
+       srcTri.delete();
+       if (cachedM) {
+         cachedM.delete();
+       }
+     };
      let pendingResult = null;
      let lastCoordTime = 0;
      let lastAppliedResult = null;
      const applyCoords = () => {
        coordRafId = 0;
+       if (that._session !== session) {
+         return;
+       }
        const r = pendingResult;
        if (!r) {
          return;
@@ -878,7 +836,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
    play() {
      let promise;
      if (this.video) {
-       promise = this.video.play();
+       promise = this._sei.play(this.video);
      }
      const source = this._getVideoSource();
      if (source && typeof source.play === 'function') {
@@ -954,29 +912,10 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {VideoLayer} 当前图层。
     */
     pushSeiParameters(items) {
-      if (!this.seiTimeline || !Array.isArray(items) || !items.length) {
-        return this;
+      if (Array.isArray(items)) {
+        this._sei.push(items);
       }
-      this.seiTimeline.push(this._normalizeSeiPoses(items));
       return this;
-    }
-
-    /**
-     * @private
-     * @description 批量归一化 SEI 相机参数的空间参考。
-     * @param {Array<Object>} items - 相机参数数组。
-     * @returns {Array<Object>} 归一化后的相机参数数组。
-     */
-    _normalizeSeiPoses(items) {
-      const list = [];
-      for (let i = 0; i < items.length; i++) {
-        const pose = normalizeSeiPose(items[i], this.seiProjection);
-        if (pose) {
-          pose.time = items[i].time;
-          list.push(pose);
-        }
-      }
-      return list;
     }
 
    /**
@@ -986,11 +925,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {VideoLayer} 当前图层。
     */
    unbindHls() {
-     if (this.seiHlsSource) {
-       this.seiHlsSource.destroy();
-       this.seiHlsSource = null;
-     }
-     this._seiHlsManaged = false;
+     this._sei.unbindHls();
      return this;
    }
 
@@ -1001,7 +936,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {Object|null} hls.js 实例，不存在时返回 `null`。
     */
    getHls() {
-     return this.seiHlsSource ? this.seiHlsSource.getHls() : null;
+     return this._sei.getHls();
    }
 
    /**
@@ -1013,16 +948,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {VideoLayer} 当前图层。
     */
    restartHls() {
-     if (!this.seiHlsSource) {
-       return this;
-     }
-     this.unbindHls();
-     // 重建是一次新的播放会话，旧姿态必须清空后重新标定
-     this._clearPoseCache();
-     if (this.seiTimeline) {
-       this.seiTimeline.clear();
-     }
-     this._startSeiHls(this.url);
+     this._sei.restart();
      return this;
    }
 
@@ -1033,7 +959,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {number|null} 推荐位置，不可用时返回 `null`。
     */
    getSeiLiveSyncPosition() {
-     return this.seiHlsSource ? this.seiHlsSource.getLiveSyncPosition() : null;
+     return this._sei.getLiveSyncPosition();
    }
 
    /**
@@ -1043,7 +969,7 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
     * @returns {number|null} 延迟秒数，不可用时返回 `null`。
     */
    getSeiLatency() {
-     return this.seiHlsSource ? this.seiHlsSource.getLatency() : null;
+     return this._sei.getLatency();
    }
 
    /**
@@ -1067,43 +993,11 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
    }
 
    _getVideoElement() {
-     const video = this.video;
-     if (!video) {
-       return null;
-     }
-     if (typeof video.tech === 'function') {
-       const tech = video.tech();
-       if (tech && typeof tech.el === 'function') {
-         return tech.el();
-       }
-     }
-     if (video.nodeType === 1) {
-       return video;
-     }
-     if (typeof video.el === 'function') {
-       return video.el();
-     }
-     return null;
+     return getVideoElement(this.video);
    }
 
    _handleSeiPayload(data) {
-     if (!this.seiTimeline || !data) {
-       return;
-     }
-     this.seiTimeline.ingest(data, {
-       parser: typeof this.options.seiParser === 'function' ? this.options.seiParser : undefined,
-       videoWidth: this.videoWidth,
-       videoHeight: this.videoHeight,
-       seiProjection: this.seiProjection
-     });
-   }
-
-   _calibrateSeiTimeline() {
-     const el = this._getVideoElement();
-     if (!this.seiTimeline || !el || !el.buffered || !el.buffered.length) {
-       return;
-     }
-     this.seiTimeline.calibrate(el.buffered.start(0));
+     return this._sei.handlePayload(data);
    }
 
    _getVideoSource() {
@@ -1113,4 +1007,3 @@ import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessa
      return this.map.getSource(this.layerId) || null;
    }
  }
- 

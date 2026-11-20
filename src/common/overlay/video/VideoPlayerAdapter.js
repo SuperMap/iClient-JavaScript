@@ -12,7 +12,7 @@
  * 这里统一适配，避免调用方被迫再包一层 video.js。
  *
  * 支持的输入：
- * - videojs.Player 实例（原样透传）
+ * - videojs.Player 实例（保留调用方所有权）
  * - HTMLVideoElement（包装成播放器风格）
  * - VideoPlayerAdapter 本身（原样返回）
  */
@@ -28,6 +28,19 @@ function isPlayerLike(target) {
     typeof target.on === 'function' &&
     typeof target.el_ === 'object'
   );
+}
+
+/** @private video.js 的 el() 是播放器容器，媒体元素必须从当前 tech 取得。 */
+export function getVideoElement(target) {
+  if (!target || isVideoElement(target)) {
+    return target || null;
+  }
+  if (typeof target.tech === 'function') {
+    const tech = target.tech();
+    return tech && typeof tech.el === 'function' ? tech.el() : null;
+  }
+  const element = typeof target.el === 'function' ? target.el() : null;
+  return isVideoElement(element) ? element : null;
 }
 
 /**
@@ -56,13 +69,7 @@ export class VideoPlayerAdapter {
   }
 
   _resolveElement() {
-    if (!this.target) {
-      return null;
-    }
-    if (typeof this.target.el === 'function') {
-      return this.target.el();
-    }
-    return null;
+    return getVideoElement(this.target);
   }
 
   /**
@@ -102,6 +109,8 @@ export class VideoPlayerAdapter {
    * @returns {HTMLVideoElement|null}
    */
   el() {
+    // 播放器切换 tech 后会替换 video，不能缓存旧媒体元素。
+    this.element = this._resolveElement();
     return this.element;
   }
 
@@ -133,7 +142,9 @@ export class VideoPlayerAdapter {
 
   on(type, listener) {
     if (this.player) {
-      this.player.on(type, listener);
+      const player = this.player;
+      player.on(type, listener);
+      this._disposers.push(() => player.off(type, listener));
       return this;
     }
     const element = this.el();
@@ -158,12 +169,15 @@ export class VideoPlayerAdapter {
 
   one(type, listener) {
     if (this.player) {
-      this.player.one(type, listener);
+      const player = this.player;
+      player.one(type, listener);
+      this._disposers.push(() => player.off(type, listener));
       return this;
     }
     const element = this.el();
     if (element && typeof element.addEventListener === 'function') {
       element.addEventListener(type, listener, { once: true });
+      this._disposers.push(() => element.removeEventListener(type, listener));
     }
     return this;
   }
@@ -229,6 +243,14 @@ export class VideoPlayerAdapter {
     }
     const element = this.el();
     return element && Number.isFinite(element.duration) ? element.duration : 0;
+  }
+
+  error() {
+    if (this.player) {
+      return this.player.error();
+    }
+    const element = this.el();
+    return element ? element.error : null;
   }
 
   /**

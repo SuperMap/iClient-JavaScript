@@ -1,5 +1,6 @@
 import VideoMapLayer from '../../../src/mapboxgl/mapping/layers/VideoMapLayer';
 import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
+import { createVideojsPlayer } from '../../tool/VideoPlayerMock';
 
 function createVideoMap() {
   return {
@@ -21,6 +22,31 @@ function createVideoMap() {
 }
 
 describe('VideoMapLayer', () => {
+  [false, true].forEach((useVideojs) => {
+    it('loads a preloaded external player exactly once: videojs=' + useVideojs, async () => {
+      const external = createVideojsPlayer();
+      const videoMap = createVideoMap();
+      videoMap.player = useVideojs ? external.player : external.video;
+      const layer = new VideoMapLayer(videoMap);
+      const loaded = jasmine.createSpy('loaded');
+      layer.on('loaded', loaded);
+      layer.add();
+      expect(loaded).not.toHaveBeenCalled();
+      await Promise.resolve();
+      expect(layer.renderer.isExternal).toBe(true);
+      expect(layer.video.tech().el()).toBe(external.video);
+      expect(loaded.calls.count()).toBe(1);
+      expect(layer.videoWidth).toBe(320);
+      expect(layer.videoHeight).toBe(180);
+      external.events.dispatchEvent(new Event('canplay'));
+      external.video.dispatchEvent(new Event('canplay'));
+      expect(loaded.calls.count()).toBe(1);
+      layer.remove();
+      expect(external.player.dispose).not.toHaveBeenCalled();
+      expect(external.video.cancelVideoFrameCallback).toHaveBeenCalled();
+    });
+  });
+
   it('returns early for an empty address and an already registered source', () => {
     const videoMap = createVideoMap();
     const layer = new VideoMapLayer(videoMap);
@@ -41,6 +67,7 @@ describe('VideoMapLayer', () => {
     const oneHandlers = {};
     const eventHandlers = {};
     const video = {
+      off: jasmine.createSpy('off'),
       one: jasmine.createSpy('one').and.callFake((name, handler) => { oneHandlers[name] = handler; }),
       on: jasmine.createSpy('on').and.callFake((name, handler) => { eventHandlers[name] = handler; }),
       videoWidth: () => 640,
@@ -50,7 +77,7 @@ describe('VideoMapLayer', () => {
       tech: () => ({ el: () => ({}) }),
       play: jasmine.createSpy('play')
     };
-    spyOn(VideoLayerRenderer.prototype, 'createVideo').and.returnValue(video);
+    spyOn(VideoLayerRenderer.prototype, 'createVideo').and.callFake(function () { this.video = video; return video; });
     spyOn(VideoLayerRenderer.prototype, 'getVideoDomId').and.returnValue('video-element-id');
     const layer = new VideoMapLayer(videoMap);
     const loaded = jasmine.createSpy('loaded');
@@ -63,6 +90,7 @@ describe('VideoMapLayer', () => {
     layer.add('recording.mp4');
     expect(layer.renderer.options).toEqual({
       url: 'recording.mp4',
+      player: undefined,
       id: layer.id,
       loop: false,
       autoplay: false
@@ -70,7 +98,7 @@ describe('VideoMapLayer', () => {
     expect(oneHandlers.firstplay).toEqual(jasmine.any(Function));
     oneHandlers.firstplay();
     expect(video.play).not.toHaveBeenCalled();
-    oneHandlers.canplay();
+    eventHandlers.canplay();
 
     expect(layer.videoWidth).toBe(640);
     expect(layer.videoHeight).toBe(360);
@@ -94,14 +122,15 @@ describe('VideoMapLayer', () => {
     videoMap.autoplay = true;
     const onceHandlers = {};
     const video = {
+      off: jasmine.createSpy('off'),
       one: jasmine.createSpy('one').and.callFake((name, handler) => { onceHandlers[name] = handler; }),
-      on: jasmine.createSpy('on'),
+      on: jasmine.createSpy('on').and.callFake((name, handler) => { onceHandlers[name] = handler; }),
       videoWidth: () => 320,
       videoHeight: () => 240,
       tech: () => ({ el: () => ({}) }),
       play: jasmine.createSpy('play')
     };
-    spyOn(VideoLayerRenderer.prototype, 'createVideo').and.returnValue(video);
+    spyOn(VideoLayerRenderer.prototype, 'createVideo').and.callFake(function () { this.video = video; return video; });
     spyOn(VideoLayerRenderer.prototype, 'getVideoDomId').and.returnValue('video-element-id');
     const layer = new VideoMapLayer(videoMap);
 
@@ -254,6 +283,8 @@ describe('VideoMapLayer', () => {
 
   it('removes the layer, source, video element and active callbacks', () => {
     const videoMap = createVideoMap();
+    videoMap.map.getLayer = jasmine.createSpy('getLayer').and.returnValue({});
+    videoMap.map.getSource.and.returnValue({});
     const layer = new VideoMapLayer(videoMap);
     const videoElement = document.createElement('video');
     videoElement.id = layer.id;
@@ -267,12 +298,50 @@ describe('VideoMapLayer', () => {
       off: jasmine.createSpy('off')
     };
 
+    const video = layer.video;
     layer.remove();
 
     expect(videoElement.cancelVideoFrameCallback).toHaveBeenCalledWith(7);
-    expect(layer.video.off).toHaveBeenCalledWith('timeupdate', timeUpdateHandler);
+    expect(video.off).toHaveBeenCalledWith('timeupdate', timeUpdateHandler);
     expect(videoMap.map.removeLayer).toHaveBeenCalledWith(layer.id);
     expect(videoMap.map.removeSource).toHaveBeenCalledWith(layer.id);
     expect(document.getElementById(layer.id)).toBeNull();
+  });
+
+  it('does not restart frame callbacks when a timeupdate listener removes the layer', () => {
+    const layer = new VideoMapLayer(createVideoMap());
+    const videoElement = document.createElement('video');
+    let update;
+    videoElement.requestVideoFrameCallback = jasmine.createSpy('requestVideoFrameCallback').and.callFake((callback) => { update = callback; return 1; });
+    videoElement.cancelVideoFrameCallback = jasmine.createSpy('cancelVideoFrameCallback');
+    layer.video = { tech: () => ({ el: () => videoElement }) };
+    layer.on('timeupdate', () => layer.remove());
+    layer._bindTimeUpdates();
+    layer._statsFrameCount = 29;
+    update(0, { mediaTime: 1 });
+    expect(videoElement.requestVideoFrameCallback.calls.count()).toBe(1);
+    expect(videoElement.cancelVideoFrameCallback).toHaveBeenCalled();
+    expect(layer.video).toBeNull();
+  });
+
+  it('stops the timeupdate fallback before reading statistics after removal', () => {
+    const layer = new VideoMapLayer(createVideoMap());
+    const element = document.createElement('video');
+    element.requestVideoFrameCallback = undefined;
+    let update;
+    const video = {
+      tech: () => ({ el: () => element }),
+      currentTime: () => 1,
+      on: (type, callback) => { update = callback; },
+      off: jasmine.createSpy('off'),
+      duration: jasmine.createSpy('duration')
+    };
+    layer.video = video;
+    layer.on('timeupdate', () => layer.remove());
+    layer._bindTimeUpdates();
+    layer._statsFrameCount = 29;
+    update();
+    expect(video.duration).not.toHaveBeenCalled();
+    expect(video.off).toHaveBeenCalledWith('timeupdate', update);
   });
 });

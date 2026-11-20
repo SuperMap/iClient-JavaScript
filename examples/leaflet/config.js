@@ -1195,6 +1195,48 @@ var exampleConfig = {
             fileName: 'fgb_bbox_load'
           }
         ]
+      },
+      "Video": {
+        name: 'Video',
+        name_en: 'Video',
+        version: '12.2.0',
+        content: [
+          {
+            name: '视频图层',
+            name_en: 'VideoLayer',
+            version: '12.2.0',
+            thumbnail: 'videoLayer.png',
+            fileName: 'videoLayer'
+          },
+          {
+            name: '无人机视频投放',
+            name_en: 'UAV Video Layer',
+            version: '12.2.0',
+            thumbnail: 'videoLayerWithTime.png',
+            fileName: 'videoLayerWithTime'
+          },
+          {
+            name: '无人机视频叠加矢量',
+            name_en: 'UAV Video Map add vector',
+            version: '12.2.0',
+            thumbnail: 'videoMapWithTime.png',
+            fileName: 'videoMapWithTime'
+          },
+          {
+            name: '直播流 SEI 视频叠加矢量（数据服务取地址）',
+            name_en: 'Live SEI Video Map (address from data service)',
+            version: '12.2.0',
+            thumbnail: 'videoMapWithLiveSei.png',
+            fileName: 'videoMapWithLiveSei'
+          },
+          {
+            name: '直播流 SEI 无人机视频投放（数据服务取地址）',
+            name_en: 'Live SEI UAV Video Layer (address from data service)',
+            version: '12.2.0',
+            thumbnail: 'videoLayerWithLiveSei.png',
+            fileName: 'videoLayerWithLiveSei'
+          }
+        ]
       }
     }
   },

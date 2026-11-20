@@ -1,7 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
-import { silencePlayRejection } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
+import { silencePlayRejection, getVideoElement } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
 
 /**
  * @class VideoMapLayer
@@ -31,11 +31,12 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   add(address) {
     this.address = address;
     const needsVideoElementOnly = !!this.videoMap && this.videoMap.parametersSource === 'SEI';
-    if (!this.address && !needsVideoElementOnly) {
+    if (!this.address && !this.videoMap.player && !needsVideoElementOnly) {
       return;
     }
     this.renderer = new VideoLayerRenderer({
       url: this.address,
+      player: this.videoMap.player,
       id: this.id,
       loop: this.loop,
       autoplay: this.autoplay
@@ -48,7 +49,7 @@ export default class VideoMapLayer extends mapboxgl.Evented {
         this.play();
       }
     });
-    this.video.one('canplay', () => {
+    this._cancelVideoReady = this.renderer.onVideoReady(() => {
       this._onVideoReady();
     });
   }
@@ -126,29 +127,45 @@ export default class VideoMapLayer extends mapboxgl.Evented {
   }
 
   _bindTimeUpdates() {
-    const videoElement = this.video && this.video.tech && this.video.tech().el();
+    const videoElement = getVideoElement(this.video);
     if (!videoElement) {
       return;
     }
     this._statsStartTime = performance.now();
     this._statsFrameCount = 0;
     this._statsLastMediaTime = 0;
+    const video = this.video;
     if (videoElement.requestVideoFrameCallback) {
       const update = (now, metadata) => {
+        if (this.video !== video) {
+          return;
+        }
         this._statsFrameCount++;
         this._statsLastMediaTime = metadata.mediaTime;
         this.fire('timeupdate', { time: metadata.mediaTime });
+        if (this.video !== video) {
+          return;
+        }
         if (this._statsFrameCount % 30 === 0) {
           this._fireVideoStats(videoElement, metadata.mediaTime);
         }
-        this.frameCallbackId = videoElement.requestVideoFrameCallback(update);
+        // timeupdate 的业务监听可能移除地图，不能在回调结束后重新启动帧循环。
+        if (this.video === video) {
+          this.frameCallbackId = videoElement.requestVideoFrameCallback(update);
+        }
       };
       this.frameCallbackId = videoElement.requestVideoFrameCallback(update);
     } else {
       this.timeUpdateHandler = () => {
+        if (this.video !== video) {
+          return;
+        }
         this._statsFrameCount++;
-        this._statsLastMediaTime = this.video.currentTime();
-        this.fire('timeupdate', { time: this.video.currentTime() });
+        this._statsLastMediaTime = video.currentTime();
+        this.fire('timeupdate', { time: this._statsLastMediaTime });
+        if (this.video !== video) {
+          return;
+        }
         if (this._statsFrameCount % 30 === 0) {
           this._fireVideoStats(videoElement, this._statsLastMediaTime);
         }
@@ -259,19 +276,22 @@ export default class VideoMapLayer extends mapboxgl.Evented {
    * @description  移除视频图层。
    */
   remove() {
+    if (this._cancelVideoReady) {
+      this._cancelVideoReady();
+    }
     if (this.id) {
-      const videoElement = this.video && this.video.tech && this.video.tech().el();
+      const videoElement = getVideoElement(this.video);
       if (videoElement && this.frameCallbackId && videoElement.cancelVideoFrameCallback) {
         videoElement.cancelVideoFrameCallback(this.frameCallbackId);
       }
       if (this.timeUpdateHandler && this.video) {
         this.video.off('timeupdate', this.timeUpdateHandler);
       }
-      if (this.renderer && this.renderer.isExternal) {
-        if (this.video && typeof this.video.dispose === 'function') {
-          this.video.dispose();
-        }
-      } else {
+      // 适配器仅解绑外部播放器监听，自建 video.js 播放器则完整销毁。
+      if (this.video && typeof this.video.dispose === 'function') {
+        this.video.dispose();
+      }
+      if (!this.renderer || !this.renderer.isExternal) {
         const wrapper = document.getElementById(this.id);
         if (wrapper && wrapper.parentNode) {
           wrapper.parentNode.removeChild(wrapper);
@@ -284,5 +304,10 @@ export default class VideoMapLayer extends mapboxgl.Evented {
         this.map.removeSource(this.id);
       }
     }
+    this.video = null;
+    this.renderer = null;
+    this.frameCallbackId = null;
+    this.timeUpdateHandler = null;
+    this._videoReady = false;
   }
 }

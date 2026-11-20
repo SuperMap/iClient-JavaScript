@@ -53,6 +53,8 @@
                     'raster-tiles': {
                         type: 'raster',
                         tileSize: 256,
+                        // 天地图影像最高原生级别为 18，继续放大时复用该级瓦片。
+                        maxzoom: 18,
                         tiles: [
                             'https://t4.tianditu.gov.cn/img_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311'
                         ]

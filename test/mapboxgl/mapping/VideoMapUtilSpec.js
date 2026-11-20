@@ -209,6 +209,19 @@ describe('VideoMapUtil camera pose interpolation', () => {
     expect(result.map((item) => item.time)).toEqual([0, 0.2]);
   });
 
+  it('smartTimeProcessor should interpolate public array extents without mutating the input', () => {
+    const data = [
+      { ...makePose(0, 10), extent: [[104, 30], [104.02, 30.02]] },
+      { ...makePose(1, 20), extent: [[104.02, 30.02], [104.04, 30.04]] }
+    ];
+    const result = smartTimeProcessor(0.5, data, ['yaw', 'extent']);
+    expect(result[1].extent[0][0]).toBeCloseTo(104.01, 8);
+    expect(result[1].extent[0][1]).toBeCloseTo(30.01, 8);
+    expect(result[1].extent[1][0]).toBeCloseTo(104.03, 8);
+    expect(result[1].extent[1][1]).toBeCloseTo(30.03, 8);
+    expect(data[0].extent).toEqual([[104, 30], [104.02, 30.02]]);
+  });
+
   it('smartTimeProcessor should select the closer next frame and deduplicate samples', () => {
     const data = [0, 0.3, 0.6, 1].map((time) => makePose(time, time * 10));
     const result = smartTimeProcessor(0.5, data, ['yaw']);

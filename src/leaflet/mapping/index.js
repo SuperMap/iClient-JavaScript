@@ -10,6 +10,7 @@ import { WMTSLayer, wmtsLayer } from './TileLayer.WMTS';
 import { WebMap, webMap } from './WebMap';
 import { ImageTileLayer, imageTileLayer } from './ImageTileLayer';
 import { initMap, crsFromMapJSON } from './initMap';
+import { VideoMap, videoMap } from './VideoMap';
 
 export { BaiduTileLayer, baiduTileLayer };
 export { CloudTileLayer, cloudTileLayer };
@@ -20,3 +21,4 @@ export { WMTSLayer, wmtsLayer };
 export { WebMap, webMap };
 export { ImageTileLayer, imageTileLayer };
 export { initMap, crsFromMapJSON };
+export { VideoMap, videoMap };

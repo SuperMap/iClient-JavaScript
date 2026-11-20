@@ -6,17 +6,14 @@ import GeojsonLayer from './layers/GeojsonLayer';
 import {
   transformCoord,
   transformCoordReverse,
-  fovXToFx,
-  fovYToFy,
   smartTimeProcessor,
   FastRangeSearcher,
   resolveCameraPose
 } from './utils/VideoMapUtil';
 import GeojsonSource from './GeojsonSource';
 import VideoMapDraw from './VideoMapDraw';
-import { SeiPoseTimeline } from './utils/SeiPoseTimeline';
-import { SeiHlsSource, isHlsStreamUrl, isSeiHlsAvailable, getSeiUnavailableMessage } from './utils/SeiHlsSource';
-import { normalizeSeiPose, normalizeSeiProjection } from './utils/seiParser';
+import { VideoSei } from '@supermapgis/iclient-common/overlay/video/VideoSei';
+import { getVideoElement } from '@supermapgis/iclient-common/overlay/video/VideoPlayerAdapter';
 import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 const MAP_EVENTS = [
@@ -103,6 +100,31 @@ const MAP_EVENTS = [
  */
 
 /**
+ * @version 12.2.0
+ * @event VideoMap#seistreamready
+ * @description 内部创建的 hls.js 解析完播放列表、直播流就绪时触发。
+ */
+
+/**
+ * @version 12.2.0
+ * @event VideoMap#seistreamerror
+ * @description 内部创建的 hls.js 报错时触发，致命错误会先尝试自动恢复。
+ * @property {Object} data - hls.js 原始的 error data。
+ * @property {string} hlsType - hls.js 的错误类型，事件自身的 type 为事件名。
+ * @property {string} details - hls.js 错误详情。
+ * @property {boolean} fatal - 是否为致命错误。
+ */
+
+/**
+ * @version 12.1.2
+ * @event VideoMap#seiinvalid
+ * @description SEI 解析失败时触发，最多每秒一次。
+ * @property {string} reason - 失败原因。
+ * @property {Object} sample - 原始 SEI 样本。
+ * @property {Object} frag - 分片信息。
+ */
+
+/**
  * @class VideoMap
  * @classdesc 视频地图
  * @category Visualization Video
@@ -110,6 +132,7 @@ const MAP_EVENTS = [
  * @modulecategory Mapping
  * @param {Object} options - 参数
  * @param {string} [options.url] - 视频 或 流链接。支持 flv, m3u8, mp4 格式。`parametersSource` 为 `'SEI'` 且为 m3u8 地址时，iClient 内部会用 hls.js 接管 MediaSource 并解析 SEI：SEI 只能由 hls.js 解析，video.js 内置的 VHS 在 Worker 内 transmux 会把 SEI 丢弃且不外抛事件，因此该地址不会交给 video.js。
+ * @param {Object|HTMLVideoElement} [options.player] - 外部 video.js 播放器或原生 video，所有权由调用方保留。
  * @param {VideoMap.VideoParameters|Array<VideoMap.VideoTimeParameters>} [options.videoParameters] - 视频地图配准参数。传入对象时为静态配准（相机位置固定）；传入数组时为动态配准，按视频时间动态更新相机参数。`parametersSource` 为 `'SEI'` 时可不传，参数由 SEI 实时提供。
  * @param {string|HTMLElement} [options.container='map'] - 地图容器 id 或 DOM 元素。
  * @param {Object} [options.opencv] - opencv.js 实例。未传入时取 window.cv；若均不存在将抛出异常。
@@ -164,6 +187,7 @@ export class VideoMap extends mapboxgl.Evented {
     const {
       container,
       url,
+      player,
       videoParameters,
       autoplay,
       loop,
@@ -172,14 +196,10 @@ export class VideoMap extends mapboxgl.Evented {
       opencv,
       styleOptions,
       interval,
-      parametersSource,
-      seiProjection,
-      seiParser,
-      seiOffset,
-      hlsConfig,
-      hlsAutoRecover
+      seiOffset
     } = options;
     this.container = container || 'map';
+    this.player = player;
     this.layerCache = {};
     this.sourceCache = {};
     this.videoWidth = videoWidth;
@@ -187,33 +207,34 @@ export class VideoMap extends mapboxgl.Evented {
     this.autoplay = autoplay !== undefined ? autoplay : true;
     this.loop = loop !== undefined ? loop : true;
     this.styleOptions = styleOptions || {};
+    this._destroyed = false;
+    this._cameraSession = {};
     this.cv = opencv || window.cv;
     if (!this.cv) {
       throw new Error('opencv.js instance is not existed!');
     }
-    this.parametersSource = parametersSource === undefined ? 'custom' : parametersSource;
-    if (this.parametersSource !== 'custom' && this.parametersSource !== 'SEI') {
-      throw new Error('parametersSource must be "custom" or "SEI".');
-    }
-    this.isSeiSource = this.parametersSource === 'SEI';
-    this.seiProjection = normalizeSeiProjection(seiProjection);
-    this.seiParser = typeof seiParser === 'function' ? seiParser : undefined;
+    this._sei = new VideoSei(options, {
+      getVideoElement: () => this.getVideoElement(),
+      getVideoSize: () => ({ videoWidth: this.videoWidth, videoHeight: this.videoHeight }),
+      emit: (type, event) => this.fire(type, event),
+      onData: (event) => this.fire('videoparametersei', event),
+      onUpdate: () => this._onSeiTimelineAdd(),
+      onReset: () => {
+        this._cameraSession = {};
+        this._seiInitializing = false;
+        this.parametersReady = false;
+        this.pendingVectorUpdate = false;
+        this.lastVectorUpdateTime = -Infinity;
+      }
+    });
+    this.parametersSource = this._sei.parametersSource;
+    this.isSeiSource = this._sei.isSeiSource;
+    this.seiProjection = this._sei.projection;
+    this.seiTimeline = this._sei.timeline;
     this.seiOffset = seiOffset || 0;
     this.url = url;
-    this.hlsConfig = hlsConfig || null;
-    this.hlsAutoRecover = hlsAutoRecover !== false;
-    this.seiHlsSource = null;
-    this._seiHlsManaged = false;
-    this._warnedSeiUnavailable = false;
-    this.seiTimeline = null;
     this.parametersReady = false;
     this._warnedTimeRange = false;
-    this._seiInvalidLastFired = 0;
-    if (this.isSeiSource) {
-      this.seiTimeline = new SeiPoseTimeline();
-      this.seiTimeline.on('add', () => this._onSeiTimelineAdd());
-      this.seiTimeline.on('invalid', (payload) => this._fireSeiInvalid(payload));
-    }
     if (!videoParameters && !this.isSeiSource) {
       throw new Error('videoParameters must be config!');
     }
@@ -231,6 +252,10 @@ export class VideoMap extends mapboxgl.Evented {
     this._mapEventListeners = {};
     const boundMapMethods = new WeakMap();
     this._createMap().then((map) => {
+      if (this._destroyed) {
+        map.remove();
+        return;
+      }
       this.map = map;
       this.map._smVideoMap = this;
       this._flushPendingControls();
@@ -506,20 +531,13 @@ export class VideoMap extends mapboxgl.Evented {
    * @param {Object} pose - 相机参数。
    */
   applyCameraPose(pose) {
-    this.coordTransfer.setCameraLocation({
-      pitch: pose.pitch,
-      roll: pose.roll,
-      yaw: pose.yaw,
-      x: pose.x,
-      y: pose.y,
-      z: pose.z,
-      fx: fovXToFx(pose.fovX, this.videoWidth),
-      fy: fovYToFy(pose.fovY, this.videoHeight),
-      centerX: pose.centerX,
-      centerY: pose.centerY
-    });
+    this.coordTransfer.setCameraLocation(CoordTransfer.getCameraParameters(pose, this.videoWidth, this.videoHeight));
     this.pendingVectorUpdate = true;
+    const session = this._cameraSession;
     const update = () => {
+      if (this._destroyed || this._cameraSession !== session) {
+        return;
+      }
       this.pendingVectorUpdate = false;
       this.lastVectorUpdateTime = this.currentTime;
       Object.keys(this.sourceCache).forEach((id) => {
@@ -681,6 +699,9 @@ export class VideoMap extends mapboxgl.Evented {
    * 视频图层尚未创建时返回 `undefined`。可据此做静音重试或「点击播放」引导。
    */
   play() {
+    if (this._sei.managed) {
+      return this._sei.play();
+    }
     if (this.videoMapLayer) {
       return this.videoMapLayer.play();
     }
@@ -922,15 +943,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {VideoMap} this。
    */
   unbindHls() {
-    if (this._autoPlayHandler) {
-      this._autoPlayHandler();
-      this._autoPlayHandler = null;
-    }
-    if (this.seiHlsSource) {
-      this.seiHlsSource.destroy();
-      this.seiHlsSource = null;
-    }
-    this._seiHlsManaged = false;
+    this._sei.unbindHls();
     return this;
   }
 
@@ -941,7 +954,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {Object|null} hls.js 实例，不存在时返回 `null`。
    */
   getHls() {
-    return this.seiHlsSource ? this.seiHlsSource.getHls() : null;
+    return this._sei.getHls();
   }
 
   /**
@@ -953,16 +966,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {VideoMap} this。
    */
   restartHls() {
-    if (!this.seiHlsSource) {
-      return this;
-    }
-    this.unbindHls();
-    // 重建是一次新的播放会话，旧姿态必须清空后重新标定
-    if (this.seiTimeline) {
-      this.seiTimeline.clear();
-    }
-    this.parametersReady = false;
-    this._startSeiHls(this.url);
+    this._sei.restart();
     return this;
   }
 
@@ -973,7 +977,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {number|null} 推荐位置，不可用时返回 `null`。
    */
   getSeiLiveSyncPosition() {
-    return this.seiHlsSource ? this.seiHlsSource.getLiveSyncPosition() : null;
+    return this._sei.getLiveSyncPosition();
   }
 
   /**
@@ -983,7 +987,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {number|null} 延迟秒数，不可用时返回 `null`。
    */
   getSeiLatency() {
-    return this.seiHlsSource ? this.seiHlsSource.getLatency() : null;
+    return this._sei.getLatency();
   }
 
   /**
@@ -995,25 +999,13 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {Array<Object>} 本次新增的姿态。
    */
   pushSeiParameters(items) {
-    if (!this.seiTimeline) {
-      return [];
-    }
-    const list = Array.isArray(items) ? items : [items];
-    const normalized = [];
-    for (let i = 0; i < list.length; i++) {
-      const pose = normalizeSeiPose(list[i], this.seiProjection);
-      if (pose) {
-        pose.time = list[i].time;
-        normalized.push(pose);
-      }
-    }
-    return this.seiTimeline.push(normalized);
+    return this._sei.push(items);
   }
 
   /**
    * @function VideoMap.prototype.getSeiTimeline
    * @version 12.1.2
-   * @description 获取 SEI 相机姿态时间轴，便于与 {@link VideoLayer} 共享同一份姿态数据。
+   * @description 获取当前实例持有的 SEI 相机姿态时间轴。
    * @returns {Object|null} 时间轴实例，非 SEI 参数源时返回 null。
    */
   getSeiTimeline() {
@@ -1027,17 +1019,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @returns {HTMLVideoElement|null} video 元素。
    */
   getVideoElement() {
-    const video = this.videoMapLayer && this.videoMapLayer.video;
-    if (!video) {
-      return null;
-    }
-    if (typeof video.tech === 'function') {
-      const tech = video.tech();
-      if (tech && typeof tech.el === 'function') {
-        return tech.el();
-      }
-    }
-    return video.nodeType === 1 ? video : null;
+    return getVideoElement(this.videoMapLayer && this.videoMapLayer.video);
   }
 
   /**
@@ -1064,63 +1046,35 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   /**
-   * @private
-   * @description 视频首次可播放时自动播放，用于 SEI 直播场景下 iClient 自行创建 video 元素的情况。
-   * 自动播放被浏览器拦截（未静音或用户尚未交互）时先静音重试一次。
-   */
-  _autoPlayOnCanPlay() {
-    const video = this.getVideoElement();
-    if (!video) {
-      return;
-    }
-    const tryPlay = () => {
-      const promise = this.play();
-      if (!promise || typeof promise.catch !== 'function') {
-        return;
-      }
-      promise.catch((e) => {
-        // 被 pause 打断的播放会以 AbortError 拒绝，属于正常流程
-        if (e && e.name === 'AbortError') {
-          return;
-        }
-        if (video.muted !== true) {
-          video.muted = true;
-          const retry = this.play();
-          if (retry && typeof retry.catch === 'function') {
-            retry.catch(() => {});
-          }
-        }
-      });
-    };
-    if (video.readyState >= 3) {
-      tryPlay();
-      return;
-    }
-    video.addEventListener('canplay', tryPlay, { once: true });
-    this._autoPlayHandler = () => video.removeEventListener('canplay', tryPlay);
-  }
-
-  /**
    * @function VideoMap.prototype.destroy
    * @description  销毁视频地图。
    */
   destroy() {
+    if (this._destroyed) {
+      return;
+    }
+    this._destroyed = true;
+    this._cameraSession = null;
+    this.parametersReady = false;
     if (this._draw) {
       this._draw.destroy();
       this._draw = null;
     }
-    this.unbindHls();
-    if (this.seiTimeline) {
-      this.seiTimeline.clear();
-      this.seiTimeline = null;
-    }
+    this._sei.stop();
+    this.seiTimeline = null;
     this.layerCache = {};
     this.sourceCache = {};
     if (this.videoMapLayer) {
       this.videoMapLayer.remove();
       this.videoMapLayer = null;
     }
-    this.map.remove();
+    if (this.coordTransfer) {
+      this.coordTransfer.dispose();
+      this.coordTransfer = null;
+    }
+    if (this.map) {
+      this.map.remove();
+    }
     this.map = null;
   }
 
@@ -1244,7 +1198,7 @@ export class VideoMap extends mapboxgl.Evented {
   }
 
   _addVideoLayer(src) {
-    const managed = this._shouldManageSeiHls(src);
+    const managed = this._sei.managed;
     // SEI + m3u8：MediaSource 由 hls.js 接管，不能把 m3u8 交给 video.js，否则 VHS 会抢占 MediaSource
     this.videoMapLayer = new VideoMapLayer(this);
     /**
@@ -1261,111 +1215,16 @@ export class VideoMap extends mapboxgl.Evented {
     this.videoMapLayer.on('pause', () => {
       this.fire('pause');
     });
-    this.videoMapLayer.add(managed ? undefined : src);
     this._bindEvents();
-    if (managed) {
-      this._startSeiHls(src);
-    }
-  }
-
-  /**
-   * @private
-   * @description 判断 SEI 模式下是否需要由 iClient 内部创建 hls.js 并接管播放。
-   * 只处理 SEI 参数源 + m3u8 地址，其余情况交给 video.js。
-   * @param {string} [src] - 视频地址。
-   * @returns {boolean}
-   */
-  _shouldManageSeiHls(src) {
-    if (!this.isSeiSource || !isHlsStreamUrl(src)) {
-      return false;
-    }
-    if (!isSeiHlsAvailable()) {
-      this._warnSeiUnavailable();
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * @private
-   * @description 浏览器 MSE 能力或 hls.js 缺失导致 SEI 参数无法解析时给出提示，只提示一次。
-   */
-  _warnSeiUnavailable() {
-    if (this._warnedSeiUnavailable) {
-      return;
-    }
-    this._warnedSeiUnavailable = true;
-    console.warn('[VideoMap] ' + getSeiUnavailableMessage());
-  }
-
-  /**
-   * @private
-   * @description 创建内部 hls.js 源并开始拉流，SEI 参数解析由 {@link SeiHlsSource} 回调驱动。
-   * @param {string} src - HLS(m3u8) 地址。
-   */
-  _startSeiHls(src) {
-    this._seiHlsManaged = true;
-    this.seiHlsSource = new SeiHlsSource({
-      url: src,
-      hlsConfig: this.hlsConfig,
-      autoRecover: this.hlsAutoRecover,
-      getVideoElement: () => this.getVideoElement(),
-      onUserData: (data) => this._handleSeiPayload(data),
-      onFragBuffered: () => this._calibrateSeiTimeline(),
-      onMediaAttached: () => {
-        if (this.autoplay !== false) {
-          this._autoPlayOnCanPlay();
-        }
-      },
-      onManifestParsed: () => {
-        /**
-         * @version 12.2.0
-         * @event VideoMap#seistreamready
-         * @description 内部创建的 hls.js 解析完播放列表、直播流就绪时触发。
-         */
-        this.fire('seistreamready', {});
-      },
-      onReconnect: () => {
-        // 重连是一次新的播放会话，旧姿态必须清空后重新标定
-        if (this.seiTimeline) {
-          this.seiTimeline.clear();
-        }
-        this.parametersReady = false;
-      },
-      onError: (data) => {
-        /**
-         * @version 12.2.0
-         * @event VideoMap#seistreamerror
-         * @description 内部创建的 hls.js 报错时触发，致命错误会先尝试自动恢复。
-         * @property {Object} data - hls.js 原始的 error data。
-         * @property {string} hlsType - hls.js 的错误类型（`networkError`、`mediaError` 等），事件自身的 `type` 会被事件名覆盖。
-         * @property {string} details - hls.js 错误详情，如 `manifestLoadError`。
-         * @property {boolean} fatal - 是否为致命错误。
-         */
-        this.fire('seistreamerror', Object.assign({}, data, { data, hlsType: data && data.type }));
-      }
-    });
-    this.seiHlsSource.start();
-  }
-
-  /**
-   * @private
-   * @description 用缓冲起点重新标定 SEI 时间轴，补偿 MSE 时间轴与播放列表时间轴的差值。
-   */
-  _calibrateSeiTimeline() {
-    const video = this.getVideoElement();
-    if (this.seiTimeline && video && video.buffered && video.buffered.length) {
-      this.seiTimeline.calibrate(video.buffered.start(0));
-    }
+    this.videoMapLayer.add(managed ? undefined : src);
+    this._sei.start();
   }
 
   _initParameters(parameters) {
     if (parameters && !Object.keys(parameters).length) {
       return;
     }
-    parameters.fx = fovXToFx(parameters.fovX, this.videoWidth);
-    parameters.fy = fovYToFy(parameters.fovY, this.videoHeight);
-    return new CoordTransfer(this.cv, parameters).init();
+    return CoordTransfer.fromVideoParameters(this.cv, parameters, this.videoWidth, this.videoHeight).init();
   }
 
   _createMap() {
@@ -1418,7 +1277,15 @@ export class VideoMap extends mapboxgl.Evented {
         this._ensureSeiCoordTransfer();
       } else {
         const initialParameters = this.isTimeVarying ? this.videoParameters[0] : this.videoParameters;
-        this.coordTransfer = await this._initParameters(initialParameters);
+        const coordTransfer = await this._initParameters(initialParameters);
+        // 初始化可能晚于销毁完成，不能再恢复监听或持有 OpenCV 矩阵。
+        if (this._destroyed) {
+          if (coordTransfer) {
+            coordTransfer.dispose();
+          }
+          return;
+        }
+        this.coordTransfer = coordTransfer;
         if (this.isTimeVarying) {
           this.currentTime = initialParameters.time;
           this.videoMapLayer.on('timeupdate', ({ time }) => {
@@ -1477,10 +1344,21 @@ export class VideoMap extends mapboxgl.Evented {
       return Promise.resolve(false);
     }
     this._seiInitializing = true;
+    const session = this._cameraSession;
     return this._initParameters(pose).then((coordTransfer) => {
+      // 重连或销毁会使旧相机初始化失效，旧结果不能覆盖当前会话，也必须释放矩阵。
+      if (this._cameraSession !== session || this._destroyed) {
+        if (coordTransfer) {
+          coordTransfer.dispose();
+        }
+        return false;
+      }
       this._seiInitializing = false;
       if (!coordTransfer) {
         return false;
+      }
+      if (this.coordTransfer && this.coordTransfer !== coordTransfer) {
+        this.coordTransfer.dispose();
       }
       this.coordTransfer = coordTransfer;
       this.parametersReady = true;
@@ -1510,49 +1388,15 @@ export class VideoMap extends mapboxgl.Evented {
    * @param {Object} data - 回调数据 `{frag, samples}`。
    */
   _handleSeiPayload(data) {
-    if (!data || !Array.isArray(data.samples) || !data.samples.length) {
-      return;
-    }
-    const frag = data.frag || {};
-    const samples = data.samples;
-    const added = this.seiTimeline.ingest(data, {
-      parser: this.seiParser,
-      videoWidth: this.videoWidth,
-      videoHeight: this.videoHeight,
-      seiProjection: this.seiProjection
-    });
     /**
      * @version 12.1.2
      * @event VideoMap#videoparametersei
-     * @description 收到并解析完一个分片的 SEI 数据时触发，主要用于调试。
+     * @description 收到并解析完一个分片的 SEI 数据时触发。
      * @property {Object} frag - 分片信息。
      * @property {Array<Object>} samples - 原始 SEI 样本。
      * @property {Array<Object>} poses - 本次新增的姿态，带媒体时间 time。
      */
-    this.fire('videoparametersei', { frag, samples, poses: added });
-  }
-
-  /**
-   * @private
-   * @function VideoMap.prototype._fireSeiInvalid
-   * @description 触发 seiinvalid 事件，最多每秒一次，避免脏数据刷屏。
-   * @param {Object} payload - 失败信息。
-   */
-  _fireSeiInvalid(payload) {
-    const now = Date.now();
-    if (now - this._seiInvalidLastFired < 1000) {
-      return;
-    }
-    this._seiInvalidLastFired = now;
-    /**
-     * @version 12.1.2
-     * @event VideoMap#seiinvalid
-     * @description SEI 解析失败时触发（最多每秒一次）。
-     * @property {string} reason - 失败原因。
-     * @property {Object} sample - 原始 SEI 样本。
-     * @property {Object} frag - 分片信息。
-     */
-    this.fire('seiinvalid', payload);
+    return this._sei.handlePayload(data);
   }
 
   _clearEvents() {
