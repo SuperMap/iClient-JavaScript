@@ -11,75 +11,14 @@ import GeoJSON from 'ol/format/GeoJSON';
 var fetch = window.fetch;
 var layersInfo, cartoCSSShaders, iPortalLayersInfo;
 var mapUrl = GlobeParameter.ChinaURL;
-
-// tileFeature.json mock 数据——所有 openlayers_StyleUtils 测试的 fetch 目标。
-// 注意：SuperMap tileFeature 返回的 geometry 是 {type, parts, points} 格式，
-// geometry.type 使用 SuperMap GeometryType 字符串枚举值（"POINT"/"LINE"/"REGION"），
-// 不是 "POLYGON" 这种 GeoJSON 类型名。
-// points 原始格式是扁平数字数组 [x1,y1,x2,y2,...]，requestFeature 会把它
-// 转成 Point(x,y) 对象数组（有 .x/.y 属性）。
-var _mockTileFeatureJson = {
-    recordsets: [
-        {
-            layerName: "China_PreCenCity_pt@China",
-            features: [{
-                geometry: { type: "POINT", parts: [1], points: [116.397428, 39.90923] }
-            }]
-        },
-        {
-            layerName: "Main_Road_L@China#1#1",
-            features: [{
-                geometry: { type: "LINE", parts: [2], points: [116.0, 39.9, 116.1, 39.95] }
-            }]
-        },
-        {
-            layerName: "World_Division_pl@China",
-            features: [{
-                geometry: {
-                    type: "REGION", parts: [5],
-                    // 扁平坐标 [x1,y1, x2,y2, x3,y3, x4,y4, x5,y5]（5 个点，闭合 polygon）
-                    points: [116.0, 39.9, 116.1, 39.9, 116.1, 40.0, 116.0, 40.0, 116.0, 39.9]
-                }
-            }]
-        },
-        {
-            layerName: "District_pt@China#6",
-            features: [{
-                geometry: { type: "POINT", parts: [1], points: [117.0, 39.85] },
-                fieldNames: ["name"],
-                fieldValues: [["三河市"]]
-            }]
-        }
-    ]
-};
-// 兼容不同 x/y/scale 的请求：都返回同一份 mock 数据
-// 注意：所有 StyleUtils 测试共用这一份 mock。polygon 相关测试虽然会拿到
-// 没有 polygon layer 的 JSON，但 requestFeature 会尝试解析所有 geometry。
-// 这里故意只留 POINT/LINE 类型来排除 REGION(MultiPolygon) 格式问题。
-// 兼容不同 x/y 缩放级别的请求：都返回同一份 mock 数据
-var _originalFetch = fetch;
-function _spyFetch() {
-    fetch = function(url, options) {
-        if (typeof url === 'string' && url.indexOf('/tileFeature.json') > -1) {
-            return Promise.resolve(new Response(JSON.stringify(_mockTileFeatureJson), { status: 200, headers: { 'Content-Type': 'application/json' } }));
-        }
-        return _originalFetch.apply(this, arguments);
-    };
-}
-function _restoreFetch() {
-    fetch = _originalFetch;
-}
-
 describe('openlayers_StyleUtils', () => {
     var originalTimeout;
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        _spyFetch();
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-        _restoreFetch();
     });
     beforeAll(() => {
         layersInfo = initLayersInfo();
