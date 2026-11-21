@@ -420,7 +420,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     const mapInfo = JSON.parse(mapstudioWebMap_drill);
     const originMapInfo = JSON.parse(mapstudioWebMap_drill);
-    const mapstudioWebmap = new WebMapV3(mapInfo, {
+    mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map'
     });
@@ -448,7 +448,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     const mapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
     const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers1);
-    const mapstudioWebmap = new WebMapV3(mapInfo, {
+    mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map'
     });
@@ -476,7 +476,7 @@ describe('maplibregl-webmap3.0', () => {
     });
     const mapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
     const originMapInfo = JSON.parse(mapstudioWebMap_drill_layers2);
-    const mapstudioWebmap = new WebMapV3(mapInfo, {
+    mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map'
     });
@@ -1023,7 +1023,7 @@ describe('maplibregl-webmap3.0', () => {
       return Promise.resolve();
     });
     const mapInfo = JSON.parse(mapstudioWebMap_group);
-    const mapstudioWebmap = new WebMapV3(mapInfo, {
+    mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
       target: 'map'
     });
