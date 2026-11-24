@@ -1,0 +1,79 @@
+{
+  "iserver": {
+    "restMap": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/maps/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World",
+      "services": ["L.supermap.initMap (load map)", "L.supermap.MapService (map info)", "L.supermap.QueryService (map query)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /rest/maps/{mapName}",
+          "endsWithRest": "Append maps/{mapName}",
+          "needsMapName": "Ask user for map name"
+        }
+      }
+    },
+    "restData": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/data",
+      "example": "https://iserver.supermap.io/iserver/services/data-world/rest/data",
+      "services": ["L.supermap.FeatureService (data query/edit)", "L.supermap.DatasetService (dataset management)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /rest/data"
+        }
+      }
+    },
+    "spatialAnalyst": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/restjsr/spatialanalyst",
+      "example": "https://iserver.supermap.io/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst",
+      "services": ["L.supermap.SpatialAnalystService (buffer, overlay, interpolation, surface analysis)"],
+      "completionRules": {
+        "incomplete": {
+          "endsWithService": "Append /restjsr/spatialanalyst"
+        }
+      }
+    },
+    "wmts": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/wmts{version}",
+      "example": "https://iserver.supermap.io/iserver/services/map-china/wmts100",
+      "note": "WMTS 不走 /rest/maps/ 路径，服务路径末段是 wmts100 / wmts1000 等版本段",
+      "services": ["L.supermap.WMTSLayer"]
+    },
+    "wms": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/wms{version}/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-china/wms111/China",
+      "note": "WMS 使用 Leaflet 原生 L.TileLayer.WMS，没有 iClient 专用类",
+      "services": ["L.TileLayer.WMS"]
+    },
+    "vectorTile": {
+      "pattern": "https?://{host}:{port}/iserver/services/{serviceName}/rest/maps/{mapName}",
+      "example": "https://iserver.supermap.io/iserver/services/map-china/rest/maps/China",
+      "note": "矢量瓦片复用 REST 地图服务地址，由 L.supermap.TiledVectorLayer + VectorTileFormat 决定切片格式",
+      "services": ["L.supermap.TiledVectorLayer"]
+    }
+  },
+  "urlToService": {
+    "/rest/maps/": "Use L.supermap.initMap / MapService / QueryService / TiledVectorLayer",
+    "/rest/data": "Use L.supermap.FeatureService / DatasetService",
+    "/restjsr/spatialanalyst": "Use L.supermap.SpatialAnalystService",
+    "wmts": "Use L.supermap.WMTSLayer",
+    "wms": "Use native L.TileLayer.WMS"
+  },
+  "autoCompletion": [
+    {
+      "userProvides": "map-china400",
+      "autoCompleteTo": "https://localhost:8090/iserver/services/map-china400/rest/maps/{mapName}（需补 mapName）"
+    },
+    {
+      "userProvides": "iserver/services/map-world/rest/maps/World",
+      "autoCompleteTo": "Already complete"
+    },
+    {
+      "userProvides": "https://iserver.supermap.io/iserver/services/map-china",
+      "note": "Need mapName from user, or ask whether it is a WMTS/WMS service"
+    },
+    {
+      "userProvides": "wmts-china",
+      "autoCompleteTo": "https://localhost:8090/iserver/services/wmts-china（WMTS 直连，需补版本段时询问）"
+    }
+  ]
+}

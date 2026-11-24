@@ -23,6 +23,15 @@ node scripts/query-api.mjs search "热力图专题图"
 node scripts/query-api.mjs get HeatMapLayer --member addFeatures
 ```
 
+examples 与插件资源可通过 Leaflet examples 查询器按平台检索：
+
+```bash
+node skills/leaflet/scripts/query-examples.mjs search "mapv MapVLayer" --platform mapboxgl
+node skills/leaflet/scripts/query-examples.mjs get examples/mapboxgl/mapvQianxi.html --platform mapboxgl
+```
+
+完整 examples HTML 与对应 include helper 原文以 gzip 存储在 `assets/iclient-mapboxgl-examples.sqlite`，查询命中后按需解压。
+
 ## 目录结构
 
 ```
@@ -34,7 +43,8 @@ skills/
 │   ├── services/     feature-service.md, query-service.md, buffer-analysis.md
 │   └── utils/        ogc-capabilities.md, rest-data-vector.md
 ├── assets/
-│   └── iclient-mapboxgl.sqlite  # SQLite FTS5 API 索引
+│   ├── iclient-mapboxgl.sqlite  # SQLite FTS5 API 索引
+│   └── iclient-mapboxgl-examples.sqlite # SQLite FTS5 examples/插件索引
 ├── scripts/
 │   ├── api-index-utils.mjs # 检索运行时辅助模块
 │   └── query-api.mjs       # API 检索 CLI

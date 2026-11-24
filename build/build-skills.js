@@ -15,9 +15,11 @@ if (target !== 'all' && !platforms.includes(target)) {
 
 const docsScript = path.join(__dirname, 'build-docs-json.js');
 const indexScript = path.join(__dirname, 'build-skills-sqlite.mjs');
+const examplesIndexScript = path.join(__dirname, 'build-skills-examples.mjs');
 const targets = target === 'all' ? platforms : [target];
 
 for (const platform of targets) {
     execFileSync(process.execPath, [docsScript, platform], { stdio: 'inherit' });
     execFileSync(process.execPath, [indexScript, platform], { stdio: 'inherit' });
+    execFileSync(process.execPath, [examplesIndexScript, platform], { stdio: 'inherit' });
 }

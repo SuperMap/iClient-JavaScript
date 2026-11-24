@@ -1,0 +1,75 @@
+{
+  "mapOptions": {
+    "note": "L.supermap.initMap 的容器 id 在库内部写死为 'map'，DOM 中必须存在 <div id=\"map\">，无法通过配置修改",
+    "container": "map",
+    "maxZoom": 22,
+    "minZoom": 0,
+    "preferCanvas": true
+  },
+  "emptyMap": {
+    "container": "map",
+    "crs": "L.CRS.EPSG3857",
+    "center": [39.9, 116.39],
+    "maxZoom": 18,
+    "zoom": 3,
+    "note": "center 为 [lat, lng]（Leaflet 顺序，与 MapboxGL 的 [lng, lat] 相反）"
+  },
+  "layerDefaults": {
+    "tiledMapLayer": {
+      "noWrap": true,
+      "minZoom": 0,
+      "tileSize": 256
+    },
+    "tiledVectorLayer": {
+      "tileSize": 512,
+      "format": "L.supermap.VectorTileFormat.MVT"
+    },
+    "wmtsLayer": {
+      "style": "default",
+      "format": "image/png",
+      "requestEncoding": "KVP",
+      "tileSize": 256
+    },
+    "wmsTileLayer": {
+      "format": "image/png",
+      "transparent": true,
+      "noWrap": true
+    }
+  },
+  "geojsonStyle": {
+    "defaultCircleRadius": 6,
+    "defaultLineWidth": 3,
+    "defaultFillOpacity": 0.5,
+    "defaultLineColor": "#ff0000",
+    "defaultFillColor": "#ff8800",
+    "defaultBufferColor": "#00ff00"
+  },
+  "bufferAnalysis": {
+    "defaultEndType": "L.supermap.BufferEndType.ROUND",
+    "defaultSemicircleLineSegment": 10,
+    "defaultRadiusUnit": "METER"
+  },
+  "queryParams": {
+    "queryServiceNameFormat": "LayerName@DataSource[.n]（地图服务图层名）",
+    "featureServiceNameFormat": "DataSource:DatasetName（数据集名）",
+    "defaultSpatialQueryMode": "L.supermap.SpatialQueryMode.INTERSECT",
+    "defaultResultFormat": "GeoJSON"
+  },
+  "cdns": {
+    "leafletVersion": "1.9.4",
+    "leaflet": {
+      "js": "https://iclient.supermap.io/web/libs/leaflet/1.9.4/leaflet.js",
+      "css": "https://iclient.supermap.io/web/libs/leaflet/1.9.4/leaflet.css"
+    },
+    "iclient": {
+      "js": "https://iclient.supermap.io/dist/leaflet/iclient-leaflet-es6.min.js",
+      "css": "https://iclient.supermap.io/dist/leaflet/iclient-leaflet.min.css"
+    },
+    "optionalEnhance": {
+      "js": "https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.js",
+      "css": "https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.css",
+      "note": "仅在使用 leaflet-mapbox-gl 等插件时需要，普通 Leaflet 场景不要引入"
+    },
+    "note": "CDN 版本固定（Leaflet 1.9.4），禁止根据用户版本要求更改 CDN 链接"
+  }
+}

@@ -28,6 +28,15 @@ node skills/maplibregl/scripts/query-api.mjs get FeatureService --member getFeat
 
 `search` 用于按中文场景、类名或成员关键词检索；`get` 用于按类名和成员名精确查询。CLI 只返回匹配的 API 记录。不要把 MapboxGL API 索引或完整 JSDoc JSON 当作 MapLibreGL API 的替代来源。
 
+examples 与插件资源可用共享查询器按 MapLibreGL 平台检索：
+
+```bash
+node skills/leaflet/scripts/query-examples.mjs search "mapv MapVLayer" --platform maplibregl
+node skills/leaflet/scripts/query-examples.mjs get examples/maplibregl/mapvQianxi.html --platform maplibregl
+```
+
+完整 examples HTML 与对应 include helper 原文以 gzip 存储在 `assets/iclient-maplibregl-examples.sqlite`，查询命中后按需解压。
+
 ## 高频场景模块
 
 | 场景 | 模块 |
