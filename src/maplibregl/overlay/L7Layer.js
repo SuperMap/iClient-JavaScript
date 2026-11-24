@@ -1,7 +1,7 @@
 import '../core/Base';
 import { L7LayerBase } from '@supermapgis/iclient-common/overlay/l7/L7LayerBase';
-import * as L7 from './L7/l7-render';
-import { Scene, Maplibre } from './L7/l7-render';
+import * as L7 from './L7/l7-render.mjs';
+import { Scene, Maplibre } from './L7/l7-render.mjs';
 import { getL7Scene } from '@supermapgis/iclient-common/overlay/l7/util';
 import * as maplibregl from 'maplibre-gl';
 import { getL7Filter } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';

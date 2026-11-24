@@ -10,8 +10,8 @@
   "module": "index.js",
   "exports": {
     ".": {
-      "import": "./dist/iclient-maplibregl.mjs",
-      "module": "./dist/iclient-maplibregl.mjs",
+      "import": "./index.js",
+      "module": "./index.js",
       "default": "./index.js"
     },
     "./dist/*": "./dist/*",

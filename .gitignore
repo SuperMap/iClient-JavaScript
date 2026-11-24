@@ -12,3 +12,5 @@
 /dist/mapboxgl/resources/
 /dist/maplibregl/resources/
 /custom-dist/
+/src/maplibregl/dist/
+/src/maplibregl/resources/

@@ -26,7 +26,7 @@ const optionalVarExternals = Object.assign({}, configBase.externals, {
   xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
   jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
   'xml-js': 'function(){try{return convert}catch(e){return {}}}()',
-  './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()',
+  './L7/l7-render.mjs': 'function(){try{return L7}catch(e){return {}}}()',
   '@antv/g2': 'function(){try{return G2}catch(e){return {}}}()'
 });
 
