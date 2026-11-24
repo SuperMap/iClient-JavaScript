@@ -411,7 +411,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(7, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
       expect(datavizWebmap.mapParams.title).toBe('theme_base');
       expect(datavizWebmap.mapParams.description).toBe('base style');
       done();
@@ -442,7 +442,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(10, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.39560889343755, 39.93917738600353));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.39560889343755, 39.93917738600353));
       expect(datavizWebmap.mapParams.title).toBe('Line_basis');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -484,7 +484,7 @@ describe('maplibregl_WebMap', () => {
       expect(datavizWebmap.mapParams.description).toBe('');
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(7, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
       done();
     });
   });
@@ -513,7 +513,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(12, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.32442464111327, 39.98897628932847));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.32442464111327, 39.98897628932847));
       expect(datavizWebmap.mapParams.title).toBe('Unique');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -547,7 +547,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(10, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.40097798513067, 39.900378604132094));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.40097798513067, 39.900378604132094));
       expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -579,7 +579,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(7, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(120.63222224999998, 30.389530096727963));
       expect(datavizWebmap.mapParams.title).toBe('Heat');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -610,7 +610,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(2, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(8.437500000000002, -7.710991655433243));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(8.437500000000002, -7.710991655433243));
       expect(datavizWebmap.mapParams.title).toBe('标注图层');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -644,7 +644,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(9, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.46675928388, 40.15816517545865));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.46675928388, 40.15816517545865));
       expect(datavizWebmap.mapParams.title).toBe('RestMap');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -673,7 +673,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(7, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.87260685408502, 40.11626853496025));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.87260685408502, 40.11626853496025));
       expect(datavizWebmap.mapParams.title).toBe('RestMap');
       expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
       done();
@@ -705,7 +705,7 @@ describe('maplibregl_WebMap', () => {
 
       var map = datavizWebmap.map;
       expect(map.getZoom()).toBeCloseTo(9, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116.8995771532053, 39.700527641334965));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116.8995771532053, 39.700527641334965));
       expect(datavizWebmap.mapParams.title).toBe('RestData');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -734,7 +734,7 @@ describe('maplibregl_WebMap', () => {
       var map = datavizWebmap.map;
       expect(map).not.toBe(null);
       expect(map.getZoom()).toBeCloseTo(1, 0.001);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(0, 0));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(0, 0));
       expect(datavizWebmap.mapParams.title).toBe('wms');
       expect(datavizWebmap.mapParams.description).toBe('');
       done();
@@ -1165,7 +1165,7 @@ describe('maplibregl_WebMap', () => {
     datavizWebmap.on('mapcreatesucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(map.getZoom()).toBe(3);
-      expect(map.getCenter()).toEqual(new maplibregl.LngLat(116, 39));
+      expect(map.getCenter()).toBeCloseTo(new maplibregl.LngLat(116, 39));
       expect(map.getStyle().layers.length).toBe(1);
       const layerToCopy = 'layer1';
       expect(map.style._layers[layerToCopy]).not.toBeUndefined();

@@ -66,8 +66,8 @@
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(includes, 'maplibre-gl-enhance') && !inArray(excludes, 'maplibregl')) {
-      inputCSS(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.css');
-      inputScript(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.js');
+      inputCSS(libsurl + '/maplibre-gl-js/5.24.1/maplibre-gl.min.css');
+      inputScript(libsurl + '/maplibre-gl-js/5.24.1/maplibre-gl.min.js');
     }
     if (inArray(includes, 'maplibre-gl-enhance')) {
       inputCSS(libsurl + '/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css');
