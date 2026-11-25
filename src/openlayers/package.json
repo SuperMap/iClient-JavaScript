@@ -19,7 +19,7 @@
     "@supermapgis/tile-decryptor": "^1.0.0",
     "@turf/turf": "7.2.0",
     "mapv": "2.0.62",
-    "ol": "10.5.0",
+    "ol": "10.7.0",
     "canvg": "^4.0.3",
     "lodash.clonedeep": "^4.5.0",
     "lodash.remove": "^4.7.0",
