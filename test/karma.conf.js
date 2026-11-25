@@ -184,10 +184,20 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-
+    customLaunchers: {
+      ChromeCI: {
+        base: 'Chrome',
+        flags: [
+          '--use-gl=angle',
+          '--use-angle=swiftshader',
+          '--enable-unsafe-swiftshader',
+          '--ignore-gpu-blocklist'
+        ]
+      }
+    },
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['ChromeCI'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
