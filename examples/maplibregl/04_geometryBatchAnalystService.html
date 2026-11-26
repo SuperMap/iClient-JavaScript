@@ -17,8 +17,18 @@
 
 <body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
   <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-  <script type="text/javascript">
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { BufferDistance, BufferEndType, BufferSetting, GeometryBufferAnalystParameters, GeometryOverlayAnalystParameters, Logo, OverlayOperationType, SpatialAnalystService } from 'iclient-maplibregl';
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map,
       attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -48,7 +58,7 @@
       zoom: 8
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
       batchAnalystFromGeometry();
@@ -146,13 +156,13 @@
       //缓冲区分析参数
       var geoBufferAnalystParams = {
         analystName: "buffer",
-        param: new maplibregl.supermap.GeometryBufferAnalystParameters({
+        param: new GeometryBufferAnalystParameters({
           sourceGeometry: bufferLine,
           sourceGeometrySRID: 4326,
-          bufferSetting: new maplibregl.supermap.BufferSetting({
-            endType: maplibregl.supermap.BufferEndType.ROUND,
-            leftDistance: new maplibregl.supermap.BufferDistance({ value: 5000 }),
-            rightDistance: new maplibregl.supermap.BufferDistance({ value: 5000 }),
+          bufferSetting: new BufferSetting({
+            endType: BufferEndType.ROUND,
+            leftDistance: new BufferDistance({ value: 5000 }),
+            rightDistance: new BufferDistance({ value: 5000 }),
             radiusUnit: "METER",
             semicircleLineSegment: 10
           })
@@ -161,13 +171,13 @@
       };
       var geoBufferAnalystParams_Point = {
         analystName: "buffer",
-        param: new maplibregl.supermap.GeometryBufferAnalystParameters({
+        param: new GeometryBufferAnalystParameters({
           sourceGeometry: bufferPoint,
           sourceGeometrySRID: 4326,
-          bufferSetting: new maplibregl.supermap.BufferSetting({
-            endType: maplibregl.supermap.BufferEndType.ROUND,
-            leftDistance: new maplibregl.supermap.BufferDistance({ value: 10000 }),
-            rightDistance: new maplibregl.supermap.BufferDistance({ value: 10000 }),
+          bufferSetting: new BufferSetting({
+            endType: BufferEndType.ROUND,
+            leftDistance: new BufferDistance({ value: 10000 }),
+            rightDistance: new BufferDistance({ value: 10000 }),
             radiusUnit: "METER",
             semicircleLineSegment: 10
           })
@@ -178,10 +188,10 @@
       //叠加分析参数
       var OverlayBatchAnalystParameters = {
         analystName: "overlay",
-        param: new maplibregl.supermap.GeometryOverlayAnalystParameters({
+        param: new GeometryOverlayAnalystParameters({
           sourceGeometry: sourceGeometry,
           operateGeometry: operateGeometry,
-          operation: maplibregl.supermap.OverlayOperationType.CLIP
+          operation: OverlayOperationType.CLIP
         })
       };
 
@@ -189,7 +199,7 @@
       var paramter = [geoBufferAnalystParams, OverlayBatchAnalystParameters, geoBufferAnalystParams_Point];
 
       //批量分析
-      new maplibregl.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter).then(function (serviceResult) {
+      new SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter).then(function (serviceResult) {
         //结果展示
         map.addSource("bufferResultLine", {
           "type": "geojson",

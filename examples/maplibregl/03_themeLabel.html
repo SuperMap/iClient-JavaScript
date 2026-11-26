@@ -11,9 +11,20 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="title" style="position:absolute;top: 10px;text-align:center;width:100%;z-index: 10;color: #f7931e" data-i18n="resources.text_popThemeLayer"></div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 <span id="show"></span>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, ServerColor, ServerStyle, ServerTextStyle, ThemeLabel, ThemeLabelBackground, ThemeLabelItem, ThemeParameters, ThemeService } from 'iclient-maplibregl';
+
+    var style1, style2, style3, themeLabelItem1, themeLabelItem2, themeLabelItem3;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -45,62 +56,62 @@
         zoom: 3
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
 
     function createTheme() {
         var style1, style2, style3;
-        style1 = new maplibregl.supermap.ServerTextStyle({
+        style1 = new ServerTextStyle({
             fontHeight: 4,
-            foreColor: new maplibregl.supermap.ServerColor(0, 0, 0),
+            foreColor: new ServerColor(0, 0, 0),
 
         });
-        style2 = new maplibregl.supermap.ServerTextStyle({
+        style2 = new ServerTextStyle({
             fontHeight: 4,
-            foreColor: new maplibregl.supermap.ServerColor(155, 30, 45),
+            foreColor: new ServerColor(155, 30, 45),
         });
-        style3 = new maplibregl.supermap.ServerTextStyle({
+        style3 = new ServerTextStyle({
             fontHeight: 4,
-            foreColor: new maplibregl.supermap.ServerColor(30, 45, 155),
+            foreColor: new ServerColor(30, 45, 155),
         });
         var themeLabelItem1, themeLabelItem2, themeLabelItem3;
-        themeLabelItem1 = new maplibregl.supermap.ThemeLabelItem({
+        themeLabelItem1 = new ThemeLabelItem({
             start: 300,//110000,
             end: 3508,//350000,
             style: style1
         });
-        themeLabelItem2 = new maplibregl.supermap.ThemeLabelItem({
+        themeLabelItem2 = new ThemeLabelItem({
             start: 3508,//350000,
             end: 5508,//550000,
             style: style2
         });
-        themeLabelItem3 = new maplibregl.supermap.ThemeLabelItem({
+        themeLabelItem3 = new ThemeLabelItem({
             start: 5508,//550000,
             end: 10724,//820000,
             style: style3
         });
 
-        var themeLabel = new maplibregl.supermap.ThemeLabel({
+        var themeLabel = new ThemeLabel({
             labelExpression: "NAME",
             rangeExpression: "pop_2014",
             numericPrecision: 0,
             items: [themeLabelItem1, themeLabelItem2, themeLabelItem3],
-            background: new maplibregl.supermap.ThemeLabelBackground({
-                backStyle: new maplibregl.supermap.ServerStyle({
-                    fillForeColor: new maplibregl.supermap.ServerColor(179, 209, 193),
+            background: new ThemeLabelBackground({
+                backStyle: new ServerStyle({
+                    fillForeColor: new ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        var themeParameters = new maplibregl.supermap.ThemeParameters({
+        var themeParameters = new ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]
         });
 
-        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
+        new ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

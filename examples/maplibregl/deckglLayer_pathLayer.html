@@ -32,8 +32,19 @@
   <body>
     <div id="map"></div>
     <script type="text/javascript" include="widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { DeckglLayer } from 'iclient-maplibregl';
+
+      var i, sColorNew, sColor;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
         url = host + '/iserver/services/map-china/rest/maps/ChinaDark';
       var map, deckglLayer;
@@ -77,7 +88,7 @@
       });
 
       function addLayer(features) {
-        deckglLayer = new maplibregl.supermap.DeckglLayer('path-layer', {
+        deckglLayer = new DeckglLayer('path-layer', {
           data: features,
           props: {
             widthScale: 20, //线宽比例

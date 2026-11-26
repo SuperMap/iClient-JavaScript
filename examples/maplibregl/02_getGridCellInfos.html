@@ -7,7 +7,14 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getGridCellInfos"></title>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
         body {
@@ -210,9 +217,9 @@
                 <div class="panel-body btn-draw">
                     <div class="button-group">
                         <button class="btn btn-primary" id="query" data-i18n="resources.text_query"
-                            onclick="queryResult()"></button>
+                           ></button>
                         <button class="btn btn-primary" id="printBtn" data-i18n="resources.text_reset"
-                            onclick="clearSearchResult(true)"></button>
+                           ></button>
                     </div>
                 </div>
             </div>
@@ -235,7 +242,11 @@
         </div>
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GetGridCellInfosParameters, GridCellInfosService, Logo } from 'iclient-maplibregl';
+
+        var i, count, tbodyHtml, j, index, h;
         var map,
             baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
             dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
@@ -277,7 +288,7 @@
         });
         map.addControl(Draw, 'top-left');
         map.addControl(new maplibregl.NavigationControl(), 'top-left');
-        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+        map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
         function queryResult() {
             var parm = {
                 dataSourceName: 'World',
@@ -295,8 +306,8 @@
             } else {
                 parm.bounds = querylist;
             }
-            var getGridCellInfosParam = new maplibregl.supermap.GetGridCellInfosParameters(parm);
-            new maplibregl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam).then(res => {
+            var getGridCellInfosParam = new GetGridCellInfosParameters(parm);
+            new GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam).then(res => {
                 $('#tableContainerAll').empty();
                 appendTable(res);
             })
@@ -448,7 +459,13 @@
         map.on('draw.delete', function (e) {
             querylist.length = 0;
         });
-    </script>
+    document.getElementById('query').addEventListener('click', function () {
+        queryResult();
+    });
+    document.getElementById('printBtn').addEventListener('click', function () {
+        clearSearchResult(true);
+    });
+</script>
 </body>
 
 </html>

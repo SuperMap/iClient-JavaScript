@@ -29,8 +29,20 @@
 
   <body>
     <div id="map"></div>
-    <script type="text/javascript" include="L7,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="L7,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { L7Layer } from 'iclient-maplibregl';
+import * as L7Render from 'maplibregl-l7-render';
+window.L7 = L7Render;
+
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var attribution =
         "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -83,7 +95,7 @@
             });
             return { coord: [latlng1, latlng2] };
           });
-          var dotPoint = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });
+          var dotPoint = new L7Layer({ type: 'PointLayer' });
           dotPoint
             .getL7Layer()
             .source(dotData, {
@@ -99,7 +111,7 @@
             .size(40);
           map.addLayer(dotPoint);
 
-          var flyLine = new maplibregl.supermap.L7Layer({ type: 'LineLayer', options: { blend: 'normal' } });
+          var flyLine = new L7Layer({ type: 'LineLayer', options: { blend: 'normal' } });
           flyLine
             .getL7Layer()
             .source(flydata, {
@@ -124,7 +136,7 @@
             });
           map.addLayer(flyLine);
 
-          var flyLine2 = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });
+          var flyLine2 = new L7Layer({ type: 'LineLayer' });
           flyLine2
             .getL7Layer()
             .source(flydata, {

@@ -22,16 +22,26 @@
   <div class='panel-heading'>
       <h5 class='panel-title text-center' data-i18n="resources.text_minDistanceCalculation"></h5></div>
   <div class='panel-body content'>
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_minDistanceCalculation"
-              onclick="geometryMinDistanceAnalystProcess()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
-              onclick="removeLayer()"/>
+      <input id="geometryMinDistanceAnalystProcessTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_minDistanceCalculation"
+             />&nbsp;
+      <input id="removeLayerTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+             />
   </div>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GeometryMinDistanceAnalystParameters, Logo, QueryBySQLParameters, QueryService, SpatialAnalystService } from 'iclient-maplibregl';
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, options, pointGeometryData, lineVectorSource,lineResultLayer,
         baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -62,7 +72,7 @@
         zoom: 7
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.on("load", function () {
       addCalcPoint()
       addReference()
@@ -71,14 +81,14 @@
     function geometryMinDistanceAnalystProcess() {
       removeLayer();
       // 进行分析，查找距离参考数据集的最近距离
-      var minDistanceAnalystParameters = new maplibregl.supermap.GeometryMinDistanceAnalystParameters({
+      var minDistanceAnalystParameters = new GeometryMinDistanceAnalystParameters({
           inputGeometries:[pointGeometryData],
           referenceDatasetName:"Neighbor_P@Jingjin",
           createResultDataset:false,
           minDistance:0,
           maxDistance:-1,
       });
-      new maplibregl.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
+      new SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
           var minDistanceAnalystResult = serviceResult.result.distanceResults
           var referenceIds = minDistanceAnalystResult[0].referenceGeometryIDs
           addPathLine(referenceIds)
@@ -99,14 +109,14 @@
     }
     // 添加参考数据集的要素
     function addReference() { 
-      var sqlParam = new maplibregl.supermap.QueryBySQLParameters({
+      var sqlParam = new QueryBySQLParameters({
           toIndex: -1,
           queryParams: {
               name: "Neighbor_P@Jingjin.1",
               attributeFilter: "SMID >= 0 "
           }
       });
-      new maplibregl.supermap.QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
+      new QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         map.addLayer({
           "id": "Neighbor",
           "type": "circle",
@@ -128,14 +138,14 @@
     // 创建被计算对象与参考对象之间的连线
     function addPathLine(referenceIds) { 
       var referenceIdsStr = '(' + referenceIds.join(', ') + ')';
-      var sqlParam = new maplibregl.supermap.QueryBySQLParameters({
+      var sqlParam = new QueryBySQLParameters({
           toIndex: -1,
           queryParams: {
               name: "Neighbor_P@Jingjin.1",
               attributeFilter: "SMID IN " + referenceIdsStr
           }
       });
-      new maplibregl.supermap.QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
+      new QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         var resFrature = serviceResult.result.recordsets[0].features;
         var routeSource = {
           type: 'geojson',
@@ -166,6 +176,12 @@
         map.removeSource('route');
       }
     }
+    document.getElementById('geometryMinDistanceAnalystProcessTrigger').addEventListener('click', function () {
+        geometryMinDistanceAnalystProcess();
+    });
+    document.getElementById('removeLayerTrigger').addEventListener('click', function () {
+        removeLayer();
+    });
 </script>
 </body>
 </html>

@@ -7,7 +7,14 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_kernelDensityJobService"></title>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
         body, #map {
             position: absolute;
@@ -105,7 +112,10 @@
         </div>
     </div>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FetchRequest, KernelDensityJobParameter, Logo, ProcessingService, SecurityManager } from 'iclient-maplibregl';
+
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
         var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -141,9 +151,9 @@
             zoom: 10
         });
         map.addControl(new maplibregl.NavigationControl(), 'top-left');
-        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+        map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
-        maplibregl.supermap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        SecurityManager.registerToken(processingUrl, window.exampleToken);
 
         function getQuery() {
             if ($('#query').val() === "") {
@@ -168,7 +178,7 @@
                 map.removeLayer("kernerlLayer")
                 map.removeSource("kernerlSource");
             }
-            var kernelDensityJobParameter = new maplibregl.supermap.KernelDensityJobParameter({
+            var kernelDensityJobParameter = new KernelDensityJobParameter({
                 datasetName: $('#datasetName').val(),
                 resolution: $('#resolution').val(),
                 method: $('#method option:selected').attr('value'),
@@ -181,7 +191,7 @@
                 areaUnit: $('#areaUnit option:selected').attr('value'),
             });
 
-            new maplibregl.supermap.ProcessingService(processingUrl, {
+            new ProcessingService(processingUrl, {
                 withCredentials: window.isLocal
             }).addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
                 if (serviceResult.error) {
@@ -192,7 +202,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        maplibregl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

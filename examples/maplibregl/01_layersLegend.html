@@ -55,7 +55,7 @@
         </div>
         <div class="panel-body" id="layersList"></div>
         <div class="panel-footer">
-          <input class="btn btn-default" type="button" onclick="createLegend()" data-i18n="[value]resources.btn_getLegend"/>
+          <input id="createLegendTrigger" class="btn btn-default" type="button" data-i18n="[value]resources.btn_getLegend"/>
         </div>
       </div>
       <div class="panel panel-primary legend" style="width:250px;margin-top: 50vh;position: absolute;">
@@ -70,8 +70,19 @@
   </div>
 
   <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
   <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-  <script type="text/javascript">
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GetLayersLegendInfoParameters, LayerInfoService, Logo } from 'iclient-maplibregl';
+
+    var baseUrl, attribution, map, fullLayerName, layers;
     var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图";
     baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图/zxyTileImage.png?z={z}&x={x}&y={y}",
     attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
@@ -99,7 +110,7 @@
       zoom: 7
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({
+    map.addControl(new Logo({
       link: "https://iclient.supermap.io"
     }), 'bottom-right');
     getLayers();
@@ -147,7 +158,7 @@
     }
 
     function getLayers() {
-      new maplibregl.supermap.LayerInfoService(url).getLayersInfo(function (serviceResult) {
+      new LayerInfoService(url).getLayersInfo(function (serviceResult) {
         var layers = serviceResult.result.subLayers.layers;
         var parentDom = document.getElementById('layersList');
         var layerName = '@@' + serviceResult.result.name;
@@ -194,19 +205,21 @@
       });
 
       // 发起请求，获取图例
-      var getLayersLegendInfoParams = new maplibregl.supermap.GetLayersLegendInfoParameters({
+      var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
         // bbox 或 layers 参数必须至少设置一个参数
         // bbox: "114.59,37.76,119.51,42.31",
         layers: "show:" + layers,
         width: 18,
         height: 18
       })
-      new maplibregl.supermap.LayerInfoService(url).getLayersLegendInfo(getLayersLegendInfoParams, function (serviceResult) {
+      new LayerInfoService(url).getLayersLegendInfo(getLayersLegendInfoParams, function (serviceResult) {
         createLegendDom(serviceResult.result.layerLegends, legendContainer);
       });
     }
-
-  </script>
+    document.getElementById('createLegendTrigger').addEventListener('click', function () {
+        createLegend();
+    });
+</script>
 </body>
 
 </html>

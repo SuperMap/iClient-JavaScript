@@ -46,10 +46,18 @@
     <div data-i18n="resources.text_2009To2016NDVI" class="subTitle"></div>
   </div>
   <div id="timeline"></div>
-  <script type="text/javascript" include="echarts,maplibre-gl-enhance"
-    src="../../dist/maplibregl/include-maplibregl.js">
-  </script>
-  <script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="echarts,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo } from 'iclient-maplibregl';
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io",
     url = host + "/iserver/services/map-china/rest/maps/China_4326";
     var config = {
@@ -89,7 +97,7 @@
         maxZoom: 18,
         zoom: 4
       });
-      map.addControl(new maplibregl.supermap.LogoControl({
+      map.addControl(new Logo({
         link: "https://iclient.supermap.io"
       }), 'bottom-right');
       map.addControl(new maplibregl.NavigationControl(), 'top-left');

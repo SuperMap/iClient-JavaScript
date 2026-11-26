@@ -23,15 +23,26 @@
   <div class='panel-heading'>
       <h5 class='panel-title text-center' data-i18n="resources.text_terrainCutFillCalculation"></h5></div>
   <div class='panel-body content'>
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainCutFillCalculation"
-              onclick="terrainCutFillCalculationProcess()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
-              onclick="removeTheme()"/>
+      <input id="terrainCutFillCalculationProcessTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainCutFillCalculation"
+             />&nbsp;
+      <input id="removeThemeTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+             />
   </div>
 </div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Geometry3D, Logo, RangeMode, ServerColor, SpatialAnalystService, TerrainCutFillCalculationParameters, ThemeGridRange, ThemeGridRangeItem, ThemeParameters, ThemeService } from 'iclient-maplibregl';
+
+    var innerHTML;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, options, terrainCutFillCalculationResult, themeLayer, popup,
     baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -62,14 +73,14 @@
         zoom: 7
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function terrainCutFillCalculationProcess() {
         removeTheme();
-        var terrainCutFillCalculationParameters = new maplibregl.supermap.TerrainCutFillCalculationParameters({
+        var terrainCutFillCalculationParameters = new TerrainCutFillCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             cutFillType:"REGION3D",
-            region3D: new maplibregl.supermap.Geometry3D({
+            region3D: new Geometry3D({
               points:[{"x":116.2,"y":40.1,"z":-5.0},{"x":116.5,"y":40.5,"z":0.0},{"x":116.5,"y":40.1,"z":30.0},{"x":116.2,"y":40.1,"z":-5.0}],
               rotationX: 0.0,
               rotationY: 0.0,
@@ -84,7 +95,7 @@
             deleteExistResultDataset:true
 
         });
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters).then(function (serviceResult) {
+        new SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters).then(function (serviceResult) {
             terrainCutFillCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -101,30 +112,30 @@
 
           //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            var themeGridRangeIteme1 = new maplibregl.supermap.ThemeGridRangeItem({
+            var themeGridRangeIteme1 = new ThemeGridRangeItem({
                     start: 0,
                     end: 100,
-                    color: new maplibregl.supermap.ServerColor(0, 255, 255)
+                    color: new ServerColor(0, 255, 255)
                 }),
-                themeGridRangeIteme2 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme2 = new ThemeGridRangeItem({
                     start: 100,
                     end: 500,
-                    color: new maplibregl.supermap.ServerColor(0, 125, 125)
+                    color: new ServerColor(0, 125, 125)
                 }),
-                themeGridRangeIteme3 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme3 = new ThemeGridRangeItem({
                     start: 500,
                     end: 1000,
-                    color: new maplibregl.supermap.ServerColor(0, 125, 0)
+                    color: new ServerColor(0, 125, 0)
                 }),
-                themeGridRangeIteme4 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme4 = new ThemeGridRangeItem({
                     start: 1000,
                     end: 99999999999,
-                    color: new maplibregl.supermap.ServerColor(0, 255, 0)
+                    color: new ServerColor(0, 255, 0)
                 });
 
-            var themeGridRange = new maplibregl.supermap.ThemeGridRange({
+            var themeGridRange = new ThemeGridRange({
                 reverseColor: false,
-                rangeMode: maplibregl.supermap.RangeMode.EQUALINTERVAL,
+                rangeMode: RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [
                     themeGridRangeIteme1,
@@ -134,7 +145,7 @@
                 ]
             });
 
-            var themeParameters = new maplibregl.supermap.ThemeParameters({
+            var themeParameters = new ThemeParameters({
                 //制作专题图的数据集（填挖方计算的结果数据集）
                 datasetNames: [terrainCutFillCalculationResult.dataset.split('@')[0]],
                 dataSourceNames: ["Jingjin"],
@@ -142,7 +153,7 @@
                 themes: [themeGridRange]
             });
 
-            new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
+            new ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 map.addLayer({
@@ -169,6 +180,12 @@
         popup.remove();
       }
     }
+    document.getElementById('terrainCutFillCalculationProcessTrigger').addEventListener('click', function () {
+        terrainCutFillCalculationProcess();
+    });
+    document.getElementById('removeThemeTrigger').addEventListener('click', function () {
+        removeTheme();
+    });
 </script>
 </body>
 </html>

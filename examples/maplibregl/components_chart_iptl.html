@@ -12,7 +12,14 @@
     <meta charset="UTF-8">
     <title data-i18n='resources.title_chart_iPortal'></title>
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
 
     <style>
         .chart-setting {
@@ -82,7 +89,10 @@
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
     <div class="chart-setting"></div>
     <div id="chart"></div>
-    <script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { ChartView } from 'iclient-maplibregl';
+
         init();
 
         function init() {
@@ -145,7 +155,7 @@
                 }
             }]
         }
-        var barChart = new maplibregl.supermap.Components.Chart("chart", options);
+        var barChart = new ChartView("chart", options);
         //加载图表之后，将要素添加到地图上
         barChart.onAdd(addDataToMap);
 

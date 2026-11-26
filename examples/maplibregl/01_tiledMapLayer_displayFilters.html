@@ -9,7 +9,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title data-i18n="resources.title_tiledMapLayer_displayFilters"></title>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
       html,
       body {
@@ -120,7 +127,11 @@
     </section>
     
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { LayerInfoService } from 'iclient-maplibregl';
+
+      var filter, i;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var mapUrl = host + '/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图';
       var landUseLayerName = 'Landuse_R@Jingjin#1';
@@ -251,7 +262,7 @@
       }
 
       function loadLandUseTypes() {
-        new maplibregl.supermap.LayerInfoService(mapUrl)
+        new LayerInfoService(mapUrl)
           .getLayersInfo()
           .then(function (serviceResult) {
             var themeLayer = findLandUseTheme(serviceResult && serviceResult.result);

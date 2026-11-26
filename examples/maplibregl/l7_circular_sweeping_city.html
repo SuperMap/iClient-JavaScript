@@ -29,8 +29,20 @@
 
   <body>
     <div id="map"></div>
-    <script type="text/javascript" include="L7,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="L7,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { L7Layer } from 'iclient-maplibregl';
+import * as L7Render from 'maplibregl-l7-render';
+window.L7 = L7Render;
+
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var attribution =
         "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -68,7 +80,7 @@
 
       map.on('load', function () {
         fetch('https://iclient.supermap.io/web/data/L7/ggFwDClGjjvpSMBIrcEx.json').then(async (res) => {
-          var pointLayer = new maplibregl.supermap.L7Layer({ type: 'CityBuildingLayer' });
+          var pointLayer = new L7Layer({ type: 'CityBuildingLayer' });
           pointLayer
             .getL7Layer()
             .source(await res.json())
@@ -97,7 +109,7 @@
           fetch('https://iclient.supermap.io/web/data/L7/67130c6c-7f49-4680-915c-54e69730861d.json')
             .then((res) => res.json())
             .then(({ lakeBorderData, lakeData, landData }) => {
-              var lakeLayer = new maplibregl.supermap.L7Layer({ type: 'PolygonLayer' });
+              var lakeLayer = new L7Layer({ type: 'PolygonLayer' });
               lakeLayer
                 .getL7Layer()
                 .source(lakeData)
@@ -110,7 +122,7 @@
                     dir: 'out'
                   }
                 });
-              var landLayer = new maplibregl.supermap.L7Layer({ type: 'PolygonLayer' });
+              var landLayer = new L7Layer({ type: 'PolygonLayer' });
               landLayer
                 .getL7Layer()
                 .source(landData)
@@ -123,7 +135,7 @@
                     dir: 'in'
                   }
                 });
-              var lakeBorderLayer = new maplibregl.supermap.L7Layer({ type: 'PolygonLayer' });
+              var lakeBorderLayer = new L7Layer({ type: 'PolygonLayer' });
               lakeBorderLayer
                 .getL7Layer()
                 .source(lakeBorderData)
@@ -140,7 +152,7 @@
               fetch('https://iclient.supermap.io/web/data/L7/40ef2173-df66-4154-a8c0-785e93a5f18e.json')
                 .then((res) => res.json())
                 .then((data) => {
-                  var layer = new maplibregl.supermap.L7Layer(
+                  var layer = new L7Layer(
                     { type: 'LineLayer' },
                     {
                       depth: true

@@ -10,9 +10,19 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 <span id="show"></span>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, ServerStyle, ThemeDotDensity, ThemeParameters, ThemeService } from 'iclient-maplibregl';
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -44,25 +54,25 @@
         zoom: 2
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
 
     function createTheme() {
-        var themeDotDensity = new maplibregl.supermap.ThemeDotDensity({
+        var themeDotDensity = new ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new maplibregl.supermap.ServerStyle({
+            style: new ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        var themeParameters = new maplibregl.supermap.ThemeParameters({
+        var themeParameters = new ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]
         });
 
-        var themeService = new maplibregl.supermap.ThemeService(dataUrl);
+        var themeService = new ThemeService(dataUrl);
         themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
 

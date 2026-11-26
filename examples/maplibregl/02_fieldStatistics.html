@@ -59,8 +59,19 @@
     </div>
 </div>
 <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FieldParameters, FieldService, FieldStatisticsParameters, LayerInfoService, Logo, StatisticMode } from 'iclient-maplibregl';
+
+    var i, subLayer, dataInfo;
     var map, currentData, layersName = [],
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World Map",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -91,14 +102,14 @@
         zoom: 2
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     showLayersInfo();
 
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        new maplibregl.supermap.LayerInfoService(baseUrl).getLayersInfo(function (serviceResult) {
+        new LayerInfoService(baseUrl).getLayersInfo(function (serviceResult) {
             var layers = serviceResult.result.subLayers.layers;
             if (!layers) return;
             for (var i = 0, len = layers.length; i < len; i++) {
@@ -126,11 +137,11 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                var param = new maplibregl.supermap.FieldParameters({
+                var param = new FieldParameters({
                     datasource: dataInfo.dataSourceName,
                     dataset: dataInfo.dataSetName
                 });
-                new maplibregl.supermap.FieldService(dataUrl).getFields(param, function (serviceResult) {
+                new FieldService(dataUrl).getFields(param, function (serviceResult) {
                     fieldStatistic();
                 });
             }
@@ -139,21 +150,21 @@
 
     function fieldStatistic() {
         var fieldName = 'SmID';
-        var param = new maplibregl.supermap.FieldStatisticsParameters({
+        var param = new FieldStatisticsParameters({
             datasource: currentData.dataSourceName,
             dataset: currentData.dataSetName,
             fieldName: fieldName,
             statisticMode: [
-                maplibregl.supermap.StatisticMode.MAX,
-                maplibregl.supermap.StatisticMode.MIN,
-                maplibregl.supermap.StatisticMode.SUM,
-                maplibregl.supermap.StatisticMode.AVERAGE,
-                maplibregl.supermap.StatisticMode.STDDEVIATION,
-                maplibregl.supermap.StatisticMode.VARIANCE
+                StatisticMode.MAX,
+                StatisticMode.MIN,
+                StatisticMode.SUM,
+                StatisticMode.AVERAGE,
+                StatisticMode.STDDEVIATION,
+                StatisticMode.VARIANCE
             ]
         });
         if (currentData) {
-            new maplibregl.supermap.FieldService(dataUrl).getFieldStatisticsInfo(param, function (serviceResult) {
+            new FieldService(dataUrl).getFieldStatisticsInfo(param, function (serviceResult) {
                 showResult(serviceResult.result);
             });
         }

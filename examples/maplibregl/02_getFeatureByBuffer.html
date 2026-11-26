@@ -8,6 +8,13 @@
   <meta charset="UTF-8">
   <title data-i18n="resources.title_getFeatureByBuffer"></title>
   <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
   <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
   <style>
     .maplibregl-popup-close-button {
@@ -18,7 +25,10 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-  <script>
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FeatureService, GetFeaturesByBufferParameters, Logo } from 'iclient-maplibregl';
+
     var map, queryBufferGeometry,
       baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
       mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -49,7 +59,7 @@
       zoom: 2
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
       queryBufferGeometry = {
@@ -76,13 +86,13 @@
     });
 
     function query() {
-      var bufferParam = new maplibregl.supermap.GetFeaturesByBufferParameters({
+      var bufferParam = new GetFeaturesByBufferParameters({
         datasetNames: ["World:Capitals"],
         bufferDistance: 30,
         geometry: queryBufferGeometry
       });
       new maplibregl.Popup().setText(resources.text_bufferDistance + ' = 30').setLngLat([0, 0]).addTo(map);
-      new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
+      new FeatureService(dataUrl).getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
         map.addSource("queryDatas", {
           "type": "geojson",
           "data": serviceResult.result.features

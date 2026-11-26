@@ -44,14 +44,24 @@
             <input class="form-control" id="radius" type="number" value="2" />
           </div>
         </div>
-        <input type="button" class="btn btn-default" value="分析" onclick="createBuffer()" />&nbsp;
-        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
+        <input id="createBufferTrigger" type="button" class="btn btn-default" value="分析" />&nbsp;
+        <input id="clearLayerTrigger" type="button" class="btn btn-default" value="移除" />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GeometryAnalysis } from 'iclient-maplibregl';
+
       var map, pointGeometryData;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
@@ -101,7 +111,7 @@
       function createBuffer() {
         clearLayer();
         var radius = parseFloat(document.getElementById('radius').value);
-        var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+        var geometryAnalysis = new GeometryAnalysis();
         var res = geometryAnalysis.buffer(pointGeometryData, radius);
         var bufferSource = {
           type: 'geojson',
@@ -129,6 +139,12 @@
       initMap(url).then((map) => {
         addMarker();
       });
-    </script>
+    document.getElementById('createBufferTrigger').addEventListener('click', function () {
+        createBuffer();
+    });
+    document.getElementById('clearLayerTrigger').addEventListener('click', function () {
+        clearLayer();
+    });
+</script>
   </body>
 </html>

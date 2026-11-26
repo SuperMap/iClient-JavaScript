@@ -30,10 +30,20 @@
 
   <body>
     <div id="knowledgeGraph"></div>
-    <script type="text/javascript" include="g6" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="g6" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GraphMap } from 'iclient-maplibregl';
+
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      const graphmap = new maplibregl.supermap.GraphMap(
+      const graphmap = new GraphMap(
         host + '/iserver/services/knowledgeGraph-budongchan/restjsr/graph/graphmaps/多样式图谱'
       );
     </script>

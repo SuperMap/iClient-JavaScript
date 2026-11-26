@@ -30,8 +30,19 @@
 <body>
 <div id='map'></div>
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-<script type="text/javascript" include="echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { QueryBySQLParameters, QueryService } from 'iclient-maplibregl';
+
+    var option, queryService;
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
@@ -358,7 +369,7 @@
     query();
 
     function query() {
-        var sqlParam = new maplibregl.supermap.QueryBySQLParameters({
+        var sqlParam = new QueryBySQLParameters({
             queryParams: [{
                 name: "ProvinceCapital_P@China",
                 attributeFilter: "NAME = '广州市' or NAME = '上海市'"
@@ -368,7 +379,7 @@
             }]
         });
 
-        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(sqlParam).then(
+        queryService = new QueryService(url).queryBySQL(sqlParam).then(
           function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             features = recordsets && recordsets[0] && recordsets[0].features;

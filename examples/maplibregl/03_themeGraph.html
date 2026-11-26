@@ -11,9 +11,20 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="title" style="position:absolute;top: 10px;text-align:center;width:100%;z-index: 10;color: #f7931e" data-i18n="resources.text_GDPStatistic"></div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 <span id="show"></span>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GraduatedMode, Logo, ServerColor, ServerStyle, ServerTextStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeParameters, ThemeService } from 'iclient-maplibregl';
+
+    var themeGraph, themeParameters;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -45,57 +56,57 @@
         zoom: 3.55
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function createTheme() {
-        themeGraph = new maplibregl.supermap.ThemeGraph({
+        themeGraph = new ThemeGraph({
             items: [
-                new maplibregl.supermap.ThemeGraphItem({
+                new ThemeGraphItem({
                     caption: "全国省份2013_GDP",
                     graphExpression: "GDP_2013",
-                    uniformStyle: new maplibregl.supermap.ServerStyle({
-                        fillForeColor: new maplibregl.supermap.ServerColor(255, 215, 0),
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(255, 215, 0),
                         lineWidth: 0
                     })
                 }),
-                new maplibregl.supermap.ThemeGraphItem({
+                new ThemeGraphItem({
                     caption: "全国省份2014_GDP",
                     graphExpression: "GDP_2014",
-                    uniformStyle: new maplibregl.supermap.ServerStyle({
-                        fillForeColor: new maplibregl.supermap.ServerColor(0, 191, 255),
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(0, 191, 255),
                         lineWidth: 0
                     })
                 }),
             ],
             barWidth: 0.001,
-            graduatedMode: maplibregl.supermap.GraduatedMode.CONSTANT,
-            graphAxes: new maplibregl.supermap.ThemeGraphAxes({
+            graduatedMode: GraduatedMode.CONSTANT,
+            graphAxes: new ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new maplibregl.supermap.ThemeGraphSize({
+            graphSize: new ThemeGraphSize({
                 maxGraphSize: 500000,
                 minGraphSize: 200000
             }),
-            graphText: new maplibregl.supermap.ThemeGraphText({
+            graphText: new ThemeGraphText({
                 graphTextDisplayed: true,
-                graphTextFormat: maplibregl.supermap.ThemeGraphTextFormat.VALUE,
-                graphTextStyle: new maplibregl.supermap.ServerTextStyle({
+                graphTextFormat: ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new ServerTextStyle({
                     fontHeight: 10,
                     fontWidth: 10
                 })
             }),
             overlapAvoided: false,
             graphSizeFixed: false,
-            graphType: maplibregl.supermap.ThemeGraphType.BAR
+            graphType: ThemeGraphType.BAR
         });
-        themeParameters = new maplibregl.supermap.ThemeParameters({
+        themeParameters = new ThemeParameters({
             themes: [themeGraph],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]
 
         });
 
-        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
+        new ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

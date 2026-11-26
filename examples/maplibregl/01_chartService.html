@@ -208,7 +208,7 @@
       </div>
       <div class="optionsWithLabel">
         <span data-i18n="resources.text_queryCondition"></span>
-        <select id="timeOption" class='form-control' onchange="createEchart()">
+        <select id="timeOption" class='form-control'>
           <option value="3-hours" data-i18n="resources.text_inFuture3hours"></option>
           <option value="6-hours" data-i18n="resources.text_inFuture6hours"></option>
           <option value="12-hours" data-i18n="resources.text_inFuture12hours"></option>
@@ -219,7 +219,7 @@
           <option value="all" data-i18n="resources.text_inFutureAll"></option>
         </select>
       </div>
-      <div class="close" onclick="closeChart()">×</div>
+      <div id="closeChartTrigger" class="close">×</div>
     </div>
     <div id="chart"></div>
   </div>
@@ -240,8 +240,8 @@
         <div id="tablePanel" class="tab-content"></div>
         <div id="queryTips" style="text-align: center;"></div>
         <div class="attrs-btns">
-          <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_select" onclick="clickToDraw()"/>&nbsp;
-          <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel" onclick="cancelClickDraw()"/>
+          <input id="clickToDrawTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_select"/>&nbsp;
+          <input id="cancelClickDrawTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel"/>
         </div>
       </div>
       <!-- SQL查询面板 -->
@@ -266,8 +266,8 @@
         </div>
         <div class='panel'>
           <div class="attrs-btns">
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="sqlQuery()" />&nbsp;
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clear" onclick="removeSqlRes()"/>
+            <input id="sqlQueryTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_query" />&nbsp;
+            <input id="removeSqlResTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_clear"/>
           </div>
         </div>
         <ul id="queryResults"></ul>
@@ -277,22 +277,22 @@
         <div class="optionsWithLabel">
           <span data-i18n="resources.text_S102query"></span>
           <div>
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_queryDepth" onclick="S102GridQuery()"/>&nbsp;
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel" onclick="cancelS102GridQuery()"/>
+            <input id="S102GridQueryTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_queryDepth"/>&nbsp;
+            <input id="cancelS102GridQueryTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel"/>
           </div>
         </div>
         <div class="optionsWithLabel">
           <span data-i18n="resources.text_S104query"></span>
           <div>
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_queryLevel" onclick="S104ClickToSelect()"/>&nbsp;
-            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel" onclick="cancelS104ClickToSelect()"/>
+            <input id="S104ClickToSelectTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_queryLevel"/>&nbsp;
+            <input id="cancelS104ClickToSelectTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancel"/>
           </div>
         </div>
         <!-- 水位调整WLA -->
         <div class="wlaPanel">
           <div class="optionsWithLabel">
             <span data-i18n="resources.text_wla"></span>
-            <select id='wlaEnable' class='form-control' onchange="changeWLA()">
+            <select id='wlaEnable' class='form-control'>
               <option value="true" data-i18n="resources.text_true"></option>
               <option value="false" data-i18n="resources.text_false" selected></option>
             </select>
@@ -330,9 +330,9 @@
           </div>
           <!-- 播放暂停 -->
           <div class="attrs-btns">
-            <input type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_play" onclick="wlaPlay()"/>&nbsp;
-            <input type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_pause" onclick="wlaPause()"/>&nbsp;
-            <input type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_stop" onclick="wlaEnd()"/>&nbsp;
+            <input id="wlaPlayTrigger" type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_play"/>&nbsp;
+            <input id="wlaPauseTrigger" type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_pause"/>&nbsp;
+            <input id="wlaEndTrigger" type="button" class="btn btn-default wlaState" data-i18n="[value]resources.btn_stop"/>&nbsp;
           </div>
         </div>
       </div>
@@ -340,8 +340,19 @@
   </div>
   </script>
   <script type="text/javascript" include="bootstrap,moment,bootstrap-datetimepicker,jquery-treegrid" src="../js/include-web.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
   <script type="text/javascript" include="maplibre-gl-enhance,turf,lodash,echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
-  <script type="text/javascript">
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartSettingS100, ChartWLTimeRangeParameter, ChartWaterDepthParameter, ChartWaterLevelParameter, LayerInfoService, MapService } from 'iclient-maplibregl';
+
+    var S100Parameter, collapseTitle, htmlContent, options, i, hasMarker, tabUl, tabContent, innerHTML, startTime, featuresInTimeRange, newChartSetting, wlaStartTime, wlaEndTime, formatTime;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-chart2/rest/maps/S101S102S104";
     var dataUrl = host + "/iserver/services/data-chart2/rest/data";
@@ -349,7 +360,7 @@
     // var s104dataSet = 'S104Position4326';
     // var s104dataSetWaterLevel = 'S104WaterLevel';
     // var s104dataSetTime = 'S104Time';
-    var chartService = new maplibregl.supermap.ChartService(url, dataUrl);
+    var chartService = new ChartService(url, dataUrl);
 
     var featureInfos;
     var imgSrc = {
@@ -486,14 +497,14 @@
         htmlContent += `</div>`; // 闭合 collapse 容器
       });
       htmlContent += `
-        <input type="button" class="btn btn-default apply-btn" onclick="updateChartSetting()" value="应用" />
+        <input type="button" class="btn btn-default apply-btn" data-action="updateChartSetting" value="应用" />
      `;
       container.innerHTML = htmlContent;
     }
 
     // 获取地图默认chartSetting
     function getMapDefaultChartSetting() {
-      return new maplibregl.supermap.MapService(url).getMapInfo().then(function(res) {
+      return new MapService(url).getMapInfo().then(function(res) {
         return res.result && res.result.chartSetting;
       });
     }
@@ -544,7 +555,7 @@
           });
         })
 
-        var chartSetting = new maplibregl.supermap.ChartSettingS100({
+        var chartSetting = new ChartSettingS100({
           contextParameters: contextParameters
         })
         return chartSetting;
@@ -613,7 +624,7 @@
         });
         hasMarker = true;
 
-      var parms = new maplibregl.supermap.ChartQueryParameters({
+      var parms = new ChartQueryParameters({
         queryMode: "ChartFeatureBoundsQuery",
         bounds: new maplibregl.LngLatBounds(b1, b2)
       });
@@ -623,7 +634,7 @@
       groups.innerHTML = '';
       tablePanel.innerHTML = '';
       queryTips.innerHTML = resources.text_isQuerying;
-      new maplibregl.supermap.ChartService(url, { parseProperties: true }).queryChart(parms).then(res => {
+      new ChartService(url, { parseProperties: true }).queryChart(parms).then(res => {
         var queryRes = res.result.recordsets;
         if (queryRes.length) {
           showClickQueryResults(queryRes, groups, tablePanel, queryTips);
@@ -792,7 +803,7 @@
     }
 
     function getLayers() {
-      new maplibregl.supermap.LayerInfoService(url).getLayersInfo().then(function (serviceResult) {
+      new LayerInfoService(url).getLayersInfo().then(function (serviceResult) {
         const chartLayers = serviceResult.result.subLayers.layers.map(function (layer) {
           return layer.name;
         });
@@ -894,11 +905,11 @@
       var featureCode = document.getElementById("featuresList").value;
       var attributeFilter = document.getElementById("attributeFilter").value;
 
-      var chartQueryFilterParameter = new maplibregl.supermap.ChartQueryFilterParameter({
+      var chartQueryFilterParameter = new ChartQueryFilterParameter({
         attributeFilter,
         featureCode,
       });
-      var chartQueryParameters = new maplibregl.supermap.ChartQueryParameters({
+      var chartQueryParameters = new ChartQueryParameters({
         queryMode: "ChartAttributeQuery",
         chartLayerNames: [chartLayerNames],
         startRecord: 0,
@@ -931,7 +942,7 @@
       }
 
     function S102GridQueryDebounceFun(X, Y) {
-      var chartWaterDepthParameter = new maplibregl.supermap.ChartWaterDepthParameter({
+      var chartWaterDepthParameter = new ChartWaterDepthParameter({
         X: X,
         Y: Y
       })
@@ -996,7 +1007,7 @@
     function S104QueryClickHandler(event) {
       // 查找点击的水位点
       var coordinates = [event.lngLat.lng, event.lngLat.lat];
-      const parm = new maplibregl.supermap.ChartWaterLevelParameter({
+      const parm = new ChartWaterLevelParameter({
         coordinates,
         dataSource: s104dataSource,
         // 数据集名称固定，可以不传
@@ -1187,7 +1198,7 @@
     changeWLA();
 
     function getTimeRange() {
-      var parms = new maplibregl.supermap.ChartWLTimeRangeParameter({
+      var parms = new ChartWLTimeRangeParameter({
         dataSource: s104dataSource,
         // 数据集名称固定，可以不传
         // dataSet: s104dataSet,
@@ -1269,7 +1280,56 @@
       setCurrentTime();
       setMapToCurrentTime();
     }
-  </script>
+    document.getElementById('timeOption').addEventListener('change', function () {
+        createEchart();
+    });
+    document.getElementById('closeChartTrigger').addEventListener('click', function () {
+        closeChart();
+    });
+    document.getElementById('clickToDrawTrigger').addEventListener('click', function () {
+        clickToDraw();
+    });
+    document.getElementById('cancelClickDrawTrigger').addEventListener('click', function () {
+        cancelClickDraw();
+    });
+    document.getElementById('sqlQueryTrigger').addEventListener('click', function () {
+        sqlQuery();
+    });
+    document.getElementById('removeSqlResTrigger').addEventListener('click', function () {
+        removeSqlRes();
+    });
+    document.getElementById('S102GridQueryTrigger').addEventListener('click', function () {
+        S102GridQuery();
+    });
+    document.getElementById('cancelS102GridQueryTrigger').addEventListener('click', function () {
+        cancelS102GridQuery();
+    });
+    document.getElementById('S104ClickToSelectTrigger').addEventListener('click', function () {
+        S104ClickToSelect();
+    });
+    document.getElementById('cancelS104ClickToSelectTrigger').addEventListener('click', function () {
+        cancelS104ClickToSelect();
+    });
+    document.getElementById('wlaEnable').addEventListener('change', function () {
+        changeWLA();
+    });
+    document.getElementById('wlaPlayTrigger').addEventListener('click', function () {
+        wlaPlay();
+    });
+    document.getElementById('wlaPauseTrigger').addEventListener('click', function () {
+        wlaPause();
+    });
+    document.getElementById('wlaEndTrigger').addEventListener('click', function () {
+        wlaEnd();
+    });
+    // 动态生成的「应用」按钮用事件委托绑定
+    document.addEventListener('click', function (e) {
+        var target = e.target.closest('[data-action="updateChartSetting"]');
+        if (target) {
+            updateChartSetting();
+        }
+    });
+</script>
 </body>
 
 </html>

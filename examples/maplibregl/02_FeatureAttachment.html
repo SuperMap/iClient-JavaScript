@@ -7,7 +7,14 @@
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_editFeatureAttachments"></title>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
         .editPane {
             position: absolute;
@@ -56,15 +63,19 @@
         </div>
         <div class='panel-body content'>
             <input id="getAttachmentsInput" type='button' class='btn btn-default'
-                data-i18n="[value]resources.text_getAttachments" onclick='getAttachments()' />
+                data-i18n="[value]resources.text_getAttachments" />
             <input id="resetFileInput" type='button' class='btn btn-default' data-i18n="[value]resources.btn_undoAdd"
-                onclick='resetFile()' />
+                />
             <input id="commitInput" type='button' class='btn btn-default'
-                data-i18n="[value]resources.text_input_value_submit" onclick='commit()' />&nbsp;
+                data-i18n="[value]resources.text_input_value_submit" />&nbsp;
         </div>
     </div>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { AttachmentsParameters, DatasetService, EditAttachmentsParameters, FeatureService, GetFeaturesBySQLParameters, Logo } from 'iclient-maplibregl';
+
+        var i, lineID, outlineName, results, innerHTML, popup;
         var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
@@ -101,20 +112,20 @@
             zoom: 2
         });
         map.addControl(new maplibregl.NavigationControl(), 'top-left');
-        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+        map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
 
         initFeature()
         function initFeature() {
             setDisabledAndTips(true, resources.msg_noFeature);
-            var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+            var sqlParam = new GetFeaturesBySQLParameters({
                 queryParameter: {
                     name: "Countries@World",
                     attributeFilter: "SMID > 0"
                 },
                 datasetNames: ["World:Countries"]
             });
-            new maplibregl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            new FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
                 let features = serviceResult.result.features.features;
                 for (let i = 0; i < features.length; i++) {
                     map.addSource("dataSource" + i, {
@@ -170,17 +181,17 @@
             commitInputDom.setAttribute("title", tooltip);
         }
         function getAttachments() {
-            new maplibregl.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+            new DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
                 if (!serviceResult.result.supportAttachments) {
                     return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
                 }
                 $(".maplibregl-popup").remove();
-                var params = new maplibregl.supermap.AttachmentsParameters({
+                var params = new AttachmentsParameters({
                     dataSourceName: "World",
                     dataSetName: "Countries",
                     featureId: featureId,
                 });
-                new maplibregl.supermap.FeatureService(url).getFeatureAttachments(params).then(res => {
+                new FeatureService(url).getFeatureAttachments(params).then(res => {
                     results = res.result;
                     let innerHTML = '';
                     if (results.length > 0) {
@@ -204,20 +215,20 @@
             file = null;
         }
         function commit() {
-            new maplibregl.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+            new DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
                 if (!serviceResult.result.supportAttachments) {
                     return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
                 }
                 file = fileDom.files[0];
                 if (file) {
-                    var params = new maplibregl.supermap.EditAttachmentsParameters({
+                    var params = new EditAttachmentsParameters({
                         dataSourceName: "World",
                         dataSetName: "Countries",
                         featureId: featureId,
                         file: file,
                         editType: 'add'
                     });
-                    var re = new maplibregl.supermap.FeatureService(url).editFeatureAttachments(params).then(serviceResult => {
+                    var re = new FeatureService(url).editFeatureAttachments(params).then(serviceResult => {
                         resetFile();
                         return widgets.alert.showAlert(resources.msg_submitSuccess, true);
                     })
@@ -226,7 +237,16 @@
                 }
             })
         }
-    </script>
+    document.getElementById('getAttachmentsInput').addEventListener('click', function () {
+        getAttachments();
+    });
+    document.getElementById('resetFileInput').addEventListener('click', function () {
+        resetFile();
+    });
+    document.getElementById('commitInput').addEventListener('click', function () {
+        commit();
+    });
+</script>
 </body>
 
 </html>

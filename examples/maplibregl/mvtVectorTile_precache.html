@@ -6,7 +6,14 @@
     <meta charset='utf-8'/>
     <title>UGCV5(MVT)</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script type="text/javascript" exclude='iclient-maplibregl' src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" exclude="iclient-maplibregl" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
         body {
             margin: 0;
@@ -23,7 +30,9 @@
 </head>
 <body>
 <div id='map'></div>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+
 
     var map = new maplibregl.Map({
         container: 'map', // container id

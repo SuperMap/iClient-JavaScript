@@ -29,14 +29,25 @@
           <input min="0" class="form-control" id="sql" placeholder="SMID > 0" />
         </div>
       </div>
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearLayer()"/>
+      <input id="queryTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_query"/>&nbsp;
+      <input id="clearLayerTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"/>
   </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FGBLayer as __sm_FGBLayer, Logo, QueryBySQLParameters, QueryService } from 'iclient-maplibregl';
+
+    var queryService;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -67,21 +78,21 @@
         maxZoom: 18,
         zoom: 2
     });
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
 
 
     function query() {
         var sql = document.getElementById("sql").value || "SMID > 0";
-        var param = new maplibregl.supermap.QueryBySQLParameters({
+        var param = new QueryBySQLParameters({
             queryParams: {
                 name: "Countries@World.1",
                 attributeFilter: sql
             }
         });
 
-        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(param, 'FGB').then(function (serviceResult) {
-            var FGBLayer = new maplibregl.supermap.FGBLayer({
+        queryService = new QueryService(url).queryBySQL(param, 'FGB').then(function (serviceResult) {
+            var FGBLayer = new __sm_FGBLayer({
               url: serviceResult.result.newResourceLocation,
               layerID: 'points',
               strategy: 'all',
@@ -100,7 +111,12 @@
         map.removeLayer('points');
       }
     }
-
+    document.getElementById('queryTrigger').addEventListener('click', function () {
+        query();
+    });
+    document.getElementById('clearLayerTrigger').addEventListener('click', function () {
+        clearLayer();
+    });
 </script>
 </body>
 </html>

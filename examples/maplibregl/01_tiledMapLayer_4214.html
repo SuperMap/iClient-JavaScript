@@ -12,11 +12,14 @@
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
         <title data-i18n="resources.title_tiledMapLayer_Beijing54"></title>
         <script type="text/javascript" src="../js/include-web.js"></script>
-        <script
-            type="text/javascript"
-            include="maplibre-gl-enhance"
-            src="../../dist/maplibregl/include-maplibregl.js"
-        ></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js" ></script>
         <style>
             body {
                 margin: 0;
@@ -34,7 +37,10 @@
 
     <body>
         <div id="map"></div>
-        <script type="text/javascript">
+        <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { HillshadeParameter, NDVIParameter, QueryBySQLParameters, QueryService } from 'iclient-maplibregl';
+
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var url = host + '/iserver/services/map-china400/rest/maps/China_4214';
             var map = new maplibregl.Map({
@@ -63,7 +69,7 @@
                             //redirect: 如果为 true，则将请求重定向到瓦片的真实地址；如果为 false，则响应体中是瓦片的字节流,默认为false；
                             //layersID:要显示的图层id字符串；
                             //tileversion: 切片版本名称，cacheEnabled 为 true 时有效；
-                            //rasterfunction: 栅格分析参数,类型为maplibregl.supermap.NDVIParameter或maplibregl.supermap.HillshadeParameter；
+                            //rasterfunction: 栅格分析参数,类型为NDVIParameter或HillshadeParameter；
                             //format:瓦片格式，默认为'png'；
                             tiles: [url],
                             rasterSource: 'iserver'
@@ -86,13 +92,13 @@
             });
             map.on('load', function() {
                 //从 iServer 查询
-                var param = new maplibregl.supermap.QueryBySQLParameters({
+                var param = new QueryBySQLParameters({
                     queryParams: {
                         name: 'China_Province_pl@China',
                         attributeFilter: 'SMID =14'
                     }
                 });
-                new maplibregl.supermap.QueryService(url).queryBySQL(param).then(function(serviceResult) {
+                new QueryService(url).queryBySQL(param).then(function(serviceResult) {
                     map.addSource('queryDatas', {
                         type: 'geojson',
                         data: serviceResult.result.recordsets[0].features

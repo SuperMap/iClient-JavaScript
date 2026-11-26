@@ -13,11 +13,14 @@
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
         <title data-i18n="resources.title_drawControlWGS84"></title>
         <script type="text/javascript" src="../js/include-web.js"></script>
-        <script
-            type="text/javascript"
-            include="maplibre-gl-enhance,draw"
-            src="../../dist/maplibregl/include-maplibregl.js"
-        ></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="maplibre-gl-enhance,draw" src="../../dist/maplibregl/include-maplibregl.js" ></script>
         <style>
             body {
                 margin: 0;
@@ -35,7 +38,11 @@
 
     <body>
         <div id="map"></div>
-        <script type="text/javascript">
+        <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FeatureService, GetFeaturesByGeometryParameters } from 'iclient-maplibregl';
+
+            var draw;
             MapboxDraw.constants.classes.CONTROL_BASE  = 'maplibregl-ctrl';
             MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';
             MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';
@@ -90,12 +97,12 @@
 
                     var data = draw.getAll();
                     var feature = data.features[data.features.length - 1];
-                    var geometryParam = new maplibregl.supermap.GetFeaturesByGeometryParameters({
+                    var geometryParam = new GetFeaturesByGeometryParameters({
                         datasetNames: ['World:Countries'],
                         geometry: feature,
                         spatialQueryMode: 'INTERSECT'
                     });
-                    new maplibregl.supermap.FeatureService(
+                    new FeatureService(
                         host + '/iserver/services/data-world/rest/data'
                     ).getFeaturesByGeometry(geometryParam).then(function(serviceResult) {
                         map.addSource('queryDatas', {

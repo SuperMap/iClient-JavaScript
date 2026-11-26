@@ -42,14 +42,24 @@
           <input min="0" class="form-control" id="sql" placeholder="SMID = 234" />
         </div>
       </div>
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_query" onclick="query()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearFeatures()"/>
+      <input id="queryTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_query"/>&nbsp;
+      <input id="clearFeaturesTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"/>
   </div>
 </div>
 <div id="map"></div>
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FeatureService, GetFeaturesBySQLParameters, Logo } from 'iclient-maplibregl';
+
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
         "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
@@ -80,12 +90,12 @@
         zoom: 4
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function query() {
         clearFeatures();
         var sql = document.getElementById("sql").value || "SMID = 234";
-        var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+        var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: sql
@@ -93,7 +103,7 @@
             datasetNames: ["World:Countries"]
         });
 
-        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features
@@ -122,6 +132,12 @@
         map.removeSource('queryDatas');
       }
     }
+    document.getElementById('queryTrigger').addEventListener('click', function () {
+        query();
+    });
+    document.getElementById('clearFeaturesTrigger').addEventListener('click', function () {
+        clearFeatures();
+    });
 </script>
 </body>
 </html>

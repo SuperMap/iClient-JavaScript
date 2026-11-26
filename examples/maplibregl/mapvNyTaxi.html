@@ -14,7 +14,14 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
     <title data-i18n="resources.title_mapvNyvTaxi"></title>
     <script type="text/javascript" include="jquery,widgets,dat-gui" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
       body {
         margin: 0;
@@ -31,7 +38,10 @@
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
     <div id="map"></div>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, MapvLayer } from 'iclient-maplibregl';
+
       var attribution =
         "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
         "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -71,7 +81,7 @@
           zoom: 11
         });
       map.addControl(new maplibregl.NavigationControl(), 'top-left');
-      map.addControl(new maplibregl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+      map.addControl(new Logo({ link: 'https://iclient.supermap.io' }), 'bottom-right');
       widgets.loader.showLoader();
       map.on('load', function () {
         $.get('../data/nyc-taxi.csv', function (csvstr) {
@@ -86,7 +96,7 @@
           dataSet.initGeometry();
           $('#loading').hide();
 
-          layer = new maplibregl.supermap.MapvLayer(dataSet, options);
+          layer = new MapvLayer(dataSet, options);
           map.addLayer(layer);
 
           $('#loading').hide();

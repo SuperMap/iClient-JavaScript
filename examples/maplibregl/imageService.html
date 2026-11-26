@@ -237,7 +237,7 @@
                                     class="form-control"
                                     id="collections"
                                     style="width: 100%"
-                                    onchange="selectCollection()"
+                                   
                                 >
                                     <option value="-1" data-i18n="resources.text_select"></option>
                                 </select>
@@ -250,7 +250,7 @@
                                     class="form-control"
                                     id="provinces"
                                     style="width: 100%"
-                                    onchange="selectProvince()"
+                                   
                                 >
                                     <option value="-1" data-i18n="resources.text_select"></option>
                                 </select>
@@ -260,13 +260,13 @@
                             class="btn btn-search"
                             id="polygon-search"
                             data-i18n="resources.text_polygon_search"
-                            onclick="drawRegion('Polygon')"
+                           
                         ></button>
                         <button
                             class="btn btn-search"
                             id="rectangle-search"
                             data-i18n="resources.text_rectangle_search"
-                            onclick="drawRegion('Box')"
+                           
                         ></button>
                         <div class="button-group">
                             <button
@@ -274,14 +274,14 @@
                                 class="btn btn-primary"
                                 id="query"
                                 data-i18n="resources.text_query"
-                                onclick="query()"
+                               
                             ></button>
                             <button
                                 type="submit"
                                 class="btn btn-primary"
                                 id="printBtn"
                                 data-i18n="resources.text_reset"
-                                onclick="clearSearchResult(true)"
+                               
                             ></button>
                         </div>
                     </div>
@@ -350,12 +350,19 @@
             </div>
         </div>
         <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-        <script
-            type="text/javascript"
-            include="turf,draw,maplibre-gl-enhance,mapboxgl-draw-rectangle-drag"
-            src="../../dist/maplibregl/include-maplibregl.js"
-        ></script>
-        <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="turf,draw,maplibre-gl-enhance,mapboxgl-draw-rectangle-drag" src="../../dist/maplibregl/include-maplibregl.js" ></script>
+        <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FeatureService, GetFeaturesBySQLParameters, ImageService as __sm_ImageService } from 'iclient-maplibregl';
+
+            var i, plotBbox, tbodyHtml, pageHtml, feature, thHtml, item;
             widgets.loader.showLoader("data loading...");
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var root = 'https://iserver.supermap.io/iserver/services/imageservice-hainan/restjsr';
@@ -411,7 +418,7 @@
             var draw = addDrawControl();
             var imageService = ImageService();
             function ImageService() {
-                var service = new maplibregl.supermap.ImageService(root);
+                var service = new __sm_ImageService(root);
                 service.getCollections(getCollectionsCompleted);
                 return service;
             }
@@ -576,13 +583,13 @@
 
             function queryFromDataService(url) {
                 var result = [];
-                var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+                var sqlParam = new GetFeaturesBySQLParameters({
                     queryParameter: { attributeFilter: "PAC Like '46%'" },
                     datasetNames: ['China:City_R'],
                     targetPrj: { epsgCode: 4326 },
                     maxFeatures: 10000
                 });
-                new maplibregl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+                new FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                     var featureResults = serviceResult.result;
                     if (featureResults) {
                         var features = featureResults.features;
@@ -674,11 +681,9 @@
                         '<td>' +
                         feature.id +
                         '</td>' +
-                        '<td onclick="showTifInfo(' +
-                        "'" +
+                        '<td data-action="showTifInfo" data-feature-id="' +
                         feature.id +
-                        "'" +
-                        ')" data-toggle="modal" data-target="#myModal"><a href="#">' +
+                        '" data-toggle="modal" data-target="#myModal"><a href="#">' +
                         feature.properties.smfilename +
                         '</a></td>' +
                         '<td>' +
@@ -687,15 +692,11 @@
                         '<td>' +
                         '<span id="' +
                         feature.id +
-                        '" class="glyphicon glyphicon-eye-closed glyphicon-eye-open" aria-hidden="true" onclick="showSearchItemTile(' +
-                        "'" +
+                        '" class="glyphicon glyphicon-eye-closed glyphicon-eye-open" aria-hidden="true" data-action="showSearchItemTile" data-feature-id="' +
                         feature.id +
-                        "'" +
-                        ',' +
-                        "'" +
+                        '" data-filename="' +
                         feature.properties.smfilename +
-                        "'" +
-                        ')"></span>' +
+                        '"></span>' +
                         '</td>' +
                         '</tr>';
                 });
@@ -703,18 +704,18 @@
             }
             function appendPage(features) {
                 var pageHtml =
-                    '<li id="previous-page" class="disabled" onclick="goPrevious()">' +
+                    '<li id="previous-page" class="disabled" data-action="goPrevious">' +
                     '<a href="#" aria-label="Previous">' +
                     '<span aria-hidden="true">&laquo;</span>' +
                     '</a>' +
                     '</li>';
                 for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
                   var pageIndex = i - 1;
-                  pageHtml += '<li onclick="clickPage(' + pageIndex + ')"><a href="#">' + i + '</a></li>';
+                  pageHtml += '<li data-action="clickPage" data-page-index="' + pageIndex + '"><a href="#">' + i + '</a></li>';
                 }
                 pageHtml +=
                     '<li id="next-page" style="margin-right: 0">' +
-                    '<a href="#" aria-label="Next" onclick="goNext()">' +
+                    '<a href="#" aria-label="Next" data-action="goNext">' +
                     '<span aria-hidden="true">&raquo;</span>' +
                     '</a>' +
                     '</li>';
@@ -855,6 +856,43 @@
                 }
                 ImageSearchService(postData);
             }
-        </script>
+    document.getElementById('collections').addEventListener('change', function () {
+        selectCollection();
+    });
+    document.getElementById('provinces').addEventListener('change', function () {
+        selectProvince();
+    });
+    document.getElementById('polygon-search').addEventListener('click', function () {
+        drawRegion('Polygon');
+    });
+    document.getElementById('rectangle-search').addEventListener('click', function () {
+        drawRegion('Box');
+    });
+    document.getElementById('query').addEventListener('click', function () {
+        query();
+    });
+    document.getElementById('printBtn').addEventListener('click', function () {
+        clearSearchResult(true);
+    });
+    // 动态生成的表格行/分页按钮用事件委托绑定
+    document.addEventListener('click', function (e) {
+        var target = e.target.closest('[data-action]');
+        if (!target) {
+            return;
+        }
+        var action = target.getAttribute('data-action');
+        if (action === 'showTifInfo') {
+            showTifInfo(target.getAttribute('data-feature-id'));
+        } else if (action === 'showSearchItemTile') {
+            showSearchItemTile(target.getAttribute('data-feature-id'), target.getAttribute('data-filename'));
+        } else if (action === 'clickPage') {
+            clickPage(target.getAttribute('data-page-index'));
+        } else if (action === 'goPrevious') {
+            goPrevious();
+        } else if (action === 'goNext') {
+            goNext();
+        }
+    });
+</script>
     </body>
 </html>

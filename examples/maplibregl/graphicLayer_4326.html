@@ -39,9 +39,20 @@
 </head>
 
 <body>
-    <script type="text/javascript" include='maplibre-gl-enhance,deck' src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="maplibre-gl-enhance,deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <div id='map'></div>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Graphic, GraphicLayer } from 'iclient-maplibregl';
+
+        var i, graphicLayer;
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map = new maplibregl.Map({
             container: 'map', 
@@ -94,12 +105,12 @@
                     };
                     /**
                      * 可以单独给要素设置颜色和半径:
-                     *  new maplibregl.supermap.Graphic(lngLat,{
+                     *  new Graphic(lngLat,{
                      *      color:[255,0,0],
                      *      radius:40
                      *  });
                      */
-                    graphics.push(new maplibregl.supermap.Graphic(lngLat));
+                    graphics.push(new Graphic(lngLat));
                 }
 
                 var graphicStyle = {
@@ -107,7 +118,7 @@
                     radius: 20
                 };
 
-                graphicLayer = new maplibregl.supermap.GraphicLayer("graphic", {
+                graphicLayer = new GraphicLayer("graphic", {
                     graphics: graphics,
                     radius: graphicStyle.radius,
                     color: graphicStyle.color,

@@ -22,16 +22,27 @@
   <div class='panel-heading'>
       <h5 class='panel-title text-center' data-i18n="resources.text_terrainAspectCalculation"></h5></div>
   <div class='panel-body content'>
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainAspectCalculation"
-              onclick="terrainAspectCalculationProcess()"/>&nbsp;
-      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
-              onclick="removeTheme()"/>
+      <input id="terrainAspectCalculationProcessTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainAspectCalculation"
+             />&nbsp;
+      <input id="removeThemeTrigger" type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+             />
   </div>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-<script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { BoundsType, CellSizeType, Logo, RangeMode, ServerColor, SpatialAnalystService, TerrainAspectCalculationParameters, ThemeGridRange, ThemeGridRangeItem, ThemeParameters, ThemeService, terrainAnalystSetting } from 'iclient-maplibregl';
+
+    var themeGridRangeIteme0, themeGridRangeIteme1, themeGridRangeIteme2, themeGridRangeIteme3, themeGridRangeIteme4, themeGridRangeIteme5, themeGridRangeIteme6, themeGridRangeIteme7, themeGridRangeIteme8;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, options, terrainAspectCalculationResult, themeLayer,
         baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
@@ -62,21 +73,21 @@
         zoom: 7
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function terrainAspectCalculationProcess() {
         removeTheme();
-        var terrainAspectCalculationParameters = new maplibregl.supermap.TerrainAspectCalculationParameters({
+        var terrainAspectCalculationParameters = new TerrainAspectCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
-            terrainAnalystSetting: new maplibregl.supermap.terrainAnalystSetting({
-              boundsType: maplibregl.supermap.BoundsType.UNION,
-              cellSizeType: maplibregl.supermap.CellSizeType.MAX
+            terrainAnalystSetting: new terrainAnalystSetting({
+              boundsType: BoundsType.UNION,
+              cellSizeType: CellSizeType.MAX
             }), 
             resultDatasetName:"testAspect", 
             deleteExistResultDataset:true
         }
         );
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).terrainAspectCalculate(terrainAspectCalculationParameters).then(function (serviceResult) {
+        new SpatialAnalystService(serviceUrl).terrainAspectCalculate(terrainAspectCalculationParameters).then(function (serviceResult) {
             terrainAspectCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -84,61 +95,61 @@
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            var themeGridRangeIteme = new maplibregl.supermap.ThemeGridRangeItem({
+            var themeGridRangeIteme = new ThemeGridRangeItem({
                     start: -1,
                     end: 0,
-                    color: new maplibregl.supermap.ServerColor(60,164,3)
+                    color: new ServerColor(60,164,3)
                 });
-                themeGridRangeIteme0 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme0 = new ThemeGridRangeItem({
                     start: 0,
                     end: 22.5,
-                    color: new maplibregl.supermap.ServerColor(91,188,11)
+                    color: new ServerColor(91,188,11)
                     });
-                themeGridRangeIteme1 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme1 = new ThemeGridRangeItem({
                     start: 22.5,
                     end: 67.5,
-                    color: new maplibregl.supermap.ServerColor(135,211,0)
+                    color: new ServerColor(135,211,0)
                 }),
-                themeGridRangeIteme2 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme2 = new ThemeGridRangeItem({
                     start: 67.5,
                     end: 112.5,
-                    color: new maplibregl.supermap.ServerColor(193,230,5)
+                    color: new ServerColor(193,230,5)
                 }),
-                themeGridRangeIteme3 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme3 = new ThemeGridRangeItem({
                     start: 112.5,
                     end: 157.5,
-                    color: new maplibregl.supermap.ServerColor(254,255,0)
+                    color: new ServerColor(254,255,0)
                 }),
-                themeGridRangeIteme4 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme4 = new ThemeGridRangeItem({
                     start: 157.5,
                     end: 202.5,
-                    color: new maplibregl.supermap.ServerColor(255,190,0)
+                    color: new ServerColor(255,190,0)
                 }),
-                themeGridRangeIteme5 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme5 = new ThemeGridRangeItem({
                     start: 202.5,
                     end: 247.5,
-                    color: new maplibregl.supermap.ServerColor(255,127,0)
+                    color: new ServerColor(255,127,0)
                 });
-                themeGridRangeIteme6 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme6 = new ThemeGridRangeItem({
                     start: 247.5,
                     end: 292.5,
-                    color: new maplibregl.supermap.ServerColor(255,63,2)
+                    color: new ServerColor(255,63,2)
                 });
-                themeGridRangeIteme7 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme7 = new ThemeGridRangeItem({
                     start: 292.5,
                     end: 337.5,
-                    color: new maplibregl.supermap.ServerColor(240,9,0)
+                    color: new ServerColor(240,9,0)
                 });
-                themeGridRangeIteme8 = new maplibregl.supermap.ThemeGridRangeItem({
+                themeGridRangeIteme8 = new ThemeGridRangeItem({
                     start: 337.5,
                     end: 360,
-                    color: new maplibregl.supermap.ServerColor(91,188,11)
+                    color: new ServerColor(91,188,11)
                 });
 
 
-            var themeGridRange = new maplibregl.supermap.ThemeGridRange({
+            var themeGridRange = new ThemeGridRange({
                 reverseColor: false,
-                rangeMode: maplibregl.supermap.RangeMode.EQUALINTERVAL,
+                rangeMode: RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [
                     themeGridRangeIteme,
@@ -154,7 +165,7 @@
                 ]
             });
 
-            var themeParameters = new maplibregl.supermap.ThemeParameters({
+            var themeParameters = new ThemeParameters({
                 //制作专题图的数据集（坡向计算的结果数据集）
                 datasetNames: [terrainAspectCalculationResult.dataset.split('@')[0]],
                 dataSourceNames: ["Jingjin"],
@@ -162,7 +173,7 @@
                 themes: [themeGridRange]
             });
 
-            new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
+            new ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 map.addLayer({
@@ -188,6 +199,12 @@
         map.removeSource('themeLayer');
       }
     }
+    document.getElementById('terrainAspectCalculationProcessTrigger').addEventListener('click', function () {
+        terrainAspectCalculationProcess();
+    });
+    document.getElementById('removeThemeTrigger').addEventListener('click', function () {
+        removeTheme();
+    });
 </script>
 </body>
 </html>

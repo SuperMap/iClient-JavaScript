@@ -35,8 +35,18 @@
       </table>
       <ul id="pagination-demo" class="pagination-sm"></ul>
     </div>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { FeatureService, GetFeaturesBySQLParameters, Logo } from 'iclient-maplibregl';
+
       var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
@@ -73,21 +83,21 @@
         zoom: 3
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on('load', function () {
         query();
     });
 
       function query() {
-        var sqlParam1 = new maplibregl.supermap.GetFeaturesBySQLParameters({
+        var sqlParam1 = new GetFeaturesBySQLParameters({
           queryParameter: {
             name: dataset + '@' + datasSource
           },
           datasetNames: [datasSource + ':' + dataset]
         });
 
-        new maplibregl.supermap.FeatureService(url).getFeaturesCount(sqlParam1).then(function (serviceResult) {
+        new FeatureService(url).getFeaturesCount(sqlParam1).then(function (serviceResult) {
           totalCount = serviceResult.result.totalCount;
           var totalPages = Math.ceil(totalCount / pageSize);
           $('#pagination-demo').twbsPagination({
@@ -105,7 +115,7 @@
             }
           });
 
-          new maplibregl.supermap.FeatureService(url).getFeaturesDatasetInfo(sqlParam1).then(function (serviceResult) {
+          new FeatureService(url).getFeaturesDatasetInfo(sqlParam1).then(function (serviceResult) {
             console.log('serviceResult2', serviceResult);
             fieldInfos = serviceResult.result[0].fieldInfos;
             fieldInfos.forEach((fieldInfo) => {
@@ -121,7 +131,7 @@
       }
 
       function getFeature(fromIndex, toIndex) {
-        var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+        var sqlParam = new GetFeaturesBySQLParameters({
           queryParameter: {
             name: dataset + '@' + datasSource,
             attributeFilter: 'SMID > 0'
@@ -131,7 +141,7 @@
           datasetNames: [datasSource + ':' + dataset],
           returnFeaturesOnly: true
         });
-        new maplibregl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+        new FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
           var tbody = document.querySelector('.tbody');
           tbody.innerHTML = '';
           serviceResult.result.features.features.forEach((feature) => {

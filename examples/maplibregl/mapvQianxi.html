@@ -29,12 +29,23 @@
         outline: none;
       }
     </style>
-    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
     <div id="map"></div>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, MapvLayer } from 'iclient-maplibregl';
+
+      var i, j, geojsonDataSet;
       var attribution =
         "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
         " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -68,7 +79,7 @@
         zoom: 4
       });
       map.addControl(new maplibregl.NavigationControl(), 'top-left');
-      map.addControl(new maplibregl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+      map.addControl(new Logo({ link: 'https://iclient.supermap.io' }), 'bottom-right');
       map.setPitch(60);
       new maplibregl.Popup({ closeOnClick: false })
         .setLngLat(map.getCenter())
@@ -189,7 +200,7 @@
 
             var curve = mapv.utilCurve.getPoints([fromCenter, toCenter]);
 
-            for (j = 0; j < curve.length; j++) {
+            for (let j = 0; j < curve.length; j++) {
               timeData.push({
                 geometry: {
                   type: 'Point',
@@ -222,7 +233,7 @@
           });
           geojsonDataSet = new mapv.DataSet(data);
 
-          var mapVlayer = new maplibregl.supermap.MapvLayer(geojsonDataSet, geojsonOptions);
+          var mapVlayer = new MapvLayer(geojsonDataSet, geojsonOptions);
           map.addLayer(mapVlayer);
 
           var textDataSet = new mapv.DataSet(textData);
@@ -236,7 +247,7 @@
             zIndex: 11,
             shadowBlur: 10
           };
-          var textLayer = new maplibregl.supermap.MapvLayer(textDataSet, textOptions);
+          var textLayer = new MapvLayer(textDataSet, textOptions);
           map.addLayer(textLayer);
 
           var lineDataSet = new mapv.DataSet(lineData);
@@ -249,7 +260,7 @@
             zIndex: 100,
             draw: 'simple'
           };
-          var lineLayer = new maplibregl.supermap.MapvLayer(lineDataSet, lineOptions);
+          var lineLayer = new MapvLayer(lineDataSet, lineOptions);
           map.addLayer(lineLayer);
 
           var pointOptions = {
@@ -263,7 +274,7 @@
 
           var pointDataSet = new mapv.DataSet(pointData);
 
-          var pointLayer = new maplibregl.supermap.MapvLayer(pointDataSet, pointOptions);
+          var pointLayer = new MapvLayer(pointDataSet, pointOptions);
           map.addLayer(pointLayer);
 
           var timeDataSet = new mapv.DataSet(timeData);
@@ -283,7 +294,7 @@
             },
             draw: 'simple'
           };
-          var timeLayer = new maplibregl.supermap.MapvLayer(timeDataSet, timeOptions);
+          var timeLayer = new MapvLayer(timeDataSet, timeOptions);
           map.addLayer(timeLayer);
         });
       });

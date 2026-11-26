@@ -21,8 +21,19 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
   <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
   <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-  <script>
+  <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { DataFlowService, Logo, QueryBySQLParameters, QueryService, SecurityManager } from 'iclient-maplibregl';
+
+    var featureResult, dataFlowBroadcast, timer, queryService;
     var host = (window.isLocal ? window.server : "https://iserver.supermap.io"),
       tileUrl = host +
         '/iserver/services/map-china/rest/maps/China/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}',
@@ -57,10 +68,10 @@
       maxZoom: 18,
       zoom: 10
     });
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
 
-    maplibregl.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+    SecurityManager.registerToken(urlDataFlow, window.exampleToken);
     var popup = new maplibregl.Popup({
       focusAfterOpen: false
     });
@@ -69,7 +80,7 @@
       var options = {
         ws: urlDataFlow
       };
-      var dataFlowSubscribe = new maplibregl.supermap.DataFlowService(options.ws, {
+      var dataFlowSubscribe = new DataFlowService(options.ws, {
         geometry: options.geometry,
         prjCoordSys: options.prjCoordSys,
         excludeField: options.excludeField
@@ -84,15 +95,15 @@
     //模拟实时数据 start
     //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
     function query() {
-      var param = new maplibregl.supermap.QueryBySQLParameters({
+      var param = new QueryBySQLParameters({
         queryParams: {
           name: "ProvincialRd_L@China#1",
           attributeFilter: "SMID = 2504"
         }
       });
-      queryService = new maplibregl.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
+      queryService = new QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
         featureResult = serviceResult;
-        dataFlowBroadcast = new maplibregl.supermap.DataFlowService(urlDataFlow).initBroadcast();
+        dataFlowBroadcast = new DataFlowService(urlDataFlow).initBroadcast();
         dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
           timer = window.setInterval("broadcast()", 2000);
         });

@@ -15,8 +15,15 @@
     <div id="root"></div>
     <script type="text/javascript" src="./websymbol-editor/static/fonts/iconfont.js"></script>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript" src="./websymbol-editor/js/websymbol-editor.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module" src="./websymbol-editor/js/websymbol-editor.js"></script>
 </body>
 
 </html>

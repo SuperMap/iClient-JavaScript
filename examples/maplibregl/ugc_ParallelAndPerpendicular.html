@@ -50,16 +50,27 @@
               </select>
             </div>
         </div>
-          <input type="button" class="btn btn-default" value="查找"
-                  onclick="search()"/>&nbsp;
-          <input type="button" class="btn btn-default" value="移除"
-                  onclick="clearLayer()"/>
+          <input id="searchTrigger" type="button" class="btn btn-default" value="查找"
+                 />&nbsp;
+          <input id="clearLayerTrigger" type="button" class="btn btn-default" value="移除"
+                 />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { GeometryAnalysis } from 'iclient-maplibregl';
+
+        var searchLines;
         var map, targetLine, lineLists = [];
         var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
         var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
@@ -147,7 +158,7 @@
           const positonFun = document.getElementById("positon").value;
           const searchResults = [];
           const [[x1, y1], [x2, y2]] = targetLine.geometry.coordinates;
-          var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+          var geometryAnalysis = new GeometryAnalysis();
           searchLines.forEach(line => {
             const [[x3, y3], [x4, y4]] = line.geometry.coordinates;
             const booleanResult = geometryAnalysis[positonFun](x1, y1, x2, y2, x3, y3, x4, y4);
@@ -188,7 +199,12 @@
         initMap(url).then((map) => {
           addFeatures();
         })
-
-    </script>
+    document.getElementById('searchTrigger').addEventListener('click', function () {
+        search();
+    });
+    document.getElementById('clearLayerTrigger').addEventListener('click', function () {
+        clearLayer();
+    });
+</script>
   </body>
 </html>

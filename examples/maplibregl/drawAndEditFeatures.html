@@ -10,7 +10,14 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
-    <script type="text/javascript" include="draw,snap,lodash" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="draw,snap,lodash" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
       .key-input,
       .value-input {
@@ -313,7 +320,11 @@
       <div class="edit-tips"><span data-i18n="resources.msg_clickToSelect"></span></div>
     </div>
     <script type="text/javascript" include="jquery,bootstrap,widgets.alert,viewer" src="../js/include-web.js"></script>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { DatasetService, EditFeaturesParameters, FeatureService, FieldParameters, FieldService, GetFeaturesBySQLParameters } from 'iclient-maplibregl';
+
+      var count, x, y, feature, allIds;
       var status = 'ADD';
       var type = '';
       var uniqueId = 0;
@@ -324,7 +335,7 @@
       var isUpdate = false;
       var dataUrl = "https://iserver.supermap.io/iserver/services/data-building/rest/data";
       var dataSourceName = 'building';
-      var editFeaturesService = new maplibregl.supermap.FeatureService(dataUrl);
+      var editFeaturesService = new FeatureService(dataUrl);
       var currentShowPanel = '';
       var datasetNameList = [];
       var datasetTypeClassify = {
@@ -549,7 +560,7 @@
             isChanged = true;
           }
         });
-        var datasetService = new maplibregl.supermap.DatasetService(dataUrl)
+        var datasetService = new DatasetService(dataUrl)
         datasetService.getDatasets(datasourceName, function(e) {
           datasetNameList = e.result.datasetNames;
           currentFeature.dataset = datasetNameList[0];
@@ -594,8 +605,8 @@
       }
 
       function getField(datasetName) {
-        new maplibregl.supermap.FieldService(dataUrl).getFields(
-          new maplibregl.supermap.FieldParameters({
+        new FieldService(dataUrl).getFields(
+          new FieldParameters({
             datasource: dataSourceName,
             dataset: datasetName
           }),
@@ -787,7 +798,7 @@
             x = document.querySelector('.coordX').value;
           }
           draw.appendCoordinates([[x, y]]);
-          overlayPopup.setPosition([x, y]);
+          // overlayPopup 是 OpenLayers 示例遗留代码，MapLibre 的 Popup 使用 setLngLat
         });
 
         document.querySelector('.cancel-add').addEventListener('click', function() {
@@ -935,12 +946,12 @@
 
       function initFeature() {
         // 按照面 线 点的顺序渲染
-        var featureService = new maplibregl.supermap.FeatureService(dataUrl);
+        var featureService = new FeatureService(dataUrl);
         var datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
         // var datasetOrder = [].concat(datasetTypeClassify['Point'])
         // var datasetOrder = ['China_island', 'demo_line', 'Capitals'];
         datasetOrder.forEach(function(datasetName) {
-          var getFeatureParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
+          var getFeatureParams = new GetFeaturesBySQLParameters({
             queryParameter: {
               name: datasetName + "@" + dataSourceName,
               attributeFilter: 'SMID < 1000'
@@ -970,7 +981,7 @@
 
       function commit(isUpdate) {
         if (currentFeature.data) {
-          var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
+          var addFeatureParams = new EditFeaturesParameters({
             features: currentFeature.data,
             dataSourceName: dataSourceName,
             dataSetName: currentDataset,
@@ -999,7 +1010,7 @@
 
       function deleteFeature() {
         Object.keys(deleteList).forEach(function(dataset) {
-          var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
+          var addFeatureParams = new EditFeaturesParameters({
             dataSourceName: dataSourceName,
             dataSetName: dataset,
             IDs: deleteList[dataset],

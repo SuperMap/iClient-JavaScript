@@ -10,9 +10,20 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 <span id="show"></span>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, ServerColor, ServerStyle, ThemeParameters, ThemeService, ThemeUnique, ThemeUniqueItem } from 'iclient-maplibregl';
+
+    var style1, style2, style3, style4, style5, style6;
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
@@ -44,159 +55,159 @@
         zoom: 4
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function createTheme() {
         var style1, style2, style3, style4, style5, style6;
-        style1 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(248, 203, 249),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style1 = new ServerStyle({
+            fillForeColor: new ServerColor(248, 203, 249),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style2 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(196, 255, 189),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style2 = new ServerStyle({
+            fillForeColor: new ServerColor(196, 255, 189),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style3 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(255, 173, 173),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style3 = new ServerStyle({
+            fillForeColor: new ServerColor(255, 173, 173),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style4 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(255, 239, 168),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style4 = new ServerStyle({
+            fillForeColor: new ServerColor(255, 239, 168),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style5 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(173, 209, 255),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style5 = new ServerStyle({
+            fillForeColor: new ServerColor(173, 209, 255),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
-        style6 = new maplibregl.supermap.ServerStyle({
-            fillForeColor: new maplibregl.supermap.ServerColor(132, 164, 232),
-            lineColor: new maplibregl.supermap.ServerColor(255, 255, 255),
+        style6 = new ServerStyle({
+            fillForeColor: new ServerColor(132, 164, 232),
+            lineColor: new ServerColor(255, 255, 255),
             lineWidth: 0.1
         });
 
-        var themeUniqueIteme1 = new maplibregl.supermap.ThemeUniqueItem({
+        var themeUniqueIteme1 = new ThemeUniqueItem({
                 unique: "黑龙江省",
                 style: style1
             }),
-            themeUniqueIteme2 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme2 = new ThemeUniqueItem({
                 unique: "湖北省",
                 style: style2
             }),
-            themeUniqueIteme3 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme3 = new ThemeUniqueItem({
                 unique: "吉林省",
                 style: style3
             }),
-            themeUniqueIteme4 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme4 = new ThemeUniqueItem({
                 unique: "内蒙古自治区",
                 style: style4
             }),
-            themeUniqueIteme5 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme5 = new ThemeUniqueItem({
                 unique: "青海省",
                 style: style5
             }),
-            themeUniqueIteme6 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme6 = new ThemeUniqueItem({
                 unique: "新疆维吾尔自治区",
                 style: style6
             }),
-            themeUniqueIteme7 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme7 = new ThemeUniqueItem({
                 unique: "云南省",
                 style: style1
             }),
-            themeUniqueIteme8 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme8 = new ThemeUniqueItem({
                 unique: "四川省",
                 style: style4
             }),
-            themeUniqueIteme9 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme9 = new ThemeUniqueItem({
                 unique: "贵州省",
                 style: style3
             }),
-            themeUniqueIteme10 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme10 = new ThemeUniqueItem({
                 unique: "甘肃省",
                 style: style3
             }),
-            themeUniqueIteme11 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme11 = new ThemeUniqueItem({
                 unique: "宁夏回族自治区",
                 style: style5
             }),
-            themeUniqueIteme12 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme12 = new ThemeUniqueItem({
                 unique: "重庆市",
                 style: style6
             }),
-            themeUniqueIteme13 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme13 = new ThemeUniqueItem({
                 unique: "山东省",
                 style: style1
             }),
-            themeUniqueIteme14 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme14 = new ThemeUniqueItem({
                 unique: "安徽省",
                 style: style2
             }),
-            themeUniqueIteme15 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme15 = new ThemeUniqueItem({
                 unique: "江西省",
                 style: style3
             }),
-            themeUniqueIteme16 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme16 = new ThemeUniqueItem({
                 unique: "浙江省",
                 style: style4
             }),
-            themeUniqueIteme17 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme17 = new ThemeUniqueItem({
                 unique: "台湾省",
                 style: style2
             }),
-            themeUniqueIteme18 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme18 = new ThemeUniqueItem({
                 unique: "江苏省",
                 style: style6
             }),
-            themeUniqueIteme19 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme19 = new ThemeUniqueItem({
                 unique: "湖南省",
                 style: style5
             }),
-            themeUniqueIteme20 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme20 = new ThemeUniqueItem({
                 unique: "河南省",
                 style: style4
             }),
-            themeUniqueIteme21 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme21 = new ThemeUniqueItem({
                 unique: "河北省",
                 style: style3
             }),
-            themeUniqueIteme22 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme22 = new ThemeUniqueItem({
                 unique: "福建省",
                 style: style5
             }),
-            themeUniqueIteme23 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme23 = new ThemeUniqueItem({
                 unique: "广西壮族自治区",
                 style: style6
             }),
-            themeUniqueIteme24 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme24 = new ThemeUniqueItem({
                 unique: "西藏自治区",
                 style: style2
             }),
-            themeUniqueIteme25 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme25 = new ThemeUniqueItem({
                 unique: "广东省",
                 style: style4
             }),
-            themeUniqueIteme26 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme26 = new ThemeUniqueItem({
                 unique: "山西省",
                 style: style2
             }),
-            themeUniqueIteme27 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme27 = new ThemeUniqueItem({
                 unique: "陕西省",
                 style: style1
             }),
-            themeUniqueIteme28 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme28 = new ThemeUniqueItem({
                 unique: "天津市",
                 style: style5
             }),
-            themeUniqueIteme29 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme29 = new ThemeUniqueItem({
                 unique: "北京市",
                 style: style2
             }),
 
-            themeUniqueIteme30 = new maplibregl.supermap.ThemeUniqueItem({
+            themeUniqueIteme30 = new ThemeUniqueItem({
                 unique: "辽宁省",
                 style: style1
             });
@@ -210,18 +221,18 @@
             themeUniqueIteme26, themeUniqueIteme27, themeUniqueIteme28, themeUniqueIteme29, themeUniqueIteme30
         ];
 
-        var themeUnique = new maplibregl.supermap.ThemeUnique({
+        var themeUnique = new ThemeUnique({
             uniqueExpression: "Name",
             items: themeUniqueItemes,
             defaultStyle: style1
         });
-        var themeParameters = new maplibregl.supermap.ThemeParameters({
+        var themeParameters = new ThemeParameters({
             datasetNames: ["Province_R"],
             dataSourceNames: ["China"],
             themes: [themeUnique]
         });
 
-        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
+        new ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

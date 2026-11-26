@@ -16,6 +16,9 @@
     }
   }
 
+  // 版本集中管理，升级或切回线上地址时使用
+  var CORE_VERSION = '6.14.0';
+
   function inputScript(url) {
     var script = '<script type="text/javascript" src="' + url + '"><' + '/script>';
     document.writeln(script);
@@ -26,26 +29,24 @@
     document.writeln(css);
   }
 
+  // 页面里这段是通用的：核心 mjs / iClient mjs / L7 mjs 的裸名映射统一在这里生成，
+  // 页面只需 <script type="module">import ... from 'maplibre-gl' / 'iclient-maplibregl'</script>。
+  function inputImportMap(imports) {
+    var map = { imports: imports };
+    document.writeln('<script type="importmap">' + JSON.stringify(map) + '<' + '/script>');
+  }
+
+  function inputModuleSrc(url) {
+    document.writeln('<script type="module" src="' + url + '"><' + '/script>');
+  }
+
   function inArray(arr, item) {
-    for (i in arr) {
-      if (arr[i] == item) {
+    for (var j = 0; j < arr.length; j++) {
+      if (arr[j] == item) {
         return true;
       }
     }
     return false;
-  }
-
-  function supportES6() {
-    var code = "'use strict'; class Foo {}; class Bar extends Foo {};";
-    try {
-      new Function(code)();
-    } catch (err) {
-      return false;
-    }
-    if (!Array.from) {
-      return false;
-    }
-    return true;
   }
 
   //加载类库资源文件
@@ -53,7 +54,7 @@
     var libsurl = config.libsurl;
     var disturl = config.disturl;
     //按本脚本自身的引入路径推导 dist 目录：页面只要引对 include-*.js，
-    //无论自身在几层目录下都能定位到 dist。推导不出时沿用默认值
+    //无论自身在几层目录下都能定位到 dist。推导不出时沿用默认值。
     var selfSrc = targetScript.getAttribute('src') || '';
     var distMatch = selfSrc.match(/^(.*?)\/?(?:maplibregl\/)?include-maplibregl\.js(?:[?#]|$)/);
     if (distMatch && distMatch[1]) {
@@ -65,17 +66,37 @@
     }
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
-    if (!inArray(includes, 'maplibre-gl-enhance') && !inArray(excludes, 'maplibregl')) {
-      inputCSS(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.css');
-      inputScript(libsurl + '/maplibre-gl-js/5.6.0/maplibre-gl.min.js');
+
+    var useEnhance = inArray(includes, 'maplibre-gl-enhance');
+    var loadCore = !inArray(excludes, 'maplibregl');
+    var loadIClient = loadCore && !inArray(excludes, 'iclient-maplibregl');
+    // 核心与 L7 统一使用线上 ESM 资源
+    var coreMjs = useEnhance
+      ? libsurl + '/maplibre-gl-js-enhance/' + CORE_VERSION + '/maplibre-gl-enhance.mjs'
+      : libsurl + '/maplibre-gl-js/' + CORE_VERSION + '/maplibre-gl.mjs';
+    var coreCss = useEnhance
+      ? libsurl + '/maplibre-gl-js-enhance/' + CORE_VERSION + '/maplibre-gl-enhance.css'
+      : libsurl + '/maplibre-gl-js/' + CORE_VERSION + '/maplibre-gl.css';
+    var l7Mjs = libsurl + '/maplibregl-l7-render/1.0.0/maplibregl-l7-render.mjs';
+
+    // ES module 核心必须先由 import map 解析裸名 'maplibre-gl'，再挂 window 全局，
+    // 供 iClient mjs 的 namespace.js 组装 supermap 以及页面业务代码使用。
+    if (loadCore) {
+      // 把页面原本要写的 import map 集中到这里：核心、iClient 产物、L7 都用裸名映射，
+      // 页面 module 里可直接 import ... from 'maplibre-gl' / 'iclient-maplibregl' / 'maplibregl-l7-render'。
+      // 同一 URL 的模块浏览器只执行一次，与下面的 inputModuleSrc 不冲突。
+      var imports = { 'maplibre-gl': coreMjs };
+      if (loadIClient) {
+        imports['iclient-maplibregl'] = disturl + '/maplibregl/iclient-maplibregl.mjs';
+      }
+      if (inArray(includes, 'L7')) {
+        imports['maplibregl-l7-render'] = l7Mjs;
+      }
+      inputImportMap(imports);
+      inputCSS(coreCss);
     }
-    if (inArray(includes, 'maplibre-gl-enhance')) {
-      inputCSS(libsurl + '/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css');
-      inputScript(libsurl + '/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js');
-    }
-    if (inArray(includes, 'L7')) {
-      inputScript(libsurl + '/maplibregl-l7-render/0.0.4/maplibregl-l7-render.js');
-    }
+
+    // 可选 UMD 库保持经典 script 注入，解析期先于所有 module 执行
     if (inArray(includes, 'g2')) {
       inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
     }
@@ -188,15 +209,18 @@
     if (inArray(includes, 'ugcwasm')) {
       inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
     }
-    if (!inArray(excludes, 'iclient-maplibregl')) {
-      if (supportES6()) {
-        inputScript(disturl + '/maplibregl/iclient-maplibregl-es6.min.js');
-      } else {
-        inputScript(disturl + '/maplibregl/iclient-maplibregl.min.js');
-      }
-    }
+
+    // 不再把 maplibre-gl / L7 挂到 window：
+    // iclient-maplibregl.mjs 通过 import map 的裸名 'maplibre-gl' 直接 ESM 导入核心；
+    // L7 也由页面用 'maplibregl-l7-render' 裸名导入（需要全局时页面自行 window.L7 = ...）。
+    // mjs 里对 window.maplibregl 的写法只是 UMD/external 兼容兜底，不存在也能正常工作。
+
+    // iClient ESM 产物 + css（exclude 语义保留）
     if (!inArray(excludes, 'iclient-maplibregl-css')) {
-      inputCSS(disturl + '/maplibregl/iclient-maplibregl.min.css');
+      inputCSS(disturl + '/maplibregl/iclient-maplibregl.css');
+    }
+    if (loadIClient) {
+      inputModuleSrc(disturl + '/maplibregl/iclient-maplibregl.mjs');
     }
   }
 

@@ -31,8 +31,18 @@
 
 <body>
     <div id='map'></div>
-    <script type="text/javascript" include='maplibre-gl-enhance,echarts' src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script type="text/javascript">
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" include="maplibre-gl-enhance,echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+
+        var i, option;
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map = new maplibregl.Map({
             container: 'map',

@@ -7,7 +7,14 @@
     <title data-i18n="resources.title_beijingMVTVectorTile"></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude='iclient-maplibregl' src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" exclude="iclient-maplibregl" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
         body {
             margin: 0;
@@ -25,7 +32,9 @@
 
 <body>
     <div id='map'></div>
-    <script type="text/javascript">
+    <script type="module">
+import * as maplibregl from 'maplibre-gl';
+
         var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";

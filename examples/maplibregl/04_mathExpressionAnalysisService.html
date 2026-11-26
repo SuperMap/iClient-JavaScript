@@ -7,11 +7,21 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mathExpression"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<!-- 12.2.0 版本后，如果不使用 include-maplibre-gl.js，需使用importmap引入 maplibre-gl.mjs
+<script type="importmap">
+  {
+    "imports": {"maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"}
+  }
+</script>
+-->
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript">
+<script type="module">
+import * as maplibregl from 'maplibre-gl';
+import { Logo, MathExpressionAnalysisParameters, RangeMode, ServerColor, SpatialAnalystService, ThemeGridRange, ThemeGridRangeItem, ThemeParameters, ThemeService } from 'iclient-maplibregl';
+
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map, mathExpressionAnalysisService, mathExpressionAnalysisParameters, mathExpressionAnalysisResult,
         themeService, themeGridRange, themeParameters, themeLayer,
@@ -43,7 +53,7 @@
         zoom: 7
     });
     map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new Logo({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
         mathExpressionAnalysisProcess();
@@ -51,9 +61,9 @@
 
     function mathExpressionAnalysisProcess() {
         //创建栅格代数运算服务实例
-        mathExpressionAnalysisService = new maplibregl.supermap.SpatialAnalystService(serviceUrl);
+        mathExpressionAnalysisService = new SpatialAnalystService(serviceUrl);
         //创建栅格代数运算参数实例
-        mathExpressionAnalysisParameters = new maplibregl.supermap.MathExpressionAnalysisParameters({
+        mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
             //要执行的栅格运算代数表达式,必设
@@ -73,35 +83,35 @@
     }
 
     function showAnalysisResult_ThemeGridRange() {
-        themeService = new maplibregl.supermap.ThemeService(dataUrl);
-        var themeGridRangeIteme1 = new maplibregl.supermap.ThemeGridRangeItem({
+        themeService = new ThemeService(dataUrl);
+        var themeGridRangeIteme1 = new ThemeGridRangeItem({
                 start: 0,
                 end: 650,
-                color: new maplibregl.supermap.ServerColor(40, 140, 40)
+                color: new ServerColor(40, 140, 40)
             }),
-            themeGridRangeIteme2 = new maplibregl.supermap.ThemeGridRangeItem({
+            themeGridRangeIteme2 = new ThemeGridRangeItem({
                 start: 650,
                 end: 750,
-                color: new maplibregl.supermap.ServerColor(170, 198, 40)
+                color: new ServerColor(170, 198, 40)
             }),
-            themeGridRangeIteme3 = new maplibregl.supermap.ThemeGridRangeItem({
+            themeGridRangeIteme3 = new ThemeGridRangeItem({
                 start: 750,
                 end: 900,
-                color: new maplibregl.supermap.ServerColor(191, 191, 0)
+                color: new ServerColor(191, 191, 0)
             }),
-            themeGridRangeIteme4 = new maplibregl.supermap.ThemeGridRangeItem({
+            themeGridRangeIteme4 = new ThemeGridRangeItem({
                 start: 900,
                 end: 1350,
-                color: new maplibregl.supermap.ServerColor(191, 95, 0)
+                color: new ServerColor(191, 95, 0)
             }),
-            themeGridRangeIteme5 = new maplibregl.supermap.ThemeGridRangeItem({
+            themeGridRangeIteme5 = new ThemeGridRangeItem({
                 start: 1350,
                 end: 3600,
-                color: new maplibregl.supermap.ServerColor(127, 0, 0)
+                color: new ServerColor(127, 0, 0)
             });
-        themeGridRange = new maplibregl.supermap.ThemeGridRange({
+        themeGridRange = new ThemeGridRange({
             reverseColor: false,
-            rangeMode: maplibregl.supermap.RangeMode.EQUALINTERVAL,
+            rangeMode: RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeIteme1,
                 themeGridRangeIteme2,
@@ -110,7 +120,7 @@
                 themeGridRangeIteme5
             ]
         });
-        themeParameters = new maplibregl.supermap.ThemeParameters({
+        themeParameters = new ThemeParameters({
             //制作专题图的数据集
             datasetNames: [mathExpressionAnalysisResult.dataset.split('@')[0]],
             dataSourceNames: ["Jingjin"],
