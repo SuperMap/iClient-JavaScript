@@ -5,11 +5,24 @@ description: iServer 空间分析缓冲区分析 - 数据集与几何两类参�
 
 # 缓冲区分析 - SpatialAnalystService.bufferAnalysis
 
+> **版本与导入约定（先读）**：下文代码默认即 **v6（默认版本）** 写法，可直接复制——业务类无 `maplibregl.supermap.` 前缀。v6 module 头部按需导入：
+>
+> ```js
+> import {
+>   SpatialAnalystService, DatasetBufferAnalystParameters, GeometryBufferAnalystParameters,
+>   FilterParameter, BufferSetting, BufferDistance, BufferEndType,
+>   FeatureService, GetFeaturesByGeometryParameters
+> } from 'https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.mjs';
+> ```
+>
+> 仅当用户明确要 v5 时，才按 [version-routing.md](../../rules/version-routing.md) 第 4 节还原为 `maplibregl.supermap.*` 全局写法（见下表 v5 命名空间），类名与调用不变。
+
 ## 服务信息
 
 | 属性 | 说明 |
 |---|---|
-| 命名空间 | `maplibregl.supermap.SpatialAnalystService` |
+| v5 命名空间 | `maplibregl.supermap.SpatialAnalystService` |
+| v6 具名导入 | `import { SpatialAnalystService } from 'iclient-maplibregl.mjs'` |
 | 服务类型 | 空间分析服务（`/restjsr/spatialanalyst`） |
 | 相关类 | `DatasetBufferAnalystParameters`、`GeometryBufferAnalystParameters`、`BufferSetting`、`BufferDistance`、`BufferEndType`、`FilterParameter` |
 
@@ -26,13 +39,13 @@ description: iServer 空间分析缓冲区分析 - 数据集与几何两类参�
 ```javascript
 var serviceUrl = 'https://iserver.supermap.io/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst';
 
-var dsBufferAnalystParameters = new maplibregl.supermap.DatasetBufferAnalystParameters({
+var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
     dataset: 'Road_L@Jingjin',
-    filterQueryParameter: new maplibregl.supermap.FilterParameter({
+    filterQueryParameter: new FilterParameter({
         attributeFilter: "NAME='莲花池东路'"
     }),
-    bufferSetting: new maplibregl.supermap.BufferSetting({
-        endType: maplibregl.supermap.BufferEndType.ROUND,
+    bufferSetting: new BufferSetting({
+        endType: BufferEndType.ROUND,
         leftDistance: { value: 300 },
         rightDistance: { value: 300 },
         semicircleLineSegment: 10,
@@ -40,7 +53,7 @@ var dsBufferAnalystParameters = new maplibregl.supermap.DatasetBufferAnalystPara
     })
 });
 
-new maplibregl.supermap.SpatialAnalystService(serviceUrl)
+new SpatialAnalystService(serviceUrl)
     .bufferAnalysis(dsBufferAnalystParameters)
     .then(function(serviceResult) {
         map.addSource('buffer-result', {
@@ -85,19 +98,19 @@ var geometryLine = {
     ]
 };
 
-var geoBufferAnalystParams = new maplibregl.supermap.GeometryBufferAnalystParameters({
+var geoBufferAnalystParams = new GeometryBufferAnalystParameters({
     sourceGeometry: geometryLine,
     sourceGeometrySRID: 4326,
-    bufferSetting: new maplibregl.supermap.BufferSetting({
-        endType: maplibregl.supermap.BufferEndType.ROUND,
-        leftDistance: new maplibregl.supermap.BufferDistance({ value: 300 }),
-        rightDistance: new maplibregl.supermap.BufferDistance({ value: 300 }),
+    bufferSetting: new BufferSetting({
+        endType: BufferEndType.ROUND,
+        leftDistance: new BufferDistance({ value: 300 }),
+        rightDistance: new BufferDistance({ value: 300 }),
         semicircleLineSegment: 10,
         radiusUnit: 'METER'
     })
 });
 
-new maplibregl.supermap.SpatialAnalystService(serviceUrl)
+new SpatialAnalystService(serviceUrl)
     .bufferAnalysis(geoBufferAnalystParams)
     .then(function(serviceResult) {
         map.addSource('buffer-result', {
@@ -144,8 +157,8 @@ new maplibregl.supermap.SpatialAnalystService(serviceUrl)
 ## 参数详情
 
 ```bash
-node scripts/query-api.mjs get DatasetBufferAnalystParameters
-node scripts/query-api.mjs get GeometryBufferAnalystParameters
-node scripts/query-api.mjs get BufferSetting
-node scripts/query-api.mjs get SpatialAnalystService --member bufferAnalysis
+node skills/maplibregl/scripts/query-api.mjs get DatasetBufferAnalystParameters
+node skills/maplibregl/scripts/query-api.mjs get GeometryBufferAnalystParameters
+node skills/maplibregl/scripts/query-api.mjs get BufferSetting
+node skills/maplibregl/scripts/query-api.mjs get SpatialAnalystService --member bufferAnalysis
 ```

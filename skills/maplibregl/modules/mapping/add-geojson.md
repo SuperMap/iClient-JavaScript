@@ -5,6 +5,8 @@ description: 添加 GeoJSON 数据源和对应的 MapLibre 图层 - 支持内联
 
 # 添加 GeoJSON 图层
 
+> **版本与导入约定（先读）**：用户未指定 maplibre-gl 版本时默认 **v6**。本文全部使用 MapLibre 原生 map 实例 API（`addSource`/`addLayer`），v5/v6 写法一致；maplibregl 的来源差异（v5 全局 / v6 `import * as`）见 [version-routing.md](../../rules/version-routing.md)。
+
 GeoJSON 必须使用 WGS84（EPSG:4326）经纬度坐标。其他坐标系的数据需要先转换，再叠加到地图上，详见 [coordinate-system.md](../../rules/coordinate-system.md)。
 
 ## 内联 GeoJSON 数据

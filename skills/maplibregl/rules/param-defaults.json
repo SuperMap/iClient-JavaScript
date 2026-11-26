@@ -60,17 +60,81 @@
     "fgbFormat": "FGB",
     "note": "FGB 查询结果通过 result.newResourceLocation 返回，使用前确认服务支持"
   },
+  "versions": {
+    "defaultProfile": "v6",
+    "routingRule": "rules/version-routing.md",
+    "note": "用户未指定 maplibre-gl 版本时默认 v6；v5 仅用于用户明确要求或存量页面维护。业务类名/方法/参数两版一致，差异只在加载与导入方式。"
+  },
   "cdns": {
-    "enhanceVersion": "5.9.0-2",
-    "maplibreGlVersion": "5.6.0",
-    "enhance": {
-      "js": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js",
-      "css": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css"
+    "v5": {
+      "label": "maplibre-gl v5 技术栈（UMD 全局，普通 script）",
+      "enhanceVersion": "5.9.0-2",
+      "maplibreGlVersion": "5.6.0",
+      "template": "templates/v5/index.html",
+      "enhance": {
+        "js": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js",
+        "css": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css"
+      },
+      "iclient": {
+        "js": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js",
+        "css": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css"
+      },
+      "l7Render": {
+        "version": "0.0.4",
+        "js": "https://iclient.supermap.io/web/libs/maplibregl-l7-render/0.0.4/maplibregl-l7-render.js",
+        "global": "L7",
+        "requiredWhen": "使用 L7Layer（L7 可视化，如 3D 弧线 arc3d、飞线、L7 热力/柱图等）时必须加载；iClient 产品不内置 L7，运行时读全局 L7",
+        "loadOrder": "普通 script 顺序固定：核心/enhance → maplibregl-l7-render → iclient-maplibregl-es6.min.js（UMD 依赖全局 maplibregl）",
+        "doNotUse": "dist/maplibregl/include-maplibregl.js 的 include=\"L7\" 仅供官方示例页，生成代码不用"
+      },
+      "namespace": "业务类通过 maplibregl.supermap.* 全局访问",
+      "note": "CDN 版本固定，与 dist/maplibregl/include-maplibregl.js 加载的版本一致，不按用户要求切换；enhance 仅在原生 EPSG:4326 显示（CRS.EPSG4326）或 3857/4326 之外的自定义投影时加载；4326 服务接受动态投影到 3857 出图时不需要"
     },
-    "iclient": {
-      "js": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js",
-      "css": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css"
-    },
-    "note": "CDN 版本固定，与 dist/maplibregl/include-maplibregl.js 加载的版本一致，不按用户要求切换"
+    "v6": {
+      "label": "maplibre-gl v6 技术栈（纯 ESM + import map，默认）",
+      "maplibreGlVersion": "6.14.0",
+      "template": "templates/v6/index.html",
+      "core": {
+        "mjs": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs",
+        "css": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.css",
+        "worker": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl-worker.mjs",
+        "importMapSnippet": "<script type=\"importmap\">{ \"imports\": { \"maplibre-gl\": \"https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs\" } }</script>",
+        "note": "2026-11-25 核实 mjs/css/worker 三件套均已部署（HTTP 200），mjs 内部以相对 URL 引用同目录 worker。但 mjs 与 worker 的响应暂缺 Content-Type 头，浏览器对 module 脚本强制 MIME 检查会直接拒绝加载（headless Chrome 实测报 Expected a JavaScript-or-Wasm module script ... MIME type of \"\"）；需服务端为 .mjs 配置 text/javascript。修复前可临时换 unpkg 同文件（https://unpkg.com/maplibre-gl@6.14.0/dist/，MIME 正常，headless 实测可加载）或自托管并正确配置 MIME"
+      },
+      "iclient": {
+        "mjs": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.mjs",
+        "jsBridge": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js",
+        "css": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css"
+      },
+      "l7Render": {
+        "status": "ready-by-convention",
+        "version": "1.0.0",
+        "bareSpecifier": "maplibregl-l7-render",
+        "mjs": "https://iclient.supermap.io/web/libs/maplibregl-l7-render/1.0.0/maplibregl-l7-render.mjs",
+        "requiresEnhance": true,
+        "requiredWhen": "使用 L7Layer（L7 可视化，如 3D 弧线 arc3d、飞线、L7 热力/柱图等）时必须提供；L7 页面核心固定映到 enhance（与底图坐标系无关，render 每帧调 map.getCRS()，普通核心会报 getCRS is not a function）。iClient mjs 不静态 import 该裸名：./L7/l7-render 是懒读 globalThis.L7 的 var external Proxy，new L7Layer 时才穿透",
+        "wiring": "三步：① import map 的 imports 中把 \"maplibre-gl\" 映到 cdns.v6.enhance.mjs（替换核心映射，render mjs 内部也裸名 import maplibre-gl，三方共享同一含 CRS 的实例），并加 \"maplibregl-l7-render\": 该 mjs；② 业务 module 中 import * as L7Render from 'maplibregl-l7-render' 后 window.L7 = L7Render（import 提升先求值，赋值早于 map load 业务代码）；③ 照常 import { L7Layer } from iclient mjs。不使用 L7 的页面零配置：import map 只映核心、不请求 render",
+        "missingMappingError": "业务 module 自己 import 该裸名，import map 缺映射时页面加载即报 Failed to resolve module specifier \"maplibregl-l7-render\"；缺 window.L7 桥接时报 L7.LineLayer is not a constructor；核心映普通核心时报 map.getCRS is not a function",
+        "note": "1.0.0 mjs CDN 地址按版本目录约定，发布时核实（2026-11-25 核实仍为 404）；未就位时换自托管同目录 mjs，不因此降级 v5。发布前还需完成 v6 适配：20261015 版 fork（= CDN 0.0.4 同源）曾读 map.transform.height/width（v6 已无 map.transform）；20261124 版本地 mjs 实测在普通核心下相机回调抛 map.getCRS is not a function，映到 enhance v6 mjs 即提供该方法。参考 modules/mapping/l7-layer.md"
+      },
+      "enhance": {
+        "status": "deployed-pending-mime-fix",
+        "version": "6.14.0",
+        "mjs": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/6.14.0/maplibre-gl-enhance.mjs",
+        "css": "https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/6.14.0/maplibre-gl-enhance.css",
+        "importMapSnippet": "<script type=\"importmap\">{ \"imports\": { \"maplibre-gl\": \"https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/6.14.0/maplibre-gl-enhance.mjs\" } }</script>",
+        "types": "metadata/maplibre-gl-enhance-v6/index.d.ts（源工程 dist/maplibre-gl-enhance.d.ts；含全部核心 API 与命名导出 CRS）",
+        "usage": "enhance 是核心超集 fork：需要原生 4326/自定义投影时，import map 直接把裸名 maplibre-gl 映到该 mjs（替换核心 mjs，不是新增映射）；页面 import * as maplibregl 后 maplibregl.CRS 可用，iClient 内部同一裸名也拿到 CRS。不需要 CRS 的普通页面仍映核心 CDN mjs。**L7 页面（L7Layer）无条件映该 mjs**，即使底图是 3857：maplibregl-l7-render 每帧调 map.getCRS()，普通核心无此方法",
+        "note": "原生 EPSG:4326 显示（CRS.EPSG4326）或 3857/4326 之外的自定义投影才需要；4326 服务接受动态投影到 3857 出图（initMap 栅格默认路径）时不需要；L7Layer 场景为固定例外（见 l7Render.requiresEnhance）。2026-11-25 核实 mjs/css/worker（同目录 maplibre-gl-worker.mjs）均已部署（HTTP 200）；但 .mjs 响应与核心 mjs 一样暂缺 Content-Type，浏览器严格 MIME 检查会拦截，需服务端配置 text/javascript，未修复前可换自托管同目录 mjs（worker/css 相邻），不因此降级 v5"
+      },
+      "namespace": "import * as maplibregl from 'maplibre-gl'；iClient 业务类从 iclient-maplibregl.mjs 具名导入；LogoControl 改名为 Logo",
+      "requirements": [
+        "import map 必须在所有 type=module 脚本之前",
+        "页面必须经 http(s) 访问，file:// 下 module worker 被拦",
+        "核心必须 import * as 命名空间导入，v6 没有 default 导出",
+        "CDN 引用时 worker 同目录自动定位，无需 setWorkerUrl；CSP 需含 worker-src 'self' blob:"
+      ],
+      "note": "iclient-maplibregl.mjs 随 iClient 12.2.0 正式发布后在 iclient.supermap.io 可访问；发布前本地可用 ../../dist/maplibregl/iclient-maplibregl.mjs 自测"
+    }
   }
 }

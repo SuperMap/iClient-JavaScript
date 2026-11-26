@@ -5,19 +5,28 @@ description: 要素数据集服务（REST Data）— 提供 ID 查询、范围�
 
 # FeatureService - 要素数据集服务
 
+> **版本与导入约定（先读）**：下文代码默认即 **v6（默认版本）** 写法，可直接复制——业务类无 `maplibregl.supermap.` 前缀。v6 module 头部按需导入：
+>
+> ```js
+> import { FeatureService, GetFeaturesBySQLParameters, GetFeaturesByGeometryParameters, GetFeaturesByBufferParameters } from 'https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.mjs';
+> ```
+>
+> 仅当用户明确要 v5 时，才按 [version-routing.md](../../rules/version-routing.md) 第 4 节还原为 `maplibregl.supermap.*` 全局写法（见下表 v5 命名空间），类名与调用不变。
+
 ## 服务信息
 
 | 属性 | 说明 |
 |---|---|
-| 命名空间 | `maplibregl.supermap.FeatureService` |
+| v5 命名空间 | `maplibregl.supermap.FeatureService` |
+| v6 具名导入 | `import { FeatureService } from 'iclient-maplibregl.mjs'` |
 | 服务类型 | REST 数据服务（`/rest/data`） |
 | 所属模块 | services |
-| 依赖 | 需先加载 maplibre-gl-enhance 与 iclient-maplibregl，版本见 `templates/index.html` |
+| 依赖 | 只需 iClient MapLibreGL 包（v5 普通 script / v6 mjs 具名导入）；**不需要 maplibre-gl-enhance**，enhance 仅非标准 CRS 场景需要 |
 
 ## 构造函数
 
 ```javascript
-new maplibregl.supermap.FeatureService(url, options);
+new FeatureService(url, options);
 ```
 
 | 参数 | 类型 | 说明 |
@@ -62,7 +71,7 @@ new maplibregl.supermap.FeatureService(url, options);
 
 ```javascript
 var dataUrl = 'https://iserver.supermap.io/iserver/services/data-world/rest/data';
-var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
+var sqlParam = new GetFeaturesBySQLParameters({
     queryParameter: {
         name: 'Countries@World',
         attributeFilter: 'POPULATION > 10000000'
@@ -70,7 +79,7 @@ var sqlParam = new maplibregl.supermap.GetFeaturesBySQLParameters({
     datasetNames: ['World:Countries']
 });
 
-new maplibregl.supermap.FeatureService(dataUrl)
+new FeatureService(dataUrl)
     .getFeaturesBySQL(sqlParam)
     .then(function(serviceResult) {
         map.addSource('query-result', {
@@ -99,7 +108,7 @@ new maplibregl.supermap.FeatureService(dataUrl)
 | `ADJOIN` | 与几何对象边界相触的要素 |
 
 ```javascript
-var geometryParam = new maplibregl.supermap.GetFeaturesByGeometryParameters({
+var geometryParam = new GetFeaturesByGeometryParameters({
     datasetNames: ['Jingjin:GreenFeild_R'],
     geometry: bufferFeature,
     spatialQueryMode: 'INTERSECT'
@@ -116,13 +125,13 @@ var queryBufferGeometry = {
     coordinates: [[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]
 };
 
-var bufferParam = new maplibregl.supermap.GetFeaturesByBufferParameters({
+var bufferParam = new GetFeaturesByBufferParameters({
     datasetNames: ['World:Capitals'],
     bufferDistance: 30,
     geometry: queryBufferGeometry
 });
 
-new maplibregl.supermap.FeatureService(dataUrl)
+new FeatureService(dataUrl)
     .getFeaturesByBuffer(bufferParam)
     .then(function(serviceResult) {
         map.addSource('queryDatas', {
@@ -159,7 +168,7 @@ new maplibregl.supermap.FeatureService(dataUrl)
 ## 参数详情
 
 ```bash
-node scripts/query-api.mjs get GetFeaturesBySQLParameters
-node scripts/query-api.mjs get GetFeaturesByGeometryParameters
-node scripts/query-api.mjs get GetFeaturesByBufferParameters
+node skills/maplibregl/scripts/query-api.mjs get GetFeaturesBySQLParameters
+node skills/maplibregl/scripts/query-api.mjs get GetFeaturesByGeometryParameters
+node skills/maplibregl/scripts/query-api.mjs get GetFeaturesByBufferParameters
 ```

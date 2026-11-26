@@ -5,6 +5,8 @@ description: 添加 WMTS 栅格图层，支持 Capabilities 解析或手动 KVP 
 
 # 添加 WMTS 栅格图层
 
+> **版本与导入约定（先读）**：用户未指定 maplibre-gl 版本时默认 **v6**。本文使用 MapLibre 原生 raster source/layer 与页面内工具函数，两版写法一致；加载方式差异见 [version-routing.md](../../rules/version-routing.md)。
+
 ## URL 识别
 
 - URL 含 `WMTS` / `wmts`（不区分大小写）。

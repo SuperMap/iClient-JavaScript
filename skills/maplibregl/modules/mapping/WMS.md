@@ -5,6 +5,8 @@ description: 通过 Capabilities 工具读取 WMS 图层信息，并以 MapLibre
 
 # 添加 WMS 栅格图层
 
+> **版本与导入约定（先读）**：用户未指定 maplibre-gl 版本时默认 **v6**。本文使用 MapLibre 原生 raster source/layer 与页面内工具函数，两版写法一致；加载方式差异见 [version-routing.md](../../rules/version-routing.md)。
+
 WMS 是栅格图像服务。使用 [OGC Capabilities 工具](../utils/ogc-capabilities.md)读取服务版本、图层、样式、图像格式和坐标系，再将选中的图层配置为 MapLibre `raster` source。
 
 ## URL 格式与解析

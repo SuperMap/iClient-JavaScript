@@ -103,7 +103,9 @@ maplibregl.supermap.WebSymbol = WebSymbol;
 
 // 兼容 UMD 产物及 external / 全局核心的用法：核心库（标准版 maplibre-gl 或 maplibre-gl-enhance）
 // 由页面先行加载提供 window.maplibregl（webpack externals 将 'maplibre-gl' 指向该全局），
-// 这里把 supermap 挂回该全局
-if (typeof window !== 'undefined' && window.maplibregl) {
+// 这里把 supermap 挂回该全局。
+// maplibregl-l7-render 1.x ESM 会把只读的 maplibre-gl 模块命名空间挂到 window.maplibregl，
+// 只读对象不可写，跳过即可（ESM 消费方用具名导入，不依赖该全局；组合③桥接用 UMD 产物，副本可写）。
+if (typeof window !== 'undefined' && window.maplibregl && Object.isExtensible(window.maplibregl)) {
   window.maplibregl.supermap = maplibregl.supermap;
 }

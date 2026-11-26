@@ -5,19 +5,28 @@ description: 地图查询服务（REST Map）— 提供范围查询、SQL 查询
 
 # QueryService - 地图查询服务
 
+> **版本与导入约定（先读）**：下文代码默认即 **v6（默认版本）** 写法，可直接复制——业务类无 `maplibregl.supermap.` 前缀。v6 module 头部按需导入：
+>
+> ```js
+> import { QueryService, QueryBySQLParameters, QueryByBoundsParameters, QueryByGeometryParameters, QueryByDistanceParameters } from 'https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.mjs';
+> ```
+>
+> 仅当用户明确要 v5 时，才按 [version-routing.md](../../rules/version-routing.md) 第 4 节还原为 `maplibregl.supermap.*` 全局写法（见下表 v5 命名空间），类名与调用不变。
+
 ## 服务信息
 
 | 属性 | 说明 |
 |---|---|
-| 命名空间 | `maplibregl.supermap.QueryService` |
+| v5 命名空间 | `maplibregl.supermap.QueryService` |
+| v6 具名导入 | `import { QueryService } from 'iclient-maplibregl.mjs'` |
 | 服务类型 | REST 地图服务（`/rest/maps/`） |
 | 所属模块 | services |
-| 依赖 | 需先加载 maplibre-gl-enhance 与 iclient-maplibregl，版本见 `templates/index.html` |
+| 依赖 | 只需 iClient MapLibreGL 包（v5 普通 script / v6 mjs 具名导入）；**不需要 maplibre-gl-enhance**，enhance 仅非标准 CRS 场景需要 |
 
 ## 构造函数
 
 ```javascript
-new maplibregl.supermap.QueryService(url, options);
+new QueryService(url, options);
 ```
 
 | 参数 | 类型 | 说明 |
@@ -72,14 +81,14 @@ new maplibregl.supermap.QueryService(url, options);
 ```javascript
 var mapServiceUrl = 'https://iserver.supermap.io/iserver/services/map-world/rest/maps/World';
 
-var param = new maplibregl.supermap.QueryBySQLParameters({
+var param = new QueryBySQLParameters({
     queryParams: {
         name: 'Capitals@World.1',
         attributeFilter: 'POPULATION > 10000000'
     }
 });
 
-new maplibregl.supermap.QueryService(mapServiceUrl)
+new QueryService(mapServiceUrl)
     .queryBySQL(param)
     .then(function(serviceResult) {
         var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
@@ -100,12 +109,12 @@ new maplibregl.supermap.QueryService(mapServiceUrl)
 ## 范围查询 - queryByBounds
 
 ```javascript
-var boundsParam = new maplibregl.supermap.QueryByBoundsParameters({
+var boundsParam = new QueryByBoundsParameters({
     queryParams: { name: 'Capitals@World.1' }
 });
 boundsParam.bounds = map.getBounds();
 
-new maplibregl.supermap.QueryService(mapServiceUrl)
+new QueryService(mapServiceUrl)
     .queryByBounds(boundsParam)
     .then(function(serviceResult) {
         var features = serviceResult.result.recordsets[0].features;
@@ -117,13 +126,13 @@ new maplibregl.supermap.QueryService(mapServiceUrl)
 ## 空间查询 - queryByGeometry
 
 ```javascript
-var geomParam = new maplibregl.supermap.QueryByGeometryParameters({
+var geomParam = new QueryByGeometryParameters({
     queryParams: { name: 'Capitals@World.1' },
     geometry: { type: 'Point', coordinates: [116.39, 39.9] },
     spatialQueryMode: 'INTERSECT'
 });
 
-new maplibregl.supermap.QueryService(mapServiceUrl)
+new QueryService(mapServiceUrl)
     .queryByGeometry(geomParam)
     .then(function(serviceResult) {
         var features = serviceResult.result.recordsets[0].features;
@@ -133,7 +142,7 @@ new maplibregl.supermap.QueryService(mapServiceUrl)
 ## 距离查询 - queryByDistance
 
 ```javascript
-var distParam = new maplibregl.supermap.QueryByDistanceParameters({
+var distParam = new QueryByDistanceParameters({
     queryParams: { name: 'Capitals@World.1' },
     geometry: { type: 'Point', coordinates: [116.39, 39.9] },
     distance: 1000
@@ -147,7 +156,7 @@ var distParam = new maplibregl.supermap.QueryByDistanceParameters({
 - QueryService 用 `queryParams`，FeatureService 用 `queryParameter` 与 `datasetNames`。
 - `queryParams.name` 为 `图层名@数据源名`（例如 `Capitals@World.1`）。
 - 结果在 `result.recordsets[0].features`，不像 FeatureService 直接返回 `result.features`。
-- 查询参数类见 `node scripts/query-api.mjs get QueryBySQLParameters`。
+- 查询参数类见 `node skills/maplibregl/scripts/query-api.mjs get QueryBySQLParameters`（在仓库根目录执行）。
 
 ## 与 FeatureService 对比
 

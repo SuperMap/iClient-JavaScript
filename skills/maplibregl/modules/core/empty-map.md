@@ -5,6 +5,8 @@ description: 使用 new maplibregl.Map 创建空白地图，适用于非 /rest/m
 
 # 空白地图创建
 
+> **版本与导入约定（先读）**：用户未指定 maplibre-gl 版本时默认 **v6**（`import * as maplibregl from 'maplibre-gl'`，纯 ESM 无全局）。下文 `new maplibregl.Map(...)` 写法两版一致，区别只在 maplibregl 的来源；详见 [version-routing.md](../../rules/version-routing.md)。
+
 ## 使用场景
 
 - 没有可用的 `/rest/maps/` 服务。
@@ -42,7 +44,7 @@ map.on('error', function (event) {
 
 - `{ version: 8, sources: {}, layers: [] }` 是合法空白样式，不带底图；空白地图必须自行添加底图或叠加数据，否则用户只会看到空白画布。
 - 所有 `addSource` / `addLayer` 必须在 `map.on('load', ...)` 内执行，否则会抛 `Style is not done loading`。
-- 只有用户提供了有效样式 URL/对象，或明确要空白地图时才走这条路；iServer REST Map URL 一律用 `maplibregl.supermap.initMap()`。
+- 只有用户提供了有效样式 URL/对象，或明确要空白地图时才走这条路；iServer REST Map URL 一律用 `initMap()`（v6 具名导入；v5 为 `maplibregl.supermap.initMap()`）。
 
 ## 叠加其他服务
 

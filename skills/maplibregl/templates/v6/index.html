@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SuperMap iClient MapLibreGL v6 示例</title>
+    <!-- 核心 v6 样式（纯 ESM 版本，不再有 UMD/全局产物） -->
+    <link rel="stylesheet" href="https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.css">
+    <!-- iClient 样式 -->
+    <link rel="stylesheet" href="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.min.css">
+    <!-- import map：把 iClient mjs 内部的裸名 maplibre-gl 映到核心 v6 真实 URL。
+         必须出现在所有 type=module 脚本之前；页面自身与 iClient 经同一映射拿到同一核心实例。 -->
+    <script type="importmap">
+    {
+        "imports": {
+            "maplibre-gl": "https://iclient.supermap.io/web/libs/maplibre-gl-js/6.14.0/maplibre-gl.mjs"
+        }
+    }
+    </script>
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        #status {
+            position: absolute;
+            z-index: 1;
+            top: 12px;
+            left: 12px;
+            max-width: min(440px, calc(100% - 48px));
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            font: 14px/1.5 sans-serif;
+        }
+
+        #status[hidden] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" aria-label="交互式地图"></div>
+    <div id="status" role="status" aria-live="polite">正在加载地图...</div>
+    <!-- v6 没有 window.maplibregl 全局：核心与 iClient 全部 import 使用。
+         页面必须经 http(s) 访问；file:// 下模块 worker 会被浏览器拦截。 -->
+    <script type="module">
+        import * as maplibregl from 'maplibre-gl';
+        import { initMap } from 'https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.mjs';
+
+        const status = document.getElementById('status');
+        // 默认底图用开启动态投影的 EPSG:3857 China 服务（无需 enhance）。
+        // enhance 三分法：3857 不需要；4326 服务接受动态投影到 3857 出图时也不需要；
+        // 要原生 EPSG:4326（CRS.EPSG4326）等经纬度显示或自定义投影时才需要。
+        // v6 需要 enhance 时仍保持 v6：把上面 import map 里的 maplibre-gl 改映到
+        // enhance 6.14.0 mjs（核心超集 fork，含 CRS），详见 rules/coordinate-system.md；
+        // v5 才用 enhance 5.9.0-2 普通 script。
+        // 注意公开 map-world/World 是 4326 且关闭动态投影（dynamicProjection:false），
+        // 既不接受动态投影又不引 enhance 时 initMap 会 reject，属服务配置特例。
+        const mapUrl = 'https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China';
+
+        function showError(error) {
+            const message = error && error.message ? error.message : String(error);
+            status.hidden = false;
+            status.textContent = '地图加载失败：' + message;
+            console.error(error);
+        }
+
+        initMap(mapUrl, {
+            mapOptions: {
+                container: 'map',
+                center: [108.9118, 34.5],
+                zoom: 3
+            }
+        }).then(function(result) {
+            const map = result.map;
+            map.addControl(new maplibregl.NavigationControl(), 'top-left');
+            map.once('load', function() {
+                map.addSource('sample-point', {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        properties: { name: '可编辑示例点' },
+                        geometry: { type: 'Point', coordinates: [108.9118, 34.5] }
+                    }
+                });
+                map.addLayer({
+                    id: 'sample-point',
+                    type: 'circle',
+                    source: 'sample-point',
+                    paint: {
+                        'circle-radius': 7,
+                        'circle-color': '#e34a33',
+                        'circle-stroke-color': '#ffffff',
+                        'circle-stroke-width': 1
+                    }
+                });
+                map.on('click', 'sample-point', function(event) {
+                    new maplibregl.Popup()
+                        .setLngLat(event.lngLat)
+                        .setText('可编辑示例点')
+                        .addTo(map);
+                });
+                status.hidden = true;
+            });
+            map.on('error', function(event) {
+                if (event && event.error) {
+                    showError(event.error);
+                }
+            });
+        }).catch(showError);
+    </script>
+</body>
+</html>

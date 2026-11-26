@@ -116,18 +116,39 @@ WGS84 下可直接使用经纬度；其他坐标系请说明 EPSG 代码。
 我不会默认使用第一个图层；也可以用你提供的 URL 生成调用 GetCapabilities 的代码，由页面加载后列出可用图层再选择。
 ```
 
-## 场景 9：非标准坐标系
+## 场景 9：原生 4326 显示或自定义坐标系
 
-**触发条件**：服务坐标系不是 EPSG:3857/4326。
+**触发条件**：用户要求在**原生 EPSG:4326（等经纬度）**坐标系下显示，或服务为 3857/4326 之外的自定义/地方投影。注意区分：4326 服务**接受动态投影到 3857 出图**时不需要 enhance（initMap 栅格默认路径）；只有要原生 4326 渲染（`crs: maplibregl.CRS.EPSG4326`，如 mvtVectorTile_4326 示例）或自定义投影才需要 `maplibregl.CRS`。
 
 ```
-该服务使用非标准坐标系，需要确认：
+该需求需要在非 Web Mercator（EPSG:3857）的原生坐标系下渲染，需要确认：
 
-1. EPSG 代码或 WKT
+1. EPSG 代码或 WKT（如 EPSG:4326、EPSG:4547、EPSG:2362）
 2. 数据范围（extent）
-3. 是否允许加载 maplibre-gl-enhance（多坐标系支持依赖该增强脚本）
+3. 投影参数（WKT/PROJ 字符串、比例尺 scale 等）
+
+将按默认 maplibre-gl v6 生成：import map 把裸名 maplibre-gl 映到 enhance 6.14.0 mjs
+（含 CRS 的核心超集 fork），无需退回 v5。仅当你明确要求兼容旧页面时才用 v5
+（enhance 5.9.0-2 普通 script）。
+
+补充：如果只是加载 4326 数据服务、接受动态投影成 3857 显示，则不需要 enhance，
+请说明是否可以接受。
 
 平面坐标系无法在 MapLibreGL 中直接渲染，需要先确认可行方案。
+```
+
+## 场景 10：版本信号冲突或不明确
+
+**触发条件**：用户同时提到 ESM/import map 与普通 script 全局写法，或项目特征无法判断 maplibre-gl 版本。注意：用户**完全没提版本**时不追问，直接按默认 v6 生成。
+
+```
+检测到 v5 与 v6 的特征同时存在，请确认目标版本：
+
+1. maplibre-gl v6（默认）：纯 ESM + import map，适用于新页面和现代打包器（vite/webpack5）
+2. maplibre-gl v5：普通 <script> + window.maplibregl 全局，适用于存量页面或需要
+   maplibre-gl-enhance 多坐标系支持的场景
+
+也可以直接描述你的页面现在是怎么引入 maplibre-gl 的，我来判断。
 ```
 
 ## 通用补问模板

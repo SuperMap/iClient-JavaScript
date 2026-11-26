@@ -5,14 +5,15 @@ description: 使用 MapLibre 加载 SuperMap iServer MVT 矢量瓦片（rest/map
 
 # iServer 地图服务（rest/maps）加载矢量瓦片
 
+> **版本与导入约定（先读）**：下文代码默认即 **v6（默认版本）** 写法，可直接复制。v6 module 头部：`import * as maplibregl from 'maplibre-gl'` + `import { initMap } from '.../iclient-maplibregl.mjs'`，业务调用无前缀。仅当用户明确要 v5 时，按 [version-routing.md](../../rules/version-routing.md) 第 4 节还原为 `maplibregl.supermap.initMap`。文中涉及 `maplibregl.CRS` 的原生 4326/自定义投影部分两版 enhance 资源形态不同，见文末版本说明。
+
 ## 方式一：initMap 配合 vector-tile 类型
 
 `initMap` 的 `type` 支持 `'raster' | 'vector-tile'`（默认 `'raster'`）。传 `type: 'vector-tile'` 时，`initMap` 会自动把服务地址拼成
 `.../rest/maps/{map}/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY` 作为样式，并按该样式创建地图：
 
 ```javascript
-maplibregl.supermap
-  .initMap('https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China', {
+initMap('https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China', {
     type: 'vector-tile',
     mapOptions: {
       container: 'map',
@@ -32,7 +33,7 @@ maplibregl.supermap
 注意：
 
 - `initMap` 返回的是 `{ map }`，`map` 已经创建完成；后续 `addSource` / `addLayer` 仍要在地图 `load` 之后执行。
-- 平面投影会直接 reject（`maplibre-gl cannot support plane coordinate system.`）；非 `EPSG:3857` 服务依赖 maplibre-gl-enhance 提供的 `maplibregl.CRS`。
+- 平面投影会直接 reject（`maplibre-gl cannot support plane coordinate system.`）。enhance 按三分法：3857 不需要；4326 服务接受动态投影到 3857 出图时不需要；**原生 4326 矢量瓦片显示（`crs: CRS.EPSG4326`，即本文件方式二）或 3857/4326 之外的自定义投影**需要 maplibre-gl-enhance（v5 用 5.9.0-2 普通脚本；v6 默认仍生成 v6，import map 映到 enhance 6.14.0 mjs，见 [coordinate-system.md](../../rules/coordinate-system.md)）。
 
 ## 方式二：直接传 vectorstyles.json 作为 style
 
@@ -81,7 +82,7 @@ var map = new maplibregl.Map({
 });
 ```
 
-`maplibregl.CRS` 由 maplibre-gl-enhance 提供，必须引入 enhance 包；标准 3857/4326 场景不需要它。
+`maplibregl.CRS`（含 EPSG4326/EPSG3857 常量）由 maplibre-gl-enhance 提供。是否需要按三分法：3857 不需要；4326 服务接受 iServer 动态投影到 3857 出图（initMap 栅格默认路径）时不需要；**要在原生 4326 坐标系下显示（如下方方式二 `crs: maplibregl.CRS.EPSG4326`，参考 `mvtVectorTile_4326.html`）以及 3857/4326 之外的自定义投影**必须引入 enhance。v5 引入 enhance 5.9.0-2 普通脚本后使用全局 `maplibregl.CRS`；**v6 不退回 v5**：import map 把裸名 `maplibre-gl` 映到 enhance 6.14.0 mjs（含全部核心 API 与 CRS 的超集 fork），`import * as maplibregl` 后直接用 `maplibregl.CRS`，详见 [coordinate-system.md](../../rules/coordinate-system.md)。
 
 ## 方式三：手动 vector source
 
@@ -199,5 +200,5 @@ map.on('load', function () {
 - 加载 iServer 地图服务矢量瓦片：**优先方式一 `initMap({ type: 'vector-tile' })`**，服务端样式自带 `source-layer`。
 - 要改样式或加字段驱动渲染：用方式三手动 source，逐几何类型 addLayer。
 - 数据服务必须先确认 `数据集名@数据源名`；不确定就调 `getRestDataInfo`。
-- 非 3857 坐标系必须引入 maplibre-gl-enhance 并配置 `maplibregl.CRS`，否则 `initMap` 会 reject；投影与叠加细节见 [coordinate-system.md](../../rules/coordinate-system.md)。
+- 原生 4326 显示（`maplibregl.CRS.EPSG4326`）或 3857/4326 之外的自定义投影必须引入 maplibre-gl-enhance 并配置 `maplibregl.CRS`，否则 `initMap` 在服务未开动态投影时会 reject（v6 用 enhance 6.14.0 mjs 的 import map，**仍生成 v6 不降级**）；仅接受动态投影到 3857 出图的 4326 服务不需要；投影与叠加细节见 [coordinate-system.md](../../rules/coordinate-system.md)。
 - 已核实示例：`examples/maplibregl/mvtVectorTile.html`、`mvtVectorTile_4326.html`、`mvtVectorTile_restdata.html`、`mvtVectorTile_Beijing_OSM.html`。

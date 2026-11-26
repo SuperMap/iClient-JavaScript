@@ -5,11 +5,13 @@ description: 通过工具函数解析 WMTS/WMS Capabilities，并为 MapLibre ra
 
 # OGC Capabilities 解析工具
 
+> **版本与导入约定（先读）**：本工具是写进生成页面的普通函数，v5/v6 通用，按所选版本放在普通 script（v5）或 `type="module"` 脚本（v6）中均可；解析结果只涉及 MapLibre 原生 raster source/layer。版本判定与加载方式见 [version-routing.md](../../rules/version-routing.md)。
+
 此工具供生成的页面按需调用，不会在 skill 加载或识别 URL 时自动执行。它使用 `fast-xml-parser` 解析服务返回的 XML，并返回可用图层及 raster source 所需信息。
 
 ## 浏览器依赖
 
-在使用工具函数前，将解析器脚本放在调用代码之前：
+在使用工具函数前，将解析器脚本放在调用代码之前。v5 普通页面与 v6 module 页面都可以继续使用这个经典 script（它挂 `window.XMLParser`，module 脚本中通过 `window.XMLParser` 访问；也可改用 ESM 版解析器的 `import`，但下面的工具函数按全局形式编写）：
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fast-xml-parser/5.2.5/fxparser.min.js"></script>

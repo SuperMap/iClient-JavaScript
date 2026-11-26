@@ -1,10 +1,10 @@
-# 用户请求
+# 用户请求（maplibre-gl v5 技术栈）
 
-生成一个能直接运行并方便继续开发的 SuperMap MapLibreGL 地图 HTML。
+生成一个能直接运行并方便继续开发的 SuperMap MapLibreGL 地图 HTML，使用 maplibre-gl v5（普通 script + `window.maplibregl` 全局）。
 
 # 期望回答
 
-基于 `templates/index.html` 提供完整 HTML 文档。使用 `templates/index.html` 中固定的 maplibre-gl-enhance 与 iclient-maplibregl CDN 标签，不要改用 `include-maplibregl.js` 加载器，也不要切换版本。使用公开 World REST Map URL 初始化地图，设置合理的中心点和缩放级别，添加导航控件，并在页面上显示初始化失败和地图错误。包含可编辑的 GeoJSON 叠加示例，并且仅在 `map` 触发 `load` 事件后添加数据源和图层。告诉用户可以将 `mapUrl`、`center`、`zoom` 和示例数据替换为自己的内容。不要使用 MapboxGL 命名空间或 CDN。
+基于 `templates/v5/index.html` 提供完整 HTML 文档。使用 v5 固定的 maplibre-gl-enhance 与 iclient-maplibregl CDN 标签（版本见 `rules/param-defaults.json` 的 `cdns.v5`），不要改用 `include-maplibregl.js` 加载器，也不要切换版本。使用公开 World REST Map URL 初始化地图，设置合理的中心点和缩放级别，添加导航控件，并在页面上显示初始化失败和地图错误。包含可编辑的 GeoJSON 叠加示例，并且仅在 `map` 触发 `load` 事件后添加数据源和图层。告诉用户可以将 `mapUrl`、`center`、`zoom` 和示例数据替换为自己的内容。不要使用 MapboxGL 命名空间或 CDN。
 
 # 输出示例
 
@@ -16,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SuperMap iClient MapLibreGL</title>
+    <title>SuperMap iClient MapLibreGL v5</title>
     <script src="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js"></script>
     <link href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css" rel="stylesheet">
     <script src="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js"></script>

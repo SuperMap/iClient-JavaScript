@@ -5,7 +5,10 @@
  * 浏览器与 npm 消费的是同一份 mjs，不再产出相对路径版 / global 版，也不随产物分发核心文件，
  * 核心三件套（maplibre-gl.mjs / -worker.mjs / .css）由使用方按核心版本自行部署。
  * 可选可视化库沿用页面全局访问（try/catch 兜底为 {}），未引入可选库不阻断基础导入；
- * 传统 .js 构建走 webpack.config.maplibregl.js / -umd.js，与本文件互不影响。 */
+ * 例外：L7 渲染库（maplibregl-l7-render）不做静态 module external——v6 用 var external 指向一个
+ * 懒读全局 L7 的 Proxy（见下方 externals），不用 L7 的页面 import map 无需映射该裸名、也不下载 render；
+ * L7 页面在业务 module 中先 import render mjs 并赋给 window.L7 即可（ESM 导入先于业务代码求值，
+ * Proxy 在真正 new L7Layer 时才读全局）；传统 .js 构建走 webpack.config.maplibregl.js，互不影响。 */
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -17,7 +20,10 @@ const libName = 'maplibregl';
 const productName = 'iclient-maplibregl';
 const distDir = `${__dirname}/../dist/${libName}/`;
 
-// 可选依赖：与传统构建一致的页面全局表达式 external（含 base externals）
+// 可选依赖：与传统构建一致的页面全局表达式 external（含 base externals）。
+// L7 特殊：表达式不是直接读全局，而是返回一个懒读 globalThis.L7 的 Proxy——
+// 产物求值阶段（业务 module 的 import 阶段）全局 L7 尚不存在也无妨，真正用到时（new L7Layer）
+// 才穿透读取；不使用 L7 的页面从不访问该 Proxy。
 const optionalVarExternals = Object.assign({}, configBase.externals, {
   three: 'function(){try{return THREE}catch(e){return {}}}()',
   'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
@@ -26,8 +32,9 @@ const optionalVarExternals = Object.assign({}, configBase.externals, {
   xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
   jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
   'xml-js': 'function(){try{return convert}catch(e){return {}}}()',
-  './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()',
-  '@antv/g2': 'function(){try{return G2}catch(e){return {}}}()'
+  '@antv/g2': 'function(){try{return G2}catch(e){return {}}}()',
+  './L7/l7-render':
+    '(function(){var g=typeof globalThis!=="undefined"?globalThis:(typeof window!=="undefined"?window:self);return new Proxy({},{get:function(o,p){if(!g.L7){return o[p]}if(p==="__esModule"){return true}if(p==="default"){return g.L7}return g.L7[p]}})})()'
 });
 
 module.exports = {
@@ -56,8 +63,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.mjs', '.json', '.css']
   },
-  // 核心走 module external（裸名，浏览器由 import map 解析、打包器由 node_modules 解析），
-  // 可选库仍以 var 读页面全局
+  // 核心走静态裸名 module external；L7 渲染库走 var external（懒 Proxy，见 optionalVarExternals）：
+  // 不映 import map、不挂全局都不影响非 L7 页面；L7 页面先 import render mjs 并赋给 window.L7。
+  // 其余可选库同样以 var 读页面全局，缺失时 try/catch 兜底为 {}。
   externalsType: 'module',
   externals: [
     { 'maplibre-gl': 'maplibre-gl' },

@@ -1,10 +1,12 @@
-# Example 2: Add Line Layer + Buffer Analysis + Spatial Query
+# Example: Add Line Layer + Buffer Analysis + Spatial Query（maplibre-gl v5 技术栈）
 
 **User Request**:
 1. 添加底图 http://localhost:8090/iserver/services/map-china400/rest/maps/China，中心点 [116.2156351162, 39.8963250173]，级别 12
 2. 添加线 [[116.1916654036, 39.8888542507], [116.2031567225, 39.8888542507], [116.2156351162, 39.8963250173], [116.2740019864, 39.8970124079]]
 3. 对线进行半径 500 米缓冲分析
 4. 查询与 Jingjin:GreenFeild_R 数据集相交要素
+
+要求使用 maplibre-gl v5（普通 script + `maplibregl.supermap.*` 全局）。
 
 **Output HTML**:
 ```html
@@ -13,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SuperMap iClient MapLibreGL</title>
+    <title>SuperMap iClient MapLibreGL v5</title>
     <script src="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.js"></script>
     <link href="https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/5.9.0-2/maplibre-gl-enhance.css" rel="stylesheet">
     <script src="https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl-es6.min.js"></script>
