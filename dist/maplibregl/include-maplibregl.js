@@ -210,11 +210,6 @@
       inputScript(libsurl + '/ugcwasm/1.0.1/UGCWasmAll.js');
     }
 
-    // 不再把 maplibre-gl / L7 挂到 window：
-    // iclient-maplibregl.mjs 通过 import map 的裸名 'maplibre-gl' 直接 ESM 导入核心；
-    // L7 也由页面用 'maplibregl-l7-render' 裸名导入（需要全局时页面自行 window.L7 = ...）。
-    // mjs 里对 window.maplibregl 的写法只是 UMD/external 兼容兜底，不存在也能正常工作。
-
     // iClient ESM 产物 + css（exclude 语义保留）
     if (!inArray(excludes, 'iclient-maplibregl-css')) {
       inputCSS(disturl + '/maplibregl/iclient-maplibregl.css');

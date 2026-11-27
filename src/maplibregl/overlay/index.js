@@ -12,4 +12,5 @@ export { GraticuleLayer } from './GraticuleLayer';
 export { FGBLayer } from './FGBLayer';
 export { WebSymbol } from './symbol/WebSymbol';
 export { L7Layer } from './L7Layer';
+export { setL7Render } from './L7/renderRegistry.js';
 export * from './graphic';

@@ -39,9 +39,9 @@
   <script type="text/javascript" include="L7,maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script type="module">
 import * as maplibregl from 'maplibre-gl';
-import { L7Layer } from 'iclient-maplibregl';
-import * as L7Render from 'maplibregl-l7-render';
-window.L7 = L7Render;
+import * as L7 from 'maplibregl-l7-render';
+import { setL7Render, L7Layer } from 'iclient-maplibregl';
+setL7Render(L7);
 
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var attribution =

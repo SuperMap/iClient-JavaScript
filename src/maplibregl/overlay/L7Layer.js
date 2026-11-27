@@ -1,11 +1,20 @@
 import '../core/Base';
 import { L7LayerBase } from '@supermapgis/iclient-common/overlay/l7/L7LayerBase';
-import * as L7 from './L7/l7-render.mjs';
-import { Scene, Maplibre } from './L7/l7-render.mjs';
+import * as L7RenderModule from './L7/l7-render.mjs';
+import { getL7Render } from './L7/renderRegistry.js';
 import { getL7Scene } from '@supermapgis/iclient-common/overlay/l7/util';
 import * as maplibregl from 'maplibre-gl';
 import { getL7Filter } from '@supermapgis/iclient-common/mapping/utils/L7LayerUtil';
 import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
+
+// 浏览器 dist 的 L7 render 被替换为占位模块，真实模块由页面 setL7Render 注入；
+// npm 源码入口未注入时回退到打包进来的本地 render。
+const getRender = () => getL7Render() || L7RenderModule;
+const L7 = new Proxy({}, {
+  get(target, prop) {
+    return getRender()[prop];
+  }
+});
 
 /**
  * @class L7Layer
@@ -33,6 +42,7 @@ export class L7Layer extends L7LayerBase {
   onAdd(map) {
     this.map = map;
     if (!map.$l7scene) {
+      const { Scene, Maplibre } = getRender();
       const scene = getL7Scene(Scene, Maplibre, map);
       map.$l7scene = scene;
       scene.on('loaded', () => {
@@ -103,6 +113,7 @@ maplibregl.Map.prototype.getL7Scene = function () {
       resolve(this.$l7scene);
       return;
     }
+    const { Scene, Maplibre } = getRender();
     const scene = getL7Scene(Scene, Maplibre, this);
     scene.on('loaded', () => {
       this.$l7scene = scene;

@@ -111,6 +111,12 @@ module.exports = {
     ]
   },
   plugins: [
+    // ESM 产物不打入 L7 render：用占位模块替换，页面导入 render 后显式调用 setL7Render 注入。
+    // 不在 externals 里写顶层 await import，避免所有页面等待 L7 解析、也避免 ES2019 目标冲突。
+    new webpack.NormalModuleReplacementPlugin(
+      /(^|\/)L7\/l7-render\.mjs$/,
+      path.resolve(__dirname, '../src/maplibregl/overlay/L7/l7-render-stub.mjs')
+    ),
     new LintExportWebpackPlugin(libName),
     new webpack.BannerPlugin(configBase.bannerInfo(productName)),
     new MiniCssExtractPlugin({ filename: `./${productName}.css` }),

@@ -24,9 +24,9 @@
   <script type="text/javascript" include="three,L7,L7Three" src="../../dist/maplibregl/include-maplibregl.js" ></script>
   <script type="module">
 import * as maplibregl from 'maplibre-gl';
-import { L7Layer } from 'iclient-maplibregl';
-import * as L7Render from 'maplibregl-l7-render';
-window.L7 = L7Render;
+import * as L7 from 'maplibregl-l7-render';
+import { setL7Render, L7Layer } from 'iclient-maplibregl';
+setL7Render(L7);
 
     var scene;
     var map = new maplibregl.Map({
