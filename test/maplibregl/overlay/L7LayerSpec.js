@@ -1,6 +1,6 @@
 ﻿﻿import * as maplibregl from 'maplibre-gl';
 import mbglmap, { revertCRS, ensureOverlayLayersManager } from '../../tool/mock_maplibregl_map';
-import * as L7 from '../../../src/maplibregl/overlay/L7/l7-render';
+import * as L7 from '../../../src/maplibregl/overlay/L7/l7-render.mjs';
 import * as mockL7 from '../../tool/mock_l7';
 import { L7Layer } from '../../../src/maplibregl/overlay/L7Layer';
 

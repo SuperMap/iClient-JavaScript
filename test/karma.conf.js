@@ -60,6 +60,14 @@ module.exports = function (config) {
           presets: ['@babel/preset-env'],
           plugins: [importMetaToEmptyObject]
         });
+        // L7 为 ESM 包（l7-render.mjs），同样只做 ESM→CJS 与 import.meta.url 替换，不计入覆盖率
+        const l7Mjs = require.resolve('../src/maplibregl/overlay/L7/l7-render.mjs');
+        bundle.transform(require('babelify'), {
+          global: true,
+          only: [l7Mjs],
+          presets: ['@babel/preset-env'],
+          plugins: [importMetaToEmptyObject]
+        });
       },
       transform: [
         [
@@ -78,7 +86,7 @@ module.exports = function (config) {
               '../node_modules/lodash/**',
               '../node_modules/echarts/dist/echarts.js',
               '../src/mapboxgl/overlay/L7/l7-render.js',
-              '../src/maplibregl/overlay/L7/l7-render.js',
+              '../src/maplibregl/overlay/L7/l7-render.mjs',
               '../node_modules/video.js/dist/video.cjs.js',
               '../src/common/util/UGCWasmAll.js'
               
@@ -218,10 +226,20 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-
+    customLaunchers: {
+      ChromeCI: {
+        base: 'Chrome',
+        flags: [
+          '--use-gl=angle',
+          '--use-angle=swiftshader',
+          '--enable-unsafe-swiftshader',
+          '--ignore-gpu-blocklist'
+        ]
+      }
+    },
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['ChromeCI'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

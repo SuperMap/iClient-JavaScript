@@ -72,7 +72,7 @@
       "src/common/mapping/WebMapV2Base",
       "src/common/mapping/WebMapService",
       "src/maplibregl/core/Util",
-      "src/maplibregl/overlay/L7/l7-render"
+      "src/maplibregl/overlay/L7/l7-render.mjs"
     ]
   },
   "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories","../plugins/modulecondition"],
